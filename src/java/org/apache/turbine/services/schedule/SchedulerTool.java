@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.TurbineException;
 
@@ -41,13 +41,19 @@ public class SchedulerTool implements ApplicationTool
     private static Log log = LogFactory.getLog(ScheduleService.LOGGER_NAME);
 
     /**
+     * The scheduler service.
+     */
+    @TurbineService
+    private ScheduleService schedulerService;
+
+    /**
      * Initialize the pull tool
      */
     @Override
     public void init(Object data)
     {
-        if (!TurbineServices.getInstance().isRegistered(
-                ScheduleService.SERVICE_NAME))
+        // Rely on injection
+        if (schedulerService == null)
         {
             log.error("You can not use the SchedulerTool unless you enable "
                     +"the Scheduler Service!!!!");
@@ -70,7 +76,7 @@ public class SchedulerTool implements ApplicationTool
      */
     public List<? extends JobEntry> getScheduledJobs()
     {
-        return TurbineScheduler.listJobs();
+        return schedulerService.listJobs();
     }
 
     /**
@@ -79,7 +85,7 @@ public class SchedulerTool implements ApplicationTool
      */
     public boolean isEnabled()
     {
-        return TurbineScheduler.isEnabled();
+        return schedulerService.isEnabled();
     }
 
     /**
@@ -94,7 +100,7 @@ public class SchedulerTool implements ApplicationTool
 
         try
         {
-            je = TurbineScheduler.getJob(Integer.parseInt(jobId));
+            je = schedulerService.getJob(Integer.parseInt(jobId));
         }
         catch (TurbineException e)
         {

@@ -21,10 +21,10 @@ package org.apache.turbine.services.pull.tools;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.pull.ApplicationTool;
-import org.apache.turbine.services.ui.TurbineUI;
 import org.apache.turbine.services.ui.UIService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
@@ -77,12 +77,18 @@ public class UITool implements ApplicationTool
     private String skinName;
 
     /**
+     * The UI service.
+     */
+    @TurbineService
+    private UIService uiService;
+
+    /**
      * Refresh the tool.
      */
     @Override
     public void refresh()
     {
-        TurbineUI.refresh(getSkin());
+        uiService.refresh(getSkin());
         log.debug("UITool refreshed for skin: " + getSkin());
     }
 
@@ -93,7 +99,7 @@ public class UITool implements ApplicationTool
      */
     public String[] getSkinNames()
     {
-        return TurbineUI.getSkinNames();
+        return uiService.getSkinNames();
     }
 
     /**
@@ -107,7 +113,7 @@ public class UITool implements ApplicationTool
      */
     public String getWebappSkinName()
     {
-        return TurbineUI.getWebappSkinName();
+        return uiService.getWebappSkinName();
     }
 
     /**
@@ -124,7 +130,7 @@ public class UITool implements ApplicationTool
      */
     public String get(String key)
     {
-        return TurbineUI.get(getSkin(), key);
+        return uiService.get(getSkin(), key);
     }
 
     /**
@@ -142,7 +148,7 @@ public class UITool implements ApplicationTool
      */
     public void setSkin()
     {
-        skinName = TurbineUI.getWebappSkinName();
+        skinName = uiService.getWebappSkinName();
     }
 
     /**
@@ -235,7 +241,7 @@ public class UITool implements ApplicationTool
      */
     public String image(String imageId, ServerData serverData)
     {
-        return TurbineUI.image(getSkin(), imageId, serverData);
+        return uiService.image(getSkin(), imageId, serverData);
     }
 
     /**
@@ -247,7 +253,7 @@ public class UITool implements ApplicationTool
      */
     public String image(String imageId)
     {
-        return TurbineUI.image(getSkin(), imageId);
+        return uiService.image(getSkin(), imageId);
     }
 
     /**
@@ -284,7 +290,7 @@ public class UITool implements ApplicationTool
      */
     public String getStylecss(ServerData serverData)
     {
-        return TurbineUI.getStylecss(getSkin(), serverData);
+        return uiService.getStylecss(getSkin(), serverData);
     }
 
     /**
@@ -295,7 +301,7 @@ public class UITool implements ApplicationTool
      */
     public String getStylecss()
     {
-        return TurbineUI.getStylecss(getSkin());
+        return uiService.getStylecss(getSkin());
     }
 
     /**
@@ -332,7 +338,7 @@ public class UITool implements ApplicationTool
      */
     public String getScript(String filename, ServerData serverData)
     {
-        return TurbineUI.getScript(getSkin(), filename, serverData);
+        return uiService.getScript(getSkin(), filename, serverData);
     }
 
     /**
@@ -344,7 +350,7 @@ public class UITool implements ApplicationTool
      */
     public String getScript(String filename)
     {
-        return TurbineUI.getScript(getSkin(), filename);
+        return uiService.getScript(getSkin(), filename);
     }
 
     /**

@@ -31,12 +31,12 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.pool.PoolService;
 import org.apache.fulcrum.security.model.turbine.TurbineUserManager;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.annotation.AnnotationProcessor;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -205,7 +205,7 @@ public class TurbinePullService
             setInit(true);
 
             // Do _NOT_ move this before the setInit(true)
-            velocity = TurbineVelocity.getService();
+            velocity = (VelocityService)TurbineServices.getInstance().getService(VelocityService.SERVICE_NAME);
 
             if (velocity != null)
             {
@@ -218,8 +218,7 @@ public class TurbinePullService
         }
         catch (Exception e)
         {
-            throw new InitializationException(
-                "TurbinePullService failed to initialize", e);
+            throw new InitializationException("TurbinePullService failed to initialize", e);
         }
     }
 
@@ -309,7 +308,7 @@ public class TurbinePullService
     }
 
     /**
-     * Retrieve the tool names and classes for the tools definied
+     * Retrieve the tool names and classes for the tools defined
      * in the configuration file with the prefix given.
      *
      * @param toolConfig The part of the configuration describing some tools
@@ -938,11 +937,13 @@ public class TurbinePullService
      */
     private void refreshGlobalTools()
     {
-        for (Iterator<ToolData> it = globalTools.iterator(); it.hasNext();)
+        if (globalTools != null)
         {
-            ToolData toolData = it.next();
-            Object tool = globalContext.get(toolData.toolName);
-            refreshTool(tool, null);
+            for (ToolData toolData : globalTools)
+            {
+                Object tool = globalContext.get(toolData.toolName);
+                refreshTool(tool, null);
+            }
         }
     }
 
@@ -969,14 +970,16 @@ public class TurbinePullService
      */
     private void releaseTools(Context context, List<ToolData> tools)
     {
-        for (Iterator<ToolData> it = tools.iterator(); it.hasNext();)
+        if (tools != null)
         {
-            ToolData toolData = it.next();
-            Object tool = context.remove(toolData.toolName);
-
-            if (tool != null)
+            for (ToolData toolData : tools)
             {
-                pool.putInstance(tool);
+                Object tool = context.remove(toolData.toolName);
+
+                if (tool != null)
+                {
+                    pool.putInstance(tool);
+                }
             }
         }
     }
@@ -992,6 +995,8 @@ public class TurbinePullService
     private void initTool(Object tool, Object param)
         throws Exception
     {
+        AnnotationProcessor.process(tool);
+
         if (param instanceof PipelineData)
         {
             if (tool instanceof PipelineDataApplicationTool)

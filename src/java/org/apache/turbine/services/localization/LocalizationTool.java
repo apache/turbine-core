@@ -25,8 +25,7 @@ import java.util.MissingResourceException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.localization.LocalizationService;
-import org.apache.turbine.services.InstantiationException;
-import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
 /**
@@ -41,34 +40,16 @@ public class LocalizationTool implements ApplicationTool
 {
     /** Logging */
     private static Log log = LogFactory.getLog(LocalizationTool.class);
+
     /** Fulcrum Localization component */
+    @TurbineService
     private LocalizationService localizationService;
+
     /**
      * The language and country information parsed from the request's
      * <code>Accept-Language</code> header.  Reset on each request.
      */
     protected Locale locale;
-
-    /**
-     * Lazy load the LocalizationService.
-     * @return a fulcrum LocalizationService
-     */
-    public LocalizationService getLocalizationService()
-    {
-        if (localizationService == null)
-        {
-            try
-            {
-                localizationService = (LocalizationService)TurbineServices.getInstance()
-                    .getService(LocalizationService.ROLE);
-            }
-            catch (Exception e)
-            {
-                throw new InstantiationException("Problem looking up Localization Service:"+e.getMessage());
-            }
-        }
-        return localizationService;
-    }
 
     /**
      * Creates a new instance.  Used by <code>PullService</code>.
@@ -95,7 +76,7 @@ public class LocalizationTool implements ApplicationTool
     {
         try
         {
-            return getLocalizationService().getString(getBundleName(null), getLocale(), key);
+            return localizationService.getString(getBundleName(null), getLocale(), key);
         }
         catch (MissingResourceException noKey)
         {
@@ -125,7 +106,7 @@ public class LocalizationTool implements ApplicationTool
      */
     protected String getBundleName(Object data)
     {
-        return getLocalizationService().getDefaultBundleName();
+        return localizationService.getDefaultBundleName();
     }
 
     /**
@@ -138,8 +119,7 @@ public class LocalizationTool implements ApplicationTool
      */
     public String format(String key, Object... args)
     {
-        return getLocalizationService()
-                .format(getBundleName(null), getLocale(), key, args);
+        return localizationService.format(getBundleName(null), getLocale(), key, args);
     }
 
     // ApplicationTool implementation
@@ -155,7 +135,7 @@ public class LocalizationTool implements ApplicationTool
         {
             // Pull necessary information out of RunData while we have
             // a reference to it.
-            locale = getLocalizationService().getLocale(((RunData) data).getRequest());
+            locale = localizationService.getLocale(((RunData) data).getRequest());
         }
     }
 
