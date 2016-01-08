@@ -38,9 +38,6 @@ import org.apache.turbine.services.pull.ApplicationTool;
 public class DateFormatter
         implements ApplicationTool
 {
-    /** Used for formatting date objects */
-    private final SimpleDateFormat sdf = new SimpleDateFormat();
-
     /** Default date format */
     private static final String DATE_FORMAT_DEFAULT = "MM/dd/yyyy";
 
@@ -105,6 +102,7 @@ public class DateFormatter
     public String format(Date theDate, String dateFormatString)
     {
         String result = null;
+        SimpleDateFormat sdf = new SimpleDateFormat();
 
         if (StringUtils.isEmpty(dateFormatString) || theDate == null)
         {
@@ -112,10 +110,9 @@ public class DateFormatter
         }
         else
         {
-            this.sdf.applyPattern(dateFormatString);
-            result = this.sdf.format(theDate);
+            sdf.applyPattern(dateFormatString);
+            result = sdf.format(theDate);
         }
         return result;
     }
-
 }
