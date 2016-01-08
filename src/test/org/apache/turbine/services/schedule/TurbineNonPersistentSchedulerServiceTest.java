@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.apache.turbine.modules.scheduledjobs.SimpleJob;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
 import org.hamcrest.CoreMatchers;
@@ -45,6 +46,8 @@ public class TurbineNonPersistentSchedulerServiceTest
 {
     private TurbineConfig tc = null;
 
+    private ScheduleService scheduler = null;
+
     @Before
     public void setUp() throws Exception
     {
@@ -53,6 +56,8 @@ public class TurbineNonPersistentSchedulerServiceTest
                 ".",
                 "/conf/test/TurbineNonPersistentSchedulerServiceTest.properties");
         tc.initialize();
+
+        scheduler = (ScheduleService)TurbineServices.getInstance().getService(ScheduleService.SERVICE_NAME);
     }
 
     @After
@@ -71,11 +76,11 @@ public class TurbineNonPersistentSchedulerServiceTest
     {
         try
         {
-            TurbineScheduler.startScheduler();
-            assertTrue(TurbineScheduler.isEnabled());
+            scheduler.startScheduler();
+            assertTrue(scheduler.isEnabled());
 
-            TurbineScheduler.stopScheduler();
-            assertFalse(TurbineScheduler.isEnabled());
+            scheduler.stopScheduler();
+            assertFalse(scheduler.isEnabled());
         }
         catch (Exception e)
         {
@@ -93,18 +98,18 @@ public class TurbineNonPersistentSchedulerServiceTest
         try
         {
             // get the current job count for later comparison
-            int jobCount = TurbineScheduler.listJobs().size();
+            int jobCount = scheduler.listJobs().size();
 
             // Add a new job entry
-            JobEntry je = TurbineScheduler.newJob(0, 1, -1, -1, -1, "SimpleJob");
+            JobEntry je = scheduler.newJob(0, 1, -1, -1, -1, "SimpleJob");
 
-            TurbineScheduler.addJob(je);
-            assertEquals(jobCount + 1, TurbineScheduler.listJobs().size());
-            
-            assertTrue(TurbineScheduler.listJobs().contains( je ));
-            TurbineScheduler.removeJob(je);
-            assertTrue(!TurbineScheduler.listJobs().contains( je ));
-            assertEquals(jobCount, TurbineScheduler.listJobs().size());
+            scheduler.addJob(je);
+            assertEquals(jobCount + 1, scheduler.listJobs().size());
+
+            assertTrue(scheduler.listJobs().contains( je ));
+            scheduler.removeJob(je);
+            assertTrue(!scheduler.listJobs().contains( je ));
+            assertEquals(jobCount, scheduler.listJobs().size());
 
         }
         catch (Exception e)
@@ -121,7 +126,7 @@ public class TurbineNonPersistentSchedulerServiceTest
     {
         try
         {
-			JobEntry je = TurbineScheduler.getJob(1);
+			JobEntry je = scheduler.getJob(1);
 			assertThat(je, CoreMatchers.instanceOf(JobEntryNonPersistent.class));
 			JobEntryNonPersistent jenp = (JobEntryNonPersistent)je;
             assertEquals(1, jenp.getJobId());

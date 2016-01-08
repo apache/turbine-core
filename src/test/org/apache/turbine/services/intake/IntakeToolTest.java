@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.fulcrum.intake.IntakeService;
 import org.apache.fulcrum.intake.model.Group;
 import org.apache.fulcrum.parser.DefaultParameterParser;
+import org.apache.turbine.annotation.AnnotationProcessor;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
@@ -40,6 +41,7 @@ import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -56,41 +58,44 @@ import com.mockobjects.servlet.MockServletConfig;
 public class IntakeToolTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
+    private IntakeTool intakeTool;
 
-    @Test public void testGet() throws Exception
+    @Before
+    public void initTool() throws Exception
     {
-        IntakeTool intakeTool = new IntakeTool();
+        intakeTool = new IntakeTool();
+        AnnotationProcessor.process(intakeTool);
         intakeTool.init(getRunData());
+    }
+
+    @Test
+    public void testGet() throws Exception
+    {
         File file = new File("./target/appData.ser");
-        assertTrue(
-            "Make sure serialized data file exists:" + file,
-            file.exists());
-        Group group = intakeTool.get("LoginGroup","loginGroupKey");
+        assertTrue("Make sure serialized data file exists:" + file, file.exists());
+        Group group = intakeTool.get("LoginGroup", "loginGroupKey");
         assertNotNull(group);
         assertEquals("loginGroupKey", group.getGID());
         assertEquals("LoginGroup", group.getIntakeGroupName());
     }
 
-
     /**
      * Make sure refresh DOESN'T do anything
+     *
      * @throws Exception
      */
-    @Test public void testRefresh() throws Exception
+    @Test
+    public void testRefresh() throws Exception
     {
-        IntakeTool intakeTool = new IntakeTool();
-        intakeTool.init(getRunData());
         int numberOfGroups = intakeTool.getGroups().size();
         intakeTool.refresh();
-        assertEquals(numberOfGroups,intakeTool.getGroups().size());
+        assertEquals(numberOfGroups, intakeTool.getGroups().size());
     }
+
     private RunData getRunData() throws Exception
     {
-        RunDataService rds =
-            (RunDataService) TurbineServices.getInstance().getService(
-                RunDataService.SERVICE_NAME);
-        EnhancedMockHttpServletRequest request =
-            new EnhancedMockHttpServletRequest();
+        RunDataService rds = (RunDataService) TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME);
+        EnhancedMockHttpServletRequest request = new EnhancedMockHttpServletRequest();
         request.setupServerName("bob");
         request.setupGetProtocol("http");
         request.setupScheme("scheme");
@@ -108,7 +113,8 @@ public class IntakeToolTest extends BaseTestCase
         HttpServletResponse response = new MockHttpServletResponse();
         ServletConfig config = new MockServletConfig();
         RunData runData = rds.getRunData(request, response, config);
-        assertEquals("Verify we are using Fulcrum parameter parser",DefaultParameterParser.class,runData.getParameters().getClass());
+        assertEquals("Verify we are using Fulcrum parameter parser", DefaultParameterParser.class, runData.getParameters()
+            .getClass());
         return runData;
     }
 

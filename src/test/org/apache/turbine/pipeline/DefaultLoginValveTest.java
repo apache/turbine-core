@@ -21,6 +21,10 @@ package org.apache.turbine.pipeline;
  */
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.actions.LoginUser;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpSession;
@@ -41,8 +46,6 @@ import org.junit.Test;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockServletConfig;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests TurbinePipeline.
@@ -67,7 +70,7 @@ public class DefaultLoginValveTest extends BaseTestCase
                             "/conf/test/CompleteTurbineResources.properties");
         tc.initialize();
     }
-    
+
     @Before
     public void setUpBefore() throws Exception {
         config = new MockServletConfig();
@@ -91,9 +94,10 @@ public class DefaultLoginValveTest extends BaseTestCase
         request.setSession(session);
 
         // User must exist
-        User user = TurbineSecurity.getUserInstance();
+        SecurityService securityService = (SecurityService)TurbineServices.getInstance().getService(SecurityService.SERVICE_NAME);
+        User user = securityService.getUserInstance();
         user.setName("username");
-        TurbineSecurity.addUser(user, "password");
+        securityService.addUser(user, "password");
     }
 
     /**
@@ -125,7 +129,7 @@ public class DefaultLoginValveTest extends BaseTestCase
         assertEquals("username",user.getName());
         assertTrue(user.hasLoggedIn());
     }
-    
+
     @AfterClass
     public static void destroy() {
         tc.dispose();
