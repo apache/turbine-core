@@ -23,9 +23,9 @@ package org.apache.turbine.services.session;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.turbine.om.security.User;
@@ -36,7 +36,7 @@ import org.apache.turbine.services.TurbineBaseService;
  * sessions of the current context.  The session objects that are
  * cached by this service are obtained through a listener, which must
  * be configured via your web application's <code>web.xml</code>
- * deployement descriptor as follows:
+ * deployment descriptor as follows:
  *
  * <blockquote><code><pre>
  * &lt;listener&gt;
@@ -58,21 +58,17 @@ public class TurbineSessionService
         implements SessionService
 {
     /** Map of active sessions */
-    private Map<String, HttpSession> activeSessions;
+    private ConcurrentMap<String, HttpSession> activeSessions;
 
     /**
      * Gets a list of the active sessions.
      *
      * @return A copy of the list of <code>HttpSession</code> objects.
      */
+    @Override
     public Collection<HttpSession> getActiveSessions()
     {
-        // Sync externally to allow ArrayList's ctor to iterate
-        // activeSessions' values in a thread-safe fashion.
-        synchronized (activeSessions)
-        {
-            return new ArrayList<HttpSession>(activeSessions.values());
-        }
+        return new ArrayList<HttpSession>(activeSessions.values());
     }
 
     /**
@@ -81,6 +77,7 @@ public class TurbineSessionService
      *
      * @param session Session to add
      */
+    @Override
     public void addSession(HttpSession session)
     {
         activeSessions.put(session.getId(), session);
@@ -92,6 +89,7 @@ public class TurbineSessionService
      *
      * @param session Session to remove
      */
+    @Override
     public void removeSession(HttpSession session)
     {
         activeSessions.remove(session.getId());
@@ -108,6 +106,7 @@ public class TurbineSessionService
      * @return true if the user is logged in on one of the
      * active sessions.
      */
+    @Override
     public boolean isUserLoggedIn(User user)
     {
         return getActiveUsers().contains(user);
@@ -120,21 +119,19 @@ public class TurbineSessionService
      *
      * @return A set of {@link org.apache.turbine.om.security.User} objects.
      */
+    @Override
     public Collection<User> getActiveUsers()
     {
         Collection<User> users;
-        synchronized (activeSessions)
+        // Pre-allocate a list which won't need expansion more
+        // than once.
+        users = new ArrayList<User>((int) (activeSessions.size() * 0.7));
+        for (HttpSession session : activeSessions.values())
         {
-            // Pre-allocate a list which won't need expansion more
-            // than once.
-            users = new ArrayList<User>((int) (activeSessions.size() * 0.7));
-            for (Iterator<HttpSession> i = activeSessions.values().iterator(); i.hasNext();)
+            User u = getUserFromSession(session);
+            if (u != null && u.hasLoggedIn())
             {
-                User u = getUserFromSession(i.next());
-                if (u != null && u.hasLoggedIn())
-                {
-                    users.add(u);
-                }
+                users.add(u);
             }
         }
 
@@ -147,6 +144,7 @@ public class TurbineSessionService
      * @param session The session from which to extract a user.
      * @return The Turbine User object.
      */
+    @Override
     public User getUserFromSession(HttpSession session)
     {
         // Not sure of other containers, but Tomcat 5.0.28 sometimes returns
@@ -168,6 +166,7 @@ public class TurbineSessionService
      * @param sessionId The unique session identifier.
      * @return The session keyed by the specified identifier.
      */
+    @Override
     public HttpSession getSession(String sessionId)
     {
         return this.activeSessions.get(sessionId);
@@ -180,19 +179,16 @@ public class TurbineSessionService
      * @param user the user
      * @return Collection of HtttSession objects
      */
+    @Override
     public Collection<HttpSession> getSessionsForUser(User user)
     {
         Collection<HttpSession> sessions = new ArrayList<HttpSession>();
-        synchronized (activeSessions)
+        for (HttpSession session : activeSessions.values())
         {
-            for (Iterator<HttpSession> i = activeSessions.values().iterator(); i.hasNext();)
+            User u = this.getUserFromSession(session);
+            if (user.equals(u))
             {
-                HttpSession session = i.next();
-                User u = this.getUserFromSession(session);
-                if (user.equals(u))
-                {
-                    sessions.add(session);
-                }
+                sessions.add(session);
             }
         }
 
@@ -200,7 +196,7 @@ public class TurbineSessionService
     }
 
 
-    // ---- Service initilization ------------------------------------------
+    // ---- Service initialization ------------------------------------------
 
     /**
      * Initializes the service
@@ -208,7 +204,7 @@ public class TurbineSessionService
     @Override
     public void init()
     {
-        this.activeSessions = new Hashtable<String, HttpSession>();
+        this.activeSessions = new ConcurrentHashMap<String, HttpSession>();
 
         setInit(true);
     }
