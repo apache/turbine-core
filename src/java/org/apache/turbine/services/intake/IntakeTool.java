@@ -28,11 +28,12 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.intake.IntakeException;
-import org.apache.fulcrum.intake.IntakeServiceFacade;
+import org.apache.fulcrum.intake.IntakeService;
 import org.apache.fulcrum.intake.Retrievable;
 import org.apache.fulcrum.intake.model.Group;
 import org.apache.fulcrum.parser.ValueParser;
 import org.apache.fulcrum.pool.Recyclable;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
 
@@ -60,7 +61,7 @@ public class IntakeTool
     public static final String INTAKE_GRP = "intake-grp";
 
     /** Groups from intake.xml */
-    protected HashMap<String, Group> groups;
+    protected HashMap<String, Group> groups = null;
 
     /** ValueParser instance */
     protected ValueParser pp;
@@ -70,26 +71,19 @@ public class IntakeTool
     private final StringBuilder groupSB = new StringBuilder(128);
 
     /** The cache of PullHelpers. **/
-    private final Map<String, IntakeTool.PullHelper> pullMap;
+    private Map<String, IntakeTool.PullHelper> pullMap = null;
+
+    /**
+     * The Intake service.
+     */
+    @TurbineService
+    private IntakeService intakeService;
 
     /**
      * Constructor
      */
     public IntakeTool()
     {
-        String[] groupNames = IntakeServiceFacade.getGroupNames();
-        int groupCount = 0;
-        if (groupNames != null)
-        {
-            groupCount = groupNames.length;
-        }
-        groups = new HashMap<String, Group>((int) (1.25 * groupCount + 1));
-        pullMap = new HashMap<String, IntakeTool.PullHelper>((int) (1.25 * groupCount + 1));
-
-        for (int i = groupCount - 1; i >= 0; i--)
-        {
-            pullMap.put(groupNames[i], new PullHelper(groupNames[i]));
-        }
     }
 
     /**
@@ -98,20 +92,37 @@ public class IntakeTool
     @Override
     public void init(Object runData)
     {
+        if (groups == null) // Initialize only once
+        {
+            String[] groupNames = intakeService.getGroupNames();
+            int groupCount = 0;
+            if (groupNames != null)
+            {
+                groupCount = groupNames.length;
+            }
+            groups = new HashMap<String, Group>((int) (1.25 * groupCount + 1));
+            pullMap = new HashMap<String, IntakeTool.PullHelper>((int) (1.25 * groupCount + 1));
+
+            for (int i = groupCount - 1; i >= 0; i--)
+            {
+                pullMap.put(groupNames[i], new PullHelper(groupNames[i]));
+            }
+        }
+
         this.pp = ((RunData) runData).getParameters();
 
         String[] groupKeys = pp.getStrings(INTAKE_GRP);
         String[] groupNames = null;
         if (groupKeys == null || groupKeys.length == 0)
         {
-            groupNames = IntakeServiceFacade.getGroupNames();
+            groupNames = intakeService.getGroupNames();
         }
         else
         {
             groupNames = new String[groupKeys.length];
             for (int i = groupKeys.length - 1; i >= 0; i--)
             {
-                groupNames[i] = IntakeServiceFacade.getGroupName(groupKeys[i]);
+                groupNames[i] = intakeService.getGroupName(groupKeys[i]);
             }
 
         }
@@ -120,7 +131,7 @@ public class IntakeTool
         {
             try
             {
-                List<Group> foundGroups = IntakeServiceFacade.getGroup(groupNames[i])
+                List<Group> foundGroups = intakeService.getGroup(groupNames[i])
                     .getObjects(pp);
 
                 if (foundGroups != null)
@@ -289,14 +300,14 @@ public class IntakeTool
         {
             Group g = null;
 
-            String inputKey = IntakeServiceFacade.getGroupKey(groupName) + key;
+            String inputKey = intakeService.getGroupKey(groupName) + key;
             if (groups.containsKey(inputKey))
             {
                 g = groups.get(inputKey);
             }
             else if (create)
             {
-                g = IntakeServiceFacade.getGroup(groupName);
+                g = intakeService.getGroup(groupName);
                 groups.put(inputKey, g);
                 g.init(key, pp);
             }
@@ -316,7 +327,7 @@ public class IntakeTool
 
             try
             {
-                String inputKey = IntakeServiceFacade.getGroupKey(groupName)
+                String inputKey = intakeService.getGroupKey(groupName)
                         + obj.getQueryKey();
                 if (groups.containsKey(inputKey))
                 {
@@ -324,7 +335,7 @@ public class IntakeTool
                 }
                 else
                 {
-                    g = IntakeServiceFacade.getGroup(groupName);
+                    g = intakeService.getGroup(groupName);
                     groups.put(inputKey, g);
                 }
 
@@ -405,11 +416,11 @@ public class IntakeTool
     {
         if (groupName == null)
         {
-            throw new IntakeException("IntakeServiceFacade.get: groupName == null");
+            throw new IntakeException("intakeService.get: groupName == null");
         }
         if (key == null)
         {
-            throw new IntakeException("IntakeServiceFacade.get: key == null");
+            throw new IntakeException("intakeService.get: key == null");
         }
 
         PullHelper ph = get(groupName);
@@ -446,7 +457,7 @@ public class IntakeTool
 
             try
             {
-                IntakeServiceFacade.releaseGroup(group);
+                intakeService.releaseGroup(group);
             }
             catch (IntakeException ie)
             {
@@ -513,7 +524,7 @@ public class IntakeTool
         {
             try
             {
-                IntakeServiceFacade.releaseGroup(group);
+                intakeService.releaseGroup(group);
             }
             catch (IntakeException ie)
             {

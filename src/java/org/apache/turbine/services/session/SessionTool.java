@@ -25,6 +25,7 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.pull.ApplicationTool;
 
@@ -37,6 +38,12 @@ import org.apache.turbine.services.pull.ApplicationTool;
 public class SessionTool
         implements ApplicationTool
 {
+    /**
+     * The session service.
+     */
+    @TurbineService
+    private SessionService sessionService;
+
     @Override
     public void init(Object o)
     {
@@ -56,7 +63,7 @@ public class SessionTool
      */
     public Collection<HttpSession> getActiveSessions()
     {
-        return TurbineSession.getActiveSessions();
+        return sessionService.getActiveSessions();
     }
 
     /**
@@ -67,7 +74,7 @@ public class SessionTool
      */
     public void addSession(HttpSession session)
     {
-        TurbineSession.addSession(session);
+        sessionService.addSession(session);
     }
 
     /**
@@ -78,7 +85,7 @@ public class SessionTool
      */
     public void removeSession(HttpSession session)
     {
-        TurbineSession.removeSession(session);
+        sessionService.removeSession(session);
     }
 
     /**
@@ -94,7 +101,7 @@ public class SessionTool
      */
     public boolean isUserLoggedIn(User user)
     {
-        return TurbineSession.isUserLoggedIn(user);
+        return sessionService.isUserLoggedIn(user);
     }
 
     /**
@@ -106,7 +113,7 @@ public class SessionTool
      */
     public Collection<User> getActiveUsers()
     {
-        return TurbineSession.getActiveUsers();
+        return sessionService.getActiveUsers();
     }
 
     /**
@@ -117,7 +124,7 @@ public class SessionTool
      */
     public User getUserFromSession(HttpSession session)
     {
-        return TurbineSession.getUserFromSession(session);
+        return sessionService.getUserFromSession(session);
     }
 
     /**
@@ -129,6 +136,6 @@ public class SessionTool
      */
     public Collection<HttpSession> getSessionsForUser(User user)
     {
-        return TurbineSession.getSessionsForUser(user);
+        return sessionService.getSessionsForUser(user);
     }
 }
