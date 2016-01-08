@@ -19,11 +19,16 @@ package org.apache.turbine.services.localization;
  * under the License.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.util.Vector;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.turbine.annotation.AnnotationProcessor;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
@@ -32,6 +37,7 @@ import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -39,9 +45,8 @@ import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockHttpSession;
 import com.mockobjects.servlet.MockServletConfig;
 
-import static org.junit.Assert.*;
 /**
- * Unit test for Localization Tool.  Verifies that localization works the same using the
+ * Unit test for Localization Tool. Verifies that localization works the same using the
  * deprecated Turbine localization service as well as the new Fulcrum Localization
  * component.
  *
@@ -51,36 +56,45 @@ import static org.junit.Assert.*;
 public class LocalizationToolTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
+    private LocalizationTool lt;
 
-    @Test public void testGet() throws Exception
+    @Before
+    public void initTool() throws Exception
     {
-        LocalizationTool lt = new LocalizationTool();
+        lt = new LocalizationTool();
+        AnnotationProcessor.process(lt);
         lt.init(getRunData());
+    }
+
+    @Test
+    public void testGet() throws Exception
+    {
         assertEquals("value1", lt.get("key1"));
         assertEquals("value3", lt.get("key3"));
     }
-    @Test public void testGetLocale() throws Exception
+
+    @Test
+    public void testGetLocale() throws Exception
     {
-        LocalizationTool lt = new LocalizationTool();
-        lt.init(getRunData());
         assertNotNull(lt.getLocale());
         assertEquals("US", lt.getLocale().getCountry());
         assertEquals("en", lt.getLocale().getLanguage());
     }
-    @Test public void testInit() throws Exception
+
+    @Test
+    public void testInit() throws Exception
     {
-        LocalizationTool lt = new LocalizationTool();
-        lt.init(getRunData());
         assertNotNull(lt.getLocale());
     }
-    @Test public void testRefresh() throws Exception
+
+    @Test
+    public void testRefresh() throws Exception
     {
-        LocalizationTool lt = new LocalizationTool();
-        lt.init(getRunData());
         assertNotNull(lt.getLocale());
         lt.refresh();
         assertNull(lt.getLocale());
     }
+
     private RunData getRunData() throws Exception
     {
         RunDataService rds = (RunDataService) TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME);
@@ -104,18 +118,20 @@ public class LocalizationToolTest extends BaseTestCase
         RunData runData = rds.getRunData(request, response, config);
         return runData;
     }
+
     @BeforeClass
     public static void setUp() throws Exception
     {
         tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
     }
+
     @AfterClass
     public static void tearDown() throws Exception
     {
         if (tc != null)
         {
             tc.dispose();
-        } 
+        }
     }
 }

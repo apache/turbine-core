@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.apache.turbine.modules.scheduledjobs.SimpleJob;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
@@ -46,6 +47,8 @@ public class QuartzSchedulerServiceTest extends BaseTestCase
 {
     private TurbineConfig tc = null;
 
+    private ScheduleService scheduler = null;
+
     @Before
     public void setUp() throws Exception
     {
@@ -54,6 +57,8 @@ public class QuartzSchedulerServiceTest extends BaseTestCase
                 ".",
                 "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
+
+        scheduler = (ScheduleService)TurbineServices.getInstance().getService(ScheduleService.SERVICE_NAME);
     }
 
     @After
@@ -72,11 +77,11 @@ public class QuartzSchedulerServiceTest extends BaseTestCase
     {
         try
         {
-            TurbineScheduler.startScheduler();
-            assertTrue(TurbineScheduler.isEnabled());
+            scheduler.startScheduler();
+            assertTrue(scheduler.isEnabled());
 
-            TurbineScheduler.stopScheduler();
-            assertFalse(TurbineScheduler.isEnabled());
+            scheduler.stopScheduler();
+            assertFalse(scheduler.isEnabled());
         }
         catch (Exception e)
         {
@@ -94,17 +99,17 @@ public class QuartzSchedulerServiceTest extends BaseTestCase
         try
         {
             // get the current job count for later comparison
-            int jobCount = TurbineScheduler.listJobs().size();
+            int jobCount = scheduler.listJobs().size();
 
             // Add a new job entry
-			JobEntry je = TurbineScheduler.newJob(10, -1, -1, -1, -1, "SimpleJob1");
+			JobEntry je = scheduler.newJob(10, -1, -1, -1, -1, "SimpleJob1");
             je.setJobId(jobCount + 1);
 
-            TurbineScheduler.addJob(je);
-            assertEquals(jobCount + 1, TurbineScheduler.listJobs().size());
+            scheduler.addJob(je);
+            assertEquals(jobCount + 1, scheduler.listJobs().size());
 
-            TurbineScheduler.removeJob(je);
-            assertEquals(jobCount, TurbineScheduler.listJobs().size());
+            scheduler.removeJob(je);
+            assertEquals(jobCount, scheduler.listJobs().size());
 
         }
         catch (Exception e)
@@ -122,7 +127,7 @@ public class QuartzSchedulerServiceTest extends BaseTestCase
         try
         {
             JobKey jk = new JobKey("SimpleJob", JobEntryQuartz.DEFAULT_JOB_GROUP_NAME);
-			JobEntry je = TurbineScheduler.getJob(jk.hashCode());
+			JobEntry je = scheduler.getJob(jk.hashCode());
 			assertThat(je, CoreMatchers.instanceOf(JobEntryQuartz.class));
 			JobEntryQuartz jeq = (JobEntryQuartz)je;
             assertEquals(jeq.getJobTrigger().getJobKey(), jk);
