@@ -28,6 +28,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
@@ -66,7 +68,12 @@ public abstract class BaseServiceBroker implements ServiceBroker
     /**
      * A repository of Service instances.
      */
-    private final Hashtable<String, Service> services = new Hashtable<String, Service>();
+    private final ConcurrentHashMap<String, Service> services = new ConcurrentHashMap<String, Service>();
+
+    /**
+     * Lock access during service initialization
+     */
+    private final ReentrantLock serviceLock = new ReentrantLock();
 
     /**
      * Configuration for the services broker.
@@ -98,7 +105,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * the requirement of having init(Object) all
      * together.
      */
-    private final Hashtable<String, Object> serviceObjects = new Hashtable<String, Object>();
+    private final ConcurrentHashMap<String, Object> serviceObjects = new ConcurrentHashMap<String, Object>();
 
     /** Logging */
     private static Log log = LogFactory.getLog(BaseServiceBroker.class);
@@ -608,55 +615,70 @@ public abstract class BaseServiceBroker implements ServiceBroker
 
         if (service == null)
         {
-            if (!this.isLocalService(name))
-            {
-                throw new InstantiationException(
-                        "ServiceBroker: unknown service " + name
-                        + " requested");
-            }
+            serviceLock.lock();
 
             try
             {
-                Class<?> clazz = mapping.get(name);
+                // Double check
+                service = services.get(name);
 
-                try
+                if (service == null)
                 {
-                    service = (Service) clazz.newInstance();
-
-                    // check if the newly created service is also a
-                    // service provider - if so then remember it
-                    if (service instanceof TurbineServiceProvider)
+                    if (!this.isLocalService(name))
                     {
-                        this.serviceProviderInstanceMap.put(name,service);
+                        throw new InstantiationException(
+                                "ServiceBroker: unknown service " + name
+                                + " requested");
                     }
-                }
-                // those two errors must be passed to the VM
-                catch (ClassCastException e)
-                {
-                    throw new InstantiationException("Class " + clazz +
-                            " doesn't implement the Service interface", e);
-                }
-                catch (ThreadDeath t)
-                {
-                    throw t;
-                }
-                catch (OutOfMemoryError t)
-                {
-                    throw t;
-                }
-                catch (Throwable t)
-                {
-                    throw new InstantiationException("Failed to instantiate " + clazz, t);
+
+                    try
+                    {
+                        Class<?> clazz = mapping.get(name);
+
+                        try
+                        {
+                            service = (Service) clazz.newInstance();
+
+                            // check if the newly created service is also a
+                            // service provider - if so then remember it
+                            if (service instanceof TurbineServiceProvider)
+                            {
+                                this.serviceProviderInstanceMap.put(name,service);
+                            }
+                        }
+                        // those two errors must be passed to the VM
+                        catch (ClassCastException e)
+                        {
+                            throw new InstantiationException("Class " + clazz +
+                                    " doesn't implement the Service interface", e);
+                        }
+                        catch (ThreadDeath t)
+                        {
+                            throw t;
+                        }
+                        catch (OutOfMemoryError t)
+                        {
+                            throw t;
+                        }
+                        catch (Throwable t)
+                        {
+                            throw new InstantiationException("Failed to instantiate " + clazz, t);
+                        }
+                    }
+                    catch (InstantiationException e)
+                    {
+                        throw new InstantiationException(
+                                "Failed to instantiate service " + name, e);
+                    }
+                    service.setServiceBroker(this);
+                    service.setName(name);
+                    services.put(name, service);
                 }
             }
-            catch (InstantiationException e)
+            finally
             {
-                throw new InstantiationException(
-                        "Failed to instantiate service " + name, e);
+                serviceLock.unlock();
             }
-            service.setServiceBroker(this);
-            service.setName(name);
-            services.put(name, service);
         }
 
         return service;
@@ -711,7 +733,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * Determines if the requested service is managed by an initialized
      * TurbineServiceProvider. We use the service names to lookup
      * the TurbineServiceProvider to ensure that we get a fully
-     * inititialized service.
+     * initialized service.
      *
      * @param name The name of the Service requested.
      * @return true if the service is managed by a TurbineServiceProvider
