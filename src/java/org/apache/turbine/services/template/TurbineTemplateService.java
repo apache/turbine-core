@@ -22,9 +22,8 @@ package org.apache.turbine.services.template;
 
 
 import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
@@ -46,7 +45,7 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.turbine.services.servlet.ServletService;
 import org.apache.turbine.services.template.mapper.BaseTemplateMapper;
 import org.apache.turbine.services.template.mapper.ClassMapper;
 import org.apache.turbine.services.template.mapper.DirectMapper;
@@ -238,6 +237,11 @@ public class TurbineTemplateService
     private String defaultTemplate;
 
     /**
+     * The servlet service.
+     */
+    private ServletService servletService;
+
+    /**
      * The mappings of template file extensions to {@link
      * org.apache.turbine.services.template.TemplateEngineService}
      * implementations. Implementing template engines can locate
@@ -245,7 +249,7 @@ public class TurbineTemplateService
      * may possess, and other template engines are stuck with file
      * based template hierarchy only.
      */
-    private Map<String, TemplateEngineService> templateEngineRegistry = null;
+    private ConcurrentMap<String, TemplateEngineService> templateEngineRegistry = null;
 
     /**
      * C'tor
@@ -268,6 +272,8 @@ public class TurbineTemplateService
         // Get the configuration for the template service.
         Configuration config = getConfiguration();
 
+        servletService = (ServletService)TurbineServices.getInstance().getService(ServletService.SERVICE_NAME);
+
         // Get the default extension to use if nothing else is applicable.
         defaultExtension = config.getString(TemplateService.DEFAULT_EXTENSION_KEY,
             TemplateService.DEFAULT_EXTENSION_VALUE);
@@ -284,7 +290,7 @@ public class TurbineTemplateService
         log.debug("Default Template:  " + defaultTemplate);
         log.debug("Use Caching:       " + useCache);
 
-        templateEngineRegistry = Collections.synchronizedMap(new HashMap<String, TemplateEngineService>());
+        templateEngineRegistry = new ConcurrentHashMap<String, TemplateEngineService>();
 
         initMapper(config);
         setInit(true);
@@ -625,7 +631,7 @@ public class TurbineTemplateService
     {
         for (int i = 0; i < templatePaths.length; i++)
         {
-            templatePaths[i] = TurbineServlet.getRealPath(templatePaths[i]);
+            templatePaths[i] = servletService.getRealPath(templatePaths[i]);
         }
         return templatePaths;
     }
@@ -633,20 +639,19 @@ public class TurbineTemplateService
     /**
      * Delegates to the appropriate {@link
      * org.apache.turbine.services.template.TemplateEngineService} to
-     * check the existance of the specified template.
+     * check the existence of the specified template.
      *
-     * @param template The template to check for the existance of.
+     * @param template The template to check for the existence of.
      * @param templatePaths The paths to check for the template.
      * @deprecated Use templateExists from the various Templating Engines
      */
     @Override
     @Deprecated
-    public boolean templateExists(String template,
-        String[] templatePaths)
+    public boolean templateExists(String template, String[] templatePaths)
     {
-        for (int i = 0; i < templatePaths.length; i++)
+        for (String templatePath : templatePaths)
         {
-            if (new File(templatePaths[i], template).exists())
+            if (new File(templatePath, template).exists())
             {
                 return true;
             }
@@ -661,13 +666,13 @@ public class TurbineTemplateService
      * @param service The <code>TemplateEngineService</code> to register.
      */
     @Override
-    public synchronized void registerTemplateEngineService(TemplateEngineService service)
+    public void registerTemplateEngineService(TemplateEngineService service)
     {
         String[] exts = service.getAssociatedFileExtensions();
 
-        for (int i = 0; i < exts.length; i++)
+        for (String ext : exts)
         {
-            templateEngineRegistry.put(exts[i], service);
+            templateEngineRegistry.put(ext, service);
         }
     }
 

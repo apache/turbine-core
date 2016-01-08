@@ -28,9 +28,9 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateEngineService;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.services.template.TurbineTemplate;
 
 /**
  * This mapper is responsible for the lookup of templates for the Layout
@@ -71,6 +71,7 @@ public class LayoutTemplateMapper
      * @param template The template name.
      * @return The parsed module name.
      */
+    @Override
     public String doMapping(String template)
     {
         log.debug("doMapping(" + template + ")");
@@ -89,15 +90,16 @@ public class LayoutTemplateMapper
         log.debug("templateName is " + templateName);
 
         // Last element decides, which template Service to use...
-        TemplateEngineService tes = TurbineTemplate.getTemplateEngineService(templateName);
+        TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+        TemplateEngineService tes = templateService.getTemplateEngineService(templateName);
 
         if (tes == null)
         {
             return null;
         }
 
-        String defaultName =
-            TurbineTemplate.getDefaultLayoutTemplateName(templateName); // We're, after all, a Layout Template Mapper...
+        // We're, after all, a Layout Template Mapper...
+        String defaultName = templateService.getDefaultLayoutTemplateName(templateName);
 
         // This is an optimization. If the name we're looking for is
         // already the default name for the template, don't do a "first run"

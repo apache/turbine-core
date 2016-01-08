@@ -22,7 +22,6 @@ package org.apache.turbine.modules.actions;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -79,7 +78,7 @@ public abstract class LegacyVelocityAction extends VelocityAction
 
         RunData data = getRunData(pipelineData);
         ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);
-        Context context = TurbineVelocity.getContext(pipelineData);
+        Context context = velocity.getContext(pipelineData);
         executeEvents(pp, new Class<?>[]{ RunData.class, Context.class },
                 new Object[]{ data, context });
     }

@@ -25,7 +25,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -69,7 +70,9 @@ public class TemplateScreen
     {
         this.data = data;
         this.screen = data.getScreen();
-        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.class);
+        AssemblerBrokerService abs = (AssemblerBrokerService)TurbineServices.getInstance()
+            .getService(AssemblerBrokerService.SERVICE_NAME);
+        this.screenLoader = (ScreenLoader)abs.getLoader(Screen.class);
     }
 
     /**

@@ -21,10 +21,11 @@ package org.apache.turbine.services.ui;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -32,18 +33,19 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.pull.TurbinePull;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.pull.PullService;
 import org.apache.turbine.services.pull.tools.UITool;
-import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.turbine.services.servlet.ServletService;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.uri.DataURI;
 
 /**
  * The UI service provides for shared access to User Interface (skin) files,
- * as well as the ability for non-default skin files to inherit properties from 
- * a default skin.  Use TurbineUI to access skin properties from your screen 
- * classes and action code. UITool is provided as a pull tool for accessing 
- * skin properties from your templates. 
+ * as well as the ability for non-default skin files to inherit properties from
+ * a default skin.  Use TurbineUI to access skin properties from your screen
+ * classes and action code. UITool is provided as a pull tool for accessing
+ * skin properties from your templates.
  *
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:james_coltman@majorband.co.uk">James Coltman</a>
@@ -101,7 +103,7 @@ public class TurbineUIService
     private static final String RELATIVE_PROPERTY = "tool.ui.want.relative";
 
     /**
-     * Default skin name. This name refers to a directory in the 
+     * Default skin name. This name refers to a directory in the
      * WEBAPP/resources/ui/skins directory. There is a file called skin.props
      * which contains the name/value pairs to be made available via the skin.
      */
@@ -126,6 +128,11 @@ public class TurbineUIService
     private static final String DEFAULT_SKIN_CSS_FILE = "skin.css";
 
     /**
+     * The servlet service.
+     */
+    private ServletService servletService;
+
+    /**
      * The directory within the skin directory that contains the skin images.
      */
     private String imagesDirectory;
@@ -144,11 +151,12 @@ public class TurbineUIService
     /**
      * The skin Properties store.
      */
-    private HashMap<String, Properties> skins = new HashMap<String, Properties>();
+    private ConcurrentHashMap<String, Properties> skins = new ConcurrentHashMap<String, Properties>();
 
     /**
      * Refresh the service by clearing all skins.
      */
+    @Override
     public void refresh()
     {
         clearSkins();
@@ -156,14 +164,15 @@ public class TurbineUIService
 
     /**
      * Refresh a particular skin by clearing it.
-     * 
+     *
      * @param skinName the name of the skin to clear.
      */
+    @Override
     public void refresh(String skinName)
     {
         clearSkin(skinName);
     }
-    
+
     /**
      * Retrieve the Properties for a specific skin.  If they are not yet loaded
      * they will be.  If the specified skin does not exist properties for the
@@ -171,32 +180,33 @@ public class TurbineUIService
      * level message will be written to the log.  If the webapp skin does not
      * exist the default skin will be used and id that doesn't exist an empty
      * Properties will be returned.
-     * 
-     * @param skinName the name of the skin whose properties are to be 
+     *
+     * @param skinName the name of the skin whose properties are to be
      * retrieved.
-     * @return the Properties for the named skin or the properties for the 
+     * @return the Properties for the named skin or the properties for the
      * default skin configured for the webapp if the named skin does not exist.
      */
     private Properties getSkinProperties(String skinName)
     {
         Properties skinProperties = skins.get(skinName);
-        return null != skinProperties ? skinProperties : loadSkin(skinName); 
+        return null != skinProperties ? skinProperties : loadSkin(skinName);
     }
 
     /**
-     * Retrieve a skin property from the named skin.  If the property is not 
-     * defined in the named skin the value for the default skin will be 
-     * provided.  If the named skin does not exist then the skin configured for 
+     * Retrieve a skin property from the named skin.  If the property is not
+     * defined in the named skin the value for the default skin will be
+     * provided.  If the named skin does not exist then the skin configured for
      * the webapp will be used.  If the webapp skin does not exist the default
-     * skin will be used.  If the default skin does not exist then 
+     * skin will be used.  If the default skin does not exist then
      * <code>null</code> will be returned.
-     * 
+     *
      * @param skinName the name of the skin to retrieve the property from.
      * @param key the key to retrieve from the skin.
-     * @return the value of the property for the named skin (defaulting to the 
+     * @return the value of the property for the named skin (defaulting to the
      * default skin), the webapp skin, the default skin or <code>null</code>,
      * depending on whether or not the property or skins exist.
      */
+    @Override
     public String get(String skinName, String key)
     {
         Properties skinProperties = getSkinProperties(skinName);
@@ -204,17 +214,18 @@ public class TurbineUIService
     }
 
     /**
-     * Retrieve a skin property from the default skin for the webapp.  If the 
-     * property is not defined in the webapp skin the value for the default skin 
-     * will be provided.  If the webapp skin does not exist the default skin 
-     * will be used.  If the default skin does not exist then <code>null</code> 
+     * Retrieve a skin property from the default skin for the webapp.  If the
+     * property is not defined in the webapp skin the value for the default skin
+     * will be provided.  If the webapp skin does not exist the default skin
+     * will be used.  If the default skin does not exist then <code>null</code>
      * will be returned.
-     * 
+     *
      * @param key the key to retrieve.
-     * @return the value of the property for the webapp skin (defaulting to the 
-     * default skin), the default skin or <code>null</code>, depending on 
+     * @return the value of the property for the webapp skin (defaulting to the
+     * default skin), the default skin or <code>null</code>, depending on
      * whether or not the property or skins exist.
      */
+    @Override
     public String get(String key)
     {
         return get(getWebappSkinName(), key);
@@ -222,59 +233,54 @@ public class TurbineUIService
 
     /**
      * Provide access to the list of available skin names.
-     * 
+     *
      * @return the available skin names.
      */
+    @Override
     public String[] getSkinNames()
     {
-        File skinsDir = new File(TurbineServlet.getRealPath(skinsDirectory));
+        File skinsDir = new File(servletService.getRealPath(skinsDirectory));
         return skinsDir.list(DirectoryFileFilter.INSTANCE);
     }
 
     /**
-     * Clear the map of stored skins. 
+     * Clear the map of stored skins.
      */
     private void clearSkins()
     {
-        synchronized (skins)
-        {
-            skins = new HashMap<String, Properties>();
-        }
+        skins.clear();
         log.debug("All skins were cleared.");
     }
-    
+
     /**
      * Clear a particular skin from the map of stored skins.
-     * 
+     *
      * @param skinName the name of the skin to clear.
      */
     private void clearSkin(String skinName)
     {
-        synchronized (skins)
+        if (!skinName.equals(SKIN_PROPERTY_DEFAULT))
         {
-            if (!skinName.equals(SKIN_PROPERTY_DEFAULT))
-            {
-                skins.remove(SKIN_PROPERTY_DEFAULT);
-            }
-            skins.remove(skinName);
+            skins.remove(SKIN_PROPERTY_DEFAULT);
         }
-        log.debug("The skin \"" + skinName 
+        skins.remove(skinName);
+        log.debug("The skin \"" + skinName
                 + "\" was cleared (will also clear \"default\" skin).");
     }
 
     /**
      * Load the specified skin.
-     * 
+     *
      * @param skinName the name of the skin to load.
      * @return the Properties for the named skin if it exists, or the skin
      * configured for the web application if it does not exist, or the default
-     * skin if that does not exist, or an empty Parameters object if even that 
+     * skin if that does not exist, or an empty Parameters object if even that
      * cannot be found.
      */
-    private synchronized Properties loadSkin(String skinName)
+    private Properties loadSkin(String skinName)
     {
         Properties defaultSkinProperties = null;
-        
+
         if (!StringUtils.equals(skinName, SKIN_PROPERTY_DEFAULT))
         {
             defaultSkinProperties = getSkinProperties(SKIN_PROPERTY_DEFAULT);
@@ -282,7 +288,7 @@ public class TurbineUIService
 
         // The following line is okay even for default.
         Properties skinProperties = new Properties(defaultSkinProperties);
-        
+
         StringBuilder sb = new StringBuilder();
         sb.append('/').append(skinsDirectory);
         sb.append('/').append(skinName);
@@ -292,22 +298,23 @@ public class TurbineUIService
             log.debug("Loading selected skin from: " + sb.toString());
         }
 
+        InputStream is = null;
+
         try
         {
             // This will NPE if the directory associated with the skin does not
-            // exist, but it is habdled correctly below.
-            InputStream is = TurbineServlet.getResourceAsStream(sb.toString());
-
+            // exist, but it is handled correctly below.
+            is = servletService.getResourceAsStream(sb.toString());
             skinProperties.load(is);
         }
         catch (Exception e)
         {
             log.error("Cannot load skin: " + skinName + ", from: "
                     + sb.toString(), e);
-            if (!StringUtils.equals(skinName, getWebappSkinName()) 
+            if (!StringUtils.equals(skinName, getWebappSkinName())
                     && !StringUtils.equals(skinName, SKIN_PROPERTY_DEFAULT))
             {
-                log.error("Attempting to return the skin configured for " 
+                log.error("Attempting to return the skin configured for "
                         + "webapp instead of " + skinName);
                 return getSkinProperties(getWebappSkinName());
             }
@@ -322,25 +329,27 @@ public class TurbineUIService
                 return new Properties();
             }
         }
-        
-        // Replace in skins HashMap
-        synchronized (skins)
+        finally
         {
-            skins.put(skinName, skinProperties);
+            IOUtils.closeQuietly(is);
         }
-        
+
+        // Replace in skins HashMap
+        skins.put(skinName, skinProperties);
+
         return skinProperties;
     }
 
     /**
-     * Get the name of the default skin name for the web application from the 
-     * TurbineResources.properties file. If the property is not present the 
+     * Get the name of the default skin name for the web application from the
+     * TurbineResources.properties file. If the property is not present the
      * name of the default skin will be returned.  Note that the web application
-     * skin name may be something other than default, in which case its 
+     * skin name may be something other than default, in which case its
      * properties will default to the skin with the name "default".
-     * 
+     *
      * @return the name of the default skin for the web application.
      */
+    @Override
     public String getWebappSkinName()
     {
         return Turbine.getConfiguration()
@@ -348,60 +357,64 @@ public class TurbineUIService
     }
 
     /**
-     * Retrieve the URL for an image that is part of a skin. The images are 
+     * Retrieve the URL for an image that is part of a skin. The images are
      * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.
      *
-     * <p>Use this if for some reason your server name, server scheme, or server 
-     * port change on a per request basis. I'm not sure if this would happen in 
+     * <p>Use this if for some reason your server name, server scheme, or server
+     * port change on a per request basis. I'm not sure if this would happen in
      * a load balanced situation. I think in most cases the image(String image)
      * method would probably be enough, but I'm not absolutely positive.
-     * 
+     *
      * @param skinName the name of the skin to retrieve the image from.
      * @param imageId the id of the image whose URL will be generated.
      * @param serverData the serverData to use as the basis for the URL.
      */
+    @Override
     public String image(String skinName, String imageId, ServerData serverData)
     {
         return getSkinResource(serverData, skinName, imagesDirectory, imageId);
     }
 
     /**
-     * Retrieve the URL for an image that is part of a skin. The images are 
+     * Retrieve the URL for an image that is part of a skin. The images are
      * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.
-     * 
+     *
      * @param skinName the name of the skin to retrieve the image from.
      * @param imageId the id of the image whose URL will be generated.
      */
+    @Override
     public String image(String skinName, String imageId)
     {
         return image(skinName, imageId, Turbine.getDefaultServerData());
     }
 
     /**
-     * Retrieve the URL for the style sheet that is part of a skin. The style is 
-     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the 
+     * Retrieve the URL for the style sheet that is part of a skin. The style is
+     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the
      * filename skin.css
      *
-     * <p>Use this if for some reason your server name, server scheme, or server 
-     * port change on a per request basis. I'm not sure if this would happen in 
-     * a load balanced situation. I think in most cases the style() method would 
+     * <p>Use this if for some reason your server name, server scheme, or server
+     * port change on a per request basis. I'm not sure if this would happen in
+     * a load balanced situation. I think in most cases the style() method would
      * probably be enough, but I'm not absolutely positive.
-     * 
+     *
      * @param skinName the name of the skin to retrieve the style sheet from.
      * @param serverData the serverData to use as the basis for the URL.
      */
+    @Override
     public String getStylecss(String skinName, ServerData serverData)
     {
         return getSkinResource(serverData, skinName, null, cssFile);
     }
 
     /**
-     * Retrieve the URL for the style sheet that is part of a skin. The style is 
-     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the 
+     * Retrieve the URL for the style sheet that is part of a skin. The style is
+     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the
      * filename skin.css
-     * 
+     *
      * @param skinName the name of the skin to retrieve the style sheet from.
      */
+    @Override
     public String getStylecss(String skinName)
     {
         return getStylecss(skinName, Turbine.getDefaultServerData());
@@ -411,15 +424,16 @@ public class TurbineUIService
      * Retrieve the URL for a given script that is part of a skin. The script is
      * stored in the WEBAPP/resources/ui/skins/[SKIN] directory.
      *
-     * <p>Use this if for some reason your server name, server scheme, or server 
-     * port change on a per request basis. I'm not sure if this would happen in 
-     * a load balanced situation. I think in most cases the style() method would 
+     * <p>Use this if for some reason your server name, server scheme, or server
+     * port change on a per request basis. I'm not sure if this would happen in
+     * a load balanced situation. I think in most cases the style() method would
      * probably be enough, but I'm not absolutely positive.
      *
      * @param skinName the name of the skin to retrieve the image from.
      * @param filename the name of the script file.
      * @param serverData the serverData to use as the basis for the URL.
      */
+    @Override
     public String getScript(String skinName, String filename,
             ServerData serverData)
     {
@@ -433,6 +447,7 @@ public class TurbineUIService
      * @param skinName the name of the skin to retrieve the image from.
      * @param filename the name of the script file.
      */
+    @Override
     public String getScript(String skinName, String filename)
     {
         return getScript(skinName, filename, Turbine.getDefaultServerData());
@@ -497,10 +512,12 @@ public class TurbineUIService
     {
         Configuration cfg = Turbine.getConfiguration();
 
-        // Get the resources directory that is specified in the TR.props or 
+        servletService = (ServletService)TurbineServices.getInstance().getService(ServletService.SERVICE_NAME);
+        PullService pullService = (PullService)TurbineServices.getInstance().getService(PullService.SERVICE_NAME);
+        // Get the resources directory that is specified in the TR.props or
         // default to "resources", relative to the webapp.
         StringBuilder sb = new StringBuilder();
-        sb.append(stripSlashes(TurbinePull.getResourcesDirectory()));
+        sb.append(stripSlashes(pullService.getResourcesDirectory()));
         sb.append("/");
         sb.append(stripSlashes(
                 cfg.getString(SKINDIR_PROPERTY, SKINS_DIRECTORY)));
@@ -521,8 +538,6 @@ public class TurbineUIService
     public void shutdown()
     {
         clearSkins();
-
         setInit(false);
     }
-
 }

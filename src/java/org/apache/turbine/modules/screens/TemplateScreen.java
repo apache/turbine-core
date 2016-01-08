@@ -26,9 +26,10 @@ import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.template.TemplateInfo;
 
 /**
  * Template Screen.
@@ -132,14 +133,15 @@ public abstract class TemplateScreen
     public static void setTemplate(PipelineData pipelineData, String template)
     {
         RunData data = (RunData)pipelineData;
-        data.getTemplateInfo().setScreenTemplate(template);
+        TemplateInfo ti = data.getTemplateInfo();
+        TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+
+        ti.setScreenTemplate(template);
         try
         {
             // We have do call getScreenTemplate because of the path
             // separator.
-            data.getTemplateInfo().setLayoutTemplate(
-                    TurbineTemplate.getLayoutTemplateName(
-                            data.getTemplateInfo().getScreenTemplate()));
+            ti.setLayoutTemplate(templateService.getLayoutTemplateName(ti.getScreenTemplate()));
         }
         catch (Exception e)
         {

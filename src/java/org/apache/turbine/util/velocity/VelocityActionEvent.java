@@ -23,9 +23,10 @@ package org.apache.turbine.util.velocity;
 
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.velocity.context.Context;
 
 /**
@@ -49,6 +50,10 @@ import org.apache.velocity.context.Context;
  */
 public abstract class VelocityActionEvent extends ActionEvent
 {
+    /** Injected velocity service */
+    @TurbineService
+    protected VelocityService velocity;
+
     /** Indicates whether or not this module has been initialized. */
     protected boolean initialized = false;
 
@@ -78,7 +83,7 @@ public abstract class VelocityActionEvent extends ActionEvent
         }
 
         ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);
-        Context context = TurbineVelocity.getContext(pipelineData);
+        Context context = velocity.getContext(pipelineData);
         executeEvents(pp, new Class<?>[]{ PipelineData.class, Context.class },
                 new Object[]{ pipelineData, context });
     }

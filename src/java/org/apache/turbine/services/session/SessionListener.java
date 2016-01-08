@@ -22,9 +22,12 @@ package org.apache.turbine.services.session;
 
 
 import java.io.Serializable;
+
 import javax.servlet.http.HttpSessionActivationListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+
+import org.apache.turbine.services.TurbineServices;
 
 /**
  * This class is a listener for both session creation and destruction,
@@ -66,13 +69,35 @@ public class SessionListener
     private static final long serialVersionUID = -8083730704842809870L;
 
     /**
+     * The session service.
+     */
+    private SessionService sessionService;
+
+    /**
+     * Lazy initialization
+     *
+     * @return the sessionService
+     */
+    private SessionService getSessionService()
+    {
+        // don't care about synchronization, lookup is cheap
+        if (sessionService == null)
+        {
+            sessionService = (SessionService)TurbineServices.getInstance().getService(SessionService.SERVICE_NAME);
+        }
+
+        return sessionService;
+    }
+
+    /**
      * Called by the servlet container when a new session is created
      *
      * @param event Session creation event.
      */
+    @Override
     public void sessionCreated(HttpSessionEvent event)
     {
-        TurbineSession.addSession(event.getSession());
+        getSessionService().addSession(event.getSession());
         event.getSession().setAttribute(getClass().getName(), this);
     }
 
@@ -81,9 +106,10 @@ public class SessionListener
      *
      * @param event Session destruction event.
      */
+    @Override
     public void sessionDestroyed(HttpSessionEvent event)
     {
-        TurbineSession.removeSession(event.getSession());
+        getSessionService().removeSession(event.getSession());
     }
 
 
@@ -95,9 +121,10 @@ public class SessionListener
      *
      * @param event Session activation event.
      */
+    @Override
     public void sessionDidActivate(HttpSessionEvent event)
     {
-        TurbineSession.addSession(event.getSession());
+        getSessionService().addSession(event.getSession());
     }
 
     /**
@@ -106,8 +133,9 @@ public class SessionListener
      *
      * @param event Session passivation event.
      */
+    @Override
     public void sessionWillPassivate(HttpSessionEvent event)
     {
-        TurbineSession.removeSession(event.getSession());
+        getSessionService().removeSession(event.getSession());
     }
 }

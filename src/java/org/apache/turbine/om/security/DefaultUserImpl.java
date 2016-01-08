@@ -30,7 +30,8 @@ import javax.servlet.http.HttpSessionBindingEvent;
 
 import org.apache.fulcrum.security.model.turbine.entity.TurbineUser;
 import org.apache.fulcrum.security.model.turbine.entity.TurbineUserGroupRole;
-import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.util.ObjectUtils;
 
 /**
@@ -97,7 +98,8 @@ public class DefaultUserImpl implements User
         {
             if (hasLoggedIn())
             {
-                TurbineSecurity.saveOnSessionUnbind(this);
+                SecurityService securityService = (SecurityService)TurbineServices.getInstance().getService(SecurityService.SERVICE_NAME);
+                securityService.saveOnSessionUnbind(this);
             }
         }
         catch (Exception e)

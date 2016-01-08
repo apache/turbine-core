@@ -37,8 +37,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.pull.PullService;
-import org.apache.turbine.services.pull.TurbinePull;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
@@ -136,11 +136,10 @@ public class TurbineVelocityService
             // We can only load the Pull Model ToolBox
             // if the Pull service has been listed in the TR.props
             // and the service has successfully been initialized.
-            if (TurbinePull.isRegistered())
+            if (TurbineServices.getInstance().isRegistered(PullService.SERVICE_NAME))
             {
                 pullModelActive = true;
-
-                pullService = TurbinePull.getService();
+                pullService = (PullService)TurbineServices.getInstance().getService(PullService.SERVICE_NAME);
 
                 log.debug("Activated Pull Tools");
             }

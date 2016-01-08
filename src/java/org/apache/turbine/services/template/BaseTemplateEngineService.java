@@ -25,6 +25,7 @@ import java.util.Hashtable;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.TurbineServices;
 
 /**
  * The base implementation of Turbine {@link
@@ -54,15 +55,18 @@ public abstract class BaseTemplateEngineService
     /**
      * @see org.apache.turbine.services.template.TemplateEngineService#registerConfiguration
      */
+    @Override
     public void registerConfiguration(String defaultExt)
     {
         initConfiguration(defaultExt);
-        TurbineTemplate.registerTemplateEngineService(this);
+        TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+        templateService.registerTemplateEngineService(this);
     }
 
     /**
      * @see org.apache.turbine.services.template.TemplateEngineService#getTemplateEngineServiceConfiguration
      */
+    @Override
     public Hashtable<String, Object> getTemplateEngineServiceConfiguration()
     {
         return configuration;
@@ -71,6 +75,7 @@ public abstract class BaseTemplateEngineService
     /**
      * @see org.apache.turbine.services.template.TemplateEngineService#getAssociatedFileExtensions
      */
+    @Override
     public String[] getAssociatedFileExtensions()
     {
         return (String[]) configuration.get(TEMPLATE_EXTENSIONS);
@@ -135,5 +140,6 @@ public abstract class BaseTemplateEngineService
     /**
      * @see org.apache.turbine.services.template.TemplateEngineService#templateExists
      */
+    @Override
     public abstract boolean templateExists(String template);
 }

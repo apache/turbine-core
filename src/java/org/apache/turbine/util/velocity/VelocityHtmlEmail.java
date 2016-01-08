@@ -31,8 +31,8 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.velocity.context.Context;
 
 /**
@@ -107,13 +107,11 @@ public class VelocityHtmlEmail extends HtmlEmail
     private String mailServer;
 
     /**
-     * Constructor, sets the context object from the passed {@link PipelineData} object
-     *
-     * @param pipelineData A Turbine {@link PipelineData} object.
+     * Constructor
      */
-    public VelocityHtmlEmail(PipelineData pipelineData)
+    public VelocityHtmlEmail()
     {
-        this(TurbineVelocity.getContext(pipelineData));
+        super();
     }
 
     /**
@@ -123,6 +121,7 @@ public class VelocityHtmlEmail extends HtmlEmail
      */
     public VelocityHtmlEmail(Context context)
     {
+        this();
         this.context = context;
         embmap = new Hashtable<String, String>();
     }
@@ -195,15 +194,15 @@ public class VelocityHtmlEmail extends HtmlEmail
 
         try
         {
+            VelocityService velocityService = (VelocityService)TurbineServices.getInstance().getService(VelocityService.SERVICE_NAME);
+
             if (htmlTemplate != null)
             {
-                setHtmlMsg(
-                        TurbineVelocity.handleRequest(context, htmlTemplate));
+                setHtmlMsg(velocityService.handleRequest(context, htmlTemplate));
             }
             if (textTemplate != null)
             {
-                setTextMsg(
-                        TurbineVelocity.handleRequest(context, textTemplate));
+                setTextMsg(velocityService.handleRequest(context, textTemplate));
             }
         }
         catch (Exception e)

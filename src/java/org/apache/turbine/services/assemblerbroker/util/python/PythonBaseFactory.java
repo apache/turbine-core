@@ -29,7 +29,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
 import org.python.core.Py;
 import org.python.util.PythonInterpreter;
@@ -57,8 +58,7 @@ public abstract class PythonBaseFactory<T extends Assembler>
     private static Log log = LogFactory.getLog(PythonBaseFactory.class);
 
     /** Our configuration */
-    private final Configuration conf =
-        TurbineAssemblerBroker.getService().getConfiguration();
+    private final Configuration conf = TurbineServices.getInstance().getConfiguration(AssemblerBrokerService.SERVICE_NAME);
 
     /**
      * Get an Assembler.

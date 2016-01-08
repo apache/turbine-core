@@ -28,7 +28,7 @@ import org.apache.fulcrum.security.model.turbine.TurbineUserManager;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.template.TurbineTemplate;
+import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -50,9 +50,8 @@ import org.apache.turbine.util.RunData;
  */
 public class TemplateSecurityCheck
 {
-    private String message =
-            "Sorry, you do not have permission to access this area.";
-    private String failScreen = TurbineTemplate.getDefaultScreen();
+    private String message = "Sorry, you do not have permission to access this area.";
+    private String failScreen;
     private String failTemplate;
     private RunData data = null;
 
@@ -65,7 +64,7 @@ public class TemplateSecurityCheck
      */
     public TemplateSecurityCheck(RunData data, String message)
     {
-        this.data = data;
+        this(data);
         this.message = message;
     }
 
@@ -77,6 +76,8 @@ public class TemplateSecurityCheck
     public TemplateSecurityCheck(RunData data)
     {
         this.data = data;
+        TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+        this.failScreen = templateService.getDefaultScreen();
     }
 
     /**

@@ -51,7 +51,7 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.DefaultPipelineData;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.template.TurbineTemplate;
+import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.util.FormMessages;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.SystemError;
@@ -561,7 +561,8 @@ public class DefaultTurbineRunData
              * services are running. If we get nothing we
              * will fall back to the ECS layout.
              */
-            layout = TurbineTemplate.getDefaultLayoutName(this);
+            TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+            layout = templateService.getDefaultLayoutName(this);
 
             if (layout == null)
             {
