@@ -21,10 +21,11 @@ package org.apache.turbine.pipeline;
  */
 
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.StringWriter;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Tests TurbinePipeline.
@@ -32,16 +33,16 @@ import static org.junit.Assert.assertEquals;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
-public class PipelineTest 
+public class PipelineTest
 {
-
+    private final static int THREADS = 100;
+    private final static int LOOPS = 10000;
 
     /**
      * Tests the Pipeline.
      */
     @Test public void testPipeline() throws Exception
     {
-
         // Make sure Valves are getting added properly to the
         // Pipeline.
         StringWriter writer = new StringWriter();
@@ -59,5 +60,76 @@ public class PipelineTest
         pipeline.invoke(new DefaultPipelineData());
 
         assertEquals("foobar", writer.toString());
+    }
+
+    /**
+     * Tests the Pipeline throughput.
+     */
+    @Test public void testPipelinePerformance() throws Exception
+    {
+        StringWriter writer = new StringWriter();
+        Pipeline pipeline = new TurbinePipeline();
+
+        SimpleValve valve = new SimpleValve();
+        valve.setWriter(writer);
+        valve.setValue("foo");
+        pipeline.addValve(valve);
+        valve = new SimpleValve();
+        valve.setWriter(writer);
+        valve.setValue("bar");
+        pipeline.addValve(valve);
+
+        Worker[] worker = new Worker[THREADS];
+        long startTime = System.currentTimeMillis();
+
+        for (int i = 0; i < THREADS; i++)
+        {
+            worker[i] = new Worker(pipeline);
+            worker[i].start();
+        }
+
+        for (int i = 0; i < THREADS; i++)
+        {
+            worker[i].join();
+        }
+
+        System.out.println(System.currentTimeMillis() - startTime);
+    }
+
+    /**
+     * Worker thread
+     */
+    protected class Worker extends Thread
+    {
+        Pipeline pipeline;
+
+        /**
+         * Constructor
+         *
+         * @param pipeline
+         */
+        public Worker(Pipeline pipeline)
+        {
+            super();
+            this.pipeline = pipeline;
+        }
+
+        @Override
+        public void run()
+        {
+            PipelineData pd = new DefaultPipelineData();
+
+            for (int idx = 0; idx < LOOPS; idx++)
+            {
+                try
+                {
+                    pipeline.invoke(pd);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

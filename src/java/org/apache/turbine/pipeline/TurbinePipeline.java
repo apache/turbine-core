@@ -22,6 +22,8 @@ package org.apache.turbine.pipeline;
 
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.turbine.annotation.AnnotationProcessor;
 import org.apache.turbine.util.TurbineException;
@@ -46,21 +48,18 @@ public class TurbinePipeline
     /**
      * Name of this pipeline.
      */
-    protected String name;
+    private String name;
 
     /**
      * The set of Valves associated with this Pipeline.
      */
-    protected Valve[] valves = new Valve[0];
+    private CopyOnWriteArrayList<Valve> valves = new CopyOnWriteArrayList<Valve>();
 
     /**
      * The per-thread execution state for processing through this
-     * pipeline.  The actual value is a java.lang.Integer object
-     * containing the subscript into the <code>values</code> array, or
-     * a subscript equal to <code>values.length</code> if the basic
-     * Valve is currently being processed.
+     * pipeline.
      */
-    protected ThreadLocal<Integer> state= new ThreadLocal<Integer>();
+    private ThreadLocal<Iterator<Valve>> state = new ThreadLocal<Iterator<Valve>>();
 
     /**
      * @see org.apache.turbine.pipeline.Pipeline#initialize()
@@ -69,19 +68,19 @@ public class TurbinePipeline
     public void initialize()
         throws Exception
     {
-        if (state==null)
+        if (state == null)
         {
-            state = new ThreadLocal<Integer>();
+            state = new ThreadLocal<Iterator<Valve>>();
         }
 
         // Valve implementations are added to this Pipeline using the
         // Mapper.
 
         // Initialize the valves
-        for (int i = 0; i < valves.length; i++)
+        for (Valve v : valves)
         {
-            AnnotationProcessor.process(valves[i]);
-            valves[i].initialize();
+            AnnotationProcessor.process(v);
+            v.initialize();
         }
     }
 
@@ -111,14 +110,8 @@ public class TurbinePipeline
     @Override
     public void addValve(Valve valve)
     {
-        // Add this Valve to the set associated with this Pipeline
-        synchronized (valves)
-        {
-            Valve[] results = new Valve[valves.length + 1];
-            System.arraycopy(valves, 0, results, 0, valves.length);
-            results[valves.length] = valve;
-            valves = results;
-        }
+        // Add this Valve to the end of the set associated with this Pipeline
+        valves.add(valve);
     }
 
     /**
@@ -127,12 +120,7 @@ public class TurbinePipeline
     @Override
     public Valve[] getValves()
     {
-        synchronized (valves)
-        {
-            Valve[] results = new Valve[valves.length];
-            System.arraycopy(valves, 0, results, 0, valves.length);
-            return results;
-        }
+        return valves.toArray(new Valve[0]);
     }
 
     /**
@@ -141,36 +129,7 @@ public class TurbinePipeline
     @Override
     public void removeValve(Valve valve)
     {
-        synchronized (valves)
-        {
-            // Locate this Valve in our list
-            int index = -1;
-            for (int i = 0; i < valves.length; i++)
-            {
-                if (valve == valves[i])
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (index < 0)
-            {
-                return;
-            }
-
-            // Remove this valve from our list
-            Valve[] results = new Valve[valves.length - 1];
-            int n = 0;
-            for (int i = 0; i < valves.length; i++)
-            {
-                if (i == index)
-                {
-                    continue;
-                }
-                results[n++] = valves[i];
-            }
-            valves = results;
-        }
+        valves.remove(valve);
     }
 
     /**
@@ -181,7 +140,7 @@ public class TurbinePipeline
         throws TurbineException, IOException
     {
         // Initialize the per-thread state for this thread
-        state.set(Integer.valueOf(0));
+        state.set(valves.iterator());
 
         // Invoke the first Valve in this pipeline for this request
         invokeNext(pipelineData);
@@ -194,16 +153,14 @@ public class TurbinePipeline
     public void invokeNext(PipelineData pipelineData)
         throws TurbineException, IOException
     {
-        // Identify the current subscript for the current request thread
-        Integer current = state.get();
-        int subscript = current.intValue();
+        // Identify the current valve for the current request thread
+        Iterator<Valve> current = state.get();
 
-        if (subscript < valves.length)
+        if (current.hasNext())
         {
             // Invoke the requested Valve for the current request
             // thread and increment its thread-local state.
-            state.set(Integer.valueOf(subscript + 1));
-            valves[subscript].invoke(pipelineData, this);
+            current.next().invoke(pipelineData, this);
         }
     }
 }
