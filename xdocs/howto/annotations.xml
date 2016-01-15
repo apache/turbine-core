@@ -75,10 +75,10 @@ will throw an exception.
 
 <subsection name="@TurbineConfiguration">
 The annotation can only be used with a field. 
-A declared field in a class annotated with <code>@TurbineConfiguration</code>
-gets injected an instance of the Turbine configuration object at
-the time the instance of the class is created. The field should have 
-the type <code>Configuration</code>
+If a declared field of the type <code>Configuration</code> is annotated 
+with <code>@TurbineConfiguration</code>, Turbine will inject an instance 
+of the Turbine configuration object at the time the instance of the class 
+is created. 
 <source><![CDATA[
 // Injected configuration instance
 @TurbineConfiguration
@@ -96,6 +96,26 @@ actionConfig = Turbine.getConfiguration().subset("action");
 ]]></source>
 The annotation supports an optional parameter, the 
 prefix of the configuration subset to retrieve.
+<br />
+If other fields having simple types are annotated with 
+<code>@TurbineConfiguration</code>, Turbine will inject the corresponding
+configuration value. In this case, the annotation parameter defines the
+configuration key and is required. Strings, Lists and most simple types
+are supported. The value will only be set if the key is found in the 
+configuration, so that the field can be initialized with a default value. 
+<source><![CDATA[
+// Injected configuration value
+@TurbineConfiguration( "module.cache" )
+private boolean moduleCache = true;
+
+@TurbineConfiguration( "template.homepage" )
+private String templateHomepage;
+]]></source>
+This is the equivalent of
+<source><![CDATA[
+moduleCache = Turbine.getConfiguration().getBoolean("module.cache", true);
+templateHomepage = Turbine.getConfiguration().getString("template.homepage");
+]]></source>
 </subsection>
 
 <subsection name="@TurbineLoader">

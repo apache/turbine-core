@@ -23,6 +23,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.fulcrum.factory.FactoryService;
 import org.apache.turbine.modules.Screen;
@@ -32,6 +34,7 @@ import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -57,6 +60,9 @@ public class AnnotationProcessorTest
 
     @TurbineConfiguration("template.homepage")
     private String templateHomepage;
+
+    @TurbineConfiguration("module.packages")
+    private List<String> modulePackages;
 
     @TurbineConfiguration("does.not.exist")
     private long notModified = 1;
@@ -98,6 +104,9 @@ public class AnnotationProcessorTest
         assertFalse(moduleCache);
         assertEquals(20, actionCacheSize);
         assertEquals("Index.vm", templateHomepage);
+        assertNotNull(modulePackages);
+        assertEquals(3, modulePackages.size());
+        assertEquals("org.apache.turbine.services.template.modules", modulePackages.get(1));
         assertEquals(1, notModified);
 
         assertNotNull(screenLoader);
@@ -105,7 +114,7 @@ public class AnnotationProcessorTest
         assertNotNull(factory);
     }
 
-    @Test
+    @Ignore("For performance tests only") @Test
     public void testProcessingPerformance() throws TurbineException
     {
         long startTime = System.currentTimeMillis();
