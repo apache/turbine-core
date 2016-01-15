@@ -22,6 +22,7 @@ package org.apache.turbine.services.assemblerbroker.util.java;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -55,6 +56,11 @@ public abstract class JavaBaseFactory<T extends Assembler>
     private final ConcurrentHashMap<String, Class<T>> classCache = new ConcurrentHashMap<String, Class<T>>();
 
     /**
+     * Lock for cache update
+     */
+    private final ReentrantLock lock = new ReentrantLock();
+
+    /**
      * Get an Assembler.
      *
      * @param packageName java package name
@@ -66,7 +72,10 @@ public abstract class JavaBaseFactory<T extends Assembler>
     {
         T assembler = null;
 
-        log.debug("Class Fragment is " + name);
+        if (log.isDebugEnabled())
+        {
+            log.debug("Class Fragment is " + name);
+        }
 
         if (StringUtils.isNotEmpty(name))
         {
@@ -77,15 +86,33 @@ public abstract class JavaBaseFactory<T extends Assembler>
                 sb.append(p).append('.').append(packageName).append('.').append(name);
                 String className = sb.toString();
 
-                log.debug("Trying " + className);
+                if (log.isDebugEnabled())
+                {
+                    log.debug("Trying " + className);
+                }
 
                 try
                 {
                     Class<T> servClass = classCache.get(className);
                     if (servClass == null)
                     {
-                        servClass = (Class<T>) Class.forName(className);
-                        classCache.put(className, servClass);
+                        lock.lock();
+
+                        try
+                        {
+                            // Double check
+                            servClass = classCache.get(className);
+
+                            if (servClass == null)
+                            {
+                                servClass = (Class<T>) Class.forName(className);
+                                classCache.put(className, servClass);
+                            }
+                        }
+                        finally
+                        {
+                            lock.unlock();
+                        }
                     }
                     assembler = servClass.newInstance();
                     break; // for()
@@ -127,7 +154,11 @@ public abstract class JavaBaseFactory<T extends Assembler>
                 // With ClassCastException, InstantiationException we hit big problems
             }
         }
-        log.debug("Returning: " + assembler);
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("Returning: " + assembler);
+        }
 
         return assembler;
     }

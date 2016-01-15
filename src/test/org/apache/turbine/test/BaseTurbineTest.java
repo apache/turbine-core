@@ -37,20 +37,21 @@ import org.junit.BeforeClass;
 public abstract class BaseTurbineTest
         extends BaseTestCase
 {
-    private static TurbineConfig turbineConfig = null;
+    private static volatile TurbineConfig turbineConfig = null;
 
     @BeforeClass
     public static void turbineInit(String config) throws Exception
     {
-
         if (turbineConfig == null)
         {
             Map<String, String> initParams = new HashMap<String, String>();
             initParams.put(TurbineConfig.PROPERTIES_PATH_KEY, config); // "conf/test/TurbineResources.properties"
             initParams.put(TurbineConstants.LOGGING_ROOT_KEY, "target/test-logs");
 
-            turbineConfig = new TurbineConfig(".", initParams);
-            turbineConfig.initialize();
+            TurbineConfig _turbineConfig = new TurbineConfig(".", initParams);
+            _turbineConfig.initialize();
+
+            turbineConfig = _turbineConfig;
         }
     }
 }
