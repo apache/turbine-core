@@ -25,6 +25,12 @@
 
   <body>
     <release version="4.0" date="in Subversion">
+      <action type="add" dev="tv">
+        Add annotation support for configuration values
+      </action>
+      <action type="update" dev="tv">
+        Improve performance of AnnotationProcessor by caching annotations. Add performance test.
+      </action>
       <action type="update" dev="tv">
         Replace synchronized array in TurbinePipeline with CopyOnWriteList (20% faster). Add performance test.
       </action>
