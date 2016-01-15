@@ -144,7 +144,7 @@ public class Turbine
      * Keep all the properties of the web server in a convenient data
      * structure
      */
-    private static ServerData serverData = null;
+    private static volatile ServerData serverData = null;
 
     /** The base from which the Turbine application will operate. */
     private static String applicationRoot;

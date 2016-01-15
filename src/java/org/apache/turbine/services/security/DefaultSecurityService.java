@@ -92,7 +92,7 @@ public class DefaultSecurityService
     /**
      * The Group object that represents the <a href="#global">global group</a>.
      */
-    private static Group globalGroup = null;
+    private static volatile Group globalGroup = null;
 
     /** Logging */
     private static Log log = LogFactory.getLog(DefaultSecurityService.class);
@@ -104,6 +104,7 @@ public class DefaultSecurityService
      *
      * @throws InitializationException Something went wrong in the init stage
      */
+    @Override
     public void init()
             throws InitializationException
     {
@@ -141,6 +142,7 @@ public class DefaultSecurityService
      * @return an object implementing User interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
+    @Override
     public <U extends User> U getUserInstance()
             throws UnknownEntityException
     {
@@ -166,6 +168,7 @@ public class DefaultSecurityService
      *
      * @throws UnknownEntityException if the object could not be instantiated.
      */
+    @Override
     public <U extends User> U getUserInstance(String userName)
             throws UnknownEntityException
     {
@@ -188,6 +191,7 @@ public class DefaultSecurityService
      * @return an object implementing Group interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
+    @Override
     public <G extends Group> G getGroupInstance()
             throws UnknownEntityException
     {
@@ -212,6 +216,7 @@ public class DefaultSecurityService
      *
      * @throws UnknownEntityException if the object could not be instantiated.
      */
+    @Override
     public <G extends Group> G getGroupInstance(String groupName)
             throws UnknownEntityException
     {
@@ -233,6 +238,7 @@ public class DefaultSecurityService
      * @return an object implementing Permission interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
+    @Override
     public <P extends Permission> P getPermissionInstance()
             throws UnknownEntityException
     {
@@ -256,6 +262,7 @@ public class DefaultSecurityService
      * @return an object implementing Permission interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
+    @Override
     public <P extends Permission> P getPermissionInstance(String permName)
             throws UnknownEntityException
     {
@@ -277,6 +284,7 @@ public class DefaultSecurityService
      * @return an object implementing Role interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
+    @Override
     public <R extends Role> R getRoleInstance()
             throws UnknownEntityException
     {
@@ -301,6 +309,7 @@ public class DefaultSecurityService
      *
      * @throws UnknownEntityException if the object could not be instantiated.
      */
+    @Override
     public <R extends Role> R getRoleInstance(String roleName)
             throws UnknownEntityException
     {
@@ -321,6 +330,7 @@ public class DefaultSecurityService
      *
      * @return An UserManager object
      */
+    @Override
     public UserManager getUserManager()
     {
         return userManager;
@@ -336,6 +346,7 @@ public class DefaultSecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
+    @Override
     public boolean accountExists(User user)
             throws DataBackendException
     {
@@ -352,6 +363,7 @@ public class DefaultSecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
+    @Override
     public boolean accountExists(String userName)
             throws DataBackendException
     {
@@ -370,6 +382,7 @@ public class DefaultSecurityService
      *            exist in the database.
      * @throws DataBackendException if there is a problem accessing the storage.
      */
+    @Override
     public <U extends User> U getAuthenticatedUser(String username, String password)
             throws DataBackendException, UnknownEntityException,
                    PasswordMismatchException
@@ -386,6 +399,7 @@ public class DefaultSecurityService
      * @throws UnknownEntityException if the user's account does not exist
      * @throws DataBackendException if there is a problem accessing the storage.
      */
+    @Override
     public <U extends User> U getUser(String username)
             throws DataBackendException, UnknownEntityException
     {
@@ -400,6 +414,7 @@ public class DefaultSecurityService
      * @throws UnknownEntityException if the implementation of User interface
      *         could not be determined, or does not exist.
      */
+    @Override
     public <U extends User> U getAnonymousUser()
             throws UnknownEntityException
     {
@@ -415,6 +430,7 @@ public class DefaultSecurityService
      * @return True if this is an anonymous user
      *
      */
+    @Override
     public boolean isAnonymousUser(User user)
     {
         return getUserManager().isAnonymousUser(user);
@@ -429,6 +445,7 @@ public class DefaultSecurityService
      *         exist in the database.
      * @throws DataBackendException if there is a problem accessing the storage.
      */
+    @Override
     public void saveUser(User user)
             throws UnknownEntityException, DataBackendException
     {
@@ -447,6 +464,7 @@ public class DefaultSecurityService
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
+    @Override
     public void saveOnSessionUnbind(User user)
             throws UnknownEntityException, DataBackendException
     {
@@ -463,6 +481,7 @@ public class DefaultSecurityService
      *         data backend.
      * @throws EntityExistsException if the user account already exists.
      */
+    @Override
     public void addUser(User user, String password)
             throws DataBackendException, EntityExistsException
     {
@@ -477,6 +496,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws UnknownEntityException if the user account is not present.
      */
+    @Override
     public void removeUser(User user)
             throws DataBackendException, UnknownEntityException
     {
@@ -496,6 +516,7 @@ public class DefaultSecurityService
      *            exist in the database.
      * @throws DataBackendException if there is a problem accessing the storage.
      */
+    @Override
     public void changePassword(User user, String oldPassword,
             String newPassword)
             throws PasswordMismatchException, UnknownEntityException,
@@ -518,6 +539,7 @@ public class DefaultSecurityService
      *            exist in the database.
      * @throws DataBackendException if there is a problem accessing the storage.
      */
+    @Override
     public void forcePassword(User user, String password)
             throws UnknownEntityException, DataBackendException
     {
@@ -587,6 +609,7 @@ public class DefaultSecurityService
      *
      * @return a Group object that represents the global group.
      */
+    @Override
     public <G extends Group> G getGlobalGroup()
     {
         if (globalGroup == null)
@@ -620,6 +643,7 @@ public class DefaultSecurityService
      *         data backend.
      * @throws UnknownEntityException if the group does not exist.
      */
+    @Override
     public <G extends Group> G getGroupByName(String name)
             throws DataBackendException, UnknownEntityException
     {
@@ -636,6 +660,7 @@ public class DefaultSecurityService
      * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
+    @Override
     public <G extends Group> G getGroupById(int id)
             throws DataBackendException, UnknownEntityException
     {
@@ -651,6 +676,7 @@ public class DefaultSecurityService
      *         data backend.
      * @throws UnknownEntityException if the role does not exist.
      */
+    @Override
     public <R extends Role> R getRoleByName(String name)
             throws DataBackendException, UnknownEntityException
     {
@@ -671,6 +697,7 @@ public class DefaultSecurityService
      * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
+    @Override
     public <R extends Role> R getRoleById(int id)
             throws DataBackendException,
                    UnknownEntityException
@@ -692,6 +719,7 @@ public class DefaultSecurityService
      *         data backend.
      * @throws UnknownEntityException if the permission does not exist.
      */
+    @Override
     public <P extends Permission> P getPermissionByName(String name)
             throws DataBackendException, UnknownEntityException
     {
@@ -708,6 +736,7 @@ public class DefaultSecurityService
      * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
+    @Override
     public <P extends Permission> P getPermissionById(int id)
             throws DataBackendException,
                    UnknownEntityException
@@ -722,6 +751,7 @@ public class DefaultSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
+    @Override
     public GroupSet getAllGroups() throws DataBackendException
     {
         return groupManager.getAllGroups();
@@ -734,6 +764,7 @@ public class DefaultSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
+    @Override
     public RoleSet getAllRoles() throws DataBackendException
     {
         return roleManager.getAllRoles();
@@ -746,6 +777,7 @@ public class DefaultSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
+    @Override
     public PermissionSet getAllPermissions() throws DataBackendException
     {
         return permissionManager.getAllPermissions();
@@ -764,6 +796,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws UnknownEntityException if user account is not present.
      */
+    @Override
     public <A extends AccessControlList> A getACL(User user)
         throws DataBackendException, UnknownEntityException
     {
@@ -785,6 +818,7 @@ public class DefaultSecurityService
      * @throws UnknownEntityException if user account, group or role is not
      *         present.
      */
+    @Override
     public void grant(User user, Group group, Role role)
     throws DataBackendException, UnknownEntityException
     {
@@ -802,6 +836,7 @@ public class DefaultSecurityService
      * @throws UnknownEntityException if user account, group or role is not
      *         present.
      */
+    @Override
     public void revoke(User user, Group group, Role role)
         throws DataBackendException, UnknownEntityException
     {
@@ -818,6 +853,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws UnknownEntityException if the account is not present.
      */
+    @Override
     public void revokeAll(User user)
         throws DataBackendException, UnknownEntityException
     {
@@ -833,6 +869,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws UnknownEntityException if role or permission is not present.
      */
+    @Override
     public void grant(Role role, Permission permission)
         throws DataBackendException, UnknownEntityException
     {
@@ -848,6 +885,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws UnknownEntityException if role or permission is not present.
      */
+    @Override
     public void revoke(Role role, Permission permission)
         throws DataBackendException, UnknownEntityException
     {
@@ -864,6 +902,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws  UnknownEntityException if the Role is not present.
      */
+    @Override
     public void revokeAll(Role role)
         throws DataBackendException, UnknownEntityException
     {
@@ -879,6 +918,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws UnknownEntityException if the role is not present.
      */
+    @Override
     public PermissionSet getPermissions(Role role)
             throws DataBackendException, UnknownEntityException
     {
@@ -893,6 +933,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws EntityExistsException if the group already exists.
      */
+    @Override
     public <G extends Group> G addGroup(G group)
             throws DataBackendException, EntityExistsException
     {
@@ -907,6 +948,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws EntityExistsException if the role already exists.
      */
+    @Override
     public <R extends Role> R addRole(R role)
             throws DataBackendException, EntityExistsException
     {
@@ -921,6 +963,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws EntityExistsException if the permission already exists.
      */
+    @Override
     public <P extends Permission> P addPermission(P permission)
             throws DataBackendException, EntityExistsException
     {
@@ -935,6 +978,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws UnknownEntityException if the group does not exist.
      */
+    @Override
     public void removeGroup(Group group)
             throws DataBackendException, UnknownEntityException
     {
@@ -948,6 +992,7 @@ public class DefaultSecurityService
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the role does not exist.
      */
+    @Override
     public void removeRole(Role role)
             throws DataBackendException, UnknownEntityException
     {
@@ -962,6 +1007,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws UnknownEntityException if the permission does not exist.
      */
+    @Override
     public void removePermission(Permission permission)
             throws DataBackendException, UnknownEntityException
     {
@@ -977,6 +1023,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws UnknownEntityException if the group does not exist.
      */
+    @Override
     public void renameGroup(Group group, String name)
             throws DataBackendException, UnknownEntityException
     {
@@ -992,6 +1039,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws UnknownEntityException if the role does not exist.
      */
+    @Override
     public void renameRole(Role role, String name)
             throws DataBackendException, UnknownEntityException
     {
@@ -1007,6 +1055,7 @@ public class DefaultSecurityService
      *         backend.
      * @throws UnknownEntityException if the permission does not exist.
      */
+    @Override
     public void renamePermission(Permission permission, String name)
             throws DataBackendException, UnknownEntityException
     {

@@ -1,6 +1,5 @@
 package org.apache.turbine;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -39,40 +38,33 @@ import org.junit.Test;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
-public class TurbineConfigTest
-    extends BaseTestCase
+public class TurbineConfigTest extends BaseTestCase
 {
-    private static TurbineConfig tc = null;
-    private static TurbineXmlConfig txc = null;
-
     @Test
     public void testTurbineConfigWithPropertiesFile() throws Exception
     {
         String value = new File("/conf/test/TemplateService.properties").getPath();
-        tc = new TurbineConfig(".", value);
+        TurbineConfig tc = new TurbineConfig(".", value);
         Turbine turbine = new Turbine();
 
         ServletConfig config = tc;
         ServletContext context = config.getServletContext();
 
-        String confFile= turbine.findInitParameter(context, config,
-                TurbineConfig.PROPERTIES_PATH_KEY,
-                null);
+        String confFile = turbine.findInitParameter(context, config, TurbineConfig.PROPERTIES_PATH_KEY, null);
         assertEquals(value, confFile);
     }
+
     @Test
     public void testTurbineXmlConfigWithConfigurationFile() throws Exception
     {
         String value = new File("/conf/test/TurbineConfiguration.xml").getPath();
-            txc = new TurbineXmlConfig(".", value);
+        TurbineXmlConfig txc = new TurbineXmlConfig(".", value);
         Turbine turbine = new Turbine();
 
         ServletConfig config = txc;
         ServletContext context = config.getServletContext();
 
-            String confFile= turbine.findInitParameter(context, config,
-                    TurbineConfig.CONFIGURATION_PATH_KEY,
-                    null);
+        String confFile = turbine.findInitParameter(context, config, TurbineConfig.CONFIGURATION_PATH_KEY, null);
         assertEquals(value, confFile);
-        }
+    }
 }
