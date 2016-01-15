@@ -23,6 +23,7 @@ package org.apache.turbine.annotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
@@ -215,6 +216,17 @@ public class AnnotationProcessor
                     field.setAccessible(true);
                     field.set(object, value);
                 }
+                else if ( Boolean.TYPE.isAssignableFrom( type ) )
+                {
+                    boolean value = conf.getBoolean(key);
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("Injection of " + value + " into object " + object);
+                    }
+
+                    field.setAccessible(true);
+                    field.setBoolean(object, value);
+                }
                 else if ( Integer.TYPE.isAssignableFrom( type ) )
                 {
                     int value = conf.getInt(key);
@@ -292,16 +304,16 @@ public class AnnotationProcessor
                     field.setAccessible(true);
                     field.setByte(object, value);
                 }
-                else if ( Boolean.TYPE.isAssignableFrom( type ) )
+                else if ( List.class.isAssignableFrom( type ) )
                 {
-                    boolean value = conf.getBoolean(key);
+                    List<Object> values = conf.getList(key);
                     if (log.isDebugEnabled())
                     {
-                        log.debug("Injection of " + value + " into object " + object);
+                        log.debug("Injection of " + values + " into object " + object);
                     }
 
                     field.setAccessible(true);
-                    field.setBoolean(object, value);
+                    field.set(object, values);
                 }
             }
         }
