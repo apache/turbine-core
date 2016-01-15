@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.StringWriter;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -65,7 +66,7 @@ public class PipelineTest
     /**
      * Tests the Pipeline throughput.
      */
-    @Test public void testPipelinePerformance() throws Exception
+    @Ignore("For performance tests only") @Test public void testPipelinePerformance() throws Exception
     {
         StringWriter writer = new StringWriter();
         Pipeline pipeline = new TurbinePipeline();
