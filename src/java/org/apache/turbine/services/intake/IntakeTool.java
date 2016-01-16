@@ -77,7 +77,7 @@ public class IntakeTool
      * The Intake service.
      */
     @TurbineService
-    private IntakeService intakeService;
+    protected IntakeService intakeService;
 
     /**
      * Constructor

@@ -25,8 +25,7 @@ import org.apache.turbine.util.ServerData;
 /**
  * The UI service provides for shared access to User Interface (skin) files,
  * as well as the ability for non-default skin files to inherit properties from
- * a default skin.  Use {@link TurbineUI} to access skin properties from your screen
- * classes and action code. UITool is provided as a pull tool for accessing
+ * a default skin. UITool is provided as a pull tool for accessing
  * skin properties from your templates.
  *
  * <p>Skins are lazy loaded in that they are not loaded until first used.
