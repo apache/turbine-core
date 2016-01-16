@@ -50,7 +50,6 @@ import org.apache.turbine.services.TurbineBaseService;
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @since 2.3
  * @version $Id$
- * @see org.apache.turbine.services.session.TurbineSession
  * @see org.apache.turbine.services.session.SessionListener
  */
 public class TurbineSessionService
