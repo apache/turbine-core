@@ -1028,11 +1028,6 @@
       <type>jar</type>
     </dependency>
     <dependency>
-      <groupId>com.thoughtworks.xstream</groupId>
-      <artifactId>xstream</artifactId>
-      <version>1.4.4</version>
-    </dependency>
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
@@ -1113,7 +1108,7 @@
 
   <properties>
     <!-- TODO: Change for release -->  
-    <turbine.site.path>turbine/turbine-4.0-M2</turbine.site.path>
+    <turbine.site.path>turbine/development/turbine-4.0</turbine.site.path>
   </properties>
   
 </project>
