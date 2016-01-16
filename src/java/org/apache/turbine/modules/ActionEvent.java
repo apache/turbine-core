@@ -32,6 +32,7 @@ import org.apache.fulcrum.parser.ValueParser.URLCaseFolding;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineActionEvent;
+import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.pipeline.PipelineData;
 
 /**
@@ -101,44 +102,21 @@ public abstract class ActionEvent extends Action
 	 * If true, the eventSubmit_do<xxx> variable must contain
 	 * a not null value to be executed.
 	 */
-	private boolean submitValueKey = false;
+    @TurbineConfiguration( TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_KEY )
+	private boolean submitValueKey = TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_DEFAULT;
 
 	/**
 	 * If true, then exceptions raised in eventSubmit_do<xxx> methods
 	 * as well as in doPerform methods are bubbled up to the Turbine
 	 * servlet's handleException method.
 	 */
-	protected boolean bubbleUpException = true;
+    @TurbineConfiguration( TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP )
+	protected boolean bubbleUpException = TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP_DEFAULT;
 
 	/**
 	 * Cache for the methods to invoke
 	 */
 	private MultiKeyMap/* <String, Method> */ methodCache = new MultiKeyMap/* <String, Method> */();
-
-	/**
-	 * C'tor
-	 */
-	public ActionEvent()
-	{
-		super();
-
-		submitValueKey = Turbine.getConfiguration()
-				.getBoolean(TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_KEY,
-						TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_DEFAULT);
-		bubbleUpException = Turbine.getConfiguration()
-				.getBoolean(TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP,
-						TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP_DEFAULT);
-
-		if (log.isDebugEnabled())
-		{
-    		log.debug(submitValueKey
-    				? "ActionEvent accepts only eventSubmit_do Keys with a value != 0"
-    				: "ActionEvent accepts all eventSubmit_do Keys");
-    		log.debug(bubbleUpException
-    				  ? "ActionEvent will bubble exceptions up to Turbine.handleException() method"
-    				  : "ActionEvent will not bubble exceptions up.");
-		}
-	}
 
 	/**
 	 * Retrieve a method of the given name and signature. The value is cached.

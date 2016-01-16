@@ -19,7 +19,6 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  * under the License.
  */
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -66,8 +65,20 @@ public class DefaultSessionValidator
     @TurbineService
     private SecurityService security;
 
-    @TurbineConfiguration
-    private Configuration conf;
+    @TurbineConfiguration( TurbineConstants.LOGIN_MESSAGE )
+    private String loginMessage;
+
+    @TurbineConfiguration( TurbineConstants.SCREEN_LOGIN )
+    private String screenLogin;
+
+    @TurbineConfiguration( TurbineConstants.LOGIN_MESSAGE_NOSCREEN )
+    private String loginMessageNoScreen;
+
+    @TurbineConfiguration( TurbineConstants.SCREEN_HOMEPAGE )
+    private String screenHomepage;
+
+    @TurbineConfiguration( TurbineConstants.SCREEN_INVALID_STATE )
+    private String screenInvalidState;
 
     /**
      * Execute the action.  The default is to populate the PipelineData
@@ -103,11 +114,11 @@ public class DefaultSessionValidator
             // (e.g. the LogoutUser action).
             if (StringUtils.isEmpty(data.getMessage()))
             {
-                data.setMessage(conf.getString(TurbineConstants.LOGIN_MESSAGE));
+                data.setMessage(loginMessage);
             }
 
             // set the screen to be the login page
-            data.setScreen(conf.getString(TurbineConstants.SCREEN_LOGIN));
+            data.setScreen(screenLogin);
 
             // We're not doing any actions buddy! (except action.login which
             // will have been performed already)
@@ -116,9 +127,8 @@ public class DefaultSessionValidator
 
         if (!data.hasScreen())
         {
-            data.setMessage(conf.getString(
-                    TurbineConstants.LOGIN_MESSAGE_NOSCREEN));
-            data.setScreen(conf.getString(TurbineConstants.SCREEN_HOMEPAGE));
+            data.setMessage(loginMessageNoScreen);
+            data.setScreen(screenHomepage);
         }
 
         if (data.getParameters().containsKey("_session_access_counter"))
@@ -130,8 +140,7 @@ public class DefaultSessionValidator
             {
                 data.getUser().setTemp("prev_screen", data.getScreen());
                 data.getUser().setTemp("prev_parameters", data.getParameters());
-                data.setScreen(conf.getString(
-                        TurbineConstants.SCREEN_INVALID_STATE));
+                data.setScreen(screenInvalidState);
                 data.setAction("");
             }
         }

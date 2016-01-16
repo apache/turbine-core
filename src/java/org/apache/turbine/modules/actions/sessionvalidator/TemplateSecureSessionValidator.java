@@ -19,7 +19,6 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  * under the License.
  */
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -66,8 +65,23 @@ public class TemplateSecureSessionValidator
     @TurbineService
     private SecurityService security;
 
-    @TurbineConfiguration
-    private Configuration conf;
+    @TurbineConfiguration( TurbineConstants.LOGIN_MESSAGE )
+    private String loginMessage;
+
+    @TurbineConfiguration( TurbineConstants.TEMPLATE_LOGIN )
+    private String templateLogin;
+
+    @TurbineConfiguration( TurbineConstants.TEMPLATE_HOMEPAGE )
+    private String templateHomepage;
+
+    @TurbineConfiguration( TurbineConstants.SCREEN_HOMEPAGE )
+    private String screenHomepage;
+
+    @TurbineConfiguration( TurbineConstants.TEMPLATE_INVALID_STATE )
+    private String templateInvalidState;
+
+    @TurbineConfiguration( TurbineConstants.SCREEN_INVALID_STATE )
+    private String screenInvalidState;
 
     /**
      * doPerform is virtually identical to DefaultSessionValidator
@@ -107,16 +121,13 @@ public class TemplateSecureSessionValidator
             // (e.g. the LogoutUser action).
             if (StringUtils.isEmpty(data.getMessage()))
             {
-                data.setMessage(conf.getString(TurbineConstants.LOGIN_MESSAGE));
+                data.setMessage(loginMessage);
             }
 
             // Set the screen template to the login page.
-            String loginTemplate =
-                conf.getString(TurbineConstants.TEMPLATE_LOGIN);
-
             log.debug("Sending User to the Login Screen ("
-                    + loginTemplate + ")");
-            data.getTemplateInfo().setScreenTemplate(loginTemplate);
+                    + templateLogin + ")");
+            data.getTemplateInfo().setScreenTemplate(templateLogin);
 
             // We're not doing any actions buddy! (except action.login which
             // will have been performed already)
@@ -129,17 +140,13 @@ public class TemplateSecureSessionValidator
         if (!data.hasScreen() && StringUtils.isEmpty(
                 data.getTemplateInfo().getScreenTemplate()))
         {
-            String template = conf.getString(
-                    TurbineConstants.TEMPLATE_HOMEPAGE);
-
-            if (StringUtils.isNotEmpty(template))
+            if (StringUtils.isNotEmpty(templateHomepage))
             {
-                data.getTemplateInfo().setScreenTemplate(template);
+                data.getTemplateInfo().setScreenTemplate(templateHomepage);
             }
             else
             {
-                data.setScreen(conf.getString(
-                        TurbineConstants.SCREEN_HOMEPAGE));
+                data.setScreen(screenHomepage);
             }
         }
 
@@ -161,15 +168,13 @@ public class TemplateSecureSessionValidator
                     data.getUser().setTemp("prev_template",
                             data.getTemplateInfo().getScreenTemplate()
                             .replace('/', ','));
-                    data.getTemplateInfo().setScreenTemplate(conf.getString(
-                            TurbineConstants.TEMPLATE_INVALID_STATE));
+                    data.getTemplateInfo().setScreenTemplate(templateInvalidState);
                 }
                 else
                 {
                     data.getUser().setTemp("prev_screen",
                                            data.getScreen().replace('/', ','));
-                    data.setScreen(conf.getString(
-                            TurbineConstants.SCREEN_INVALID_STATE));
+                    data.setScreen(screenInvalidState);
                 }
                 data.getUser().setTemp("prev_parameters", data.getParameters());
                 data.setAction("");

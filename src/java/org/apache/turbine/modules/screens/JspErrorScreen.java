@@ -19,8 +19,8 @@ package org.apache.turbine.modules.screens;
  * under the License.
  */
 
-import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.pipeline.PipelineData;
 
 /**
@@ -34,6 +34,9 @@ import org.apache.turbine.pipeline.PipelineData;
 public class JspErrorScreen
     extends BaseJspScreen
 {
+    @TurbineConfiguration( TurbineConstants.TEMPLATE_ERROR_KEY )
+    private String templateError = TurbineConstants.TEMPLATE_ERROR_JSP;
+
     /**
      * @param pipelineData Turbine information.
      * @exception Exception a generic exception.
@@ -42,10 +45,6 @@ public class JspErrorScreen
     protected void doBuildTemplate(PipelineData pipelineData)
         throws Exception
     {
-        String errorTemplate = Turbine.getConfiguration()
-                .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
-                           TurbineConstants.TEMPLATE_ERROR_JSP);
-
-        setTemplate(pipelineData, errorTemplate);
+        setTemplate(pipelineData, templateError);
     }
 }
