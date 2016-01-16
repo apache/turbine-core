@@ -38,11 +38,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.FactoryConfigurationError;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.DefaultConfigurationBuilder;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
@@ -64,9 +67,6 @@ import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.uri.URIConstants;
-
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 /**
  * Turbine is the main servlet for the entire system. It is <code>final</code>
@@ -380,7 +380,6 @@ public class Turbine
 
         // Retrieve the pipeline class and then initialize it.  The pipeline
         // handles the processing of a webrequest/response cycle.
-
 	    String descriptorPath =
 		  	configuration.getString(
 			  "pipeline.default.descriptor",
@@ -390,8 +389,10 @@ public class Turbine
 
   		log.debug("Using descriptor path: " + descriptorPath);
         Reader reader = new BufferedReader(new FileReader(descriptorPath));
-        XStream pipelineMapper = new XStream(new StaxDriver()); // does not require XPP3 library
-        pipeline = (Pipeline) pipelineMapper.fromXML(reader);
+        JAXBContext jaxb = JAXBContext.newInstance(TurbinePipeline.class);
+        Unmarshaller unmarshaller = jaxb.createUnmarshaller();
+        pipeline = (Pipeline) unmarshaller.unmarshal(reader);
+        IOUtils.closeQuietly(reader);
 
 	  	log.debug("Initializing pipeline");
 

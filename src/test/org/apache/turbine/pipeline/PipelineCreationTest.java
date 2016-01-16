@@ -1,6 +1,5 @@
 package org.apache.turbine.pipeline;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,15 +19,18 @@ package org.apache.turbine.pipeline;
  * under the License.
  */
 
-
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
+import java.io.StringReader;
+import java.io.StringWriter;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests TurbinePipeline.
@@ -40,27 +42,40 @@ public class PipelineCreationTest
 {
     private Pipeline pipeline;
 
-    public void setUp(){
+    @Before
+    public void setUp()
+    {
         pipeline = new TurbinePipeline();
         pipeline.addValve(new SimpleValve());
         pipeline.addValve(new DetermineActionValve());
     }
 
-    @Test public void testSavingPipelineWXstream() throws Exception
+    @Test
+    public void testSavingPipeline() throws Exception
     {
-        XStream xstream = new XStream(new DomDriver()); // does not require XPP3 library
-
-        /* String xml = */ xstream.toXML(pipeline);
-        //System.out.println(xml);
-        //Pipeline pipeline = (Pipeline)xstream.fromXML(xml);
+        JAXBContext context = JAXBContext.newInstance(TurbinePipeline.class);
+        Marshaller marshaller = context.createMarshaller();
+        StringWriter writer = new StringWriter();
+        marshaller.marshal(pipeline, writer);
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
+                + "<pipeline><valves>"
+                + "<valve>org.apache.turbine.pipeline.SimpleValve</valve>"
+                + "<valve>org.apache.turbine.pipeline.DetermineActionValve</valve>"
+                + "</valves></pipeline>", writer.toString());
     }
 
-    @Test public void testReadingPipelineWXstream() throws Exception{
-        String xml="<org.apache.turbine.pipeline.TurbinePipeline>  <valves>    <org.apache.turbine.pipeline.SimpleValve/>    <org.apache.turbine.pipeline.DetermineActionValve/>  </valves></org.apache.turbine.pipeline.TurbinePipeline>";
-        XStream xstream = new XStream(new DomDriver()); // does not require XPP3 library
-        Object o = xstream.fromXML(xml);
-        Pipeline pipeline = (Pipeline)o;
-        assertEquals(pipeline.getValves().length,2);
+    @Test
+    public void testReadingPipeline() throws Exception
+    {
+        String xml = "<pipeline name=\"default\"><valves>"
+                + "<valve>org.apache.turbine.pipeline.SimpleValve</valve>"
+                + "<valve>org.apache.turbine.pipeline.DetermineActionValve</valve>"
+                + "</valves></pipeline>";
+        JAXBContext context = JAXBContext.newInstance(TurbinePipeline.class);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        StringReader reader = new StringReader(xml);
+        Pipeline pipeline = (Pipeline) unmarshaller.unmarshal(reader);
+        assertEquals(2, pipeline.getValves().length);
         assertTrue(pipeline.getValves()[0] instanceof SimpleValve);
         assertTrue(pipeline.getValves()[1] instanceof DetermineActionValve);
     }

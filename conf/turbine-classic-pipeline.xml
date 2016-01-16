@@ -17,16 +17,16 @@
  specific language governing permissions and limitations
  under the License.
 -->
-<org.apache.turbine.pipeline.TurbinePipeline>
+<pipeline name="default">
   <valves>
-    <org.apache.turbine.pipeline.DetermineActionValve/>
-    <org.apache.turbine.pipeline.DetermineTargetValve/>
-    <org.apache.turbine.pipeline.DefaultSessionTimeoutValve/>
-    <org.apache.turbine.pipeline.DefaultLoginValve/>
-    <org.apache.turbine.pipeline.DefaultSessionValidationValve/>
-    <org.apache.turbine.pipeline.DefaultACLCreationValve/>
-    <org.apache.turbine.pipeline.ExecutePageValve/>
-    <org.apache.turbine.pipeline.CleanUpValve/>
-    <org.apache.turbine.pipeline.DetermineRedirectRequestedValve/>
+    <valve>org.apache.turbine.pipeline.DetermineActionValve</valve>
+    <valve>org.apache.turbine.pipeline.DetermineTargetValve</valve>
+    <valve>org.apache.turbine.pipeline.DefaultSessionTimeoutValve</valve>
+    <valve>org.apache.turbine.pipeline.DefaultLoginValve</valve>
+    <valve>org.apache.turbine.pipeline.DefaultSessionValidationValve</valve>
+    <valve>org.apache.turbine.pipeline.DefaultACLCreationValve</valve>
+    <valve>org.apache.turbine.pipeline.ExecutePageValve</valve>
+    <valve>org.apache.turbine.pipeline.CleanUpValve</valve>
+    <valve>org.apache.turbine.pipeline.DetermineRedirectRequestedValve</valve>
   </valves>
-</org.apache.turbine.pipeline.TurbinePipeline>
+</pipeline>
