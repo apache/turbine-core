@@ -23,7 +23,6 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.annotation.TurbineLoader;
@@ -46,9 +45,8 @@ public class DefaultACLCreationValve
     @TurbineLoader( Action.class )
     private ActionLoader actionLoader;
 
-    /** Injected configuration instance */
-    @TurbineConfiguration
-    private Configuration config;
+    @TurbineConfiguration( TurbineConstants.ACTION_ACCESS_CONTROLLER_KEY )
+    private String actionAccessController = TurbineConstants.ACTION_ACCESS_CONTROLLER_DEFAULT;
 
     /**
      * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
@@ -64,10 +62,7 @@ public class DefaultACLCreationValve
             // into the session for serialization.  Modules can null
             // out the ACL to force it to be rebuilt based on more
             // information.
-            actionLoader.exec(
-                    pipelineData, config.getString(
-                            TurbineConstants.ACTION_ACCESS_CONTROLLER_KEY,
-                            TurbineConstants.ACTION_ACCESS_CONTROLLER_DEFAULT));
+            actionLoader.exec(pipelineData, actionAccessController);
         }
         catch (Exception e)
         {

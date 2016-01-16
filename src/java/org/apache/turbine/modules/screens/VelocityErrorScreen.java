@@ -53,9 +53,6 @@ public class VelocityErrorScreen
         context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER,
                 data.getStackTrace());
 
-        String errorTemplate = conf.getString(TurbineConstants.TEMPLATE_ERROR_KEY,
-                TurbineConstants.TEMPLATE_ERROR_VM);
-
-        setTemplate(pipelineData, errorTemplate);
+        setTemplate(pipelineData, templateError);
     }
 }

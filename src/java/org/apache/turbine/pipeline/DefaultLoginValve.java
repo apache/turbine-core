@@ -28,7 +28,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.annotation.TurbineLoader;
@@ -55,9 +54,11 @@ public class DefaultLoginValve
     @TurbineLoader( Action.class )
     private ActionLoader actionLoader;
 
-    /** Injected configuration instance */
-    @TurbineConfiguration
-    private Configuration config;
+    @TurbineConfiguration( TurbineConstants.ACTION_LOGIN_KEY )
+    private String actionLogin;
+
+    @TurbineConfiguration( TurbineConstants.ACTION_LOGOUT_KEY )
+    private String actionLogout;
 
     /**
      * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
@@ -96,10 +97,8 @@ public class DefaultLoginValve
         // after the logout has taken place.
         String actionName = data.getAction();
         if (data.hasAction() &&
-            actionName.equalsIgnoreCase
-            (config.getString(TurbineConstants.ACTION_LOGIN_KEY)) ||
-            actionName.equalsIgnoreCase
-            (config.getString(TurbineConstants.ACTION_LOGOUT_KEY)))
+            actionName.equalsIgnoreCase(actionLogin) ||
+            actionName.equalsIgnoreCase(actionLogout))
         {
             // If a User is logging in, we should refresh the
             // session here.  Invalidating session and starting a
@@ -112,8 +111,7 @@ public class DefaultLoginValve
             // associated with the previous User.  Currently the
             // only keys stored in the session are "turbine.user"
             // and "turbine.acl".
-            if (actionName.equalsIgnoreCase
-                (config.getString(TurbineConstants.ACTION_LOGIN_KEY)))
+            if (actionName.equalsIgnoreCase(actionLogin))
             {
                 @SuppressWarnings("unchecked")
                 Enumeration<String> names = data.getSession().getAttributeNames();

@@ -19,7 +19,6 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  * under the License.
  */
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -60,8 +59,17 @@ public class TemplateSessionValidator
     @TurbineService
     private SecurityService security;
 
-    @TurbineConfiguration
-    private Configuration conf;
+    @TurbineConfiguration( TurbineConstants.TEMPLATE_HOMEPAGE )
+    private String templateHomepage;
+
+    @TurbineConfiguration( TurbineConstants.SCREEN_HOMEPAGE )
+    private String screenHomepage;
+
+    @TurbineConfiguration( TurbineConstants.TEMPLATE_INVALID_STATE )
+    private String templateInvalidState;
+
+    @TurbineConfiguration( TurbineConstants.SCREEN_INVALID_STATE )
+    private String screenInvalidState;
 
     /**
      * Execute the action.
@@ -90,17 +98,13 @@ public class TemplateSessionValidator
         if (!data.hasScreen() && StringUtils.isEmpty(
                 data.getTemplateInfo().getScreenTemplate()))
         {
-            String template = conf.getString(
-                    TurbineConstants.TEMPLATE_HOMEPAGE);
-
-            if (StringUtils.isNotEmpty(template))
+            if (StringUtils.isNotEmpty(templateHomepage))
             {
-                data.getTemplateInfo().setScreenTemplate(template);
+                data.getTemplateInfo().setScreenTemplate(templateHomepage);
             }
             else
             {
-                data.setScreen(conf.getString(
-                        TurbineConstants.SCREEN_HOMEPAGE));
+                data.setScreen(screenHomepage);
             }
         }
         // the session_access_counter can be placed as a hidden field in
@@ -119,15 +123,13 @@ public class TemplateSessionValidator
                     data.getUser().setTemp("prev_template",
                             data.getTemplateInfo().getScreenTemplate()
                             .replace('/', ','));
-                    data.getTemplateInfo().setScreenTemplate(conf.getString(
-                            TurbineConstants.TEMPLATE_INVALID_STATE));
+                    data.getTemplateInfo().setScreenTemplate(templateInvalidState);
                 }
                 else
                 {
                     data.getUser().setTemp("prev_screen",
                                            data.getScreen().replace('/', ','));
-                    data.setScreen(conf.getString(
-                            TurbineConstants.SCREEN_INVALID_STATE));
+                    data.setScreen(screenInvalidState);
                 }
                 data.getUser().setTemp("prev_parameters", data.getParameters());
                 data.setAction("");

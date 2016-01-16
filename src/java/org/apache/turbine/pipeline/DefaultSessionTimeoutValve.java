@@ -23,9 +23,8 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -41,20 +40,8 @@ import org.apache.turbine.util.TurbineException;
 public class DefaultSessionTimeoutValve
     extends AbstractValve
 {
-    protected int timeout;
-
-    /**
-     * Here we can setup objects that are thread safe and can be
-     * reused, so we get the timeout from the configuration..
-     */
-    public DefaultSessionTimeoutValve()
-    {
-        Configuration cfg = Turbine.getConfiguration();
-
-        // Get the session timeout.
-    	timeout = cfg.getInt(TurbineConstants.SESSION_TIMEOUT_KEY,
-                TurbineConstants.SESSION_TIMEOUT_DEFAULT);
-    }
+    @TurbineConfiguration( TurbineConstants.SESSION_TIMEOUT_KEY )
+    protected int timeout = TurbineConstants.SESSION_TIMEOUT_DEFAULT;
 
     /**
      * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)

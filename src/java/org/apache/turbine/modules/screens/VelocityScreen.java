@@ -19,7 +19,6 @@ package org.apache.turbine.modules.screens;
  * under the License.
  */
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.turbine.TurbineConstants;
@@ -60,9 +59,8 @@ public class VelocityScreen
     @TurbineService
     protected TemplateService templateService;
 
-    /** Injected configuration instance */
-    @TurbineConfiguration
-    protected Configuration conf;
+    @TurbineConfiguration( TurbineConstants.TEMPLATE_ERROR_KEY )
+    protected String templateError = TurbineConstants.TEMPLATE_ERROR_VM;
 
     /**
      * Velocity Screens extending this class should override this
@@ -146,10 +144,7 @@ public class VelocityScreen
             context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
             context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
 
-            templateName = conf.getString(TurbineConstants.TEMPLATE_ERROR_KEY,
-                           TurbineConstants.TEMPLATE_ERROR_VM);
-
-            screenData = velocity.handleRequest(context, prefix + templateName);
+            screenData = velocity.handleRequest(context, prefix + templateError);
         }
 
         return screenData;

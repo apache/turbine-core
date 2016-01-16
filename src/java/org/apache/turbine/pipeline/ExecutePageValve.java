@@ -23,7 +23,6 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.annotation.TurbineLoader;
@@ -52,9 +51,8 @@ public class ExecutePageValve
     @TurbineLoader( Page.class )
     private PageLoader pageLoader;
 
-    /** Injected configuration instance */
-    @TurbineConfiguration
-    private Configuration config;
+    @TurbineConfiguration( TurbineConstants.PAGE_DEFAULT_KEY )
+    private String pageDefault = TurbineConstants.PAGE_DEFAULT_DEFAULT;
 
     /**
      * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
@@ -112,8 +110,7 @@ public class ExecutePageValve
              * if they wish but the DefaultPage should work in
              * most cases.
              */
-            defaultPage = config.getString(TurbineConstants.PAGE_DEFAULT_KEY,
-                    TurbineConstants.PAGE_DEFAULT_DEFAULT);
+            defaultPage = pageDefault;
         }
 
         pageLoader.exec(pipelineData, defaultPage);

@@ -83,11 +83,7 @@ public class VelocityDirectScreen
             context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
             context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
 
-            templateName = conf.getString(TurbineConstants.TEMPLATE_ERROR_KEY,
-                           TurbineConstants.TEMPLATE_ERROR_VM);
-
-            velocity.handleRequest(context,
-                    prefix + templateName,
+            velocity.handleRequest(context, prefix + templateError,
                     data.getResponse().getOutputStream());
         }
 

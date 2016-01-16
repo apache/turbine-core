@@ -49,28 +49,28 @@ public class InitContextsAction
     private Configuration conf;
 
     /**
-     * This action will place the contexts defined in the
-     * TurbineResources instance (if any) into the data.contexts
-     * Hashtable.
+     * This action will place the contexts defined in the TurbineResources
+     * instance (if any) into the data.contexts Hashtable.
      *
-     * @param pipelineData The PipelineRunData object for the current request.
-     * @exception NamingException could not create InitialContext
+     * @param pipelineData
+     *            The PipelineRunData object for the current request.
+     * @exception NamingException
+     *                could not create InitialContext
      */
     @Override
     public void doPerform(PipelineData pipelineData)
-    throws NamingException
+            throws NamingException
     {
         RunData data = getRunData(pipelineData);
         // Context properties are specified in lines in the properties
         // file that begin with "context.contextname.", allowing
-        // multiple named contexts to be used.  Everything after the
+        // multiple named contexts to be used. Everything after the
         // "contextname." is the name of the property that will be
         // used by the InitialContext class to create a new context
         // instance.
 
         Hashtable<String, Properties> contextPropsList = new Hashtable<String, Properties>();
-        for (Iterator<String> contextKeys = conf.getKeys("context.");
-                contextKeys.hasNext();)
+        for (Iterator<String> contextKeys = conf.getKeys("context."); contextKeys.hasNext();)
         {
             String key = contextKeys.next();
             int start = key.indexOf(".") + 1;
@@ -85,8 +85,7 @@ public class InitContextsAction
             {
                 contextProps = new Properties();
             }
-            contextProps.put(key.substring(end + 1),
-                    conf.getString(key));
+            contextProps.put(key.substring(end + 1), conf.getString(key));
             contextPropsList.put(contextName, contextProps);
         }
 

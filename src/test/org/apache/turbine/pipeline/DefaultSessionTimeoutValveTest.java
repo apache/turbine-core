@@ -1,6 +1,5 @@
 package org.apache.turbine.pipeline;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,6 +19,7 @@ package org.apache.turbine.pipeline;
  * under the License.
  */
 
+import static org.junit.Assert.assertEquals;
 
 import java.util.Vector;
 
@@ -42,14 +42,13 @@ import org.junit.Test;
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockServletConfig;
 
-import static org.junit.Assert.*;
-
 /**
  * Tests TurbinePipeline.
  *
  * @author <a href="mailto:epugh@opensourceConnections.com">Eric Pugh</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
- * @version $Id$
+ * @version $Id: DefaultSessionTimeoutValveTest.java 1606111 2014-06-27
+ *          14:46:47Z gk $
  */
 public class DefaultSessionTimeoutValveTest extends BaseTestCase
 {
@@ -59,17 +58,18 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
     private EnhancedMockHttpSession session = null;
     private HttpServletResponse response = null;
 
-    
     @BeforeClass
-    public static void init() {
+    public static void init()
+    {
         tc = new TurbineConfig(
-                            ".",
-                            "/conf/test/CompleteTurbineResources.properties");
+                ".",
+                "/conf/test/CompleteTurbineResources.properties");
         tc.initialize();
     }
 
     @Before
-    public void setUpBefore() throws Exception {
+    public void setUpBefore() throws Exception
+    {
         config = new MockServletConfig();
         config.setupNoParameters();
         request = new EnhancedMockHttpServletRequest();
@@ -95,7 +95,8 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
     /**
      * Tests the Valve.
      */
-    @Test public void testDefaults() throws Exception
+    @Test
+    public void testDefaults() throws Exception
     {
         // reset
         Turbine.getConfiguration().setProperty(TurbineConstants.SESSION_TIMEOUT_KEY,
@@ -103,9 +104,9 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
         Vector<String> v = new Vector<String>();
         v.add(URIConstants.CGI_ACTION_PARAM);
         request.setupGetParameterNames(v.elements());
-        request.setupAddParameter(URIConstants.CGI_ACTION_PARAM,"TestAction");
+        request.setupAddParameter(URIConstants.CGI_ACTION_PARAM, "TestAction");
 
-        PipelineData pipelineData = getPipelineData(request,response,config);
+        PipelineData pipelineData = getPipelineData(request, response, config);
 
         Pipeline pipeline = new TurbinePipeline();
 
@@ -114,39 +115,35 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
 
         pipeline.invoke(pipelineData);
 
-        RunData runData = (RunData)pipelineData;
-        assertEquals(0,runData.getSession().getMaxInactiveInterval());
-
-
+        RunData runData = (RunData) pipelineData;
+        assertEquals(0, runData.getSession().getMaxInactiveInterval());
     }
 
     /**
      * Tests the Valve.
      */
-    @Test public void testTimeoutSet() throws Exception
+    @Test
+    public void testTimeoutSet() throws Exception
     {
-
-        Turbine.getConfiguration().setProperty(TurbineConstants.SESSION_TIMEOUT_KEY,"3600");
-        PipelineData pipelineData = getPipelineData(request,response,config);
+        Turbine.getConfiguration().setProperty(TurbineConstants.SESSION_TIMEOUT_KEY, "3600");
+        PipelineData pipelineData = getPipelineData(request, response, config);
 
         Pipeline pipeline = new TurbinePipeline();
 
         DefaultSessionTimeoutValve valve = new DefaultSessionTimeoutValve();
         pipeline.addValve(valve);
+        pipeline.initialize();
 
         pipeline.invoke(pipelineData);
-        RunData runData = (RunData)pipelineData;
+        RunData runData = (RunData) pipelineData;
 
-        assertEquals(3600,runData.getSession().getMaxInactiveInterval());
-
-
+        assertEquals(3600, runData.getSession().getMaxInactiveInterval());
     }
-    
+
     @AfterClass
-    public static void destroy() {
+    public static void destroy()
+    {
         tc.dispose();
     }
-
-
 
 }

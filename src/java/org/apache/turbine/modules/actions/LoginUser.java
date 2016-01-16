@@ -19,7 +19,6 @@ package org.apache.turbine.modules.actions;
  * under the License.
  */
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -61,9 +60,14 @@ public class LoginUser
     @TurbineService
     private SecurityService security;
 
-    /** Injected configuration instance */
-    @TurbineConfiguration
-    private Configuration conf;
+    @TurbineConfiguration( TurbineConstants.LOGIN_ERROR )
+    private String loginError = "";
+
+    @TurbineConfiguration( TurbineConstants.TEMPLATE_LOGIN )
+    private String templateLogin;
+
+    @TurbineConfiguration( TurbineConstants.SCREEN_LOGIN )
+    private String screenLogin;
 
     /**
      * Updates the user's LastLogin timestamp, sets their state to
@@ -128,21 +132,18 @@ public class LoginUser
             }
 
             // Set Error Message and clean out the user.
-            data.setMessage(conf.getString(TurbineConstants.LOGIN_ERROR, ""));
+            data.setMessage(loginError);
             User anonymousUser = security.getAnonymousUser();
             data.setUser(anonymousUser);
 
-            String loginTemplate = conf.getString(
-                    TurbineConstants.TEMPLATE_LOGIN);
-
-            if (StringUtils.isNotEmpty(loginTemplate))
+            if (StringUtils.isNotEmpty(templateLogin))
             {
                 // We're running in a templating solution
-                data.setScreenTemplate(loginTemplate);
+                data.setScreenTemplate(templateLogin);
             }
             else
             {
-                data.setScreen(conf.getString(TurbineConstants.SCREEN_LOGIN));
+                data.setScreen(screenLogin);
             }
         }
     }

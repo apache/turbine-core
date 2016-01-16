@@ -26,10 +26,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
-import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.services.pull.ApplicationTool;
 
 /**
@@ -120,6 +119,15 @@ public class HtmlPageAttributes
 
     /** Doctype */
     private String doctype = null;
+
+    @TurbineConfiguration( TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY )
+    private String defaultHtmlDoctypeRootElement = TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_DEFAULT;
+
+    @TurbineConfiguration( TurbineConstants.DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY )
+    private String defaultHtmlDoctypeIdentifier = TurbineConstants.DEFAULT_HTML_DOCTYPE_IDENTIFIER_DEFAULT;
+
+    @TurbineConfiguration( TurbineConstants.DEFAULT_HTML_DOCTYPE_URI_KEY )
+    private String defaultHtmlDoctypeUri = TurbineConstants.DEFAULT_HTML_DOCTYPE_URI_DEFAULT;
 
     /**
      * Construct a new instance
@@ -625,10 +633,7 @@ public class HtmlPageAttributes
     {
         if (doctype == null)
         {
-            Configuration conf = Turbine.getConfiguration();
-            String tag = conf.getString(
-                    TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY,
-                    TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_DEFAULT);
+            String tag = defaultHtmlDoctypeRootElement;
 
             if (StringUtils.isEmpty(tag))
             {
@@ -636,15 +641,7 @@ public class HtmlPageAttributes
             }
             else
             {
-                String identifier = conf.getString(
-                        TurbineConstants.DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY,
-                        TurbineConstants.DEFAULT_HTML_DOCTYPE_IDENTIFIER_DEFAULT);
-
-                String uri = conf.getString(
-                        TurbineConstants.DEFAULT_HTML_DOCTYPE_URI_KEY,
-                        TurbineConstants.DEFAULT_HTML_DOCTYPE_URI_DEFAULT);
-
-                doctype = buildDoctype(tag, identifier, uri);
+                doctype = buildDoctype(tag, defaultHtmlDoctypeIdentifier, defaultHtmlDoctypeUri);
             }
         }
 

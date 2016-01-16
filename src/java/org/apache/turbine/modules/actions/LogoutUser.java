@@ -19,7 +19,6 @@ package org.apache.turbine.modules.actions;
  * under the License.
  */
 
-import org.apache.commons.configuration.Configuration;
 import org.apache.fulcrum.security.util.FulcrumSecurityException;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineConfiguration;
@@ -46,9 +45,14 @@ public class LogoutUser
     @TurbineService
     private SecurityService security;
 
-    /** Injected configuration instance */
-    @TurbineConfiguration
-    private Configuration conf;
+    @TurbineConfiguration( TurbineConstants.LOGOUT_MESSAGE )
+    private String logoutMessage;
+
+    @TurbineConfiguration( TurbineConstants.ACTION_LOGOUT_KEY )
+    private String actionLogout = TurbineConstants.ACTION_LOGOUT_DEFAULT;
+
+    @TurbineConfiguration( TurbineConstants.SCREEN_HOMEPAGE )
+    private String screenHomepage;
 
     /**
      * Clears the PipelineData user object back to an anonymous status not
@@ -87,7 +91,7 @@ public class LogoutUser
             security.saveUser(user);
         }
 
-        data.setMessage(conf.getString(TurbineConstants.LOGOUT_MESSAGE));
+        data.setMessage(logoutMessage);
 
         // This will cause the acl to be removed from the session in
         // the Turbine servlet code.
@@ -110,11 +114,9 @@ public class LogoutUser
         // - it is recommended that action.logout is set to "LogoutUser" and
         // that the session validator does handle setting the screen/template
         // for a logged out (read not-logged-in) user.
-        if (!conf.getString(TurbineConstants.ACTION_LOGOUT_KEY,
-                            TurbineConstants.ACTION_LOGOUT_DEFAULT)
-            .equals(TurbineConstants.ACTION_LOGOUT_DEFAULT))
+        if (!actionLogout.equals(TurbineConstants.ACTION_LOGOUT_DEFAULT))
         {
-            data.setScreen(conf.getString(TurbineConstants.SCREEN_HOMEPAGE));
+            data.setScreen(screenHomepage);
         }
     }
 }
