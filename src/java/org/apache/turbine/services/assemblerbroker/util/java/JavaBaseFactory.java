@@ -22,7 +22,6 @@ package org.apache.turbine.services.assemblerbroker.util.java;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -54,11 +53,6 @@ public abstract class JavaBaseFactory<T extends Assembler>
      * to reduce the Class.forName() overhead (which can be sizable).
      */
     private final ConcurrentHashMap<String, Class<T>> classCache = new ConcurrentHashMap<String, Class<T>>();
-
-    /**
-     * Lock for cache update
-     */
-    private final ReentrantLock lock = new ReentrantLock();
 
     /**
      * Get an Assembler.
@@ -96,22 +90,11 @@ public abstract class JavaBaseFactory<T extends Assembler>
                     Class<T> servClass = classCache.get(className);
                     if (servClass == null)
                     {
-                        lock.lock();
-
-                        try
+                        servClass = (Class<T>) Class.forName(className);
+                        Class<T> _servClass = classCache.putIfAbsent(className, servClass);
+                        if (_servClass != null)
                         {
-                            // Double check
-                            servClass = classCache.get(className);
-
-                            if (servClass == null)
-                            {
-                                servClass = (Class<T>) Class.forName(className);
-                                classCache.put(className, servClass);
-                            }
-                        }
-                        finally
-                        {
-                            lock.unlock();
+                            servClass = _servClass;
                         }
                     }
                     assembler = servClass.newInstance();
