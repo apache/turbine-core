@@ -21,8 +21,6 @@ package org.apache.turbine.services;
 
 
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -119,7 +117,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
     /**
      * mapping from service names to instances of TurbineServiceProviders
      */
-    private final Hashtable<String, Service> serviceProviderInstanceMap = new Hashtable<String, Service>();
+    private final ConcurrentHashMap<String, Service> serviceProviderInstanceMap = new ConcurrentHashMap<String, Service>();
 
     /**
      * Default constructor, protected as to only be usable by subclasses.
@@ -643,7 +641,11 @@ public abstract class BaseServiceBroker implements ServiceBroker
                             // service provider - if so then remember it
                             if (service instanceof TurbineServiceProvider)
                             {
-                                this.serviceProviderInstanceMap.put(name,service);
+                                Service _service = this.serviceProviderInstanceMap.putIfAbsent(name,service);
+                                if (_service != null)
+                                {
+                                    service = _service;
+                                }
                             }
                         }
                         // those two errors must be passed to the VM
@@ -672,7 +674,11 @@ public abstract class BaseServiceBroker implements ServiceBroker
                     }
                     service.setServiceBroker(this);
                     service.setName(name);
-                    services.put(name, service);
+                    Service _service = services.putIfAbsent(name, service);
+                    if (_service != null) // Unlikely
+                    {
+                        service = _service;
+                    }
                 }
             }
             finally
@@ -740,14 +746,11 @@ public abstract class BaseServiceBroker implements ServiceBroker
      */
     protected boolean isNonLocalService(String name)
     {
-        String serviceName = null;
         TurbineServiceProvider turbineServiceProvider = null;
-        Enumeration<String> list = this.serviceProviderInstanceMap.keys();
 
-        while (list.hasMoreElements())
+        for (Map.Entry<String, Service> entry : this.serviceProviderInstanceMap.entrySet())
         {
-            serviceName = list.nextElement();
-            turbineServiceProvider = (TurbineServiceProvider) this.getService(serviceName);
+            turbineServiceProvider = (TurbineServiceProvider) this.getService(entry.getKey());
 
             if (turbineServiceProvider.exists(name))
             {
@@ -768,14 +771,11 @@ public abstract class BaseServiceBroker implements ServiceBroker
     protected Object getNonLocalService(String name)
     	throws InstantiationException
     {
-        String serviceName = null;
         TurbineServiceProvider turbineServiceProvider = null;
-        Enumeration<String> list = this.serviceProviderInstanceMap.keys();
 
-        while (list.hasMoreElements())
+        for (Map.Entry<String, Service> entry : this.serviceProviderInstanceMap.entrySet())
         {
-            serviceName = list.nextElement();
-            turbineServiceProvider = (TurbineServiceProvider) this.getService(serviceName);
+            turbineServiceProvider = (TurbineServiceProvider) this.getService(entry.getKey());
 
             if (turbineServiceProvider.exists(name))
             {
