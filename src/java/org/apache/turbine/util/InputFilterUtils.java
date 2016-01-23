@@ -21,9 +21,8 @@ package org.apache.turbine.util;
  */
 
 
-import org.apache.ecs.Entities;
-
-import org.apache.ecs.filter.CharacterFilter;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Some filter methods that have been orphaned in the Screen class.
@@ -36,12 +35,6 @@ import org.apache.ecs.filter.CharacterFilter;
 
 public abstract class InputFilterUtils
 {
-    /** A HtmlFilter Object for the normal input filter */
-    private static final CharacterFilter filter = htmlFilter();
-
-    /** A HtmlFilter Object for the minimal input filter */
-    private static final CharacterFilter minFilter = htmlMinFilter();
-
     /**
      * This function can/should be used in any screen that will output
      * User entered text.  This will help prevent users from entering
@@ -52,7 +45,7 @@ public abstract class InputFilterUtils
      */
     public static String prepareText(String s)
     {
-        return filter.process(s);
+        return StringEscapeUtils.escapeHtml(s);
     }
 
     /**
@@ -65,42 +58,12 @@ public abstract class InputFilterUtils
      */
     public static String prepareTextMinimum(String s)
     {
-        return minFilter.process(s);
-    }
-
-    /**
-     * These attributes are supposed to be the default, but they are
-     * not, at least in ECS 1.2.  Include them all just to be safe.
-     *
-     * @return A CharacterFilter to do HTML filtering.
-     */
-    private static CharacterFilter htmlFilter()
-    {
-        CharacterFilter filter = new CharacterFilter();
-        filter.addAttribute("\"", Entities.QUOT);
-        filter.addAttribute("'", Entities.LSQUO);
-        filter.addAttribute("&", Entities.AMP);
-        filter.addAttribute("<", Entities.LT);
-        filter.addAttribute(">", Entities.GT);
-        return filter;
-    }
-
-    /*
-     * We would like to filter user entered text that might be
-     * dynamically added, using javascript for example.  But we do not
-     * want to filter all the above chars, so we will just disallow
-     * <.
-     *
-     * @return A CharacterFilter to do minimal HTML filtering.
-     */
-    private static CharacterFilter htmlMinFilter()
-    {
-        CharacterFilter filter = new CharacterFilter();
-        filter.removeAttribute(">");
-        filter.removeAttribute("\"");
-        filter.removeAttribute("'");
-        filter.removeAttribute("&");
-        filter.addAttribute("<", Entities.LT);
-        return filter;
+        /*
+         * We would like to filter user entered text that might be
+         * dynamically added, using javascript for example.  But we do not
+         * want to filter all the above chars, so we will just disallow
+         * <.
+         */
+        return StringUtils.replace(s, "<", "&lt;");
     }
 }
