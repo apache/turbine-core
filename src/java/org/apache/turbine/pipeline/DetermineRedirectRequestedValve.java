@@ -23,6 +23,7 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
@@ -40,6 +41,7 @@ public class DetermineRedirectRequestedValve
     extends AbstractValve
 {
     private static final Log log = LogFactory.getLog(DetermineRedirectRequestedValve.class);
+
     /**
      * Creates a new instance.
      */
@@ -51,6 +53,7 @@ public class DetermineRedirectRequestedValve
     /**
      * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
      */
+    @Override
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
@@ -77,55 +80,16 @@ public class DetermineRedirectRequestedValve
     {
         RunData data = getRunData(pipelineData);
         // handle a redirect request
-        boolean requestRedirected = ((data.getRedirectURI() != null)
-        && (data.getRedirectURI().length() > 0));
+        boolean requestRedirected = StringUtils.isNotEmpty(data.getRedirectURI());
         if (requestRedirected)
         {
             if (data.getResponse().isCommitted())
             {
-                requestRedirected = false;
-                log.warn("redirect requested, response already committed: " +
-                        data.getRedirectURI());
+                log.warn("redirect requested, response already committed: " + data.getRedirectURI());
             }
             else
             {
                 data.getResponse().sendRedirect(data.getRedirectURI());
-            }
-        }
-
-        if (!requestRedirected)
-        {
-            try
-            {
-                if (data.isPageSet() == false && data.isOutSet() == false)
-                {
-                    throw new Exception("Nothing to output");
-                }
-
-                // We are all done! if isPageSet() output that way
-                // otherwise, data.getOut() has already been written
-                // to the data.getOut().close() happens below in the
-                // finally.
-                if (data.isPageSet() && data.isOutSet() == false)
-                {
-                    // Modules can override these.
-                    data.getResponse().setLocale(data.getLocale());
-                    data.getResponse().setContentType(
-                            data.getContentType());
-
-                    // Set the status code.
-                    data.getResponse().setStatus(data.getStatusCode());
-                    // Output the Page.
-                    data.getPage().output(data.getResponse().getWriter());
-                }
-            }
-            catch (Exception e)
-            {
-                // The output stream was probably closed by the client
-                // end of things ie: the client clicked the Stop
-                // button on the browser, so ignore any errors that
-                // result.
-                log.debug("Output stream closed? ", e);
             }
         }
     }

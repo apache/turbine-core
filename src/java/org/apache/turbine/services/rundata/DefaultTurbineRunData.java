@@ -37,9 +37,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ecs.Document;
-import org.apache.ecs.Element;
-import org.apache.ecs.StringElement;
 import org.apache.fulcrum.mimetype.MimeTypeService;
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.ParameterParser;
@@ -94,12 +91,6 @@ public class DefaultTurbineRunData
 
     /** The default charset. */
     private static String defaultCharSet = null;
-
-    /** Determines if there is information in the document or not. */
-    private boolean pageSet;
-
-    /** This creates an ECS Document. */
-    private Document page;
 
     /** Cached action name to execute for this request. */
     private String action;
@@ -323,8 +314,6 @@ public class DefaultTurbineRunData
         // empty pipelinedata map
         get(Turbine.class).clear();
 
-        pageSet = false;
-        page = null;
         action = null;
         layout = null;
         screen = null;
@@ -472,37 +461,6 @@ public class DefaultTurbineRunData
     }
 
     /**
-     * Checks to see if the page is set.
-     *
-     * @return true if the page is set.
-     * @deprecated no replacement planned, ECS is no longer a requirement
-     */
-    @Override
-    @Deprecated
-    public boolean isPageSet()
-    {
-        return pageSet;
-    }
-
-    /**
-     * Gets the page.
-     *
-     * @return a document.
-     * @deprecated no replacement planned, ECS is no longer a requirement
-     */
-    @Override
-    @Deprecated
-    public Document getPage()
-    {
-        pageSet = true;
-        if (this.page == null)
-        {
-            this.page = new Document();
-        }
-        return this.page;
-    }
-
-    /**
      * Whether or not an action has been defined.
      *
      * @return true if an action has been defined.
@@ -530,7 +488,7 @@ public class DefaultTurbineRunData
     /**
      * Sets the action for the request.
      *
-     * @param action a atring.
+     * @param action a string.
      */
     @Override
     public void setAction(String action)
@@ -719,9 +677,8 @@ public class DefaultTurbineRunData
     @Override
     public boolean hasMessage()
     {
-        StringElement message = get(Turbine.class, StringElement.class);
-        return (message != null)
-            && StringUtils.isNotEmpty(message.toString());
+        StringBuilder message = get(Turbine.class, StringBuilder.class);
+        return message != null && message.length() > 0;
     }
 
     /**
@@ -733,8 +690,8 @@ public class DefaultTurbineRunData
     @Override
     public String getMessage()
     {
-        StringElement message = get(Turbine.class, StringElement.class);
-        return (message == null ? null : message.toString());
+        StringBuilder message = get(Turbine.class, StringBuilder.class);
+        return message == null ? null : message.toString();
     }
 
     /**
@@ -745,7 +702,7 @@ public class DefaultTurbineRunData
     @Override
     public void setMessage(String msg)
     {
-        get(Turbine.class).put(StringElement.class, new StringElement(msg));
+        get(Turbine.class).put(StringBuilder.class, new StringBuilder(msg));
     }
 
     /**
@@ -757,54 +714,28 @@ public class DefaultTurbineRunData
     @Override
     public void addMessage(String msg)
     {
-        addMessage(new StringElement(msg));
+        StringBuilder message = get(Turbine.class, StringBuilder.class);
+        if (message == null)
+        {
+            setMessage(msg);
+        }
+        else
+        {
+            message.append(msg);
+        }
     }
 
     /**
      * Gets the results of an action or another message
-     * to be displayed as an ECS string element.
+     * to be displayed as a string (never null).
      *
      * @return a string element.
      */
     @Override
-    public StringElement getMessageAsHTML()
+    public String getMessageAsHTML()
     {
-        return get(Turbine.class, StringElement.class);
-    }
-
-    /**
-     * Sets the message for the request as an ECS element.
-     *
-     * @param msg an element.
-     */
-    @Override
-    public void setMessage(Element msg)
-    {
-        get(Turbine.class).put(StringElement.class, new StringElement(msg));
-    }
-
-    /**
-     * Adds the ECS element to message. If message has prior messages from
-     * other actions or screens, this method can be used to chain them.
-     *
-     * @param msg an element.
-     */
-    @Override
-    public void addMessage(Element msg)
-    {
-        if (msg != null)
-        {
-            StringElement message = get(Turbine.class, StringElement.class);
-
-            if (message != null)
-            {
-                message.addElement(msg);
-            }
-            else
-            {
-                setMessage(msg);
-            }
-        }
+        String message = getMessage();
+        return message == null ? "" : message;
     }
 
     /**
@@ -813,7 +744,7 @@ public class DefaultTurbineRunData
     @Override
     public void unsetMessage()
     {
-        get(Turbine.class).remove(StringElement.class);
+        get(Turbine.class).remove(StringBuilder.class);
     }
 
     /**
@@ -961,7 +892,6 @@ public class DefaultTurbineRunData
         {
             setOut(getResponse().getWriter());
         }
-        pageSet = false;
         outSet = true;
         return this.out;
     }
@@ -976,7 +906,6 @@ public class DefaultTurbineRunData
     public void declareDirectResponse()
     {
         outSet = true;
-        pageSet = false;
     }
 
     /**
