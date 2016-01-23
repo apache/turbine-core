@@ -1,5 +1,8 @@
 package org.apache.turbine.util.template;
 
+import org.apache.ecs.html.Option;
+import org.apache.ecs.html.Select;
+
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -20,10 +23,6 @@ package org.apache.turbine.util.template;
  * under the License.
  */
 
-
-import org.apache.ecs.html.Option;
-import org.apache.ecs.html.Select;
-
 /**
  * This class is for generating a SelectorBox. It is good when used
  * with WM because you can stuff it into the context and then just
@@ -31,7 +30,7 @@ import org.apache.ecs.html.Select;
  * well, but WM is the best case for it right now.
  *
  * <p>For example code showing the usage for this module, please see
- * the toString() method below to see how it would be refered to from
+ * the toString() method below to see how it would be referred to from
  * WM.
  *
  * <pre>
@@ -153,7 +152,7 @@ public class SelectorBox
     /**
      * Pass in an array of selected items and the entire set of items
      * and it will determine which items in the selected set are also
-     * in the entireset and then build a boolean[] up that is the same
+     * in the entire set and then build a boolean[] up that is the same
      * size as the entireSet with markings to tell whether or not the
      * items are marked or not.  It uses toString().equalsIgnoreCase()
      * on the Object in the Object[] to determine if the items are
