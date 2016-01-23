@@ -26,6 +26,15 @@
   <body>
     <release version="4.0" date="in Subversion">
       <action type="update" dev="tv">
+        Update BrowserDetector to support contemporary browsers.
+      </action>
+      <action type="remove" dev="tv">
+        Remove TurbineAvalonComponentService including the long deprecated Excalibur dependency
+      </action>
+      <action type="remove" dev="tv">
+        Remove methods in RunData referring to Jakarta ECS.
+      </action>
+      <action type="update" dev="tv">
         Replace xstream with JAXB when reading the pipeline descriptor.
       </action>
       <action type="add" dev="tv">
