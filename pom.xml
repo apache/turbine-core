@@ -858,6 +858,11 @@
       <type>jar</type>
     </dependency>
     <dependency>
+      <groupId>net.sf.uadetector</groupId>
+      <artifactId>uadetector-resources</artifactId>
+      <version>2014.10</version>
+    </dependency>
+    <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-cache</artifactId>
       <version>1.1.0</version>
@@ -948,20 +953,6 @@
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-quartz</artifactId>
       <version>1.1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.excalibur.component</groupId>
-      <artifactId>excalibur-component</artifactId>
-      <version>2.2.1</version>
-      <type>jar</type>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.excalibur.containerkit</groupId>
-      <artifactId>excalibur-logger</artifactId>
-      <version>2.2.1</version>
-      <type>jar</type>
-      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.python</groupId>
