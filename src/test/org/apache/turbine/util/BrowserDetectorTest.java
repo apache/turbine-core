@@ -38,39 +38,38 @@ public class BrowserDetectorTest extends BaseTestCase
     {
         String userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8) Gecko/20051111 Firefox/1.5";
         BrowserDetector bd = new BrowserDetector(userAgent);
-        assertEquals(BrowserDetector.MOZILLA, bd.getBrowserName());
-        // Should this really be 5?
-        assertEquals(5f, bd.getBrowserVersion(), 0.0f);
-        assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
+        assertEquals("Firefox", bd.getBrowserName());
+        assertEquals(1.5f, bd.getBrowserVersion(), 0.0f);
+        assertEquals("Windows", bd.getBrowserPlatform());
     }
 
     @Test public void testOpera()
     {
         String userAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; en) Opera 8.02";
         BrowserDetector bd = new BrowserDetector(userAgent);
-        assertEquals(BrowserDetector.OPERA, bd.getBrowserName());
+        assertEquals("Opera", bd.getBrowserName());
         assertEquals(8.02f, bd.getBrowserVersion(), 0.0f);
-        assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
+        assertEquals("Windows", bd.getBrowserPlatform());
 
         userAgent = "Opera/7.51 (Windows NT 5.1; U) [en]";
         bd = new BrowserDetector(userAgent);
-        assertEquals(BrowserDetector.OPERA, bd.getBrowserName());
+        assertEquals("Opera", bd.getBrowserName());
         assertEquals(7.51f, bd.getBrowserVersion(), 0.0f);
-        assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
+        assertEquals("Windows", bd.getBrowserPlatform());
     }
 
     @Test public void testIE()
     {
         String userAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
         BrowserDetector bd = new BrowserDetector(userAgent);
-        assertEquals(BrowserDetector.MSIE, bd.getBrowserName());
+        assertEquals("IE", bd.getBrowserName());
         assertEquals(6.0f, bd.getBrowserVersion(), 0.0f);
-        assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
+        assertEquals("Windows", bd.getBrowserPlatform());
 
         userAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)";
         bd = new BrowserDetector(userAgent);
-        assertEquals(BrowserDetector.MSIE, bd.getBrowserName());
+        assertEquals("IE", bd.getBrowserName());
         assertEquals(6.0f, bd.getBrowserVersion(), 0.0f);
-        assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
+        assertEquals("Windows", bd.getBrowserPlatform());
     }
 }
