@@ -33,9 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ecs.Document;
-import org.apache.ecs.Element;
-import org.apache.ecs.StringElement;
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.security.acl.AccessControlList;
@@ -121,24 +118,6 @@ public interface RunData extends PipelineData
      * @param acl an access control list.
      */
     void setACL(AccessControlList acl);
-
-    /**
-     * Checks to see if the page is set.
-     *
-     * @return true if the page is set.
-     * @deprecated no replacement planned, ECS is no longer a requirement
-     */
-    @Deprecated
-    boolean isPageSet();
-
-    /**
-     * Gets the page.
-     *
-     * @return a document.
-     * @deprecated no replacement planned, ECS is no longer a requirement
-     */
-    @Deprecated
-    Document getPage();
 
     /**
      * Whether or not an action has been defined.
@@ -295,26 +274,11 @@ public interface RunData extends PipelineData
 
     /**
      * Gets the results of an action or another message
-     * to be displayed as an ECS string element.
+     * to be displayed as a string.
      *
-     * @return a string element.
+     * @return a string.
      */
-    StringElement getMessageAsHTML();
-
-    /**
-     * Sets the message for the request as an ECS element.
-     *
-     * @param msg an element.
-     */
-    void setMessage(Element msg);
-
-    /**
-     * Adds the ECS element to message. If message has prior messages from
-     * other actions or screens, this method can be used to chain them.
-     *
-     * @param msg an element.
-     */
-    void addMessage(Element msg);
+    String getMessageAsHTML();
 
     /**
      * Unsets the message for the request.
