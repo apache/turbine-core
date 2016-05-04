@@ -85,7 +85,7 @@ public class JSONScreen extends RawScreen
 
     /** Injected service instance */
     @TurbineService
-    private JsonRpcService jsonRpcService;
+    protected JsonRpcService jsonRpcService;
 
     /**
      * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.pipeline.PipelineData)
