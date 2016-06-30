@@ -341,7 +341,8 @@ public class TurbinePullService
                 log.info("Tool " + toolClassName
                     + " to add to the context as '$" + toolName + "'");
             }
-            catch (Exception e)
+            // NoClassDefFoundError + ClassNotFoundException
+            catch (Throwable e)
             {
                 log.error("Cannot instantiate tool class "
                     + toolClassName + ": ", e);

@@ -214,7 +214,7 @@ public class Turbine
                     throw new TurbineException("No RunData Service configured!");
                 }
             }
-            catch (Exception e)
+            catch (Throwable e)
             {
                 // save the exception to complain loudly later :-)
                 initFailure = e;
