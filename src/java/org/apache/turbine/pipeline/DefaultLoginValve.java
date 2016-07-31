@@ -148,9 +148,9 @@ public class DefaultLoginValve
     /**
      * cleans the Velocity Context if available.
      *
-     * @param pipelineData A RunData Object
+     * @param data A RunData Object
      *
-     * @throws Exception A problem while cleaning out the Template Context occured.
+     * @throws Exception A problem while cleaning out the Template Context occurred.
      */
     private void cleanupTemplateContext(RunData data)
     throws Exception
