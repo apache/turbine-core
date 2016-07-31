@@ -22,6 +22,7 @@ package org.apache.turbine.pipeline;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -61,6 +62,7 @@ public class DefaultLoginValveTest extends BaseTestCase
     private EnhancedMockHttpServletRequest request = null;
     private EnhancedMockHttpSession session = null;
     private HttpServletResponse response = null;
+    private SecurityService securityService = null;
 
 
     @BeforeClass
@@ -89,15 +91,16 @@ public class DefaultLoginValveTest extends BaseTestCase
         session = new EnhancedMockHttpSession();
         response = new MockHttpServletResponse();
 
-        session.setupGetAttribute(User.SESSION_KEY, null);
-
         request.setSession(session);
 
         // User must exist
-        SecurityService securityService = (SecurityService)TurbineServices.getInstance().getService(SecurityService.SERVICE_NAME);
-        User user = securityService.getUserInstance();
-        user.setName("username");
-        securityService.addUser(user, "password");
+        securityService = (SecurityService)TurbineServices.getInstance().getService(SecurityService.SERVICE_NAME);
+        if (!securityService.accountExists("username"))
+        {
+            User user = securityService.getUserInstance();
+            user.setName("username");
+            securityService.addUser(user, "password");
+        }
     }
 
     /**
@@ -105,6 +108,8 @@ public class DefaultLoginValveTest extends BaseTestCase
      */
     @Test public void testDefaults() throws Exception
     {
+        session.setupGetAttribute(User.SESSION_KEY, null);
+
         Vector<String> v = new Vector<String>();
         v.add(LoginUser.CGI_USERNAME);
         v.add(LoginUser.CGI_PASSWORD);
@@ -128,6 +133,32 @@ public class DefaultLoginValveTest extends BaseTestCase
         assertNotNull(user);
         assertEquals("username",user.getName());
         assertTrue(user.hasLoggedIn());
+    }
+
+    /**
+     * Tests the LogoutAction.
+     */
+    @Test public void testLogout() throws Exception
+    {
+        User user = securityService.getUser("username");
+        user.setHasLoggedIn(Boolean.TRUE);
+        session.setupGetAttribute(User.SESSION_KEY, user);
+
+        RunData runData = getRunData(request,response,config);
+        runData.setAction(TurbineConstants.ACTION_LOGOUT_DEFAULT);
+
+        Pipeline pipeline = new TurbinePipeline();
+        PipelineData pipelineData = runData;
+
+        DefaultLoginValve valve = new DefaultLoginValve();
+        pipeline.addValve(valve);
+        pipeline.initialize();
+
+        pipeline.invoke(pipelineData);
+        user = runData.getUser();
+        assertNotNull(user);
+        assertTrue(securityService.isAnonymousUser(user));
+        assertFalse(user.hasLoggedIn());
     }
 
     @AfterClass
