@@ -63,7 +63,7 @@ public class LogoutUser
      * If this action name is the value of action.logout then we are
      * being run before the session validator, so we don't need to
      * set the screen (we assume that the session validator will handle
-     * that). This is basically still here simply to preserve old behaviour
+     * that). This is basically still here simply to preserve old behavior
      * - it is recommended that action.logout is set to "LogoutUser" and
      * that the session validator does handle setting the screen/template
      * for a logged out (read not-logged-in) user.
@@ -77,7 +77,9 @@ public class LogoutUser
             throws FulcrumSecurityException
     {
         RunData data = getRunData(pipelineData);
-        User user = data.getUser();
+
+        // Session validator did not run, so RunData is not populated
+        User user = data.getUserFromSession();
 
         if (!security.isAnonymousUser(user))
         {
