@@ -988,7 +988,7 @@
         </exclusion>
       </exclusions>
     </dependency>
-     <dependency>
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.7.10</version>
@@ -1039,15 +1039,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>mockobjects</groupId>
-      <artifactId>mockobjects-jdk1.4-j2ee1.3</artifactId>
-      <version>0.09</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>mockobjects</groupId>
-      <artifactId>mockobjects-core</artifactId>
-      <version>0.09</version>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>2.0.2-beta</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

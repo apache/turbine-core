@@ -22,25 +22,25 @@ package org.apache.turbine.pipeline;
 
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl;
 import org.apache.turbine.om.security.DefaultUserImpl;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.test.BaseTestCase;
-import org.apache.turbine.test.EnhancedMockHttpServletRequest;
-import org.apache.turbine.test.EnhancedMockHttpSession;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.mockobjects.servlet.MockHttpServletResponse;
-import com.mockobjects.servlet.MockServletConfig;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests TurbinePipeline.
@@ -52,14 +52,13 @@ import static org.junit.Assert.*;
 public class DefaultACLCreationValveTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    private MockServletConfig config = null;
-    private EnhancedMockHttpServletRequest request = null;
-    private EnhancedMockHttpSession session = null;
+    private ServletConfig config = null;
+    private HttpServletRequest request = null;
     private HttpServletResponse response = null;
 
-
     @BeforeClass
-    public static void init() {
+    public static void init()
+    {
         tc = new TurbineConfig(
                             ".",
                             "/conf/test/CompleteTurbineResources.properties");
@@ -67,24 +66,12 @@ public class DefaultACLCreationValveTest extends BaseTestCase
     }
 
     @Before
-    public void setUpBefore() throws Exception {
-        config = new MockServletConfig();
-        config.setupNoParameters();
-        request = new EnhancedMockHttpServletRequest();
-        request.setupServerName("bob");
-        request.setupGetProtocol("http");
-        request.setupScheme("scheme");
-        request.setupPathInfo("damn");
-        request.setupGetServletPath("damn2");
-        request.setupGetContextPath("wow");
-        request.setupGetContentType("html/text");
-        request.setupAddHeader("Content-type", "html/text");
-        request.setupAddHeader("Accept-Language", "en-US");
-        session = new EnhancedMockHttpSession();
-        response = new MockHttpServletResponse();
-        request.setSession(session);
+    public void setUpBefore() throws Exception
+    {
+        config = mock(ServletConfig.class);
+        request = getMockRequest();
+        response = mock(HttpServletResponse.class);
     }
-
 
     @Test public void testLoggedInUser() throws Exception
     {
@@ -109,9 +96,10 @@ public class DefaultACLCreationValveTest extends BaseTestCase
         assertTrue(user.hasLoggedIn());
         assertNotNull(runData.getACL());
     }
-    
+
     @AfterClass
-    public static void destroy() {
+    public static void destroy()
+    {
         tc.dispose();
     }
 }
