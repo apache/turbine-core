@@ -22,12 +22,13 @@ package org.apache.turbine;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.turbine.test.BaseTestCase;
-import org.apache.turbine.test.EnhancedMockHttpServletResponse;
 import org.apache.turbine.util.TurbineConfig;
 import org.junit.Test;
-
-import com.mockobjects.servlet.MockHttpServletRequest;
+import org.mockito.Mockito;
 
 /**
  * This testcase verifies that TurbineConfig can be used to startup Turbine in a
@@ -53,8 +54,8 @@ public class TurbineTest extends BaseTestCase
         assertEquals("", Turbine.getScriptName());
         Turbine t = tc.getTurbine();
 
-        MockHttpServletRequest request = getMockRequest();
-        EnhancedMockHttpServletResponse resp = new EnhancedMockHttpServletResponse();
+        HttpServletRequest request = getMockRequest();
+        HttpServletResponse resp = Mockito.mock(HttpServletResponse.class);
 
         t.doGet(request, resp);
 
@@ -62,6 +63,7 @@ public class TurbineTest extends BaseTestCase
         t.destroy();
         tc.dispose();
     }
+
     @Test
     public void testDefaultInputEncoding() throws Exception
     {
@@ -74,6 +76,7 @@ public class TurbineTest extends BaseTestCase
         t.destroy();
         tc.dispose();
     }
+
     @Test
     public void testNonDefaultEncoding()
     {

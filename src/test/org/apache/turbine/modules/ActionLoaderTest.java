@@ -23,30 +23,27 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.actions.VelocityActionDoesNothing;
-import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.DefaultPipelineData;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.test.BaseTestCase;
-import org.apache.turbine.test.EnhancedMockHttpServletRequest;
-import org.apache.turbine.test.EnhancedMockHttpSession;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.mockobjects.servlet.MockHttpServletResponse;
-import com.mockobjects.servlet.MockServletConfig;
 
 /**
  * This test case is to verify whether exceptions in Velocity actions are
@@ -62,9 +59,8 @@ import com.mockobjects.servlet.MockServletConfig;
 public class ActionLoaderTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    private MockServletConfig config = null;
-    private EnhancedMockHttpServletRequest request = null;
-    private EnhancedMockHttpSession session = null;
+    private ServletConfig config = null;
+    private HttpServletRequest request = null;
     private HttpServletResponse response = null;
 
     /*
@@ -72,7 +68,8 @@ public class ActionLoaderTest extends BaseTestCase
      */
 
     @BeforeClass
-    public static void init() {
+    public static void init()
+    {
         tc = new TurbineConfig(".", "/conf/test/CompleteTurbineResources.properties");
         tc.initialize();
     }
@@ -80,24 +77,9 @@ public class ActionLoaderTest extends BaseTestCase
     @Before
     public void setUpBefore() throws Exception
     {
-        config = new MockServletConfig();
-        config.setupNoParameters();
-        request = new EnhancedMockHttpServletRequest();
-        request.setupServerName("bob");
-        request.setupGetProtocol("http");
-        request.setupScheme("scheme");
-        request.setupPathInfo("damn");
-        request.setupGetServletPath("damn2");
-        request.setupGetContextPath("wow");
-        request.setupGetContentType("html/text");
-        request.setupAddHeader("Content-type", "html/text");
-        request.setupAddHeader("Accept-Language", "en-US");
-        Vector<String> v = new Vector<String>();
-        request.setupGetParameterNames(v.elements());
-        session = new EnhancedMockHttpSession();
-        response = new MockHttpServletResponse();
-        session.setupGetAttribute(User.SESSION_KEY, null);
-        request.setSession(session);
+        config = mock(ServletConfig.class);
+        request = getMockRequest();
+        response = mock(HttpServletResponse.class);
     }
 
     /*
@@ -124,7 +106,6 @@ public class ActionLoaderTest extends BaseTestCase
     public void testDoPerformBubblesException() throws Exception
     {
         System.out.println("tcturbine:"+ tc.getTurbine());
-
     }
 
     /**
@@ -138,9 +119,7 @@ public class ActionLoaderTest extends BaseTestCase
     @Test
     public void testActionEventBubblesException() throws Exception
     {
-        // can't seem to figure out how to setup the Mock Request with the right
-        // parameters...
-        request.setupAddParameter("eventSubmit_doCauseexception", "foo");
+        when(request.getParameterValues("eventSubmit_doCauseexception")).thenReturn(new String[] { "foo" });
         RunData data = getRunData(request, response, config);
         PipelineData pipelineData = new DefaultPipelineData();
         Map<Class<?>, Object> runDataMap = new HashMap<Class<?>, Object>();
@@ -220,7 +199,7 @@ public class ActionLoaderTest extends BaseTestCase
         // can't seem to figure out how to setup the Mock Request with the right
         // parameters...
         Turbine.getConfiguration().setProperty("action.event.bubbleexception", Boolean.FALSE);
-        request.setupAddParameter("eventSubmit_doCauseexception", "foo");
+        when(request.getParameterValues("eventSubmit_doCauseexception")).thenReturn(new String[] { "foo" });
         RunData data = getRunData(request, response, config);
         PipelineData pipelineData = new DefaultPipelineData();
         Map<Class<?>, Object> runDataMap = new HashMap<Class<?>, Object>();
@@ -258,9 +237,7 @@ public class ActionLoaderTest extends BaseTestCase
     @Test
     public void testActionEventAnnotation() throws Exception
     {
-        // can't seem to figure out how to setup the Mock Request with the right
-        // parameters...
-        request.setupAddParameter("eventSubmit_annotatedEvent", "foo");
+        when(request.getParameterValues("eventSubmit_annotatedEvent")).thenReturn(new String[] { "foo" });
         RunData data = getRunData(request, response, config);
         PipelineData pipelineData = data;
         data.setAction("VelocityActionDoesNothing");

@@ -22,28 +22,22 @@ package org.apache.turbine.services.localization;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-
-import java.util.Vector;
+import static org.mockito.Mockito.mock;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.turbine.annotation.AnnotationProcessor;
-import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.test.BaseTestCase;
-import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.mockobjects.servlet.MockHttpServletResponse;
-import com.mockobjects.servlet.MockHttpSession;
-import com.mockobjects.servlet.MockServletConfig;
 
 /**
  * Unit test for Localization Tool. Verifies that localization works the same using the
@@ -98,23 +92,9 @@ public class LocalizationToolTest extends BaseTestCase
     private RunData getRunData() throws Exception
     {
         RunDataService rds = (RunDataService) TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME);
-        EnhancedMockHttpServletRequest request = new EnhancedMockHttpServletRequest();
-        request.setupServerName("bob");
-        request.setupGetProtocol("http");
-        request.setupScheme("scheme");
-        request.setupPathInfo("damn");
-        request.setupGetServletPath("damn2");
-        request.setupGetContextPath("wow");
-        request.setupGetContentType("html/text");
-        request.setupAddHeader("Content-type", "html/text");
-        request.setupAddHeader("Accept-Language", "en-US");
-        Vector<String> v = new Vector<String>();
-        request.setupGetParameterNames(v.elements());
-        MockHttpSession session = new MockHttpSession();
-        session.setupGetAttribute(User.SESSION_KEY, null);
-        request.setSession(session);
-        HttpServletResponse response = new MockHttpServletResponse();
-        ServletConfig config = new MockServletConfig();
+        ServletConfig config = mock(ServletConfig.class);
+        HttpServletRequest request = getMockRequest();
+        HttpServletResponse response = mock(HttpServletResponse.class);
         RunData runData = rds.getRunData(request, response, config);
         return runData;
     }

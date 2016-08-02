@@ -21,14 +21,17 @@ package org.apache.turbine.pipeline;
  */
 
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.Vector;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.turbine.om.security.User;
 import org.apache.turbine.test.BaseTestCase;
-import org.apache.turbine.test.EnhancedMockHttpServletRequest;
-import org.apache.turbine.test.EnhancedMockHttpSession;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.uri.URIConstants;
@@ -36,11 +39,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.mockobjects.servlet.MockHttpServletResponse;
-import com.mockobjects.servlet.MockServletConfig;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests TurbinePipeline.
@@ -52,14 +50,13 @@ import static org.junit.Assert.*;
 public class DetermineTargetValveTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    private MockServletConfig config = null;
-    private EnhancedMockHttpServletRequest request = null;
-    private EnhancedMockHttpSession session = null;
+    private ServletConfig config = null;
+    private HttpServletRequest request = null;
     private HttpServletResponse response = null;
 
-    
     @BeforeClass
-    public static void init() {
+    public static void init()
+    {
         tc = new TurbineConfig(
                             ".",
                             "/conf/test/CompleteTurbineResources.properties");
@@ -67,25 +64,11 @@ public class DetermineTargetValveTest extends BaseTestCase
     }
 
     @Before
-    public void setUpBefore() throws Exception {
-        config = new MockServletConfig();
-        config.setupNoParameters();
-        request = new EnhancedMockHttpServletRequest();
-        request.setupServerName("bob");
-        request.setupGetProtocol("http");
-        request.setupScheme("scheme");
-        request.setupPathInfo("damn");
-        request.setupGetServletPath("damn2");
-        request.setupGetContextPath("wow");
-        request.setupGetContentType("html/text");
-        request.setupAddHeader("Content-type", "html/text");
-        request.setupAddHeader("Accept-Language", "en-US");
-
-        session = new EnhancedMockHttpSession();
-        response = new MockHttpServletResponse();
-
-        session.setupGetAttribute(User.SESSION_KEY, null);
-        request.setSession(session);
+    public void setUpBefore() throws Exception
+    {
+        config = mock(ServletConfig.class);
+        request = getMockRequest();
+        response = mock(HttpServletResponse.class);
     }
 
     /**
@@ -95,9 +78,9 @@ public class DetermineTargetValveTest extends BaseTestCase
     {
         Vector<String> v = new Vector<String>();
         v.add(URIConstants.CGI_SCREEN_PARAM);
-        request.setupGetParameterNames(v.elements());
+        when(request.getParameterNames()).thenReturn(v.elements());
 
-        request.setupAddParameter(URIConstants.CGI_SCREEN_PARAM,"TestScreen");
+        when(request.getParameterValues(URIConstants.CGI_SCREEN_PARAM)).thenReturn(new String[] { "TestScreen" });
 
         RunData runData = getRunData(request,response,config);
 
@@ -114,11 +97,9 @@ public class DetermineTargetValveTest extends BaseTestCase
     {
         Vector<String> v = new Vector<String>();
         v.add(URIConstants.CGI_SCREEN_PARAM);
-        request.setupGetParameterNames(v.elements());
+        when(request.getParameterNames()).thenReturn(v.elements());
 
-        String screens[] = new String[1];
-        screens[0]=null;
-        request.setupAddParameter(URIConstants.CGI_SCREEN_PARAM,screens);
+        when(request.getParameterValues(URIConstants.CGI_SCREEN_PARAM)).thenReturn(new String[] { null });
 
         RunData runData = getRunData(request,response,config);
 
@@ -131,9 +112,10 @@ public class DetermineTargetValveTest extends BaseTestCase
         pipeline.invoke(pipelineData);
         assertEquals("",runData.getScreen());
     }
-    
+
     @AfterClass
-    public static void destroy() {
+    public static void destroy()
+    {
         tc.dispose();
     }
 }

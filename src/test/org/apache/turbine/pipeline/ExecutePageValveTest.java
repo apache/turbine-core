@@ -24,9 +24,14 @@ package org.apache.turbine.pipeline;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.Vector;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl;
@@ -35,9 +40,6 @@ import org.apache.turbine.modules.actions.VelocitySecureActionDoesNothing;
 import org.apache.turbine.om.security.DefaultUserImpl;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.test.BaseTestCase;
-import org.apache.turbine.test.EnhancedMockHttpServletRequest;
-import org.apache.turbine.test.EnhancedMockHttpServletResponse;
-import org.apache.turbine.test.EnhancedMockHttpSession;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.uri.URIConstants;
@@ -45,8 +47,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.mockobjects.servlet.MockServletConfig;
 
 /**
  * Tests ExecutePageValve.
@@ -58,14 +58,13 @@ import com.mockobjects.servlet.MockServletConfig;
 public class ExecutePageValveTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    private MockServletConfig config = null;
-    private EnhancedMockHttpServletRequest request = null;
-    private EnhancedMockHttpSession session = null;
+    private ServletConfig config = null;
+    private HttpServletRequest request = null;
     private HttpServletResponse response = null;
 
-
     @BeforeClass
-    public static void init() {
+    public static void init()
+    {
         tc = new TurbineConfig(
                             ".",
                             "/conf/test/CompleteTurbineResources.properties");
@@ -75,34 +74,21 @@ public class ExecutePageValveTest extends BaseTestCase
     @Before
     public void setUpBefore() throws Exception
     {
-        config = new MockServletConfig();
-        config.setupNoParameters();
-        request = new EnhancedMockHttpServletRequest();
-        request.setupServerName("bob");
-        request.setupGetProtocol("http");
-        request.setupScheme("scheme");
-        request.setupPathInfo("damn");
-        request.setupGetServletPath("damn2");
-        request.setupGetContextPath("wow");
-        request.setupGetContentType("html/text");
-        request.setupAddHeader("Content-type", "html/text");
-        request.setupAddHeader("Accept-Language", "en-US");
+        config = mock(ServletConfig.class);
+        request = getMockRequest();
+        response = mock(HttpServletResponse.class);
+        ServletOutputStream sos = mock(ServletOutputStream.class);
 
-        session = new EnhancedMockHttpSession();
-        response = new EnhancedMockHttpServletResponse();
-
-        request.setSession(session);
-
+        when(response.getOutputStream()).thenReturn(sos);
     }
 
     @Test public void testValve() throws Exception
     {
         Vector<String> v = new Vector<String>();
         v.add(URIConstants.CGI_TEMPLATE_PARAM);
-        request.setupGetParameterNames(v.elements());
-        String nulls[] = new String[1];
-        nulls[0]="Index.vm";
-        request.setupAddParameter(URIConstants.CGI_TEMPLATE_PARAM, nulls);
+        when(request.getParameterNames()).thenReturn(v.elements());
+
+        when(request.getParameterValues(URIConstants.CGI_TEMPLATE_PARAM)).thenReturn(new String[] { "Index.vm" });
 
         RunData runData = getRunData(request, response, config);
         runData.setScreenTemplate("ExistPageWithLayout.vm");
@@ -134,10 +120,9 @@ public class ExecutePageValveTest extends BaseTestCase
     {
         Vector<String> v = new Vector<String>();
         v.add(URIConstants.CGI_TEMPLATE_PARAM);
-        request.setupGetParameterNames(v.elements());
-        String nulls[] = new String[1];
-        nulls[0]="Index.vm";
-        request.setupAddParameter(URIConstants.CGI_TEMPLATE_PARAM, nulls);
+        when(request.getParameterNames()).thenReturn(v.elements());
+
+        when(request.getParameterValues(URIConstants.CGI_TEMPLATE_PARAM)).thenReturn(new String[] { "Index.vm" });
 
         RunData runData = getRunData(request, response, config);
         runData.setScreenTemplate("ExistPageWithLayout.vm");

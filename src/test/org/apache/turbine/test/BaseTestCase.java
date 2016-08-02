@@ -21,26 +21,36 @@ package org.apache.turbine.test;
  */
 
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.util.RunData;
 import org.junit.BeforeClass;
-
-import com.mockobjects.servlet.MockHttpServletRequest;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 /**
  * Base functionality to be extended by all Apache Turbine test cases.  Test
@@ -82,28 +92,85 @@ public abstract class BaseTestCase
         RunData runData = rds.getRunData(request, response, config);
         return runData;
     }
+
     protected PipelineData getPipelineData(HttpServletRequest request,HttpServletResponse response,ServletConfig config) throws Exception {
        RunData runData = getRunData(request,response,config);
        return runData;
     }
 
+    protected Map<String,Object> attributes = new HashMap<String,Object>();
+    protected int maxInactiveInterval = 0;
 
-    protected MockHttpServletRequest getMockRequest(){
-        EnhancedMockHttpServletRequest request = new EnhancedMockHttpServletRequest();
-        EnhancedMockHttpSession session = new EnhancedMockHttpSession();
-        session.setupGetAttribute(User.SESSION_KEY, null);
-        request.setupServerName("bob");
-        request.setupGetProtocol("http");
-        request.setupScheme("scheme");
-        request.setupPathInfo("damn");
-        request.setupGetServletPath("damn2");
-        request.setupGetContextPath("wow");
-        request.setupGetContentType("html/text");
-        request.setupAddHeader("Content-type", "html/text");
-        request.setupAddHeader("Accept-Language", "en-US");
+    @SuppressWarnings("boxing")
+    protected HttpServletRequest getMockRequest()
+    {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpSession session = mock(HttpSession.class);
+
+        doAnswer(new Answer<Object>()
+        {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable
+            {
+                String key = (String) invocation.getArguments()[0];
+                return attributes.get(key);
+            }
+        }).when(session).getAttribute(anyString());
+
+        doAnswer(new Answer<Object>()
+        {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable
+            {
+                String key = (String) invocation.getArguments()[0];
+                Object value = invocation.getArguments()[1];
+                attributes.put(key, value);
+                return null;
+            }
+        }).when(session).setAttribute(anyString(), any());
+
+        when(session.getMaxInactiveInterval()).thenReturn(maxInactiveInterval);
+
+        doAnswer(new Answer<Integer>()
+        {
+            @Override
+            public Integer answer(InvocationOnMock invocation) throws Throwable
+            {
+                return Integer.valueOf(maxInactiveInterval);
+            }
+        }).when(session).getMaxInactiveInterval();
+
+        doAnswer(new Answer<Object>()
+        {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable
+            {
+                Integer value = (Integer) invocation.getArguments()[0];
+                maxInactiveInterval = value.intValue();
+                return null;
+            }
+        }).when(session).setMaxInactiveInterval(anyInt());
+
+        when(session.isNew()).thenReturn(true);
+        when(request.getSession()).thenReturn(session);
+
+        when(request.getServerName()).thenReturn("bob");
+        when(request.getProtocol()).thenReturn("http");
+        when(request.getScheme()).thenReturn("scheme");
+        when(request.getPathInfo()).thenReturn("damn");
+        when(request.getServletPath()).thenReturn("damn2");
+        when(request.getContextPath()).thenReturn("wow");
+        when(request.getContentType()).thenReturn("html/text");
+
+        when(request.getCharacterEncoding()).thenReturn("US-ASCII");
+        when(request.getServerPort()).thenReturn(8080);
+        when(request.getLocale()).thenReturn(Locale.US);
+
+        when(request.getHeader("Content-type")).thenReturn("html/text");
+        when(request.getHeader("Accept-Language")).thenReturn("en-US");
+
         Vector<String> v = new Vector<String>();
-        request.setupGetParameterNames(v.elements());
-        request.setSession(session);
+        when(request.getParameterNames()).thenReturn(v.elements());
         return request;
     }
 }

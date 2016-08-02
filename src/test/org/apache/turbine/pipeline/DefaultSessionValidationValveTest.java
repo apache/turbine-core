@@ -21,8 +21,17 @@ package org.apache.turbine.pipeline;
  */
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.Vector;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl;
@@ -31,19 +40,12 @@ import org.apache.turbine.modules.actions.LoginUser;
 import org.apache.turbine.om.security.DefaultUserImpl;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.test.BaseTestCase;
-import org.apache.turbine.test.EnhancedMockHttpServletRequest;
-import org.apache.turbine.test.EnhancedMockHttpSession;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.mockobjects.servlet.MockHttpServletResponse;
-import com.mockobjects.servlet.MockServletConfig;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests TurbinePipeline.
@@ -55,41 +57,25 @@ import static org.junit.Assert.*;
 public class DefaultSessionValidationValveTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    private MockServletConfig config = null;
-    private EnhancedMockHttpServletRequest request = null;
-    private EnhancedMockHttpSession session = null;
+    private ServletConfig config = null;
+    private HttpServletRequest request = null;
     private HttpServletResponse response = null;
 
-
-
     @BeforeClass
-    public static void init() {
+    public static void init()
+    {
         tc = new TurbineConfig(
                             ".",
                             "/conf/test/CompleteTurbineResources.properties");
         tc.initialize();
     }
-    
+
     @Before
-    public void setUpBefore() throws Exception {
-        config = new MockServletConfig();
-        config.setupNoParameters();
-        request = new EnhancedMockHttpServletRequest();
-        request.setupServerName("bob");
-        request.setupGetProtocol("http");
-        request.setupScheme("scheme");
-        request.setupPathInfo("damn");
-        request.setupGetServletPath("damn2");
-        request.setupGetContextPath("wow");
-        request.setupGetContentType("html/text");
-        request.setupAddHeader("Content-type", "html/text");
-        request.setupAddHeader("Accept-Language", "en-US");
-
-        session = new EnhancedMockHttpSession();
-        response = new MockHttpServletResponse();
-
-        request.setSession(session);
-
+    public void setUpBefore() throws Exception
+    {
+        config = mock(ServletConfig.class);
+        request = getMockRequest();
+        response = mock(HttpServletResponse.class);
     }
 
     /**
@@ -100,10 +86,10 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
         Vector<String> v = new Vector<String>();
         v.add(LoginUser.CGI_USERNAME);
         v.add(LoginUser.CGI_PASSWORD);
-        request.setupGetParameterNames(v.elements());
+        when(request.getParameterNames()).thenReturn(v.elements());
 
-        request.setupAddParameter(LoginUser.CGI_USERNAME,"username");
-        request.setupAddParameter(LoginUser.CGI_PASSWORD,"password");
+        when(request.getParameterValues(LoginUser.CGI_USERNAME)).thenReturn(new String[] { "username" });
+        when(request.getParameterValues(LoginUser.CGI_PASSWORD)).thenReturn(new String[] { "password" });
 
         RunData runData = getRunData(request,response,config);
         runData.setAction(TurbineConstants.ACTION_LOGIN_DEFAULT);
@@ -127,10 +113,10 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
         Vector<String> v = new Vector<String>();
         v.add(LoginUser.CGI_USERNAME);
         v.add(LoginUser.CGI_PASSWORD);
-        request.setupGetParameterNames(v.elements());
+        when(request.getParameterNames()).thenReturn(v.elements());
 
-        request.setupAddParameter(LoginUser.CGI_USERNAME,"username");
-        request.setupAddParameter(LoginUser.CGI_PASSWORD,"password");
+        when(request.getParameterValues(LoginUser.CGI_USERNAME)).thenReturn(new String[] { "username" });
+        when(request.getParameterValues(LoginUser.CGI_PASSWORD)).thenReturn(new String[] { "password" });
 
         RunData runData = getRunData(request,response,config);
         User tu = new DefaultUserImpl(new TurbineUserImpl());
@@ -138,7 +124,7 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
         tu.setHasLoggedIn(Boolean.TRUE);
         runData.setAction("TestAction");
 
-        session.setupGetAttribute(User.SESSION_KEY, tu);
+        request.getSession().setAttribute(User.SESSION_KEY, tu);
 
         Pipeline pipeline = new TurbinePipeline();
         PipelineData pipelineData = runData;
@@ -153,9 +139,10 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
         assertEquals("username",user.getName());
         assertTrue(user.hasLoggedIn());
     }
-    
+
     @AfterClass
-    public static void destroy() {
+    public static void destroy()
+    {
         tc.dispose();
     }
 }
