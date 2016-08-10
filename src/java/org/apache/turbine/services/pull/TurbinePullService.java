@@ -673,7 +673,7 @@ public class TurbinePullService
                 synchronized (data.getSession())
                 {
                     // first try and fetch the tool from the user's
-                    // hashtable
+                    // hashmap
                     Object tool = data.getSession().getAttribute(
                             SESSION_TOOLS_ATTRIBUTE_PREFIX
                             + toolData.toolClassName);

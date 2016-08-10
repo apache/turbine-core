@@ -1108,7 +1108,7 @@ public class DefaultTurbineRunData
     /**
      * Gets JNDI Contexts.
      *
-     * @return a hashtable.
+     * @return a hashmap.
      */
     @Override
     public Map<String, Context> getJNDIContexts()
@@ -1123,7 +1123,7 @@ public class DefaultTurbineRunData
     /**
      * Sets JNDI Contexts.
      *
-     * @param contexts a hashtable.
+     * @param contexts a hashmap.
      */
     @Override
     public void setJNDIContexts(Map<String, Context> contexts)
