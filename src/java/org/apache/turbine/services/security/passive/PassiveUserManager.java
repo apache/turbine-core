@@ -173,7 +173,7 @@ public class PassiveUserManager implements UserManager
      * to exist in the storage.
      *
      * LastLogin, AccessCounter, persistent pull tools, and any data stored
-     * in the permData hashtable that is not mapped to a column will be saved.
+     * in the permData hashmap that is not mapped to a column will be saved.
      *
      * @exception UnknownEntityException if the user's account does not
      *            exist in the database.

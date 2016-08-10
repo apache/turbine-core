@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Hashtable;
 import java.util.Map;
 
 /**
@@ -50,11 +49,9 @@ public abstract class ObjectUtils
      *
      * @exception Exception A generic exception.
      */
-    public static byte[] serializeMap(Map<String, Object> map)
-        throws Exception
+	public static byte[] serializeMap(Map<String, Object> map)
+            throws Exception
     {
-        Map<String, Serializable> saveData =
-            new Hashtable<String, Serializable>(map.size());
         String key = null;
         Object value = null;
         byte[] byteArray = null;
@@ -63,9 +60,9 @@ public abstract class ObjectUtils
         {
             key = entry.getKey();
             value = entry.getValue();
-            if (value instanceof Serializable)
+            if (! (value instanceof Serializable))
             {
-                saveData.put (key, (Serializable)value);
+                throw new Exception("Could not serialize, value is not serializable:" + value);
             }
         }
 
@@ -79,7 +76,7 @@ public abstract class ObjectUtils
             bos  = new BufferedOutputStream(baos);
             out  = new ObjectOutputStream(bos);
 
-            out.writeObject(saveData);
+            out.writeObject(map);
             out.flush();
             bos.flush();
 
