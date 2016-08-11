@@ -42,7 +42,7 @@ import org.apache.turbine.util.ObjectUtils;
  * @version $Id: TorqueUser.java 1199856 2011-11-09 17:06:04Z tv $
  */
 
-public class DefaultUserImpl implements User
+public class DefaultUserImpl implements User, TurbineUserDelegate
 {
     /** Serial version */
     private static final long serialVersionUID = -1866504873085624111L;
@@ -735,22 +735,20 @@ public class DefaultUserImpl implements User
         setLastLogin(new java.util.Date());
     }
 
-    /**
-     * Get the delegated user
-     *
-     * @return the userDelegate
-     */
-    public TurbineUser getUserDelegate()
+    /* (non-Javadoc)
+	 * @see org.apache.turbine.om.security.UserDelegate#getUserDelegate()
+	 */
+    @Override
+	public TurbineUser getUserDelegate()
     {
         return userDelegate;
     }
 
-    /**
-     * Set the delegated user
-     *
-     * @param userDelegate the userDelegate to set
-     */
-    public void setUserDelegate(TurbineUser userDelegate)
+    /* (non-Javadoc)
+	 * @see org.apache.turbine.om.security.UserDelegate#setUserDelegate(org.apache.fulcrum.security.model.turbine.entity.TurbineUser)
+	 */
+    @Override
+	public void setUserDelegate(TurbineUser userDelegate)
     {
         this.userDelegate = userDelegate;
     }

@@ -510,6 +510,7 @@
         <configuration>
           <!--default setting is forkCount=1/reuseForks=true -->
           <reuseForks>false</reuseForks>
+          <forkCount>1</forkCount>
         </configuration>
       </plugin>
       <plugin>

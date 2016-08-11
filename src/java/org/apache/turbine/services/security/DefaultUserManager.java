@@ -35,6 +35,7 @@ import org.apache.fulcrum.security.util.UnknownEntityException;
 import org.apache.fulcrum.security.util.UserSet;
 import org.apache.turbine.om.security.DefaultUserImpl;
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.om.security.TurbineUserDelegate;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.ObjectUtils;
@@ -208,7 +209,7 @@ public class DefaultUserManager implements UserManager
             throw new DataBackendException("Could not serialize permanent storage", e);
         }
 
-        umDelegate.saveUser(((DefaultUserImpl)user).getUserDelegate());
+        umDelegate.saveUser(((TurbineUserDelegate)user).getUserDelegate());
     }
 
     /**
@@ -302,7 +303,7 @@ public class DefaultUserManager implements UserManager
             DataBackendException
     {
         umDelegate.changePassword(
-                ((DefaultUserImpl)user).getUserDelegate(),
+                ((TurbineUserDelegate)user).getUserDelegate(),
                 oldPassword, newPassword);
     }
 
