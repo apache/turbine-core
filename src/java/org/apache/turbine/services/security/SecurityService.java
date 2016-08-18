@@ -25,6 +25,8 @@ import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.fulcrum.security.entity.Group;
 import org.apache.fulcrum.security.entity.Permission;
 import org.apache.fulcrum.security.entity.Role;
+import org.apache.fulcrum.security.model.turbine.entity.TurbineUser;
+import org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl;
 import org.apache.fulcrum.security.util.DataBackendException;
 import org.apache.fulcrum.security.util.EntityExistsException;
 import org.apache.fulcrum.security.util.GroupSet;
@@ -32,6 +34,7 @@ import org.apache.fulcrum.security.util.PasswordMismatchException;
 import org.apache.fulcrum.security.util.PermissionSet;
 import org.apache.fulcrum.security.util.RoleSet;
 import org.apache.fulcrum.security.util.UnknownEntityException;
+import org.apache.turbine.om.security.DefaultUserImpl;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.Service;
 import org.apache.turbine.services.security.passive.PassiveUserManager;
@@ -61,7 +64,7 @@ public interface SecurityService
     String SERVICE_NAME = "SecurityService";
 
     /**
-     * the key within services's properties for user implementation
+     * the key within services's properties for user manager implementation
      * classname (user.manager)
      */
     String USER_MANAGER_KEY = "user.manager";
@@ -72,6 +75,32 @@ public interface SecurityService
      */
     String USER_MANAGER_DEFAULT
             = PassiveUserManager.class.getName();
+    
+    /**
+     * the key within services's properties for user implementation
+     * classname (wrapper.class)
+     */
+    String USER_WRAPPER_KEY = "wrapper.class";
+    
+    /**
+     * the default implementation of {@link User} interface
+     * (org.apache.turbine.om.security.DefaultUserImpl)
+     */
+    String USER_WRAPPER_DEFAULT
+            = DefaultUserImpl.class.getName();
+//    
+//    /**
+//     * the key within services's properties for user implementation
+//     * classname (user.class)
+//     */
+//    String USER_KEY = "user.class";
+//    
+//    /**
+//     * the default implementation of {@link TurbineUser} interface
+//     * (org.apache.turbine.om.security.DefaultUserImpl)
+//     */
+//    String USER_DEFAULT
+//            = TurbineUserImpl.class.getName();
 
     /*-----------------------------------------------------------------------
       Management of User objects

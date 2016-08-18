@@ -82,6 +82,10 @@ services.SecurityService.classname=org.apache.turbine.services.security.DefaultS
 
 # Default: org.apache.turbine.services.security.passive.PassiveUserManager
 services.SecurityService.user.manager = org.apache.turbine.services.security.DefaultUserManager
+
+# Default: org.apache.turbine.om.security.DefaultUserImpl
+#services.SecurityService.wrapper.class =
+
 ]]></source>
 
 </section>
@@ -96,6 +100,15 @@ configured in TurbineResource.properties with the
 allows access to various properties of an Turbine User object, can
 change password, authenticate users to the Security service and
 manages the Turbine user objects.
+
+If you have have additional columns in the User (e.g. TurbineUser) table, you get them handled properly (persisting and reading) this way:
+
+- create a non default wrapper.class. This class should extend DefaultUserImpl and override or add the required properties.
+
+- best practice would be to provide an interface to communicate on same standards between this wrapper.class and the backend ORM-class (e.g generated TurbineTorqueUser class). Otherwise you could use your ORM class. 
+
+ The ORM class is e.g. fetched from the default implementation of the Fulcrum User Manager (org.apache.fulcrum.security.UserManager) (as configured in componentConfiguration.xml userManager->className) and the Turbine User Manager gets it by fetching it first from the Fulcrum User Manager (= umDelegate) and then setting this class as userDelegate in the wrapper class.
+   
 </p>
 
 </section>

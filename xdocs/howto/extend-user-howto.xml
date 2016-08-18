@@ -29,7 +29,7 @@
     <section name="Important note">
       <p>
         The information in this HOWTO pertains to Turbine 2.2.  Please refer
-        to the <a href="../services/torque-security-service.html">Torque
+        to the <a href="../services/security-service.html">Torque
         Security Service</a> page for information on extending TurbineUser
         in Turbine 2.3 and beyond.
       </p>
@@ -118,7 +118,7 @@
         </p>
         <p>
             Another interesting fact about TurbineUser is the way in which data stored in
-            the database is accessed.  Instaed of using using private attributes for storage
+            the database is accessed.  Instead of using using private attributes for storage
             within the object, all attibutes are stored in a hashtable (known herein as the
             perm hashtable).  Access to the perm hashtable is controlled through the
             getPerm/setPerm methods.
@@ -194,12 +194,12 @@
       </source>
         <p>
             Notice the attribute on the database tag for defaultJavaType.  I used
-            "object" as the value.  The default is "primative".  You do not have to
+            "object" as the value.  The default is "primitive".  You do not have to
             use "object"!!!
         </p>
         <p>
-            In the last version of Turbine (2.1), the only option was to use the
-            primative types.  However, this posed a small problem.  It was not
+            Turbine Version 2.1 only: In this version of Turbine, the only option was to use the
+            primitive types.  However, this posed a small problem.  It was not
             possible to have number or boolean types that contained null values.
             If a null value was found in the database for columns of these types,
             the value returned from the OM object was 0 or false, respectively.
