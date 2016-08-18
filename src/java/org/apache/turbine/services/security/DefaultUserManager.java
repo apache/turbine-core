@@ -25,17 +25,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.fulcrum.factory.FactoryService;
 import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.fulcrum.security.model.turbine.TurbineUserManager;
 import org.apache.fulcrum.security.model.turbine.entity.TurbineUser;
+import org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl;
 import org.apache.fulcrum.security.util.DataBackendException;
 import org.apache.fulcrum.security.util.EntityExistsException;
 import org.apache.fulcrum.security.util.PasswordMismatchException;
 import org.apache.fulcrum.security.util.UnknownEntityException;
 import org.apache.fulcrum.security.util.UserSet;
 import org.apache.turbine.om.security.DefaultUserImpl;
-import org.apache.turbine.om.security.User;
 import org.apache.turbine.om.security.TurbineUserDelegate;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.ObjectUtils;
@@ -53,6 +58,15 @@ public class DefaultUserManager implements UserManager
 {
     /** Fulcrum user manager instance to delegate to */
     private TurbineUserManager umDelegate = null;
+    
+    private FactoryService factoryService = null;
+    
+    /** The user class, which the UserManager uses as wrapper for Fulcrum {@link TurbineUser} */
+    private String userWrapperClass;
+    
+    
+    /** Logging */
+    private static Log log = LogFactory.getLog(DefaultUserManager.class);
 
     /**
      * Wrap a Fulcrum user object into a Turbine user object
@@ -63,24 +77,85 @@ public class DefaultUserManager implements UserManager
      */
     protected <U extends User> U wrap(TurbineUser user)
     {
+    	// U u = (U)new DefaultUserImpl(user);
         @SuppressWarnings("unchecked")
-        U u = (U)new DefaultUserImpl(user);
+        U u = (U) getUserWrapper(user);
         return u;
     }
-
+    
     /**
+     * Exception could be ignored, as it is tested before in {@link #init(Configuration)}.
+     * 
+     * @return instance extending {@link User}
+     */
+    @SuppressWarnings("unchecked")
+	public <U extends User> U getUserWrapper(TurbineUser user) {
+		try {
+            Object params[] = new Object[1];
+            params[0] = user;
+            String signature[] = new String[1];
+            signature[0] = TurbineUser.class.getName();
+            return (U) factoryService.getInstance(getUserWrapperClass(), params, signature);
+		} catch (Exception e) {
+			log.error("after init/late instantiation exception", e);
+			return null; // (U)new DefaultUserImpl(user);
+		} 
+	}
+
+    public String getUserWrapperClass() {
+		return userWrapperClass;
+	}
+    
+    public void setUserWrapperClass(String userWrapperClass2) {
+		userWrapperClass = userWrapperClass2;		
+	}
+
+	/**
      * Initializes the UserManager
      *
      * @param conf A Configuration object to init this Manager
      */
     @Override
-    public void init(Configuration conf)
+    public void init(Configuration conf) throws InitializationException
     {
         ServiceManager manager = TurbineServices.getInstance();
         this.umDelegate = (TurbineUserManager)manager.getService(TurbineUserManager.ROLE);
+        
+        String userWrapperClass = conf.getString(
+                SecurityService.USER_WRAPPER_KEY,
+                SecurityService.USER_WRAPPER_DEFAULT);
+        
+//        String userClass = conf.getString(
+//                SecurityService.USER_KEY,
+//                SecurityService.USER_DEFAULT);
+        
+        
+        try {
+        	
+        	factoryService = (FactoryService)manager.getService(FactoryService.ROLE);
+             
+            //  check instantiation 
+        	
+        	// should provide default constructor
+        	TurbineUser turbineUser = umDelegate.getUserInstance();
+        			//(TurbineUser) factoryService.getInstance(userClass); 
+            Object params[] = new Object[1];
+            params[0] = turbineUser;
+            String signature[] = new String[1];
+            signature[0] = TurbineUser.class.getName();
+            User uc = (User) factoryService.getInstance(userWrapperClass, params, signature);
+            
+            this.setUserWrapperClass(userWrapperClass);
+            
+        } catch (Exception e)
+	    {
+	       throw new InitializationException("Failed to instantiate user wrapper class", e);
+	    }
+        
     }
 
-    /**
+
+	/**
      * Check whether a specified user's account exists.
      *
      * The login name is used for looking up the account.
