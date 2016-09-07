@@ -25,8 +25,6 @@ import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.fulcrum.security.entity.Group;
 import org.apache.fulcrum.security.entity.Permission;
 import org.apache.fulcrum.security.entity.Role;
-import org.apache.fulcrum.security.model.turbine.entity.TurbineUser;
-import org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl;
 import org.apache.fulcrum.security.util.DataBackendException;
 import org.apache.fulcrum.security.util.EntityExistsException;
 import org.apache.fulcrum.security.util.GroupSet;
