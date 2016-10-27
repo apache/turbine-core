@@ -25,12 +25,11 @@ import org.osgi.framework.ServiceRegistration;
 
 public class Activator implements BundleActivator
 {
-    private ServiceRegistration m_registration = null;
+    private ServiceRegistration<?> m_registration = null;
 
     /**
      * @see
-     * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext
-     * )
+     * org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
      */
     public void start(BundleContext context) throws Exception
     {
