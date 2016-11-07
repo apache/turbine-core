@@ -31,6 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * This mapper tries to map Template names to class names. If no direct match
@@ -97,7 +98,8 @@ public class ClassMapper
      * @param template The template name.
      * @return A class name for the given template.
      */
-    public String doMapping(String template)
+    @Override
+	public String doMapping(String template)
     {
         log.debug("doMapping(" + template + ")");
 
@@ -147,6 +149,10 @@ public class ClassMapper
                 loader.getAssembler(testName.toString());
                 log.debug("Found it, returning " + testName);
                 return testName.toString();
+            }
+            catch (TurbineException e)
+            {
+                log.error("Turbine Exception Class mapping  ",e);
             }
             catch (Exception e)
             {
