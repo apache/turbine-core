@@ -78,11 +78,11 @@ public class AnnotationProcessor
     }
 
     /**
-     * Search for annotated fields of the object and provide them with the
-     * appropriate TurbineService
+     * Search for annotated fields of the object and inject the appropriate
+     * objects
      *
      * @param object the object
-     * @throws TurbineException if the service could not be injected
+     * @throws TurbineException if the objects could not be injected
      */
     public static void process(Object object) throws TurbineException
     {
