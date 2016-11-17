@@ -26,7 +26,6 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
@@ -54,9 +53,6 @@ public class AnnotationProcessor
     /** Annotation cache */
     private static ConcurrentMap<String, Annotation[]> annotationCache = new ConcurrentHashMap<String, Annotation[]>();
 
-    /** Lock for initialization of cache entry */
-    private static ReentrantLock lock = new ReentrantLock();
-
     /**
      * Search for annotated fields of the object and provide them with the
      * appropriate TurbineService
@@ -81,22 +77,11 @@ public class AnnotationProcessor
                 Annotation[] annotations = annotationCache.get(key);
                 if (annotations == null)
                 {
-                    lock.lock();
-
-                    try
+                    Annotation[] newAnnotations = field.getDeclaredAnnotations();
+                    annotations = annotationCache.putIfAbsent(key, newAnnotations);
+                    if (annotations == null)
                     {
-                        // Double check
-                        annotations = annotationCache.get(key);
-
-                        if (annotations == null)
-                        {
-                            annotations = field.getDeclaredAnnotations();
-                            annotationCache.put(key, annotations);
-                        }
-                    }
-                    finally
-                    {
-                        lock.unlock();
+                        annotations = newAnnotations;
                     }
                 }
 
