@@ -22,6 +22,7 @@ package org.apache.turbine.annotation;
 
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -54,6 +55,29 @@ public class AnnotationProcessor
     private static ConcurrentMap<String, Annotation[]> annotationCache = new ConcurrentHashMap<String, Annotation[]>();
 
     /**
+     * Get cached annotations for field, class or method
+     *
+     * @param object a field, class or method
+     *
+     * @return the declared annotations for the object
+     */
+    public static Annotation[] getAnnotations(AccessibleObject object)
+    {
+        String key = object.getClass() + object.toString();
+        Annotation[] annotations = annotationCache.get(key);
+        if (annotations == null)
+        {
+            Annotation[] newAnnotations = object.getDeclaredAnnotations();
+            annotations = annotationCache.putIfAbsent(key, newAnnotations);
+            if (annotations == null)
+            {
+                annotations = newAnnotations;
+            }
+        }
+        return annotations;
+    }
+
+    /**
      * Search for annotated fields of the object and provide them with the
      * appropriate TurbineService
      *
@@ -73,17 +97,7 @@ public class AnnotationProcessor
 
             for (Field field : fields)
             {
-                String key = field.toString();
-                Annotation[] annotations = annotationCache.get(key);
-                if (annotations == null)
-                {
-                    Annotation[] newAnnotations = field.getDeclaredAnnotations();
-                    annotations = annotationCache.putIfAbsent(key, newAnnotations);
-                    if (annotations == null)
-                    {
-                        annotations = newAnnotations;
-                    }
-                }
+                Annotation[] annotations = getAnnotations(field);
 
                 for (Annotation a : annotations)
                 {

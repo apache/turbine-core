@@ -1,5 +1,7 @@
 package org.apache.turbine.modules;
 
+import java.lang.annotation.Annotation;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,6 +33,7 @@ import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.parser.ValueParser.URLCaseFolding;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.AnnotationProcessor;
 import org.apache.turbine.annotation.TurbineActionEvent;
 import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.pipeline.PipelineData;
@@ -136,17 +139,23 @@ public abstract class ActionEvent extends Action
 	    {
 	        // Try annotations of public methods
 	        Method[] methods = getClass().getMethods();
+
+        methodLoop:
 	        for (Method m : methods)
 	        {
-	            if (m.isAnnotationPresent(TurbineActionEvent.class))
+	            Annotation[] annotations = AnnotationProcessor.getAnnotations(m);
+	            for (Annotation a : annotations)
 	            {
-	                TurbineActionEvent tae = m.getAnnotation(TurbineActionEvent.class);
-	                if (name.equals(pp.convert(tae.value()))
-                        && Arrays.equals(signature, m.getParameterTypes()))
-	                {
-	                    method = m;
-	                    break;
-	                }
+    	            if (a instanceof TurbineActionEvent)
+    	            {
+    	                TurbineActionEvent tae = (TurbineActionEvent) a;
+    	                if (name.equals(pp.convert(tae.value()))
+                            && Arrays.equals(signature, m.getParameterTypes()))
+    	                {
+    	                    method = m;
+    	                    break methodLoop;
+    	                }
+    	            }
 	            }
 	        }
 
