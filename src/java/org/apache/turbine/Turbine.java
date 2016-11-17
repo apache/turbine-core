@@ -1,31 +1,10 @@
 package org.apache.turbine;
 
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -168,6 +147,14 @@ public class Turbine
     /** Default Input encoding if the servlet container does not report an encoding */
     private String inputEncoding = null;
 
+    /** Which configuration method is being used */
+    private enum ConfigurationStyle
+    {
+        XML,
+        PROPERTIES,
+        UNSET
+    }
+
     /** Logging class from commons.logging */
     private static Log log = LogFactory.getLog(Turbine.class);
 
@@ -185,7 +172,6 @@ public class Turbine
         synchronized (Turbine.class)
         {
             super.init();
-            ServletConfig config = getServletConfig();
 
             if (!firstInit)
             {
@@ -195,6 +181,7 @@ public class Turbine
             // executing init will trigger some static initializers, so we have
             // only one chance.
             firstInit = false;
+            ServletConfig config = getServletConfig();
 
             try
             {
@@ -203,7 +190,7 @@ public class Turbine
                 configure(config, context);
 
                 TemplateService templateService =
-                    (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+                    (TemplateService)getServiceManager().getService(TemplateService.SERVICE_NAME);
                 if (templateService == null)
                 {
                     throw new TurbineException("No Template Service configured!");
@@ -248,7 +235,7 @@ public class Turbine
                 TurbineConstants.APPLICATION_ROOT_KEY,
                 TurbineConstants.APPLICATION_ROOT_DEFAULT);
 
-        webappRoot = config.getServletContext().getRealPath("/");
+        webappRoot = context.getRealPath("/");
         // log.info("Web Application root is " + webappRoot);
         // log.info("Application root is "     + applicationRoot);
 
@@ -293,51 +280,54 @@ public class Turbine
         // /WEB-INF/conf/TurbineResources.properties relative to the
         // web application root.
 
-        String confStyle = "unset";
-        String confPath= null;
+        ConfigurationStyle confStyle = ConfigurationStyle.UNSET;
         // first test
         String confFile= findInitParameter(context, config,
                 TurbineConfig.CONFIGURATION_PATH_KEY,
                 null);
         if (StringUtils.isNotEmpty(confFile))
         {
-            confStyle = "XML";
-        } else // // second test
+            confStyle = ConfigurationStyle.XML;
+        }
+        else // second test
         {
             confFile = findInitParameter(context, config,
                     TurbineConfig.PROPERTIES_PATH_KEY,
                                          null);
             if (StringUtils.isNotEmpty((confFile)) )
             {
-                confStyle = "Properties";
+                confStyle = ConfigurationStyle.PROPERTIES;
             }
         }
         // more tests ..
         // last test
-        if (confStyle.equals( "unset" ))
+        if (confStyle == ConfigurationStyle.UNSET)
         {  // last resort
              confFile = findInitParameter(context, config,
                     TurbineConfig.PROPERTIES_PATH_KEY,
                     TurbineConfig.PROPERTIES_PATH_DEFAULT);
-             confStyle = "Properties";
+             confStyle = ConfigurationStyle.PROPERTIES;
         }
         // now begin loading
-        if (!confStyle.equals( "unset" ))
+        switch (confStyle)
         {
-             if (confStyle.equals( "XML" )) {
-                 if (confFile.startsWith( "/" ))
-                 {
-                     confFile = confFile.substring( 1 ); // cft. RFC2396 should not start with a slash, if not absolute path
-                 }
-                 DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(confFile);
-                 confPath = new File(applicationRoot).toURI().toString();// relative base path used for this and child configuration files
-                 configurationBuilder.setBasePath(confPath);
-                 configuration = configurationBuilder.getConfiguration();
-             } else {
-                 confPath = getRealPath(confFile);
-                 //configurationBuilder.setBasePath(getRealPath(getApplicationRoot()));
-                 configuration = new PropertiesConfiguration(confPath);
-             }
+            case XML:
+                if (confFile.startsWith( "/" ))
+                {
+                    confFile = confFile.substring( 1 ); // cft. RFC2396 should not start with a slash, if not absolute path
+                }
+                DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(confFile);
+
+                // relative base path used for this and child configuration files
+                String confPath = new File(getApplicationRoot()).toURI().toString();
+                configurationBuilder.setBasePath(confPath);
+                configuration = configurationBuilder.getConfiguration();
+                break;
+            case PROPERTIES:
+                configuration = new PropertiesConfiguration(getRealPath(confFile));
+                break;
+            default:
+                break;
         }
         //
         // Set up logging as soon as possible
@@ -345,7 +335,7 @@ public class Turbine
         configureLogging();
 
         // Now report our successful configuration to the world
-        log.info("Loaded configuration (" + confStyle + ") from " + confFile + " (" + confPath + ") style: "+ configuration.toString());
+        log.info("Loaded configuration (" + confStyle + ") from " + confFile + " style: " + configuration.toString());
 
         setTurbineServletConfig(config);
         setTurbineServletContext(context);
@@ -385,10 +375,12 @@ public class Turbine
 			  "pipeline.default.descriptor",
 					  TurbinePipeline.CLASSIC_PIPELINE);
 
-        descriptorPath = getRealPath(descriptorPath);
+        if (log.isDebugEnabled())
+        {
+            log.debug("Using descriptor path: " + descriptorPath);
+        }
 
-  		log.debug("Using descriptor path: " + descriptorPath);
-        Reader reader = new BufferedReader(new FileReader(descriptorPath));
+        InputStream reader = context.getResourceAsStream(descriptorPath);
         JAXBContext jaxb = JAXBContext.newInstance(TurbinePipeline.class);
         Unmarshaller unmarshaller = jaxb.createUnmarshaller();
         pipeline = (Pipeline) unmarshaller.unmarshal(reader);
@@ -567,7 +559,7 @@ public class Turbine
                 saveServletInfo(data);
 
                 // Initialize services with the PipelineData instance
-                TurbineServices services = (TurbineServices)TurbineServices.getInstance();
+                TurbineServices services = (TurbineServices)getServiceManager();
 
                 for (Iterator<String> i = services.getServiceNames(); i.hasNext();)
                 {
@@ -869,7 +861,7 @@ public class Turbine
     protected void handleException(PipelineData pipelineData, HttpServletResponse res,
                                        Throwable t)
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = (RunData) pipelineData;
         // make sure that the stack trace makes it the log
         log.error("Turbine.handleException: ", t);
 
@@ -1031,20 +1023,6 @@ public class Turbine
     }
 
     /**
-     * Get a RunData from the pipelineData. Once RunData is fully replaced
-     * by PipelineData this should not be required.
-     * @param pipelineData
-     * @return
-     */
-    private RunData getRunData(PipelineData pipelineData)
-    {
-        RunData data = null;
-        data = (RunData)pipelineData;
-        return data;
-    }
-
-
-    /**
      * Returns the default input encoding for the servlet.
      *
      * @return the default input encoding.
@@ -1060,7 +1038,6 @@ public class Turbine
      */
     private RunDataService getRunDataService()
     {
-        return (RunDataService) TurbineServices
-            .getInstance().getService(RunDataService.SERVICE_NAME);
+        return (RunDataService) getServiceManager().getService(RunDataService.SERVICE_NAME);
     }
 }
