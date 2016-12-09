@@ -56,13 +56,13 @@ public class DefaultUserManager implements UserManager
 {
     /** Fulcrum user manager instance to delegate to */
     private TurbineUserManager umDelegate = null;
-    
+
     private FactoryService factoryService = null;
-    
+
     /** The user class, which the UserManager uses as wrapper for Fulcrum {@link TurbineUser} */
     private String userWrapperClass;
-    
-    
+
+
     /** Logging */
     private static Log log = LogFactory.getLog(DefaultUserManager.class);
 
@@ -80,36 +80,47 @@ public class DefaultUserManager implements UserManager
         U u = (U) getUserWrapper(user);
         return u;
     }
-    
+
     /**
      * Exception could be ignored, as it is tested before in {@link #init(Configuration)}.
-     * 
+     *
+     * @param user the user object to wrap
      * @return instance extending {@link User}
      */
     @SuppressWarnings("unchecked")
-	public <U extends User> U getUserWrapper(TurbineUser user) 
+	public <U extends User> U getUserWrapper(TurbineUser user)
     {
-		try 
+		try
 		{
             Object params[] = new Object[] { user };
             String signature[] = new String[] { TurbineUser.class.getName() };
             return (U) factoryService.getInstance(getUserWrapperClass(), params, signature);
-		} 
-		catch (Exception e) 
+		}
+		catch (Exception e)
 		{
 			log.error("after init/late instantiation exception", e);
 			return null; // (U)new DefaultUserImpl(user);
-		} 
+		}
 	}
 
-    public String getUserWrapperClass() 
+    /**
+     * Get the wrapper class for user objects
+     *
+     * @return the wrapper class name
+     */
+    public String getUserWrapperClass()
     {
 		return userWrapperClass;
 	}
-    
-    public void setUserWrapperClass(String userWrapperClass2) 
+
+    /**
+     * Set the wrapper class for user objects
+     *
+     * @param userWrapperClass2 the wrapper class name
+     */
+    public void setUserWrapperClass(String userWrapperClass2)
     {
-		userWrapperClass = userWrapperClass2;		
+		userWrapperClass = userWrapperClass2;
 	}
 
 	/**
@@ -122,35 +133,37 @@ public class DefaultUserManager implements UserManager
     {
         ServiceManager manager = TurbineServices.getInstance();
         this.umDelegate = (TurbineUserManager)manager.getService(TurbineUserManager.ROLE);
-        
+
         String userWrapperClass = conf.getString(
                 SecurityService.USER_WRAPPER_KEY,
                 SecurityService.USER_WRAPPER_DEFAULT);
-        
+
 //        String userClass = conf.getString(
 //                SecurityService.USER_KEY,
 //                SecurityService.USER_DEFAULT);
-        
-        try 
+
+        try
         {
         	factoryService = (FactoryService)manager.getService(FactoryService.ROLE);
-             
-            //  check instantiation 
-        	
+
+            //  check instantiation
+
         	// should provide default constructor
         	TurbineUser turbineUser = umDelegate.getUserInstance();
-        			//(TurbineUser) factoryService.getInstance(userClass); 
+        			//(TurbineUser) factoryService.getInstance(userClass);
             Object params[] = new Object[] { turbineUser };
             String signature[] = new String[] { TurbineUser.class.getName() };
-            User uc = (User) factoryService.getInstance(userWrapperClass, params, signature);
-            
+
+            // Just check if exceptions would occur
+            factoryService.getInstance(userWrapperClass, params, signature);
+
             this.setUserWrapperClass(userWrapperClass);
-        } 
+        }
         catch (Exception e)
 	    {
 	       throw new InitializationException("Failed to instantiate user wrapper class", e);
 	    }
-        
+
     }
 
 
