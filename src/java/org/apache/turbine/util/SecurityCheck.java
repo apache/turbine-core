@@ -35,12 +35,12 @@ import org.apache.turbine.services.TurbineServices;
  *
  * Sample usage:<br>
  *
- * <pre><code>
+ * <pre>
  * SecurityCheck mycheck =
  *   new SecurityCheck(data, "Unauthorized to do this!", "WrongPermission");
  * if (!mycheck.hasPermission("add_user");
  *   return;
- *</code></pre>
+ *</pre>
  *
  * @author <a href="mailto:mbryson@mindspring.com">Dave Bryson</a>
  * @author <a href="jh@byteaction.de">J&#252;rgen Hoffmann</a>
@@ -104,7 +104,7 @@ public class SecurityCheck
      *
      * @param role A Role.
      * @return True if the user has this role.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     public boolean hasRole(Role role)
             throws Exception
@@ -130,7 +130,7 @@ public class SecurityCheck
      * @param role
      *            A String.
      * @return True if the user has this role.
-     * @exception Exception,
+     * @throws Exception
      *                a generic exception.
      */
     public boolean hasRole(String role) throws Exception
@@ -164,7 +164,7 @@ public class SecurityCheck
      *
      * @param permission A Permission.
      * @return True if the user has this permission.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     public boolean hasPermission(Permission permission)
             throws Exception
@@ -195,7 +195,7 @@ public class SecurityCheck
      * @param permission
      *            A String.
      * @return True if the user has this permission.
-     * @exception Exception,
+     * @throws Exception
      *                a generic exception.
      */
     public boolean hasPermission(String permission)

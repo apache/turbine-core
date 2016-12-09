@@ -288,9 +288,9 @@ public interface SecurityService
      *
      * @param user the user object
      *
-     * @exception UnknownEntityException if the user's account does not
+     * @throws UnknownEntityException if the user's account does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     void saveOnSessionUnbind(User user)
@@ -333,11 +333,11 @@ public interface SecurityService
      * @param user an User to change password for.
      * @param oldPassword the current password supplied by the user.
      * @param newPassword the current password requested by the user.
-     * @exception PasswordMismatchException if the supplied password was
+     * @throws PasswordMismatchException if the supplied password was
      *            incorrect.
-     * @exception UnknownEntityException if the user's record does not
+     * @throws UnknownEntityException if the user's record does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     void changePassword(User user, String oldPassword,
@@ -355,9 +355,9 @@ public interface SecurityService
      *
      * @param user an User to change password for.
      * @param password the new password.
-     * @exception UnknownEntityException if the user's record does not
+     * @throws UnknownEntityException if the user's record does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     void forcePassword(User user, String password)
@@ -503,9 +503,9 @@ public interface SecurityService
      *
      * @return an object representing the Group with specified name.
      *
-     * @exception UnknownEntityException if the permission does not
+     * @throws UnknownEntityException if the permission does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     <G extends Group> G getGroupById(int id)
@@ -531,9 +531,9 @@ public interface SecurityService
      *
      * @return an object representing the Role with specified name.
      *
-     * @exception UnknownEntityException if the permission does not
+     * @throws UnknownEntityException if the permission does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     <R extends Role> R getRoleById(int id)
@@ -559,9 +559,9 @@ public interface SecurityService
      *
      * @return an object representing the Permission with specified name.
      *
-     * @exception UnknownEntityException if the permission does not
+     * @throws UnknownEntityException if the permission does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     <P extends Permission> P getPermissionById(int id)

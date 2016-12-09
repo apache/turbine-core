@@ -56,7 +56,7 @@ public abstract class Action extends Assembler
      * Action can also set the screen that is associated with {@link PipelineData}.
      *
      * @param pipelineData Turbine information.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     public abstract void doPerform(PipelineData pipelineData) throws Exception;
 
@@ -66,7 +66,7 @@ public abstract class Action extends Assembler
      * use ActionLoader to perform an Action.
      *
      * @param pipelineData Turbine information.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     protected void perform(PipelineData pipelineData) throws Exception
     {

@@ -118,7 +118,7 @@ public interface JobEntry extends Comparable<JobEntry>
      * 3. Calculate the diff in time between the current time and the next run
      * time. <br>
      *
-     * @exception TurbineException
+     * @throws TurbineException
      *                a generic exception.
      */
     void calcRunTime() throws TurbineException;

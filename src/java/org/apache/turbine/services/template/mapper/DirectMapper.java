@@ -48,7 +48,7 @@ public class DirectMapper
     /**
      * Strip off a possible extension, replace all "," with "."
      *
-     * about,directions,Driving.vm --> about.directions.Driving
+     * about,directions,Driving.vm --&lt; about.directions.Driving
      *
      * @param template The template name.
      * @return A class name for the given template.

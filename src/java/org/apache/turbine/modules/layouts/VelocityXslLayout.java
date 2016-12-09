@@ -83,7 +83,7 @@ public class VelocityXslLayout extends Layout
      * of the HttpServletResponse object.
      *
      * @param pipelineData Turbine information.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public void doBuild(PipelineData pipelineData)

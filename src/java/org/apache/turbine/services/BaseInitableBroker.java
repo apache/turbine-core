@@ -46,7 +46,7 @@ import org.apache.commons.logging.LogFactory;
  * parties.</li>
  *
  * <li>Maintaining dependencies between <code>Initables</code> during
- * early initalization phases, including circular dependencies
+ * early initialization phases, including circular dependencies
  * detection.</li>
  *
  * </ul>
@@ -90,7 +90,7 @@ public abstract class BaseInitableBroker
      *
      * @param className The name of the class to be initialized.
      * @param data An Object to be used for initialization activities.
-     * @exception InitializationException Initialization was not successful.
+     * @throws InitializationException Initialization was not successful.
      */
     @Override
     public void initClass(String className, Object data)
@@ -170,7 +170,7 @@ public abstract class BaseInitableBroker
      *
      * @param className The name of the Initable requested.
      * @return An instance of the requested Initable.
-     * @exception InstantiationException if there was a problem
+     * @throws InstantiationException if there was a problem
      * during instantiation or initialization of the Initable.
      */
     @Override
@@ -219,7 +219,10 @@ public abstract class BaseInitableBroker
      * then returned.
      *
      * @param className The name of the class to be instantiated.
-     * @exception InstantiationException if the requested class can't
+     *
+     * @return an instance of the requested class
+     *
+     * @throws InstantiationException if the requested class can't
      * be instantiated.
      */
     protected Initable getInitableInstance(String className)

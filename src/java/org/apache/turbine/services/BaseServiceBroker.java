@@ -43,9 +43,8 @@ import org.apache.commons.logging.LogFactory;
  * pluggable service implementations.</li>
  * <li>Providing <code>Services</code> with a configuration based on
  * system wide configuration mechanism.</li>
- * </ul>
  * <li>Integration of TurbineServiceProviders for looking up
- * non-local services
+ * non-local services</li>
  * </ul>
  *
  * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
@@ -360,7 +359,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * @param name The name of the service (generally the
      * <code>SERVICE_NAME</code> constant of the service's interface
      * definition).
-     * @exception InitializationException Initialization of this
+     * @throws InitializationException Initialization of this
      * service was not successful.
      */
     @Override
@@ -535,7 +534,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      *
      * @param name The name of the Service requested.
      * @return An instance of requested Service.
-     * @exception InstantiationException if the service is unknown or
+     * @throws InstantiationException if the service is unknown or
      * can't be initialized.
      */
     @Override
@@ -603,7 +602,10 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * instances.
      *
      * @param name The name of the service requested.
-     * @exception InstantiationException The service is unknown or
+     *
+     * @return the Service instance
+     *
+     * @throws InstantiationException The service is unknown or
      * can't be initialized.
      */
     protected Service getServiceInstance(String name)

@@ -78,7 +78,7 @@ public class LoginUser
      * to SCREEN_LOGIN
      *
      * @param     pipelineData Turbine information.
-     * @exception FulcrumSecurityException could not get instance of the
+     * @throws FulcrumSecurityException could not get instance of the
      *            anonymous user
      */
     @Override

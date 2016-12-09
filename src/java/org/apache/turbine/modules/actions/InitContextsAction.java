@@ -54,7 +54,7 @@ public class InitContextsAction
      *
      * @param pipelineData
      *            The PipelineRunData object for the current request.
-     * @exception NamingException
+     * @throws NamingException
      *                could not create InitialContext
      */
     @Override

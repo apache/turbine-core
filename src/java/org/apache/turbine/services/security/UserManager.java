@@ -152,9 +152,9 @@ public interface UserManager
      *
      * @param user the user in the session
      *
-     * @exception UnknownEntityException if the user's account does not
+     * @throws UnknownEntityException if the user's account does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     void saveOnSessionUnbind(User user)

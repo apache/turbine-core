@@ -212,7 +212,7 @@ public interface TemplateService
      *
      * @param template The screen template name.
      * @return The found screen module name.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     String getScreenName(String template)
             throws Exception;
@@ -223,7 +223,7 @@ public interface TemplateService
      *
      * @param template The layout template name.
      * @return The found layout module name.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     String getLayoutName(String template)
             throws Exception;
@@ -234,7 +234,7 @@ public interface TemplateService
      *
      * @param template The navigation template name.
      * @return The found navigation module name.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     String getNavigationName(String template)
             throws Exception;
@@ -245,7 +245,7 @@ public interface TemplateService
      *
      * @param template The template name parameter.
      * @return The found screen template name.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     String getScreenTemplateName(String template)
             throws Exception;
@@ -256,7 +256,7 @@ public interface TemplateService
      *
      * @param template The template name parameter.
      * @return The found screen template name.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     String getLayoutTemplateName(String template)
             throws Exception;
@@ -267,7 +267,7 @@ public interface TemplateService
      *
      * @param template The template name parameter.
      * @return The found navigation template name.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     String getNavigationTemplateName(String template)
             throws Exception;

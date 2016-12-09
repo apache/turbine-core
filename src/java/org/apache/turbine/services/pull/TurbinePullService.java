@@ -48,7 +48,7 @@ import org.apache.velocity.context.Context;
  * These are tools that are placed in the context by the service
  * These tools will be made available to all your
  * templates. You list the tools in the following way:
- * <p>
+ * </p>
  * <pre>
  * tool.&lt;scope&gt;.&lt;id&gt; = &lt;classname&gt;
  *
@@ -76,7 +76,7 @@ import org.apache.velocity.context.Context;
  *
  * configures the value of "skin" for the "ui" tool.
  *
- * Tools are accessible in all templates by the <id> given
+ * Tools are accessible in all templates by the &lt;id&gt; given
  * to the tool. So for the above listings the UIManager would
  * be available as $ui, the MessageManager as $mm, the TemplateLink
  * as $link and the TemplatePageAttributes as $page.
@@ -225,7 +225,7 @@ public class TurbinePullService
     /**
      * Initialize the pull service
      *
-     * @exception Exception A problem happened when starting up
+     * @throws Exception A problem happened when starting up
      */
     private void initPullService()
         throws Exception
@@ -261,7 +261,7 @@ public class TurbinePullService
      * tools may call the methods of this service via the
      * static facade class TurbinePull.
      *
-     * @exception Exception A problem happened when starting up
+     * @throws Exception A problem happened when starting up
      */
     private void initPullTools()
         throws Exception

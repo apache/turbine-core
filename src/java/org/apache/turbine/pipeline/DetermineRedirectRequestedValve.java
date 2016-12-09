@@ -57,14 +57,7 @@ public class DetermineRedirectRequestedValve
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
-        try
-        {
-            redirectRequested(pipelineData);
-        }
-        catch (Exception e)
-        {
-            throw new TurbineException(e);
-        }
+        redirectRequested(pipelineData);
 
         // Pass control to the next Valve in the Pipeline
         context.invokeNext(pipelineData);
@@ -74,9 +67,11 @@ public class DetermineRedirectRequestedValve
      * Perform clean up after processing the request.
      *
      * @param pipelineData The run-time data.
+     *
+     * @throws IOException if sending the redirect fails
      */
     protected void redirectRequested(PipelineData pipelineData)
-        throws Exception
+        throws IOException
     {
         RunData data = getRunData(pipelineData);
         // handle a redirect request

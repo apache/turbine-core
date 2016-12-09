@@ -129,7 +129,7 @@ public class TurbineNonPersistentSchedulerService extends AbstractSchedulerServi
      *
      * @param oid The int id for the job.
      * @return A JobEntry.
-     * @exception TurbineException could not retrieve job
+     * @throws TurbineException could not retrieve job
      */
     @Override
     public JobEntry getJob(int oid)

@@ -44,7 +44,7 @@ public class VelocitySecureActionDoesNothing extends VelocitySecureAction
      *
      * @param  pipelineData           Current RunData information
      * @param  context        Context to populate
-     * @exception  Exception  Thrown on error
+     * @throws  Exception  Thrown on error
      */
     @Override
     public void doPerform(PipelineData pipelineData, Context context) throws Exception

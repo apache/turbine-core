@@ -588,11 +588,11 @@ public class TurbineURI
      * URL is absolute; it starts with http/https...
      *
      * <p>
-     * <code><pre>
+     * <pre>
      * TurbineURI tui = new TurbineURI (data, "UserScreen");
      * tui.addPathInfo("user","jon");
      * tui.getAbsoluteLink();
-     * </pre></code>
+     * </pre>
      *
      *  The above call to absoluteLink() would return the String:
      *
@@ -621,11 +621,11 @@ public class TurbineURI
      * URL is relative to the webserver root.
      *
      * <p>
-     * <code><pre>
+     * <pre>
      * TurbineURI tui = new TurbineURI (data, "UserScreen");
      * tui.addPathInfo("user","jon");
      * tui.getRelativeLink();
-     * </pre></code>
+     * </pre>
      *
      *  The above call to relativeLink() would return the String:
      *

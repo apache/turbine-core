@@ -54,6 +54,7 @@ public class CleanUpValve
     /**
      * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
      */
+    @Override
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
@@ -76,7 +77,6 @@ public class CleanUpValve
      * @param pipelineData The run-time data.
      */
     protected void cleanUp(PipelineData pipelineData)
-        throws Exception
     {
         RunData data = getRunData(pipelineData);
         // If a module has set data.acl = null, remove acl from

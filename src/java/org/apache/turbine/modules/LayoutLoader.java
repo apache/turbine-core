@@ -52,7 +52,7 @@ public class LayoutLoader
      *
      * @param pipelineData Turbine information.
      * @param name Name of object that will execute the layout.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public void exec(PipelineData pipelineData, String name)
@@ -67,7 +67,7 @@ public class LayoutLoader
      *
      * @param name Name of object instance.
      * @return A Layout with the specified name, or null.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public Layout getAssembler(String name)

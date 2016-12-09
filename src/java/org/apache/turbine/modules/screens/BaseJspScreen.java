@@ -55,7 +55,7 @@ public class BaseJspScreen
      *
      * @param pipelineData Turbine information.
      * @return null - the JSP sends the information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public String buildTemplate(PipelineData pipelineData)
@@ -85,7 +85,7 @@ public class BaseJspScreen
      * Method to be overridden by subclasses to include data in beans, etc.
      *
      * @param pipelineData the PipelineData object
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     protected void doBuildTemplate(PipelineData pipelineData)

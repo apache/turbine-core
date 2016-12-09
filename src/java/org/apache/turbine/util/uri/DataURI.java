@@ -108,11 +108,11 @@ public class DataURI
      * URL is absolute; it starts with http/https...
      *
      * <p>
-     * <code><pre>
+     * <pre>
      * TurbineURI tui = new TurbineURI (data, "UserScreen");
      * tui.addPathInfo("user","jon");
      * tui.getAbsoluteLink();
-     * </pre></code>
+     * </pre>
      *
      *  The above call to getAbsoluteLink() would return the String:
      *
@@ -146,11 +146,11 @@ public class DataURI
      * URL is relative to the webserver root.
      *
      * <p>
-     * <code><pre>
+     * <pre>
      * TurbineURI tui = new TurbineURI (data, "UserScreen");
      * tui.addPathInfo("user","jon");
      * tui.getRelativeLink();
-     * </pre></code>
+     * </pre>
      *
      *  The above call to getRelativeLink() would return the String:
      *
@@ -184,6 +184,7 @@ public class DataURI
      * @return This URI as a String
      *
      */
+    @Override
     public String toString()
     {
         return getAbsoluteLink();

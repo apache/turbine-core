@@ -53,9 +53,10 @@ public class DateFormatter
      * Initialize the application tool. The data parameter holds a different
      * type depending on how the tool is being instantiated:
      * <ul>
-     * <li>For global tools data will be null
-     * <li>For request tools data will be of type RunData
-     * <li>For session and persistent tools data will be of type User
+     * <li>For global tools data will be null</li>
+     * <li>For request tools data will be of type RunData</li>
+     * <li>For session and persistent tools data will be of type User</li>
+     * </ul>
      *
      * @param data initialization data
      */

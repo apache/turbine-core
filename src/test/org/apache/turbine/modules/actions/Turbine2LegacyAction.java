@@ -40,7 +40,7 @@ public class Turbine2LegacyAction extends LegacyVelocityAction
      *
      * @param  data           Current RunData information
      * @param  context        Context to populate
-     * @exception  Exception  Thrown on error
+     * @throws  Exception  Thrown on error
      */
     @Override
     public void doPerform(RunData data, Context context) throws Exception

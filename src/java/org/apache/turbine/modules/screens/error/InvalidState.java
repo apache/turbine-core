@@ -52,7 +52,7 @@ public class InvalidState
      * Build the Screen.
      *
      * @param pipelineData Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public String doBuild(PipelineData pipelineData)

@@ -61,7 +61,7 @@ public interface ServiceBroker
      * Performs early initialization of the specified service.
      *
      * @param name The name of the service.
-     * @exception InitializationException if the service is unknown
+     * @throws InitializationException if the service is unknown
      * or can't be initialized.
      */
     void initService(String name) throws InitializationException;
@@ -89,7 +89,7 @@ public interface ServiceBroker
      *
      * @param name The name of the Service requested.
      * @return An instance of requested Service.
-     * @exception InstantiationException if the service is unknown or
+     * @throws InstantiationException if the service is unknown or
      * can't be initialized.
      */
     Object getService(String name) throws InstantiationException;

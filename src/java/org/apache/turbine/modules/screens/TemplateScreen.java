@@ -66,7 +66,7 @@ public abstract class TemplateScreen
      * This method should be overridden by subclasses that wish to add
      * specific business logic.
      * @param pipelineData Turbine information.
-     * @exception Exception A generic exception.
+     * @throws Exception A generic exception.
      */
     protected abstract void doBuildTemplate(PipelineData pipelineData)
             throws Exception;
@@ -77,7 +77,7 @@ public abstract class TemplateScreen
      * the template.
      * @param pipelineData Turbine information.
      * @return the content of the screen
-     * @exception Exception A generic exception.
+     * @throws Exception A generic exception.
      */
     public abstract String buildTemplate(PipelineData pipelineData)
             throws Exception;
@@ -86,6 +86,8 @@ public abstract class TemplateScreen
      * This method can be overridden to write code that executes when
      * the template has been built (called from a finally clause, so
      * executes regardless of whether an exception is thrown or not)
+     *
+     * @param pipelineData Turbine information
      */
     protected void doPostBuildTemplate(PipelineData pipelineData)
     {
@@ -98,7 +100,7 @@ public abstract class TemplateScreen
      *
      * @param pipelineData Turbine information.
      * @return the content of the screen
-     * @exception Exception A generic exception.
+     * @throws Exception A generic exception.
      */
     @Override
     protected String doBuild(PipelineData pipelineData)
@@ -166,7 +168,7 @@ public abstract class TemplateScreen
      * @param pipelineData Turbine information.
      * @param screen Name of screen to redirect to.
      * @param template Name of template.
-     * @exception Exception A generic exception.
+     * @throws Exception A generic exception.
      */
     public void doRedirect(PipelineData pipelineData, String screen, String template)
             throws Exception
@@ -192,7 +194,7 @@ public abstract class TemplateScreen
      *
      * @param pipelineData Turbine information.
      * @param template Name of template.
-     * @exception Exception A generic exception.
+     * @throws Exception A generic exception.
      */
     public void doRedirect(PipelineData pipelineData, String template)
             throws Exception

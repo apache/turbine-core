@@ -166,7 +166,7 @@ public class JobQueue<J extends JobEntry>
      * Update the job for its next run time.
      *
      * @param je A JobEntry to be updated.
-     * @exception TurbineException a generic exception.
+     * @throws TurbineException a generic exception.
      */
     public synchronized void updateQueue(J je)
             throws TurbineException

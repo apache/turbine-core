@@ -183,7 +183,7 @@ public class Turbine
      *
      * This method is called by init(ServletConfig config)
      *
-     * @exception ServletException a servlet exception.
+     * @throws ServletException a servlet exception.
      */
     @Override
     public void init() throws ServletException
@@ -764,8 +764,8 @@ public class Turbine
      *
      * @param req Servlet request.
      * @param res Servlet response.
-     * @exception IOException a servlet exception.
-     * @exception ServletException a servlet exception.
+     * @throws IOException a servlet exception.
+     * @throws ServletException a servlet exception.
      */
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -843,8 +843,8 @@ public class Turbine
      *
      * @param req Servlet request.
      * @param res Servlet response.
-     * @exception IOException a servlet exception.
-     * @exception ServletException a servlet exception.
+     * @throws IOException a servlet exception.
+     * @throws ServletException a servlet exception.
      */
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res)

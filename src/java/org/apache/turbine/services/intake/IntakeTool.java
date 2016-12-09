@@ -256,7 +256,7 @@ public class IntakeTool
         /**
          * Protected constructor to force use of factory method.
          *
-         * @param groupName
+         * @param groupName the group name
          */
         protected PullHelper(String groupName)
         {
@@ -267,7 +267,7 @@ public class IntakeTool
          * Populates the object with the default values from the XML File
          *
          * @return a Group object with the default values
-         * @throws IntakeException
+         * @throws IntakeException if getting the group fails
          */
         public Group getDefault()
                 throws IntakeException
@@ -278,9 +278,9 @@ public class IntakeTool
         /**
          * Calls setKey(key,true)
          *
-         * @param key
+         * @param key the group key
          * @return an Intake Group
-         * @throws IntakeException
+         * @throws IntakeException if getting the group fails
          */
         public Group setKey(String key)
                 throws IntakeException
@@ -289,11 +289,12 @@ public class IntakeTool
         }
 
         /**
+         * Return the group identified by its key
          *
-         * @param key
-         * @param create
+         * @param key the group key
+         * @param create true if a non-existing group should be created
          * @return an Intake Group
-         * @throws IntakeException
+         * @throws IntakeException if getting the group fails
          */
         public Group setKey(String key, boolean create)
                 throws IntakeException

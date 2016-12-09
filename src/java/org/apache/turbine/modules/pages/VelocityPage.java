@@ -48,7 +48,7 @@ public class VelocityPage
      * the Action module and the Screen module via getContext().
      *
      * @param pipelineData Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     protected void doBuildBeforeAction(PipelineData pipelineData)

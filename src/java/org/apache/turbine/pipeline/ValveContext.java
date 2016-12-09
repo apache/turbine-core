@@ -59,9 +59,9 @@ public interface ValveContext
      * @param pipelineData The run-time information, including the servlet
      * request and response we are processing.
      *
-     * @exception IOException Thrown by a subsequent Valve.
-     * @exception TurbineException Thrown by a subsequent Valve.
-     * @exception TurbineException No further Valves configured in the
+     * @throws IOException Thrown by a subsequent Valve.
+     * @throws TurbineException Thrown by a subsequent Valve.
+     * @throws TurbineException No further Valves configured in the
      * Pipeline currently being processed.
      */
     public void invokeNext(PipelineData pipelineData)

@@ -61,7 +61,7 @@ public abstract class Navigation
      *
      * @param pipelineData Turbine information.
      * @return the content of the navigation module
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     protected abstract String doBuild(PipelineData pipelineData) throws Exception;
 
@@ -72,7 +72,7 @@ public abstract class Navigation
      *
      * @param pipelineData Turbine information.
      * @return the content of the navigation module
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     protected String build(PipelineData pipelineData)
         throws Exception

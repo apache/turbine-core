@@ -29,9 +29,9 @@ import java.util.Map;
  * If you need to use Turbine outside of a servlet container, you can
  * use this class for initialization of the Turbine servlet.
  * <p>
- * <blockquote><code><pre>
+ * <pre>
  * TurbineXmlConfig config = new TurbineXmlConfig(".", "conf/TurbineResources.properties");
- * </pre></code></blockquote>
+ * </pre>
  * <p>
  * All paths referenced in TurbineResources.properties and the path to
  * the properties file itself (the second argument) will be resolved

@@ -97,24 +97,24 @@ import org.apache.turbine.util.uri.URIConstants;
  * this template.
  *
  * If you request e.g. the template screen
- *
+ * <pre>
  * about,directions,Driving.vm
- *
+ * </pre>
  * then the following class names are searched (on the module search
  * path):
- *
+ * <pre>
  * 1. about.directions.Driving     &lt;- direct matching the template to the class name
  * 2. about.directions.Default     &lt;- matching the package, class name is Default
  * 3. about.Default                &lt;- stepping up in the package hierarchy, looking for Default
  * 4. Default                      &lt;- Class called "Default" without package
  * 5. VelocityScreen               &lt;- The class configured by the Service (VelocityService) to
- *
+ * </pre>
  * And if you have the following module packages configured:
- *
+ * <pre>
  * module.packages = org.apache.turbine.modules, com.mycorp.modules
- *
+ * </pre>
  * then the class loader will look for
- *
+ * <pre>
  * org.apache.turbine.modules.screens.about.directions.Driving
  * com.mycorp.modules.screens.about.directions.Driving
  * org.apache.turbine.modules.screens.about.directions.Default
@@ -125,41 +125,43 @@ import org.apache.turbine.util.uri.URIConstants;
  * com.mycorp.modules.screens.Default
  * org.apache.turbine.modules.screens.VelocityScreen
  * com.mycorp.modules.screens.VelocityScreen
- *
+ * </pre>
  * Most of the times, you don't have any backing Java class for a
  * template screen, so the first match will be
  * org.apache.turbine.modules.screens.VelocityScreen
  * which then renders your screen.
- *
+ * <p>
  * Please note, that your Screen Template (Driving.vm) must exist!
  * If it does not exist, the Template Service will report an error.
- *
+ * <p>
  * Once the screen is found, the template service will look for
  * the Layout and Navigation templates of your Screen. Here, the
  * template service looks for matching template names!
- *
- * Consider our example:  about,directions,Driving.vm (Screen Name)
- *
+ * <p>
+ * Consider our example:
+ * <pre>
+ * about,directions,Driving.vm (Screen Name)
+ * </pre>
  * Now the template service will look for the following Navigation
  * and Layout templates:
- *
+ * <pre>
  * 1. about,directions,Driving.vm      &lt;- exact match
  * 2. about,directions,Default.vm      &lt;- package match, Default name
  * 3. about,Default.vm                 &lt;- stepping up in the hierarchy
  * 4. Default.vm                       &lt;- The name configured as default.layout.template
  *                                        in the Velocity service.
- *
+ * </pre>
  * And now Hennings' two golden rules for using templates:
- *
+ * <p>
  * Many examples and docs from older Turbine code show template pathes
  * with a slashes. Repeat after me: "TEMPLATE NAMES NEVER CONTAIN SLASHES!"
- *
+ * <p>
  * Many examples and docs from older Turbine code show templates that start
  * with "/". This is not only a violation of the rule above but actively breaks
  * things like loading templates from a jar with the velocity jar loader. Repeat
  * after me: "TEMPLATE NAMES ARE NOT PATHES. THEY'RE NOT ABSOLUTE AND HAVE NO
  * LEADING /".
- *
+ * <p>
  * If you now wonder how a template name is mapped to a file name: This is
  * scope of the templating engine. Velocity e.g. has this wonderful option to
  * load templates from jar archives. There is no single file but you tell
@@ -222,8 +224,9 @@ public class TurbineTemplateService
      * The default file extension used as a registry key when a
      * template's file extension cannot be determined.
      *
-     * @deprecated. Use TemplateService.DEFAULT_EXTENSION_VALUE.
+     * @deprecated Use TemplateService.DEFAULT_EXTENSION_VALUE.
      */
+    @Deprecated
     protected static final String NO_FILE_EXT = TemplateService.DEFAULT_EXTENSION_VALUE;
 
 
@@ -262,7 +265,7 @@ public class TurbineTemplateService
     /**
      * Called the first time the Service is used.
      *
-     * @exception InitializationException Something went wrong when
+     * @throws InitializationException Something went wrong when
      *                                     setting up the Template Service.
      */
     @Override
@@ -528,7 +531,7 @@ public class TurbineTemplateService
      *
      * @param template The screen template name.
      * @return The found screen module name.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public String getScreenName(String template)
@@ -543,7 +546,7 @@ public class TurbineTemplateService
      *
      * @param template The layout template name.
      * @return The found layout module name.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public String getLayoutName(String template)
@@ -558,7 +561,7 @@ public class TurbineTemplateService
      *
      * @param template The navigation template name.
      * @return The found navigation module name.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public String getNavigationName(String template)
@@ -574,7 +577,7 @@ public class TurbineTemplateService
      *
      * @param template The template name parameter.
      * @return The found screen template name.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public String getScreenTemplateName(String template)
@@ -589,7 +592,7 @@ public class TurbineTemplateService
      *
      * @param template The template name parameter.
      * @return The found screen template name.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public String getLayoutTemplateName(String template)
@@ -605,7 +608,7 @@ public class TurbineTemplateService
      *
      * @param template The template name parameter.
      * @return The found navigation template name.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public String getNavigationTemplateName(String template)

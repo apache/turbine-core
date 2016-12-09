@@ -94,9 +94,9 @@ public class PassiveUserManager implements UserManager
      *
      * @param username the name of the user.
      * @return an User object.
-     * @exception UnknownEntityException if the user's record does not
+     * @throws UnknownEntityException if the user's record does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     @Override
@@ -136,11 +136,11 @@ public class PassiveUserManager implements UserManager
      * @param username the name of the user.
      * @param password the user supplied password.
      * @return an User object.
-     * @exception PasswordMismatchException if the supplied password was
+     * @throws PasswordMismatchException if the supplied password was
      *            incorrect.
-     * @exception UnknownEntityException if the user's record does not
+     * @throws UnknownEntityException if the user's record does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     @Override
@@ -156,9 +156,9 @@ public class PassiveUserManager implements UserManager
      * required to exist in the storage.
      *
      * @param user an User object to store.
-     * @exception UnknownEntityException if the user's record does not
+     * @throws UnknownEntityException if the user's record does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     @Override
@@ -175,9 +175,9 @@ public class PassiveUserManager implements UserManager
      * LastLogin, AccessCounter, persistent pull tools, and any data stored
      * in the permData hashmap that is not mapped to a column will be saved.
      *
-     * @exception UnknownEntityException if the user's account does not
+     * @throws UnknownEntityException if the user's account does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     @Override
@@ -194,11 +194,11 @@ public class PassiveUserManager implements UserManager
      *
      * @param user an User object to authenticate.
      * @param password the user supplied password.
-     * @exception PasswordMismatchException if the supplied password was
+     * @throws PasswordMismatchException if the supplied password was
      *            incorrect.
-     * @exception UnknownEntityException if the user's record does not
+     * @throws UnknownEntityException if the user's record does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     @Override
@@ -246,11 +246,11 @@ public class PassiveUserManager implements UserManager
      * @param user an User to change password for.
      * @param oldPassword the current password supplied by the user.
      * @param newPassword the current password requested by the user.
-     * @exception PasswordMismatchException if the supplied password was
+     * @throws PasswordMismatchException if the supplied password was
      *            incorrect.
-     * @exception UnknownEntityException if the user's record does not
+     * @throws UnknownEntityException if the user's record does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     @Override
@@ -272,9 +272,9 @@ public class PassiveUserManager implements UserManager
      *
      * @param user an User to change password for.
      * @param password the new password.
-     * @exception UnknownEntityException if the user's record does not
+     * @throws UnknownEntityException if the user's record does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     @Override

@@ -74,7 +74,7 @@ public class JobEntryNonPersistent extends AbstractJobEntry
      * @param wd Value for entry "week days".
      * @param day_mo Value for entry "month days".
      * @param task Task to execute.
-     * @exception TurbineException a generic exception.
+     * @throws TurbineException a generic exception.
      */
     public JobEntryNonPersistent(int sec,
                     int min,

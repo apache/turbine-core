@@ -25,7 +25,7 @@ public abstract class ObjectUtils
      *
      * @return A byte[] with the converted Map.
      *
-     * @exception Exception A generic exception.
+     * @throws Exception A generic exception.
      */
 	public static byte[] serializeMap(Map<String, Object> map)
             throws Exception

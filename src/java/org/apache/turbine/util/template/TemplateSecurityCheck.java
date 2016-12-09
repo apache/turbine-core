@@ -35,14 +35,14 @@ import org.apache.turbine.util.RunData;
  * Utility class to help check for proper authorization when using
  * template screens.  Sample usages:
  *
- * <p><pre><code>
+ * <p><pre>
  * TemplateSecurityCheck secCheck = new TemplateSecurityCheck( data );
  * secCheck.setMessage( "Sorry, you do not have permission to " +
  *                      "access this area." );
  * secCheck.setFailTemplate("login.wm");
  * if ( !secCheck.hasRole("ADMIN") )
  *     return;
- * </pre></code>
+ * </pre>
  *
  * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
@@ -85,7 +85,7 @@ public class TemplateSecurityCheck
      *
      * @param role The role to be checked.
      * @return Whether the user has the role.
-     * @exception Exception Trouble validating.
+     * @throws Exception Trouble validating.
      */
     public boolean hasRole(Role role)
         throws Exception
@@ -112,7 +112,7 @@ public class TemplateSecurityCheck
      *
      * @param permission The permission to be checked.
      * @return Whether the user has the permission.
-     * @exception Exception Trouble validating.
+     * @throws Exception Trouble validating.
      */
     public boolean hasPermission(Permission permission)
         throws Exception
@@ -134,7 +134,7 @@ public class TemplateSecurityCheck
      * Check that the user has logged in.
      *
      * @return True if user has logged in.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     public boolean checkLogin()
         throws Exception

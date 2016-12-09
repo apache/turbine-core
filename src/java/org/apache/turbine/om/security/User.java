@@ -280,7 +280,7 @@ public interface User
     /**
      * Updates the last login date in the database.
      *
-     * @exception Exception A generic exception.
+     * @throws Exception A generic exception.
      */
     void updateLastLogin()
         throws Exception;

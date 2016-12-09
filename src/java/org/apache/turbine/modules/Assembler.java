@@ -21,10 +21,11 @@ package org.apache.turbine.modules;
 
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
+
 /**
- * This is an interface that defines what an Assembler is. All the
- * current modules extend off of this class. It is currently empty and
- * future use is yet to be determined.
+ * This is an interface that defines what an Assembler is. All the current
+ * modules extend off of this class. It is currently empty and future use is yet
+ * to be determined.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
@@ -34,20 +35,23 @@ public abstract class Assembler
 {
     /**
      * This can go once RunData is replaced...
-     * @param pipelineData
-     * @return RunData
+     *
+     * @param pipelineData Turbine request data
+     * @return RunData extracted from PipelineData
      */
     public final RunData getRunData(PipelineData pipelineData)
     {
-        if(!(pipelineData instanceof RunData)){
+        if (!(pipelineData instanceof RunData))
+        {
             throw new RuntimeException("Can't cast to rundata from pipeline data.");
         }
-        return (RunData)pipelineData;
+        return (RunData) pipelineData;
     }
-    
+
     /**
-     * Abstract method to provide the prefix for module related classes and templates
-     * 
+     * Abstract method to provide the prefix for module related classes and
+     * templates
+     *
      * @return the prefix
      */
     public abstract String getPrefix();

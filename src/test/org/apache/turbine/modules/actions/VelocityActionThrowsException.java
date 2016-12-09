@@ -41,7 +41,7 @@ public class VelocityActionThrowsException extends VelocityAction
      *
      * @param  data           Current PipelineData information
      * @param  context        Context to populate
-     * @exception  Exception  Thrown on error
+     * @throws  Exception  Thrown on error
      */
     @Override
     public void doPerform(PipelineData data, Context context) throws Exception

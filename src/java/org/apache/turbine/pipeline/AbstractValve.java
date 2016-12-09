@@ -39,7 +39,7 @@ public abstract class AbstractValve
     /**
      * Initialize this valve for use in a pipeline.
      *
-     * @throws Exception
+     * @throws Exception if initialization fails
      */
     @Override
     public void initialize()
@@ -57,8 +57,9 @@ public abstract class AbstractValve
 
 
     /**
-     * utility for getting RunData out of the pipelineData object.
-     * @param pipelineData
+     * Utility for getting RunData out of the pipelineData object.
+     *
+     * @param pipelineData Turbine request data
      * @return the RunData object extracted from pipelineData
      */
     public final RunData getRunData(PipelineData pipelineData)
@@ -69,5 +70,4 @@ public abstract class AbstractValve
         }
         return (RunData)pipelineData;
     }
-
 }

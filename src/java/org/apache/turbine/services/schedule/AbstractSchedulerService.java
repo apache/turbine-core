@@ -92,7 +92,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
      * Load all jobs from configuration storage
      *
      * @return the list of pre-configured jobs
-     * @throws TurbineException
+     * @throws TurbineException if jobs could not be loaded
      */
     protected abstract List<? extends JobEntry> loadJobs() throws TurbineException;
 
@@ -122,7 +122,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
      * @param oid
      *            The int id for the job.
      * @return A JobEntry.
-     * @exception TurbineException
+     * @throws TurbineException
      *                job could not be retrieved.
      */
     @Override
@@ -147,7 +147,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
      *
      * @param je
      *            A JobEntry with the job to remove.
-     * @exception TurbineException
+     * @throws TurbineException
      *                job could not be removed
      */
     @Override
@@ -178,7 +178,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
     /**
      * Sets the enabled status of the scheduler
      *
-     * @param enabled
+     * @param enabled true to enable the scheduler
      *
      */
     protected void setEnabled(boolean enabled)
@@ -277,7 +277,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
      * Return the next Job to execute, or null if thread is interrupted.
      *
      * @return A JobEntry.
-     * @exception TurbineException
+     * @throws TurbineException
      *                a generic exception.
      */
     protected synchronized JobEntry nextJob() throws TurbineException

@@ -78,6 +78,8 @@ public class ExecutePageValve
      * execute the page generation.
      *
      * @param pipelineData The run-time data.
+     *
+     * @throws Exception if the page execution fails
      */
     protected void executePage(PipelineData pipelineData)
         throws Exception

@@ -75,7 +75,7 @@ public class TemplateSessionValidator
      * Execute the action.
      *
      * @param pipelineData Turbine information.
-     * @exception Exception The anonymous user could not be obtained
+     * @throws Exception The anonymous user could not be obtained
      *         from the security service
      */
     @Override

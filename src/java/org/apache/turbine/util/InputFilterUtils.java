@@ -27,7 +27,6 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Some filter methods that have been orphaned in the Screen class.
  *
- *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
@@ -38,7 +37,7 @@ public abstract class InputFilterUtils
     /**
      * This function can/should be used in any screen that will output
      * User entered text.  This will help prevent users from entering
-     * html (<SCRIPT>) tags that will get executed by the browser.
+     * html (&lt;SCRIPT&gt;) tags that will get executed by the browser.
      *
      * @param s The string to prepare.
      * @return A string with the input already prepared.
@@ -51,7 +50,7 @@ public abstract class InputFilterUtils
     /**
      * This function can/should be used in any screen that will output
      * User entered text.  This will help prevent users from entering
-     * html (<SCRIPT>) tags that will get executed by the browser.
+     * html (&lt;SCRIPT&gt;) tags that will get executed by the browser.
      *
      * @param s The string to prepare.
      * @return A string with the input already prepared.

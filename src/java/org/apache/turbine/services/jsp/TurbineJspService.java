@@ -272,7 +272,7 @@ public class TurbineJspService
      * required by <a href="http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/ServletContext.html#getRequestDispatcher(java.lang.String)">
      * javax.servlet.RequestDispatcher</a>
      *
-     * @param template
+     * @param template the name of the template
      * @return String
      */
     @Override

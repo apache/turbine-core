@@ -185,7 +185,7 @@ public class VelocityHtmlEmail extends HtmlEmail
     /**
      * Actually send the mail.
      *
-     * @exception EmailException thrown if mail cannot be sent.
+     * @throws EmailException thrown if mail cannot be sent.
      */
     @Override
     public String send() throws EmailException
@@ -222,14 +222,14 @@ public class VelocityHtmlEmail extends HtmlEmail
      *
      * <p>Example of template:
      *
-     * <code><pre width="80">
+     * <pre>
      * &lt;html&gt;
      * &lt;!-- $mail.embed("http://server/border.gif","border.gif"); --&gt;
      * &lt;img src=$mail.getCid("border.gif")&gt;
      * &lt;p&gt;This is your content
      * &lt;img src=$mail.getCid("border.gif")&gt;
      * &lt;/html&gt;
-     * </pre></code>
+     * </pre>
      *
      * @param surl A String.
      * @param name A String.

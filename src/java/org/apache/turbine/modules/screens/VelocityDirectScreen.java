@@ -48,7 +48,7 @@ public class VelocityDirectScreen
      *
      * @param pipelineData Turbine information.
      * @return the content of the screen
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public String buildTemplate(PipelineData pipelineData)

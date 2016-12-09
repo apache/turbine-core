@@ -102,14 +102,14 @@ public abstract class ActionEvent extends Action
 	protected static final int LENGTH = BUTTON.length();
 
 	/**
-	 * If true, the eventSubmit_do<xxx> variable must contain
+	 * If true, the eventSubmit_do&lt;xxx&gt; variable must contain
 	 * a not null value to be executed.
 	 */
     @TurbineConfiguration( TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_KEY )
 	private boolean submitValueKey = TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_DEFAULT;
 
 	/**
-	 * If true, then exceptions raised in eventSubmit_do<xxx> methods
+	 * If true, then exceptions raised in eventSubmit_do&lt;xxx&gt; methods
 	 * as well as in doPerform methods are bubbled up to the Turbine
 	 * servlet's handleException method.
 	 */
@@ -178,7 +178,7 @@ public abstract class ActionEvent extends Action
 	 * doPerform() method instead.
 	 *
 	 * @param pipelineData Turbine information.
-	 * @exception Exception a generic exception.
+	 * @throws Exception a generic exception.
 	 */
 	@Override
     public void doPerform(PipelineData pipelineData)
@@ -195,7 +195,7 @@ public abstract class ActionEvent extends Action
 	 * @param signature the signature of the method to call
 	 * @param parameters the parameters for the method to call
 	 *
-	 * @exception Exception a generic exception.
+	 * @throws Exception a generic exception.
 	 */
 	protected void executeEvents(ParameterParser pp, Class<?>[] signature, Object[] parameters)
 			throws Exception
@@ -328,7 +328,7 @@ public abstract class ActionEvent extends Action
 		{
 			// If the action.eventsubmit.needsvalue key is true,
 			// events with a "0" or empty value are ignored.
-			// This can be used if you have multiple eventSubmit_do<xxx>
+			// This can be used if you have multiple eventSubmit_do&lt;xxx&gt;
 			// fields in your form which are selected by client side code,
 			// e.g. JavaScript.
 			//

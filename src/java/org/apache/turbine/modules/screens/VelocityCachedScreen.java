@@ -47,7 +47,7 @@ public class VelocityCachedScreen
      *
      * @param pipelineData Turbine information.
      * @return A ConcreteElement.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public String buildTemplate(PipelineData pipelineData)

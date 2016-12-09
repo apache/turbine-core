@@ -50,7 +50,7 @@ public abstract class RawScreen extends Screen
      *
      * @param pipelineData Turbine information.
      * @return A ConcreteElement.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     protected final String doBuild(PipelineData pipelineData)
@@ -78,7 +78,7 @@ public abstract class RawScreen extends Screen
      * data.getResponse().getOutputStream();</pre>.
      *
      * @param pipelineData Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected abstract void doOutput(PipelineData pipelineData) throws Exception;
 

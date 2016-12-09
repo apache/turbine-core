@@ -111,7 +111,7 @@ public class DefaultPage
      * Builds the Page.
      *
      * @param pipelineData Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public void doBuild(PipelineData pipelineData)
@@ -172,7 +172,7 @@ public class DefaultPage
      * Screen module via getContext().  It does nothing here.
      *
      * @param pipelineData Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected void doBuildBeforeAction(PipelineData pipelineData)
             throws Exception
@@ -185,7 +185,7 @@ public class DefaultPage
      * process a template.  It does nothing here.
      *
      * @param pipelineData Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected void doBuildAfterAction(PipelineData pipelineData)
             throws Exception
@@ -198,7 +198,7 @@ public class DefaultPage
      * fully processed. It does nothing here.
      *
      * @param pipelineData Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected void doPostBuild(PipelineData pipelineData)
             throws Exception

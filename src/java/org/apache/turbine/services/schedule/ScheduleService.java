@@ -76,7 +76,7 @@ public interface ScheduleService
      * @param task Task to execute.
      *
      * @return A JobEntry.
-     * @exception TurbineException could not create job
+     * @throws TurbineException could not create job
      */
     JobEntry newJob(int sec,
             int min,
@@ -90,7 +90,7 @@ public interface ScheduleService
      *
      * @param oid The int id for the job.
      * @return A JobEntry.
-     * @exception TurbineException could not retrieve job
+     * @throws TurbineException could not retrieve job
      */
     JobEntry getJob(int oid)
             throws TurbineException;
@@ -117,7 +117,7 @@ public interface ScheduleService
      * Remove a job from the queue.
      *
      * @param je A JobEntry with the job to remove.
-     * @exception TurbineException job could not be removed
+     * @throws TurbineException job could not be removed
      */
     void removeJob(JobEntry je)
             throws TurbineException;

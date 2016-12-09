@@ -64,7 +64,7 @@ public interface Pipeline
      *
      * @param valve Valve to be added.
      *
-     * @exception IllegalStateException If the pipeline has not been
+     * @throws IllegalStateException If the pipeline has not been
      * initialized.
      */
     void addValve(Valve valve);

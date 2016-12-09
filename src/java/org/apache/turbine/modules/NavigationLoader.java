@@ -57,7 +57,7 @@ public class NavigationLoader
      * @param pipelineData Turbine information.
      * @param name Name of object that will execute the navigation.
      * @return the navigation module output
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     public String eval(PipelineData pipelineData, String name)
             throws Exception
@@ -71,7 +71,7 @@ public class NavigationLoader
      *
      * @param pipelineData Turbine information.
      * @param name Name of object instance.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public void exec(PipelineData pipelineData, String name)
@@ -86,7 +86,7 @@ public class NavigationLoader
      *
      * @param name Name of object instance.
      * @return A Layout with the specified name, or null.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public Navigation getAssembler(String name)

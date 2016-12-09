@@ -468,7 +468,7 @@ public class TurbineVelocityService
      * @param filename The file name of the unrenderable template.
      * @param e        The error.
      *
-     * @exception TurbineException Thrown every time.  Adds additional
+     * @throws TurbineException Thrown every time.  Adds additional
      *                             information to <code>e</code>.
      */
     private static final void renderingError(String filename, Exception e)
@@ -483,7 +483,7 @@ public class TurbineVelocityService
      * Setup the velocity runtime by using a subset of the
      * Turbine configuration which relates to velocity.
      *
-     * @exception Exception An Error occurred.
+     * @throws Exception An Error occurred.
      */
     private synchronized void initVelocity()
         throws Exception

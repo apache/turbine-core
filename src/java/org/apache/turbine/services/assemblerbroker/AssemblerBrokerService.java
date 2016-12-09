@@ -45,6 +45,9 @@ public interface AssemblerBrokerService
      * Register an AssemblerFactory class
      *
      * @param factory The factory object
+     *
+     * @param <T> the type of the assembler
+     *
      */
     <T extends Assembler> void registerFactory(AssemblerFactory<T> factory);
 
@@ -53,6 +56,9 @@ public interface AssemblerBrokerService
      *
      * @param type The Type of the Assembler
      * @param name The Name of the Assembler
+     *
+     * @param <T> the type of the assembler
+     *
      * @return An Assembler object for the requested name and type
      *
      * @throws TurbineException Something went wrong while looking for the Assembler
@@ -63,6 +69,9 @@ public interface AssemblerBrokerService
      * Get a Loader for the given assembler type
      *
      * @param type The Type of the Assembler
+     *
+     * @param <T> the type of the assembler
+     *
      * @return A Loader instance for the requested type
      */
     <T extends Assembler> Loader<T> getLoader(Class<T> type);

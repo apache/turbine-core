@@ -35,15 +35,15 @@ import org.apache.turbine.services.TurbineServices;
  * via your web application's <code>web.xml</code> deployment
  * descriptor as follows for the container to call it:
  *
- * <blockquote><code><pre>
+ * <pre>
  * &lt;listener&gt;
  *   &lt;listener-class&gt;
  *     org.apache.turbine.session.SessionListener
  *   &lt;/listener-class&gt;
  * &lt;/listener&gt;
- * </pre></code></blockquote>
+ * </pre>
  *
- * <code>&lt;listener&gt;</code> elemements can occur between
+ * <code>&lt;listener&gt;</code> elements can occur between
  * <code>&lt;context-param&gt;</code> and <code>&lt;servlet&gt;</code>
  * elements in your deployment descriptor.
  *

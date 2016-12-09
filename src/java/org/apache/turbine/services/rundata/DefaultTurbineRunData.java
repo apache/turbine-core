@@ -164,6 +164,9 @@ public class DefaultTurbineRunData
      * not exist, it returns null.
      *
      * @param session An HttpSession.
+     *
+     * @param <T> a type extending {@link User}
+     *
      * @return A User.
      */
     public static <T extends User> T getUserFromSession(HttpSession session)
@@ -818,6 +821,8 @@ public class DefaultTurbineRunData
     /**
      * Gets the user.
      *
+     * @param <T> a type extending {@link User}
+     *
      * @return a user.
      */
     @Override
@@ -881,7 +886,7 @@ public class DefaultTurbineRunData
      * will set the print writer via the response.
      *
      * @return a print writer.
-     * @throws IOException
+     * @throws IOException on failure getting the PrintWriter
      */
     @Override
     public PrintWriter getOut()

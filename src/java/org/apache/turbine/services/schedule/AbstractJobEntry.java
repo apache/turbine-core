@@ -89,7 +89,7 @@ public abstract class AbstractJobEntry implements JobEntry
      * @param wd Value for entry "week days".
      * @param day_mo Value for entry "month days".
      * @param task Task to execute.
-     * @exception TurbineException a generic exception.
+     * @throws TurbineException a generic exception.
      */
     public AbstractJobEntry(int sec,
                     int min,
@@ -201,7 +201,7 @@ public abstract class AbstractJobEntry implements JobEntry
      * 3. Calculate the diff in time between the current time and the
      * next run time.<br>
      *
-     * @exception TurbineException a generic exception.
+     * @throws TurbineException a generic exception.
      */
     @Override
     public void calcRunTime()
@@ -299,7 +299,7 @@ public abstract class AbstractJobEntry implements JobEntry
      *
      * @return A number specifying the type of schedule. See
      * calcRunTime().
-     * @exception TurbineException a generic exception.
+     * @throws TurbineException a generic exception.
      */
     private ScheduleType evaluateJobType()
             throws TurbineException

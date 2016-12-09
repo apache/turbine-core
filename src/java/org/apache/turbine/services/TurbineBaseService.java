@@ -30,7 +30,7 @@ import org.apache.turbine.util.RunData;
  * functionality provided in addition to <code>BaseService</code>
  * functionality is recognizing objects used in early initialization
  * of <code>Services</code> in Turbine, and passing them to
- * appropriate convenience methods.  These methods should be overriden
+ * appropriate convenience methods.  These methods should be overridden
  * to provide desired initialization functionality.</p>
  *
  * <p><strong>Note!</strong><br>Remember to call
@@ -41,11 +41,11 @@ import org.apache.turbine.util.RunData;
  * request initialization of that <code>Service</code> before using
  * it:</p>
  *
- * <pre><code>
+ * <pre>
  * getServiceBroker().initClass("OtherService",data);
  * OtherService service =
  *         (OtherService)getServiceBroker().getService("OtherService");
- * </code></pre>
+ * </pre>
  *
  * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
@@ -65,7 +65,7 @@ public abstract class TurbineBaseService
      * initialization and pass them to appropriate init() methods.
      *
      * @param data An Object to use for initialization activities.
-     * @exception InitializationException if initialization of this
+     * @throws InitializationException if initialization of this
      * class was not successful.
      */
     @Override
@@ -86,7 +86,7 @@ public abstract class TurbineBaseService
      * Performs early initialization.
      *
      * @param pipelineData A PipelineData to use for initialization activities.
-     * @exception InitializationException if initialization of this
+     * @throws InitializationException if initialization of this
      * class was not successful.
      */
     public void init(PipelineData pipelineData) throws InitializationException
@@ -101,7 +101,7 @@ public abstract class TurbineBaseService
      * expects was not received, you can use late initialization to
      * throw an exception and complain.
      *
-     * @exception InitializationException, if initialization of this
+     * @throws InitializationException if initialization of this
      * class was not successful.
      */
     @Override

@@ -53,7 +53,7 @@ public class ScheduledJobLoader
      *
      * @param job The JobEntry.
      * @param name Name of object that will execute the job.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     public void exec(JobEntry job, String name)
             throws Exception
@@ -74,7 +74,7 @@ public class ScheduledJobLoader
      *
      * @param pipelineData Turbine information.
      * @param name Name of object that will execute the job.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      * @deprecated
      */
     @Deprecated
@@ -91,7 +91,7 @@ public class ScheduledJobLoader
      *
      * @param name Name of object instance.
      * @return A ScheduledJob with the specified name, or null.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public ScheduledJob getAssembler(String name)
