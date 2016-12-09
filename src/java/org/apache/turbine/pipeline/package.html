@@ -25,9 +25,9 @@
 <body>
 
 <p>
-  The Turbine processing pipeline is modelled after the pipeline found
+  The Turbine processing pipeline is modeled after the pipeline found
   in Tomcat 4.0.1 (Catalina), and after the module architecture found
-  in Apache httpd.  It is extensionable both laterally and
+  in Apache httpd.  It is extensible both laterally and
   vertically via Valve additions and default Valve implementations
   (respectively).  Even the semantics of the default Turbine
   Pipeline (ClassicPipeline) can be changed by replacing or extending
@@ -38,24 +38,21 @@
   As with Catalina, Turbine's Pipeline and Valve configuration is
   setup via XML:
 
-  <blockquote><code><pre>
-
-  <pipeline>
-    <class>org.apache.turbine.pipeline.ClassicPipeline</class>
-    <valves>
-      <valve>
-        <class>org.apache.turbine.pipeline.Valve1</class>
-      </valve>
-      <valve>
-        <class>org.apache.turbine.pipeline.Valve2</class>
-      </valve>
-      <valve>
-        <class>org.apache.turbine.pipeline.Valve3</class>
-      </valve>
-    </valves>
-  </pipeline>
-
-  </pre></code></blockquote>
+  <code>
+	&lt;pipeline name="default"&gt;
+	  &lt;valves&gt;
+	    &lt;valve&gt;org.apache.turbine.pipeline.DetermineActionValve&lt;/valve&gt;
+	    &lt;valve&gt;org.apache.turbine.pipeline.DetermineTargetValve&lt;/valve&gt;
+	    &lt;valve&gt;org.apache.turbine.pipeline.DefaultSessionTimeoutValve&lt;/valve&gt;
+	    &lt;valve&gt;org.apache.turbine.pipeline.DefaultLoginValve&lt;/valve&gt;
+	    &lt;valve&gt;org.apache.turbine.pipeline.DefaultSessionValidationValve&lt;/valve&gt;
+	    &lt;valve&gt;org.apache.turbine.pipeline.DefaultACLCreationValve&lt;/valve&gt;
+	    &lt;valve&gt;org.apache.turbine.pipeline.ExecutePageValve&lt;/valve&gt;
+	    &lt;valve&gt;org.apache.turbine.pipeline.CleanUpValve&lt;/valve&gt;
+	    &lt;valve&gt;org.apache.turbine.pipeline.DetermineRedirectRequestedValve&lt;/valve&gt;
+	  &lt;/valves&gt;
+	&lt;/pipeline&gt;
+  </code>
 </p>
 
 <p>
