@@ -1,28 +1,6 @@
 package org.apache.turbine.util;
 
 
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -52,14 +30,10 @@ public abstract class ObjectUtils
 	public static byte[] serializeMap(Map<String, Object> map)
             throws Exception
     {
-        String key = null;
-        Object value = null;
         byte[] byteArray = null;
 
-        for (Map.Entry<String, Object> entry : map.entrySet())
+        for (Object value : map.values())
         {
-            key = entry.getKey();
-            value = entry.getValue();
             if (! (value instanceof Serializable))
             {
                 throw new Exception("Could not serialize, value is not serializable:" + value);
@@ -67,18 +41,15 @@ public abstract class ObjectUtils
         }
 
         ByteArrayOutputStream baos = null;
-        BufferedOutputStream bos = null;
         ObjectOutputStream out = null;
         try
         {
             // These objects are closed in the finally.
-            baos = new ByteArrayOutputStream();
-            bos  = new BufferedOutputStream(baos);
-            out  = new ObjectOutputStream(bos);
+            baos = new ByteArrayOutputStream(1024);
+            out  = new ObjectOutputStream(baos);
 
             out.writeObject(map);
             out.flush();
-            bos.flush();
 
             byteArray = baos.toByteArray();
         }
@@ -88,15 +59,12 @@ public abstract class ObjectUtils
             {
                 out.close();
             }
-            if (bos != null)
-            {
-                bos.close();
-            }
             if (baos != null)
             {
                 baos.close();
             }
         }
+
         return byteArray;
     }
 
@@ -117,11 +85,10 @@ public abstract class ObjectUtils
             // These streams are closed in finally.
             ObjectInputStream in = null;
             ByteArrayInputStream bin = new ByteArrayInputStream(objectData);
-            BufferedInputStream bufin = new BufferedInputStream(bin);
 
             try
             {
-                in = new ObjectInputStream(bufin);
+                in = new ObjectInputStream(bin);
 
                 // If objectData has not been initialized, an
                 // exception will occur.
@@ -139,8 +106,6 @@ public abstract class ObjectUtils
                     {
                         in.close();
                     }
-
-                    bufin.close();
                     bin.close();
                 }
                 catch (IOException e)
