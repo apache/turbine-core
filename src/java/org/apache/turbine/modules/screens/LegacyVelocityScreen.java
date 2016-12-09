@@ -40,7 +40,7 @@ public class LegacyVelocityScreen
      *
      * @param data Turbine information.
      * @param context Context for web pages.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected void doBuildTemplate(RunData data, Context context)
             throws Exception
@@ -53,7 +53,7 @@ public class LegacyVelocityScreen
      *
      * @param pipelineData Turbine information.
      * @param context Context for web pages.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     protected void doBuildTemplate(PipelineData pipelineData,

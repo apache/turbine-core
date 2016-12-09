@@ -38,13 +38,13 @@ import org.apache.turbine.services.TurbineBaseService;
  * be configured via your web application's <code>web.xml</code>
  * deployment descriptor as follows:
  *
- * <blockquote><code><pre>
+ * <pre>
  * &lt;listener&gt;
  *   &lt;listener-class&gt;
  *     org.apache.turbine.session.SessionListener
  *   &lt;/listener-class&gt;
  * &lt;/listener&gt;
- * </pre></code></blockquote>
+ * </pre>
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>

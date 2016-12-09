@@ -169,7 +169,7 @@ public class QuartzSchedulerService
      *
      * @param oid The int id for the job.
      * @return A JobEntry.
-     * @exception TurbineException job could not be retrieved.
+     * @throws TurbineException job could not be retrieved.
      */
     @Override
     public JobEntry getJob(int oid)
@@ -212,7 +212,7 @@ public class QuartzSchedulerService
      * Remove a job from the queue.
      *
      * @param je A JobEntry with the job to remove.
-     * @exception TurbineException job could not be removed
+     * @throws TurbineException job could not be removed
      */
     @Override
     public void removeJob(JobEntry je)

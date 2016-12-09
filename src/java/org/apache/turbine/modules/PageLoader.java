@@ -52,7 +52,7 @@ public class PageLoader
      *
      * @param pipelineData Turbine information.
      * @param name Name of object that will execute the page.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public void exec(PipelineData pipelineData, String name)
@@ -68,7 +68,7 @@ public class PageLoader
      *
      * @param name Name of object instance.
      * @return A Screen with the specified name, or null.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public Page getAssembler(String name)

@@ -63,7 +63,7 @@ public class VelocityNavigation
      *
      * @param pipelineData Turbine information.
      * @param context Context for web pages.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected void doBuildTemplate(PipelineData pipelineData,
                                    Context context)
@@ -78,7 +78,7 @@ public class VelocityNavigation
      * context in the parameter list.
      *
      * @param pipelineData Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     protected void doBuildTemplate(PipelineData pipelineData)
@@ -92,7 +92,7 @@ public class VelocityNavigation
      *
      * @param pipelineData Turbine information.
      * @return the content of the navigation module
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public String buildTemplate(PipelineData pipelineData)

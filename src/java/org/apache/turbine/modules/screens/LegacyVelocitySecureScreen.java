@@ -39,7 +39,7 @@ public abstract class LegacyVelocitySecureScreen
      *
      * @param data Turbine information.
      * @param context Context for web pages.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     protected abstract void doBuildTemplate(RunData data, Context context)
@@ -50,7 +50,7 @@ public abstract class LegacyVelocitySecureScreen
      * perform a security check first.
      *
      * @param pipelineData Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     protected void doBuildTemplate(PipelineData pipelineData)
@@ -70,7 +70,7 @@ public abstract class LegacyVelocitySecureScreen
      *
      * @param data Turbine information.
      * @return True if the user is authorized to access the screen.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected abstract boolean isAuthorized(RunData data)
             throws Exception;

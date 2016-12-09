@@ -48,7 +48,7 @@ public interface RunDataApplicationTool
      * <code>tools.per.request.refresh</code> is set to <code>true</code>
      * in <code>TurbineResources.properties</code>.  You will then be able to
      * get a <code>User</code> object from the instance of
-     * <code>RunData</object>.
+     * <code>RunData</code>.
      *
      * @param data initialization data
      */

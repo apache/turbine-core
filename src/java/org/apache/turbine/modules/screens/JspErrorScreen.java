@@ -39,7 +39,7 @@ public class JspErrorScreen
 
     /**
      * @param pipelineData Turbine information.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     protected void doBuildTemplate(PipelineData pipelineData)

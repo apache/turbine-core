@@ -85,7 +85,7 @@ public class AccessController
      * session.
      *
      * @param pipelineData Turbine information.
-     * @exception FulcrumSecurityException problem with the security service.
+     * @throws FulcrumSecurityException problem with the security service.
      */
     @Override
     public void doPerform(PipelineData pipelineData)

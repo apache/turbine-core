@@ -63,7 +63,7 @@ public abstract class Screen
      * RunData.
      * @param pipelineData Turbine information.
      * @return the content of the screen
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     protected abstract String doBuild(PipelineData pipelineData) throws Exception;
 
@@ -74,7 +74,7 @@ public abstract class Screen
      *
      * @param pipelineData Turbine information.
      * @return the content of the screen
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     protected String build(PipelineData pipelineData)
         throws Exception

@@ -85,6 +85,8 @@ public class DefaultLoginValve
      * string, and access control.
      *
      * @param pipelineData The run-time data.
+     *
+     * @throws Exception if executing the action fails
      */
     protected void process(PipelineData pipelineData)
         throws Exception
@@ -145,15 +147,13 @@ public class DefaultLoginValve
             data.setAction(null);
         }
     }
+
     /**
      * cleans the Velocity Context if available.
      *
      * @param data A RunData Object
-     *
-     * @throws Exception A problem while cleaning out the Template Context occurred.
      */
     private void cleanupTemplateContext(RunData data)
-    throws Exception
     {
         // This is Velocity specific and shouldn't be done here.
         // But this is a band aid until we get real listeners

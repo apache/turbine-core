@@ -59,6 +59,9 @@ public interface PipelineData
      *
      * @param key the key class
      * @param innerKey the key into the value map
+     *
+     * @param <T> the type of the inner key
+     *
      * @return the inner value or null if no such keys exist
      */
     public <T> T get(Class<?> key, Class<T> innerKey);

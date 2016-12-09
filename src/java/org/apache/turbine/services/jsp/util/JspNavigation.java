@@ -34,9 +34,9 @@ import org.apache.turbine.util.RunData;
  * set the navigation template they'd like to place in their templates.<br>
  * Here's how it's used in a JSP template:<br>
  * <code>
- * <%useBean id="navigation" class="JspNavigation" scope="request"/%>
+ * &lt;%useBean id="navigation" class="JspNavigation" scope="request" %&gt;
  * ...
- * <%= navigation.setTemplate("admin_navigation.jsp") %>
+ * &lt;%= navigation.setTemplate("admin_navigation.jsp") %&gt;
  * </code>
  * @author <a href="john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>

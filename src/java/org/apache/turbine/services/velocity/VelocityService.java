@@ -70,7 +70,7 @@ public interface VelocityService
      * @param context A Context.
      * @param template A String with the filename of the template.
      * @return The process template as a String.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     String handleRequest(Context context, String template)
             throws Exception;

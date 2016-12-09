@@ -41,7 +41,7 @@ public class VelocityErrorScreen
      *
      * @param pipelineData Turbine information.
      * @param context Context for web pages.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     protected void doBuildTemplate(PipelineData pipelineData, Context context)

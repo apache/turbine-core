@@ -66,7 +66,7 @@ public abstract class GenericLoader<T extends Assembler>
      * set.
      * @param pipelineData the Turbine request
      * @param name the name of the assembler module
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     public abstract void exec(PipelineData pipelineData, String name)
             throws Exception;
@@ -149,7 +149,7 @@ public abstract class GenericLoader<T extends Assembler>
      * @param type Type of the assembler.
      * @param name Name of object instance.
      * @return A Screen with the specified name, or null.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     protected T getAssembler(Class<T> type, String name)
         throws Exception

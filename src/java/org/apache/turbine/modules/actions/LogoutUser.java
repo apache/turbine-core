@@ -69,7 +69,7 @@ public class LogoutUser
      * for a logged out (read not-logged-in) user.
      *
      * @param pipelineData Turbine information.
-     * @exception FulcrumSecurityException a problem occurred in the security
+     * @throws FulcrumSecurityException a problem occurred in the security
      *            service.
      */
     @Override

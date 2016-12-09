@@ -86,8 +86,8 @@ public interface Valve
      * @param context The valve context used to invoke the next valve
      *  in the current processing pipeline
      *
-     * @exception IOException Thrown by a subsequent Valve.
-     * @exception TurbineException Thrown by a subsequent Valve.
+     * @throws IOException Thrown by a subsequent Valve.
+     * @throws TurbineException Thrown by a subsequent Valve.
      */
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException;

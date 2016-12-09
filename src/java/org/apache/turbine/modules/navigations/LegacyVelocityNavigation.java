@@ -42,7 +42,7 @@ public class LegacyVelocityNavigation
      *
      * @param data Turbine information.
      * @param context Context for web pages.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected void doBuildTemplate(RunData data, Context context)
             throws Exception

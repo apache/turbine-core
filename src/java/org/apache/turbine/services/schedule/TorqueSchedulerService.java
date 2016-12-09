@@ -87,7 +87,7 @@ public class TorqueSchedulerService extends AbstractSchedulerService
      * @param oid
      *            The int id for the job.
      * @return A JobEntry.
-     * @exception TurbineException
+     * @throws TurbineException
      *                job could not be retrieved.
      */
     @Override
@@ -109,7 +109,7 @@ public class TorqueSchedulerService extends AbstractSchedulerService
      *
      * @param je
      *            A JobEntry with the job to remove.
-     * @exception TurbineException
+     * @throws TurbineException
      *                job could not be removed
      */
     @Override

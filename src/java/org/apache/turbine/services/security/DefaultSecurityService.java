@@ -459,9 +459,9 @@ public class DefaultSecurityService
      * LastLogin, AccessCounter, persistent pull tools, and any data stored
      * in the permData hashmap that is not mapped to a column will be saved.
      *
-     * @exception UnknownEntityException if the user's account does not
+     * @throws UnknownEntityException if the user's account does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
+     * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
     @Override

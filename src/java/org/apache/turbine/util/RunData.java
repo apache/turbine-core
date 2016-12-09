@@ -109,6 +109,8 @@ public interface RunData extends PipelineData
      * Gets the access control list.
      *
      * @return the access control list.
+     *
+     * @param <A> a type extending {@link AccessControlList}
      */
     <A extends AccessControlList> A getACL();
 
@@ -324,6 +326,8 @@ public interface RunData extends PipelineData
     /**
      * Gets the user.
      *
+     * @param <T> a type extending {@link User}
+     *
      * @return a user.
      */
     <T extends User> T getUser();
@@ -332,6 +336,8 @@ public interface RunData extends PipelineData
      * Sets the user.
      *
      * @param user a user.
+     *
+     * @param <T> a type extending {@link User}
      */
     <T extends User> void setUser(T user);
 
@@ -340,6 +346,8 @@ public interface RunData extends PipelineData
      * not exist, it returns null.
      *
      * @return a user.
+     *
+     * @param <T> a type extending {@link User}
      */
     <T extends User> T getUserFromSession();
 
@@ -364,7 +372,7 @@ public interface RunData extends PipelineData
      * will set the print writer via the response.
      *
      * @return a print writer.
-     * @throws IOException
+     * @throws IOException on failure getting the PrintWriter
      */
     PrintWriter getOut()
             throws IOException;

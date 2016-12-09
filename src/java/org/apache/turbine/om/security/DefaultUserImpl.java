@@ -726,7 +726,7 @@ public class DefaultUserImpl implements User, TurbineUserDelegate
     /**
      * Updates the last login date in the database.
      *
-     * @exception Exception A generic exception.
+     * @throws Exception A generic exception.
      */
     @Override
     public void updateLastLogin()

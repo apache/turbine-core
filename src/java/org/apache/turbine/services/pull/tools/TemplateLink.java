@@ -479,18 +479,15 @@ public class TemplateLink
      * encoded using HttpServletResponse.encodeUrl(). The resulting
      * URL is absolute; it starts with http/https...
      *
-     * <p>
-     * <code><pre>
+     * <pre>
      * TemplateURI tui = new TemplateURI (data, "UserScreen");
      * tui.addPathInfo("user","jon");
      * tui.getAbsoluteLink();
-     * </pre></code>
+     * </pre>
      *
-     *  The above call to absoluteLink() would return the String:
-     *
+     * The above call to absoluteLink() would return the String:
      * <p>
      * http://www.server.com/servlets/Turbine/screen/UserScreen/user/jon
-     *
      * <p>
      * After rendering the URI, it clears the
      * pathInfo and QueryString portions of the TemplateURI. So you can
@@ -517,18 +514,15 @@ public class TemplateLink
      * encoded using HttpServletResponse.encodeUrl(). The resulting
      * URL is relative to the webserver root.
      *
-     * <p>
-     * <code><pre>
+     * <pre>
      * TemplateURI tui = new TemplateURI (data, "UserScreen");
      * tui.addPathInfo("user","jon");
      * tui.getRelativeLink();
-     * </pre></code>
+     * </pre>
      *
-     *  The above call to absoluteLink() would return the String:
-     *
+     * The above call to absoluteLink() would return the String:
      * <p>
      * /servlets/Turbine/screen/UserScreen/user/jon
-     *
      * <p>
      * After rendering the URI, it clears the
      * pathInfo and QueryString portions of the TemplateURI. So you can

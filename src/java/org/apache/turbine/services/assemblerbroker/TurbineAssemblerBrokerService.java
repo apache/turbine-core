@@ -75,6 +75,9 @@ public class TurbineAssemblerBrokerService
      * Get a list of AssemblerFactories of a certain type
      *
      * @param type type of Assembler
+     *
+     * @param <T> the type of the assembler
+     *
      * @return list of AssemblerFactories
      */
     @SuppressWarnings("unchecked")
@@ -91,7 +94,7 @@ public class TurbineAssemblerBrokerService
      * Utility method to register all factories for a given type.
      *
      * @param type type of Assembler
-     * @throws TurbineException
+     * @throws TurbineException if the factory for the given type could not be registered
      */
     private void registerFactories(String type)
         throws TurbineException
@@ -133,7 +136,7 @@ public class TurbineAssemblerBrokerService
      * Initializes the AssemblerBroker and loads the AssemblerFactory
      * classes registered in TurbineResources.Properties.
      *
-     * @throws InitializationException
+     * @throws InitializationException if problems occur while registering the factories
      */
     @SuppressWarnings("unchecked") // as long as commons-collections does not use generics
     @Override
@@ -183,7 +186,11 @@ public class TurbineAssemblerBrokerService
      * Register a new AssemblerFactory
      *
      * @param factory factory to register
+     *
+     * @param <T> the type of the assembler
+     *
      */
+    @Override
     public <T extends Assembler> void registerFactory(AssemblerFactory<T> factory)
     {
         getFactoryGroup(factory.getManagedClass()).add(factory);
@@ -197,9 +204,13 @@ public class TurbineAssemblerBrokerService
      *
      * @param type type of Assembler
      * @param name name of the requested Assembler
+     *
+     * @param <T> the type of the assembler
+     *
      * @return an Assembler or null
-     * @throws TurbineException
+     * @throws TurbineException if the assembler could not be loaded
      */
+    @Override
     @SuppressWarnings("unchecked")
     public <T extends Assembler> T getAssembler(Class<T> type, String name)
         throws TurbineException
@@ -252,8 +263,12 @@ public class TurbineAssemblerBrokerService
      * Get a Loader for the given assembler type
      *
      * @param type The Type of the Assembler
+     *
+     * @param <T> the type of the assembler
+     *
      * @return A Loader instance for the requested type
      */
+    @Override
     @SuppressWarnings("unchecked")
     public <T extends Assembler> Loader<T> getLoader(Class<T> type)
     {

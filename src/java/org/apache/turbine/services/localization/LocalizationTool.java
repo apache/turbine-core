@@ -103,6 +103,8 @@ public class LocalizationTool implements ApplicationTool
      *
      * @param data The inputs passed from {@link #init(Object)}.
      * (ignored by this implementation).
+     *
+     * @return the name of the bundle to use
      */
     protected String getBundleName(Object data)
     {

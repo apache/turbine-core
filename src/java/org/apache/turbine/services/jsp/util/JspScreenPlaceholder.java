@@ -36,10 +36,10 @@ import org.apache.turbine.util.RunData;
  * place the screen template within the layout.<br>
  * Here's how it's used in a JSP template:<br>
  * <code>
- * <%useBean id="screen_placeholder" class="JspScreenPlaceholder" scope="request"/%>
+ * &lt;%useBean id="screen_placeholder" class="JspScreenPlaceholder" scope="request" %&gt;
  * ...
- * <%= screen_placeholder %>
- *</code>
+ * &lt;%= screen_placeholder %&gt;
+ * </code>
  *
  * @author <a href="john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>

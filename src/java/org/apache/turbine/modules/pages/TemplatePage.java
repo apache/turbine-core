@@ -91,7 +91,7 @@ public class TemplatePage
      * corresponding class modules.
      *
      * @param pipelineData Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     protected void doBuildAfterAction(PipelineData pipelineData)

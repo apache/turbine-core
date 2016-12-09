@@ -59,7 +59,7 @@ public class ScreenLoader
      * @param pipelineData Turbine information.
      * @param name Name of object that will execute the screen.
      * @return the output of the screen module
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     public String eval(PipelineData pipelineData, String name)
             throws Exception
@@ -75,7 +75,7 @@ public class ScreenLoader
      *
      * @param pipelineData Turbine information.
      * @param name Name of object that will execute the screen.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public void exec(PipelineData pipelineData, String name)
@@ -90,7 +90,7 @@ public class ScreenLoader
      *
      * @param name Name of object instance.
      * @return A Screen with the specified name, or null.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public Screen getAssembler(String name)

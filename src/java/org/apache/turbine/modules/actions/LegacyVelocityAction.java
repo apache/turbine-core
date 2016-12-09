@@ -65,7 +65,7 @@ public abstract class LegacyVelocityAction extends VelocityAction
      * doPerform() method instead.
      *
      * @param pipelineData A Turbine RunData object.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public void doPerform(PipelineData pipelineData)

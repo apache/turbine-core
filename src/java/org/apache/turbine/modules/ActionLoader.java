@@ -52,7 +52,7 @@ public class ActionLoader
      *
      * @param pipelineData Turbine information.
      * @param name Name of object that will execute the action.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public void exec(PipelineData pipelineData, String name)
@@ -67,7 +67,7 @@ public class ActionLoader
      *
      * @param name Name of object instance.
      * @return An Action with the specified name, or null.
-     * @exception Exception a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     public Action getAssembler(String name)

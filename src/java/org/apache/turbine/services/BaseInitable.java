@@ -81,7 +81,7 @@ public class BaseInitable
      * activities.
      *
      * @param data An Object to use for initialization activities.
-     * @exception InitializationException Initialization of this
+     * @throws InitializationException Initialization of this
      * class was not successful.
      */
     @Override
@@ -97,7 +97,7 @@ public class BaseInitable
      *
      * Late initialization of a BaseInitable is always successful.
      *
-     * @exception InitializationException Initialization of this
+     * @throws InitializationException Initialization of this
      * class was not successful.
      */
     @Override

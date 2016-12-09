@@ -31,8 +31,8 @@ import org.apache.turbine.pipeline.PipelineData;
  *
  * <p>Typically you would extend this class and override the doOutput() method
  * to use TurbineJsonRpc to register the POJOs that will provide the functions
- * you are making available via JSON-RPC.  Use JSONScreen if you <p>do not</b>
- * need the user to be logged in prior to executing the functions you provide.
+ * you are making available via JSON-RPC.  Use JSONScreen if you <b>do not</b>
+ * need the user to be logged in prior to executing the functions you provide.</p>
  *
  * <p>Here is an example from a superclass:
  * <code>
@@ -51,7 +51,7 @@ import org.apache.turbine.pipeline.PipelineData;
  *
  *     super.doOutput(data);
  * }
- * </code>
+ * </code></p>
  *
  * <p>The class MyFunctions would be something like:
  * <code>
@@ -69,7 +69,7 @@ import org.apache.turbine.pipeline.PipelineData;
  *         return "Client " + clientParameter + " says Hello World to " + name;
  *     }
  * }
- * </code>
+ * </code></p>
  *
  * @author <a href="mailto:seade@policypoint.net">Scott Eade</a>
  * @version $Id$
@@ -81,7 +81,7 @@ public abstract class JSONSecureScreen extends JSONScreen
      * check prior to producing the output.
      *
      * @param pipelineData Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     @Override
     protected void doOutput(PipelineData pipelineData) throws Exception
@@ -97,7 +97,7 @@ public abstract class JSONSecureScreen extends JSONScreen
      *
      * @param pipelineData Turbine information.
      * @return <code>true</code> if the user is authorized to access the screen.
-     * @exception Exception A generic exception.
+     * @throws Exception A generic exception.
      */
     protected abstract boolean isAuthorized(PipelineData pipelineData)
             throws Exception;
