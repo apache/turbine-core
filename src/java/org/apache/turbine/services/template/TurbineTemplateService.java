@@ -792,7 +792,7 @@ public class TurbineTemplateService
             try
             {
     		    FactoryService factory = (FactoryService)TurbineServices.getInstance().getService(FactoryService.ROLE);
-    		    tm = (Mapper) factory.getInstance(mapperClass);
+    		    tm = factory.getInstance(mapperClass);
             }
             catch (FactoryException e)
             {
