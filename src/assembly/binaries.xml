@@ -28,7 +28,7 @@
   <includeSiteDirectory>true</includeSiteDirectory>
   <dependencySets>
     <dependencySet>
-      <outputDirectory>/lib</outputDirectory>
+      <outputDirectory>lib</outputDirectory>
       <useProjectArtifact>false</useProjectArtifact>
       <scope>runtime</scope>
     </dependencySet>
@@ -36,14 +36,14 @@
   <fileSets>
     <fileSet>
       <directory>${project.basedir}</directory>
-      <outputDirectory>/</outputDirectory>
       <includes>
         <include>README*</include>
+        <include>RELEASE-NOTES*</include>
       </includes>
     </fileSet>
     <fileSet>
       <directory>${project.build.directory}/maven-shared-archive-resources/META-INF</directory>
-      <outputDirectory>/</outputDirectory>
+      <outputDirectory></outputDirectory>
       <includes>
         <include>LICENSE*</include>
         <include>NOTICE*</include>
@@ -51,21 +51,21 @@
     </fileSet>
     <fileSet>
       <directory>${project.build.directory}</directory>
-      <outputDirectory>/</outputDirectory>
+      <outputDirectory></outputDirectory>
       <includes>
         <include>*.jar</include>
       </includes>
     </fileSet>
     <fileSet>
       <directory>${project.build.directory}/generated-sql/torque</directory>
-      <outputDirectory>/sql</outputDirectory>
+      <outputDirectory>sql</outputDirectory>
       <includes>
         <include>**/*.sql</include>
       </includes>
     </fileSet>
     <fileSet>
       <directory>${project.basedir}/conf</directory>
-      <outputDirectory>/conf</outputDirectory>
+      <outputDirectory>conf</outputDirectory>
       <includes>
         <include>componentConfiguration.xml</include>
         <include>roleConfiguration.xml</include>
