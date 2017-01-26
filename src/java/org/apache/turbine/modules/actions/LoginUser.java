@@ -32,6 +32,7 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * This is where we authenticate the user logging into the system
@@ -96,6 +97,11 @@ public class LoginUser
 
         try
         {
+        	if (username.equals(security.getAnonymousUser().getName()))
+            {
+                throw new TurbineException("Anonymous user cannot login");
+            }
+        	
             // Authenticate the user and get the object.
             User user = security.getAuthenticatedUser(username, password);
 
