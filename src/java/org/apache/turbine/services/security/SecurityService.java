@@ -86,19 +86,7 @@ public interface SecurityService
      */
     String USER_WRAPPER_DEFAULT
             = DefaultUserImpl.class.getName();
-//    
-//    /**
-//     * the key within services's properties for user implementation
-//     * classname (user.class)
-//     */
-//    String USER_KEY = "user.class";
-//    
-//    /**
-//     * the default implementation of {@link TurbineUser} interface
-//     * (org.apache.turbine.om.security.DefaultUserImpl)
-//     */
-//    String USER_DEFAULT
-//            = TurbineUserImpl.class.getName();
+
 
     /*-----------------------------------------------------------------------
       Management of User objects
