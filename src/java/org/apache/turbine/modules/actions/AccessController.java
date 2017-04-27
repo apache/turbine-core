@@ -22,6 +22,7 @@ package org.apache.turbine.modules.actions;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.security.acl.AccessControlList;
+import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
 import org.apache.fulcrum.security.util.FulcrumSecurityException;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
@@ -114,6 +115,6 @@ public class AccessController
         }
 
         // Comply with Turbine 4.0 standards
-        pipelineData.get(Turbine.class).put(AccessControlList.class, data.getACL());
+        pipelineData.get(Turbine.class).put(TurbineAccessControlList.class, data.getACL());
     }
 }

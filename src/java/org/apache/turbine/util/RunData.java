@@ -119,7 +119,7 @@ public interface RunData extends PipelineData
      *
      * @param acl an access control list.
      */
-    void setACL(AccessControlList acl);
+    <A extends AccessControlList> void setACL(A acl);
 
     /**
      * Whether or not an action has been defined.
