@@ -42,6 +42,7 @@ import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.pool.Recyclable;
 import org.apache.fulcrum.security.acl.AccessControlList;
+import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
@@ -448,7 +449,7 @@ public class DefaultTurbineRunData
     public <A extends AccessControlList> A getACL()
     {
         @SuppressWarnings("unchecked")
-        A acl = (A)get(Turbine.class, AccessControlList.class);
+        A acl = (A)get(Turbine.class, TurbineAccessControlList.class);
         return acl;
     }
 
@@ -460,7 +461,7 @@ public class DefaultTurbineRunData
     @Override
     public void setACL(AccessControlList acl)
     {
-        get(Turbine.class).put(AccessControlList.class, acl);
+        get(Turbine.class).put(TurbineAccessControlList.class, acl);
     }
 
     /**
