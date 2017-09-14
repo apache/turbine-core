@@ -50,7 +50,7 @@
         Improve performance of AnnotationProcessor by caching annotations. Add performance test.
       </action>
       <action type="update" dev="tv">
-        Replace synchronized array in TurbinePipeline with CopyOnWriteList (20% faster). Add performance test.
+        Replace synchronized array in TurbinePipeline with CopyOnWriteArrayList (20% faster). Add performance test.
       </action>
       <action type="update" dev="tv">
         Replace several synchronized maps with ConcurrentMaps
