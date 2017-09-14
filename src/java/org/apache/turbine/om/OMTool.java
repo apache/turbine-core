@@ -35,7 +35,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
  */
 public class OMTool implements ApplicationTool, Recyclable
 {
-    protected ConcurrentHashMap<String, Object> omMap;
+    protected ConcurrentMap<String, Object> omMap;
 
     // note the following could be a static attribute to reduce memory
     // footprint. Might require a service to front load the

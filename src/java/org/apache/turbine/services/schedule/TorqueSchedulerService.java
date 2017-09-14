@@ -32,7 +32,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id: TorqueSchedulerService.java 534527 2007-05-02 16:10:59Z tv $
  *
- * @deprecated Use QuartzSchedulerService instead
+ * @deprecated Use {@link QuartzSchedulerService} instead
  */
 @Deprecated
 public class TorqueSchedulerService extends AbstractSchedulerService
