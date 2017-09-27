@@ -504,6 +504,25 @@
     </testResources>
     
     <plugins>
+      <!-- run optionally, use not as reporting plugin, as it exposes file paths to artifacts 
+        mvn org.owasp:dependency-check-maven:check 
+        check each possible vulnerability carefully, find more info about how to read, false positives et al. here: https://jeremylong.github.io/DependencyCheck/dependency-check-maven/plugin-info.html
+      -->
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>2.1.1</version> 
+        <executions>
+            <execution>
+                <goals>
+                    <goal>check</goal>
+                </goals>
+            </execution>
+        </executions>
+        <!--configuration> 
+           <suppressionFiles>true</suppressionFiles>
+        </configuration--> 
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -820,7 +839,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-email</artifactId>
-      <version>1.4</version>
+      <version>1.5</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -946,6 +965,7 @@
       <version>1.1.0</version>
     </dependency>
     <dependency>
+      <!-- TODO update to 2.7.1, because of CVE-2016-4000 --> 
       <groupId>org.python</groupId>
       <artifactId>jython</artifactId>
       <version>2.7.0</version>
@@ -956,24 +976,11 @@
       <artifactId>jabsorb</artifactId>
       <version>1.3.2</version>
       <optional>true</optional>
-      <!-- exclude old versions -->
+      <!-- exclude old versions: org.slf4j:slf4j-jdk14,slf4j-api,(renamed)cl104-over-slf4j,org.mortbay.jetty:jsp-2.1, commons-httpclient:commons-httpclient -->
       <exclusions>
         <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-        </exclusion>
-        <exclusion>
-           <groupId>org.slf4j</groupId>
-           <artifactId>slf4j-api</artifactId>
-        </exclusion>
-        <!--  renamed -->
-        <exclusion>
-           <groupId>org.slf4j</groupId>
-           <artifactId>jcl104-over-slf4j</artifactId>
-        </exclusion>
-        <exclusion>
-           <groupId>org.mortbay.jetty</groupId>
-           <artifactId>jsp-2.1</artifactId>
+          <artifactId>*</artifactId>
+          <groupId>*</groupId>
         </exclusion>
       </exclusions>
     </dependency>
