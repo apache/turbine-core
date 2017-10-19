@@ -29,7 +29,7 @@
   <bannerRight>
     <src>/images/logo.gif</src>
   </bannerRight>
-  
+
   <body>
     <menu name="General Information">
       <item name="Overview"              href="/index.html"/>

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-   Licensed to the Apache Software Foundation (ASF) under one or more
-   contributor license agreements.  See the NOTICE file distributed with
-   this work for additional information regarding copyright ownership.
-   The ASF licenses this file to You under the Apache License, Version 2.0
-   (the "License"); you may not use this file except in compliance with
-   the License.  You may obtain a copy of the License at
+   http://www.apache.org/licenses/LICENSE-2.0
 
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -33,9 +33,9 @@
     can also be used independently of the web portion of Turbine as
     well. In other words, we strive to make portions of Turbine easily
     available for use in other applications.</description>
-    
+
   <url>http://turbine.apache.org/${turbine.site.path}</url>
-  
+
   <inceptionYear>2000</inceptionYear>
 
   <developers>
@@ -470,7 +470,7 @@
       <url />
       <organization />
       <timezone />
-    </contributor>    
+    </contributor>
   </contributors>
 
   <scm>
@@ -492,7 +492,7 @@
         </includes>
       </resource>
     </resources>
-    
+
     <testResources>
       <testResource>
         <targetPath />
@@ -502,16 +502,16 @@
         </includes>
       </testResource>
     </testResources>
-    
+
     <plugins>
-      <!-- run optionally, use not as reporting plugin, as it exposes file paths to artifacts 
-        mvn org.owasp:dependency-check-maven:check 
+      <!-- run optionally, use not as reporting plugin, as it exposes file paths to artifacts
+        mvn org.owasp:dependency-check-maven:check
         check each possible vulnerability carefully, find more info about how to read, false positives et al. here: https://jeremylong.github.io/DependencyCheck/dependency-check-maven/plugin-info.html
       -->
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>2.1.1</version> 
+        <version>2.1.1</version>
         <executions>
             <execution>
                 <goals>
@@ -519,9 +519,9 @@
                 </goals>
             </execution>
         </executions>
-        <!--configuration> 
+        <!--configuration>
            <suppressionFiles>true</suppressionFiles>
-        </configuration--> 
+        </configuration-->
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -538,7 +538,7 @@
         <version>4.0</version>
         <configuration>
           <targetDatabase>mysql</targetDatabase>
-          <schemaDir>src/torque/schema</schemaDir> 
+          <schemaDir>src/torque/schema</schemaDir>
         </configuration>
         <executions>
           <execution>
@@ -802,13 +802,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
-        <configuration> 
+        <configuration>
           <aggregate>false</aggregate>
-        </configuration> 
+        </configuration>
       </plugin>
     </plugins>
   </reporting>
-  
+
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -938,7 +938,7 @@
             <artifactId>avalon-logkit</artifactId>
         </exclusion>
       </exclusions>
-    </dependency> 
+    </dependency>
     <!-- using snapshot, until released -->
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
@@ -965,7 +965,7 @@
       <version>1.1.0</version>
     </dependency>
     <dependency>
-      <!-- TODO update to stable 2.7.1, because of CVE-2016-5699 --> 
+      <!-- TODO update to stable 2.7.1, because of CVE-2016-5699 -->
       <groupId>org.python</groupId>
       <artifactId>jython</artifactId>
       <version>2.7.0</version>
@@ -1044,7 +1044,7 @@
 			<scope>test</scope>
 		</dependency>
   </dependencies>
-  
+
   <profiles>
     <profile>
       <id>apache-release</id>
@@ -1090,16 +1090,16 @@
                 </configuration>
               </execution>
             </executions>
-          </plugin>      
+          </plugin>
         </plugins>
       </build>
-    </profile>    
+    </profile>
   </profiles>
 
   <properties>
-    <!-- TODO: Change for release -->  
+    <!-- TODO: Change for release -->
     <turbine.site.path>turbine/development/turbine-4.0</turbine.site.path>
     <slf4j.version>1.7.25</slf4j.version>
   </properties>
-  
+
 </project>

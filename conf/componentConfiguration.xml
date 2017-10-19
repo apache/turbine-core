@@ -59,7 +59,7 @@
         <automaticUpload>true</automaticUpload>
     </parser>
 
-    <!-- These components belong to the Fulcrum-Security services -->        
+    <!-- These components belong to the Fulcrum-Security services -->
     <securityService/>
     <authenticator/>
     <modelManager/>

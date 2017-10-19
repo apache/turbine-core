@@ -1,12 +1,5 @@
 package org.apache.turbine.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import org.apache.turbine.modules.Assembler;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -25,6 +18,14 @@ import org.apache.turbine.modules.Assembler;
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import org.apache.turbine.modules.Assembler;
+
 
 /**
  * Annotation to mark fields in modules that require a loader to be injected

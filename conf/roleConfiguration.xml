@@ -65,23 +65,23 @@
         name="org.apache.fulcrum.factory.FactoryService"
         shorthand="factory"
         default-class="org.apache.fulcrum.factory.DefaultFactoryService"/>
-        
+
     <role
         name="org.apache.fulcrum.pool.PoolService"
         shorthand="pool"
         default-class="org.apache.fulcrum.pool.DefaultPoolService"/>
-        
+
     <role
         name="org.apache.fulcrum.parser.ParserService"
         shorthand="parser"
         default-class="org.apache.fulcrum.parser.DefaultParserService"/>
-        
+
     <role
         name="org.apache.fulcrum.xslt.XSLTService"
         shorthand="xslt"
         default-class="org.apache.fulcrum.xslt.DefaultXSLTService"/>
 
-    <!-- These components belong to the Fulcrum-Security services -->        
+    <!-- These components belong to the Fulcrum-Security services -->
     <role
         name="org.apache.fulcrum.security.SecurityService"
         shorthand="securityService"

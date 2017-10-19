@@ -49,7 +49,7 @@ public class PathConverterTest
     private static VelocityService vs = null;
     private static String fileSeperator = System.getProperty("file.separator");
 
-    
+
     @BeforeClass
     public static void setUp() throws Exception {
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");

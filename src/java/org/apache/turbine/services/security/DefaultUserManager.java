@@ -48,11 +48,11 @@ import org.apache.turbine.util.ObjectUtils;
  *
  * The user manager wraps Fulcrum security user objects into
  * Turbine-specific ones.
- * 
- * 
- * <ol><li>either in a method with the same name (and very similar signature) 
+ *
+ *
+ * <ol><li>either in a method with the same name (and very similar signature)
  * <li>or mapped to method names as listed below:
- * 
+ *
  * <ul>
  * <li>method(s) in this manager -> Fulcrum manager method(s)
  * <li>{@link #createAccount(User, String)}createAccount -> addUser(User, String)
@@ -61,8 +61,8 @@ import org.apache.turbine.util.ObjectUtils;
  * <li>{@link #retrieve(String)} and {@link #retrieve(String, String)} -> getUser(String), getUser(String, String)
  * <li>{@link #retrieveList(Object)} ->getAllUsers()
  * <li>{@link #accountExists(String)}, {@link #accountExists(User)} -> checkExists(String), checkExists(User)
- *  
- * In this way all public methods of Fulcrum {@link TurbineUserManager} interface are used by reference of the Fulcrum delegate {@link #umDelegate} 
+ *
+ * In this way all public methods of Fulcrum {@link TurbineUserManager} interface are used by reference of the Fulcrum delegate {@link #umDelegate}
  * and wrapped by this manager.
  *
  * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>

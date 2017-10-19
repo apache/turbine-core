@@ -29,9 +29,9 @@
 <section name="Specification">
 
 <p>
-Turbine is made up of different modules which serve a specific service within 
-the Turbine framework. Five of them are used in the standard configuration. 
-In order for the reader to understand the general flow of the Turbine framework, 
+Turbine is made up of different modules which serve a specific service within
+the Turbine framework. Five of them are used in the standard configuration.
+In order for the reader to understand the general flow of the Turbine framework,
 each of these modules is explained in detail below.
 </p>
 
@@ -46,7 +46,7 @@ each of these modules is explained in detail below.
 <section name="The Pipeline">
 
 <p>
-In Turbine 4, the way a request is processed is controlled by the 
+In Turbine 4, the way a request is processed is controlled by the
 <em>Pipeline</em>. This concept has been "borrowed" from the Tomcat
 project. A pipeline consists of <em>Valves</em> which control the single
 processing steps and allow to decide which path the request is to take.
@@ -116,12 +116,12 @@ business logic.
 </p>
 
 <p>
-Sometimes it may seem to be difficult to decide which parts of an application 
+Sometimes it may seem to be difficult to decide which parts of an application
 should go to Actions and which parts go to Pages (or Screens). To help you with
 these decisions, our recommended rules of thumb are
 <ul>
   <li>
-    Screens <em>show</em> something. That is, they <em>read</em> data, for 
+    Screens <em>show</em> something. That is, they <em>read</em> data, for
     example a record from a database.
   </li>
   <li>
@@ -130,7 +130,7 @@ these decisions, our recommended rules of thumb are
   </li>
   <li>
     When an Action is finished, it should generally clean up after itself so that
-    a following Screen or other module will find the same state as if no action was 
+    a following Screen or other module will find the same state as if no action was
     performed. In the given example that would mean that the Action writes its data
     to the database and the Screen would reload it from there.
   </li>
@@ -271,10 +271,10 @@ factory that creates requested modules from java class files.
 
 <p>
 Factories are required to provide access to an instance of a Loader (see above)
-that is able to load the specific type of module they are responsible for. They 
+that is able to load the specific type of module they are responsible for. They
 can in fact implement the Loader themselves. Turbine makes no assumptions about
-a module. The wiring of modules is controlled by the valves of the pipeline 
-only. 
+a module. The wiring of modules is controlled by the valves of the pipeline
+only.
 </p>
 
 <p>

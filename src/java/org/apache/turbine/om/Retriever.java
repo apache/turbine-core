@@ -26,7 +26,7 @@ package org.apache.turbine.om;
  *
  * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
  * @version $Id$
- * 
+ *
  * @deprecated cft. deprecation comment in {@link OMTool}.
  */
 @Deprecated

@@ -52,10 +52,10 @@ import org.apache.turbine.util.RunData;
  */
 public abstract class SessionValidator extends Action
 {
-    
+
     @TurbineService
     protected SecurityService security;
-    
+
     @TurbineConfiguration( TurbineConstants.TEMPLATE_HOMEPAGE )
     protected String templateHomepage;
 
@@ -72,13 +72,13 @@ public abstract class SessionValidator extends Action
     // forms.  This can be used to prevent a user from using the
     // browsers back button and submitting stale data.
     /**
-     * 
+     *
      * @param data
-     * @param screenOnly {@link DefaultSessionValidator} 
+     * @param screenOnly {@link DefaultSessionValidator}
      */
     protected void handleFormCounterToken( RunData data, boolean screenOnly )
     {
-        if (data.getParameters().containsKey("_session_access_counter")) 
+        if (data.getParameters().containsKey("_session_access_counter"))
         {
             if (screenOnly) {
                 // See comments in screens.error.InvalidState.

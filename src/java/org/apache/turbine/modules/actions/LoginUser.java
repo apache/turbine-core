@@ -101,7 +101,7 @@ public class LoginUser
             {
                 throw new TurbineException("Anonymous user cannot login");
             }
-        	
+
             // Authenticate the user and get the object.
             User user = security.getAuthenticatedUser(username, password);
 

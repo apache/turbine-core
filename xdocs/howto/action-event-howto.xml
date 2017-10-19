@@ -58,7 +58,7 @@ public class NewUser extends VelocityAction
     @TurbineActionEvent("save")
     public void saveUser (PipelineData data, Context context) throws Exception
     {
-        // put code here to save the modified user to persistent storage 
+        // put code here to save the modified user to persistent storage
         getRunData(data).setMessage("User Saved!");
     }
 
@@ -103,7 +103,7 @@ method or button could be found.
 </p>
 
 <p>
-Because all keys processed by ParameterParser are subject to URL 
+Because all keys processed by ParameterParser are subject to URL
 case folding, (in default mode lowercase), we have
 to do some work to format the string into a method name. For example, a
 button name eventSubmit_doDelete gets converted into eventsubmit_dodelete.

@@ -25,6 +25,21 @@
 
   <body>
     <release version="4.0" date="in Subversion">
+      <action type="update" dev="gk">
+        OWASP vulnerability check
+      </action>
+      <action type="update" dev="gk">
+        Decoupling from DefaultUserImpl class by introducing a user wrapper class definition, which the UserManager uses as wrapper for Fulcrum Security and a TurbineUserDelegate marker interface.
+      </action>
+      <action type="update" dev="gk">
+        Update/Add Tests for Turbine and Fulcrum Security Service version 1.1.1 interaction / handling
+      </action>
+      <action type="update" dev="gk">
+        Using slf4j over log4j (currently version 1.7.25)
+      </action>
+      <action type="update" dev="tv">
+        Assembly bugfixes
+      </action>
       <action type="update" dev="tv">
         Replace mockobjects with Mockito
       </action>
@@ -59,7 +74,7 @@
         Add annotation processing to pull tools
       </action>
       <action type="remove" dev="tv">
-        Eventually remove all static service accessors and replace them by lookups or annotations 
+        Eventually remove all static service accessors and replace them by lookups or annotations
       </action>
     </release>
     <release version="4.0-M2" date="2015-12-21">
@@ -88,7 +103,7 @@
         Update to Torque 4.0.0
       </action>
       <action type="add" dev="tv">
-        Add Annotation @TurbineActionEvent to annotate action methods 
+        Add Annotation @TurbineActionEvent to annotate action methods
         with arbitrary event names.
       </action>
       <action type="update" dev="tv">
@@ -103,7 +118,7 @@
         Update Turbine Parent POM to version 3
       </action>
       <action type="add" dev="tv">
-        Add Annotation @TurbineLoader to inject a loader 
+        Add Annotation @TurbineLoader to inject a loader
         instance into objects.
       </action>
       <action type="update" dev="tv">
@@ -113,14 +128,14 @@
         Refactor handling of annotated fields into AnnotationProcessor.
       </action>
       <action type="add" dev="tv">
-        Add Annotation @TurbineConfiguration to inject a configuration 
+        Add Annotation @TurbineConfiguration to inject a configuration
         instance into objects.
       </action>
       <action type="fix" dev="tv">
         Fix Velocity logging.
       </action>
       <action type="update" dev="gk">
-        Reintroduce VelocityCachedLayout/Screen classes 
+        Reintroduce VelocityCachedLayout/Screen classes
       </action>
       <action type="update" dev="tv">
         Adjust site for Apache Turbine Parent POM version 2
@@ -130,7 +145,7 @@
       </action>
       <action type="add" dev="tv">
         Add Annotation @TurbineService to inject Turbine service instance into assemblers
-        such as screens, actions, navigations etc. and pipeline valves. 
+        such as screens, actions, navigations etc. and pipeline valves.
         See VelocityActionWithServiceInjection for an example.
       </action>
       <action type="add" dev="tv">
@@ -232,7 +247,7 @@
         loaders. Loaders are expected to be provided by the module factories.
       </action>
       <action type="update" dev="tv">
-        Moved the different loader caches into the AssemblerBrokerService and 
+        Moved the different loader caches into the AssemblerBrokerService and
         centralized several loader features. The loaders do no longer extend
         Hashtable.
       </action>
@@ -243,18 +258,18 @@
         without any hard-wired module types.
       </action>
       <action type="update" dev="tv">
-        Ported the class cache for JavaBaseFactory from Turbine 2.3 
+        Ported the class cache for JavaBaseFactory from Turbine 2.3
       </action>
       <action type="update" dev="tv">
         Use the transparent service lookup in all service lookups
       </action>
       <action type="update" dev="tv">
-        Initialize the locale of RunData, the ParameterParser and the CookieParser 
-        from the HttpServletRequest. Make RunData.setLocale propagate the locale 
+        Initialize the locale of RunData, the ParameterParser and the CookieParser
+        from the HttpServletRequest. Make RunData.setLocale propagate the locale
         setting to the parsers.
       </action>
       <action type="update" dev="tv" issue="TRB-39">
-        Make sure that Turbine uses the ParserService to get 
+        Make sure that Turbine uses the ParserService to get
         correctly initialized parser objects.
       </action>
       <action type="fix" dev="seade">

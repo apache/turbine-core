@@ -70,7 +70,7 @@ import org.jabsorb.JSONRPCBridge;
  * }
  * </code>
  *
- * <p>This code is derived from the com.metaparadigm.jsonrpc.JSONRPCServlet and (after upgrade) checked against 
+ * <p>This code is derived from the com.metaparadigm.jsonrpc.JSONRPCServlet and (after upgrade) checked against
  * org.jabsorb.JSONRPCServlet.
  *
  * @author brad@folkens.com
@@ -98,7 +98,7 @@ public class JSONScreen extends RawScreen
 
     /**
      * Output the dynamic content.
-     * 
+     *
      * Encodign is UTF-8. @{@link #JSONRPC_CONTENT_TYPE}: {@value #JSONRPC_CONTENT_TYPE}.
      *
      * @param pipelineData The PipelineData object.

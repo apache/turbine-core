@@ -1,10 +1,5 @@
 package org.apache.turbine.annotation;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -24,6 +19,12 @@ import java.lang.annotation.Target;
  * under the License.
  */
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+
 /**
  * Annotation to mark modules or methods in modules that require certain roles to be executed
  */
@@ -37,10 +38,10 @@ public @interface TurbineRequiredRole
      * @return an array of role names
      */
     String[] value();
-    
+
     /**
      * Get the name of the role-associated group
-     * 
+     *
      * @return a group name, empty string if the global group
      */
     String group() default "";

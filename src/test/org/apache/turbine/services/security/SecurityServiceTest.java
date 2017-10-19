@@ -43,7 +43,7 @@ import org.junit.Test;
 
 /**
  * Test that the SecurityService works properly by comparing behaviour of Turbine and Fulcrum security services using memory user manager.
- * 
+ *
  * Code adapted from SecurityServiceAdapter in Fulcrum Security Adapter
  *
  * @author gkallidis
@@ -52,12 +52,12 @@ import org.junit.Test;
 
 public class SecurityServiceTest extends BaseUnit4Test
 {
-     
+
     SecurityService fulcrumSecurityService;
     org.apache.turbine.services.security.SecurityService securityService;
     static TurbineConfig tc;
 
-    
+
     @BeforeClass
     public static void init() throws Exception
     {
@@ -65,19 +65,19 @@ public class SecurityServiceTest extends BaseUnit4Test
         tc.initialize();
 
     }
-    
+
     @Before
     public void setUpBefore() throws Exception
     {
-        
+
         ServiceManager serviceManager = TurbineServices.getInstance();
-        // 
+        //
         fulcrumSecurityService = (SecurityService) serviceManager.getService(SecurityService.ROLE);
-        
+
         securityService = (org.apache.turbine.services.security.SecurityService)
         		TurbineServices.getInstance().getService(org.apache.turbine.services.security.SecurityService.SERVICE_NAME);
     }
-    
+
     @Test
     public void testAccountExists() throws Exception
     {
@@ -101,13 +101,13 @@ public class SecurityServiceTest extends BaseUnit4Test
 		assertTrue(fulcrumSecurityService.getUserManager().checkExists(user));
 
 	}
-    
+
     /**
-     * Tests Turbine and Fulcrum. 
-     * 
+     * Tests Turbine and Fulcrum.
+     *
      * Fulcrum part is similar/duplicated from {@link AbstractTurbineModelManagerTest#testGrantUserGroupRole()}
-     * 
-     * 
+     *
+     *
      * @throws Exception
      */
     @Test
@@ -119,32 +119,32 @@ public class SecurityServiceTest extends BaseUnit4Test
         Role role = fulcrumSecurityService.getRoleManager().getRoleInstance();
         role.setName("TEST_Role");
         fulcrumSecurityService.getRoleManager().addRole(role);
-        
+
         //  Turbine security service returns a wrapped instance: org.apache.turbine.om.security.DefaultUserImpl
         // which implements org.apache.turbine.om.security.User and contains
-        User user = securityService.getUserInstance("Clint");   
+        User user = securityService.getUserInstance("Clint");
 		// memory
         securityService.addUser(user, "clint");
         securityService.grant(user, group, role);
-        
+
 		addUserAndCheck(group, role, user);
-        
+
         // Fulcrum security service returns a raw org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl,
 		org.apache.fulcrum.security.UserManager  userManager = fulcrumSecurityService.getUserManager();
-        org.apache.fulcrum.security.entity.User fulcrumUser = userManager.getUserInstance("Clint2");    
+        org.apache.fulcrum.security.entity.User fulcrumUser = userManager.getUserInstance("Clint2");
         userManager.addUser(fulcrumUser, "clint2");         // memory
         ((TurbineModelManager)fulcrumSecurityService.getModelManager()).grant(fulcrumUser, group, role);
-        
+
         addUserAndCheck(group, role, fulcrumUser);
 
     }
 
     /**
-     * Fulcrum contract check  
-     * 
+     * Fulcrum contract check
+     *
      * @param group Fulcrum interface
      * @param role Fulcrum interface
-     * @param user Fulcrum interface 
+     * @param user Fulcrum interface
      * @throws EntityExistsException
      * @throws DataBackendException
      * @throws UnknownEntityException
@@ -169,8 +169,8 @@ public class SecurityServiceTest extends BaseUnit4Test
         assertTrue(ugrTest.getGroup().equals(group));
         assertTrue(ugrTest.getUser().equals(user));
 	}
-    
-    
+
+
 	@AfterClass
 	public static void setupAfter()
     {

@@ -73,13 +73,13 @@ public interface SecurityService
      */
     String USER_MANAGER_DEFAULT
             = PassiveUserManager.class.getName();
-    
+
     /**
      * the key within services's properties for user implementation
      * classname (wrapper.class)
      */
     String USER_WRAPPER_KEY = "wrapper.class";
-    
+
     /**
      * the default implementation of {@link User} interface
      * (org.apache.turbine.om.security.DefaultUserImpl)

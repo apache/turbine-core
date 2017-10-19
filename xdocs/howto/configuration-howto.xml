@@ -78,8 +78,8 @@ web.xml file:
 
 <p>
 This works well, but if you want to customize the various settings that Turbine uses to
-control it's behavior, then you need to provide a TurbineConfiguration.xml file! 
-Reading from /WEB-INF/conf/TurbineResources.properties is actually the default fall back - if no init parameter is provided. 
+control it's behavior, then you need to provide a TurbineConfiguration.xml file!
+Reading from /WEB-INF/conf/TurbineResources.properties is actually the default fall back - if no init parameter is provided.
 </p>
 </section>
 
@@ -88,7 +88,7 @@ Reading from /WEB-INF/conf/TurbineResources.properties is actually the default f
 The TurbineConfiguration.xml file doesn't contain any configuration data itself, instead
 it points at other files that may have configuration data.  Turbine leverages Commons-Configuration's
 <code>DefaultConfigurationBuilder</code> to access the data.  For more information, look at
-the <a href="http://commons.apache.org/proper/commons-configuration/">Configuration</a> 
+the <a href="http://commons.apache.org/proper/commons-configuration/">Configuration</a>
 homepage.
 </p>
 

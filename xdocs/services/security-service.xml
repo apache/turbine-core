@@ -34,9 +34,9 @@ and permissions in groups.
 </p>
 <p>
 Turbine uses the <a href="/fulcrum//fulcrum-security-api/index.html">Fulcrum Security API</a>
-to provide security features to applications. In the Fulcrum repository, 
-implementations exist for 
-<a href="/fulcrum/fulcrum-security-hibernate/index.html">Hibernate</a>, 
+to provide security features to applications. In the Fulcrum repository,
+implementations exist for
+<a href="/fulcrum/fulcrum-security-hibernate/index.html">Hibernate</a>,
 <a href="/fulcrum/fulcrum-security-torque/index.html">Torque</a>
 and <a href="/fulcrum/fulcrum-security-nt/index.html">NTLM</a>.
 </p>
@@ -105,10 +105,10 @@ If you have have additional columns in the User (e.g. TurbineUser) table, you ge
 
 - create a non default wrapper.class. This class should extend DefaultUserImpl and override or add the required properties.
 
-- best practice would be to provide an interface to communicate on same standards between this wrapper.class and the backend ORM-class (e.g generated TurbineTorqueUser class). Otherwise you could use your ORM class. 
+- best practice would be to provide an interface to communicate on same standards between this wrapper.class and the backend ORM-class (e.g generated TurbineTorqueUser class). Otherwise you could use your ORM class.
 
  The ORM class is e.g. fetched from the default implementation of the Fulcrum User Manager (org.apache.fulcrum.security.UserManager) (as configured in componentConfiguration.xml userManager->className) and the Turbine User Manager gets it by fetching it first from the Fulcrum User Manager (= umDelegate) and then setting this class as userDelegate in the wrapper class.
-   
+
 </p>
 
 </section>
@@ -117,17 +117,17 @@ If you have have additional columns in the User (e.g. TurbineUser) table, you ge
 <p>
 The actual implementations for the different Fulcrum services that
 define the behavior of the security service are configured in the
-files <code>roleConfiguration.xml</code> and 
+files <code>roleConfiguration.xml</code> and
 <code>componentConfiguration.xml</code>. All of them can be extended
 and/or modified to meet your requirements. The following example shows
-the sections for the 
+the sections for the
 <a href="/fulcrum/fulcrum-security-torque/index.html">Torque</a>
 implementation, using the Turbine security model.
 
 <subsection name="Dependencies">
-Turbine 4.0 does not depend on a particular Fulcrum Security 
+Turbine 4.0 does not depend on a particular Fulcrum Security
 implementation. To use the Torque-flavor, you need to specify
-the dependency explicitly in your POM: 
+the dependency explicitly in your POM:
 <source><![CDATA[
 <dependency>
   <groupId>org.apache.fulcrum</groupId>

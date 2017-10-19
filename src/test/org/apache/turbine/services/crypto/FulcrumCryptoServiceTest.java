@@ -91,7 +91,7 @@ public class FulcrumCryptoServiceTest extends BaseTestCase
         tc.initialize();
 
     }
-    
+
     @Before
     public void setUpBefore() throws Exception
     {

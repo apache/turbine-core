@@ -16,9 +16,10 @@
 # under the License.
 
 # Run the CodeWrestler
-# http://henning.schmiedehausen.org/eyewiki/Wiki.jsp?page=CodeWrestler
+# https://github.com/hgschmie/CodeWrestler
 
 # Add license to new files
+# copy CodeWrestler-master.zip to ~/Dev/cw folder from https://github.com/hgschmie/CodeWrestler
 python ~/Dev/cw/CodeWrestler.py -e conf/CodeWrestler.excludes --module=license.ReLicense --modopts='-f conf/checkstyle-license.txt -t java -n'
 # Relicense existing files
 python ~/Dev/cw/CodeWrestler.py -e conf/CodeWrestler.excludes --module=license.ReLicense --modopts='-f conf/checkstyle-license.txt -t java -e'

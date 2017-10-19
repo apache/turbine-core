@@ -125,7 +125,7 @@ public class DefaultSecurityService
         {
             this.userManager =
                     (UserManager) Class.forName(userManagerClassName).newInstance();
-            
+
             userManager.init(conf);
         }
         catch (Exception e)
