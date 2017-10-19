@@ -75,7 +75,7 @@ public class TurbineUniqueIdService
 
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte [] bytesId = md.digest(url.getBytes("UTF-8"));
-            turbineId = new String(Base64.encodeBase64(bytesId));
+            turbineId = new String(Base64.encodeBase64(bytesId),"UTF-8");
 
             log.info("This is Turbine instance running at: " + url);
             log.info("The instance id is #" + turbineId);

@@ -39,7 +39,7 @@ import org.apache.turbine.util.RunData;
  *
  * Templating services requires a different Session Validator
  * because of the way it handles screens.  If you use the WebMacro or
- * Velocity Service with the DefaultSessionValidator, users will be able to
+ * Velocity Service with the {@link DefaultSessionValidator}, users will be able to
  * bypass login by directly addressing the template using
  * template/index.wm.  This is because the Page class looks for the
  * keyword "template" in the Path information and if it finds it will
@@ -62,8 +62,6 @@ public class TemplateSecureSessionValidator
     private static Log log = LogFactory.getLog(
             TemplateSecureSessionValidator.class);
 
-    @TurbineService
-    private SecurityService security;
 
     @TurbineConfiguration( TurbineConstants.LOGIN_MESSAGE )
     private String loginMessage;
@@ -71,17 +69,6 @@ public class TemplateSecureSessionValidator
     @TurbineConfiguration( TurbineConstants.TEMPLATE_LOGIN )
     private String templateLogin;
 
-    @TurbineConfiguration( TurbineConstants.TEMPLATE_HOMEPAGE )
-    private String templateHomepage;
-
-    @TurbineConfiguration( TurbineConstants.SCREEN_HOMEPAGE )
-    private String screenHomepage;
-
-    @TurbineConfiguration( TurbineConstants.TEMPLATE_INVALID_STATE )
-    private String templateInvalidState;
-
-    @TurbineConfiguration( TurbineConstants.SCREEN_INVALID_STATE )
-    private String screenInvalidState;
 
     /**
      * doPerform is virtually identical to DefaultSessionValidator
@@ -148,37 +135,8 @@ public class TemplateSecureSessionValidator
             {
                 data.setScreen(screenHomepage);
             }
-        }
-
-        // The session_access_counter can be placed as a hidden field in
-        // forms.  This can be used to prevent a user from using the
-        // browsers back button and submitting stale data.
-        // FIXME!! a template needs to be written to use this with templates.
-
-        if (data.getParameters().containsKey("_session_access_counter")
-                && !security.isAnonymousUser(data.getUser()))
-        {
-            // See comments in screens.error.InvalidState.
-            if (data.getParameters().getInt("_session_access_counter")
-                    < (((Integer) data.getUser().getTemp(
-                    "_session_access_counter")).intValue() - 1))
-            {
-                if (data.getTemplateInfo().getScreenTemplate() != null)
-                {
-                    data.getUser().setTemp("prev_template",
-                            data.getTemplateInfo().getScreenTemplate()
-                            .replace('/', ','));
-                    data.getTemplateInfo().setScreenTemplate(templateInvalidState);
-                }
-                else
-                {
-                    data.getUser().setTemp("prev_screen",
-                                           data.getScreen().replace('/', ','));
-                    data.setScreen(screenInvalidState);
-                }
-                data.getUser().setTemp("prev_parameters", data.getParameters());
-                data.setAction("");
-            }
+        } else {
+            handleFormCounterToken(data, false);
         }
 
         // We do not want to allow both a screen and template parameter.
