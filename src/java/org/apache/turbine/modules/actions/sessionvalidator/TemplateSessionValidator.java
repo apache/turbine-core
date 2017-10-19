@@ -23,18 +23,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.annotation.TurbineConfiguration;
-import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.util.RunData;
 
 /**
  * SessionValidator for use with the Template Service, the
  * TemplateSessionValidator is virtually identical to the
- * TemplateSecureValidator except that it does not transfer to the
+ * {@link TemplateSecureSessionValidator} except that it does not transfer to the
  * login page when it detects a null user (or a user not logged in).
  *
  * <p>The Template Service requires a different Session Validator
@@ -55,21 +51,6 @@ public class TemplateSessionValidator
 {
     /** Logging */
     private static Log log = LogFactory.getLog(TemplateSessionValidator.class);
-
-    @TurbineService
-    private SecurityService security;
-
-    @TurbineConfiguration( TurbineConstants.TEMPLATE_HOMEPAGE )
-    private String templateHomepage;
-
-    @TurbineConfiguration( TurbineConstants.SCREEN_HOMEPAGE )
-    private String screenHomepage;
-
-    @TurbineConfiguration( TurbineConstants.TEMPLATE_INVALID_STATE )
-    private String templateInvalidState;
-
-    @TurbineConfiguration( TurbineConstants.SCREEN_INVALID_STATE )
-    private String screenInvalidState;
 
     /**
      * Execute the action.
@@ -106,34 +87,8 @@ public class TemplateSessionValidator
             {
                 data.setScreen(screenHomepage);
             }
-        }
-        // the session_access_counter can be placed as a hidden field in
-        // forms.  This can be used to prevent a user from using the
-        // browsers back button and submitting stale data.
-        else if (data.getParameters().containsKey("_session_access_counter")
-                && !security.isAnonymousUser(data.getUser()))
-        {
-            // See comments in screens.error.InvalidState.
-            if (data.getParameters().getInt("_session_access_counter")
-                    < (((Integer) data.getUser().getTemp(
-                    "_session_access_counter")).intValue() - 1))
-            {
-                if (data.getTemplateInfo().getScreenTemplate() != null)
-                {
-                    data.getUser().setTemp("prev_template",
-                            data.getTemplateInfo().getScreenTemplate()
-                            .replace('/', ','));
-                    data.getTemplateInfo().setScreenTemplate(templateInvalidState);
-                }
-                else
-                {
-                    data.getUser().setTemp("prev_screen",
-                                           data.getScreen().replace('/', ','));
-                    data.setScreen(screenInvalidState);
-                }
-                data.getUser().setTemp("prev_parameters", data.getParameters());
-                data.setAction("");
-            }
+        } else {
+            handleFormCounterToken(data, false);
         }
 
         // we do not want to allow both a screen and template parameter.

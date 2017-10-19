@@ -965,7 +965,7 @@
       <version>1.1.0</version>
     </dependency>
     <dependency>
-      <!-- TODO update to 2.7.1, because of CVE-2016-4000 --> 
+      <!-- TODO update to stable 2.7.1, because of CVE-2016-5699 --> 
       <groupId>org.python</groupId>
       <artifactId>jython</artifactId>
       <version>2.7.0</version>

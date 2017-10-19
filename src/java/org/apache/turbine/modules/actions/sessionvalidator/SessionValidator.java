@@ -1,5 +1,9 @@
 package org.apache.turbine.modules.actions.sessionvalidator;
 
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineService;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,6 +24,8 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  */
 
 import org.apache.turbine.modules.Action;
+import org.apache.turbine.services.security.SecurityService;
+import org.apache.turbine.util.RunData;
 
 /**
  * The SessionValidator attempts to retrieve the User object from the
@@ -46,5 +52,73 @@ import org.apache.turbine.modules.Action;
  */
 public abstract class SessionValidator extends Action
 {
+    
+    @TurbineService
+    protected SecurityService security;
+    
+    @TurbineConfiguration( TurbineConstants.TEMPLATE_HOMEPAGE )
+    protected String templateHomepage;
+
+    @TurbineConfiguration( TurbineConstants.SCREEN_HOMEPAGE )
+    protected String screenHomepage;
+
+    @TurbineConfiguration( TurbineConstants.TEMPLATE_INVALID_STATE )
+    protected String templateInvalidState;
+
+    @TurbineConfiguration( TurbineConstants.SCREEN_INVALID_STATE )
+    protected String screenInvalidState;
+
+    // the session_access_counter can be placed as a hidden field in
+    // forms.  This can be used to prevent a user from using the
+    // browsers back button and submitting stale data.
+    /**
+     * 
+     * @param data
+     * @param screenOnly {@link DefaultSessionValidator} 
+     */
+    protected void handleFormCounterToken( RunData data, boolean screenOnly )
+    {
+        if (data.getParameters().containsKey("_session_access_counter")) 
+        {
+            if (screenOnly) {
+                // See comments in screens.error.InvalidState.
+                if (data.getParameters().getInt("_session_access_counter")
+                        < (((Integer) data.getUser().getTemp(
+                        "_session_access_counter")).intValue() - 1))
+                {
+                    data.getUser().setTemp("prev_screen", data.getScreen());
+                    data.getUser().setTemp("prev_parameters", data.getParameters());
+                    data.setScreen(screenInvalidState);
+                    data.setAction("");
+                }
+            } else {
+                if (!security.isAnonymousUser(data.getUser()))
+                {
+                    // See comments in screens.error.InvalidState.
+                    if (data.getParameters().getInt("_session_access_counter")
+                            < (((Integer) data.getUser().getTemp(
+                            "_session_access_counter")).intValue() - 1))
+                    {
+                        if (data.getTemplateInfo().getScreenTemplate() != null)
+                        {
+                            data.getUser().setTemp("prev_template",
+                                    data.getTemplateInfo().getScreenTemplate()
+                                    .replace('/', ','));
+                            data.getTemplateInfo().setScreenTemplate(templateInvalidState);
+                        }
+                        else
+                        {
+                            data.getUser().setTemp("prev_screen",
+                                                   data.getScreen().replace('/', ','));
+                            data.setScreen(screenInvalidState);
+                        }
+                        data.getUser().setTemp("prev_parameters", data.getParameters());
+                        data.setAction("");
+                    }
+                }
+            }
+        }
+
+    }
     // empty
 }
