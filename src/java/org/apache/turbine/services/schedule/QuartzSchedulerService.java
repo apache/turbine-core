@@ -60,7 +60,7 @@ public class QuartzSchedulerService
     private Scheduler scheduler;
 
     /**
-     * Initializes the SchedulerService. Retrieves the Quartz {@link #scheduler} from the Fulcrum {@link QuartzScheduler} service. 
+     * Initializes the SchedulerService. Retrieves the Quartz {@link #scheduler} from the Fulcrum {@link QuartzScheduler} service.
      *
      * @throws InitializationException Something went wrong in the init
      *         stage
@@ -389,20 +389,20 @@ public class QuartzSchedulerService
 
     /**
      * Exposing the Quartz scheduler to handle jobs/triggers in more detail.
-     * 
+     *
      * @return the {@link Scheduler} of this service.
      */
 	public Scheduler getScheduler()
 	{
 		return scheduler;
 	}
-	
+
 	/**
 	 * Builds a {@link JobEntryQuartz} from Quartz trigger/job.
-	 * 
-	 * The developer should be aware to set identity/context properly, i.e. to 
+	 *
+	 * The developer should be aware to set identity/context properly, i.e. to
      * {@value JobEntryQuartz#DEFAULT_JOB_GROUP_NAME}, if adding triggers/jobs.
-	 * 
+	 *
 	 * @param trigger a Quartz {@link Trigger}.
 	 * @param jd a Quartz {@link JobDetail} (built from a {@link Job} with {@link JobBuilder}).
 	 * @return A JobEntryQuartz.

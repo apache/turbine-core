@@ -1,6 +1,6 @@
 #
 # This is an exclude file to parse the turbine-2 code base using CodeWrestler,
-# available from http://henning.schmiedehausen.org/eyewiki/Wiki.jsp?page=CodeWrestler
+# available from https://github.com/hgschmie/CodeWrestler
 #
 .*\.ai$
 .*\.psd$

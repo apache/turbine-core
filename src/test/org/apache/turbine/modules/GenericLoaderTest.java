@@ -28,7 +28,7 @@ import org.junit.Test;
 public class GenericLoaderTest
     extends BaseTestCase
 {
-    
+
 
     @Test
     public void testPackage()

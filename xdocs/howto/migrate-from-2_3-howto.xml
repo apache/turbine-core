@@ -32,17 +32,17 @@
     application written for Turbine 2.3 to Turbine 4.0.
 </p>
 <p>
-	Migrating from Turbine 2.3 to Turbine 4.0 is mostly a task of 
-	moving from the old service format to the new one. One of the 
+	Migrating from Turbine 2.3 to Turbine 4.0 is mostly a task of
+	moving from the old service format to the new one. One of the
 	biggest purposes with Turbine 4 was to decouple the different services
 	and move them to <a href="http://turbine.apache.org/fulcrum/">Fulcrum</a>.
-	Many of the released components of Fulcrum correspond to 
+	Many of the released components of Fulcrum correspond to
 	a previous Turbine service that is no longer bundled with the
-	Turbine core. 
+	Turbine core.
 </p>
 <p>
-	The services has been converted to Avalon components and do not 
-	implement the Service interface any more. Turbine still handles 
+	The services has been converted to Avalon components and do not
+	implement the Service interface any more. Turbine still handles
 	services that do implement the Service interface though so no
 	rewrite is necessary if you have written services of your own.
 	The new services can also be accessed in pretty much the same way
@@ -52,7 +52,7 @@
 
 <section name="Accessing the new services">
 <p>
-	What needs to be done to access the decoupled services can be 
+	What needs to be done to access the decoupled services can be
 	summarised in 4 steps:
 	<ul>
 		<li>Make sure the AvalonComponentService is properly configured</li>
@@ -63,10 +63,10 @@
 </p>
 <subsection name="Make sure the AvalonComponentService is properly configured">
 <p>
-	The AvalonComponentService allows you to retrieve the new services 
-	via the old TurbineServices interface. Make sure that the AvalonComponentService 
-	is added in your TurbineResources.properties and that you use TurbineYaafiComponentService as 
-	the implementing class. 
+	The AvalonComponentService allows you to retrieve the new services
+	via the old TurbineServices interface. Make sure that the AvalonComponentService
+	is added in your TurbineResources.properties and that you use TurbineYaafiComponentService as
+	the implementing class.
 </p>
 <source>
 <![CDATA[
@@ -92,7 +92,7 @@ services.AvalonComponentService.earlyInit=true
 </subsection>
 <subsection name="Access the Fulcrum services with class name instead of service name">
 <p>
-	As you may have noticed in the documentation for the Fulcrum components, the name for 
+	As you may have noticed in the documentation for the Fulcrum components, the name for
 	the different services is the full class name. Therefore the input parameter in the
 	getService method of TurbineServices needs to be the full class name of the service.
 	Usually this is stored in a static field called ROLE. Ex:
@@ -105,11 +105,11 @@ ParseService parserService = (ParserService)TurbineServices.getInstance().getSer
 </subsection>
 <subsection name="Remove any reference to the static facade classes and access the interfaces directly">
 <p>
-	The new services do not have a static facade class like the old ones 
+	The new services do not have a static facade class like the old ones
 	(org.apache.turbine.services.localization.Localization for LocalizationService,
 	org.apache.turbine.services.cache.TurbineGlobalCache for GlobalCacheService etc).
 	If you have used these facade classes, you now need to access the service directly via
-	the interface instead. How to access the classes is described in the previous section. 
+	the interface instead. How to access the classes is described in the previous section.
 </p>
 </subsection>
 </section>

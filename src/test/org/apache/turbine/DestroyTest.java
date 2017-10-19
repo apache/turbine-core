@@ -39,7 +39,7 @@ public class DestroyTest
 {
     private static TurbineConfig tc = null;
 
-    
+
     @BeforeClass
     public static void init() throws Exception {
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");

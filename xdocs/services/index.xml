@@ -160,7 +160,7 @@ Allows for the creation of Context unique and pseudo random identifiers.
 <li>
 <a href="velocity-service.html">Velocity Service</a>
 <br/>
-The Velocity Service supports the rendering of 
+The Velocity Service supports the rendering of
 <a href="http://velocity.apache.org">Velocity</a> templates.
 </li>
 

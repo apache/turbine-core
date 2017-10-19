@@ -26,10 +26,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Test Fulcrum Integration. 
- * 
- * Stub for further tests, relying on Fulcrum. 
- * 
+ * Test Fulcrum Integration.
+ *
+ * Stub for further tests, relying on Fulcrum.
+ *
  * @author gkallidis
  * @version $Id:$
  */
@@ -55,13 +55,13 @@ public class TurbineDefaultModelManagerTest
         }
 
     }
-    
+
     @Test
     public void testDummy() {
     	// all tests in abstract
     }
-    
-   
+
+
 
     @Override
     @After

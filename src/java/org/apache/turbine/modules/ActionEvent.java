@@ -1,7 +1,5 @@
 package org.apache.turbine.modules;
 
-import java.lang.annotation.Annotation;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,6 +18,9 @@ import java.lang.annotation.Annotation;
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import java.lang.annotation.Annotation;
+
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

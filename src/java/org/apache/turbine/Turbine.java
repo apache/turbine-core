@@ -403,7 +403,7 @@ public class Turbine
         if (!descriptorPath.startsWith( "/" )) {
         	descriptorPath  = "/" + descriptorPath;
         }
-        	
+
         InputStream reader = context.getResourceAsStream(descriptorPath);
         JAXBContext jaxb = JAXBContext.newInstance(TurbinePipeline.class);
         Unmarshaller unmarshaller = jaxb.createUnmarshaller();

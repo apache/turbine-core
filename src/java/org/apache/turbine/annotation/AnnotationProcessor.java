@@ -1,6 +1,5 @@
 package org.apache.turbine.annotation;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,7 +18,6 @@ package org.apache.turbine.annotation;
  * specific language governing permissions and limitations
  * under the License.
  */
-
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;

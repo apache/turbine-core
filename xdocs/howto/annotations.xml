@@ -30,16 +30,16 @@
 
 <p>
 Turbine provides a number of annotations to inject dependencies into your actions,
-screens and layouts. All <code>Assemblers</code> that is, all modules of type 
+screens and layouts. All <code>Assemblers</code> that is, all modules of type
 <code>Action</code>, <code>Screen</code>, <code>Layout</code>, <code>Page</code>,
-<code>Navigation</code> and <code>ScheduledJob</code> as well as all 
-<code>Valves</code> in the pipeline support the injection of services, 
+<code>Navigation</code> and <code>ScheduledJob</code> as well as all
+<code>Valves</code> in the pipeline support the injection of services,
 configurations and loaders. This relieves you from the burden of looking
-them up at runtime and thus simplifies and accelerates the code. 
+them up at runtime and thus simplifies and accelerates the code.
 </p>
 
 <subsection name="@TurbineService">
-The annotation can only be used with a field. 
+The annotation can only be used with a field.
 A declared field in a class annotated with <code>@TurbineService</code>
 gets injected an instance of this service at the time the instance
 of the class is created. The field should have the type of the service
@@ -61,24 +61,24 @@ runDataService = (RunDataService) TurbineServices
 factory = (FactoryService) TurbineServices
     .getInstance().getService(FactoryService.ROLE);
 ]]></source>
-As you an see, the annotation supports an optional parameter, the 
-name of the service in the Turbine service repository. If this 
+As you an see, the annotation supports an optional parameter, the
+name of the service in the Turbine service repository. If this
 parameter is not present, the annotation processor will look
 for the field <code>SERVICE_NAME</code> and then <code>ROLE</code>
 in the type class of the field to retrieve the service name. If none
 of them can be found, the fully qualified class name of the
 service interface is used to look up the service.
 <br />
-If the service instance cannot be found, the annotation processor 
+If the service instance cannot be found, the annotation processor
 will throw an exception.
 </subsection>
 
 <subsection name="@TurbineConfiguration">
-The annotation can only be used with a field. 
-If a declared field of the type <code>Configuration</code> is annotated 
-with <code>@TurbineConfiguration</code>, Turbine will inject an instance 
-of the Turbine configuration object at the time the instance of the class 
-is created. 
+The annotation can only be used with a field.
+If a declared field of the type <code>Configuration</code> is annotated
+with <code>@TurbineConfiguration</code>, Turbine will inject an instance
+of the Turbine configuration object at the time the instance of the class
+is created.
 <source><![CDATA[
 // Injected configuration instance
 @TurbineConfiguration
@@ -94,15 +94,15 @@ config = Turbine.getConfiguration();
 
 actionConfig = Turbine.getConfiguration().subset("action");
 ]]></source>
-The annotation supports an optional parameter, the 
+The annotation supports an optional parameter, the
 prefix of the configuration subset to retrieve.
 <br />
-If other fields having simple types are annotated with 
+If other fields having simple types are annotated with
 <code>@TurbineConfiguration</code>, Turbine will inject the corresponding
 configuration value. In this case, the annotation parameter defines the
 configuration key and is required. Strings, Lists and most simple types
-are supported. The value will only be set if the key is found in the 
-configuration, so that the field can be initialized with a default value. 
+are supported. The value will only be set if the key is found in the
+configuration, so that the field can be initialized with a default value.
 <source><![CDATA[
 // Injected configuration value
 @TurbineConfiguration( "module.cache" )
@@ -119,10 +119,10 @@ templateHomepage = Turbine.getConfiguration().getString("template.homepage");
 </subsection>
 
 <subsection name="@TurbineLoader">
-The annotation can only be used with a field. 
+The annotation can only be used with a field.
 A declared field in a class annotated with <code>@TurbineLoader</code>
 gets injected an instance of the specified <code>Loader</code> at
-the time the instance of the class is created. The field should have 
+the time the instance of the class is created. The field should have
 the type of the loader.
 <source><![CDATA[
 // Injected loader instance
@@ -133,15 +133,15 @@ This is the equivalent of
 <source><![CDATA[
 actionLoader = TurbineAssemblerBroker.getLoader(Action.class);
 ]]></source>
-The annotation parameter is required and defines the type of module 
+The annotation parameter is required and defines the type of module
 that is to be loaded.
 </subsection>
 
 <subsection name="@TurbineActionEvent">
-The annotation can only be used with a method. 
+The annotation can only be used with a method.
 A method in a class annotated with <code>@TurbineActionEvent</code>
-is associated to a named action event. The annotation parameter 
-is required and defines the name of the event. See the 
+is associated to a named action event. The annotation parameter
+is required and defines the name of the event. See the
 <a href="action-event-howto.html">Action Events Howto</a>
 for usage and examples.
 </subsection>
@@ -151,7 +151,7 @@ It is important to note that the processing of the annotations at
 the time the module class is instantiated takes some time. It is
 therefore strongly recommended to re-use the module instances in
 a production environment by setting the configuration parameter
-<code>module.cache</code> to <code>true</code> in 
+<code>module.cache</code> to <code>true</code> in
 <code>TurbineResources.properties</code>.
 </subsection>
 

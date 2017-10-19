@@ -56,7 +56,7 @@
         <automaticUpload>true</automaticUpload>
     </parser>
 
-    <!-- These components belong to the Fulcrum-Security services -->        
+    <!-- These components belong to the Fulcrum-Security services -->
     <securityService/>
     <authenticator/>
     <modelManager/>
@@ -82,7 +82,7 @@
         configuration/properties := a set of properties to configure Quartz
         configuration/properties/parameter := a  single configuration
         configuration/properties/parameter@name := the name of the property
-        configuration/properties/parameter@value := the value of the property                    
+        configuration/properties/parameter@value := the value of the property
     -->
 
     <quartz>

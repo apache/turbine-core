@@ -58,7 +58,7 @@ public class DefaultTurbineRunDataTest extends BaseTestCase
                 "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
     }
-    @AfterClass 
+    @AfterClass
     public static void tearDown() throws Exception
     {
         if (tc != null)

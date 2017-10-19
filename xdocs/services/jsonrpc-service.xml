@@ -32,7 +32,7 @@
 
 <p>
 The JSON-RPC Service supports JavaScript to Java AJAX communications using
-<a href="https://code.google.com/p/jabsorb/">JSON-RPC-Java</a> 
+<a href="https://code.google.com/p/jabsorb/">JSON-RPC-Java</a>
 (Jabsorb replaced project oss.metaparadigm.com/jsonrpc/. As of March 2015 Google Code projects are only read-only and this project is <a href="https://code.google.com/archive/p/jabsorb/">archived</a> too, though GIT exports are allowed probably until Jan 2016, e.g. https://github.com/gmkll/jabsorb).
 </p>
 
@@ -96,7 +96,7 @@ public class MyJsonScreen extends JSONScreen
 }
 ]]></source>
 
-<subsection name="Client Side: Synchronous AJAX Calls"> 
+<subsection name="Client Side: Synchronous AJAX Calls">
 <p>
 
 Now we shift focus to your template classes.  Firstly, there are a few useful
@@ -186,7 +186,7 @@ Then you need to set up the specific handler for the page (synchronous example):
     ## Here you would again use the DOM to include the result somewhere on your
     ## page.
   }
-//-->
+-->
 </script>
 ]]></source>
 
@@ -206,7 +206,7 @@ Usage of asynchronous calls conforms more to <a href="ttps://xhr.spec.whatwg.org
 // Second example asynchronous call
 var deferred;
 function jsonOnLoad() {
-  try { 
+  try {
       // This feature is available since jabsorb 1.1 release, cft. webapps/jaxrpc/CHANGES.txt.
       // JQuery Promises are available since jQuery 1.5/1.8 (with major changes).
       // This is just an example, any other Promise handling will do it.
@@ -274,18 +274,18 @@ Then you need to set up the specific handler for the page (in this case a asynch
     );
     return jQuery.when(promiseA, promiseB);
     }
-    
-  # call function 
+
+  # call function
   var helloResult;
   var promise = retrieveHello(myArg);
-  promise.done( 
+  promise.done(
       function(resultA,resultB) {
         helloResult = resultB;
         ## Here or in another dependent Promise you would again use the DOM to include the result somewhere on your
         ## page.
     }
-  ); 
-//-->
+  );
+-->
 </script>
 ]]></source>
 

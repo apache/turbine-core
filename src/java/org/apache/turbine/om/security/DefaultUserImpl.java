@@ -67,7 +67,7 @@ public class DefaultUserImpl implements User, TurbineUserDelegate
     public DefaultUserImpl(TurbineUser user)
     {
         super();
-        this.userDelegate = user;
+        setUserDelegate( user );;
         setCreateDate(new Date());
         tempStorage = new HashMap<String, Object>(10);
         setHasLoggedIn(Boolean.FALSE);

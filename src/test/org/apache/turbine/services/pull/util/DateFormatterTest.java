@@ -33,7 +33,7 @@ import static org.junit.Assert.*;
  * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  */
-public class DateFormatterTest 
+public class DateFormatterTest
 {
 
 //    /*

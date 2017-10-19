@@ -32,7 +32,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
  * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
- * 
+ *
  * @deprecated This class is probably not used anymore, it may have been intended for cacheable Torque OM or might be used with Fulcrum Security Torque.
  */
 @Deprecated

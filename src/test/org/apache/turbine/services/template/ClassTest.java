@@ -44,7 +44,7 @@ public class ClassTest
     private static TurbineConfig tc = null;
     private static TemplateService ts = null;
 
-    
+
     @BeforeClass
     public static void setUp() throws Exception
     {

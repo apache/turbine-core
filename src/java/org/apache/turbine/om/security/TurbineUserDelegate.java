@@ -21,8 +21,8 @@ package org.apache.turbine.om.security;
 import org.apache.fulcrum.security.model.turbine.entity.TurbineUser;
 
 /**
- * Marker interface 
- * 
+ * Marker interface
+ *
  * @author gkallidis
  *
  */

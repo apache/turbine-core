@@ -72,13 +72,13 @@
         name="org.apache.fulcrum.parser.ParserService"
         shorthand="parser"
         default-class="org.apache.fulcrum.parser.DefaultParserService"/>
-       
+
     <role
         name="org.apache.fulcrum.xslt.XSLTService"
         shorthand="xslt"
         default-class="org.apache.fulcrum.xslt.DefaultXSLTService"/>
 
-    <!-- These components belong to the Fulcrum-Security services -->        
+    <!-- These components belong to the Fulcrum-Security services -->
     <role
         name="org.apache.fulcrum.security.SecurityService"
         shorthand="securityService"
@@ -120,7 +120,7 @@
         shorthand="aclFactory"
         default-class="org.apache.fulcrum.security.model.turbine.TurbineACLFactory"/>
 
-    <!-- Service required for the QuartzSchedulerService -->        
+    <!-- Service required for the QuartzSchedulerService -->
     <role
         name="org.apache.fulcrum.quartz.QuartzScheduler"
         shorthand="quartz"

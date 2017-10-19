@@ -41,10 +41,9 @@ No current items.
 <subsection name="Stuff that needs to be looked into (current release or next release)">
 <p>
   <ul>
-    <li>Googlezation of URLs (<a href="http://marc.theaimsgroup.com/?l=turbine-user&amp;m=103008672127247&amp;w=2">See here</a>)</li>
-    <li>Make sure that pull tools get refreshed correctly under all circumstances</li>
-    <li>Check lifetimes of authorized and session tools if the application is not the standard login-logout application</li>
-    <li>Move AvalonComponentService to the Fortress container (suggested by the avalon-dev list)</li>
+    <li>Make sure that pull tools get refreshed correctly under all circumstances (done?)</li>
+    <li>Check lifetimes of authorized and session tools if the application is not the standard login-logout application (done?)</li>
+    <li>Move AvalonComponentService to the Fortress container (suggested by the avalon-dev list) - or looking for an alternative</li>
   </ul>
 </p>
 </subsection>
@@ -52,8 +51,8 @@ No current items.
 <subsection name="Blue Skying for future Turbine releases">
 <p>
   <ul>
-    <li>Move forward to a component based architecture (avalonization)  (partly done!)</li>
-    <li>Decouple the code base into core, components and toolbox</li>
+    <li>Servlet 3.x asynchronous cycle handling / prototype / proof of concept (servlet API is still 2.5 in Turbine in 2017)</li>
+    <li>OSGI or Java 9 modularization (proposal exists and Java required version is still 6 for Turbine in 2017</li>
   </ul>
 </p>
 </subsection>
