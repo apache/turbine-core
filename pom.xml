@@ -1098,7 +1098,7 @@
 
   <properties>
     <!-- TODO: Change for release -->
-    <turbine.site.path>turbine/development/turbine-4.0</turbine.site.path>
+    <turbine.site.path>turbine/turbine-4.0</turbine.site.path>
     <slf4j.version>1.7.25</slf4j.version>
   </properties>
 
