@@ -42,7 +42,7 @@ import org.apache.turbine.util.ObjectUtils;
  * @version $Id: TorqueUser.java 1199856 2011-11-09 17:06:04Z tv $
  */
 
-public class DefaultUserImpl implements User, TurbineUserDelegate
+public class DefaultUserImpl implements User
 {
     /** Serial version */
     private static final long serialVersionUID = -1866504873085624111L;
@@ -198,7 +198,6 @@ public class DefaultUserImpl implements User, TurbineUserDelegate
      *
      * @return A String with the user's first name.
      */
-
     @Override
     public String getFirstName()
     {

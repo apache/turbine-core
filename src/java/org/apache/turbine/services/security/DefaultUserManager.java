@@ -56,7 +56,7 @@ import org.apache.turbine.util.ObjectUtils;
  * <ul>
  * <li>method(s) in this manager -> Fulcrum manager method(s)
  * <li>{@link #createAccount(User, String)}createAccount -> addUser(User, String)
- * <li> {@link #removeAccount(User)} -> removeUser(User)
+ * <li>{@link #removeAccount(User)} -> removeUser(User)
  * <li>{@link #store(User)} -> saveUser(User)
  * <li>{@link #retrieve(String)} and {@link #retrieve(String, String)} -> getUser(String), getUser(String, String)
  * <li>{@link #retrieveList(Object)} ->getAllUsers()
@@ -196,7 +196,10 @@ public class DefaultUserManager implements UserManager
     public boolean accountExists(User user)
             throws DataBackendException
     {
-        return umDelegate.checkExists(user);
+        if (user == null) {
+            return false;
+        }
+        return umDelegate.checkExists(user.getUserDelegate());
     }
 
     /**
@@ -303,6 +306,9 @@ public class DefaultUserManager implements UserManager
     public void store(User user)
             throws UnknownEntityException, DataBackendException
     {
+        if (user == null) {
+            throw new UnknownEntityException("user is null");
+        }
         try
         {
             user.setObjectdata(ObjectUtils.serializeMap(user.getPermStorage()));
@@ -367,9 +373,12 @@ public class DefaultUserManager implements UserManager
      */
     @Override
     public void createAccount(User user, String initialPassword)
-            throws EntityExistsException, DataBackendException
+            throws UnknownEntityException, EntityExistsException, DataBackendException
     {
-        umDelegate.addUser(user, initialPassword);
+        if (user == null) {
+            throw new UnknownEntityException("user is null");
+        }
+        umDelegate.addUser(user.getUserDelegate(), initialPassword);
     }
 
     /**
@@ -383,7 +392,10 @@ public class DefaultUserManager implements UserManager
     public void removeAccount(User user)
             throws UnknownEntityException, DataBackendException
     {
-        umDelegate.removeUser(user);
+        if (user == null) {
+            throw new UnknownEntityException("user is null");
+        }
+        umDelegate.removeUser(user.getUserDelegate());
     }
 
     /**
@@ -405,6 +417,9 @@ public class DefaultUserManager implements UserManager
             throws PasswordMismatchException, UnknownEntityException,
             DataBackendException
     {
+        if (user == null) {
+            throw new UnknownEntityException("user is null");
+        }
         umDelegate.changePassword(
                 ((TurbineUserDelegate)user).getUserDelegate(),
                 oldPassword, newPassword);
@@ -429,7 +444,10 @@ public class DefaultUserManager implements UserManager
     public void forcePassword(User user, String password)
             throws UnknownEntityException, DataBackendException
     {
-        umDelegate.forcePassword(user, password);
+        if (user == null) {
+            throw new UnknownEntityException("user is null");
+        }
+        umDelegate.forcePassword(user.getUserDelegate(), password);
     }
 
     /**
@@ -511,6 +529,9 @@ public class DefaultUserManager implements UserManager
     @Override
     public <T extends AccessControlList> T getACL(User user) throws UnknownEntityException
     {
-        return umDelegate.getACL(user);
+        if (user == null) {
+            throw new UnknownEntityException("user is null");
+        }
+        return umDelegate.getACL(user.getUserDelegate());
     }
 }

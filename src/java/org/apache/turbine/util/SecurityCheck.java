@@ -148,7 +148,10 @@ public class SecurityCheck
                 roleObject = securityService.getRoleManager().getRoleInstance(role);
                 securityService.getRoleManager().addRole(roleObject);
                 TurbineModelManager modelManager = (TurbineModelManager)securityService.getModelManager();
-                modelManager.grant(data.getUser(), modelManager.getGlobalGroup(), roleObject);
+                if (data.getUser() == null) {
+                  throw new UnknownEntityException("user is null");
+                }
+                modelManager.grant(data.getUser().getUserDelegate(), modelManager.getGlobalGroup(), roleObject);
             }
             else
             {

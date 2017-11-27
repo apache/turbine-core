@@ -186,7 +186,7 @@ public interface UserManager
      * @throws EntityExistsException if the user account already exists.
      */
     void createAccount(User user, String initialPassword)
-            throws EntityExistsException, DataBackendException;
+            throws UnknownEntityException, EntityExistsException, DataBackendException;
 
     /**
      * Removes an user account from the system.
