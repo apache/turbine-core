@@ -483,7 +483,7 @@ public class DefaultSecurityService
      */
     @Override
     public void addUser(User user, String password)
-            throws DataBackendException, EntityExistsException
+            throws UnknownEntityException,DataBackendException, EntityExistsException
     {
         getUserManager().createAccount(user, password);
     }
@@ -500,8 +500,11 @@ public class DefaultSecurityService
     public void removeUser(User user)
             throws DataBackendException, UnknownEntityException
     {
+        if (user == null) {
+            throw new UnknownEntityException("user is null");
+        }
         // revoke all roles form the user
-        modelManager.revokeAll(user);
+        modelManager.revokeAll(user.getUserDelegate());
         getUserManager().removeAccount(user);
     }
 
@@ -822,7 +825,10 @@ public class DefaultSecurityService
     public void grant(User user, Group group, Role role)
     throws DataBackendException, UnknownEntityException
     {
-        modelManager.grant(user, group, role);
+        if (user == null) {
+            throw new UnknownEntityException("user is null");
+        }
+        modelManager.grant(user.getUserDelegate(), group, role);
     }
 
     /**
@@ -840,7 +846,10 @@ public class DefaultSecurityService
     public void revoke(User user, Group group, Role role)
         throws DataBackendException, UnknownEntityException
     {
-        modelManager.revoke(user, group, role);
+        if (user == null) {
+            throw new UnknownEntityException("user is null");
+        }
+        modelManager.revoke(user.getUserDelegate(), group, role);
     }
 
     /**
@@ -857,7 +866,10 @@ public class DefaultSecurityService
     public void revokeAll(User user)
         throws DataBackendException, UnknownEntityException
     {
-        modelManager.revokeAll(user);
+        if (user == null) {
+            throw new UnknownEntityException("user is null");
+        }
+        modelManager.revokeAll(user.getUserDelegate());
     }
 
     /**

@@ -53,15 +53,12 @@ public class TurbineDefaultModelManagerTest
         {
             fail(e.toString());
         }
-
     }
 
     @Test
     public void testDummy() {
     	// all tests in abstract
     }
-
-
 
     @Override
     @After

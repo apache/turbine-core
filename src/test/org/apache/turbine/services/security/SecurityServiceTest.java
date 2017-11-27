@@ -127,11 +127,11 @@ public class SecurityServiceTest extends BaseUnit4Test
         securityService.addUser(user, "clint");
         securityService.grant(user, group, role);
 
-		addUserAndCheck(group, role, user);
+		addUserAndCheck(group, role, user.getUserDelegate());
 
         // Fulcrum security service returns a raw org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl,
 		org.apache.fulcrum.security.UserManager  userManager = fulcrumSecurityService.getUserManager();
-        org.apache.fulcrum.security.entity.User fulcrumUser = userManager.getUserInstance("Clint2");
+		TurbineUser fulcrumUser = userManager.getUserInstance("Clint2");
         userManager.addUser(fulcrumUser, "clint2");         // memory
         ((TurbineModelManager)fulcrumSecurityService.getModelManager()).grant(fulcrumUser, group, role);
 
@@ -149,7 +149,7 @@ public class SecurityServiceTest extends BaseUnit4Test
      * @throws DataBackendException
      * @throws UnknownEntityException
      */
-	private void addUserAndCheck(Group group, Role role, org.apache.fulcrum.security.entity.User user)
+	private void addUserAndCheck(Group group, Role role, TurbineUser user)
 			throws EntityExistsException, DataBackendException,
 			UnknownEntityException
 	{

@@ -296,9 +296,10 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws EntityExistsException if the user account already exists.
+     * @throws UnknownEntityException  if the provided user does not exist (is null)
      */
     void addUser(User user, String password)
-            throws DataBackendException, EntityExistsException;
+            throws DataBackendException, EntityExistsException, UnknownEntityException;
 
     /**
      * Removes an user account from the system.
