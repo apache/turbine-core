@@ -27,7 +27,7 @@
   <groupId>org.apache.turbine</groupId>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
-  <version>4.1-SNAPSHOT</version>
+  <version>4.0.1-SNAPSHOT</version>
   <description>Turbine is a servlet based framework that allows experienced Java
     developers to quickly build secure web applications. Parts of Turbine
     can also be used independently of the web portion of Turbine as
@@ -1099,7 +1099,7 @@
   <properties>
     <!-- TODO: Change for release -->
     <turbine.site.path>turbine/development/turbine-4.1</turbine.site.path>
-    <fulcrum.security>1.1.2-SNAPSHOT</fulcrum.security>
+    <fulcrum.security>1.1.1</fulcrum.security>
     <slf4j.version>1.7.25</slf4j.version>
   </properties>
 
