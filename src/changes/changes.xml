@@ -24,7 +24,12 @@
   </properties>
 
   <body>
-    <release version="4.0" date="in Subversion">
+    <release version="4.0.1" date="in Subversion">
+      <action type="fix" dev="gk" due-to="Jeffery Painter">
+      Each call in Turbine managers to the user delegate with a user object parameter now gets the wrapped user (the userDelegate).
+      </action>
+    </release> 
+    <release version="4.0" date="2017-11-06">
       <action type="update" dev="gk">
         OWASP vulnerability check
       </action>
