@@ -316,7 +316,7 @@ public class DefaultSecurityService
         R role;
         try
         {
-            role = roleManager.getRoleInstance();
+            role = roleManager.getRoleInstance(roleName);
         }
         catch (Exception e)
         {
@@ -907,7 +907,7 @@ public class DefaultSecurityService
     /**
      * Revokes all permissions from a Role.
      *
-     * This method is user when deleting a Role.
+     * This method is used when deleting a Role.
      *
      * @param role the Role
      * @throws DataBackendException if there was an error accessing the data
