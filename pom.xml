@@ -506,22 +506,23 @@
     <plugins>
       <!-- run optionally, use not as reporting plugin, as it exposes file paths to artifacts
         mvn org.owasp:dependency-check-maven:check
-        check each possible vulnerability carefully, find more info about how to read, false positives et al. here: https://jeremylong.github.io/DependencyCheck/dependency-check-maven/plugin-info.html
+        check each possible vulnerability carefully, find more info about how to read, false positives et al. here: 
+        https://jeremylong.github.io/DependencyCheck/dependency-check-maven/plugin-info.html
       -->
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>2.1.1</version>
+        <version>3.0.2</version>
         <executions>
-            <execution>
+           <execution>
                 <goals>
                     <goal>check</goal>
                 </goals>
             </execution>
         </executions>
-        <!--configuration>
-           <suppressionFiles>true</suppressionFiles>
-        </configuration-->
+        <configuration>
+           <!--skip>true</skip-->
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -1050,6 +1051,13 @@
       <id>apache-release</id>
       <build>
         <plugins>
+           <plugin>
+            <groupId>org.owasp</groupId>
+            <artifactId>dependency-check-maven</artifactId>
+            <configuration>
+               <skip>false</skip>
+            </configuration>
+          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-site-plugin</artifactId>
