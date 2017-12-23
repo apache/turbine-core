@@ -82,7 +82,7 @@ public class AccessController
      * If there is a user and the user is logged in, doPerform will
      * set the RunData ACL.  The list is first sought from the current
      * session, otherwise it is loaded through
-     * <code>TurbineSecurity.getACL()</code> and added to the current
+     * <code>link {@link SecurityService#getACL(User)}</code> and added to the current
      * session.
      *
      * @param pipelineData Turbine information.

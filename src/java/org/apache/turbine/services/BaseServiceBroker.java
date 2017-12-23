@@ -33,6 +33,8 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.annotation.AnnotationProcessor;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * A generic implementation of a <code>ServiceBroker</code> which
@@ -373,6 +375,16 @@ public abstract class BaseServiceBroker implements ServiceBroker
 
         if (!instance.getInit())
         {
+            
+            try
+            {
+             // convenience annotation in Turbine services 
+                AnnotationProcessor.process(instance);
+            }
+            catch ( TurbineException e )
+            {
+                throw new InstantiationException( e.getMessage(), e );
+            }
             // this call might result in an indirect recursion
             instance.init();
         }

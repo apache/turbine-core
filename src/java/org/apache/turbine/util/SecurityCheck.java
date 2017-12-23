@@ -192,7 +192,7 @@ public class SecurityCheck
      * The permission will be created and granted to the first available Role of
      * the user, that the SecurityCheck is running against.
      *
-     * If the User has no Roles, the first Role via TurbineSecurity is granted the
+     * If the User has no Roles, the first Role via SecurityService is granted the
      * permission.
      *
      * @param permission
@@ -228,7 +228,7 @@ public class SecurityCheck
                 {
                     /*
                      * The User within data has no roles yet, let us grant the permission
-                     * to the first role available through TurbineSecurity.
+                     * to the first role available through SecurityService.
                      */
                     roles = securityService.getRoleManager().getAllRoles();
                     if(roles.size() > 0)
