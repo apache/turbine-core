@@ -920,6 +920,28 @@ public class DefaultSecurityService
     {
         modelManager.revokeAll(role);
     }
+    
+    /**
+     * Revokes by default all permissions from a Role and if flag is set
+     * all group and user relationships with this role
+     * 
+     * This method is used when deleting a Role.
+     * 
+     * @param role
+     *            the Role
+     * @param cascadeDelete
+     *             if <code>true </code> removes all groups and user for this role.
+     * @throws DataBackendException
+     *             if there was an error accessing the data backend.
+     * @throws UnknownEntityException
+     *             if the Role is not present.
+     */
+    @Override
+    public void revokeAll( Role role, boolean cascadeDelete )
+        throws DataBackendException, UnknownEntityException 
+    {
+        modelManager.revokeAll(role, cascadeDelete);
+    }
 
     /**
      * Retrieves all permissions associated with a role.
