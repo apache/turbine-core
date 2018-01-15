@@ -240,7 +240,7 @@ public interface UserManager
      * @throws UnknownEntityException
      *             if the anonymous User object couldn't be constructed.
      */
-    <T extends User> T getAnonymousUser() throws UnknownEntityException;
+    <U extends User> U getAnonymousUser() throws UnknownEntityException;
 
     /**
      * Checks whether a passed user object matches the anonymous user pattern
@@ -263,7 +263,7 @@ public interface UserManager
      * @throws DataBackendException
      *             if the object could not be instantiated.
      */
-    <T extends User> T getUserInstance() throws DataBackendException;
+    <U extends User> U getUserInstance() throws DataBackendException;
 
     /**
      * Construct a blank User object.
@@ -278,7 +278,7 @@ public interface UserManager
      * @throws DataBackendException
      *             if the object could not be instantiated.
      */
-    <T extends User> T getUserInstance(String userName) throws DataBackendException;
+    <U extends User> U getUserInstance(String userName) throws DataBackendException;
 
     /**
      * Return a Class object representing the system's chosen implementation of
@@ -290,5 +290,5 @@ public interface UserManager
      *             if the implementation of ACL interface could not be
      *             determined, or does not exist.
      */
-    <T extends AccessControlList> T getACL(User user) throws UnknownEntityException;
+    <A extends AccessControlList> A getACL(User user) throws UnknownEntityException;
 }

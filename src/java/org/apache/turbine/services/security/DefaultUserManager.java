@@ -459,7 +459,7 @@ public class DefaultUserManager implements UserManager
      *             if the anonymous User object couldn't be constructed.
      */
     @Override
-    public <T extends User> T getAnonymousUser() throws UnknownEntityException
+    public <U extends User> U getAnonymousUser() throws UnknownEntityException
     {
         TurbineUser u = umDelegate.getAnonymousUser();
         return wrap(u);
@@ -491,7 +491,7 @@ public class DefaultUserManager implements UserManager
      *             if the object could not be instantiated.
      */
     @Override
-    public <T extends User> T getUserInstance() throws DataBackendException
+    public <U extends User> U getUserInstance() throws DataBackendException
     {
         TurbineUser u = umDelegate.getUserInstance();
         return wrap(u);
@@ -511,7 +511,7 @@ public class DefaultUserManager implements UserManager
      *             if the object could not be instantiated.
      */
     @Override
-    public <T extends User> T getUserInstance(String userName) throws DataBackendException
+    public <U extends User> U getUserInstance(String userName) throws DataBackendException
     {
         TurbineUser u = umDelegate.getUserInstance(userName);
         return wrap(u);
@@ -527,7 +527,7 @@ public class DefaultUserManager implements UserManager
      *             determined, or does not exist.
      */
     @Override
-    public <T extends AccessControlList> T getACL(User user) throws UnknownEntityException
+    public <A extends AccessControlList> A getACL(User user) throws UnknownEntityException
     {
         if (user == null) {
             throw new UnknownEntityException("user is null");
