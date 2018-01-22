@@ -713,5 +713,17 @@ public interface SecurityService
      */
     void renamePermission(Permission permission, String name)
             throws DataBackendException, UnknownEntityException;
+    /**
+     * Replaces transactionally the first given role with the second role for the given user. 
+     * 
+     * @param user the user.
+     * @param role the old role
+     * @param newRole the new role
+     * 
+     * @throws DataBackendException
+     * @throws UnknownEntityException
+     */
+    void replaceRole( User user, Role role, Role newRole )
+        throws DataBackendException, UnknownEntityException;
 
 }

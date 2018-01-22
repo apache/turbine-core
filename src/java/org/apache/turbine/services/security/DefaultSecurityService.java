@@ -851,6 +851,23 @@ public class DefaultSecurityService
         }
         modelManager.revoke(user.getUserDelegate(), group, role);
     }
+    
+    /**
+     * Replaces transactionally the first role with second role for the given user. 
+     * 
+     * @param user the user.
+     * @param role the old role
+     * @param newRole the new role
+     * 
+     * @throws DataBackendException
+     * @throws UnknownEntityException
+     */
+    @Override
+    public void replaceRole(User user, Role role, Role newRole)
+                    throws DataBackendException, UnknownEntityException
+    {
+        modelManager.replace( user, role, newRole );
+    }
 
     /**
      * Revokes all roles from an User.
