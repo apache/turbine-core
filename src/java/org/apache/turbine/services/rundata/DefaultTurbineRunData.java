@@ -455,6 +455,8 @@ public class DefaultTurbineRunData
 
     /**
      * Sets the access control list.
+     * 
+     * To delete ACL from session use key {@link TurbineConstants#ACL_SESSION_KEY}. Invalidate session, if session persist.
      *
      * @param acl an access control list.
      */
