@@ -24,9 +24,16 @@
   </properties>
 
   <body>
-    <release version="4.0.1" date="in Subversion">
+    <release version="4.0.2" date="in Subversion">
+    </release> 
+    <release version="4.0.1" date="2018-02-21">
+       <action type="update" dev="gk">
+        Security methods replaceRole and revokeAll(Role, flag), Interface changes: SecurityService's addUser method and UserManager's createAccount, getAnonymousUser, getACL methods may now throw UnknownEntityException additionally.
+       </action>
+       <action type="update" dev="painter">
+         input.encoding property (velocity) is set now default for locale.default.charset (both default to ISO-8859-1).
+      </action>
       <action type="update" dev="gk">
-        New security method replaceRole,
         Updated dependency versions: commons-codec to 1.11, commons-beanutils to 1.9.3, mockito-core to 2.13.0.
       </action>
       <action type="fix" dev="gk" due-to="Jeffery Painter">
