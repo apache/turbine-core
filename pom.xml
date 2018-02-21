@@ -522,6 +522,8 @@
         </executions>
         <configuration>
            <!--skip>true</skip-->
+           <!-- suppress false positive -->
+           <suppressionFiles>${project.basedir}/suppression-owasp-fp.xml</suppressionFiles>
         </configuration>
       </plugin>
       <plugin>
@@ -1146,8 +1148,8 @@
   <properties>
     <!-- TODO: Change for release -->
     <turbine.site.path>turbine/development/turbine-4.1</turbine.site.path>
-    <fulcrum.intake>1.2.3-SNAPSHOT</fulcrum.intake>
-    <fulcrum.security>1.1.2-SNAPSHOT</fulcrum.security>
+    <fulcrum.intake>1.2.3</fulcrum.intake>
+    <fulcrum.security>1.1.2</fulcrum.security>
     <slf4j.version>1.7.25</slf4j.version>
   </properties>
 
