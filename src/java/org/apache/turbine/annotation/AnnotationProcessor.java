@@ -30,6 +30,7 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.ServiceManager;
@@ -75,6 +76,78 @@ public class AnnotationProcessor
         return annotations;
     }
 
+    /**
+     * Check if the object given is authorized to be executed based on its annotations
+     * The method will return false if one of the annotations denies execution
+     *
+     * @param object the object
+     * @return true if the execution is allowed
+     */
+    public static <A extends TurbineAccessControlList> boolean isAuthorized(AccessibleObject object, A acl)
+    {
+        Annotation[] annotations = getAnnotations(object);
+
+        for (Annotation annotation : annotations)
+        {
+            if (annotation instanceof TurbineRequiredRole)
+            {
+                TurbineRequiredRole trr = (TurbineRequiredRole) annotation;
+                String[] roleNames = trr.value();
+                String group = trr.group();
+                
+                if (StringUtils.isEmpty(group)) // global group
+                {
+                    for (String roleName : roleNames)
+                    {
+                        if (!acl.hasRole(roleName))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    for (String roleName : roleNames)
+                    {
+                        if (!acl.hasRole(roleName, group))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            else if (annotation instanceof TurbineRequiredPermission)
+            {
+                TurbineRequiredPermission trp = (TurbineRequiredPermission) annotation;
+                String[] permissionNames = trp.value();
+                String group = trp.group();
+                
+                if (StringUtils.isEmpty(group)) // global group
+                {
+                    for (String permissionName : permissionNames)
+                    {
+                        if (!acl.hasPermission(permissionName))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    for (String permissionName : permissionNames)
+                    {
+                        if (!acl.hasPermission(permissionName, group))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
+    
     /**
      * Search for annotated fields of the object and inject the appropriate
      * objects
