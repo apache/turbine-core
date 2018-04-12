@@ -44,14 +44,17 @@ compile, run the unit tests, and build the jar.  Some other useful goals:
 
 mvn site   - generate the site documention
 
+- test site
+mvn site scm-publish:publish-scm -Dscmpublish.dryRun=true
+- deploy site
 mvn clean site scm-publish:publish-scm    - deploy Turbine release site to the Apache web site (cft. to https://svn.apache.org/repos/asf/turbine/site how to deploy main Turbine web site)
 
 Find more about release related command hints in 
 - https://svn.apache.org/repos/asf/turbine/fulcrum/trunk/README.txt
-- Update turbine.site.path in pom.xml to the new production path 
-(e.g. turbine/turbine-4.0 for version 4.0) BEFORE release and the new SNAPSHOT version to the new 
-development path (e.g. turbine/development/turbine-4.1 for version 4.1-SNAPSHOT) AFTER the release, 
-cft. the site structure https://svn.apache.org/repos/infra/websites/production/turbine/content/turbine/.
+- If major.minor changed, do update turbine.site.path in pom.xml to the new production path 
+(e.g. turbine/turbine-4.0 for version 4.0) removing also the "/development/"-part of the path BEFORE release.
+- if updating the site for the new SNAPSHOT version add the new development path (e.g. turbine/development/turbine-4.1 for version 4.1-SNAPSHOT) AFTER the release.
+- cft. the site structure https://svn.apache.org/repos/infra/websites/production/turbine/content/turbine/.
 
 As of Turbine 2.3, you must also have the Torque plugin for Maven installed
 to build Turbine.  Information on how to install the plugin is available

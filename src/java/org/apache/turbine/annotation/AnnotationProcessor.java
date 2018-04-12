@@ -81,6 +81,7 @@ public class AnnotationProcessor
      * The method will return false if one of the annotations denies execution
      *
      * @param object the object
+     * @param acl
      * @return true if the execution is allowed
      */
     public static <A extends TurbineAccessControlList> boolean isAuthorized(AccessibleObject object, A acl)
