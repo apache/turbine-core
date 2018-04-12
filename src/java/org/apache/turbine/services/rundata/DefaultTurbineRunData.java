@@ -254,7 +254,7 @@ public class DefaultTurbineRunData
 
         String charset = defaultCharSet;
 
-        if (StringUtils.isEmpty(charset))
+        if (StringUtils.isEmpty(charset)) // this might not occur actually, as a default is always set
         {
             log.debug("charset is empty!");
             /* Default charset isn't specified, get the locale specific one. */
