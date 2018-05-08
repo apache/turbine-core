@@ -1070,10 +1070,11 @@
       <version>1.0.5</version>
       <scope>test</scope>
     </dependency>
+    <!-- moved mockito to testcontainer with v1.0.8 -->
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>2.13.0</version>
+      <version>2.18.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -1144,7 +1145,8 @@
 
   <properties>
     <!-- TODO: Change for release -->
-    <turbine.site.path>turbine/development/turbine-4.1</turbine.site.path>
+    <!--turbine.site.path>turbine/development/turbine-4.1</turbine.site.path-->
+    <turbine.site.path>turbine/turbine-4.0</turbine.site.path>
     <fulcrum.intake>1.2.3</fulcrum.intake>
     <fulcrum.security>1.1.2</fulcrum.security>
     <slf4j.version>1.7.25</slf4j.version>
