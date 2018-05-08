@@ -374,9 +374,6 @@ public class Turbine
                 TurbineConstants.PARAMETER_ENCODING_KEY,
                 TurbineConstants.PARAMETER_ENCODING_DEFAULT);
 
-        // RunData needs the following encoding set to override the default charset
-        configuration.setProperty(TurbineConstants.LOCALE_DEFAULT_CHARSET_KEY, inputEncoding);
-
         if (log.isDebugEnabled())
         {
             log.debug("Input Encoding has been set to " + inputEncoding);
