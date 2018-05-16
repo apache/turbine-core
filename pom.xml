@@ -1148,7 +1148,7 @@
     <!--turbine.site.path>turbine/development/turbine-4.1</turbine.site.path-->
     <turbine.site.path>turbine/turbine-4.0</turbine.site.path>
     <fulcrum.intake>1.2.3</fulcrum.intake>
-    <fulcrum.security>1.1.2</fulcrum.security>
+    <fulcrum.security>1.1.3-SNAPSHOT</fulcrum.security>
     <slf4j.version>1.7.25</slf4j.version>
   </properties>
 
