@@ -75,16 +75,39 @@ public class AnnotationProcessor
         }
         return annotations;
     }
-
+    
+    public enum ConditionType
+    {
+        COMPOUND, ANY; 
+    }
+    
     /**
      * Check if the object given is authorized to be executed based on its annotations
+     * 
      * The method will return false if one of the annotations denies execution
-     *
-     * @param object the object
+     * 
+     * @see #isAuthorized(AccessibleObject, TurbineAccessControlList, ConditionType)
+     * 
+     * @param object
      * @param acl
      * @return true if the execution is allowed
      */
     public static <A extends TurbineAccessControlList> boolean isAuthorized(AccessibleObject object, A acl)
+    {
+        return isAuthorized( object, acl, ConditionType.COMPOUND );
+    }
+
+    /**
+     * Check if the object given is authorized to be executed based on its annotations
+     * The method's return value depends on the conditonType, cft. {@link RoleConditionType}.
+     *
+     * @param object the object
+     * @param acl
+     * @param conditonType either {@link RoleConditionType#COMPOUND}: The method will return false if one of the annotations denies execution
+     *                     or {@link RoleConditionType#SINGLE} : The method will return true if one of the annotations allows execution
+     * @return true if the execution is allowed
+     */
+    public static <A extends TurbineAccessControlList> boolean isAuthorized(AccessibleObject object, A acl, ConditionType conditonType)
     {
         Annotation[] annotations = getAnnotations(object);
 
@@ -100,9 +123,19 @@ public class AnnotationProcessor
                 {
                     for (String roleName : roleNames)
                     {
-                        if (!acl.hasRole(roleName))
-                        {
-                            return false;
+                        switch ( conditonType ) {
+                            case COMPOUND: default:
+                                if (!acl.hasRole(roleName))
+                                {
+                                    return false;
+                                }
+                                break;
+                            case ANY:
+                                if (acl.hasRole(roleName))
+                                {
+                                    return true;
+                                }
+                                break;
                         }
                     }
                 }
@@ -110,9 +143,19 @@ public class AnnotationProcessor
                 {
                     for (String roleName : roleNames)
                     {
-                        if (!acl.hasRole(roleName, group))
-                        {
-                            return false;
+                        switch ( conditonType ) {
+                            case COMPOUND: default:
+                                if (!acl.hasRole(roleName, group))
+                                {
+                                    return false;
+                                }
+                                break;
+                            case ANY:
+                                if (acl.hasRole(roleName, group))
+                                {
+                                    return true;
+                                }
+                                break;
                         }
                     }
                 }
@@ -127,9 +170,19 @@ public class AnnotationProcessor
                 {
                     for (String permissionName : permissionNames)
                     {
-                        if (!acl.hasPermission(permissionName))
-                        {
-                            return false;
+                        switch ( conditonType ) {
+                            case COMPOUND: default:
+                                if (!acl.hasPermission(permissionName))
+                                {
+                                    return false;
+                                }
+                                break;
+                            case ANY:
+                                if (acl.hasPermission(permissionName))
+                                {
+                                    return true;
+                                }
+                                break;
                         }
                     }
                 }
@@ -137,10 +190,21 @@ public class AnnotationProcessor
                 {
                     for (String permissionName : permissionNames)
                     {
-                        if (!acl.hasPermission(permissionName, group))
-                        {
-                            return false;
+                        switch ( conditonType ) {
+                            case COMPOUND: default:
+                                if (!acl.hasPermission(permissionName, group))
+                                {
+                                    return false;
+                                }
+                                break;
+                            case ANY:
+                                if (acl.hasPermission(permissionName, group))
+                                {
+                                    return true;
+                                }
+                                break;
                         }
+
                     }
                 }
             }
