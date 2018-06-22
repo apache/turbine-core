@@ -37,9 +37,11 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.actions.VelocityActionDoesNothing;
 import org.apache.turbine.pipeline.DefaultPipelineData;
 import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
+import org.apache.velocity.context.Context;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -320,6 +322,9 @@ public class ActionLoaderTest extends BaseTestCase
         try
         {
             ActionLoader.getInstance().exec(pipelineData, data.getAction());
+            Context context = (Context)
+                            data.getTemplateInfo().getTemplateContext(VelocityService.CONTEXT);
+            assertTrue( context.get( "mykey" ) != null );
         }
         catch (Exception e)
         {
