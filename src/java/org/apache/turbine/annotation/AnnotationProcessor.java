@@ -138,6 +138,9 @@ public class AnnotationProcessor
                                 break;
                         }
                     }
+                    if (conditonType == ConditionType.ANY) { // nothing matched
+                        return false;
+                    }
                 }
                 else
                 {
