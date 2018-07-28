@@ -35,7 +35,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
- * Set defaultEncoding of the request
+ * Set default encoding of the request. The default behavior is to respond
+ * with the charset that was requested.
  *
  * This valve must be situated in the pipeline before any access to the
  * {@link org.apache.fulcrum.parser.ParameterParser} to take effect.
