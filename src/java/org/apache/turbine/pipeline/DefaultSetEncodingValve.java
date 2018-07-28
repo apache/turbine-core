@@ -31,10 +31,14 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
  * Set defaultEncoding of the request
+ *
+ * This valve must be situated in the pipeline before any access to the
+ * {@link org.apache.fulcrum.parser.ParameterParser} to take effect.
  *
  * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
  */
@@ -56,23 +60,31 @@ public class DefaultSetEncodingValve
         HttpServletRequest req = pipelineData.get(Turbine.class, HttpServletRequest.class);
 
         // If the servlet container gives us no clear indication about the
-        // Encoding of the contents, set it to our default value.
-        if (req.getCharacterEncoding() == null)
+        // encoding of the contents, set it to our default value.
+        String requestEncoding = req.getCharacterEncoding();
+
+        if (requestEncoding == null)
         {
+            requestEncoding = defaultEncoding;
+
             if (log.isDebugEnabled())
             {
-                log.debug("Changing Input Encoding to " + defaultEncoding);
+                log.debug("Changing Input Encoding to " + requestEncoding);
             }
 
             try
             {
-                req.setCharacterEncoding(defaultEncoding);
+                req.setCharacterEncoding(requestEncoding);
             }
             catch (UnsupportedEncodingException uee)
             {
-                log.warn("Could not change request defaultEncoding to " + defaultEncoding, uee);
+                log.warn("Could not change request encoding to " + requestEncoding, uee);
             }
         }
+
+        // Copy encoding charset to RunData to set a reasonable default for the response
+        RunData data = getRunData(pipelineData);
+        data.setCharSet(requestEncoding);
 
         // Pass control to the next Valve in the Pipeline
         context.invokeNext(pipelineData);
