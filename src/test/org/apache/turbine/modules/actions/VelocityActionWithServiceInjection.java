@@ -57,11 +57,12 @@ public class VelocityActionWithServiceInjection extends VelocityAction
     public void doPerform(PipelineData pipelineData, Context context) throws Exception
     {
         log.debug("Calling doPerform(PipelineData)");
-		assertNotNull("runDataService object was Null.", runDataService);
+        assertNotNull("runDataService object was Null.", runDataService);
         log.debug("Injected service is " + runDataService.getName());
         assertNotNull("runDataService2 object was Null.", runDataService2);
         log.debug("Injected service is " + runDataService2.getName());
         assertNotNull("factory object was Null.", factory);
         log.debug("Injected service is " + factory.getClass());
+        context.put("mykey","x");
     }
 }
