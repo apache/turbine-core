@@ -23,8 +23,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Vector;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +32,6 @@ import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
-import org.apache.turbine.util.uri.URIConstants;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -48,7 +45,7 @@ import org.junit.Test;
  * @version $Id: DefaultSessionTimeoutValveTest.java 1606111 2014-06-27
  *          14:46:47Z gk $
  */
-public class DefaultSessionTimeoutValveTest extends BaseTestCase
+public class DefaultSetEncodingValveTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
     private ServletConfig config = null;
@@ -70,6 +67,7 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
         config = mock(ServletConfig.class);
         request = getMockRequest();
         response = mock(HttpServletResponse.class);
+        when(request.getCharacterEncoding()).thenReturn(null);
     }
 
     /**
@@ -79,47 +77,42 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
     public void testDefaults() throws Exception
     {
         // reset
-        Turbine.getConfiguration().setProperty(TurbineConstants.SESSION_TIMEOUT_KEY,
-                Integer.valueOf(TurbineConstants.SESSION_TIMEOUT_DEFAULT));
-
-        Vector<String> v = new Vector<String>();
-        v.add(URIConstants.CGI_ACTION_PARAM);
-        when(request.getParameterNames()).thenReturn(v.elements());
-        when(request.getParameterValues(URIConstants.CGI_ACTION_PARAM)).thenReturn(new String[] { "TestAction" });
+        Turbine.getConfiguration().setProperty(TurbineConstants.PARAMETER_ENCODING_KEY,
+                TurbineConstants.PARAMETER_ENCODING_DEFAULT);
 
         PipelineData pipelineData = getPipelineData(request, response, config);
 
         Pipeline pipeline = new TurbinePipeline();
 
-        DefaultSessionTimeoutValve valve = new DefaultSessionTimeoutValve();
+        DefaultSetEncodingValve valve = new DefaultSetEncodingValve();
         pipeline.addValve(valve);
         pipeline.initialize();
 
         pipeline.invoke(pipelineData);
 
         RunData runData = (RunData) pipelineData;
-        assertEquals(0, runData.getSession().getMaxInactiveInterval());
+        assertEquals(TurbineConstants.PARAMETER_ENCODING_DEFAULT, runData.getCharSet());
     }
 
     /**
      * Tests the Valve.
      */
     @Test
-    public void testTimeoutSet() throws Exception
+    public void testEncodingSet() throws Exception
     {
-        Turbine.getConfiguration().setProperty(TurbineConstants.SESSION_TIMEOUT_KEY, "3600");
+        Turbine.getConfiguration().setProperty(TurbineConstants.PARAMETER_ENCODING_KEY, "UTF-8");
         PipelineData pipelineData = getPipelineData(request, response, config);
 
         Pipeline pipeline = new TurbinePipeline();
 
-        DefaultSessionTimeoutValve valve = new DefaultSessionTimeoutValve();
+        DefaultSetEncodingValve valve = new DefaultSetEncodingValve();
         pipeline.addValve(valve);
         pipeline.initialize();
 
         pipeline.invoke(pipelineData);
         RunData runData = (RunData) pipelineData;
 
-        assertEquals(3600, runData.getSession().getMaxInactiveInterval());
+        assertEquals("UTF-8", runData.getCharSet());
     }
 
     @AfterClass
