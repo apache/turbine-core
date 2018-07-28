@@ -78,7 +78,7 @@ public class DefaultSetEncodingValve
             }
             catch (UnsupportedEncodingException uee)
             {
-                log.warn("Could not change request encoding to " + requestEncoding, uee);
+                throw new TurbineException("Could not change request encoding to " + requestEncoding, uee);
             }
         }
 
