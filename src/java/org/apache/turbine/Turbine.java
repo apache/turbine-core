@@ -24,7 +24,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -164,7 +163,7 @@ public class Turbine
     private static Configuration configuration = null;
 
     /** Default Input encoding if the servlet container does not report an encoding */
-    private String inputEncoding = null;
+    private static String inputEncoding = TurbineConstants.PARAMETER_ENCODING_DEFAULT;
 
     /** Which configuration method is being used */
     private enum ConfigurationStyle
@@ -369,7 +368,7 @@ public class Turbine
         configuration.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, applicationRoot);
         configuration.setProperty(TurbineConstants.WEBAPP_ROOT_KEY, webappRoot);
 
-        // Get the default input encoding
+        // Get the default input defaultEncoding
         inputEncoding = configuration.getString(
                 TurbineConstants.PARAMETER_ENCODING_KEY,
                 TurbineConstants.PARAMETER_ENCODING_DEFAULT);
@@ -378,7 +377,7 @@ public class Turbine
         {
             log.debug("Input Encoding has been set to " + inputEncoding);
         }
-        
+
         getServiceManager().setConfiguration(configuration);
 
         // Initialize the service manager. Services
@@ -399,7 +398,7 @@ public class Turbine
             log.debug("Using descriptor path: " + descriptorPath);
         }
 
-        // context resource path has to begin with slash, cft. context,getResource
+        // context resource path has to begin with slash, cft. context.getResource
         if (!descriptorPath.startsWith( "/" )) {
         	descriptorPath  = "/" + descriptorPath;
         }
@@ -786,26 +785,6 @@ public class Turbine
                 throw initFailure;
             }
 
-            //
-            // If the servlet container gives us no clear indication about the
-            // Encoding of the contents, set it to our default value.
-            if (req.getCharacterEncoding() == null)
-            {
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Changing Input Encoding to " + inputEncoding);
-                }
-
-                try
-                {
-                    req.setCharacterEncoding(inputEncoding);
-                }
-                catch (UnsupportedEncodingException uee)
-                {
-                    log.warn("Could not change request encoding to " + inputEncoding, uee);
-                }
-            }
-
             // Get general RunData here...
             // Perform turbine specific initialization below.
             pipelineData = getRunDataService().getRunData(req, res, getServletConfig());
@@ -1051,7 +1030,7 @@ public class Turbine
      *
      * @return the default input encoding.
      */
-    public String getDefaultInputEncoding()
+    public static String getDefaultInputEncoding()
     {
         return inputEncoding;
     }
