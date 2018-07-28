@@ -462,8 +462,7 @@ public class IntakeTool
             }
             catch (IntakeException ie)
             {
-                log.error("Tried to release unknown group "
-                        + group.getIntakeGroupName());
+                log.error("Tried to release unknown group " + group.getIntakeGroupName(), ie);
             }
         }
     }
