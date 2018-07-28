@@ -1029,7 +1029,10 @@ public class Turbine
      * Returns the default input encoding for the servlet.
      *
      * @return the default input encoding.
+     *
+     * @deprecated Use {@link org.apache.turbine.pipeline.DefaultSetEncodingValve} to set default encoding
      */
+    @Deprecated
     public static String getDefaultInputEncoding()
     {
         return inputEncoding;
