@@ -29,12 +29,12 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.collections.ExtendedProperties;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineServices;
@@ -48,7 +48,7 @@ import org.apache.velocity.app.event.EventCartridge;
 import org.apache.velocity.app.event.MethodExceptionEventHandler;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.runtime.log.CommonsLogLogChute;
+import org.apache.velocity.util.introspection.Info;
 
 /**
  * This is a Service that can process Velocity templates from within a
@@ -85,9 +85,6 @@ public class TurbineVelocityService
 {
     /** The generic resource loader path property in velocity.*/
     private static final String RESOURCE_LOADER_PATH = ".resource.loader.path";
-
-    /** Default character set to use if not specified in the RunData object. */
-    private static final String DEFAULT_CHAR_SET = "ISO-8859-1";
 
     /** The prefix used for URIs which are of type <code>jar</code>. */
     private static final String JAR_PREFIX = "jar:";
@@ -147,7 +144,11 @@ public class TurbineVelocityService
             // Register with the template service.
             registerConfiguration(VelocityService.VELOCITY_EXTENSION);
 
-            defaultInputEncoding = getConfiguration().getString("input.encoding", DEFAULT_CHAR_SET);
+            String turbineInputEncoding = Turbine.getConfiguration().getString(
+                    TurbineConstants.PARAMETER_ENCODING_KEY,
+                    TurbineConstants.PARAMETER_ENCODING_DEFAULT);
+
+            defaultInputEncoding = getConfiguration().getString("input.encoding", turbineInputEncoding);
             defaultOutputEncoding = getConfiguration().getString("output.encoding", defaultInputEncoding);
 
             setInit(true);
@@ -196,28 +197,30 @@ public class TurbineVelocityService
      * MethodException Event Cartridge handler
      * for Velocity.
      *
-     * It logs an execption thrown by the velocity processing
+     * It logs an exception thrown by the velocity processing
      * on error level into the log file
      *
+     * @param context The current context
      * @param clazz The class that threw the exception
      * @param method The Method name that threw the exception
      * @param e The exception that would've been thrown
+     * @param info Information about the template, line and column the exception occurred
      * @return A valid value to be used as Return value
-     * @throws Exception We threw the exception further up
      */
     @Override
-    @SuppressWarnings("rawtypes") // Interface not generified
-	public Object methodException(Class clazz, String method, Exception e)
-            throws Exception
+	public Object methodException(Context context, Class clazz, String method, Exception e, Info info)
     {
         log.error("Class " + clazz.getName() + "." + method + " threw Exception", e);
 
         if (!catchErrors)
         {
-            throw e;
+            throw new RuntimeException(e);
         }
 
-        return "[Turbine caught an Error here. Look into the turbine.log for further information]";
+        return "[Turbine caught an Error in template " + info.getTemplateName()
+            + ", l:" + info.getLine()
+            + ", c:" + info.getColumn()
+            + ". Look into the turbine.log for further information]";
     }
 
     /**
@@ -493,37 +496,29 @@ public class TurbineVelocityService
 
         catchErrors = conf.getBoolean(CATCH_ERRORS_KEY, CATCH_ERRORS_DEFAULT);
 
-        conf.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,
-                CommonsLogLogChute.class.getName());
-        conf.setProperty(CommonsLogLogChute.LOGCHUTE_COMMONS_LOG_NAME,
-                "velocity");
+        // backward compatibility, can be overridden in the configuration
+        conf.setProperty(RuntimeConstants.RUNTIME_LOG_NAME, "velocity");
 
         velocity = new VelocityEngine();
-        velocity.setExtendedProperties(createVelocityProperties(conf));
+        setVelocityProperties(velocity, conf);
         velocity.init();
     }
 
 
     /**
-     * This method generates the Extended Properties object necessary
+     * This method generates the Properties object necessary
      * for the initialization of Velocity. It also converts the various
      * resource loader pathes into webapp relative pathes. It also
      *
+     * @param velocity The Velocity engine
      * @param conf The Velocity Service configuration
-     *
-     * @return An ExtendedProperties Object for Velocity
      *
      * @throws Exception If a problem occurred while converting the properties.
      */
 
-    public ExtendedProperties createVelocityProperties(Configuration conf)
+    protected void setVelocityProperties(VelocityEngine velocity, Configuration conf)
             throws Exception
     {
-        // This bugger is public, because we want to run some Unit tests
-        // on it.
-
-        ExtendedProperties veloConfig = new ExtendedProperties();
-
         // Fix up all the template resource loader pathes to be
         // webapp relative. Copy all other keys verbatim into the
         // veloConfiguration.
@@ -534,15 +529,16 @@ public class TurbineVelocityService
             if (!key.endsWith(RESOURCE_LOADER_PATH))
             {
                 Object value = conf.getProperty(key);
-                if (value instanceof List<?>) {
+                if (value instanceof List<?>)
+                {
                     for (Iterator<?> itr = ((List<?>)value).iterator(); itr.hasNext();)
                     {
-                        veloConfig.addProperty(key, itr.next());
+                        velocity.addProperty(key, itr.next());
                     }
                 }
                 else
                 {
-                    veloConfig.addProperty(key, value);
+                    velocity.addProperty(key, value);
                 }
                 continue; // for()
             }
@@ -601,10 +597,9 @@ public class TurbineVelocityService
 
                 log.debug("Adding " + key + " -> " + path);
                 // Re-Add this property to the configuration object
-                veloConfig.addProperty(key, path);
+                velocity.addProperty(key, path);
             }
         }
-        return veloConfig;
     }
 
     /**
