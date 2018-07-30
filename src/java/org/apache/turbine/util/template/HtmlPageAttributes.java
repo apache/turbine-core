@@ -124,10 +124,10 @@ public class HtmlPageAttributes
     private String defaultHtmlDoctypeRootElement = TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_DEFAULT;
 
     @TurbineConfiguration( TurbineConstants.DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY )
-    private String defaultHtmlDoctypeIdentifier = TurbineConstants.DEFAULT_HTML_DOCTYPE_IDENTIFIER_DEFAULT;
+    private String defaultHtmlDoctypeIdentifier;
 
     @TurbineConfiguration( TurbineConstants.DEFAULT_HTML_DOCTYPE_URI_KEY )
-    private String defaultHtmlDoctypeUri = TurbineConstants.DEFAULT_HTML_DOCTYPE_URI_DEFAULT;
+    private String defaultHtmlDoctypeUri;
 
     /**
      * Construct a new instance
@@ -641,7 +641,7 @@ public class HtmlPageAttributes
             }
             else
             {
-                doctype = buildDoctype(tag, defaultHtmlDoctypeIdentifier, defaultHtmlDoctypeUri);
+                doctype = getDoctype(tag, defaultHtmlDoctypeIdentifier, defaultHtmlDoctypeUri);
             }
         }
 
@@ -656,7 +656,7 @@ public class HtmlPageAttributes
      * @param uri the uri for the doctype declaration.
      * @return the doctype.
      */
-    private String buildDoctype(String tag, String identifier, String uri)
+    public String getDoctype(String tag, String identifier, String uri)
     {
         StringBuilder doctypeBuf = new StringBuilder("<!DOCTYPE ");
         doctypeBuf.append(tag);
@@ -666,14 +666,17 @@ public class HtmlPageAttributes
             doctypeBuf.append(" PUBLIC \"");
             doctypeBuf.append(identifier);
             doctypeBuf.append("\" \"");
+            doctypeBuf.append(uri);
+            doctypeBuf.append('"');
         }
-        else
+        else if (StringUtils.isNotEmpty(uri))
         {
             doctypeBuf.append(" SYSTEM \"");
+            doctypeBuf.append(uri);
+            doctypeBuf.append('"');
         }
 
-        doctypeBuf.append(uri);
-        doctypeBuf.append("\">");
+        doctypeBuf.append('>');
 
         return doctypeBuf.toString();
     }
