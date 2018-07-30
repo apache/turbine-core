@@ -37,7 +37,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.fulcrum.mimetype.MimeTypeService;
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.pool.Recyclable;
@@ -47,10 +46,10 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.DefaultPipelineData;
-import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.util.FormMessages;
+import org.apache.turbine.util.LocaleUtils;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.SystemError;
 import org.apache.turbine.util.template.TemplateInfo;
@@ -86,12 +85,6 @@ public class DefaultTurbineRunData
      * The disposed flag.
      */
     private boolean disposed;
-
-    /** The default locale. */
-    private static Locale defaultLocale = null;
-
-    /** The default charset. */
-    private static String defaultCharSet = null;
 
     /** Cached action name to execute for this request. */
     private String action;
@@ -158,7 +151,7 @@ public class DefaultTurbineRunData
     private final Map<String, Object> debugVariables = new HashMap<String, Object>();
 
     /** Logging */
-    private static Log log = LogFactory.getLog(DefaultTurbineRunData.class);
+    private static final Log log = LogFactory.getLog(DefaultTurbineRunData.class);
 
     /**
      * Attempts to get the User object from the session.  If it does
@@ -201,91 +194,6 @@ public class DefaultTurbineRunData
             return false;
         }
         return true;
-    }
-
-    /**
-     * Gets the default locale defined by properties named
-     * "locale.default.lang" and "locale.default.country".
-     *
-     * This changed from earlier Turbine versions that you can
-     * rely on getDefaultLocale() to never return null.
-     *
-     * @return A Locale object.
-     */
-    protected static Locale getDefaultLocale()
-    {
-        if (defaultLocale == null)
-        {
-            /* Get the default locale and cache it in a static variable. */
-            String lang = Turbine.getConfiguration()
-                .getString(TurbineConstants.LOCALE_DEFAULT_LANGUAGE_KEY,
-                    TurbineConstants.LOCALE_DEFAULT_LANGUAGE_DEFAULT);
-
-            String country = Turbine.getConfiguration()
-                .getString(TurbineConstants.LOCALE_DEFAULT_COUNTRY_KEY,
-                    TurbineConstants.LOCALE_DEFAULT_COUNTRY_DEFAULT);
-
-
-            // We ensure that lang and country is never null
-            defaultLocale =  new Locale(lang, country);
-        }
-        return defaultLocale;
-    }
-
-    /**
-     * Gets the default charset defined by a property named
-     * "locale.default.charset" or by the specified locale.
-     * If the specified locale is null, the default locale is applied.
-     *
-     * @return the name of the default charset or null.
-     */
-    protected String getDefaultCharSet()
-    {
-        log.debug("getDefaultCharSet()");
-
-        if (defaultCharSet == null)
-        {
-            /* Get the default charset and cache it in a static variable. */
-            defaultCharSet = Turbine.getConfiguration()
-                .getString(TurbineConstants.LOCALE_DEFAULT_CHARSET_KEY,
-                    TurbineConstants.LOCALE_DEFAULT_CHARSET_DEFAULT);
-            log.debug("defaultCharSet = " + defaultCharSet + " (From Properties)");
-        }
-
-        String charset = defaultCharSet;
-
-        if (StringUtils.isEmpty(charset)) // this might not occur actually, as a default is always set
-        {
-            log.debug("charset is empty!");
-            /* Default charset isn't specified, get the locale specific one. */
-            Locale locale = getLocale();
-            if (locale == null)
-            {
-                locale = getDefaultLocale();
-                log.debug("Locale was null, is now " + locale + " (from getDefaultLocale())");
-            }
-
-            log.debug("Locale is " + locale);
-
-            if (!locale.equals(Locale.US))
-            {
-                log.debug("We don't have US Locale!");
-                ServiceManager serviceManager = TurbineServices.getInstance();
-				MimeTypeService mimeTypeService=null;
-                try {
-					mimeTypeService= (MimeTypeService)serviceManager.getService(MimeTypeService.ROLE);
-                }
-                catch (Exception e){
-                    throw new RuntimeException(e);
-                }
-                charset = mimeTypeService.getCharSet(locale);
-
-                log.debug("Charset now " + charset);
-            }
-        }
-
-        log.debug("Returning default Charset of " + charset);
-        return charset;
     }
 
     /**
@@ -455,7 +363,7 @@ public class DefaultTurbineRunData
 
     /**
      * Sets the access control list.
-     * 
+     *
      * To delete ACL from session use key {@link TurbineConstants#ACL_SESSION_KEY}. Invalidate session, if session persist.
      *
      * @param acl an access control list.
@@ -931,7 +839,7 @@ public class DefaultTurbineRunData
         Locale locale = get(Turbine.class, Locale.class);
         if (locale == null)
         {
-            locale = getDefaultLocale();
+            locale = LocaleUtils.getDefaultLocale();
         }
         return locale;
     }
@@ -978,12 +886,10 @@ public class DefaultTurbineRunData
         if (StringUtils.isEmpty(charSet))
         {
             log.debug("Charset was null!");
-            return getDefaultCharSet();
+            charSet =  LocaleUtils.getDefaultCharSet();
         }
-        else
-        {
-            return charSet;
-        }
+
+        return charSet;
     }
 
     /**
@@ -1018,7 +924,7 @@ public class DefaultTurbineRunData
             {
                 if (contentType.startsWith("text/"))
                 {
-                    return contentType + "; charset=" + getDefaultCharSet();
+                    return contentType + "; charset=" + LocaleUtils.getDefaultCharSet();
                 }
 
                 return contentType;

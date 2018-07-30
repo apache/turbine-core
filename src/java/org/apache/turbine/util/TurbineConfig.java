@@ -29,15 +29,24 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.servlet.Filter;
+import javax.servlet.FilterRegistration;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+import javax.servlet.ServletRegistration.Dynamic;
+import javax.servlet.SessionCookieConfig;
+import javax.servlet.SessionTrackingMode;
+import javax.servlet.descriptor.JspConfigDescriptor;
 
 import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.activity.Initializable;
@@ -595,6 +604,330 @@ public class TurbineConfig
      */
     @Override
     public void setAttribute(String s, Object o)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public int getEffectiveMajorVersion()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public int getEffectiveMinorVersion()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public boolean setInitParameter(String name, String value)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public Dynamic addServlet(String servletName, String className)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public Dynamic addServlet(String servletName, Servlet servlet)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public Dynamic addServlet(String servletName, Class<? extends Servlet> servletClass)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public <T extends Servlet> T createServlet(Class<T> clazz) throws ServletException
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public ServletRegistration getServletRegistration(String servletName)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public Map<String, ? extends ServletRegistration> getServletRegistrations()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, String className)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, Filter filter)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, Class<? extends Filter> filterClass)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public <T extends Filter> T createFilter(Class<T> clazz) throws ServletException
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public FilterRegistration getFilterRegistration(String filterName)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public Map<String, ? extends FilterRegistration> getFilterRegistrations()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public SessionCookieConfig getSessionCookieConfig()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public void setSessionTrackingModes(Set<SessionTrackingMode> sessionTrackingModes)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public Set<SessionTrackingMode> getDefaultSessionTrackingModes()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public Set<SessionTrackingMode> getEffectiveSessionTrackingModes()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public void addListener(String className)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public <T extends EventListener> void addListener(T t)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public void addListener(Class<? extends EventListener> listenerClass)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public <T extends EventListener> T createListener(Class<T> clazz) throws ServletException
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public JspConfigDescriptor getJspConfigDescriptor()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public ClassLoader getClassLoader()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public void declareRoles(String... roleNames)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     */
+    @Override
+    public String getVirtualServerName()
     {
         throw new UnsupportedOperationException();
     }
