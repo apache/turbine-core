@@ -20,13 +20,12 @@ package org.apache.turbine.services.ui;
  */
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -240,7 +239,15 @@ public class TurbineUIService
     public String[] getSkinNames()
     {
         File skinsDir = new File(servletService.getRealPath(skinsDirectory));
-        return skinsDir.list(DirectoryFileFilter.INSTANCE);
+        return skinsDir.list(new FilenameFilter()
+        {
+            @Override
+            public boolean accept(File dir, String name)
+            {
+                File directory = new File(dir, name);
+                return directory.isDirectory();
+            }
+        });
     }
 
     /**
@@ -298,13 +305,10 @@ public class TurbineUIService
             log.debug("Loading selected skin from: " + sb.toString());
         }
 
-        InputStream is = null;
-
-        try
+        try (InputStream is = servletService.getResourceAsStream(sb.toString()))
         {
             // This will NPE if the directory associated with the skin does not
             // exist, but it is handled correctly below.
-            is = servletService.getResourceAsStream(sb.toString());
             skinProperties.load(is);
         }
         catch (Exception e)
@@ -328,10 +332,6 @@ public class TurbineUIService
                 log.error("No skins available - returning an empty Properties");
                 return new Properties();
             }
-        }
-        finally
-        {
-            IOUtils.closeQuietly(is);
         }
 
         // Replace in skins HashMap

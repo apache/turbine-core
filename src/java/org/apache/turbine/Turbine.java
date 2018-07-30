@@ -44,7 +44,6 @@ import javax.xml.parsers.FactoryConfigurationError;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.DefaultConfigurationBuilder;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
@@ -399,15 +398,17 @@ public class Turbine extends HttpServlet
         }
 
         // context resource path has to begin with slash, cft. context.getResource
-        if (!descriptorPath.startsWith( "/" )) {
+        if (!descriptorPath.startsWith( "/" ))
+        {
         	descriptorPath  = "/" + descriptorPath;
         }
 
-        InputStream reader = context.getResourceAsStream(descriptorPath);
-        JAXBContext jaxb = JAXBContext.newInstance(TurbinePipeline.class);
-        Unmarshaller unmarshaller = jaxb.createUnmarshaller();
-        pipeline = (Pipeline) unmarshaller.unmarshal(reader);
-        IOUtils.closeQuietly(reader);
+        try (InputStream reader = context.getResourceAsStream(descriptorPath))
+        {
+            JAXBContext jaxb = JAXBContext.newInstance(TurbinePipeline.class);
+            Unmarshaller unmarshaller = jaxb.createUnmarshaller();
+            pipeline = (Pipeline) unmarshaller.unmarshal(reader);
+        }
 
 	  	log.debug("Initializing pipeline");
 
