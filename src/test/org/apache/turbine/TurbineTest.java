@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -40,14 +42,28 @@ import org.mockito.Mockito;
  */
 public class TurbineTest extends BaseTestCase
 {
+    private TurbineConfig tc = null;
+
+    @Before
+    public void setUp() throws Exception
+    {
+        tc = new TurbineConfig(".",
+                "/conf/test/CompleteTurbineResources.properties");
+        tc.initialize();
+    }
+
+    @After
+    public void tearDown() throws Exception
+    {
+        if (tc != null)
+        {
+            tc.dispose();
+        }
+    }
 
     @Test
     public void testTurbineAndFirstGet() throws Exception
     {
-        TurbineConfig tc = new TurbineConfig(".",
-                "/conf/test/CompleteTurbineResources.properties");
-        tc.initialize();
-
         assertNotNull(Turbine.getDefaultServerData());
         assertEquals("", Turbine.getServerName());
         assertEquals("80", Turbine.getServerPort());
@@ -61,31 +77,23 @@ public class TurbineTest extends BaseTestCase
 
         assertEquals("8080", Turbine.getServerPort());
         t.destroy();
-        tc.dispose();
     }
 
     @Test
     public void testDefaultInputEncoding() throws Exception
     {
-        TurbineConfig tc = new TurbineConfig(".",
-                "/conf/test/CompleteTurbineResources.properties");
-        tc.initialize();
         Turbine t = tc.getTurbine();
         assertNotNull(t.getDefaultInputEncoding());
         assertEquals(TurbineConstants.PARAMETER_ENCODING_DEFAULT, t.getDefaultInputEncoding());
         t.destroy();
-        tc.dispose();
     }
 
     @Test
     public void testNonDefaultEncoding()
     {
-        TurbineConfig tc = new TurbineConfig(".",
-                "/conf/test/CompleteTurbineResourcesWithEncoding.properties");
-        tc.initialize();
         Turbine t = tc.getTurbine();
+        t.getConfiguration().setProperty(TurbineConstants.PARAMETER_ENCODING_KEY, "UTF-8");
         assertNotNull(t.getDefaultInputEncoding());
         assertEquals("UTF-8", t.getDefaultInputEncoding());
-        tc.dispose();
     }
 }

@@ -284,17 +284,9 @@ public class TurbineRunDataService
         {
             throw new TurbineException("RunData configuration '" + key + "' is illegal caused a pool exception", pe);
         }
-        catch (ClassNotFoundException x)
+        catch (ClassNotFoundException | ClassCastException | InstantiationException x)
         {
             throw new TurbineException("RunData configuration '" + key + "' is illegal", x);
-        }
-        catch (ClassCastException x)
-        {
-            throw new TurbineException("RunData configuration '" + key + "' is illegal", x);
-        }
-        catch (InstantiationException e)
-        {
-            throw new TurbineException("RunData configuration '" + key + "' is illegal", e);
         }
 
         // Set the request and response.
