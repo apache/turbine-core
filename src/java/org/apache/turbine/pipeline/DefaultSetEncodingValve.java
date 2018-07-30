@@ -29,14 +29,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.annotation.TurbineConfiguration;
-import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.LocaleUtils;
 import org.apache.turbine.util.TurbineException;
 
 /**
  * Set default encoding of the request. The default behavior is to respond
- * with the charset that was requested.
+ * with the charset that was requested. If the configuration sets a property named
+ * "locale.override.charset", the output encoding will always be set to its value,
+ * no matter what the input encoding is.
  *
  * This valve must be situated in the pipeline before any access to the
  * {@link org.apache.fulcrum.parser.ParameterParser} to take effect.
@@ -47,9 +47,6 @@ public class DefaultSetEncodingValve
     extends AbstractValve
 {
     private static final Log log = LogFactory.getLog(DefaultSetEncodingValve.class);
-
-    @TurbineConfiguration( TurbineConstants.PARAMETER_ENCODING_KEY )
-    protected String defaultEncoding = TurbineConstants.PARAMETER_ENCODING_DEFAULT;
 
     /**
      * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
@@ -66,7 +63,7 @@ public class DefaultSetEncodingValve
 
         if (requestEncoding == null)
         {
-            requestEncoding = defaultEncoding;
+            requestEncoding = LocaleUtils.getDefaultInputEncoding();
 
             if (log.isDebugEnabled())
             {
@@ -84,8 +81,13 @@ public class DefaultSetEncodingValve
         }
 
         // Copy encoding charset to RunData to set a reasonable default for the response
-        RunData data = getRunData(pipelineData);
-        data.setCharSet(requestEncoding);
+        String outputEncoding = LocaleUtils.getOverrideCharSet();
+        if (outputEncoding == null)
+        {
+            outputEncoding = requestEncoding;
+        }
+
+        getRunData(pipelineData).setCharSet(outputEncoding);
 
         // Pass control to the next Valve in the Pipeline
         context.invokeNext(pipelineData);

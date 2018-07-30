@@ -34,12 +34,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.pull.PullService;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
+import org.apache.turbine.util.LocaleUtils;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 import org.apache.velocity.VelocityContext;
@@ -144,11 +144,13 @@ public class TurbineVelocityService
             // Register with the template service.
             registerConfiguration(VelocityService.VELOCITY_EXTENSION);
 
-            String turbineInputEncoding = Turbine.getConfiguration().getString(
-                    TurbineConstants.PARAMETER_ENCODING_KEY,
-                    TurbineConstants.PARAMETER_ENCODING_DEFAULT);
+            defaultInputEncoding = getConfiguration().getString("input.encoding", LocaleUtils.getDefaultInputEncoding());
 
-            defaultInputEncoding = getConfiguration().getString("input.encoding", turbineInputEncoding);
+            String outputEncoding = LocaleUtils.getOverrideCharSet();
+            if (outputEncoding == null)
+            {
+                outputEncoding = defaultInputEncoding;
+            }
             defaultOutputEncoding = getConfiguration().getString("output.encoding", defaultInputEncoding);
 
             setInit(true);

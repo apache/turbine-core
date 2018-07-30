@@ -239,6 +239,9 @@ public interface TurbineConstants
 	/** Default value for Charset property */
 	String LOCALE_DEFAULT_CHARSET_DEFAULT = "ISO-8859-1";
 
+    /** Override Charset property */
+    String LOCALE_OVERRIDE_CHARSET_KEY = "locale.override.charset";
+
 	/** If this value is set as applicationRoot, then the webContext is used
 	 * as application root
 	 */

@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.test.BaseTestCase;
+import org.apache.turbine.util.LocaleUtils;
 import org.apache.turbine.util.TurbineConfig;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -43,10 +44,7 @@ public class DefaultTurbineRunDataTest extends BaseTestCase
 		Turbine.getConfiguration().setProperty(
 			  TurbineConstants.LOCALE_DEFAULT_COUNTRY_KEY,
 			  "UK");
-         DefaultTurbineRunData runData =
-            new DefaultTurbineRunData();
-        assertEquals("ISO-8859-1", runData.getDefaultCharSet());
-
+        assertEquals("ISO-8859-1", LocaleUtils.getDefaultCharSet());
     }
 
     @BeforeClass
@@ -58,6 +56,7 @@ public class DefaultTurbineRunDataTest extends BaseTestCase
                 "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
     }
+
     @AfterClass
     public static void tearDown() throws Exception
     {
