@@ -24,20 +24,40 @@
   </properties>
 
   <body>
-    <release version="4.0.2" date="in Subversion">
+    <release version="4.1" date="in Subversion">
+      <action type="update" dev="tv">
+        IMPORTANT: Update HtmlPageAttributes to deliver a default Doctype for HTML 5
+        Add a test.
+      </action>
+      <action type="update" dev="tv">
+        IMPORTANT: Update dependency servlet-api to 3.1.0
+        Adjust settings and services accordingly. The Turbine servlet is now annotated 
+        as @WebServlet with reasonable defaults, so a web.xml is no longer needed.
+      </action>
+      <action type="add" dev="tv">
+        Add DefaultSetEncodingValve to concentrate handling of input and output encoding. 
+        If required, add this valve at first position to your pipeline descriptor.
+        Move all charset and locale related methods to org.apache.turbine.util.LocaleUtils
+        Deprecate Turbine.getDefaultInputEncoding()
+      </action>
+      <action type="update" dev="tv">
+        Update dependency velocity to 2.0
+        Adjust settings and services accordingly. Examples are in CompleteTurbineResources.properties.
+        Look for [backward compatibility with Velocity 1.x] for easy migration
+      </action>
     </release> 
     <release version="4.0.1" date="2018-02-21">
-       <action type="update" dev="gk">
+      <action type="update" dev="gk">
         Security methods replaceRole and revokeAll(Role, flag), Interface changes: SecurityService's addUser method and UserManager's createAccount, getAnonymousUser, getACL methods may now throw UnknownEntityException additionally.
-       </action>
-       <action type="update" dev="painter">
+      </action>
+      <action type="update" dev="painter">
          input.encoding property (velocity) is set now default for locale.default.charset (both default to ISO-8859-1).
       </action>
       <action type="update" dev="gk">
         Updated dependency versions: commons-codec to 1.11, commons-beanutils to 1.9.3, mockito-core to 2.13.0.
       </action>
       <action type="fix" dev="gk" due-to="Jeffery Painter">
-      Each call in Turbine managers to the user delegate with a user object parameter now gets the wrapped user (the userDelegate).
+        Each call in Turbine managers to the user delegate with a user object parameter now gets the wrapped user (the userDelegate).
       </action>
     </release> 
     <release version="4.0" date="2017-11-06">

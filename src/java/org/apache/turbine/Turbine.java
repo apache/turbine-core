@@ -32,6 +32,8 @@ import java.util.Properties;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,6 +61,7 @@ import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.util.LocaleUtils;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
@@ -102,8 +105,18 @@ import org.apache.turbine.util.uri.URIConstants;
  * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
  * @version $Id$
  */
-public class Turbine
-        extends HttpServlet
+@WebServlet(
+    name = "Turbine",
+    urlPatterns = {"/app"},
+    loadOnStartup = 1,
+    initParams={ @WebInitParam(name = TurbineConstants.APPLICATION_ROOT_KEY,
+                    value = TurbineConstants.APPLICATION_ROOT_DEFAULT),
+                 @WebInitParam(name = TurbineConstants.LOGGING_ROOT_KEY,
+                    value = TurbineConstants.LOGGING_ROOT_DEFAULT),
+                 @WebInitParam(name = TurbineConfig.PROPERTIES_PATH_KEY,
+                    value = TurbineConfig.PROPERTIES_PATH_DEFAULT) } )
+
+public class Turbine extends HttpServlet
 {
     /** Serialversion */
     private static final long serialVersionUID = -6317118078613623990L;
@@ -161,9 +174,6 @@ public class Turbine
 
     /** Our internal configuration object */
     private static Configuration configuration = null;
-
-    /** Default Input encoding if the servlet container does not report an encoding */
-    private static String inputEncoding = TurbineConstants.PARAMETER_ENCODING_DEFAULT;
 
     /** Which configuration method is being used */
     private enum ConfigurationStyle
@@ -367,16 +377,6 @@ public class Turbine
         // ${webappRoot}
         configuration.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, applicationRoot);
         configuration.setProperty(TurbineConstants.WEBAPP_ROOT_KEY, webappRoot);
-
-        // Get the default input defaultEncoding
-        inputEncoding = configuration.getString(
-                TurbineConstants.PARAMETER_ENCODING_KEY,
-                TurbineConstants.PARAMETER_ENCODING_DEFAULT);
-
-        if (log.isDebugEnabled())
-        {
-            log.debug("Input Encoding has been set to " + inputEncoding);
-        }
 
         getServiceManager().setConfiguration(configuration);
 
@@ -1035,7 +1035,7 @@ public class Turbine
     @Deprecated
     public static String getDefaultInputEncoding()
     {
-        return inputEncoding;
+        return LocaleUtils.getDefaultInputEncoding();
     }
 
     /**
