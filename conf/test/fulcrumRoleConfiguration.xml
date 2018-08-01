@@ -49,11 +49,6 @@
         default-class="org.apache.fulcrum.localization.DefaultLocalizationService"/>
 
     <role
-        name="org.apache.fulcrum.upload.UploadService"
-        shorthand="upload"
-        default-class="org.apache.fulcrum.upload.DefaultUploadService"/>
-
-    <role
         name="org.apache.fulcrum.intake.IntakeService"
         shorthand="intake"
         default-class="org.apache.fulcrum.intake.IntakeServiceImpl"/>
