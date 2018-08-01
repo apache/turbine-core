@@ -26,9 +26,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-import org.apache.commons.collections.map.LRUMap;
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
@@ -63,10 +64,10 @@ public class TurbineAssemblerBrokerService
     private Map<Class<?>, List<?>> factories = null;
 
     /** A cache that holds the generated Assemblers */
-    private Map<String, Assembler> assemblerCache = null;
+    private ConcurrentMap<String, Assembler> assemblerCache = null;
 
     /** A cache that holds the Loaders */
-    private Map<Class<?>, Loader<? extends Assembler>> loaderCache = null;
+    private ConcurrentMap<Class<?>, Loader<? extends Assembler>> loaderCache = null;
 
     /** Caching on/off */
     private boolean isCaching;
@@ -114,11 +115,7 @@ public class TurbineAssemblerBrokerService
                 registerFactory(af);
             }
             // these must be passed to the VM
-            catch (ThreadDeath e)
-            {
-                throw e;
-            }
-            catch (OutOfMemoryError e)
+            catch (ThreadDeath | OutOfMemoryError e)
             {
                 throw e;
             }
@@ -138,7 +135,6 @@ public class TurbineAssemblerBrokerService
      *
      * @throws InitializationException if problems occur while registering the factories
      */
-    @SuppressWarnings("unchecked") // as long as commons-collections does not use generics
     @Override
     public void init()
         throws InitializationException
@@ -175,8 +171,8 @@ public class TurbineAssemblerBrokerService
                 .getInt(TurbineConstants.MODULE_CACHE_SIZE_KEY,
                         TurbineConstants.MODULE_CACHE_SIZE_DEFAULT);
 
-            assemblerCache = new LRUMap(cacheSize);
-            loaderCache = new LRUMap(cacheSize);
+            assemblerCache = new ConcurrentHashMap<String, Assembler>(cacheSize);
+            loaderCache = new ConcurrentHashMap<Class<?>, Loader<? extends Assembler>>(cacheSize);
         }
 
         setInit(true);
@@ -221,11 +217,17 @@ public class TurbineAssemblerBrokerService
         if (isCaching && assemblerCache.containsKey(key))
         {
             assembler = (T) assemblerCache.get(key);
-            log.debug("Found " + key + " in the cache!");
+            if (log.isDebugEnabled())
+            {
+                log.debug("Found " + key + " in the cache!");
+            }
         }
         else
         {
-            log.debug("Loading " + key);
+            if (log.isDebugEnabled())
+            {
+                log.debug("Loading " + key);
+            }
             List<AssemblerFactory<T>> facs = getFactoryGroup(type);
 
             for (Iterator<AssemblerFactory<T>> it = facs.iterator(); (assembler == null) && it.hasNext();)
@@ -250,7 +252,11 @@ public class TurbineAssemblerBrokerService
 
                     if (isCaching)
                     {
-                        assemblerCache.put(key, assembler);
+                        T oldAssembler = (T) assemblerCache.putIfAbsent(key, assembler);
+                        if (oldAssembler != null)
+                        {
+                            assembler = oldAssembler;
+                        }
                     }
                 }
             }
