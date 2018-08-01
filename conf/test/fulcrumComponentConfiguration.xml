@@ -42,7 +42,6 @@
         <bundle>org.apache.turbine.services.localization.BarBundle</bundle>
       </bundles>
     </localization>
-    <upload repository="target" sizeMax="1048576" sizeThreshold="10240"/>
     <intake>
       <serialDataPath>target/appData.ser</serialDataPath>
       <xmlPaths>
