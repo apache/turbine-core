@@ -21,7 +21,6 @@ package org.apache.turbine.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -58,29 +57,13 @@ public abstract class ObjectUtils
             }
         }
 
-        ByteArrayOutputStream baos = null;
-        ObjectOutputStream out = null;
-        try
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
+             ObjectOutputStream out = new ObjectOutputStream(baos))
         {
-            // These objects are closed in the finally.
-            baos = new ByteArrayOutputStream(1024);
-            out  = new ObjectOutputStream(baos);
-
             out.writeObject(map);
             out.flush();
 
             byteArray = baos.toByteArray();
-        }
-        finally
-        {
-            if (out != null)
-            {
-                out.close();
-            }
-            if (baos != null)
-            {
-                baos.close();
-            }
         }
 
         return byteArray;
@@ -100,14 +83,9 @@ public abstract class ObjectUtils
 
         if (objectData != null)
         {
-            // These streams are closed in finally.
-            ObjectInputStream in = null;
-            ByteArrayInputStream bin = new ByteArrayInputStream(objectData);
-
-            try
+            try (ByteArrayInputStream bin = new ByteArrayInputStream(objectData);
+                 ObjectInputStream in = new ObjectInputStream(bin))
             {
-                in = new ObjectInputStream(bin);
-
                 // If objectData has not been initialized, an
                 // exception will occur.
                 object = (T)in.readObject();
@@ -116,22 +94,8 @@ public abstract class ObjectUtils
             {
                 // ignore
             }
-            finally
-            {
-                try
-                {
-                    if (in != null)
-                    {
-                        in.close();
-                    }
-                    bin.close();
-                }
-                catch (IOException e)
-                {
-                    // ignore
-                }
-            }
         }
+
         return object;
     }
 }

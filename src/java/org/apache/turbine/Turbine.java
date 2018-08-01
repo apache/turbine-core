@@ -120,16 +120,18 @@ import org.apache.turbine.util.uri.URIConstants;
 
 public class Turbine extends HttpServlet
 {
-    /** Serialversion */
+    /** Serial version */
     private static final long serialVersionUID = -6317118078613623990L;
 
     /**
      * Name of path info parameter used to indicate the redirected stage of
      * a given user's initial Turbine request
      */
+    @Deprecated // not used
     public static final String REDIRECTED_PATHINFO_NAME = "redirected";
 
     /** The base directory key */
+    @Deprecated // not used
     public static final String BASEDIR_KEY = "basedir";
 
     /**
@@ -815,10 +817,6 @@ public class Turbine extends HttpServlet
 			// XML properties file.
 			pipeline.invoke(pipelineData);
 
-        }
-        catch (Exception e)
-        {
-            handleException(pipelineData, res, e);
         }
         catch (Throwable t)
         {

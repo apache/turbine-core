@@ -22,7 +22,6 @@ package org.apache.turbine.services.velocity;
 
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -281,14 +280,11 @@ public class TurbineVelocityService
         throws TurbineException
     {
         String results = null;
-        ByteArrayOutputStream bytes = null;
         OutputStreamWriter writer = null;
         String charset = getOutputCharSet(context);
 
-        try
+        try (ByteArrayOutputStream bytes = new ByteArrayOutputStream())
         {
-            bytes = new ByteArrayOutputStream();
-
             writer = new OutputStreamWriter(bytes, charset);
 
             executeRequest(context, filename, writer);
@@ -299,20 +295,7 @@ public class TurbineVelocityService
         {
             renderingError(filename, e);
         }
-        finally
-        {
-            try
-            {
-                if (bytes != null)
-                {
-                    bytes.close();
-                }
-            }
-            catch (IOException ignored)
-            {
-                // do nothing.
-            }
-        }
+
         return results;
     }
 
@@ -334,33 +317,16 @@ public class TurbineVelocityService
             throws TurbineException
     {
         String charset  = getOutputCharSet(context);
-        OutputStreamWriter writer = null;
 
-        try
+        try (OutputStreamWriter writer = new OutputStreamWriter(output, charset))
         {
-            writer = new OutputStreamWriter(output, charset);
             executeRequest(context, filename, writer);
         }
         catch (Exception e)
         {
             renderingError(filename, e);
         }
-        finally
-        {
-            try
-            {
-                if (writer != null)
-                {
-                    writer.flush();
-                }
-            }
-            catch (Exception ignored)
-            {
-                // do nothing.
-            }
-        }
     }
-
 
     /**
      * Process the request and fill in the template with the values
