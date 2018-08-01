@@ -99,13 +99,9 @@ public abstract class PythonBaseFactory<T extends Assembler>
 
         if (f.exists())
         {
-            PythonInterpreter interp = null;
-
-            try
+            // We try to open the Py Interpreter
+            try (PythonInterpreter interp = new PythonInterpreter())
             {
-                // We try to open the Py Interpreter
-                interp = new PythonInterpreter();
-
                 // Make sure the Py Interpreter use the right classloader
                 // This is necessary for servlet engines generally has
                 // their own classloader implementations and servlets aren't
@@ -154,13 +150,6 @@ public abstract class PythonBaseFactory<T extends Assembler>
                 // won't be useful anymore.
                 log.error("PYTHON SCRIPT SCREEN LOADER ERROR:", e);
                 throw e;
-            }
-            finally
-            {
-                if (interp != null)
-                {
-                    interp.close();
-                }
             }
         }
         return assembler;

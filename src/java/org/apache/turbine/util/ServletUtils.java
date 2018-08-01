@@ -1,6 +1,8 @@
 package org.apache.turbine.util;
 
 
+import java.io.File;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -75,7 +77,7 @@ public class ServletUtils
         String base = context.getRealPath("/");
 
         base = (StringUtils.isEmpty(base))
-            ? config.getInitParameter(Turbine.BASEDIR_KEY)
+            ? Turbine.getApplicationRoot()
             : base;
 
         if (StringUtils.isEmpty(base))
@@ -83,17 +85,14 @@ public class ServletUtils
             return text;
         }
 
-        String separator = System.getProperty("path.separator");
-
-        StringTokenizer tokenizer = new StringTokenizer(text,
-                separator);
+        StringTokenizer tokenizer = new StringTokenizer(text, File.pathSeparator);
         StringBuilder buffer = new StringBuilder();
         while (tokenizer.hasMoreTokens())
         {
             buffer.append(base).append(tokenizer.nextToken());
             if (tokenizer.hasMoreTokens())
             {
-                buffer.append(separator);
+                buffer.append(File.pathSeparator);
             }
         }
         return buffer.toString();
