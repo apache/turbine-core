@@ -23,7 +23,7 @@ package org.apache.turbine.services.security.passive;
 
 import java.util.List;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.fulcrum.security.util.DataBackendException;
 import org.apache.fulcrum.security.util.EntityExistsException;

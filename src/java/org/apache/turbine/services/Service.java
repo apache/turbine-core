@@ -23,7 +23,7 @@ package org.apache.turbine.services;
 
 import java.util.Properties;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 
 /**
  * <code>Services</code> are <code>Initables</code> that have a name,

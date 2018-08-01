@@ -25,7 +25,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.apache.fulcrum.factory.FactoryService;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;

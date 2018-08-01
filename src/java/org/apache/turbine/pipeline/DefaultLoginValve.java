@@ -115,7 +115,6 @@ public class DefaultLoginValve
             // and "turbine.acl".
             if (actionName.equalsIgnoreCase(actionLogin))
             {
-                @SuppressWarnings("unchecked")
                 Enumeration<String> names = data.getSession().getAttributeNames();
                 if (names != null)
                 {

@@ -41,9 +41,14 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.FactoryConfigurationError;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.DefaultConfigurationBuilder;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.FileBasedConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.combined.CombinedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
+import org.apache.commons.configuration2.io.HomeDirectoryLocationStrategy;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
@@ -68,24 +73,22 @@ import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.uri.URIConstants;
 
 /**
- * Turbine is the main servlet for the entire system. It is <code>final</code>
- * because you should <i>not</i> ever need to subclass this servlet.  If you
+ * Turbine is the main servlet for the entire system. If you
  * need to perform initialization of a service, then you should implement the
  * Services API and let your code be initialized by it.
- * If you need to override something in the <code>doGet()</code> or
- * <code>doPost()</code> methods, edit the TurbineResources.properties file and
- * specify your own classes there.
  * <p>
  * Turbine servlet recognizes the following initialization parameters.
  * <ul>
  * <li><code>properties</code> the path to TurbineResources.properties file
- * used by the default implementation of <code>ResourceService</code>, relative
+ * used to configure Turbine, relative to the application root.</li>
+ * <li><code>configuration</code> the path to TurbineConfiguration.xml file
+ * used to configure Turbine from various sources, relative
  * to the application root.</li>
- * <li><code>basedir</code> this parameter is used <strong>only</strong> if your
- * application server does not support web applications, or the or does not
- * support <code>ServletContext.getRealPath(String)</code> method correctly.
- * You can use this parameter to specify the directory within the server's
- * filesystem, that is the base of your web application.</li>
+ * <li><code>applicationRoot</code> this parameter defaults to the web context
+ * of the servlet container. You can use this parameter to specify the directory
+ * within the server's filesystem, that is the base of your web application.</li>
+ * <li><code>loggingRoot</code> the path to Turbine log files, relative
+ * to the application root.</li>
  * </ul>
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
@@ -335,7 +338,11 @@ public class Turbine extends HttpServlet
                     TurbineConfig.PROPERTIES_PATH_DEFAULT);
              confStyle = ConfigurationStyle.PROPERTIES;
         }
+
         // now begin loading
+        Parameters params = new Parameters();
+        String confPath = new File(getApplicationRoot()).getCanonicalPath();
+
         switch (confStyle)
         {
             case XML:
@@ -343,16 +350,26 @@ public class Turbine extends HttpServlet
                 {
                     confFile = confFile.substring( 1 ); // cft. RFC2396 should not start with a slash, if not absolute path
                 }
-                DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(confFile);
 
                 // relative base path used for this and child configuration files
-                String confPath = new File(getApplicationRoot()).toURI().toString();
-                configurationBuilder.setBasePath(confPath);
-                configuration = configurationBuilder.getConfiguration();
+                CombinedConfigurationBuilder combinedBuilder = new CombinedConfigurationBuilder()
+                    .configure(params.fileBased()
+                        .setFileName(confFile)
+                        .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
+                        .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath, false)));
+                configuration = combinedBuilder.getConfiguration();
                 break;
+
             case PROPERTIES:
-                configuration = new PropertiesConfiguration(getRealPath(confFile));
+                FileBasedConfigurationBuilder<FileBasedConfiguration> propertiesBuilder =
+                    new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
+                    .configure(params.properties()
+                        .setFileName(confFile)
+                        .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
+                        .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath, false)));
+                configuration = propertiesBuilder.getConfiguration();
                 break;
+
             default:
                 break;
         }
@@ -454,11 +471,9 @@ public class Turbine extends HttpServlet
                 // fix up the Application root
                 //
                 Properties p = new Properties();
-                FileInputStream fis = null;
 
-                try
+                try (FileInputStream fis = new FileInputStream(log4jFile))
                 {
-                    fis = new FileInputStream(log4jFile);
                     p.load(fis);
                     p.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot());
                     PropertyConfigurator.configure(p);
@@ -469,13 +484,6 @@ public class Turbine extends HttpServlet
                     System.err.println("Could not open Log4J configuration file "
                             + log4jFile + ": ");
                     fnf.printStackTrace();
-                }
-                finally
-                {
-                    if (fis != null)
-                    {
-                        fis.close();
-                    }
                 }
             }
 

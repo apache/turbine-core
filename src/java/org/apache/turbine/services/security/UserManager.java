@@ -21,7 +21,7 @@ package org.apache.turbine.services.security;
 
 import java.util.List;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.fulcrum.security.util.DataBackendException;
 import org.apache.fulcrum.security.util.EntityExistsException;
@@ -181,6 +181,7 @@ public interface UserManager
      *
      * @param user the object describing account to be created.
      * @param initialPassword password for the new user
+     * @throws UnknownEntityException if the user account cannot be created.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws EntityExistsException if the user account already exists.

@@ -28,9 +28,9 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.net.URL;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.FileSystem;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.builder.fluent.Configurations;
+import org.apache.commons.configuration2.io.FileLocatorUtils;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineXmlConfig;
@@ -119,7 +119,7 @@ public class ConfigurationTest extends BaseTestCase
         String confPath = Turbine.getRealPath( "/conf/test/usersettings.properties" );
         try
         {
-            Configuration configuration = new PropertiesConfiguration(confPath);
+            Configuration configuration = new Configurations().properties(confPath);
             assertNotNull("No Configuration Object found!", configuration);
             assertFalse("Make sure we have values", configuration.isEmpty());
 
@@ -172,7 +172,7 @@ public class ConfigurationTest extends BaseTestCase
             assertEquals("Read a config value " + key + ", received:" + configuration.getBoolean(key), false, configuration.getBoolean(key));
 
             // converts to URL, cft. RFC2396
-            URL testURL = FileSystem.getDefaultFileSystem().locateFromURL(new File( Turbine.getApplicationRoot()).toURI().toString() , configurationRessourcePath);
+            URL testURL = FileLocatorUtils.DEFAULT_FILE_SYSTEM.locateFromURL(new File( Turbine.getApplicationRoot()).toURI().toString() , configurationRessourcePath);
             assertNotNull( "Should be a valid URL",testURL);
         }
         finally
