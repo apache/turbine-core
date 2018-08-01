@@ -20,13 +20,12 @@ package org.apache.turbine.modules;
  */
 
 import java.lang.annotation.Annotation;
-
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-import org.apache.commons.collections.map.MultiKeyMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -120,7 +119,7 @@ public abstract class ActionEvent extends Action
 	/**
 	 * Cache for the methods to invoke
 	 */
-	private MultiKeyMap/* <String, Method> */ methodCache = new MultiKeyMap/* <String, Method> */();
+	private ConcurrentMap<String, Method> methodCache = new ConcurrentHashMap<String, Method>();
 
 	/**
 	 * Retrieve a method of the given name and signature. The value is cached.
@@ -134,7 +133,13 @@ public abstract class ActionEvent extends Action
 	 */
 	protected Method getMethod(String name, Class<?>[] signature, ParameterParser pp) throws NoSuchMethodException
 	{
-	    Method method = (Method) this.methodCache.get(name, signature);
+	    StringBuilder cacheKey = new StringBuilder(name);
+	    for (Class<?> clazz : signature)
+	    {
+	        cacheKey.append(':').append(clazz.getCanonicalName());
+	    }
+
+	    Method method = this.methodCache.get(cacheKey.toString());
 
 	    if (method == null)
 	    {
@@ -167,7 +172,11 @@ public abstract class ActionEvent extends Action
 	            method = getClass().getMethod(METHOD_NAME_PREFIX + StringUtils.capitalize(tmp), signature);
 	        }
 
-	        this.methodCache.put(name, signature, method);
+	        Method oldMethod = this.methodCache.putIfAbsent(cacheKey.toString(), method);
+	        if (oldMethod != null)
+	        {
+	            method = oldMethod;
+	        }
 	    }
 
 	    return method;
