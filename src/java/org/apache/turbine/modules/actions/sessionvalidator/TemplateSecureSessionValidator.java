@@ -25,10 +25,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineConfiguration;
-import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.util.RunData;
 
 /**

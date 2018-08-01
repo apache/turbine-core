@@ -23,8 +23,8 @@ package org.apache.turbine.services;
 
 import java.util.Properties;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationConverter;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.ConfigurationConverter;
 
 /**
  * This class is a generic implementation of <code>Service</code>.

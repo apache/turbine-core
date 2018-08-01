@@ -404,7 +404,7 @@ public class QuartzSchedulerService
      * {@value JobEntryQuartz#DEFAULT_JOB_GROUP_NAME}, if adding triggers/jobs.
 	 *
 	 * @param trigger a Quartz {@link Trigger}.
-	 * @param jd a Quartz {@link JobDetail} (built from a {@link Job} with {@link JobBuilder}).
+	 * @param jd a Quartz {@link JobDetail} (built from a {@link org.quartz.Job} with {@link JobBuilder}).
 	 * @return A JobEntryQuartz.
 	 */
 	public JobEntryQuartz buildJobEntry(Trigger trigger, JobDetail jd) {

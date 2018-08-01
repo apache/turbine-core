@@ -29,7 +29,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.DefaultCookieParser;
 import org.apache.fulcrum.parser.DefaultParameterParser;

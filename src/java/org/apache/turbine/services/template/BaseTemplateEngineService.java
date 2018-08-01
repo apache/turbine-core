@@ -23,7 +23,7 @@ package org.apache.turbine.services.template;
 
 import java.util.Hashtable;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 

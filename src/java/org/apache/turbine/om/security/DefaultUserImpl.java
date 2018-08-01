@@ -68,7 +68,7 @@ public class DefaultUserImpl implements User
     public DefaultUserImpl(TurbineUser user)
     {
         super();
-        setUserDelegate( user );;
+        setUserDelegate( user );
         setCreateDate(new Date());
         tempStorage = new HashMap<String, Object>(10);
         setHasLoggedIn(Boolean.FALSE);
@@ -289,7 +289,7 @@ public class DefaultUserImpl implements User
      * Get the User/Group/Role set associated with this entity
      *
      * @return a set of User/Group/Role relations
-     * @throws DataBackendException 
+     * @throws DataBackendException
      */
     @Override
     public <T extends TurbineUserGroupRole> Set<T> getUserGroupRoleSet() throws DataBackendException
@@ -314,7 +314,7 @@ public class DefaultUserImpl implements User
      *
      * @param userGroupRole
      *            a User/Group/Role relation to add
-     * @throws DataBackendException 
+     * @throws DataBackendException
      */
     @Override
     public void addUserGroupRole(TurbineUserGroupRole userGroupRole) throws DataBackendException
@@ -327,7 +327,7 @@ public class DefaultUserImpl implements User
      *
      * @param userGroupRole
      *            a User/Group/Role relation to remove
-     * @throws DataBackendException 
+     * @throws DataBackendException
      */
     @Override
     public void removeUserGroupRole(TurbineUserGroupRole userGroupRole) throws DataBackendException

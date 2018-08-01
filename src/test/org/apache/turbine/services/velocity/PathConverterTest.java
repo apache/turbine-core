@@ -26,7 +26,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;

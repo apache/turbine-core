@@ -21,7 +21,7 @@ package org.apache.turbine.services;
  */
 
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 
 /**
  * Classes that implement this interface can act as a broker for
