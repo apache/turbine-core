@@ -25,6 +25,23 @@
 
   <body>
     <release version="5.0" date="in Subversion">
+      <action type="update" dev="tv">
+        Update dependency commons-configuration to 2.2
+        Configuration pathes are now all relative to application root.
+      </action>
+      <action type="update" dev="tv">
+        Update dependency commons-lang to 3.7
+      </action>
+      <action type="update" dev="tv">
+        Update dependencies fulcrum-parser to 2.0.0-SNAPSHOT and fulcrum-intake to
+        2.0.0-SNAPSHOT
+      </action>
+      <action type="remove" dev="tv">
+        Remove dependency on fulcrum-upload
+      </action>
+      <action type="remove" dev="tv">
+        Remove dependency on commons-collections
+      </action>
       <action type="remove" dev="tv">
         Remove dependency on commons-io
       </action>
