@@ -26,7 +26,6 @@ import static org.junit.Assert.fail;
 
 import org.apache.commons.configuration2.BaseConfiguration;
 import org.apache.commons.configuration2.Configuration;
-import org.apache.turbine.Turbine;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
@@ -57,7 +56,6 @@ public class TurbineAvalonComponentServiceTest
      */
     @Test public void testGetAndUseTestComponent()
     {
-        Turbine.setApplicationRoot(".");
         ServiceManager serviceManager = TurbineServices.getInstance();
         serviceManager.setApplicationRoot(".");
 

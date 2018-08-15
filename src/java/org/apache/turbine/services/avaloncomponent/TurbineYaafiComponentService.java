@@ -33,7 +33,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.yaafi.framework.container.ServiceContainer;
 import org.apache.fulcrum.yaafi.framework.factory.ServiceContainerConfiguration;
 import org.apache.fulcrum.yaafi.framework.factory.ServiceContainerFactory;
-import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.InstantiationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -113,16 +112,10 @@ public class TurbineYaafiComponentService
     public void initialize() throws Exception
     {
         // get the configuration from the baseclass
-
         Configuration conf = this.getConfiguration();
 
         // determine the home directory
-        String homePath = Turbine.getRealPath("/");
-        if (homePath == null)
-        {
-            homePath = Turbine.getApplicationRoot();
-        }
-        File home = new File(homePath);
+        File home = new File(getServiceBroker().getApplicationRoot());
         log.info("Using the following home : " + home.getAbsolutePath());
 
         // create the configuration for YAAFI

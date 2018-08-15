@@ -102,4 +102,12 @@ public interface ServiceBroker
      * @return Configuration of the requested service.
      */
     Configuration getConfiguration(String name);
+
+    /**
+     * Get the application root as set by
+     * the parent application.
+     *
+     * @return String application root
+     */
+    String getApplicationRoot();
 }
