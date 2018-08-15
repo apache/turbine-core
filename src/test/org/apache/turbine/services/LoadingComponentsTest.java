@@ -51,6 +51,20 @@ public class LoadingComponentsTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
 
+    @BeforeClass
+    public static void setUp() throws Exception
+    {
+        tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
+        tc.initialize();
+    }
+    @AfterClass
+    public static void tearDown() throws Exception
+    {
+        if (tc != null)
+        {
+            tc.dispose();
+        }
+    }
 
     /**
      * Test to load a couple of Avalon services directly by the
@@ -147,21 +161,6 @@ public class LoadingComponentsTest extends BaseTestCase
         Locale locale = new Locale("en", "US");
         String s = mimeTypeService.getCharSet(locale);
         assertEquals("ISO-8859-1", s);
-    }
-
-    @BeforeClass
-    public static void setUp() throws Exception
-    {
-        tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
-        tc.initialize();
-    }
-    @AfterClass
-    public static void tearDown() throws Exception
-    {
-        if (tc != null)
-        {
-            tc.dispose();
-        }
     }
 
 }

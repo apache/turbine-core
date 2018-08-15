@@ -19,8 +19,8 @@
 -->
 
 <configuration>
-  <xml fileName="conf/test/TurbineResources.xml"/>
-  <properties fileName="conf/test/TemplateService.properties"/>
+  <xml fileName="TurbineResources.xml"/>
+  <properties fileName="TemplateService.properties"/>
 </configuration>
 
 

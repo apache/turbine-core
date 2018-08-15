@@ -123,6 +123,14 @@
       <timezone />
     </developer>
     <developer>
+      <id>painter</id>
+      <name>Jeffery Painter</name>
+      <email>jeff@jivecast.com</email>
+      <url />
+      <organization />
+      <timezone />
+    </developer>
+    <developer>
       <id>mpoeschl</id>
       <name>Martin Poeschl</name>
       <email>mpoeschl@marmot.at</email>
@@ -516,7 +524,7 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>3.3.0</version><!-- requires mvn version > 3.3! For older version try to check v 3.2.1 or 3.1.2 -->
+        <version>3.1.2</version><!-- requires mvn version > 3.3! For older version try to check v 3.2.1 or 3.1.2 -->
         <executions>
            <execution>
                 <goals>

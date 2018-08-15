@@ -25,6 +25,10 @@
 
   <body>
     <release version="5.0" date="in Subversion">
+      <action type="update" dev="gk">
+        Configuration pathes and log4j path are now all relative to base configuration file (included from).
+        Adding screens for plain JSON
+      </action>
       <action type="update" dev="tv">
         Update dependency commons-configuration to 2.2
         Configuration pathes are now all relative to application root.
