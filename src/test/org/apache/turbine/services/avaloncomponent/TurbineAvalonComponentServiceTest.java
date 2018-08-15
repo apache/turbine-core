@@ -26,6 +26,7 @@ import static org.junit.Assert.fail;
 
 import org.apache.commons.configuration2.BaseConfiguration;
 import org.apache.commons.configuration2.Configuration;
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
@@ -56,13 +57,12 @@ public class TurbineAvalonComponentServiceTest
      */
     @Test public void testGetAndUseTestComponent()
     {
+        Turbine.setApplicationRoot(".");
         ServiceManager serviceManager = TurbineServices.getInstance();
         serviceManager.setApplicationRoot(".");
 
         Configuration cfg = new BaseConfiguration();
 
-        // decide here whether to start ECM or YAAFI
-        //cfg.setProperty(PREFIX + "classname", TurbineAvalonComponentService.class.getName());
         cfg.setProperty(PREFIX + "classname", TurbineYaafiComponentService.class.getName());
 
         // we want to configure the service to load test TEST configuration files
