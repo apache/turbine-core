@@ -135,6 +135,7 @@ public class TurbineYaafiComponentService
             this.container = ServiceContainerFactory.create(
                 config
                 );
+            //this.container .service( manager );
         }
         catch (Exception e)
         {

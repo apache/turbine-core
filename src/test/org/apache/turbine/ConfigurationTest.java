@@ -34,6 +34,7 @@ import org.apache.commons.configuration2.io.FileLocatorUtils;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineXmlConfig;
+import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -55,6 +56,12 @@ public class ConfigurationTest extends BaseTestCase
 
     private TurbineConfig tc = null;
     private TurbineXmlConfig txc = null;
+    
+    @After
+    public void close() {
+        if (tc != null) tc.dispose();
+        if (txc != null) txc.dispose();
+    }
 
     @Test
     public void testCreateTurbineWithConfigurationXML() throws Exception
@@ -114,7 +121,7 @@ public class ConfigurationTest extends BaseTestCase
     }
 
     @Test
-    public void testCreateTurbineWithIncludedConfiguration() throws Exception
+    public void testCreateConfigurationWithIncludedConfiguration() throws Exception
     {
         String confPath = Turbine.getRealPath( "/conf/test/usersettings.properties" );
         try
@@ -131,6 +138,32 @@ public class ConfigurationTest extends BaseTestCase
         catch (Exception e)
         {
             throw e;
+        }
+    }
+    
+    @Test
+    public void testCreateTurbineWithIncludedConfiguration() throws Exception
+    {
+        tc = new TurbineConfig(".", "/conf/test/usersettings.properties");
+        try
+        {
+            tc.initialize();
+            
+            Configuration configuration = Turbine.getConfiguration();
+            assertNotNull("No Configuration Object found!", configuration);
+            assertFalse("Make sure we have values", configuration.isEmpty());
+
+            String key = "scheduledjob.cache.size";
+            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "100", configuration.getString(key));
+            String key2 ="module.cache";
+            assertEquals("Read a config value " + key2 + ", received:" + configuration.getString(key2), "false", configuration.getString(key2));
+        }
+        catch (Exception e)
+        {
+            throw e;
+        } finally
+        {
+            tc.dispose();
         }
     }
 

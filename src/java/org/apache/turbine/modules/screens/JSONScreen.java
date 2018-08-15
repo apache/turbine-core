@@ -99,7 +99,7 @@ public class JSONScreen extends RawScreen
     /**
      * Output the dynamic content.
      *
-     * Encodign is UTF-8. @{@link #JSONRPC_CONTENT_TYPE}: {@value #JSONRPC_CONTENT_TYPE}.
+     * Encoding is UTF-8. @{@link #JSONRPC_CONTENT_TYPE}: {@value #JSONRPC_CONTENT_TYPE}.
      *
      * @param pipelineData The PipelineData object.
      */

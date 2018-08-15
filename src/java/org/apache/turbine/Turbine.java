@@ -24,6 +24,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -32,6 +35,7 @@ import java.util.Properties;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,13 +46,13 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.FactoryConfigurationError;
 
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.configuration2.FileBasedConfiguration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.combined.CombinedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 import org.apache.commons.configuration2.io.HomeDirectoryLocationStrategy;
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
@@ -117,7 +121,7 @@ import org.apache.turbine.util.uri.URIConstants;
                     value = TurbineConstants.LOGGING_ROOT_DEFAULT),
                  @WebInitParam(name = TurbineConfig.PROPERTIES_PATH_KEY,
                     value = TurbineConfig.PROPERTIES_PATH_DEFAULT) } )
-
+@MultipartConfig
 public class Turbine extends HttpServlet
 {
     /** Serial version */
@@ -184,6 +188,8 @@ public class Turbine extends HttpServlet
     {
         XML,
         PROPERTIES,
+        JSON,
+        YAML,
         UNSET
     }
 
@@ -343,34 +349,44 @@ public class Turbine extends HttpServlet
 
         // now begin loading
         Parameters params = new Parameters();
-        String confPath = new File(getApplicationRoot()).getCanonicalPath();
-
+        File confPath = new File(getApplicationRoot()); //.getCanonicalPath();
+        
+        if (confFile.startsWith( "/" ))
+        {
+            confFile = confFile.substring( 1 ); // cft. RFC2396 should not start with a slash, if not absolute path
+        }
+        
+        Path confFileRelativePath =  Paths.get( confFile );// relative to later join
+        Path targetPath = Paths.get( confPath.toURI() );
+        targetPath = targetPath.resolve( confFileRelativePath );
+        
+        confPath = targetPath.getParent().normalize().toFile();// base part, normally conf folder
+        confFile = targetPath.getFileName().toString();
+        
         switch (confStyle)
         {
             case XML:
-                if (confFile.startsWith( "/" ))
-                {
-                    confFile = confFile.substring( 1 ); // cft. RFC2396 should not start with a slash, if not absolute path
-                }
-
                 // relative base path used for this and child configuration files
                 CombinedConfigurationBuilder combinedBuilder = new CombinedConfigurationBuilder()
                     .configure(params.fileBased()
                         .setFileName(confFile)
                         .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
-                        .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath, false)));
+                        .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath.getCanonicalPath(), false)));
                 configuration = combinedBuilder.getConfiguration();
                 break;
 
             case PROPERTIES:
-                FileBasedConfigurationBuilder<FileBasedConfiguration> propertiesBuilder =
-                    new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
+                FileBasedConfigurationBuilder<PropertiesConfiguration> propertiesBuilder =
+                                new FileBasedConfigurationBuilder<>(
+                                                PropertiesConfiguration.class)
                     .configure(params.properties()
                         .setFileName(confFile)
                         .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
-                        .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath, false)));
+                        .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath.getCanonicalPath(), false)));
                 configuration = propertiesBuilder.getConfiguration();
                 break;
+            case JSON: case YAML: 
+                throw new NotImplementedException("JSON or XAML configuration style not yet implemented!");
 
             default:
                 break;
@@ -378,7 +394,7 @@ public class Turbine extends HttpServlet
         //
         // Set up logging as soon as possible
         //
-        configureLogging();
+        configureLogging(targetPath);
 
         // Now report our successful configuration to the world
         log.info("Loaded configuration (" + confStyle + ") from " + confFile + " style: " + configuration.toString());
@@ -436,18 +452,27 @@ public class Turbine extends HttpServlet
 
     /**
      * Configure the logging facilities of Turbine
+     * @param targetPath 
      *
      * @throws IOException if the configuration file handling fails.
      */
-    protected void configureLogging() throws IOException
+    protected void configureLogging(Path targetPath) throws IOException
     {
         String log4jFile = configuration.getString(TurbineConstants.LOG4J_CONFIG_FILE,
                 TurbineConstants.LOG4J_CONFIG_FILE_DEFAULT);
+        
+        if (log4jFile.startsWith( "/" ))
+        {
+            log4jFile = log4jFile.substring( 1 );
+        }
+        // log4j must either share path with configuration path or resolved relatively
+        Path log4jTarget = targetPath.getParent().resolve( log4jFile ).normalize();
 
         if (StringUtils.isNotEmpty(log4jFile) &&
-                !log4jFile.equalsIgnoreCase("none"))
+                !log4jFile.equalsIgnoreCase("none") && Files.exists( log4jTarget ))
         {
-            log4jFile = getRealPath(log4jFile);
+            log4jFile = log4jTarget.toFile().getAbsolutePath();
+            
             boolean success = false;
 
             if (log4jFile.endsWith(".xml"))

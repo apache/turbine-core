@@ -18,21 +18,31 @@ package org.apache.turbine.annotation;
  * specific language governing permissions and limitations
  * under the License.
  */
-
+import static org.hamcrest.CoreMatchers.any;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.fulcrum.factory.FactoryService;
+import org.apache.fulcrum.security.entity.Group;
+import org.apache.fulcrum.security.entity.Role;
+import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
+import org.apache.turbine.annotation.AnnotationProcessor.ConditionType;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -89,9 +99,14 @@ public class AnnotationProcessorTest
     {
         tc.dispose();
     }
+    
+    @Before
+    public void setUpBefore() throws Exception
+    {
+    }
 
     @Test
-    public void testProcess() throws TurbineException
+    public void testProcess() throws Exception
     {
         AnnotationProcessor.process(this);
 
@@ -112,6 +127,80 @@ public class AnnotationProcessorTest
         assertNotNull(screenLoader);
         assertNotNull(asb);
         assertNotNull(factory);
+        
+    }
+    
+    @TurbineRequiredRole({"user","admin"})
+    public void guardedMethoded() {
+        
+    }
+    
+    @Test
+    public void testRequiredRoleMethodProcess() throws Exception
+    {
+        RunData data = mock(RunData.class);
+        TurbineAccessControlList acl = mock(TurbineAccessControlList.class);
+        Role role = mock(Role.class);
+        when(role.getName()).thenReturn( "user" );
+        Group group = mock(Group.class);
+        when(acl.hasRole( role.getName() )).thenReturn( true );
+        when(data.getACL()).thenReturn(acl );
+                                       
+        Method[] methods = getClass().getMethods();
+        for (Method m : methods) {
+            if (m.getName().equals( "guardedMethoded" )) {
+                assertTrue( AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList)data.getACL(), ConditionType.ANY ));
+                assertFalse( AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList)data.getACL(), ConditionType.COMPOUND ));
+            }
+        }
+    }
+    
+    @TurbineRequiredRole({"admin"})
+    public void guardedMethodedAdmin() {
+        
+    }
+    
+    @Test
+    public void testRequiredRoleAdminMethodProcess() throws Exception
+    {
+        RunData data = mock(RunData.class);
+        TurbineAccessControlList acl = mock(TurbineAccessControlList.class);
+        Role role = mock(Role.class);
+        when(role.getName()).thenReturn( "user" );
+        Group group = mock(Group.class);
+        when(acl.hasRole( role.getName() )).thenReturn( true );
+        when(data.getACL()).thenReturn(acl );
+                                       
+        Method[] methods = getClass().getMethods();
+        for (Method m : methods) {
+            if (m.getName().equals( "guardedMethodedAdmin" )) {
+                assertFalse( AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList)data.getACL(), ConditionType.ANY ));
+            }
+        }
+    }
+    
+    public void unguardedMethoded() {
+        
+    }
+    
+    @Test
+    public void testUnguardedMethodWProcessDefault() throws Exception
+    {
+        RunData data = mock(RunData.class);
+        TurbineAccessControlList acl = mock(TurbineAccessControlList.class);
+        Role role = mock(Role.class);
+        when(role.getName()).thenReturn( "user" );
+        Group group = mock(Group.class);
+        when(acl.hasRole( role.getName() )).thenReturn( false );
+        when(data.getACL()).thenReturn(acl );
+                                       
+        Method[] methods = getClass().getMethods();
+        for (Method m : methods) {
+            if (m.getName().equals( "unguardedMethoded" )) {
+                // default is true, if not annotated
+                assertTrue( AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList)data.getACL(), ConditionType.ANY ));
+            }
+        }
     }
 
     @Ignore("For performance tests only") @Test

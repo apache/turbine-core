@@ -1,14 +1,5 @@
 package org.apache.turbine.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import net.sf.uadetector.OperatingSystem;
-import net.sf.uadetector.ReadableUserAgent;
-import net.sf.uadetector.UserAgentStringParser;
-import net.sf.uadetector.VersionNumber;
-import net.sf.uadetector.service.UADetectorServiceFactory;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -28,6 +19,14 @@ import net.sf.uadetector.service.UADetectorServiceFactory;
  * under the License.
  */
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.sf.uadetector.OperatingSystem;
+import net.sf.uadetector.ReadableUserAgent;
+import net.sf.uadetector.UserAgentStringParser;
+import net.sf.uadetector.VersionNumber;
+import net.sf.uadetector.service.UADetectorServiceFactory;
 /**
  * This class parses the user agent string and provides getters for
  * its parts. It uses UADetector (http://uadetector.sourceforge.net/)
