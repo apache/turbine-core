@@ -1115,6 +1115,9 @@
           </plugin>
         </plugins>
       </build>
+      <properties> 
+        <dependency.check.skip>false</dependency.check.skip>
+      </properties>
     </profile>
   </profiles>
 
