@@ -720,6 +720,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      *
      * @return String application root
      */
+    @Override
     public String getApplicationRoot()
     {
         return applicationRoot;

@@ -26,6 +26,9 @@
   <body>
     <release version="5.0" date="in Subversion">
       <action type="add" dev="tv">
+        Add ServiceBroker.getApplicationRoot() to allow services to get their root directory
+      </action>
+      <action type="add" dev="tv">
         Add Turbine.getApplicationRootAsFile()
       </action>
       <action type="update" dev="tv">
