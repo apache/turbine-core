@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -117,8 +118,6 @@ import org.apache.turbine.util.uri.URIConstants;
     loadOnStartup = 1,
     initParams={ @WebInitParam(name = TurbineConstants.APPLICATION_ROOT_KEY,
                     value = TurbineConstants.APPLICATION_ROOT_DEFAULT),
-                 @WebInitParam(name = TurbineConstants.LOGGING_ROOT_KEY,
-                    value = TurbineConstants.LOGGING_ROOT_DEFAULT),
                  @WebInitParam(name = TurbineConfig.PROPERTIES_PATH_KEY,
                     value = TurbineConfig.PROPERTIES_PATH_DEFAULT) } )
 @MultipartConfig
@@ -266,9 +265,7 @@ public class Turbine extends HttpServlet
     {
 
         // Set the application root. This defaults to the webapp
-        // context if not otherwise set. This is to allow 2.1 apps
-        // to be developed from CVS. This feature will carry over
-        // into 3.0.
+        // context if not otherwise set.
         applicationRoot = findInitParameter(context, config,
                 TurbineConstants.APPLICATION_ROOT_KEY,
                 TurbineConstants.APPLICATION_ROOT_DEFAULT);
@@ -285,10 +282,6 @@ public class Turbine extends HttpServlet
 
         // Set the applicationRoot for this webapp.
         setApplicationRoot(applicationRoot);
-
-        // Create any directories that need to be setup for
-        // a running Turbine application.
-        createRuntimeDirectories(context, config);
 
         //
         // Now we run the Turbine configuration code. There are two ways
@@ -349,20 +342,20 @@ public class Turbine extends HttpServlet
 
         // now begin loading
         Parameters params = new Parameters();
-        File confPath = new File(getApplicationRoot()); //.getCanonicalPath();
-        
+        File confPath = getApplicationRootAsFile(); //.getCanonicalPath();
+
         if (confFile.startsWith( "/" ))
         {
             confFile = confFile.substring( 1 ); // cft. RFC2396 should not start with a slash, if not absolute path
         }
-        
+
         Path confFileRelativePath =  Paths.get( confFile );// relative to later join
         Path targetPath = Paths.get( confPath.toURI() );
         targetPath = targetPath.resolve( confFileRelativePath );
-        
+
         confPath = targetPath.getParent().normalize().toFile();// base part, normally conf folder
         confFile = targetPath.getFileName().toString();
-        
+
         switch (confStyle)
         {
             case XML:
@@ -385,7 +378,7 @@ public class Turbine extends HttpServlet
                         .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath.getCanonicalPath(), false)));
                 configuration = propertiesBuilder.getConfiguration();
                 break;
-            case JSON: case YAML: 
+            case JSON: case YAML:
                 throw new NotImplementedException("JSON or XAML configuration style not yet implemented!");
 
             default:
@@ -452,7 +445,7 @@ public class Turbine extends HttpServlet
 
     /**
      * Configure the logging facilities of Turbine
-     * @param targetPath 
+     * @param targetPath
      *
      * @throws IOException if the configuration file handling fails.
      */
@@ -460,7 +453,7 @@ public class Turbine extends HttpServlet
     {
         String log4jFile = configuration.getString(TurbineConstants.LOG4J_CONFIG_FILE,
                 TurbineConstants.LOG4J_CONFIG_FILE_DEFAULT);
-        
+
         if (log4jFile.startsWith( "/" ))
         {
             log4jFile = log4jFile.substring( 1 );
@@ -472,7 +465,7 @@ public class Turbine extends HttpServlet
                 !log4jFile.equalsIgnoreCase("none") && Files.exists( log4jTarget ))
         {
             log4jFile = log4jTarget.toFile().getAbsolutePath();
-            
+
             boolean success = false;
 
             if (log4jFile.endsWith(".xml"))
@@ -519,40 +512,6 @@ public class Turbine extends HttpServlet
                 // Rebuild our log object with a configured commons-logging
                 log = LogFactory.getLog(this.getClass());
                 log.info("Configured log4j from " + log4jFile);
-            }
-        }
-    }
-    /**
-     * Create any directories that might be needed during
-     * runtime. Right now this includes:
-     *
-     * <ul>
-     *
-     * <li>The directory to write the log files to (relative to the
-     * web application root), or <code>null</code> for the default of
-     * <code>/logs</code>.  The directory is specified via the {@link
-     * TurbineConstants#LOGGING_ROOT_KEY} parameter.</li>
-     *
-     * </ul>
-     *
-     * @param context Global initialization parameters.
-     * @param config Initialization parameters specific to the Turbine
-     * servlet.
-     */
-    protected void createRuntimeDirectories(ServletContext context,
-                                                 ServletConfig config)
-    {
-        String path = findInitParameter(context, config,
-                                        TurbineConstants.LOGGING_ROOT_KEY,
-                                        TurbineConstants.LOGGING_ROOT_DEFAULT);
-
-        File logDir = new File(getRealPath(path));
-        if (!logDir.exists())
-        {
-            // Create the logging directory
-            if (!logDir.mkdirs())
-            {
-                System.err.println("Cannot create directory for logs!");
             }
         }
     }
@@ -811,46 +770,45 @@ public class Turbine extends HttpServlet
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws IOException, ServletException
     {
-        PipelineData pipelineData = null;
-
-        try
+        // Check to make sure that we started up properly.
+        if (initFailure != null)
         {
-            // Check to make sure that we started up properly.
-            if (initFailure != null)
+            handleHorribleException(res, initFailure);
+            return;
+        }
+
+        // Get general PipelineData here...
+        try (PipelineData pipelineData = getRunDataService().getRunData(req, res, getServletConfig()))
+        {
+            try
             {
-                throw initFailure;
+                // Perform turbine specific initialization below.
+                Map<Class<?>, Object> runDataMap = new HashMap<Class<?>, Object>();
+                runDataMap.put(RunData.class, pipelineData);
+                // put the data into the pipeline
+                pipelineData.put(RunData.class, runDataMap);
+
+                // If this is the first invocation, perform some
+                // initialization.  Certain services need RunData to initialize
+                // themselves.
+                if (firstDoGet)
+                {
+                    init(pipelineData);
+                }
+
+                // Stages of Pipeline implementation execution
+                // configurable via attached Valve implementations in a
+                // XML properties file.
+                pipeline.invoke(pipelineData);
             }
-
-            // Get general RunData here...
-            // Perform turbine specific initialization below.
-            pipelineData = getRunDataService().getRunData(req, res, getServletConfig());
-            Map<Class<?>, Object> runDataMap = new HashMap<Class<?>, Object>();
-            runDataMap.put(RunData.class, pipelineData);
-            // put the data into the pipeline
-            pipelineData.put(RunData.class, runDataMap);
-
-            // If this is the first invocation, perform some
-            // initialization.  Certain services need RunData to initialize
-            // themselves.
-            if (firstDoGet)
+            catch (Throwable t)
             {
-                init(pipelineData);
+                handleException(pipelineData, res, t);
             }
-
-            // Stages of Pipeline implementation execution
-			// configurable via attached Valve implementations in a
-			// XML properties file.
-			pipeline.invoke(pipelineData);
-
         }
         catch (Throwable t)
         {
-            handleException(pipelineData, res, t);
-        }
-        finally
-        {
-            // Return the used RunData to the factory for recycling.
-            getRunDataService().putRunData((RunData)pipelineData);
+            handleHorribleException(res, t);
         }
     }
 
@@ -900,7 +858,6 @@ public class Turbine extends HttpServlet
         // make sure that the stack trace makes it the log
         log.error("Turbine.handleException: ", t);
 
-        String mimeType = "text/plain";
         try
         {
             // This is where we capture all exceptions and show the
@@ -931,58 +888,35 @@ public class Turbine extends HttpServlet
             data.getResponse().setContentType(data.getContentType());
             data.getResponse().setStatus(data.getStatusCode());
         }
-        // Catch this one because it occurs if some code hasn't been
-        // completely re-compiled after a change..
-        catch (java.lang.NoSuchFieldError e)
-        {
-            try
-            {
-                data.getResponse().setContentType(mimeType);
-                data.getResponse().setStatus(200);
-            }
-            catch (Exception ignored)
-            {
-                // ignore
-            }
-
-            try
-            {
-				data.getResponse().getWriter().print("java.lang.NoSuchFieldError: "
-                        + "Please recompile all of your source code.");
-            }
-            catch (IOException ignored)
-            {
-                // ignore
-            }
-
-            log.error(data.getStackTrace(), e);
-        }
         // Attempt to do *something* at this point...
         catch (Throwable reallyScrewedNow)
         {
-            StringBuilder msg = new StringBuilder();
-            msg.append("Horrible Exception: ");
-            if (data != null)
-            {
-                msg.append(data.getStackTrace());
-            }
-            else
-            {
-                msg.append(t);
-            }
-            try
-            {
-                res.setContentType(mimeType);
-                res.setStatus(200);
-                res.getWriter().print(msg.toString());
-            }
-            catch (Exception ignored)
-            {
-                // ignore
-            }
-
-            log.error(reallyScrewedNow.getMessage(), reallyScrewedNow);
+            handleHorribleException(res, reallyScrewedNow);
         }
+    }
+
+    /**
+     * This method handles exception cases where no PipelineData object exists
+     *
+     * @param res Servlet response.
+     * @param t The exception to report.
+     */
+    protected void handleHorribleException(HttpServletResponse res, Throwable t)
+    {
+        try
+        {
+            res.setContentType("text/plain");
+            res.setStatus(200);
+            PrintWriter writer = res.getWriter();
+            writer.println("Horrible Exception: ");
+            t.printStackTrace(writer);
+        }
+        catch (Exception ignored)
+        {
+            // ignore
+        }
+
+        log.error(t.getMessage(), t);
     }
 
     /**
@@ -1016,17 +950,24 @@ public class Turbine extends HttpServlet
     }
 
     /**
-     * Get the application root for this Turbine webapp. This
-     * concept was started in 3.0 and will allow an app to be
-     * developed from a standard CVS layout. With a simple
-     * switch the app will work fully within the servlet
-     * container for deployment.
+     * Get the application root for this Turbine webapp.
      *
      * @return String applicationRoot
      */
     public static String getApplicationRoot()
     {
         return applicationRoot;
+    }
+
+    /**
+     * Get the application root for this Turbine webapp as a
+     * file object.
+     *
+     * @return File applicationRootFile
+     */
+    public static File getApplicationRootAsFile()
+    {
+        return new File(applicationRoot);
     }
 
     /**
@@ -1041,10 +982,10 @@ public class Turbine extends HttpServlet
     {
         if (path.startsWith("/"))
         {
-            return new File(getApplicationRoot(), path.substring(1)).getAbsolutePath();
+            return new File(getApplicationRootAsFile(), path.substring(1)).getAbsolutePath();
         }
 
-        return new File(getApplicationRoot(), path).getAbsolutePath();
+        return new File(getApplicationRootAsFile(), path).getAbsolutePath();
     }
 
     /**
