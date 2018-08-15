@@ -3,6 +3,10 @@ package org.apache.turbine.pipeline;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.rundata.RunDataService;
+import org.apache.turbine.util.RunData;
+
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -83,5 +87,18 @@ public class DefaultPipelineData implements PipelineData
             return null;
         }
         return (T) innerMap.get(innerKey);
+    }
+
+    /**
+     * Put object back into RunDataService for recycling
+     */
+    @Override
+    public void close() throws Exception
+    {
+        RunDataService rds = (RunDataService) TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME);
+        if (rds != null)
+        {
+            rds.putRunData((RunData) this);
+        }
     }
 }

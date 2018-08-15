@@ -36,7 +36,7 @@ import java.util.Map;
  * @author <a href="mailto:epugh@opensourceconnections.com">Eric Pugh</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
-public interface PipelineData
+public interface PipelineData extends AutoCloseable
 {
     /**
      * Put a configured map of objects into the pipeline data object
