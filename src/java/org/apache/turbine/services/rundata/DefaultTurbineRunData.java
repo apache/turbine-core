@@ -39,7 +39,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.ParameterParser;
-import org.apache.fulcrum.pool.Recyclable;
 import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
 import org.apache.turbine.Turbine;
@@ -79,7 +78,7 @@ import org.apache.turbine.util.template.TemplateInfo;
  */
 public class DefaultTurbineRunData
         extends DefaultPipelineData
-        implements TurbineRunData, Recyclable
+        implements TurbineRunData
 {
     /**
      * The disposed flag.
