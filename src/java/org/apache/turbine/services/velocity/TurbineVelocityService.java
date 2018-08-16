@@ -209,7 +209,7 @@ public class TurbineVelocityService
      * @return A valid value to be used as Return value
      */
     @Override
-	public Object methodException(Context context, Class clazz, String method, Exception e, Info info)
+	public Object methodException(Context context, @SuppressWarnings("rawtypes") Class clazz, String method, Exception e, Info info)
     {
         log.error("Class " + clazz.getName() + "." + method + " threw Exception", e);
 

@@ -18,7 +18,7 @@ package org.apache.turbine.annotation;
  * specific language governing permissions and limitations
  * under the License.
  */
-import static org.hamcrest.CoreMatchers.any;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -31,7 +31,6 @@ import java.util.List;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.fulcrum.factory.FactoryService;
-import org.apache.fulcrum.security.entity.Group;
 import org.apache.fulcrum.security.entity.Role;
 import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
 import org.apache.turbine.annotation.AnnotationProcessor.ConditionType;
@@ -99,10 +98,11 @@ public class AnnotationProcessorTest
     {
         tc.dispose();
     }
-    
+
     @Before
     public void setUpBefore() throws Exception
     {
+        // do nothing
     }
 
     @Test
@@ -127,14 +127,14 @@ public class AnnotationProcessorTest
         assertNotNull(screenLoader);
         assertNotNull(asb);
         assertNotNull(factory);
-        
+
     }
-    
+
     @TurbineRequiredRole({"user","admin"})
     public void guardedMethoded() {
-        
+        // do nothing
     }
-    
+
     @Test
     public void testRequiredRoleMethodProcess() throws Exception
     {
@@ -142,10 +142,10 @@ public class AnnotationProcessorTest
         TurbineAccessControlList acl = mock(TurbineAccessControlList.class);
         Role role = mock(Role.class);
         when(role.getName()).thenReturn( "user" );
-        Group group = mock(Group.class);
-        when(acl.hasRole( role.getName() )).thenReturn( true );
+        // Group group = mock(Group.class);
+        when(acl.hasRole( role.getName() )).thenReturn( Boolean.TRUE );
         when(data.getACL()).thenReturn(acl );
-                                       
+
         Method[] methods = getClass().getMethods();
         for (Method m : methods) {
             if (m.getName().equals( "guardedMethoded" )) {
@@ -154,12 +154,12 @@ public class AnnotationProcessorTest
             }
         }
     }
-    
+
     @TurbineRequiredRole({"admin"})
     public void guardedMethodedAdmin() {
-        
+        // do nothing
     }
-    
+
     @Test
     public void testRequiredRoleAdminMethodProcess() throws Exception
     {
@@ -167,10 +167,10 @@ public class AnnotationProcessorTest
         TurbineAccessControlList acl = mock(TurbineAccessControlList.class);
         Role role = mock(Role.class);
         when(role.getName()).thenReturn( "user" );
-        Group group = mock(Group.class);
-        when(acl.hasRole( role.getName() )).thenReturn( true );
+        // Group group = mock(Group.class);
+        when(acl.hasRole( role.getName() )).thenReturn( Boolean.TRUE );
         when(data.getACL()).thenReturn(acl );
-                                       
+
         Method[] methods = getClass().getMethods();
         for (Method m : methods) {
             if (m.getName().equals( "guardedMethodedAdmin" )) {
@@ -178,11 +178,11 @@ public class AnnotationProcessorTest
             }
         }
     }
-    
+
     public void unguardedMethoded() {
-        
+        // do nothing
     }
-    
+
     @Test
     public void testUnguardedMethodWProcessDefault() throws Exception
     {
@@ -190,10 +190,10 @@ public class AnnotationProcessorTest
         TurbineAccessControlList acl = mock(TurbineAccessControlList.class);
         Role role = mock(Role.class);
         when(role.getName()).thenReturn( "user" );
-        Group group = mock(Group.class);
-        when(acl.hasRole( role.getName() )).thenReturn( false );
+        // Group group = mock(Group.class);
+        when(acl.hasRole( role.getName() )).thenReturn( Boolean.FALSE );
         when(data.getACL()).thenReturn(acl );
-                                       
+
         Method[] methods = getClass().getMethods();
         for (Method m : methods) {
             if (m.getName().equals( "unguardedMethoded" )) {

@@ -19,7 +19,6 @@ package org.apache.turbine.om.security;
  * under the License.
  */
 
-import java.io.Serializable;
 import java.util.Map;
 
 import javax.servlet.http.HttpSessionBindingListener;
@@ -38,7 +37,7 @@ import org.apache.fulcrum.security.model.turbine.entity.TurbineUser;
  * @version $Id$
  */
 public interface User
-    extends HttpSessionBindingListener, Serializable, TurbineUserDelegate, TurbineUser
+    extends HttpSessionBindingListener, TurbineUserDelegate, TurbineUser
 {
     /** The 'perm storage' key name for the create_date field. */
     String CREATE_DATE = "CREATE_DATE";
@@ -282,7 +281,7 @@ public interface User
      *
      * @throws Exception A generic exception.
      */
-    
+
     void updateLastLogin()
         throws Exception;
 }
