@@ -37,10 +37,10 @@ src/        This is where all of the source code to Turbine lives.
 target/     This is a temporary directory for building the project.
 
 In order to get started with Turbine, you must build it first.
-Turbine uses Maven for its build environment.  You can find installation
+Turbine uses Maven for its build environment. You can find installation
 information about Maven online at http://maven.apache.org/ .
-Once Maven has been installed, just type 'mvn package'.  The default behavior is to
-compile, run the unit tests, and build the jar.  Some other useful goals:
+Once Maven has been installed, just type 'mvn package'. The default behavior 
+is to compile, run the unit tests, and build the jar. Some other useful goals:
 
 mvn site   - generate the site documention
 
