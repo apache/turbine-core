@@ -856,7 +856,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.7</version>
+      <version>3.8.1</version>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
@@ -887,17 +887,17 @@
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-factory</artifactId>
-      <version>1.1.0</version>
+      <version>1.1.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-pool</artifactId>
-      <version>1.0.4</version>
+      <version>1.0.5-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-localization</artifactId>
-      <version>1.0.6</version>
+      <version>1.0.7-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
@@ -911,25 +911,25 @@
     </dependency>
     <!-- yaafi 1.0.7 is in group turbine, 1.0.8 will be in group fulcrum again (package ) -->
     <dependency>
-      <groupId>org.apache.turbine</groupId>
+      <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-yaafi</artifactId>
-      <version>1.0.7</version>
+      <version>1.0.8-SNAPSHOT</version>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-crypto</artifactId>
-      <version>1.0.7</version>
+      <version>1.0.8-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-xslt</artifactId>
-      <version>1.1.0</version>
+      <version>1.1.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-mimetype</artifactId>
-      <version>1.0.5</version>
+      <version>1.0.6-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.torque</groupId>
@@ -969,7 +969,7 @@
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-quartz</artifactId>
-      <version>1.1.0</version>
+      <version>1.1.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <!-- TODO update to stable 2.7.1, because of CVE-2016-5699 -->
@@ -1129,7 +1129,7 @@
     <!--turbine.site.path>turbine/development/turbine-4.1</turbine.site.path-->
     <turbine.site.path>turbine/turbine-4.0</turbine.site.path>
     <fulcrum.intake>2.0.0-SNAPSHOT</fulcrum.intake>
-    <fulcrum.security>1.1.2</fulcrum.security>
+    <fulcrum.security>1.1.3-SNAPSHOT</fulcrum.security>
     <slf4j.version>1.7.25</slf4j.version>
     <dependency.check.skip>true</dependency.check.skip>
   </properties>
