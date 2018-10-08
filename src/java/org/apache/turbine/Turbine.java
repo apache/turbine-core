@@ -142,7 +142,7 @@ public class Turbine extends HttpServlet
      * sometimes even concurrently. This causes bad things to happen,
      * so we use this flag to prevent it.
      */
-    private static boolean firstInit = true;
+    private boolean firstInit = true;
 
     /**
      * The pipeline to use when processing requests.
@@ -155,7 +155,7 @@ public class Turbine extends HttpServlet
     /**
      * Should initialization activities be performed during doGet() execution?
      */
-    private static boolean firstDoGet = true;
+    private boolean firstDoGet = true;
 
     /**
      * Keep all the properties of the web server in a convenient data
@@ -353,8 +353,21 @@ public class Turbine extends HttpServlet
         Path targetPath = Paths.get( confPath.toURI() );
         targetPath = targetPath.resolve( confFileRelativePath );
 
-        confPath = targetPath.getParent().normalize().toFile();// base part, normally conf folder
-        confFile = targetPath.getFileName().toString();
+        // Get the target path directory
+        Path targetPathDirectory = targetPath.getParent();
+        if ( targetPathDirectory != null )
+        {
+        	// set the configuration path
+    		confPath = targetPathDirectory.normalize().toFile();
+
+            Path targetFilePath = targetPath.getFileName();
+            if ( targetFilePath != null )
+            {
+            	// set the configuration file name
+            	confFile = targetFilePath.toString();
+            }
+    		
+        }
 
         switch (confStyle)
         {
@@ -459,7 +472,16 @@ public class Turbine extends HttpServlet
             log4jFile = log4jFile.substring( 1 );
         }
         // log4j must either share path with configuration path or resolved relatively
-        Path log4jTarget = targetPath.getParent().resolve( log4jFile ).normalize();
+        Path log4jTarget = null;
+        Path logConfPath = targetPath.getParent();
+        if ( logConfPath != null )
+        {
+        	Path logFilePath = logConfPath.resolve( log4jFile );
+        	if ( logFilePath != null )
+        	{
+        		log4jTarget = logFilePath.normalize();
+            }
+        }
 
         if (StringUtils.isNotEmpty(log4jFile) &&
                 !log4jFile.equalsIgnoreCase("none") && Files.exists( log4jTarget ))
