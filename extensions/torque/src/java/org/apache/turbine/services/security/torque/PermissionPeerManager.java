@@ -27,7 +27,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,7 +43,7 @@ import org.apache.turbine.util.security.PermissionSet;
 import org.apache.torque.TorqueException;
 import org.apache.torque.om.Persistent;
 import org.apache.torque.util.BasePeer;
-import org.apache.torque.util.Criteria;
+import org.apache.torque.criteria.Criteria;
 
 /**
  * This class capsulates all direct Peer access for the Permission entities.

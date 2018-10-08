@@ -21,7 +21,7 @@ package org.apache.turbine.services.systemproperties;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.InitializationException;
