@@ -22,7 +22,7 @@
 
   <bannerLeft>
     <name>Apache Turbine</name>
-    <src>/images/turbine-project.png</src>
+    <src>/images/turbine-project-apache-separate.png</src>
     <alt>Apache Turbine</alt>
     <href>http://turbine.apache.org/</href>
   </bannerLeft>
@@ -79,6 +79,7 @@
        	<item name="Migrating from 2.1 to 2.2" href="/howto/migrate-from-2_1-howto.html"/>
         <item name="Migrating from 2.2 to 2.3" href="/howto/migrate-from-2_2-howto.html"/>
         <item name="Migrating from 2.3 to 4.0" href="/howto/migrate-from-2_3-howto.html"/>
+        <item name="Migrating from 4.0 to 5.0" href="/howto/migrate-from-4_0-howto.html"/>
         <item name="Pull Model Howto"    href="/howto/pullmodel-howto.html"/>
         <item name="Python Howto"        href="/howto/python-howto.html"/>
         <item name="Security Howto"      href="/howto/security-howto.html"/>
