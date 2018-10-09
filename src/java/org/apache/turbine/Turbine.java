@@ -142,7 +142,7 @@ public class Turbine extends HttpServlet
      * sometimes even concurrently. This causes bad things to happen,
      * so we use this flag to prevent it.
      */
-    private boolean firstInit = true;
+    private static boolean firstInit = true;
 
     /**
      * The pipeline to use when processing requests.
@@ -155,7 +155,7 @@ public class Turbine extends HttpServlet
     /**
      * Should initialization activities be performed during doGet() execution?
      */
-    private boolean firstDoGet = true;
+    private static boolean firstDoGet = true;
 
     /**
      * Keep all the properties of the web server in a convenient data
