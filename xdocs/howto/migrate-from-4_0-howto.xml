@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+ <properties>
+  <title>Migrating from 4.0 to 5.0</title>
+ </properties>
+
+<body>
+
+<section name="Introduction">
+<p>
+    This document describes the basic steps needed to migrate an
+    application written for Turbine 4.0 to Turbine 5.0.
+</p>
+<p>
+	Migrating from Turbine 4.0 to Turbine 5.0 is mostly a task of
+	updating any references to commons-config and insuring that you
+    are using Parts for file upload rather than the old FileItem object.
+</p>
+</section>
+
+<section name="Updating configuration">
+<p>
+    TurbineResources.properties have changed making it less verbose
+    to point to the log4j config file.
+
+	<ul>
+		<li>Remove the WEB-INF/conf/ prefix from your log4j config file location</li>
+	</ul>
+</p>
+</section>
+
+
+
+<section name="Migrating file upload to Parts">
+
+<p>
+	In turbine-4.0.1 and prior, file uploads were processed through the
+	data.getParameters().getFileItem("file_field_name") method and returned
+	a FileItem object.
+</p>
+
+<p>
+	With Turbine-5.0, the framework is now using Java servlet 3.1.0.
+	As such, you will need to migrate this code using the
+	new Part object from the servlet spec.  This actually saves you some
+	time since you don't have to convert the FileItem to a byte array and
+	then into an InputStream for processing.. you auto-magically get an
+	getInputStream() method on your javax.servlet.http.Part object to then
+	do as you please...
+</p>
+
+<source>
+<![CDATA[
+
+        // all file items are now parts
+        Part fileItem = data.getParameters().getPart("file");
+
+        if (fileItem != null) {
+
+            InputStream is = fileItem.getInputStream();
+            BufferedReader bfReader = null;
+            try {
+                bfReader = new BufferedReader(new InputStreamReader(is));
+                String line = null;
+                while ((line = bfReader.readLine()) != null) {
+
+                    // do something with the input here ...
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (is != null)
+                        is.close();
+                } catch (Exception ex) {
+
+                }
+            }
+        }
+
+]]>
+</source>
+
+<p>
+	And if you really do need a byte array (for example to store the
+	contents as a binary object in the database), you can do this using the
+	following method calls.
+</p>
+
+<source>
+<![CDATA[
+
+  InputStream is = fileItem.getInputStream();
+  byte[] byteArray = IOUtils.toByteArray(is);
+  
+]]>
+</source>
+
+</section>
+
+
+</body>
+</document>
