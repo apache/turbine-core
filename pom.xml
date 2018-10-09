@@ -830,7 +830,7 @@
 	<dependency>
 	    <groupId>javax.servlet</groupId>
 	    <artifactId>javax.servlet-api</artifactId>
-	    <version>4.0.1</version>
+	    <version>3.1.0</version>
 	    <scope>provided</scope>
 	</dependency>
     <dependency>
@@ -1045,17 +1045,10 @@
       <version>2.2.9</version>
       <scope>test</scope>
     </dependency>
-    <!-- moved mockito to testcontainer with v1.0.8 -->
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>2.18.3</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-testcontainer</artifactId>
-      <version>1.0.7</version>
+      <version>1.0.8-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
