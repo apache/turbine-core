@@ -38,43 +38,142 @@
 </p>
 </section>
 
-<section name="Updating configuration">
-<p>
-    TurbineResources.properties have changed making it less verbose
-    to point to the log4j config file.
 
-	<ul>
-		<li>Remove the WEB-INF/conf/ prefix from your log4j config file location</li>
-	</ul>
-</p>
+<section name="Updating configuration">
+
+	<subsection name="Log4j changes">
+		<p>
+		    TurbineResources.properties have changed making it less verbose
+		    to point to the log4j config file.
+		
+			Old config line:
+<source>
+<![CDATA[
+
+        # -------------------------------------------------------------------
+        #
+        #  L O G 4 J - L O G G I N G
+        #
+        # -------------------------------------------------------------------
+        
+        log4j.file = WEB-INF/conf/log4j.properties
+    
+]]>
+			</source>
+		
+			New config line:
+<source>
+<![CDATA[
+        # -------------------------------------------------------------------
+        #
+        #  L O G 4 J - L O G G I N G
+        #
+        # -------------------------------------------------------------------
+        
+        log4j.file = log4j.properties
+]]>
+</source>
+
+        </p>
+
+	</subsection>
+
+	<subsection name="Setting character encoding">
+		<p>
+			The default character encoding typically should be set
+			by your servlet container.  For example, in Tomcat you can
+			update the server.xml in the following way to force URI connections
+			to be encoded in UTF-8.
+		</p>
+		
+<source>
+<![CDATA[
+    <!-- Define a non-SSL HTTP/1.1 Connector on port 8080 -->
+       <Connector port="8080" maxHttpHeaderSize="8192"
+                   maxThreads="150" minSpareThreads="25" maxSpareThreads="75"
+                   enableLookups="false" redirectPort="8443" acceptCount="100"
+                   connectionTimeout="20000" disableUploadTimeout="true"
+                   URIEncoding="UTF-8"
+       />
+]]>
+</source>
+
+		<p>
+			However, earlier versions of Apache Turbine allowed you to override this
+			value by setting the input.encoding property in your TurbineResources.properties file.
+		</p>
+		
+		<p>			
+			With Turbine 5.0, you can still accomplish this same behavior, but you need
+			to make sure that you have added the encoding valve to the turbine-classic-pipeline.xml
+			to enable it.
+		</p>
+		
+		<p>			
+			In TurbineResources.properties, you can set the following parameter:
+		</p>
+
+<source>
+<![CDATA[
+        input.encoding = UTF-8
+]]>
+</source>
+
+		<p>
+			But it will not be picked up unless you edit the pipeline valves 
+			to read as follows. Note that ORDER does matter if you are not
+			seeing the behavior you expected.
+		</p>
+
+<source>
+<![CDATA[
+    <pipeline name="default">
+        <valves>
+
+            <!-- Use this valve to enable use of the input.encoding
+                    parameter defined in your TurbineResources.properties file -->
+            <valve>org.apache.turbine.pipeline.DefaultSetEncodingValve</valve>
+
+            <valve>org.apache.turbine.pipeline.DetermineActionValve</valve>
+            <valve>org.apache.turbine.pipeline.DetermineTargetValve</valve>
+            <valve>org.apache.turbine.pipeline.DefaultSessionTimeoutValve</valve>
+            <valve>org.apache.turbine.pipeline.DefaultLoginValve</valve>
+            <valve>org.apache.turbine.pipeline.DefaultSessionValidationValve</valve>
+            <valve>org.apache.turbine.pipeline.DefaultACLCreationValve</valve>
+            <valve>org.apache.turbine.pipeline.ExecutePageValve</valve>
+            <valve>org.apache.turbine.pipeline.CleanUpValve</valve>
+            <valve>org.apache.turbine.pipeline.DetermineRedirectRequestedValve</valve>
+      </valves>
+    </pipeline>
+]]>
+</source>
+
+	</subsection>
 </section>
 
 
-
 <section name="Migrating file upload to Parts">
-
-<p>
-	In turbine-4.0.1 and prior, file uploads were processed through the
-	data.getParameters().getFileItem("file_field_name") method and returned
-	a FileItem object.
-</p>
-
-<p>
-	With Turbine-5.0, the framework is now using Java servlet 3.1.0.
-	As such, you will need to migrate this code using the
-	new Part object from the servlet spec.  This actually saves you some
-	time since you don't have to convert the FileItem to a byte array and
-	then into an InputStream for processing.. you auto-magically get an
-	getInputStream() method on your javax.servlet.http.Part object to then
-	do as you please...
-</p>
-
+	
+	<p>
+		In turbine-4.0.1 and prior, file uploads were processed through the
+		data.getParameters().getFileItem("file_field_name") method and returned
+		a FileItem object.
+	</p>
+	
+	<p>
+		With Turbine-5.0, the framework is now using Java servlet 3.1.0.
+		As such, you will need to migrate this code using the
+		new Part object from the servlet spec.  This actually saves you some
+		time since you don't have to convert the FileItem to a byte array and
+		then into an InputStream for processing.. you auto-magically get an
+		getInputStream() method on your javax.servlet.http.Part object to then
+		do as you please...
+	</p>
 <source>
 <![CDATA[
 
         // all file items are now parts
         Part fileItem = data.getParameters().getPart("file");
-
         if (fileItem != null) {
 
             InputStream is = fileItem.getInputStream();
@@ -88,26 +187,27 @@
 
                 }
             } catch (IOException e) {
+                // handle exception here	
                 e.printStackTrace();
             } finally {
                 try {
                     if (is != null)
                         is.close();
                 } catch (Exception ex) {
-
+                    // handle exception here	
                 }
             }
         }
 
 ]]>
-</source>
-
-<p>
-	And if you really do need a byte array (for example to store the
-	contents as a binary object in the database), you can do this using the
-	following method calls.
-</p>
-
+	</source>
+	
+	<p>
+		And if you really do need a byte array (for example to store the
+		contents as a binary object in the database), you can do this using the
+		following method calls.
+	</p>
+	
 <source>
 <![CDATA[
 
@@ -118,7 +218,6 @@
 </source>
 
 </section>
-
 
 </body>
 </document>
