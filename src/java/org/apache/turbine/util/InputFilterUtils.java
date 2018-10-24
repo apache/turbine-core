@@ -21,8 +21,8 @@ package org.apache.turbine.util;
  */
 
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Some filter methods that have been orphaned in the Screen class.
@@ -44,7 +44,7 @@ public abstract class InputFilterUtils
      */
     public static String prepareText(String s)
     {
-        return StringEscapeUtils.escapeHtml(s);
+        return StringEscapeUtils.escapeHtml4(s);
     }
 
     /**

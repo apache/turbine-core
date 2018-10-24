@@ -22,7 +22,7 @@ package org.apache.turbine.services.schedule;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.turbine.modules.ScheduledJobLoader;
 import org.apache.turbine.util.TurbineException;
 import org.quartz.Job;

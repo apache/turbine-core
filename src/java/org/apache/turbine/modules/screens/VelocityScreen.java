@@ -19,8 +19,8 @@ package org.apache.turbine.modules.screens;
  * under the License.
  */
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.annotation.TurbineService;

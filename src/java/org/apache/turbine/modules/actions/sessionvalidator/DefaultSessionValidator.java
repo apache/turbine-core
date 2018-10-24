@@ -19,7 +19,7 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  * under the License.
  */
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
@@ -71,9 +71,9 @@ public class DefaultSessionValidator
 
 
     /**
-     * Execute the action.  The default is to populate the PipelineData
-     * object and, if the user is unknown, to force a login screen (as
-     * set in the tr.props).
+     * Execute the action. The default behavior is to populate the PipelineData
+     * object, and if the user is unknown, to then force a redirect
+     * to the login screen (as set in the tr.props).
      *
      * @see org.apache.turbine.modules.screens.error.InvalidState
      * @param pipelineData Turbine PipelineData context information.
@@ -91,7 +91,7 @@ public class DefaultSessionValidator
         // The user may have not logged in, so create a "guest/anonymous" user.
         if (data.getUser() == null)
         {
-            log.debug("Fixing up empty User Object!");
+            log.debug("Creating an anonymous user object!");
             User anonymousUser = security.getAnonymousUser();
             data.setUser(anonymousUser);
             data.save();

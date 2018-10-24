@@ -24,7 +24,7 @@ package org.apache.turbine.util.velocity;
 import java.net.URL;
 import java.util.Hashtable;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.mail.EmailException;

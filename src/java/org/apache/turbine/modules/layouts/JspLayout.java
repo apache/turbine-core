@@ -60,7 +60,7 @@ public class JspLayout
         throws Exception
     {
         RunData data = getRunData(pipelineData);
-        data.getResponse().setContentType("text/html");
+        data.getResponse().setContentType( TurbineConstants.DEFAULT_HTML_CONTENT_TYPE );
         data.declareDirectResponse();
 
         // variable to reference the screen in the layout template

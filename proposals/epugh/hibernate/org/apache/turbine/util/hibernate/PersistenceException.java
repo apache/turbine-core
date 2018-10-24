@@ -16,7 +16,7 @@ package org.apache.turbine.util.hibernate;
  * limitations under the License.
  */
 
-import org.apache.commons.lang.exception.NestableException;
+import org.apache.commons.lang3.exception.NestableException;
 /**
  * A general PersistenceException that can be thrown by 
  * Hibernate DAO classes.

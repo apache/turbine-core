@@ -53,9 +53,9 @@ import org.apache.commons.configuration2.builder.combined.CombinedConfigurationB
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 import org.apache.commons.configuration2.io.HomeDirectoryLocationStrategy;
-import org.apache.commons.lang.NotImplementedException;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.PropertyConfigurator;
@@ -927,7 +927,7 @@ public class Turbine extends HttpServlet
     {
         try
         {
-            res.setContentType("text/plain");
+            res.setContentType( TurbineConstants.DEFAULT_TEXT_CONTENT_TYPE );
             res.setStatus(200);
             PrintWriter writer = res.getWriter();
             writer.println("Horrible Exception: ");

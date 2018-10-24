@@ -24,7 +24,7 @@ package org.apache.turbine.services.pull.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.pull.ApplicationTool;
 

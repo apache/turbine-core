@@ -19,7 +19,7 @@ package org.apache.turbine.modules.screens;
  * under the License.
  */
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.jsp.JspService;
