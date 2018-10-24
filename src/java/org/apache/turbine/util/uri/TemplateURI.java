@@ -23,7 +23,7 @@ package org.apache.turbine.util.uri;
 
 import java.util.Iterator;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;

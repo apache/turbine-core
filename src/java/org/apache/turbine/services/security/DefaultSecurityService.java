@@ -371,8 +371,9 @@ public class DefaultSecurityService
     }
 
     /**
-     * Authenticates an user, and constructs an User object to represent
-     * him/her.
+     * Retrieves a User object representing an individual who has 
+     * properly identified themselves with their verified 
+     * username and password
      *
      * @param username The user name.
      * @param password The user password.
@@ -392,7 +393,8 @@ public class DefaultSecurityService
 
     /**
      * Constructs an User object to represent a registered user of the
-     * application.
+     * application. This method does not authenticate that the proper
+     * credentials were supplied (see @link #getAuthenticatedUser()})
      *
      * @param username The user name.
      * @return A Turbine User.

@@ -19,7 +19,7 @@ package org.apache.turbine.modules.actions;
  * under the License.
  */
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.security.util.DataBackendException;
@@ -139,6 +139,7 @@ public class LoginUser
 
             // Set Error Message and clean out the user.
             data.setMessage(loginError);
+            
             User anonymousUser = security.getAnonymousUser();
             data.setUser(anonymousUser);
 

@@ -25,7 +25,7 @@ import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.time.FastDateFormat;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
 

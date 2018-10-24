@@ -102,7 +102,7 @@ public class LogoutUser
         // Retrieve an anonymous user.
         User anonymousUser = security.getAnonymousUser();
         data.setUser(anonymousUser);
-        data.save();
+        data.save();        
 
         // In the event that the current screen or related navigations
         // require acl info, we cannot wait for Turbine to handle

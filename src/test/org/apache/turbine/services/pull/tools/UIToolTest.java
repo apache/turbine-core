@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.jsonrpc.JsonrpcServicelTest;

@@ -28,7 +28,7 @@ import java.util.StringTokenizer;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.turbine.Turbine;
 
 /**

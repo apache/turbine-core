@@ -23,7 +23,7 @@ package org.apache.turbine.modules.layouts;
 
 import java.io.StringReader;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.xslt.XSLTService;
@@ -93,7 +93,7 @@ public class VelocityXslLayout extends Layout
         // Get the context needed by Velocity.
         Context context = velocityService.getContext(pipelineData);
 
-        data.getResponse().setContentType("text/html");
+        data.getResponse().setContentType(TurbineConstants.DEFAULT_HTML_CONTENT_TYPE);
 
         String screenName = data.getScreen();
 

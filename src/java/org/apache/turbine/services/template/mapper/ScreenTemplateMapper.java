@@ -21,7 +21,7 @@ package org.apache.turbine.services.template.mapper;
  */
 
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateEngineService;
 import org.apache.turbine.services.template.TemplateService;

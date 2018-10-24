@@ -21,7 +21,7 @@ package org.apache.turbine.util.uri;
  */
 
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Helper Class to keep a key and a value together in

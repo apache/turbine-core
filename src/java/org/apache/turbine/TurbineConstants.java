@@ -221,6 +221,11 @@ public interface TurbineConstants
 	String DEFAULT_HTML_DOCTYPE_URI_DEFAULT
 			= "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd";
 
+	/** Define content types **/
+	String DEFAULT_HTML_CONTENT_TYPE = "text/html";
+	String DEFAULT_TEXT_CONTENT_TYPE = "text/plain";
+	String DEFAULT_CSS_CONTENT_TYPE = "text/css";
+	
 	/** Default Language property */
 	String LOCALE_DEFAULT_LANGUAGE_KEY = "locale.default.language";
 
