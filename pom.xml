@@ -22,7 +22,7 @@
   <parent>
      <groupId>org.apache.turbine</groupId>
      <artifactId>turbine-parent</artifactId>
-     <version>4</version>
+     <version>5</version>
   </parent>
   <groupId>org.apache.turbine</groupId>
   <artifactId>turbine</artifactId>
