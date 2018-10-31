@@ -51,7 +51,7 @@ public interface TurbineConstants
 	String LOG4J_CONFIG_FILE = "log4j.file";
 
 	/** The default value for the Log4J File */
-	String LOG4J_CONFIG_FILE_DEFAULT = "/WEB-INF/conf/Log4j.properties";
+	String LOG4J_CONFIG_FILE_DEFAULT = "/WEB-INF/conf/log4j.xml";
 
 	/** This is the default log file to be used for logging */
 	String DEFAULT_LOGGER = "turbine";

@@ -25,6 +25,9 @@
 
   <body>
     <release version="5.0" date="in Subversion">
+      <action type="update" dev="jp">
+        Update from lang to commons lang3
+      </action>
       <action type="add" dev="tv">
         Add ServiceBroker.getApplicationRoot() to allow services to get their root directory
       </action>
