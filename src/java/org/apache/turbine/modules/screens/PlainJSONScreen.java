@@ -22,8 +22,6 @@ package org.apache.turbine.modules.screens;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 import org.slf4j.Logger;
@@ -101,14 +99,12 @@ public class PlainJSONScreen extends RawScreen
     protected void doOutput(PipelineData pipelineData) throws Exception
     {
         RunData data = getRunData(pipelineData);
-       
-        HttpServletRequest request = data.getRequest();
         // read in json!
         String charset =  "UTF-8"; //request.getCharacterEncoding();
         
         String json_res =data.getMessage();
 
-        log.debug( "json_res output:" +json_res );
+        log.debug( "json_res output: {}", json_res );
         PrintWriter out = new PrintWriter(
                 new OutputStreamWriter(data.getResponse().getOutputStream(),charset));
         out.print(json_res.toString());
