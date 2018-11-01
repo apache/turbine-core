@@ -19,6 +19,7 @@ package org.apache.turbine;
  * under the License.
  */
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,6 +29,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -58,6 +60,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.text.StringSubstitutor;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.apache.turbine.modules.PageLoader;
@@ -92,8 +95,6 @@ import org.apache.turbine.util.uri.URIConstants;
  * <li><code>applicationRoot</code> this parameter defaults to the web context
  * of the servlet container. You can use this parameter to specify the directory
  * within the server's filesystem, that is the base of your web application.</li>
- * <li><code>loggingRoot</code> the path to Turbine log files, relative
- * to the application root.</li>
  * </ul>
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
@@ -129,11 +130,13 @@ public class Turbine extends HttpServlet
     /**
      * Name of path info parameter used to indicate the redirected stage of
      * a given user's initial Turbine request
+     * @deprecated
      */
     @Deprecated // not used
     public static final String REDIRECTED_PATHINFO_NAME = "redirected";
 
-    /** The base directory key */
+    /** The base directory key @deprecated 
+     * */
     @Deprecated // not used
     public static final String BASEDIR_KEY = "basedir";
 
@@ -484,7 +487,7 @@ public class Turbine extends HttpServlet
         }
 
         if (StringUtils.isNotEmpty(log4jFile) &&
-                !log4jFile.equalsIgnoreCase("none") && Files.exists( log4jTarget ))
+                !log4jFile.equalsIgnoreCase("none") && log4jTarget != null && log4jTarget.toFile().exists() )
         {
             log4jFile = log4jTarget.toFile().getAbsolutePath();
 
@@ -496,7 +499,17 @@ public class Turbine extends HttpServlet
                 // NOTE: Only system property expansion available
                 try
                 {
-                    DOMConfigurator.configure(log4jFile);
+                    // do a substitute application root
+                    Map<String,String> valMap = new HashMap<>();
+                    // just always use slashes, TODO make it configurable? 
+                    valMap.put(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot().replace( '\\', '/' ));
+                    StringSubstitutor sub = new StringSubstitutor(valMap);
+                    String log4jTemplate = new String(Files.readAllBytes(Paths.get(log4jFile)));
+                    String resolvedString = sub.replace(log4jTemplate);
+                    String log4jFileTarget = log4jFile.replaceFirst( "\\.xml$", "-gen.xml");
+                    Files.copy( new ByteArrayInputStream(resolvedString.getBytes()), 
+                                new File(log4jFileTarget).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    DOMConfigurator.configure(log4jFileTarget);
                     success = true;
                 }
                 catch (FactoryConfigurationError e)
