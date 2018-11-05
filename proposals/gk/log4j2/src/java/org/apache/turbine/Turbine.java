@@ -55,6 +55,7 @@ import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.combined.CombinedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.configuration2.io.HomeDirectoryLocationStrategy;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
@@ -62,9 +63,12 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.text.StringSubstitutor;
-import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.turbine.modules.PageLoader;
 import org.apache.turbine.pipeline.Pipeline;
 import org.apache.turbine.pipeline.PipelineData;
@@ -81,6 +85,9 @@ import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.uri.URIConstants;
+//import org.apache.log4j.LogManager;
+//import org.apache.log4j.PropertyConfigurator;
+//import org.apache.log4j.xml.DOMConfigurator;
 
 /**
  * Turbine is the main servlet for the entire system. If you
@@ -113,7 +120,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
- * @version $Id$
+ * @version $Id: Turbine.java 1845484 2018-11-01 15:15:03Z gk $
  */
 @WebServlet(
     name = "Turbine",
@@ -124,7 +131,7 @@ import org.apache.turbine.util.uri.URIConstants;
                  @WebInitParam(name = TurbineConfig.PROPERTIES_PATH_KEY,
                     value = TurbineConfig.PROPERTIES_PATH_DEFAULT) } )
 @MultipartConfig
-public class Turbine extends HttpServlet
+public class TurbineLog4J2 extends HttpServlet
 {
     /** Serial version */
     private static final long serialVersionUID = -6317118078613623990L;
@@ -198,7 +205,12 @@ public class Turbine extends HttpServlet
     }
 
     /** Logging class from commons.logging */
-    private static Log log = LogFactory.getLog(Turbine.class);
+    private static Log log = LogFactory.getLog(TurbineLog4J2.class);
+    
+    /**
+     * 
+     */
+    public static Logger log4j2Logger = LogManager.getLogger();
 
     /**
      * This init method will load the default resources from a
@@ -211,7 +223,7 @@ public class Turbine extends HttpServlet
     @Override
     public void init() throws ServletException
     {
-        synchronized (Turbine.class)
+        synchronized (TurbineLog4J2.class)
         {
             super.init();
 
@@ -316,6 +328,70 @@ public class Turbine extends HttpServlet
         // /WEB-INF/conf/TurbineResources.properties relative to the
         // web application root.
 
+        Path targetPath = configureFromConfiguration( config, context );
+        
+        //
+        // Set up logging as soon as possible
+        //
+        configureLogging(targetPath);
+
+        // Now report our successful configuration to the world
+        log.info("Loaded configuration: " + configuration.toString());
+
+        setTurbineServletConfig(config);
+        setTurbineServletContext(context);
+
+        getServiceManager().setApplicationRoot(applicationRoot);
+
+        // We want to set a few values in the configuration so
+        // that ${variable} interpolation will work for
+        //
+        // ${applicationRoot}
+        // ${webappRoot}
+        configuration.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, applicationRoot);
+        configuration.setProperty(TurbineConstants.WEBAPP_ROOT_KEY, webappRoot);
+
+        getServiceManager().setConfiguration(configuration);
+
+        // Initialize the service manager. Services
+        // that have its 'earlyInit' property set to
+        // a value of 'true' will be started when
+        // the service manager is initialized.
+        getServiceManager().init();
+
+        // Retrieve the pipeline class and then initialize it.  The pipeline
+        // handles the processing of a webrequest/response cycle.
+	    String descriptorPath =
+		  	configuration.getString(
+			  "pipeline.default.descriptor",
+					  TurbinePipeline.CLASSIC_PIPELINE);
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("Using descriptor path: " + descriptorPath);
+        }
+
+        // context resource path has to begin with slash, cft. context.getResource
+        if (!descriptorPath.startsWith( "/" ))
+        {
+        	descriptorPath  = "/" + descriptorPath;
+        }
+
+        try (InputStream reader = context.getResourceAsStream(descriptorPath))
+        {
+            JAXBContext jaxb = JAXBContext.newInstance(TurbinePipeline.class);
+            Unmarshaller unmarshaller = jaxb.createUnmarshaller();
+            pipeline = (Pipeline) unmarshaller.unmarshal(reader);
+        }
+
+	  	log.debug("Initializing pipeline");
+
+	  	pipeline.initialize();
+    }
+
+    private Path configureFromConfiguration( ServletConfig config, ServletContext context )
+        throws IOException, ConfigurationException
+    {
         ConfigurationStyle confStyle = ConfigurationStyle.UNSET;
         // first test
         String confFile= findInitParameter(context, config,
@@ -362,16 +438,16 @@ public class Turbine extends HttpServlet
         Path targetPathDirectory = targetPath.getParent();
         if ( targetPathDirectory != null )
         {
-            // set the configuration path
-            confPath = targetPathDirectory.normalize().toFile();
+        	// set the configuration path
+    		confPath = targetPathDirectory.normalize().toFile();
 
             Path targetFilePath = targetPath.getFileName();
             if ( targetFilePath != null )
             {
-                // set the configuration file name
-                confFile = targetFilePath.toString();
+            	// set the configuration file name
+            	confFile = targetFilePath.toString();
             }
-            
+    		
         }
 
         switch (confStyle)
@@ -402,63 +478,11 @@ public class Turbine extends HttpServlet
             default:
                 break;
         }
-        //
-        // Set up logging as soon as possible
-        //
-        configureLogging(targetPath);
-
-        // Now report our successful configuration to the world
-        log.info("Loaded configuration (" + confStyle + ") from " + confFile + " style: " + configuration.toString());
-
-        setTurbineServletConfig(config);
-        setTurbineServletContext(context);
-
-        getServiceManager().setApplicationRoot(applicationRoot);
-
-        // We want to set a few values in the configuration so
-        // that ${variable} interpolation will work for
-        //
-        // ${applicationRoot}
-        // ${webappRoot}
-        configuration.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, applicationRoot);
-        configuration.setProperty(TurbineConstants.WEBAPP_ROOT_KEY, webappRoot);
-
-        getServiceManager().setConfiguration(configuration);
-
-        // Initialize the service manager. Services
-        // that have its 'earlyInit' property set to
-        // a value of 'true' will be started when
-        // the service manager is initialized.
-        getServiceManager().init();
-
-        // Retrieve the pipeline class and then initialize it.  The pipeline
-        // handles the processing of a webrequest/response cycle.
-        String descriptorPath =
-            configuration.getString(
-              "pipeline.default.descriptor",
-                      TurbinePipeline.CLASSIC_PIPELINE);
-
-        if (log.isDebugEnabled())
-        {
-            log.debug("Using descriptor path: " + descriptorPath);
+        if (log4j2Logger != null) {
+            // Now report our successful configuration to the world
+            log4j2Logger.info("Loaded configuration (" + confStyle + ") from " + confFile + " style: " + configuration.toString());
         }
-
-        // context resource path has to begin with slash, cft. context.getResource
-        if (!descriptorPath.startsWith( "/" ))
-        {
-            descriptorPath  = "/" + descriptorPath;
-        }
-
-        try (InputStream reader = context.getResourceAsStream(descriptorPath))
-        {
-            JAXBContext jaxb = JAXBContext.newInstance(TurbinePipeline.class);
-            Unmarshaller unmarshaller = jaxb.createUnmarshaller();
-            pipeline = (Pipeline) unmarshaller.unmarshal(reader);
-        }
-
-        log.debug("Initializing pipeline");
-
-        pipeline.initialize();
+        return targetPath;
     }
 
     /**
@@ -469,9 +493,26 @@ public class Turbine extends HttpServlet
      */
     protected void configureLogging(Path targetPath) throws IOException
     {
-        String log4jFile = configuration.getString(TurbineConstants.LOG4J_CONFIG_FILE,
-                TurbineConstants.LOG4J_CONFIG_FILE_DEFAULT);
 
+        Boolean useLog4j2 = configuration.getBoolean( "use.log4j2", false);
+        
+        if (useLog4j2) {
+            // Log4j" has a default configuration, as a result log4j2Logger will always be set
+            log4j2Logger.info("Configured log4j2");
+        } else {
+            configureLog4j1x( targetPath );
+        } 
+    }
+
+    private void configureLog4j1x( Path targetPath )
+        throws IOException
+    {
+        boolean success = false;
+        
+        
+        String log4jFile = configuration.getString(TurbineConstants.LOG4J_CONFIG_FILE,
+                                                   TurbineConstants.LOG4J_CONFIG_FILE_DEFAULT);
+                        
         if (log4jFile.startsWith( "/" ))
         {
             log4jFile = log4jFile.substring( 1 );
@@ -481,10 +522,10 @@ public class Turbine extends HttpServlet
         Path logConfPath = targetPath.getParent();
         if ( logConfPath != null )
         {
-            Path logFilePath = logConfPath.resolve( log4jFile );
-            if ( logFilePath != null )
-            {
-                log4jTarget = logFilePath.normalize();
+        	Path logFilePath = logConfPath.resolve( log4jFile );
+        	if ( logFilePath != null )
+        	{
+        		log4jTarget = logFilePath.normalize();
             }
         }
 
@@ -492,9 +533,14 @@ public class Turbine extends HttpServlet
                 !log4jFile.equalsIgnoreCase("none") && log4jTarget != null && log4jTarget.toFile().exists() )
         {
             log4jFile = log4jTarget.toFile().getAbsolutePath();
-
-            boolean success = false;
-
+            Configurator.initialize("log4j1x_config", null, log4jTarget.toFile().toURI());
+            
+            LoggerContext context = (LoggerContext) LogManager.getContext(false);
+            org.apache.logging.log4j.core.config.Configuration log4jconf = context.getConfiguration();
+            String appRoot = log4jconf.getStrSubstitutor().getVariableResolver().lookup("applicationRoot");
+            log4jconf.getStrSubstitutor().replace( appRoot );
+            
+            
             if (log4jFile.endsWith(".xml"))
             {
                 // load XML type configuration
@@ -503,7 +549,6 @@ public class Turbine extends HttpServlet
                 {
                     // NOTE: expand application root explicitely
                     Map<String,String> valMap = new HashMap<>();
-                    // just always use slashes, TODO make it configurable? 
                     valMap.put(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot().replace( '\\', '/' ));
                     StringSubstitutor sub = new StringSubstitutor(valMap);
                     String log4jTemplate = new String(Files.readAllBytes(Paths.get(log4jFile)));
@@ -513,12 +558,12 @@ public class Turbine extends HttpServlet
                     String winFS = "\\";
                     if (FileSystems.getDefault().getSeparator().equals( winFS )
                                     && resolvedString.contains( winFS )) {
-                        System.out.println( FileSystems.getDefault().getClass().getName() + " with fsep ('"+ FileSystems.getDefault().getSeparator() + "') in "  + log4jFile + ", changing to forward slash ('/')." );
+                        System.out.println( FileSystems.getDefault().getClass().getName() + " with fsep ('"+ FileSystems.getDefault().getSeparator() + "') found in "  + log4jFile + ", changing to forward slash ('/')." );
                         resolvedString = resolvedString.replace( '\\', '/' ); 
                     }
                     Reader memoryConfiguration = new StringReader(resolvedString);
                     DOMConfigurator log4jDOMConf = new DOMConfigurator();
-                    log4jDOMConf.doConfigure(memoryConfiguration, LogManager.getLoggerRepository());
+                    log4jDOMConf.doConfigure(memoryConfiguration, org.apache.log4j.LogManager.getLoggerRepository());
 
                     success = true;
                 }
@@ -551,13 +596,12 @@ public class Turbine extends HttpServlet
                     fnf.printStackTrace();
                 }
             }
-
-            if (success)
-            {
-                // Rebuild our log object with a configured commons-logging
-                log = LogFactory.getLog(this.getClass());
-                log.info("Configured log4j from " + log4jFile);
-            }
+        }
+        if (success)
+        {
+            // Rebuild our log object with a configured commons-logging
+            log = LogFactory.getLog(this.getClass());
+            log.info("Configured log4j from " + log4jFile);
         }
     }
 
@@ -610,7 +654,7 @@ public class Turbine extends HttpServlet
      */
     public void init(PipelineData data)
     {
-        synchronized (Turbine.class)
+        synchronized (TurbineLog4J2.class)
         {
             if (firstDoGet)
             {
@@ -626,20 +670,20 @@ public class Turbine extends HttpServlet
 
                 for (Iterator<String> i = services.getServiceNames(); i.hasNext();)
                 {
-                    String serviceName = i.next();
-                    Object service = services.getService(serviceName);
+                	String serviceName = i.next();
+                	Object service = services.getService(serviceName);
 
-                    if (service instanceof Initable)
-                    {
-                        try
-                        {
-                            ((Initable)service).init(data);
-                        }
-                        catch (InitializationException e)
-                        {
-                            log.warn("Could not initialize Initable " + serviceName + " with PipelineData", e);
-                        }
-                    }
+                	if (service instanceof Initable)
+                	{
+                		try
+                		{
+							((Initable)service).init(data);
+						}
+                		catch (InitializationException e)
+                		{
+                			log.warn("Could not initialize Initable " + serviceName + " with PipelineData", e);
+						}
+                	}
                 }
 
                 // Mark that we're done.
@@ -980,7 +1024,7 @@ public class Turbine extends HttpServlet
         //
         // Bundle all the information above up into a convenient structure
         //
-        ServerData requestServerData = data.get(Turbine.class, ServerData.class);
+        ServerData requestServerData = data.get(TurbineLog4J2.class, ServerData.class);
         serverData = (ServerData) requestServerData.clone();
     }
 
