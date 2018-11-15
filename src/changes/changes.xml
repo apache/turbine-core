@@ -29,7 +29,7 @@
         Update from log4j to log4j2, redirect JCL to slf4j
       </action>
       <action type="update" dev="jp">
-        Update from lang to commons-configuration2 to 2.4
+        Update commons-configuration2 to 2.4
       </action>
       <action type="update" dev="jp">
         Update from lang to commons lang3
