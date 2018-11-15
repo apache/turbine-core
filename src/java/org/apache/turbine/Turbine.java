@@ -20,21 +20,14 @@ package org.apache.turbine;
  */
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.StringReader;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -47,7 +40,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.parsers.FactoryConfigurationError;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
@@ -55,16 +47,14 @@ import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.combined.CombinedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.configuration2.io.HomeDirectoryLocationStrategy;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.text.StringSubstitutor;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.turbine.modules.PageLoader;
 import org.apache.turbine.pipeline.Pipeline;
 import org.apache.turbine.pipeline.PipelineData;
@@ -197,8 +187,9 @@ public class Turbine extends HttpServlet
         UNSET
     }
 
-    /** Logging class from commons.logging */
-    private static Log log = LogFactory.getLog(Turbine.class);
+    /** Logging class from commons.logging - this may still work, due to jcl-over-slf4j */
+    //private static Log log = LogFactory.getLog(Turbine.class);
+    public static Logger log = LogManager.getLogger();
 
     /**
      * This init method will load the default resources from a
@@ -274,7 +265,7 @@ public class Turbine extends HttpServlet
         applicationRoot = findInitParameter(context, config,
                 TurbineConstants.APPLICATION_ROOT_KEY,
                 TurbineConstants.APPLICATION_ROOT_DEFAULT);
-
+        
         webappRoot = context.getRealPath("/");
         // log.info("Web Application root is " + webappRoot);
         // log.info("Application root is "     + applicationRoot);
@@ -315,7 +306,79 @@ public class Turbine extends HttpServlet
         // known behaviour of loading a properties file called
         // /WEB-INF/conf/TurbineResources.properties relative to the
         // web application root.
+        
 
+        Path confPath =  configureApplication( config, context );
+
+        configureLogging(confPath);
+        
+        //
+        // Logging with log4j 2 is done via convention, finding in path
+   
+        setTurbineServletConfig(config);
+        setTurbineServletContext(context);
+
+        getServiceManager().setApplicationRoot(applicationRoot);
+
+        // We want to set a few values in the configuration so
+        // that ${variable} interpolation will work for
+        //
+        // ${applicationRoot}
+        // ${webappRoot}
+        configuration.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, applicationRoot);
+        configuration.setProperty(TurbineConstants.WEBAPP_ROOT_KEY, webappRoot);
+
+        getServiceManager().setConfiguration(configuration);
+
+        // Initialize the service manager. Services
+        // that have its 'earlyInit' property set to
+        // a value of 'true' will be started when
+        // the service manager is initialized.
+        getServiceManager().init();
+
+        // Retrieve the pipeline class and then initialize it.  The pipeline
+        // handles the processing of a webrequest/response cycle.
+        String descriptorPath =
+            configuration.getString(
+              "pipeline.default.descriptor",
+                      TurbinePipeline.CLASSIC_PIPELINE);
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("Using descriptor path: " + descriptorPath);
+        }
+
+        // context resource path has to begin with slash, cft. context.getResource
+        if (!descriptorPath.startsWith( "/" ))
+        {
+            descriptorPath  = "/" + descriptorPath;
+        }
+
+        try (InputStream reader = context.getResourceAsStream(descriptorPath))
+        {
+            JAXBContext jaxb = JAXBContext.newInstance(TurbinePipeline.class);
+            Unmarshaller unmarshaller = jaxb.createUnmarshaller();
+            pipeline = (Pipeline) unmarshaller.unmarshal(reader);
+        }
+
+        log.debug("Initializing pipeline");
+
+        pipeline.initialize();
+    }
+
+    /**
+     * Checks configuraton style, resolves the location of the configuration and loads it to 
+     * internal {@link Configuration} object ({@link #configuration}).
+     *  
+     * @param config the Servlet Configuration
+     * @param context Servlet Context
+     * @return The resolved Configuration Path 
+     * @throws IOException
+     * @throws ConfigurationException
+     */
+    protected Path configureApplication( ServletConfig config, ServletContext context )
+        throws IOException, ConfigurationException
+    {
         ConfigurationStyle confStyle = ConfigurationStyle.UNSET;
         // first test
         String confFile= findInitParameter(context, config,
@@ -344,10 +407,13 @@ public class Turbine extends HttpServlet
                     TurbineConfig.PROPERTIES_PATH_DEFAULT);
              confStyle = ConfigurationStyle.PROPERTIES;
         }
+        
+        // First report
+        log.debug("Loading configuration (" + confStyle + ") from " + confFile);
 
         // now begin loading
         Parameters params = new Parameters();
-        File confPath = getApplicationRootAsFile(); //.getCanonicalPath();
+        File confPath = getApplicationRootAsFile(); 
 
         if (confFile.startsWith( "/" ))
         {
@@ -402,163 +468,10 @@ public class Turbine extends HttpServlet
             default:
                 break;
         }
-        //
-        // Set up logging as soon as possible
-        //
-        configureLogging(targetPath);
-
         // Now report our successful configuration to the world
         log.info("Loaded configuration (" + confStyle + ") from " + confFile + " style: " + configuration.toString());
 
-        setTurbineServletConfig(config);
-        setTurbineServletContext(context);
-
-        getServiceManager().setApplicationRoot(applicationRoot);
-
-        // We want to set a few values in the configuration so
-        // that ${variable} interpolation will work for
-        //
-        // ${applicationRoot}
-        // ${webappRoot}
-        configuration.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, applicationRoot);
-        configuration.setProperty(TurbineConstants.WEBAPP_ROOT_KEY, webappRoot);
-
-        getServiceManager().setConfiguration(configuration);
-
-        // Initialize the service manager. Services
-        // that have its 'earlyInit' property set to
-        // a value of 'true' will be started when
-        // the service manager is initialized.
-        getServiceManager().init();
-
-        // Retrieve the pipeline class and then initialize it.  The pipeline
-        // handles the processing of a webrequest/response cycle.
-        String descriptorPath =
-            configuration.getString(
-              "pipeline.default.descriptor",
-                      TurbinePipeline.CLASSIC_PIPELINE);
-
-        if (log.isDebugEnabled())
-        {
-            log.debug("Using descriptor path: " + descriptorPath);
-        }
-
-        // context resource path has to begin with slash, cft. context.getResource
-        if (!descriptorPath.startsWith( "/" ))
-        {
-            descriptorPath  = "/" + descriptorPath;
-        }
-
-        try (InputStream reader = context.getResourceAsStream(descriptorPath))
-        {
-            JAXBContext jaxb = JAXBContext.newInstance(TurbinePipeline.class);
-            Unmarshaller unmarshaller = jaxb.createUnmarshaller();
-            pipeline = (Pipeline) unmarshaller.unmarshal(reader);
-        }
-
-        log.debug("Initializing pipeline");
-
-        pipeline.initialize();
-    }
-
-    /**
-     * Configure the logging facilities of Turbine
-     * @param targetPath
-     *
-     * @throws IOException if the configuration file handling fails.
-     */
-    protected void configureLogging(Path targetPath) throws IOException
-    {
-        String log4jFile = configuration.getString(TurbineConstants.LOG4J_CONFIG_FILE,
-                TurbineConstants.LOG4J_CONFIG_FILE_DEFAULT);
-
-        if (log4jFile.startsWith( "/" ))
-        {
-            log4jFile = log4jFile.substring( 1 );
-        }
-        // log4j must either share path with configuration path or resolved relatively
-        Path log4jTarget = null;
-        Path logConfPath = targetPath.getParent();
-        if ( logConfPath != null )
-        {
-            Path logFilePath = logConfPath.resolve( log4jFile );
-            if ( logFilePath != null )
-            {
-                log4jTarget = logFilePath.normalize();
-            }
-        }
-
-        if (StringUtils.isNotEmpty(log4jFile) &&
-                !log4jFile.equalsIgnoreCase("none") && log4jTarget != null && log4jTarget.toFile().exists() )
-        {
-            log4jFile = log4jTarget.toFile().getAbsolutePath();
-
-            boolean success = false;
-
-            if (log4jFile.endsWith(".xml"))
-            {
-                // load XML type configuration
-                // NOTE: Only system property expansion available
-                try
-                {
-                    // NOTE: expand application root explicitely
-                    Map<String,String> valMap = new HashMap<>();
-                    // just always use slashes, TODO make it configurable? 
-                    valMap.put(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot().replace( '\\', '/' ));
-                    StringSubstitutor sub = new StringSubstitutor(valMap);
-                    String log4jTemplate = new String(Files.readAllBytes(Paths.get(log4jFile)));
-                    String resolvedString = sub.replace(log4jTemplate);
-                    
-                    // just always use slashes
-                    String winFS = "\\";
-                    if (FileSystems.getDefault().getSeparator().equals( winFS )
-                                    && resolvedString.contains( winFS )) {
-                        System.out.println( FileSystems.getDefault().getClass().getName() + " with fsep ('"+ FileSystems.getDefault().getSeparator() + "') in "  + log4jFile + ", changing to forward slash ('/')." );
-                        resolvedString = resolvedString.replace( '\\', '/' ); 
-                    }
-                    Reader memoryConfiguration = new StringReader(resolvedString);
-                    DOMConfigurator log4jDOMConf = new DOMConfigurator();
-                    log4jDOMConf.doConfigure(memoryConfiguration, LogManager.getLoggerRepository());
-
-                    success = true;
-                }
-                catch (FactoryConfigurationError e)
-                {
-                    System.err.println("Could not configure Log4J from configuration file "
-                            + log4jFile + ": ");
-                    e.printStackTrace();
-                }
-            }
-            else
-            {
-                //
-                // Load the config file above into a Properties object and
-                // fix up the Application root
-                //
-                Properties p = new Properties();
-
-                try (FileInputStream fis = new FileInputStream(log4jFile))
-                {
-                    p.load(fis);
-                    p.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot());
-                    PropertyConfigurator.configure(p);
-                    success = true;
-                }
-                catch (FileNotFoundException fnf)
-                {
-                    System.err.println("Could not open Log4J configuration file "
-                            + log4jFile + ": ");
-                    fnf.printStackTrace();
-                }
-            }
-
-            if (success)
-            {
-                // Rebuild our log object with a configured commons-logging
-                log = LogFactory.getLog(this.getClass());
-                log.info("Configured log4j from " + log4jFile);
-            }
-        }
+        return targetPath;
     }
 
     /**
@@ -984,6 +897,55 @@ public class Turbine extends HttpServlet
         serverData = (ServerData) requestServerData.clone();
     }
 
+    /**
+     * Checks Log4j 2 Context, loads log4File, if configured and configuration is not already located.
+     * @param logConf Configuration file path
+     * @throws IOException
+     */
+    protected void configureLogging(Path logConf) throws IOException
+    {   
+        LoggerContext context = (LoggerContext) LogManager.getContext(false);
+        
+        if (context.getConfiguration().getConfigurationSource().getLocation() == null) {
+            Path log4jFile = resolveLog4j2( logConf.getParent() );
+            // configured + no other log4j configuration already found
+            if (log4jFile != null) {
+                LogManager.getContext(null, false, log4jFile.toUri());
+            }
+        }
+        log.debug( "resolved log4j2 location: {}", context.getConfiguration().getConfigurationSource().getLocation() );
+    }
+    
+    /**
+     * Check {@value TurbineConstants#LOG4J2_CONFIG_FILE} in Turbine configuration.
+     * 
+     * @param logConfPath configuration directory
+     * @return Resolved log4j2 {@link Path} or null, if not found or configured "none".
+     */
+    protected Path resolveLog4j2( Path logConfPath )
+    {
+        String log4jFile = configuration.getString(TurbineConstants.LOG4J2_CONFIG_FILE,
+                                                   TurbineConstants.LOG4J2_CONFIG_FILE_DEFAULT);
+                        
+        if (log4jFile.startsWith( "/" ))
+        {
+            log4jFile = log4jFile.substring( 1 );
+        }
+        Path log4jTarget = null;
+        if (StringUtils.isNotEmpty(log4jFile) && !log4jFile.equalsIgnoreCase("none")) {
+            // log4j must either share path with configuration path or resolved relatively
+            
+            if ( logConfPath != null )
+            {
+                Path logFilePath = logConfPath.resolve( log4jFile );
+                if ( logFilePath != null && logFilePath.toFile().exists() )
+                {
+                    log4jTarget = logFilePath.normalize();
+                }
+            }
+        }
+        return log4jTarget;
+    }
     /**
      * Set the application root for the webapp.
      *

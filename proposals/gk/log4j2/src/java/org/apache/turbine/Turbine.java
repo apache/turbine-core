@@ -20,21 +20,18 @@ package org.apache.turbine;
  */
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.io.Reader;
-import java.io.StringReader;
-import java.nio.file.FileSystems;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.Properties;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -47,7 +44,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.parsers.FactoryConfigurationError;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
@@ -60,15 +56,14 @@ import org.apache.commons.configuration2.io.HomeDirectoryLocationStrategy;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.text.StringSubstitutor;
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.appender.FileAppender;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.turbine.modules.PageLoader;
 import org.apache.turbine.pipeline.Pipeline;
 import org.apache.turbine.pipeline.PipelineData;
@@ -85,9 +80,6 @@ import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.uri.URIConstants;
-//import org.apache.log4j.LogManager;
-//import org.apache.log4j.PropertyConfigurator;
-//import org.apache.log4j.xml.DOMConfigurator;
 
 /**
  * Turbine is the main servlet for the entire system. If you
@@ -120,7 +112,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
- * @version $Id: Turbine.java 1845484 2018-11-01 15:15:03Z gk $
+ * @version $Id: Turbine.java 1845811 2018-11-05 15:18:22Z gk $
  */
 @WebServlet(
     name = "Turbine",
@@ -131,7 +123,7 @@ import org.apache.turbine.util.uri.URIConstants;
                  @WebInitParam(name = TurbineConfig.PROPERTIES_PATH_KEY,
                     value = TurbineConfig.PROPERTIES_PATH_DEFAULT) } )
 @MultipartConfig
-public class TurbineLog4J2 extends HttpServlet
+public class Turbine extends HttpServlet
 {
     /** Serial version */
     private static final long serialVersionUID = -6317118078613623990L;
@@ -204,13 +196,9 @@ public class TurbineLog4J2 extends HttpServlet
         UNSET
     }
 
-    /** Logging class from commons.logging */
-    private static Log log = LogFactory.getLog(TurbineLog4J2.class);
-    
-    /**
-     * 
-     */
-    public static Logger log4j2Logger = LogManager.getLogger();
+    /** Logging class from commons.logging - this may still work, due to jcl-over-slf4j */
+    //private static Log log = LogFactory.getLog(Turbine.class);
+    public static Logger log = LogManager.getLogger();
 
     /**
      * This init method will load the default resources from a
@@ -223,7 +211,7 @@ public class TurbineLog4J2 extends HttpServlet
     @Override
     public void init() throws ServletException
     {
-        synchronized (TurbineLog4J2.class)
+        synchronized (Turbine.class)
         {
             super.init();
 
@@ -286,7 +274,7 @@ public class TurbineLog4J2 extends HttpServlet
         applicationRoot = findInitParameter(context, config,
                 TurbineConstants.APPLICATION_ROOT_KEY,
                 TurbineConstants.APPLICATION_ROOT_DEFAULT);
-
+        
         webappRoot = context.getRealPath("/");
         // log.info("Web Application root is " + webappRoot);
         // log.info("Application root is "     + applicationRoot);
@@ -327,17 +315,15 @@ public class TurbineLog4J2 extends HttpServlet
         // known behaviour of loading a properties file called
         // /WEB-INF/conf/TurbineResources.properties relative to the
         // web application root.
+        
 
-        Path targetPath = configureFromConfiguration( config, context );
+        Path confPath =  configureApplication( config, context );
+
+        configureLogging(confPath);
         
         //
-        // Set up logging as soon as possible
-        //
-        configureLogging(targetPath);
-
-        // Now report our successful configuration to the world
-        log.info("Loaded configuration: " + configuration.toString());
-
+        // Logging with log4j2 is done via convention, finding in path
+   
         setTurbineServletConfig(config);
         setTurbineServletContext(context);
 
@@ -361,10 +347,10 @@ public class TurbineLog4J2 extends HttpServlet
 
         // Retrieve the pipeline class and then initialize it.  The pipeline
         // handles the processing of a webrequest/response cycle.
-	    String descriptorPath =
-		  	configuration.getString(
-			  "pipeline.default.descriptor",
-					  TurbinePipeline.CLASSIC_PIPELINE);
+        String descriptorPath =
+            configuration.getString(
+              "pipeline.default.descriptor",
+                      TurbinePipeline.CLASSIC_PIPELINE);
 
         if (log.isDebugEnabled())
         {
@@ -374,7 +360,7 @@ public class TurbineLog4J2 extends HttpServlet
         // context resource path has to begin with slash, cft. context.getResource
         if (!descriptorPath.startsWith( "/" ))
         {
-        	descriptorPath  = "/" + descriptorPath;
+            descriptorPath  = "/" + descriptorPath;
         }
 
         try (InputStream reader = context.getResourceAsStream(descriptorPath))
@@ -384,12 +370,22 @@ public class TurbineLog4J2 extends HttpServlet
             pipeline = (Pipeline) unmarshaller.unmarshal(reader);
         }
 
-	  	log.debug("Initializing pipeline");
+        log.debug("Initializing pipeline");
 
-	  	pipeline.initialize();
+        pipeline.initialize();
     }
 
-    private Path configureFromConfiguration( ServletConfig config, ServletContext context )
+    /**
+     * Checks configuraton style, resolves the location of the configuration and loads it to 
+     * internal {@link Configuration} object ({@link #configuration}).
+     *  
+     * @param config the Servlet Configuration
+     * @param context Servlet Context
+     * @return The resolved Configuration Path 
+     * @throws IOException
+     * @throws ConfigurationException
+     */
+    protected Path configureApplication( ServletConfig config, ServletContext context )
         throws IOException, ConfigurationException
     {
         ConfigurationStyle confStyle = ConfigurationStyle.UNSET;
@@ -420,10 +416,13 @@ public class TurbineLog4J2 extends HttpServlet
                     TurbineConfig.PROPERTIES_PATH_DEFAULT);
              confStyle = ConfigurationStyle.PROPERTIES;
         }
+        
+        // First report
+        log.debug("Loading configuration (" + confStyle + ") from " + confFile);
 
         // now begin loading
         Parameters params = new Parameters();
-        File confPath = getApplicationRootAsFile(); //.getCanonicalPath();
+        File confPath = getApplicationRootAsFile(); 
 
         if (confFile.startsWith( "/" ))
         {
@@ -438,16 +437,16 @@ public class TurbineLog4J2 extends HttpServlet
         Path targetPathDirectory = targetPath.getParent();
         if ( targetPathDirectory != null )
         {
-        	// set the configuration path
-    		confPath = targetPathDirectory.normalize().toFile();
+            // set the configuration path
+            confPath = targetPathDirectory.normalize().toFile();
 
             Path targetFilePath = targetPath.getFileName();
             if ( targetFilePath != null )
             {
-            	// set the configuration file name
-            	confFile = targetFilePath.toString();
+                // set the configuration file name
+                confFile = targetFilePath.toString();
             }
-    		
+            
         }
 
         switch (confStyle)
@@ -478,131 +477,10 @@ public class TurbineLog4J2 extends HttpServlet
             default:
                 break;
         }
-        if (log4j2Logger != null) {
-            // Now report our successful configuration to the world
-            log4j2Logger.info("Loaded configuration (" + confStyle + ") from " + confFile + " style: " + configuration.toString());
-        }
+        // Now report our successful configuration to the world
+        log.info("Loaded configuration (" + confStyle + ") from " + confFile + " style: " + configuration.toString());
+
         return targetPath;
-    }
-
-    /**
-     * Configure the logging facilities of Turbine
-     * @param targetPath
-     *
-     * @throws IOException if the configuration file handling fails.
-     */
-    protected void configureLogging(Path targetPath) throws IOException
-    {
-
-        Boolean useLog4j2 = configuration.getBoolean( "use.log4j2", false);
-        
-        if (useLog4j2) {
-            // Log4j" has a default configuration, as a result log4j2Logger will always be set
-            log4j2Logger.info("Configured log4j2");
-        } else {
-            configureLog4j1x( targetPath );
-        } 
-    }
-
-    private void configureLog4j1x( Path targetPath )
-        throws IOException
-    {
-        boolean success = false;
-        
-        
-        String log4jFile = configuration.getString(TurbineConstants.LOG4J_CONFIG_FILE,
-                                                   TurbineConstants.LOG4J_CONFIG_FILE_DEFAULT);
-                        
-        if (log4jFile.startsWith( "/" ))
-        {
-            log4jFile = log4jFile.substring( 1 );
-        }
-        // log4j must either share path with configuration path or resolved relatively
-        Path log4jTarget = null;
-        Path logConfPath = targetPath.getParent();
-        if ( logConfPath != null )
-        {
-        	Path logFilePath = logConfPath.resolve( log4jFile );
-        	if ( logFilePath != null )
-        	{
-        		log4jTarget = logFilePath.normalize();
-            }
-        }
-
-        if (StringUtils.isNotEmpty(log4jFile) &&
-                !log4jFile.equalsIgnoreCase("none") && log4jTarget != null && log4jTarget.toFile().exists() )
-        {
-            log4jFile = log4jTarget.toFile().getAbsolutePath();
-            Configurator.initialize("log4j1x_config", null, log4jTarget.toFile().toURI());
-            
-            LoggerContext context = (LoggerContext) LogManager.getContext(false);
-            org.apache.logging.log4j.core.config.Configuration log4jconf = context.getConfiguration();
-            String appRoot = log4jconf.getStrSubstitutor().getVariableResolver().lookup("applicationRoot");
-            log4jconf.getStrSubstitutor().replace( appRoot );
-            
-            
-            if (log4jFile.endsWith(".xml"))
-            {
-                // load XML type configuration
-                // NOTE: Only system property expansion available
-                try
-                {
-                    // NOTE: expand application root explicitely
-                    Map<String,String> valMap = new HashMap<>();
-                    valMap.put(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot().replace( '\\', '/' ));
-                    StringSubstitutor sub = new StringSubstitutor(valMap);
-                    String log4jTemplate = new String(Files.readAllBytes(Paths.get(log4jFile)));
-                    String resolvedString = sub.replace(log4jTemplate);
-                    
-                    // just always use slashes
-                    String winFS = "\\";
-                    if (FileSystems.getDefault().getSeparator().equals( winFS )
-                                    && resolvedString.contains( winFS )) {
-                        System.out.println( FileSystems.getDefault().getClass().getName() + " with fsep ('"+ FileSystems.getDefault().getSeparator() + "') found in "  + log4jFile + ", changing to forward slash ('/')." );
-                        resolvedString = resolvedString.replace( '\\', '/' ); 
-                    }
-                    Reader memoryConfiguration = new StringReader(resolvedString);
-                    DOMConfigurator log4jDOMConf = new DOMConfigurator();
-                    log4jDOMConf.doConfigure(memoryConfiguration, org.apache.log4j.LogManager.getLoggerRepository());
-
-                    success = true;
-                }
-                catch (FactoryConfigurationError e)
-                {
-                    System.err.println("Could not configure Log4J from configuration file "
-                            + log4jFile + ": ");
-                    e.printStackTrace();
-                }
-            }
-            else
-            {
-                //
-                // Load the config file above into a Properties object and
-                // fix up the Application root
-                //
-                Properties p = new Properties();
-
-                try (FileInputStream fis = new FileInputStream(log4jFile))
-                {
-                    p.load(fis);
-                    p.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot());
-                    PropertyConfigurator.configure(p);
-                    success = true;
-                }
-                catch (FileNotFoundException fnf)
-                {
-                    System.err.println("Could not open Log4J configuration file "
-                            + log4jFile + ": ");
-                    fnf.printStackTrace();
-                }
-            }
-        }
-        if (success)
-        {
-            // Rebuild our log object with a configured commons-logging
-            log = LogFactory.getLog(this.getClass());
-            log.info("Configured log4j from " + log4jFile);
-        }
     }
 
     /**
@@ -654,7 +532,7 @@ public class TurbineLog4J2 extends HttpServlet
      */
     public void init(PipelineData data)
     {
-        synchronized (TurbineLog4J2.class)
+        synchronized (Turbine.class)
         {
             if (firstDoGet)
             {
@@ -670,20 +548,20 @@ public class TurbineLog4J2 extends HttpServlet
 
                 for (Iterator<String> i = services.getServiceNames(); i.hasNext();)
                 {
-                	String serviceName = i.next();
-                	Object service = services.getService(serviceName);
+                    String serviceName = i.next();
+                    Object service = services.getService(serviceName);
 
-                	if (service instanceof Initable)
-                	{
-                		try
-                		{
-							((Initable)service).init(data);
-						}
-                		catch (InitializationException e)
-                		{
-                			log.warn("Could not initialize Initable " + serviceName + " with PipelineData", e);
-						}
-                	}
+                    if (service instanceof Initable)
+                    {
+                        try
+                        {
+                            ((Initable)service).init(data);
+                        }
+                        catch (InitializationException e)
+                        {
+                            log.warn("Could not initialize Initable " + serviceName + " with PipelineData", e);
+                        }
+                    }
                 }
 
                 // Mark that we're done.
@@ -1024,8 +902,144 @@ public class TurbineLog4J2 extends HttpServlet
         //
         // Bundle all the information above up into a convenient structure
         //
-        ServerData requestServerData = data.get(TurbineLog4J2.class, ServerData.class);
+        ServerData requestServerData = data.get(Turbine.class, ServerData.class);
         serverData = (ServerData) requestServerData.clone();
+    }
+
+    protected void configureLogging(Path logConf) throws IOException
+    {
+        
+        LoggerContext context = (LoggerContext) LogManager.getContext(false);
+        
+        if (context.getConfiguration().getConfigurationSource().getLocation() == null) {
+            Path log4jFile = resolveLog4j2( logConf.getParent() );
+            // configured + no other log4j configuration already found
+            if (log4jFile != null) {
+                String log4jTemplate = new String(Files.readAllBytes(log4jFile));
+                // check old style applicationRoot, remove it 
+                if (log4jTemplate.contains( TurbineConstants.APPLICATION_ROOT_KEY )) {
+                    // NOTE: expand application root explicitely
+                    StringSubstitutor sub = getApplicationRootSubstitutor();
+                    String appRootResolvedLog4J2File = sub.replace(log4jTemplate);
+                    String[] fnParts = log4jFile.getFileName().toString().split( "\\." );
+                    String extension = (fnParts.length > 1)? fnParts[1]:"";
+                    Path targetLog4jFile = log4jFile.resolveSibling( log4jFile.getFileName().toString().replaceAll( "\\."+extension, "-gen."+extension ) );
+                    Files.write( targetLog4jFile, appRootResolvedLog4J2File.getBytes() );
+                    LogManager.getContext(null, false, targetLog4jFile.toUri());
+                } else {
+                    LogManager.getContext(null, false, log4jFile.toUri());
+                }
+            }
+        } else {
+            // default find it in classpath
+            log4j2ResolveApplicationRoot( context );
+        }
+        log.debug( "resolved log4j2 location: {}", context.getConfiguration().getConfigurationSource().getLocation() );
+    }
+    
+    // old style configured log4j 
+    protected Path resolveLog4j2( Path logConfPath )
+    {
+        String log4jFile = configuration.getString(TurbineConstants.LOG4J2_CONFIG_FILE,
+                                                   TurbineConstants.LOG4J2_CONFIG_FILE_DEFAULT);
+                        
+        if (log4jFile.startsWith( "/" ))
+        {
+            log4jFile = log4jFile.substring( 1 );
+        }
+        Path log4jTarget = null;
+        if (StringUtils.isNotEmpty(log4jFile) && !log4jFile.equalsIgnoreCase("none")) {
+            // log4j must either share path with configuration path or resolved relatively
+            
+            if ( logConfPath != null )
+            {
+                Path logFilePath = logConfPath.resolve( log4jFile );
+                if ( logFilePath != null && Files.exists( logFilePath ))
+                {
+                    log4jTarget = logFilePath.normalize();
+                }
+            }
+        }
+        return log4jTarget;
+    }
+
+    protected StringSubstitutor getApplicationRootSubstitutor()
+    {
+        Map<String,String> valMap = new HashMap<>();
+        // always use slashes, make it configurable? 
+        valMap.put(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot().replace( '\\', '/' ));
+        StringSubstitutor sub = new StringSubstitutor(valMap);
+        return sub;
+    }
+
+    /**
+     * Checks if old style {@link TurbineConstants#APPLICATION_ROOT_KEY} exists in configuration file again, otherwise returns.
+     * 
+     * Log4j2 auto configures itself, this is only to handle/backport applicationRoot.
+     * Log4j2 has a default configuration, as a result log4j2Logger will always be set.
+     * Caveat: Log4j2 is already initialized already - this is too late to catch any logs before this.
+     * @see <a href="https://logging.apache.org/log4j/2.x/manual/webapp.html">Log4j2 Manual Webapp</a>
+     * 
+     * @param context the log4j2 context
+     */
+    protected void log4j2ResolveApplicationRoot( LoggerContext context )
+    {
+        org.apache.logging.log4j.core.config.Configuration log4jconfig = context.getConfiguration();
+        Map<String, Appender> appenders =  log4jconfig.getAppenders();
+        
+        List<String> resolvedAppenderNames = appenders.values().stream().
+            filter( a ->  a instanceof FileAppender).
+            filter( a -> ( (FileAppender) a ).getFileName().contains( TurbineConstants.APPLICATION_ROOT_KEY ) ).
+            map(    a ->   ((FileAppender) a ).getName() ).collect( Collectors.toList() );
+        
+        if (resolvedAppenderNames.isEmpty()) {
+            return;
+        }
+        resolvedAppenderNames.stream().forEach( resolvableAppender -> {
+            //delete old appender/logger
+            FileAppender logFile = (FileAppender) log4jconfig.getAppender(resolvableAppender);
+            Layout<? extends Serializable> old_layout = logFile.getLayout();
+            String fileNameTemplate = logFile.getFileName();
+            String resolvedFileName = getApplicationRootSubstitutor().replace(fileNameTemplate);
+            logFile.stop(); // now no logging until restart!
+            //create new appender/logger
+            FileAppender newAppender = FileAppender.newBuilder()
+                            .withAdvertise(false)
+                            .withAdvertiseUri("")
+                            .withAppend(false)
+                            .withBufferedIo(true)
+                            .withBufferSize(8192)
+                            .setConfiguration(log4jconfig)
+                            .withFileName(resolvedFileName)
+                            .withFilter(null)
+                            .withIgnoreExceptions(true)
+                            .withImmediateFlush(true)
+                            .withLayout(old_layout)
+                            .withLocking(false)
+                            .withName(resolvableAppender)
+                            .build();
+            Map<String,LoggerConfig> loggers =log4jconfig.getLoggers();
+            // remove old/add new appender
+            loggers.values().stream().forEach( lc ->
+                { 
+                    lc.getAppenderRefs().forEach( ar -> { 
+                       if (ar.getRef().equals( resolvableAppender )) {
+                           lc.removeAppender( resolvableAppender );
+                           lc.addAppender( newAppender,lc.getLevel(), logFile.getFilter() );
+                       }
+                  });
+                    lc.getAppenders().keySet().stream().forEach( appName -> {
+                        if (appName.equals( resolvableAppender )) {
+                            lc.removeAppender( resolvableAppender );
+                            lc.addAppender( newAppender,lc.getLevel(), logFile.getFilter() );
+                        }
+                  });
+               }
+            );
+            newAppender.start();  
+        });
+        context.updateLoggers();
+        log.debug( "loggers restarted with applicationRoot is resolved" );
     }
 
     /**

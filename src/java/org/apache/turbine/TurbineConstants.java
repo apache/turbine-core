@@ -48,10 +48,10 @@ public interface TurbineConstants
 	String CONFIG_NAMESPACE = "org.apache.turbine";
 
 	/** The key for the Log4J File */
-	String LOG4J_CONFIG_FILE = "log4j.file";
+	String LOG4J2_CONFIG_FILE = "log4j2.file";
 
 	/** The default value for the Log4J File */
-	String LOG4J_CONFIG_FILE_DEFAULT = "/WEB-INF/conf/log4j.xml";
+	String LOG4J2_CONFIG_FILE_DEFAULT = "/WEB-INF/conf/log4j2.xml";
 
 	/** This is the default log file to be used for logging */
 	String DEFAULT_LOGGER = "turbine";

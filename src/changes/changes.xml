@@ -25,6 +25,9 @@
 
   <body>
     <release version="5.0" date="in Subversion">
+       <action type="update" dev="gk">
+        Update from log4j to log4j2, redirect JCL to slf4j
+      </action>
       <action type="update" dev="jp">
         Update from lang to commons-configuration2 to 2.4
       </action>
