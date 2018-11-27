@@ -31,8 +31,8 @@
 <p>
     The Scheduler is modeled after Unix Cron. The Scheduler runs as a background
     process that executes timed scheduled tasks independently of HTTP requests.
-    Tasks are stored in the database in the TURBINE_SCHEDULED_JOB table and once
-    entered in the database are loaded automatically when Turbine initializes.
+    Tasks are either stored in the database in the TURBINE_SCHEDULED_JOB table and once
+    entered in the database are loaded automatically when Turbine initializes or as a non persistent service using TurbineNonPersistentSchedulerService.
 </p>
 
 <p>
@@ -46,9 +46,7 @@
     The Scheduler Service should be accessed in one of two ways.
     <ul>
         <li>
-            org.apache.turbine.services.schedule.TurbineScheduler - This class
-            provides static methods to access the scheduler service.  This is the
-            preferred method of access from within java code.
+            Get an instance of type org.apache.turbine.services.schedule.ScheduleService (eihter using annnotation @TurbineService or by using static call to TurbineServices.getInstance().getService with parameter ScheduleService.SERVICE_NAME) - This interface provides  methods to access the scheduler service.  This is the preferred method of access from within java code.
         </li>
         <li>
             org.apache.turbine.services.schedule.SchedulerTool - This is a pull
@@ -74,7 +72,7 @@
 # To specify properties of a service use the following syntax:
 # service.[name].[property]=[value]
 
-services.SchedulerService.classname=org.apache.turbine.services.schedule.TurbineSchedulerService
+services.SchedulerService.classname=org.apache.turbine.services.schedule.QuartzSchedulerService
 .
 .
 .

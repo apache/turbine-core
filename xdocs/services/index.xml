@@ -83,6 +83,12 @@ The JSON-RPC Service supports JavaScript to Java AJAX communications using
 </li>
 
 <li>
+<a href="/fulcrum/fulcrum-json/">JSON Service</a>
+<br/>
+The JSON Service provides a configurable integration of JSON De-/Serializers with Jackson 2 (1) or GSON APIs (e.g. providing helpers for filtering, mixins and other settings).
+</li>
+
+<li>
 <a href="jsp-service.html">JSP Service</a>
 <br/>
 The JSP Service is the set of classes that process JSP files inside the
