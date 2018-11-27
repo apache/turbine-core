@@ -221,5 +221,230 @@
 
 </section>
 
+
+<section name="Migrating to Quartz for Job Scheduling">
+
+<p>
+    Quartz was introduced as a replacement for job scheduling starting
+    with Turbine 4.0. It provides Unix cron like abilities to manage 
+    the automatic execution of tasks (or jobs) within your Turbine application.
+</p>
+
+<p>
+    An example of a job might be periodic data or log cleanup that you
+    want to automate within the application itself.
+</p>
+
+	<subsection name="Creating a job">
+
+    <p>
+        Job creation has not really changed from the way jobs
+        were created in older versions of Turbine. You can refer
+        to the older documentation on how to create a job. For ease of
+        following the notes below however, we will add one simple job.
+    </p>
+
+    <p>
+        Create the job class in com.myapp.modules.scheduledjobs.MyTurbineJob.java
+    </p>
+
+
+<source>
+<![CDATA[
+
+package com.myapp.modules.scheduledjobs;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.modules.ScheduledJob;
+import org.apache.turbine.services.schedule.JobEntry;
+import org.apache.turbine.services.security.SecurityService;
+
+public class MyTurbineJob extends ScheduledJob {
+
+	/** Logging */
+	private static Log log = LogFactory.getLog(MyTurbineJob.class);
+
+    // Track the number of times the job has been run
+	private static int taskcount = 0;
+
+	/**
+	 * Constructor
+	 */
+	public MyTurbineJob() {
+	}
+
+	@Override
+	public void run(JobEntry job) throws Exception {
+
+		try {
+
+            log.info("Job run: " + taskcount);
+            // do some interesting work to be scheduled here...
+
+		} catch (Exception e) {
+			log.error("An error occurred running MyTurbineJob: " + e.toString());
+		}
+
+		taskcount++;
+	}
+}
+]]>
+</source>
+
+    </subsection>
+
+	<subsection name="Quartz service configuration">
+
+    <p> The Quartz scheduler is implemented as a Fulcrum component and needs
+        to be defined in the roleConfiguration.xml and componentConfiguration.xml
+        files in the WEB-INF/conf directory.
+    </p>
+
+    <p> Modify the 
+        <b>WEB-INF/conf/roleConfiguration.xml</b>
+    </p>
+
+<source>
+<![CDATA[
+
+
+<role-list>
+
+    ...
+
+    <!-- Service required for the QuartzSchedulerService -->
+    <role
+        name="org.apache.fulcrum.quartz.QuartzScheduler"
+        shorthand="quartz"
+        default-class="org.apache.fulcrum.quartz.impl.QuartzSchedulerImpl" />
+        
+</role-list>
+]]>
+</source>
+
+    <p> Modify the 
+        <b>WEB-INF/conf/componentConfiguration.xml</b>
+    </p>
+
+<source>
+<![CDATA[
+
+<componentConfig>
+    ...
+
+     <quartz>
+        <configuration>
+            <properties>
+                <parameter name="org.quartz.scheduler.instanceName" value="TestScheduler"/>
+                <parameter name="org.quartz.scheduler.instanceId " value="AUTO"/>
+                <parameter name="org.quartz.scheduler.skipUpdateCheck" value="true"/>
+                <parameter name="org.quartz.threadPool.class" value="org.quartz.simpl.SimpleThreadPool"/>
+                <parameter name="org.quartz.threadPool.threadCount" value="3"/>
+                <parameter name="org.quartz.threadPool.threadPriority" value="5"/>
+                <parameter name="org.quartz.jobStore.misfireThreshold" value="60000"/>
+                <parameter name="org.quartz.jobStore.class" value="org.quartz.simpl.RAMJobStore"/>
+                <parameter name="org.quartz.plugin.jobInitializer.class" value="org.quartz.plugins.xml.XMLSchedulingDataProcessorPlugin"/>
+                <parameter name="org.quartz.plugin.jobInitializer.fileNames" value="../conf/quartz.xml"/>
+                <parameter name="org.quartz.plugin.jobInitializer.failOnFileNotFound" value="true"/>
+                <parameter name="org.quartz.plugin.jobInitializer.scanInterval" value="120"/>
+                <parameter name="org.quartz.plugin.jobInitializer.wrapInUserTransaction" value="false"/>
+            </properties>
+        </configuration>
+    </quartz>  
+
+</componentConfig>
+
+]]>
+</source>
+
+<p> 
+    Next, enable the Quartz scheduler service in the TurbineResources.properties file. 
+</p>
+
+
+<source>
+<![CDATA[
+services.SchedulerService.classname=org.apache.turbine.services.schedule.QuartzSchedulerService
+]]>
+</source>
+
+<p> 
+Finally, we need the configuration file for Quartz itself to run the job. You can do this by creating a quartz.xml file in your WEB-INF/conf directory.
+</p>
+
+<p>
+
+   If you want to change the name, check the component configuration above
+   which defines the org.quartz.plugin.jobInitializer.fileNames value.
+</p>
+
+<p>
+    This example quartz configuration is set to run our test job every 15 minutes.
+</p>
+
+<source>
+<![CDATA[
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+<job-scheduling-data
+	xmlns="http://www.quartz-scheduler.org/xml/JobSchedulingData"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.quartz-scheduler.org/xml/JobSchedulingData http://www.quartz-scheduler.org/xml/job_scheduling_data_2_0.xsd"
+	version="2.0">
+	<pre-processing-commands>
+		<delete-jobs-in-group>*</delete-jobs-in-group>
+		<!-- clear all jobs in scheduler -->
+		<delete-triggers-in-group>*</delete-triggers-in-group>
+		<!-- clear all triggers in scheduler -->
+	</pre-processing-commands>
+	<processing-directives>
+		<!-- if there are any jobs/trigger in scheduler of same name (as in this 
+			file), overwrite them -->
+		<overwrite-existing-data>true</overwrite-existing-data>
+		<!-- if there are any jobs/trigger in scheduler of same name (as in this 
+			file), and over-write is false, ignore them rather then generating an error -->
+		<ignore-duplicates>false</ignore-duplicates>
+	</processing-directives>
+	<schedule>
+		<job>
+			<name>MyTurbineJob</name>
+			<group>TURBINE</group>
+			<description>Perform some task at a specified time</description>
+			<job-class>org.apache.turbine.services.schedule.JobEntryQuartz</job-class>
+		</job>
+		<trigger>
+			<simple>
+				<name>MyTurbineJobTrigger</name>
+				<group>TURBINE</group>
+				<job-name>MyTurbineJob</job-name>
+				<job-group>TURBINE</job-group>
+				<start-time>2018-06-01T00:00:00</start-time>
+				<misfire-instruction>MISFIRE_INSTRUCTION_RESCHEDULE_NOW_WITH_EXISTING_REPEAT_COUNT</misfire-instruction>
+				<repeat-count>-1</repeat-count>
+        		<!--  check every 15 minutes -->
+				<repeat-interval>900000</repeat-interval>
+			</simple>
+		</trigger>
+	</schedule>
+</job-scheduling-data>
+
+
+	]]>
+</source>
+
+</subsection>
+
+</section>
+
 </body>
 </document>
