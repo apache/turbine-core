@@ -25,7 +25,7 @@
     <format>tar.gz</format>
     <format>zip</format>
   </formats>
-  <includeSiteDirectory>true</includeSiteDirectory>
+  <includeSiteDirectory/>
   <dependencySets>
     <dependencySet>
       <outputDirectory>lib</outputDirectory>
@@ -70,8 +70,7 @@
         <include>componentConfiguration.xml</include>
         <include>roleConfiguration.xml</include>
         <include>turbine-classic-pipeline.xml</include>
-        <include>Log4j.properties</include>
-        <include>log4j.xml</include>
+        <include>log4j2.xml</include>
         <include>TurbineResources.properties</include>
       </includes>
     </fileSet>

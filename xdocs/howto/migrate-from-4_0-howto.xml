@@ -45,6 +45,8 @@
 		<p>
 		    TurbineResources.properties have changed making it less verbose
 		    to point to the log4j config file.
+        
+        Secondly, we have upgraded to Log4j2. We still keep the file as is (i.e. outside classpath), as this is what Turbine did all the way. 
 		
 			Old config line:
 <source>
@@ -66,11 +68,11 @@
 <![CDATA[
         # -------------------------------------------------------------------
         #
-        #  L O G 4 J - L O G G I N G
+        #  L O G 4 J 2 - L O G G I N G
         #
         # -------------------------------------------------------------------
         
-        log4j.file = log4j.properties
+        log4j.file = log4j2.xml
 ]]>
 </source>
 

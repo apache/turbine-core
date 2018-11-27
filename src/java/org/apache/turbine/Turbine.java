@@ -913,7 +913,7 @@ public class Turbine extends HttpServlet
                 LogManager.getContext(null, false, log4jFile.toUri());
             }
         }
-        log.debug( "resolved log4j2 location: {}", context.getConfiguration().getConfigurationSource().getLocation() );
+        log.info( "resolved log4j2 location: {}", context.getConfiguration().getConfigurationSource().getLocation() );
     }
     
     /**
