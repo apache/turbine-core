@@ -44,15 +44,19 @@ is to compile, run the unit tests, and build the jar. Some other useful goals:
 
 mvn site   - generate the site documention
 
-- test site
-mvn site scm-publish:publish-scm -Dscmpublish.dryRun=true
+- test site 
+mvn site scm-publish:publish-scm -Dscmpublish.dryRun=true -Papache-release 
+Activatiing Maven profile apache-release is not required, but as it currently binds doclint: none use it for a successfull javadoc generation.
 - deploy site
-mvn clean site scm-publish:publish-scm    - deploy Turbine release site to the Apache web site (cft. to https://svn.apache.org/repos/asf/turbine/site how to deploy main Turbine web site)
+mvn clean site scm-publish:publish-scm -Papache-release    
+- Deploys Turbine release site to the Apache web site (cft. to https://svn.apache.org/repos/asf/turbine/site how to deploy main Turbine web site).
+CAVEAT: If you make a dry run or decide to rebuild a new site when publishing, delete the cache folder! By default this folder is user.home/turbine-sites/turbine, configured in Turbien parent property turbine.site.cache. Otherwise no site might be deployt!
+
 
 Find more about release related command hints in 
 - https://svn.apache.org/repos/asf/turbine/fulcrum/trunk/README.txt
 - If major.minor changed, do update turbine.site.path in pom.xml to the new production path 
-(e.g. turbine/turbine-4.0 for version 4.0) removing also the "/development/"-part of the path BEFORE release.
+(e.g. turbine/turbine-4.0 for version 4.0) removing also the turbine/"development/"-part of the path BEFORE release.
 - if updating the site for the new SNAPSHOT version add the new development path (e.g. turbine/development/turbine-4.1 for version 4.1-SNAPSHOT) AFTER the release.
 - cft. the site structure https://svn.apache.org/repos/infra/websites/production/turbine/content/turbine/.
 
