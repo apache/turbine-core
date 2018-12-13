@@ -548,10 +548,11 @@
             <suppressionFile>${project.basedir}/suppression-owasp-fp.xml</suppressionFile>
             </suppressionFiles>
         </configuration>
-      </plugin>
+      </plugin>   
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M2</version>
         <configuration>
           <!--default setting is forkCount=1/reuseForks=true -->
           <reuseForks>false</reuseForks>
