@@ -19,8 +19,8 @@ package org.apache.turbine.modules;
  * under the License.
  */
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
@@ -119,15 +119,9 @@ public abstract class GenericLoader<T extends Assembler>
     public static List<String> getPackages()
     {
         if (TURBINE_PACKAGES == null)
-        {
-            List<String> turbinePackages = new ArrayList<String>();
-            List<Object> configTurbinePackages =
-                Turbine.getConfiguration()
-                	.getList(TurbineConstants.MODULE_PACKAGES);
-            for (Object o : configTurbinePackages)
-            {
-            	turbinePackages.add((String)o);
-            }
+        {  
+            List<String> turbinePackages = Turbine.getConfiguration()
+            .getList(TurbineConstants.MODULE_PACKAGES).stream().map( o -> (String) o ).collect( Collectors.toList() );
 
             TURBINE_PACKAGES = turbinePackages;
         }
