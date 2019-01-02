@@ -92,7 +92,7 @@ public class AnnotationProcessor
      * @param acl
      * @return true if the execution is allowed
      */
-    public static <A extends TurbineAccessControlList> boolean isAuthorized(AccessibleObject object, A acl)
+    public static <A extends TurbineAccessControlList<?>> boolean isAuthorized(AccessibleObject object, A acl)
     {
         return isAuthorized( object, acl, ConditionType.COMPOUND );
     }
@@ -107,7 +107,7 @@ public class AnnotationProcessor
      *                     or {@link RoleConditionType#SINGLE} : The method will return true if one of the annotations allows execution
      * @return true if the execution is allowed
      */
-    public static <A extends TurbineAccessControlList> boolean isAuthorized(AccessibleObject object, A acl, ConditionType conditonType)
+    public static <A extends TurbineAccessControlList<?>> boolean isAuthorized(AccessibleObject object, A acl, ConditionType conditonType)
     {
         Annotation[] annotations = getAnnotations(object);
 
