@@ -562,7 +562,7 @@
       <plugin>
         <groupId>org.apache.torque</groupId>
         <artifactId>torque-maven-plugin</artifactId>
-        <version>4.0</version>
+        <version>${torque.version}</version>
         <configuration>
           <targetDatabase>mysql</targetDatabase>
           <schemaDir>src/torque/schema</schemaDir>
@@ -817,7 +817,7 @@
             <dependency>
                 <groupId>org.apache.torque</groupId>
                 <artifactId>torque-templates</artifactId>
-                <version>4.0</version>
+                <version>${torque.version}</version>
             </dependency>
         </dependencies>
       </plugin>
@@ -969,7 +969,7 @@
     <dependency>
       <groupId>org.apache.torque</groupId>
       <artifactId>torque-runtime</artifactId>
-      <version>4.0</version>
+      <version>${torque.version}</version>
       <exclusions>
         <exclusion>
             <groupId>avalon-framework</groupId>
@@ -1195,6 +1195,7 @@
     <slf4j.version>1.7.25</slf4j.version>
     <log4j2.version>2.11.1</log4j2.version>
     <dependency.check.skip>true</dependency.check.skip>
+    <torque.version>4.0</torque.version>
   </properties>
 
 </project>
