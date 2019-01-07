@@ -587,7 +587,6 @@ public class TurbineURI
      * encoded using HttpServletResponse.encodeUrl(). The resulting
      * URL is absolute; it starts with http/https...
      *
-     * <p>
      * <pre>
      * TurbineURI tui = new TurbineURI (data, "UserScreen");
      * tui.addPathInfo("user","jon");
@@ -598,6 +597,7 @@ public class TurbineURI
      *
      * <p>
      * http://www.server.com/servlets/Turbine/screen/UserScreen/user/jon
+     * </p>
      *
      * @return A String with the built URL.
      */
@@ -620,7 +620,6 @@ public class TurbineURI
      * encoded using HttpServletResponse.encodeUrl(). The resulting
      * URL is relative to the webserver root.
      *
-     * <p>
      * <pre>
      * TurbineURI tui = new TurbineURI (data, "UserScreen");
      * tui.addPathInfo("user","jon");
@@ -631,6 +630,7 @@ public class TurbineURI
      *
      * <p>
      * /servlets/Turbine/screen/UserScreen/user/jon
+     * </p>
      *
      * @return A String with the built URL.
      */

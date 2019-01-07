@@ -861,8 +861,10 @@ public class DefaultSecurityService
      * @param role the old role
      * @param newRole the new role
      * 
-     * @throws DataBackendException
-     * @throws UnknownEntityException
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if user account, group or role is not
+     *         present.
      */
     @Override
     public void replaceRole(User user, Role role, Role newRole)

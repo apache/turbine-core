@@ -88,8 +88,9 @@ public class AnnotationProcessor
      * 
      * @see #isAuthorized(AccessibleObject, TurbineAccessControlList, ConditionType)
      * 
-     * @param object
-     * @param acl
+     * @param <A> ACL instance
+     * @param object accessible object to test
+     * @param acl access control list
      * @return true if the execution is allowed
      */
     public static <A extends TurbineAccessControlList<?>> boolean isAuthorized(AccessibleObject object, A acl)
@@ -99,12 +100,13 @@ public class AnnotationProcessor
 
     /**
      * Check if the object given is authorized to be executed based on its annotations
-     * The method's return value depends on the conditonType, cft. {@link RoleConditionType}.
+     * The method's return value depends on the conditonType, refer to the ConditionType 
      *
+     * @param <A> ACL instance
      * @param object the object
-     * @param acl
-     * @param conditonType either {@link RoleConditionType#COMPOUND}: The method will return false if one of the annotations denies execution
-     *                     or {@link RoleConditionType#SINGLE} : The method will return true if one of the annotations allows execution
+     * @param acl access control list
+     * @param conditonType either {@link ConditionType#COMPOUND}: The method will return false if one of the annotations denies execution
+     *                     or {@link ConditionType#ANY} : The method will return true if one of the annotations allows execution
      * @return true if the execution is allowed
      */
     public static <A extends TurbineAccessControlList<?>> boolean isAuthorized(AccessibleObject object, A acl, ConditionType conditonType)

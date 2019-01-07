@@ -24,6 +24,7 @@ package org.apache.turbine.util;
 /**
  * The base class of all exceptions thrown by Turbine.
  *
+ * <p>
  * It is intended to ease the debugging by carrying on the information
  * about the exception which was caught and provoked throwing the
  * current exception. Catching and rethrowing may occur multiple
@@ -31,10 +32,12 @@ package org.apache.turbine.util;
  * are descendands of <code>TurbineException</code>, when the
  * exception is finally printed out using any of the <code>
  * printStackTrace()</code> methods, the stacktrace will contain
- * the information about all exceptions thrown and caught on
- * the way.
- * <p> Running the following program
- * <p><pre>
+ * the information about all exceptions thrown and caught on the way.
+ * </p>
+ * 
+ * <p> Running the following program </p>
+ * 
+ * <pre>
  *  1 import org.apache.turbine.util.TurbineException;
  *  2
  *  3 public class Test {
@@ -66,9 +69,11 @@ package org.apache.turbine.util;
  * 29          throw new Exception("baz");
  * 30      }
  * 31 }
- * </pre>
- * <p>Yields the following stacktrace:
- * <p><pre>
+ * </pre> 
+ * 
+ * <p>Yields the following stacktrace: </p>
+ * 
+ * <pre>
  * java.lang.Exception: baz: bar: foo
  *    at Test.c(Test.java:29)
  *    at Test.b(Test.java:22)
@@ -78,7 +83,7 @@ package org.apache.turbine.util;
  * rethrown as TurbineException: foo
  *    at Test.a(Test.java:16)
  *    at Test.main(Test.java:6)
- * </pre><br>
+ * </pre>
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>

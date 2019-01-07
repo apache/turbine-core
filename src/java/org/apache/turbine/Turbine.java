@@ -73,11 +73,16 @@ import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.uri.URIConstants;
 
 /**
+ * <p>
  * Turbine is the main servlet for the entire system. If you
  * need to perform initialization of a service, then you should implement the
  * Services API and let your code be initialized by it.
+ * </p>
+ * 
  * <p>
  * Turbine servlet recognizes the following initialization parameters.
+ * </p>
+ * 
  * <ul>
  * <li><code>properties</code> the path to TurbineResources.properties file
  * used to configure Turbine, relative to the application root.</li>
@@ -373,8 +378,8 @@ public class Turbine extends HttpServlet
      * @param config the Servlet Configuration
      * @param context Servlet Context
      * @return The resolved Configuration Path 
-     * @throws IOException
-     * @throws ConfigurationException
+     * @throws IOException if configuration path not found
+     * @throws ConfigurationException if failed to configure
      */
     protected Path configureApplication( ServletConfig config, ServletContext context )
         throws IOException, ConfigurationException
@@ -479,6 +484,12 @@ public class Turbine extends HttpServlet
      * parameter, looking first for a servlet-specific parameter, then
      * for a global parameter, and using the provided default if not
      * found.
+     * 
+     * @param context the servlet context
+     * @param config configuration object
+     * @param name name of parameter
+     * @param defaultValue of the parameter
+     * @return String value of the parameter
      */
     protected String findInitParameter(ServletContext context,
             ServletConfig config, String name, String defaultValue)
@@ -900,7 +911,7 @@ public class Turbine extends HttpServlet
     /**
      * Checks Log4j 2 Context, loads log4File, if configured and configuration is not already located.
      * @param logConf Configuration file path
-     * @throws IOException
+     * @throws IOException if path not found
      */
     protected void configureLogging(Path logConf) throws IOException
     {   

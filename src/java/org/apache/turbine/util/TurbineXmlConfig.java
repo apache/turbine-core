@@ -25,13 +25,16 @@ import java.util.Map;
 
 /**
  * A class used for initialization of Turbine without a servlet container.
+ * 
  * <p>
  * If you need to use Turbine outside of a servlet container, you can
  * use this class for initialization of the Turbine servlet.
- * <p>
+ * </p>
+ * 
  * <pre>
  * TurbineXmlConfig config = new TurbineXmlConfig(".", "conf/TurbineResources.properties");
  * </pre>
+ * 
  * <p>
  * All paths referenced in TurbineResources.properties and the path to
  * the properties file itself (the second argument) will be resolved
@@ -39,12 +42,15 @@ import java.util.Map;
  * here - the directory where application was started. Don't worry about
  * discarding the references to objects created above. They are not needed,
  * once everything is initialized.
+ * </p>
+ * 
  * <p>
  * In order to initialize the Services Framework outside of the Turbine Servlet,
  * you need to call the <code>init()</code> method. By default, this will
  * initialize the Resource and Logging Services and any other services you
  * have defined in your TurbineResources.properties file.
- *
+ * </p>
+ * 
  * TODO Make this class enforce the lifecycle contracts
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>

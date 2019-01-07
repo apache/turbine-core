@@ -86,6 +86,7 @@ public interface UserManager
      * Retrieve a user from persistent storage using username as the
      * key.
      *
+     * @param <U> user class
      * @param username the name of the user.
      * @return an User object.
      * @throws UnknownEntityException if the user's record does not
@@ -119,6 +120,7 @@ public interface UserManager
      * to authenticate to the server as the user whose data is being
      * retrieved.
      *
+     * @param <U> user class
      * @param username the name of the user.
      * @param password the user supplied password.
      * @return an User object.
@@ -237,6 +239,7 @@ public interface UserManager
      * Constructs an User object to represent an anonymous user of the
      * application.
      *
+     * @param <U> user class
      * @return An anonymous Turbine User.
      * @throws UnknownEntityException
      *             if the anonymous User object couldn't be constructed.
@@ -260,6 +263,7 @@ public interface UserManager
      * This method calls getUserClass, and then creates a new object using the
      * default constructor.
      *
+     * @param <U> user class
      * @return an object implementing User interface.
      * @throws DataBackendException
      *             if the object could not be instantiated.
@@ -272,6 +276,7 @@ public interface UserManager
      * This method calls getUserClass, and then creates a new object using the
      * default constructor.
      *
+     * @param <U> user class
      * @param userName
      *            The name of the user.
      *
@@ -284,7 +289,8 @@ public interface UserManager
     /**
      * Return a Class object representing the system's chosen implementation of
      * of ACL interface for the given user
-     *
+     * 
+     * @param <A> ACL class
      * @param user the user
      * @return systems's chosen implementation of ACL interface.
      * @throws UnknownEntityException

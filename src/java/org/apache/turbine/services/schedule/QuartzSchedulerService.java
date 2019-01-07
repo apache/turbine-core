@@ -293,7 +293,7 @@ public class QuartzSchedulerService
     /**
      * Sets the enabled status of the scheduler
      *
-     * @param enabled
+     * @param enabled true if enabled
      *
      */
     protected void setEnabled(boolean enabled)

@@ -119,7 +119,7 @@ public class SessionTool
     /**
      * Gets the User object of the the specified HttpSession.
      *
-     * @param session
+     * @param session the session
      * @return the user from the session
      */
     public User getUserFromSession(HttpSession session)

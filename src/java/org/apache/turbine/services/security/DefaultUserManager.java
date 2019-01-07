@@ -50,18 +50,23 @@ import org.apache.turbine.util.ObjectUtils;
  * Turbine-specific ones.
  *
  *
- * <ol><li>either in a method with the same name (and very similar signature)
+ * <ol>
+ * <li>either in a method with the same name (and very similar signature)</li>
  * <li>or mapped to method names as listed below:
- *
+ * 
  * <ul>
- * <li>method(s) in this manager -> Fulcrum manager method(s)
- * <li>{@link #createAccount(User, String)}createAccount -> addUser(User, String)
- * <li>{@link #removeAccount(User)} -> removeUser(User)
- * <li>{@link #store(User)} -> saveUser(User)
- * <li>{@link #retrieve(String)} and {@link #retrieve(String, String)} -> getUser(String), getUser(String, String)
- * <li>{@link #retrieveList(Object)} ->getAllUsers()
- * <li>{@link #accountExists(String)}, {@link #accountExists(User)} -> checkExists(String), checkExists(User)
- *
+ * <li>method(s) in this manager -&gt; Fulcrum manager method(s)
+ * <li>{@link #createAccount(User, String)}createAccount -&gt; addUser(User, String)
+ * <li>{@link #removeAccount(User)} -&gt; removeUser(User)
+ * <li>{@link #store(User)} -&gt; saveUser(User)
+ * <li>{@link #retrieve(String)} and {@link #retrieve(String, String)} -&gt; getUser(String), getUser(String, String)
+ * <li>{@link #retrieveList(Object)} -&gt; getAllUsers()
+ * <li>{@link #accountExists(String)}, {@link #accountExists(User)} -&gt; checkExists(String), checkExists(User)
+ * </ul>
+ * 
+ * </li>
+ * </ol>
+ * 
  * In this way all public methods of Fulcrum {@link TurbineUserManager} interface are used by reference of the Fulcrum delegate {@link #umDelegate}
  * and wrapped by this manager.
  *
@@ -85,13 +90,13 @@ public class DefaultUserManager implements UserManager
     /**
      * Wrap a Fulcrum user object into a Turbine user object
      *
+     * @param <U> user class
      * @param user the user object to delegate to
      *
      * @return the wrapped object
      */
     protected <U extends User> U wrap(TurbineUser user)
     {
-    	// U u = (U)new DefaultUserImpl(user);
         @SuppressWarnings("unchecked")
         U u = (U) getUserWrapper(user);
         return u;
@@ -100,6 +105,7 @@ public class DefaultUserManager implements UserManager
     /**
      * Exception could be ignored, as it is tested before in {@link #init(Configuration)}.
      *
+     * @param <U> user class
      * @param user the user object to wrap
      * @return instance extending {@link User}
      */
@@ -154,16 +160,11 @@ public class DefaultUserManager implements UserManager
                 SecurityService.USER_WRAPPER_KEY,
                 SecurityService.USER_WRAPPER_DEFAULT);
 
-//        String userClass = conf.getString(
-//                SecurityService.USER_KEY,
-//                SecurityService.USER_DEFAULT);
-
         try
         {
         	factoryService = (FactoryService)manager.getService(FactoryService.ROLE);
 
             //  check instantiation
-
         	// should provide default constructor
         	TurbineUser turbineUser = umDelegate.getUserInstance();
         			//(TurbineUser) factoryService.getInstance(userClass);
@@ -179,7 +180,6 @@ public class DefaultUserManager implements UserManager
 	    {
 	       throw new InitializationException("Failed to instantiate user wrapper class", e);
 	    }
-
     }
 
 

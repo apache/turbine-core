@@ -40,9 +40,13 @@ import org.apache.turbine.services.pull.ApplicationTool;
  * The set/add methods are can be used from a screen template, action, screen
  * class, layour template, or anywhere else.  The get methods should be used in
  * your layout template(s) to construct the appropriate HTML tags.
+ * </p>
+ * 
  *<p>
  * Example usage of this tool to build the HEAD and BODY tags in your layout
  * templates:
+ * </p>
+ * 
  * <p>
  *  <code>
  *  ## Set defaults for all pages using this layout.  Anything set here can<br>
@@ -83,11 +87,14 @@ import org.apache.turbine.services.pull.ApplicationTool;
  *      #end<br>
  *     &gt;
  * </code>
+ * </p>
+ * 
  * <p>
  * Example usages of this tool in your screen templates:<br>
  *   <code>$page.addScript($content.getURI("myJavascript.js")<br>
  *   $page.setTitle("My page title")<br>
  *   $page.setHttpEquiv("refresh","5; URL=http://localhost/nextpage.html")</code>
+ * </p>
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
@@ -221,7 +228,7 @@ public class HtmlPageAttributes
     /**
      * Adds a script reference
      *
-     * @param scriptURL
+     * @param scriptURL the url
      * @return a <code>HtmlPageAttributes</code> (self).
      */
     public HtmlPageAttributes addScript(String scriptURL)
@@ -570,7 +577,7 @@ public class HtmlPageAttributes
         /**
          * Sets the title of the stylesheet
          *
-         * @param title
+         * @param title of the stylesheet
          */
         public void setTitle(String title)
         {

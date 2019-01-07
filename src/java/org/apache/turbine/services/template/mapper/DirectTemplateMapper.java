@@ -49,7 +49,7 @@ public class DirectTemplateMapper
     /**
      * Replace all "," with ".", but keep the extension.
      *
-     * about,directions,Driving.vm --> about/directions/Driving.vm
+     * about,directions,Driving.vm --&gt; about/directions/Driving.vm
      *
      * @param template The template name.
      * @return A class name for the given template.

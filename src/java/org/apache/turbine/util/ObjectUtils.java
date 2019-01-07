@@ -72,6 +72,7 @@ public abstract class ObjectUtils
     /**
      * Deserializes a single object from an array of bytes.
      *
+     * @param <T> type of the object to return
      * @param objectData The serialized object.
      *
      * @return The deserialized object, or <code>null</code> on failure.

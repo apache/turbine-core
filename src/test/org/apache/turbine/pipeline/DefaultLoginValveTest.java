@@ -94,7 +94,8 @@ public class DefaultLoginValveTest extends BaseTestCase
     /**
      * Tests the Valve.
      */
-    @Test public void testDefaults() throws Exception
+    @Test 
+    public void testDefaults() throws Exception
     {
         Vector<String> v = new Vector<String>();
         v.add(LoginUser.CGI_USERNAME);
@@ -124,7 +125,8 @@ public class DefaultLoginValveTest extends BaseTestCase
     /**
      * Tests the LogoutAction.
      */
-    @Test public void testLogout() throws Exception
+    @Test 
+    public void testLogout() throws Exception
     {
         User user = securityService.getUser("username");
         user.setHasLoggedIn(Boolean.TRUE);

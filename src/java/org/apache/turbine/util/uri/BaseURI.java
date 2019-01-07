@@ -384,7 +384,8 @@ public abstract class BaseURI
     /**
      * Set a Response Object to use when creating the
      * response string.
-     *
+     * 
+     * @param response the servlet response
      */
     protected void setResponse(HttpServletResponse response)
     {
@@ -410,6 +411,7 @@ public abstract class BaseURI
      * This is a convenience method to be
      * used in the Link output routines of derived classes to
      * easily append the correct path.
+     * </p>
      *
      * @param sb The StringBuilder to store context path and script name.
      */
@@ -446,7 +448,8 @@ public abstract class BaseURI
      * <p>
      * This is a convenience method to be
      * used in the Link output routines of derived classes to
-     * easily append the correct server scheme.
+     * easily append the correct server scheme. 
+     * </p>
      *
      * @param sb The StringBuilder to store the scheme and port information.
      */

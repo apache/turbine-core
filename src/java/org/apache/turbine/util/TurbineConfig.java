@@ -61,10 +61,12 @@ import org.apache.turbine.annotation.TurbineConfiguration;
  * <p>
  * If you need to use Turbine outside of a servlet container, you can
  * use this class for initialization of the Turbine servlet.
- * <p>
+ * </p>
+ * 
  * <pre>
  * TurbineConfig config = new TurbineConfig(".", "conf/TurbineResources.properties");
  * </pre>
+ * 
  * <p>
  * All paths referenced in TurbineResources.properties and the path to
  * the properties file itself (the second argument) will be resolved
@@ -72,11 +74,14 @@ import org.apache.turbine.annotation.TurbineConfiguration;
  * here - the directory where application was started. Don't worry about
  * discarding the references to objects created above. They are not needed,
  * once everything is initialized.
+ * </p>
+ * 
  * <p>
  * In order to initialize the Services Framework outside of the Turbine Servlet,
  * you need to call the <code>init()</code> method. By default, this will
  * initialize the Resource and Logging Services and any other services you
  * have defined in your TurbineResources.properties file.
+ * </p>
  *
  * TODO Make this class enforce the lifecycle contracts
  *
@@ -357,7 +362,7 @@ public class TurbineConfig
      *
      * @param s the path to the resource
      * @return a URL pointing to the resource
-     * @throws MalformedURLException
+     * @throws MalformedURLException if unable to parse path
      */
     @Override
     public URL getResource(String s)

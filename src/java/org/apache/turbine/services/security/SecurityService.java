@@ -38,17 +38,23 @@ import org.apache.turbine.services.Service;
 import org.apache.turbine.services.security.passive.PassiveUserManager;
 
 /**
+ * <p>
  * The Security Service manages Users, Groups Roles and Permissions in the
  * system.
- *
+ * </p>
+ * 
+ * <p>
  * The task performed by the security service include creation and removal of
  * accounts, groups, roles, and permissions; assigning users roles in groups;
  * assigning roles specific permissions and construction of objects
  * representing these logical entities.
+ * </p>
  *
- * <p> Because of pluggable nature of the Services, it is possible to create
+ * <p> 
+ * Because of pluggable nature of the Services, it is possible to create
  * multiple implementations of SecurityService, for example employing database
- * and directory server as the data backend.<br>
+ * and directory server as the data backend.
+ * </p>
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
@@ -95,6 +101,7 @@ public interface SecurityService
     /**
      * Construct a blank User object.
      *
+     * @param <U> user class
      * @return an object implementing User interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
@@ -104,6 +111,7 @@ public interface SecurityService
     /**
      * Construct a blank User object.
      *
+     * @param <U> user class
      * @param userName The name of the user.
      *
      * @return an object implementing User interface.
@@ -115,6 +123,7 @@ public interface SecurityService
     /**
      * Construct a blank Group object.
      *
+     * @param <G> group class
      * @return an object implementing Group interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
@@ -124,6 +133,7 @@ public interface SecurityService
     /**
      * Construct a blank Group object.
      *
+     * @param <G> group class
      * @param groupName The name of the Group
      *
      * @return an object implementing Group interface.
@@ -135,6 +145,7 @@ public interface SecurityService
     /**
      * Construct a blank Permission object.
      *
+     * @param <P> permission class
      * @return an object implementing Permission interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
@@ -144,6 +155,7 @@ public interface SecurityService
     /**
      * Construct a blank Permission object.
      *
+     * @param <P> permission class
      * @param permName The name of the Permission
      *
      * @return an object implementing Permission interface.
@@ -155,6 +167,7 @@ public interface SecurityService
     /**
      * Construct a blank Role object.
      *
+     * @param <R> role class
      * @return an object implementing Role interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
@@ -164,6 +177,7 @@ public interface SecurityService
     /**
      * Construct a blank Role object.
      *
+     * @param <R> role class
      * @param roleName The name of the Role
      *
      * @return an object implementing Role interface.
@@ -208,6 +222,7 @@ public interface SecurityService
      * Authenticates an user, and constructs an User object to represent
      * him/her.
      *
+     * @param <U> user class
      * @param username The user name.
      * @param password The user password.
      * @return An authenticated Turbine User.
@@ -224,6 +239,7 @@ public interface SecurityService
      * Constructs an User object to represent a registered user of the
      * application.
      *
+     * @param <U> user class
      * @param username The user name.
      * @return A Turbine User.
      * @throws DataBackendException if there was an error accessing the data
@@ -237,6 +253,7 @@ public interface SecurityService
      * Constructs an User object to represent an anonymous user of the
      * application.
      *
+     * @param <U> user class
      * @return An anonymous Turbine User.
      * @throws UnknownEntityException if the anonymous User object couldn't be
      *         constructed.
@@ -249,7 +266,6 @@ public interface SecurityService
      * according to the configured user manager
      *
      * @param u a user object
-     *
      * @return True if this is an anonymous user
      *
      */
@@ -359,6 +375,7 @@ public interface SecurityService
     /**
      * Constructs an AccessControlList for a specific user.
      *
+     * @param <A> ACL class
      * @param user the user for whom the AccessControlList are to be retrieved
      * @return A new AccessControlList object.
      * @throws DataBackendException if there was an error accessing the data backend.
@@ -487,6 +504,7 @@ public interface SecurityService
      * Provides a reference to the Group object that represents the
      * <a href="#global">global group</a>.
      *
+     * @param <G> group class
      * @return A Group object that represents the global group.
      */
     <G extends Group> G getGlobalGroup();
@@ -494,6 +512,7 @@ public interface SecurityService
     /**
      * Retrieve a Group object with specified name.
      *
+     * @param <G> group class
      * @param name the name of the Group.
      * @return an object representing the Group with specified name.
      * @throws DataBackendException if there was an error accessing the data
@@ -506,6 +525,7 @@ public interface SecurityService
     /**
      * Retrieve a Group object with specified Id.
      *
+     * @param <G> group class
      * @param id the id of the Group.
      *
      * @return an object representing the Group with specified name.
@@ -521,7 +541,8 @@ public interface SecurityService
 
     /**
      * Retrieve a Role object with specified name.
-     *
+     * 
+     * @param <R> role class
      * @param name the name of the Role.
      * @return an object representing the Role with specified name.
      * @throws DataBackendException if there was an error accessing the data
@@ -534,6 +555,7 @@ public interface SecurityService
     /**
      * Retrieve a Role object with specified Id.
      *
+     * @param <R> role class
      * @param id the id of the Role.
      *
      * @return an object representing the Role with specified name.
@@ -550,6 +572,7 @@ public interface SecurityService
     /**
      * Retrieve a Permission object with specified name.
      *
+     * @param <P> permission class
      * @param name the name of the Permission.
      * @return an object representing the Permission with specified name.
      * @throws DataBackendException if there was an error accessing the data
@@ -562,6 +585,7 @@ public interface SecurityService
     /**
      * Retrieve a Permission object with specified Id.
      *
+     * @param <P> permission class
      * @param id the id of the Permission.
      *
      * @return an object representing the Permission with specified name.
@@ -612,6 +636,7 @@ public interface SecurityService
     /**
      * Creates a new group with specified attributes.
      *
+     * @param <G> group class
      * @param group the object describing the group to be created.
      * @return the new Group object.
      * @throws DataBackendException if there was an error accessing the data
@@ -624,6 +649,7 @@ public interface SecurityService
     /**
      * Creates a new role with specified attributes.
      *
+     * @param <R> role class
      * @param role The object describing the role to be created.
      * @return the new Role object.
      * @throws DataBackendException if there was an error accessing the data
@@ -636,6 +662,7 @@ public interface SecurityService
     /**
      * Creates a new permission with specified attributes.
      *
+     * @param <P> permission class
      * @param permission The object describing the permission to be created.
      * @return the new Permission object.
      * @throws DataBackendException if there was an error accessing the data
@@ -720,8 +747,9 @@ public interface SecurityService
      * @param role the old role
      * @param newRole the new role
      * 
-     * @throws DataBackendException
-     * @throws UnknownEntityException
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if the permission does not exist.
      */
     void replaceRole( User user, Role role, Role newRole )
         throws DataBackendException, UnknownEntityException;

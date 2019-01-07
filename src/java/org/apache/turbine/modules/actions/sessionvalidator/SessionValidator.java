@@ -36,16 +36,16 @@ import org.apache.turbine.util.RunData;
  * TurbineResources.properties.
  *
  * <p>
- *
  * Other systems generally have a database table which stores this
  * information, but we take advantage of the Servlet API here to save
  * a hit to the database for each and every connection that a user
  * makes.
- *
+ * </p>
+ * 
  * <p>
- *
  * This action is special in that it should only be executed by the
  * Turbine servlet.
+ * </p>
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
@@ -73,7 +73,7 @@ public abstract class SessionValidator extends Action
     // browsers back button and submitting stale data.
     /**
      *
-     * @param data
+     * @param data RunData object
      * @param screenOnly {@link DefaultSessionValidator}
      */
     protected void handleFormCounterToken( RunData data, boolean screenOnly )

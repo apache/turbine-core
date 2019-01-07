@@ -41,7 +41,7 @@ public class TorqueSchedulerService extends AbstractSchedulerService
      * Load all jobs from configuration storage
      *
      * @return the list of pre-configured jobs
-     * @throws TurbineException
+     * @throws TurbineException if unable to load jobs
      */
     @Override
     protected List<? extends JobEntry> loadJobs() throws TurbineException
