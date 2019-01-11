@@ -923,12 +923,12 @@
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-factory</artifactId>
-      <version>1.1.1-SNAPSHOT</version>
+      <version>1.1.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-pool</artifactId>
-      <version>1.0.5-SNAPSHOT</version>
+      <version>1.0.5</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
