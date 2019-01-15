@@ -17,8 +17,9 @@ package org.apache.turbine.services.security;
  * specific language governing permissions and limitations
  * under the License.
  */
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.fulcrum.security.SecurityService;
 import org.apache.fulcrum.security.entity.Group;
@@ -31,15 +32,15 @@ import org.apache.fulcrum.security.model.turbine.test.AbstractTurbineModelManage
 import org.apache.fulcrum.security.util.DataBackendException;
 import org.apache.fulcrum.security.util.EntityExistsException;
 import org.apache.fulcrum.security.util.UnknownEntityException;
-import org.apache.fulcrum.testcontainer.BaseUnit4Test;
+import org.apache.fulcrum.testcontainer.BaseUnit5Test;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.TurbineConfig;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test that the SecurityService works properly by comparing behaviour of Turbine and Fulcrum security services using memory user manager.
@@ -50,7 +51,7 @@ import org.junit.Test;
  * @version $Id$
  */
 
-public class SecurityServiceTest extends BaseUnit4Test
+public class SecurityServiceTest extends BaseUnit5Test
 {
 
     SecurityService fulcrumSecurityService;
@@ -58,7 +59,7 @@ public class SecurityServiceTest extends BaseUnit4Test
     static TurbineConfig tc;
 
 
-    @BeforeClass
+    @BeforeAll
     public static void init() throws Exception
     {
     	tc = new TurbineConfig(".", "/conf/test/CompleteTurbineResources.properties");
@@ -66,7 +67,7 @@ public class SecurityServiceTest extends BaseUnit4Test
 
     }
 
-    @Before
+    @BeforeEach
     public void setUpBefore() throws Exception
     {
 
@@ -171,7 +172,7 @@ public class SecurityServiceTest extends BaseUnit4Test
 	}
 
 
-	@AfterClass
+	@AfterAll
 	public static void setupAfter()
     {
         ServiceManager serviceManager = TurbineServices.getInstance();

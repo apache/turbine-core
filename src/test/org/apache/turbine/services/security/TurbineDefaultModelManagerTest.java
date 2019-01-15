@@ -18,12 +18,14 @@ package org.apache.turbine.services.security;
  * under the License.
  */
 
-import static org.junit.Assert.fail;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.apache.fulcrum.security.model.turbine.test.AbstractTurbineModelManagerTest;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 
 /**
  * Test Fulcrum Integration.
@@ -38,7 +40,7 @@ public class TurbineDefaultModelManagerTest
 {
 
     @Override
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception
     {
         try
@@ -61,11 +63,12 @@ public class TurbineDefaultModelManagerTest
     }
 
     @Override
-    @After
+    @AfterEach
 	public void tearDown()
     {
         modelManager = null;
         securityService = null;
+        super.tearDown();
     }
 
 }
