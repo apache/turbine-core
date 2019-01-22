@@ -21,8 +21,6 @@ package org.apache.turbine.modules.screens.error;
  */
 
 
-import org.apache.ecs.ElementContainer;
-import org.apache.ecs.html.A;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.pipeline.PipelineData;
@@ -59,9 +57,10 @@ public class InvalidState
             throws Exception
     {
         RunData data = getRunData(pipelineData);
-        ElementContainer body = new ElementContainer();
-        ElementContainer message = new ElementContainer();
-
+        StringBuilder body = new StringBuilder();
+        body.append("<body>");
+        
+        StringBuilder message = new StringBuilder();
         StringBuilder sb = new StringBuilder();
         sb.append("<b>There has been an error.</b>")
                 .append("<p>")
@@ -71,18 +70,18 @@ public class InvalidState
                 .append("<p>")
                 .append("Please click ");
 
-        message.addElement(sb.toString());
+        message.append(sb.toString());
         ParameterParser pp;
         pp = (ParameterParser) data.getUser().getTemp("prev_parameters");
         pp.remove("_session_access_counter");
 
         TurbineURI back = new TurbineURI(data,(String) data.getUser().getTemp("prev_screen"));
         back.addPathInfo(pp);
-        message.addElement(new A().setHref(back.getRelativeLink()).addElement("here"));
+        message.append( "<a href=\"" ).append(back.getRelativeLink()).append("\">here</a>");
+        message.append(" to return the the screen you were working on.");
 
-        message.addElement(" to return the the screen you were working on.");
-
-        body.addElement(message);
+        body.append(message);
+        body.append("</body>");
         return body.toString();
     }
 }
