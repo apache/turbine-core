@@ -25,6 +25,14 @@
 
   <body>
     <release version="5.0" date="in Subversion">
+      <action type="update" dev="jp">
+        Update fulcrum component releases:
+            fulcrum-mimetype 1.0.5
+            fulcrum-factory 1.1.1 
+            fulcrum-pool 1.0.5
+            fulcrum-testcontainer 1.0.8
+            fulcrum-yaafi 1.0.8
+      </action>
        <action type="update" dev="gk">
         Update from log4j to log4j2, redirect JCL to slf4j
       </action>
