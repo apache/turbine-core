@@ -969,7 +969,7 @@
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-localization</artifactId>
-      <version>1.0.7-SNAPSHOT</version>
+      <version>1.0.7</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
@@ -990,12 +990,12 @@
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-crypto</artifactId>
-      <version>1.0.8-SNAPSHOT</version>
+      <version>1.0.8</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-xslt</artifactId>
-      <version>1.1.1-SNAPSHOT</version>
+      <version>1.1.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>

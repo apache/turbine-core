@@ -32,6 +32,10 @@
             fulcrum-pool 1.0.5
             fulcrum-testcontainer 1.0.8
             fulcrum-yaafi 1.0.8
+            fulcrum-mimetype 1.0.6
+            fulcrum-localization 1.0.7
+            fulcrum-crypto 1.0.8
+            fulcrum-xslt 1.1.1
       </action>
        <action type="update" dev="gk">
         Update from log4j to log4j2, redirect JCL to slf4j
