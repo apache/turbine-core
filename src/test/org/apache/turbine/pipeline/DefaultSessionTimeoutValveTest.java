@@ -19,7 +19,7 @@ package org.apache.turbine.pipeline;
  * under the License.
  */
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -35,10 +35,10 @@ import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.uri.URIConstants;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests TurbinePipeline.
@@ -55,7 +55,7 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
     private HttpServletRequest request = null;
     private HttpServletResponse response = null;
 
-    @BeforeClass
+    @BeforeAll
     public static void init()
     {
         tc = new TurbineConfig(
@@ -64,7 +64,7 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
         tc.initialize();
     }
 
-    @Before
+    @BeforeEach
     public void setUpBefore() throws Exception
     {
         config = mock(ServletConfig.class);
@@ -122,7 +122,7 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
         assertEquals(3600, runData.getSession().getMaxInactiveInterval());
     }
 
-    @AfterClass
+    @AfterAll
     public static void destroy()
     {
         tc.dispose();

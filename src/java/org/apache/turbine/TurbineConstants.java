@@ -49,6 +49,8 @@ public interface TurbineConstants
 
 	/** The key for the Log4J File */
 	String LOG4J2_CONFIG_FILE = "log4j2.file";
+	/** old key as a reminder */
+	String LOG4J_CONFIG_FILE = "log4j.file";
 
 	/** The default value for the Log4J File */
 	String LOG4J2_CONFIG_FILE_DEFAULT = "/WEB-INF/conf/log4j2.xml";

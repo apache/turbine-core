@@ -19,8 +19,9 @@ package org.apache.turbine.pipeline;
  * under the License.
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -29,8 +30,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests TurbinePipeline.
@@ -42,7 +44,7 @@ public class PipelineCreationTest
 {
     private Pipeline pipeline;
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         pipeline = new TurbinePipeline();

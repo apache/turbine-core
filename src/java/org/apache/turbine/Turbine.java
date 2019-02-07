@@ -948,10 +948,19 @@ public class Turbine extends HttpServlet
             
             if ( logConfPath != null )
             {
-                Path logFilePath = logConfPath.resolve( log4jFile );
+                Path log4jFilePath = Paths.get(log4jFile);
+                Path logFilePath = logConfPath.resolve( log4jFilePath );
                 if ( logFilePath != null && logFilePath.toFile().exists() )
                 {
                     log4jTarget = logFilePath.normalize();
+                } else {
+                    // fall back just using the filename, if path match
+                    if (log4jFilePath != null && log4jFilePath.getParent() != null && logConfPath.endsWith(log4jFilePath.getParent() )) {
+                        logFilePath = logConfPath.resolve( log4jFilePath.getFileName());
+                        if ( logFilePath != null && logFilePath.toFile().exists() ) {
+                            log4jTarget = logFilePath.normalize();
+                        }
+                    }
                 }
             }
         }

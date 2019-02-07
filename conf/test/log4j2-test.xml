@@ -17,10 +17,9 @@
  specific language governing permissions and limitations
  under the License.
 -->
-<!-- may change status to debug or trace -->
 <Configuration status="info" verbose="true">
     <Appenders>
-        <Console name="console" target="SYSTEM_OUT">
+      <Console name="console" target="SYSTEM_OUT">
 	      <PatternLayout pattern="%d [%t] %-5p %c - %m%n"/>
 	    </Console>
 	    <File name="logfile" fileName="target/turbine-test.log">
@@ -28,10 +27,14 @@
 	    </File>
     </Appenders>
     <Loggers>
-         <Logger name="org.apache.turbine" level="debug" additivity="false">
+       <Logger name="org.apache.fulcrum" level="info" additivity="false">
           <AppenderRef ref="logfile"/>
-        </Logger>
-        <Logger name="avalon" level="info" additivity="false">
+       </Logger>
+       <Logger name="org.apache.turbine" level="debug" additivity="false">
+          <AppenderRef ref="logfile" />
+          <AppenderRef ref="console" level="info"/>
+       </Logger>
+       <Logger name="avalon" level="info" additivity="false">
 	      <AppenderRef ref="logfile"/>
 	    </Logger>
       <Logger name="org.apache.logging.log4j" level="debug" additivity="false">

@@ -19,11 +19,10 @@ package org.apache.turbine.pipeline;
  * specific language governing permissions and limitations
  * under the License.
  */
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -43,10 +42,11 @@ import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.uri.URIConstants;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests ExecutePageValve.
@@ -62,7 +62,7 @@ public class ExecutePageValveTest extends BaseTestCase
     private HttpServletRequest request = null;
     private HttpServletResponse response = null;
 
-    @BeforeClass
+    @BeforeAll
     public static void init()
     {
         tc = new TurbineConfig(
@@ -71,7 +71,7 @@ public class ExecutePageValveTest extends BaseTestCase
         tc.initialize();
     }
 
-    @Before
+    @BeforeEach
     public void setUpBefore() throws Exception
     {
         config = mock(ServletConfig.class);
@@ -109,7 +109,7 @@ public class ExecutePageValveTest extends BaseTestCase
 
         int numberOfCalls = VelocityActionDoesNothing.numberOfCalls;
         pipeline.invoke(pipelineData);
-        assertEquals("Assert action was called",numberOfCalls +1,VelocityActionDoesNothing.numberOfCalls);
+        assertEquals(numberOfCalls +1,VelocityActionDoesNothing.numberOfCalls, "Assert action was called");
         User user = runData.getUser();
         assertNotNull(user);
         assertEquals("username", user.getName());
@@ -144,15 +144,15 @@ public class ExecutePageValveTest extends BaseTestCase
         int numberOfCalls = VelocitySecureActionDoesNothing.numberOfCalls;
         int isAuthorizedCalls = VelocitySecureActionDoesNothing.isAuthorizedCalls;
         pipeline.invoke(pipelineData);
-        assertEquals("Assert action was called",numberOfCalls +1,VelocitySecureActionDoesNothing.numberOfCalls);
-        assertEquals("Assert authorization was called",isAuthorizedCalls +1,VelocitySecureActionDoesNothing.isAuthorizedCalls);
+        assertEquals(numberOfCalls +1,VelocitySecureActionDoesNothing.numberOfCalls, "Assert action was called");
+        assertEquals(isAuthorizedCalls +1,VelocitySecureActionDoesNothing.isAuthorizedCalls, "Assert authorization was called");
         User user = runData.getUser();
         assertNotNull(user);
         assertEquals("username", user.getName());
         assertTrue(user.hasLoggedIn());
     }
 
-    @AfterClass
+    @AfterAll
     public static void destroy()
     {
         tc.dispose();

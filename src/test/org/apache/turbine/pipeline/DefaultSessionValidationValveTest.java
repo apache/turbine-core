@@ -21,11 +21,12 @@ package org.apache.turbine.pipeline;
  */
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
+
 import static org.mockito.Mockito.when;
 
 import java.util.Vector;
@@ -42,10 +43,11 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests TurbinePipeline.
@@ -61,7 +63,7 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
     private HttpServletRequest request = null;
     private HttpServletResponse response = null;
 
-    @BeforeClass
+    @BeforeAll
     public static void init()
     {
         tc = new TurbineConfig(
@@ -70,7 +72,7 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
         tc.initialize();
     }
 
-    @Before
+    @BeforeEach
     public void setUpBefore() throws Exception
     {
         config = mock(ServletConfig.class);
@@ -140,7 +142,7 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
         assertTrue(user.hasLoggedIn());
     }
 
-    @AfterClass
+    @AfterAll
     public static void destroy()
     {
         tc.dispose();

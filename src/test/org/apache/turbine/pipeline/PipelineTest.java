@@ -21,12 +21,13 @@ package org.apache.turbine.pipeline;
  */
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.StringWriter;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests TurbinePipeline.
@@ -66,7 +67,9 @@ public class PipelineTest
     /**
      * Tests the Pipeline throughput.
      */
-    @Ignore("For performance tests only") @Test public void testPipelinePerformance() throws Exception
+    //@Disabled("For performance tests only") 
+    @Tag("performance") 
+    @Test public void testPipelinePerformance() throws Exception
     {
         StringWriter writer = new StringWriter();
         Pipeline pipeline = new TurbinePipeline();

@@ -22,9 +22,9 @@ package org.apache.turbine.pipeline;
 
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import javax.servlet.ServletConfig;
@@ -37,11 +37,10 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 /**
  * Tests TurbinePipeline.
  *
@@ -56,7 +55,7 @@ public class DefaultACLCreationValveTest extends BaseTestCase
     private HttpServletRequest request = null;
     private HttpServletResponse response = null;
 
-    @BeforeClass
+    @BeforeAll
     public static void init()
     {
         tc = new TurbineConfig(
@@ -65,7 +64,7 @@ public class DefaultACLCreationValveTest extends BaseTestCase
         tc.initialize();
     }
 
-    @Before
+    @BeforeEach
     public void setUpBefore() throws Exception
     {
         config = mock(ServletConfig.class);
@@ -97,7 +96,7 @@ public class DefaultACLCreationValveTest extends BaseTestCase
         assertNotNull(runData.getACL());
     }
 
-    @AfterClass
+    @AfterAll
     public static void destroy()
     {
         tc.dispose();

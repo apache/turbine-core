@@ -1,5 +1,6 @@
 package org.apache.turbine.annotation;
 
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,12 +20,10 @@ package org.apache.turbine.annotation;
  * under the License.
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -40,11 +39,12 @@ import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the various annotations
@@ -85,21 +85,21 @@ public class AnnotationProcessorTest
     @TurbineService
     private FactoryService factory;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() throws Exception
     {
         tc = new TurbineConfig(".", "/conf/test/CompleteTurbineResources.properties");
         tc.initialize();
     }
 
-    @AfterClass
+    @AfterAll
     public static void destroy()
         throws Exception
     {
         tc.dispose();
     }
 
-    @Before
+    @BeforeEach
     public void setUpBefore() throws Exception
     {
         // do nothing
@@ -203,7 +203,9 @@ public class AnnotationProcessorTest
         }
     }
 
-    @Ignore("For performance tests only") @Test
+    //@Disabled("For performance tests only") 
+    @Tag("performance") // ignore in surefire, activating seems to be still buggy ?
+    @Test
     public void testProcessingPerformance() throws TurbineException
     {
         long startTime = System.currentTimeMillis();

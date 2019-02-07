@@ -152,9 +152,9 @@ public class TurbineNonPersistentSchedulerServiceTest
         try
         {
            int beforeCount = SimpleJob.getCounter();
-           Thread.sleep(1200);
+           Thread.sleep(1600);// expect at least less than about two seconds
            int afterCount = SimpleJob.getCounter();
-           assertTrue(beforeCount < afterCount);
+           assertTrue(beforeCount + " should be before " + afterCount, beforeCount < afterCount);
 
         }
         catch (Exception e)
