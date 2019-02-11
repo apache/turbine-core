@@ -512,7 +512,6 @@
     <!-- cft. loading path https://logging.apache.org/log4j/2.x/manual/configuration.html -->
     <testResources>
       <testResource>
-        <targetPath />
         <directory>conf/test</directory>
         <includes>
           <include>log4j2-test.xml</include>
@@ -530,7 +529,7 @@
         or to invoke goal only:
         $>mvn org.owasp:dependency-check-maven:check -Ddependency.check.skip=false
       -->
-      <plugin>
+     <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
         <version>3.1.2</version><!-- requires mvn version > 3.3! For older version try to check v 3.2.1 or 3.1.2 -->
@@ -1225,7 +1224,7 @@
       </build>
       <properties> 
         <dependency.check.skip>false</dependency.check.skip>
-        <doclint>none</doclint><!-- since javadoc v.3 this is the reuqired instead of -Xdoclint:none, remove if turbine parent is correct again using profile java8  -->
+        <doclint>none</doclint><!-- since javadoc v.3 this is the required instead of -Xdoclint:none, remove if turbine parent (v6) is correct again using profile java8  -->
       </properties>
     </profile>
   </profiles>
