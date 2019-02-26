@@ -27,6 +27,7 @@
     <release version="5.0" date="in Subversion">
       <action type="update" dev="jp">
         Update fulcrum component releases:
+            fulcrum-quartz 1.1.1
             fulcrum-mimetype 1.0.5
             fulcrum-factory 1.1.1 
             fulcrum-pool 1.0.5
