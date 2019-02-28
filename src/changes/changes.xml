@@ -25,6 +25,12 @@
 
   <body>
     <release version="5.0" date="in Subversion">
+      <action type="update" dev="tv">
+        Update jython to jython-standalone 2.7.1
+      </action>
+      <action type="update" dev="tv">
+        Use log4j-jcl instead of redirection through slf4j
+      </action>
       <action type="update" dev="jp">
         Update fulcrum component releases:
             fulcrum-quartz 1.1.1
@@ -38,7 +44,7 @@
             fulcrum-crypto 1.0.8
             fulcrum-xslt 1.1.1
       </action>
-       <action type="update" dev="gk">
+      <action type="update" dev="gk">
         Update from log4j to log4j2, redirect JCL to slf4j
       </action>
       <action type="update" dev="jp">

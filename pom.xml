@@ -532,7 +532,7 @@
      <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>3.1.2</version><!-- requires mvn version > 3.3! For older version try to check v 3.2.1 or 3.1.2 -->
+        <version>5.0.0-M1</version>
         <executions>
            <execution>
                 <goals>
@@ -1061,10 +1061,9 @@
       <version>1.1.1</version>
     </dependency>
     <dependency>
-      <!-- TODO update to stable 2.7.1, because of CVE-2016-5699 -->
       <groupId>org.python</groupId>
-      <artifactId>jython</artifactId>
-      <version>2.7.0</version>
+      <artifactId>jython-standalone</artifactId>
+      <version>2.7.1</version>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -1095,19 +1094,9 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>${slf4j.version}</version>
-    </dependency>
-     <dependency>     <!-- redirect JCL to slf4j, Turbine + Avalon do use commons loggers   -->
-      <groupId>org.slf4j</groupId>
-      <artifactId>jcl-over-slf4j</artifactId>
-      <version>${slf4j.version}</version>
-    </dependency>
-    <dependency><!-- delegate slf4j to log4j2, no logback -->
-       <groupId>org.apache.logging.log4j</groupId>
-       <artifactId>log4j-slf4j-impl</artifactId>
-       <version>${log4j2.version}</version>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-jcl</artifactId>
+      <version>${log4j2.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
