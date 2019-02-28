@@ -26,6 +26,9 @@
   <body>
     <release version="5.0" date="in Subversion">
       <action type="update" dev="tv">
+        Direct Avalon logging to Log4j2
+      </action>
+      <action type="update" dev="tv">
         Update jython to jython-standalone 2.7.1
       </action>
       <action type="update" dev="tv">

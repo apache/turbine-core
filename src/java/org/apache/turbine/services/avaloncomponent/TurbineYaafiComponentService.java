@@ -24,15 +24,13 @@ import java.io.IOException;
 
 import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.activity.Initializable;
-import org.apache.avalon.framework.logger.CommonsLogger;
 import org.apache.avalon.framework.logger.Logger;
 import org.apache.avalon.framework.service.ServiceException;
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.yaafi.framework.container.ServiceContainer;
 import org.apache.fulcrum.yaafi.framework.factory.ServiceContainerConfiguration;
 import org.apache.fulcrum.yaafi.framework.factory.ServiceContainerFactory;
+import org.apache.logging.log4j.LogManager;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.InstantiationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -47,7 +45,7 @@ public class TurbineYaafiComponentService
         implements AvalonComponentService, Initializable, Disposable
 {
     /** the logger to be used */
-    private static Log log = LogFactory.getLog(AVALON_LOG_CATEGORY);
+    private static org.apache.logging.log4j.Logger log = LogManager.getLogger(AVALON_LOG_CATEGORY);
 
     /** property to lookup the container configuration file */
     public static final String CONTAINER_CONFIGURATION_KEY = "containerConfiguration";
@@ -260,8 +258,7 @@ public class TurbineYaafiComponentService
      */
     protected Logger createAvalonLogger()
     {
-        Logger result = new CommonsLogger(log, AVALON_LOG_CATEGORY);
-        return result;
+        return new Log4j2Logger(log);
     }
 
     // -------------------------------------------------------------
