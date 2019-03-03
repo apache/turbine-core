@@ -19,17 +19,18 @@ package org.apache.turbine.util;
  * under the License.
  */
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-import net.sf.uadetector.OperatingSystem;
-import net.sf.uadetector.ReadableUserAgent;
-import net.sf.uadetector.UserAgentStringParser;
-import net.sf.uadetector.VersionNumber;
-import net.sf.uadetector.service.UADetectorServiceFactory;
+import nl.basjes.parse.useragent.UserAgent;
+import nl.basjes.parse.useragent.UserAgentAnalyzer;
+
 /**
  * This class parses the user agent string and provides getters for
- * its parts. It uses UADetector (http://uadetector.sourceforge.net/)
+ * its parts. It uses YAUAA (https://yauaa.basjes.nl/)
+ *
+ * The initialization step for a full UserAgentAnalyzer
+ * (i.e. all fields) usually takes something in the range of 2-5 seconds.
  *
  * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
  * @author <a href="mailto:leon@clearink.com">Leon Atkisnon</a>
@@ -42,13 +43,18 @@ public class BrowserDetector
     /** The user agent string. */
     private String userAgentString = "";
 
-    /** The user agent cache. */
-    private static volatile Map<String, ReadableUserAgent> userAgentCache =
-            new HashMap<String, ReadableUserAgent>();
-
     /** The user agent parser */
-    private static UserAgentStringParser parser =
-            UADetectorServiceFactory.getCachingAndUpdatingParser();
+    private static UserAgentAnalyzer uaa = UserAgentAnalyzer
+            .newBuilder()
+            .withFields(UserAgent.AGENT_NAME,
+                    UserAgent.AGENT_VERSION,
+                    UserAgent.OPERATING_SYSTEM_NAME)
+            .hideMatcherLoadStats()
+            .build();
+
+    /** The user agent cache. */
+    private static volatile ConcurrentMap<String, UserAgent> userAgentCache =
+            new ConcurrentHashMap<>();
 
     /** The browser name specified in the user agent string. */
     private String browserName = "";
@@ -72,7 +78,15 @@ public class BrowserDetector
     public BrowserDetector(String userAgentString)
     {
         this.userAgentString = userAgentString;
-        parse();
+        UserAgent userAgent = getUserAgent();
+
+        // Get the browser name and version.
+        browserName = userAgent.getValue(UserAgent.AGENT_NAME);
+        String version = userAgent.getValue(UserAgent.AGENT_VERSION);
+        browserVersion = toFloat(version);
+
+        // Try to figure out what platform.
+        browserPlatform = userAgent.getValue(UserAgent.OPERATING_SYSTEM_NAME);
     }
 
     /**
@@ -130,32 +144,19 @@ public class BrowserDetector
      *
      * @return A user agent.
      */
-    public ReadableUserAgent getUserAgent()
+    public UserAgent getUserAgent()
     {
-        return userAgentCache.get(userAgentString);
+        return parse(userAgentString);
     }
 
     /**
      * Helper method to initialize this class.
+     *
+     * @param userAgentString the user agent string
      */
-    private void parse()
+    private static UserAgent parse(String userAgentString)
     {
-        ReadableUserAgent userAgent = userAgentCache.get(userAgentString);
-
-        if (userAgent == null)
-        {
-            userAgent = parser.parse(userAgentString);
-            userAgentCache.put(userAgentString, userAgent);
-        }
-
-        // Get the browser name and version.
-        browserName = userAgent.getName();
-        VersionNumber version = userAgent.getVersionNumber();
-        browserVersion = toFloat(version.toVersionString());
-
-        // Try to figure out what platform.
-        OperatingSystem os = userAgent.getOperatingSystem();
-        browserPlatform = os.getFamilyName();
+        return userAgentCache.computeIfAbsent(userAgentString, uaa::parse);
     }
 
     /**
@@ -168,5 +169,4 @@ public class BrowserDetector
     {
         return Float.parseFloat(s);
     }
-
 }
