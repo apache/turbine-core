@@ -28,7 +28,7 @@ import org.apache.turbine.pipeline.PipelineData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public abstract class Action extends Assembler
+public abstract class Action implements Assembler
 {
     /** Prefix for action related classes and templates */
     public static final String PREFIX = "actions";
@@ -72,6 +72,4 @@ public abstract class Action extends Assembler
     {
         doPerform(pipelineData);
     }
-
-
 }

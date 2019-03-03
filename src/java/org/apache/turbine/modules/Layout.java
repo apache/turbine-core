@@ -28,8 +28,7 @@ import org.apache.turbine.pipeline.PipelineData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public abstract class Layout
-    extends Assembler
+public abstract class Layout implements Assembler
 {
     /** Prefix for layout related classes and templates */
     public static final String PREFIX = "layouts";

@@ -46,7 +46,7 @@ public class ScreenLoader
      */
     private ScreenLoader()
     {
-        super();
+        super(Screen.class);
     }
 
     /**
@@ -83,21 +83,6 @@ public class ScreenLoader
 	{
         this.eval(pipelineData, name);
 	}
-
-    /**
-     * Pulls out an instance of the object by name.  Name is just the
-     * single name of the object.
-     *
-     * @param name Name of object instance.
-     * @return A Screen with the specified name, or null.
-     * @throws Exception a generic exception.
-     */
-    @Override
-    public Screen getAssembler(String name)
-        throws Exception
-    {
-        return getAssembler(Screen.class, name);
-    }
 
     /**
      * @see org.apache.turbine.modules.Loader#getCacheSize()

@@ -44,7 +44,7 @@ public class ActionLoader
      */
     private ActionLoader()
     {
-        super();
+        super(Action.class);
     }
 
     /**
@@ -59,21 +59,6 @@ public class ActionLoader
     		throws Exception
     {
         getAssembler(name).perform(pipelineData);
-    }
-
-    /**
-     * Pulls out an instance of the object by name.  Name is just the
-     * single name of the object.
-     *
-     * @param name Name of object instance.
-     * @return An Action with the specified name, or null.
-     * @throws Exception a generic exception.
-     */
-    @Override
-    public Action getAssembler(String name)
-        throws Exception
-    {
-        return getAssembler(Action.class, name);
     }
 
     /**

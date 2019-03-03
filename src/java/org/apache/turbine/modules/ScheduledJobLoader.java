@@ -45,7 +45,7 @@ public class ScheduledJobLoader
      */
     private ScheduledJobLoader()
     {
-        super();
+        super(ScheduledJob.class);
     }
 
     /**
@@ -83,21 +83,6 @@ public class ScheduledJobLoader
             throws Exception
     {
         throw new Exception("PipelineData objects not accepted for Scheduled jobs");
-    }
-
-    /**
-     * Pulls out an instance of the object by name.  Name is just the
-     * single name of the object.
-     *
-     * @param name Name of object instance.
-     * @return A ScheduledJob with the specified name, or null.
-     * @throws Exception a generic exception.
-     */
-    @Override
-    public ScheduledJob getAssembler(String name)
-        throws Exception
-    {
-        return getAssembler(ScheduledJob.class, name);
     }
 
     /**

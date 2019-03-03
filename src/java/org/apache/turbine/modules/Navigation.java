@@ -29,8 +29,7 @@ import org.apache.turbine.pipeline.PipelineData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public abstract class Navigation
-    extends Assembler
+public abstract class Navigation implements Assembler
 {
     /** Prefix for navigation related classes and templates */
     public static final String PREFIX = "navigations";

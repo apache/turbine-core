@@ -38,10 +38,13 @@ import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @param <T> the specialized assembler type
  */
-public abstract class GenericLoader<T extends Assembler>
+public abstract class GenericLoader<T extends Assembler> implements Loader<T>
 {
     /** The Assembler Broker Service */
     protected AssemblerBrokerService ab;
+
+    /** Class of loaded assembler */
+    private Class<T> assemblerClass;
 
     /** @serial This can be serialized */
     private boolean reload = false;
@@ -54,11 +57,15 @@ public abstract class GenericLoader<T extends Assembler>
 
     /**
      * Basic constructor for creating a loader.
+     *
+     * @param assemblerClass Class of loaded assembler
      */
-    public GenericLoader()
+    public GenericLoader(Class<T> assemblerClass)
     {
         super();
-        ab = (AssemblerBrokerService)TurbineServices.getInstance().getService(AssemblerBrokerService.SERVICE_NAME);
+        this.assemblerClass = assemblerClass;
+        this.ab = (AssemblerBrokerService)TurbineServices.getInstance()
+                .getService(AssemblerBrokerService.SERVICE_NAME);
     }
 
     /**
@@ -119,7 +126,7 @@ public abstract class GenericLoader<T extends Assembler>
     public static List<String> getPackages()
     {
         if (TURBINE_PACKAGES == null)
-        {  
+        {
             List<String> turbinePackages = Turbine.getConfiguration()
             .getList(TurbineConstants.MODULE_PACKAGES).stream().map( o -> (String) o ).collect( Collectors.toList() );
 
@@ -134,6 +141,21 @@ public abstract class GenericLoader<T extends Assembler>
         }
 
         return packages;
+    }
+
+    /**
+     * Pulls out an instance of the object by name.  Name is just the
+     * single name of the object.
+     *
+     * @param name Name of object instance.
+     * @return An Action with the specified name, or null.
+     * @throws Exception a generic exception.
+     */
+    @Override
+    public T getAssembler(String name)
+        throws Exception
+    {
+        return getAssembler(assemblerClass, name);
     }
 
     /**

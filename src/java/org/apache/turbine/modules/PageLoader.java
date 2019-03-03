@@ -44,7 +44,7 @@ public class PageLoader
      */
     private PageLoader()
     {
-        super();
+        super(Page.class);
     }
 
     /**
@@ -60,21 +60,6 @@ public class PageLoader
     {
         // Execute page
         getAssembler(name).build(pipelineData);
-    }
-
-    /**
-     * Pulls out an instance of the object by name.  Name is just the
-     * single name of the object.
-     *
-     * @param name Name of object instance.
-     * @return A Screen with the specified name, or null.
-     * @throws Exception a generic exception.
-     */
-    @Override
-    public Page getAssembler(String name)
-        throws Exception
-    {
-        return getAssembler(Page.class, name);
     }
 
     /**

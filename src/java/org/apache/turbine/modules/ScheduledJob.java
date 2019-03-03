@@ -34,7 +34,7 @@ import org.apache.turbine.services.schedule.JobEntry;
  * @author <a href="mailto:mbryson@mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
-public abstract class ScheduledJob extends Assembler
+public abstract class ScheduledJob implements Assembler
 {
     /** Prefix for scheduler job related classes */
     public static final String PREFIX = "scheduledjobs";

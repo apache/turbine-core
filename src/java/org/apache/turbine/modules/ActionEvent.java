@@ -27,10 +27,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.parser.ValueParser.URLCaseFolding;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.AnnotationProcessor;
@@ -86,7 +86,7 @@ import org.apache.turbine.pipeline.PipelineData;
 public abstract class ActionEvent extends Action
 {
 	/** Logging */
-	protected Log log = LogFactory.getLog(this.getClass());
+	protected Logger log = LogManager.getLogger(this.getClass());
 
 	/** The name of the button to look for. */
 	protected static final String BUTTON = "eventSubmit_";
@@ -257,10 +257,7 @@ public abstract class ActionEvent extends Action
 
 		try
 		{
-			if (log.isDebugEnabled())
-			{
-				log.debug("Invoking " + method);
-			}
+			log.debug("Invoking {}", method);
 
 			method.invoke(this, parameters);
 		}
@@ -280,7 +277,7 @@ public abstract class ActionEvent extends Action
 			}
 			else
 			{
-			    log.error("Invokation of " + method , t);
+			    log.error("Invokation of {}", method, t);
 			}
 		}
 	}
@@ -331,7 +328,7 @@ public abstract class ActionEvent extends Action
 	{
 		if (!submitValueKey)
 		{
-			log.debug("No Value required, accepting " + key);
+			log.debug("No Value required, accepting {}", key);
 			return true;
 		}
 		else
@@ -346,10 +343,10 @@ public abstract class ActionEvent extends Action
 			// current behavior.
 			//
 			String keyValue = pp.getString(key);
-			log.debug("Key Value is " + keyValue);
+			log.debug("Key Value is {}", keyValue);
 			if (StringUtils.isEmpty(keyValue))
 			{
-				log.debug("Key is empty, rejecting " + key);
+				log.debug("Key is empty, rejecting {}", key);
 				return false;
 			}
 
@@ -357,7 +354,7 @@ public abstract class ActionEvent extends Action
 			{
 				if (Integer.parseInt(keyValue) != 0)
 				{
-					log.debug("Integer != 0, accepting " + key);
+					log.debug("Integer != 0, accepting {}", key);
 					return true;
 				}
 			}
@@ -370,7 +367,7 @@ public abstract class ActionEvent extends Action
 				return true;
 			}
 		}
-		log.debug("Rejecting " + key);
+		log.debug("Rejecting {}", key);
 		return false;
 	}
 }

@@ -32,8 +32,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public abstract class Screen
-    extends Assembler
+public abstract class Screen implements Assembler
 {
     /** Prefix for screen related classes and templates */
     public static final String PREFIX = "screens";

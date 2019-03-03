@@ -29,8 +29,7 @@ import org.apache.turbine.pipeline.PipelineData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public abstract class Page
-    extends Assembler
+public abstract class Page implements Assembler
 {
     /** Prefix for page related classes and templates */
     public static final String PREFIX = "pages";

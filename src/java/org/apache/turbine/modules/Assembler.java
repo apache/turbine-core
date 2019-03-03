@@ -31,7 +31,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public abstract class Assembler
+public interface Assembler
 {
     /**
      * This can go once RunData is replaced...
@@ -39,7 +39,7 @@ public abstract class Assembler
      * @param pipelineData Turbine request data
      * @return RunData extracted from PipelineData
      */
-    public final RunData getRunData(PipelineData pipelineData)
+    default RunData getRunData(PipelineData pipelineData)
     {
         if (!(pipelineData instanceof RunData))
         {
@@ -54,5 +54,5 @@ public abstract class Assembler
      *
      * @return the prefix
      */
-    public abstract String getPrefix();
+    String getPrefix();
 }
