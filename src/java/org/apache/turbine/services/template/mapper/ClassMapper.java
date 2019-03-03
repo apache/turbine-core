@@ -26,8 +26,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.template.TemplateService;
@@ -60,7 +60,7 @@ public class ClassMapper
     private Loader<? extends Assembler> loader = null;
 
     /** Logging */
-    private static Log log = LogFactory.getLog(ClassMapper.class);
+    private static final Logger log = LogManager.getLogger(ClassMapper.class);
 
     /**
      * Default C'tor. If you use this C'tor, you must use
@@ -88,7 +88,7 @@ public class ClassMapper
     public void setLoader(Loader<? extends Assembler> loader)
     {
         this.loader = loader;
-        log.debug("Loader is " + this.loader);
+        log.debug("Loader is {}", this.loader);
     }
 
     /**
@@ -101,7 +101,7 @@ public class ClassMapper
     @Override
 	public String doMapping(String template)
     {
-        log.debug("doMapping(" + template + ")");
+        log.debug("doMapping({})", template);
 
         // Copy our elements into an array
         List<String> components
@@ -115,7 +115,7 @@ public class ClassMapper
         String className = components.get(componentSize);
         components.remove(componentSize--);
 
-        log.debug("className is " + className);
+        log.debug("className is {}", className);
 
         // Strip off a possible Extension
         int dotIndex = className.lastIndexOf(TemplateService.EXTENSION_SEPARATOR);
@@ -131,7 +131,7 @@ public class ClassMapper
             String pkg = StringUtils.join(components.iterator(), String.valueOf(separator));
             StringBuilder testName = new StringBuilder();
 
-            log.debug("classPackage is now: " + pkg);
+            log.debug("classPackage is now: {}", pkg);
 
             if (!components.isEmpty())
             {
@@ -143,16 +143,16 @@ public class ClassMapper
                 ? className
                 : TemplateService.DEFAULT_NAME);
 
-            log.debug("Looking for " + testName);
+            log.debug("Looking for {}", testName);
             try
             {
                 loader.getAssembler(testName.toString());
-                log.debug("Found it, returning " + testName);
+                log.debug("Found it, returning {}", testName);
                 return testName.toString();
             }
             catch (TurbineException e)
             {
-                log.error("Turbine Exception Class mapping  ",e);
+                log.error("Turbine Exception Class mapping", e);
             }
             catch (Exception e)
             {

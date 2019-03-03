@@ -31,8 +31,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A generic implementation of a <code>ServiceBroker</code> which
@@ -105,7 +105,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
     private final ConcurrentHashMap<String, Object> serviceObjects = new ConcurrentHashMap<String, Object>();
 
     /** Logging */
-    private static Log log = LogFactory.getLog(BaseServiceBroker.class);
+    private static final Logger log = LogManager.getLogger(BaseServiceBroker.class);
 
     /**
      * Application root path as set by the
@@ -263,7 +263,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
                     && ("." + keyParts[2]).equals(CLASSNAME_SUFFIX))
             {
                 String serviceKey = keyParts[1];
-                log.info("Added Mapping for Service: " + serviceKey);
+                log.info("Added Mapping for Service: {}", serviceKey);
 
                 if (!mapping.containsKey(serviceKey))
                 {
@@ -276,7 +276,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
                         // detect TurbineServiceProviders
                         if (checkForInterface(TurbineServiceProvider.class, clazz.getInterfaces()))
                         {
-                            log.info("Found a TurbineServiceProvider: " + serviceKey + " - initializing it early");
+                            log.info("Found a TurbineServiceProvider: {} - initializing it early", serviceKey);
                             earlyInitFlags.put(SERVICE_PREFIX + serviceKey + ".earlyInit", "true");
                         }
                     }
@@ -289,12 +289,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
                     {
                         throw t;
                     }
-                    catch (ClassNotFoundException e)
-                    {
-                        throw new InitializationException("Class " + className +
-                            " is unavailable. Check your jars and classes.", e);
-                    }
-                    catch (NoClassDefFoundError e)
+                    catch (ClassNotFoundException | NoClassDefFoundError e)
                     {
                         throw new InitializationException("Class " + className +
                             " is unavailable. Check your jars and classes.", e);
@@ -390,11 +385,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
         {
             initServices(false);
         }
-        catch (InstantiationException notThrown)
-        {
-            log.debug("Caught non fatal exception", notThrown);
-        }
-        catch (InitializationException notThrown)
+        catch (InstantiationException | InitializationException notThrown)
         {
             log.debug("Caught non fatal exception", notThrown);
         }
@@ -432,11 +423,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
                 }
                         // In case of an exception, file an error message; the
                         // system may be still functional, though.
-                catch (InstantiationException e)
-                {
-                    log.error(e);
-                }
-                catch (InitializationException e)
+                catch (InstantiationException | InitializationException e)
                 {
                     log.error(e);
                 }
@@ -455,9 +442,9 @@ public abstract class BaseServiceBroker implements ServiceBroker
         // Only start up services that have their earlyInit flag set.
         if (getConfiguration(name).getBoolean("earlyInit", false))
         {
-            log.info("Start Initializing service (early): " + name);
+            log.info("Start Initializing service (early): {}", name);
             initService(name);
-            log.info("Finish Initializing service (early): " + name);
+            log.info("Finish Initializing service (early): {}", name);
         }
     }
 
@@ -524,7 +511,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
         for (Iterator<String> serviceNames = reverseServicesList.iterator(); serviceNames.hasNext();)
         {
             serviceName = serviceNames.next();
-            log.info("Shutting down service: " + serviceName);
+            log.info("Shutting down service: {}", serviceName);
             shutdownService(serviceName);
         }
     }
@@ -553,9 +540,9 @@ public abstract class BaseServiceBroker implements ServiceBroker
 	                {
 	                    if (!service.getInit())
 	                    {
-	                        log.info("Start Initializing service (late): " + name);
+	                        log.info("Start Initializing service (late): {}", name);
 	                        service.init();
-	                        log.info("Finish Initializing service (late): " + name);
+	                        log.info("Finish Initializing service (late): {}", name);
 	                    }
 	                }
 	            }

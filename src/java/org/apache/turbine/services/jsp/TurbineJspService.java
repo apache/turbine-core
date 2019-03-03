@@ -29,8 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
@@ -63,7 +63,7 @@ public class TurbineJspService
     private int bufferSize;
 
     /** Logging */
-    private static Log log = LogFactory.getLog(TurbineJspService.class);
+    private static Logger log = LogManager.getLogger(TurbineJspService.class);
 
     /**
      * Load all configured components and initialize them. This is
@@ -278,16 +278,16 @@ public class TurbineJspService
     @Override
     public String getRelativeTemplateName(String template)
     {
-        template = warnAbsolute(template);
+        String relativeTemplate = warnAbsolute(template);
 
         // Find which template path the template is in
         // We have a 1:1 match between relative and absolute
         // pathes so we can use the index for translation.
         for (int i = 0; i < templatePaths.length; i++)
         {
-            if (templateExists(templatePaths[i], template))
+            if (templateExists(templatePaths[i], relativeTemplate))
             {
-                return relativeTemplatePaths[i] + "/" + template;
+                return relativeTemplatePaths[i] + "/" + relativeTemplate;
             }
         }
         return null;
@@ -303,8 +303,7 @@ public class TurbineJspService
     {
         if (template.startsWith("/"))
         {
-            log.warn("Template " + template
-                + " has a leading /, which is wrong!");
+            log.warn("Template {} has a leading /, which is wrong!", template);
             return template.substring(1);
         }
         return template;

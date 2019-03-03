@@ -35,12 +35,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
@@ -150,7 +150,7 @@ public class DefaultTurbineRunData
     private final Map<String, Object> debugVariables = new HashMap<String, Object>();
 
     /** Logging */
-    private static final Log log = LogFactory.getLog(DefaultTurbineRunData.class);
+    private static final Logger log = LogManager.getLogger(DefaultTurbineRunData.class);
 
     /**
      * Attempts to get the User object from the session.  If it does
@@ -751,7 +751,7 @@ public class DefaultTurbineRunData
     @Override
     public void setUser(User user)
     {
-        log.debug("user set: " + user.getName());
+        log.debug("user set: {}", user::getName);
         get(Turbine.class).put(User.class, user);
     }
 
@@ -899,7 +899,7 @@ public class DefaultTurbineRunData
     @Override
     public void setCharSet(String charSet)
     {
-        log.debug("setCharSet(" + charSet + ")");
+        log.debug("setCharSet({})", charSet);
         this.charSet = charSet;
     }
 

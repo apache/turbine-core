@@ -1,6 +1,8 @@
 package org.apache.turbine.util.template;
 
 
+import org.apache.logging.log4j.LogManager;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -21,8 +23,7 @@ package org.apache.turbine.util.template;
  */
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.services.TurbineServices;
@@ -51,7 +52,7 @@ import org.apache.turbine.util.RunData;
 public class TemplateScreen
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(TemplateScreen.class);
+    private static final Logger log = LogManager.getLogger(TemplateScreen.class);
 
     /* The RunData object. */
     private final RunData data;

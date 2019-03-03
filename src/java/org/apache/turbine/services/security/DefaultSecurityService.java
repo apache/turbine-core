@@ -22,8 +22,6 @@ package org.apache.turbine.services.security;
 
 
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.security.GroupManager;
 import org.apache.fulcrum.security.PermissionManager;
 import org.apache.fulcrum.security.RoleManager;
@@ -40,6 +38,8 @@ import org.apache.fulcrum.security.util.PasswordMismatchException;
 import org.apache.fulcrum.security.util.PermissionSet;
 import org.apache.fulcrum.security.util.RoleSet;
 import org.apache.fulcrum.security.util.UnknownEntityException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.ServiceManager;
@@ -95,7 +95,7 @@ public class DefaultSecurityService
     private static volatile Group globalGroup = null;
 
     /** Logging */
-    private static Log log = LogFactory.getLog(DefaultSecurityService.class);
+    private static final Logger log = LogManager.getLogger(DefaultSecurityService.class);
 
     /**
      * Initializes the SecurityService, locating the appropriate UserManager
@@ -371,8 +371,8 @@ public class DefaultSecurityService
     }
 
     /**
-     * Retrieves a User object representing an individual who has 
-     * properly identified themselves with their verified 
+     * Retrieves a User object representing an individual who has
+     * properly identified themselves with their verified
      * username and password
      *
      * @param username The user name.
@@ -853,14 +853,14 @@ public class DefaultSecurityService
         }
         modelManager.revoke(user.getUserDelegate(), group, role);
     }
-    
+
     /**
-     * Replaces transactionally the first role with second role for the given user. 
-     * 
+     * Replaces transactionally the first role with second role for the given user.
+     *
      * @param user the user.
      * @param role the old role
      * @param newRole the new role
-     * 
+     *
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if user account, group or role is not
@@ -941,13 +941,13 @@ public class DefaultSecurityService
     {
         modelManager.revokeAll(role);
     }
-    
+
     /**
      * Revokes by default all permissions from a Role and if flag is set
      * all group and user relationships with this role
-     * 
+     *
      * This method is used when deleting a Role.
-     * 
+     *
      * @param role
      *            the Role
      * @param cascadeDelete
@@ -959,7 +959,7 @@ public class DefaultSecurityService
      */
     @Override
     public void revokeAll( Role role, boolean cascadeDelete )
-        throws DataBackendException, UnknownEntityException 
+        throws DataBackendException, UnknownEntityException
     {
         modelManager.revokeAll(role, cascadeDelete);
     }

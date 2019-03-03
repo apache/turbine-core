@@ -24,13 +24,10 @@ package org.apache.turbine.util.uri;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 
@@ -51,7 +48,7 @@ public abstract class BaseURI
                    URIConstants
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(BaseURI.class);
+    private static final Logger log = LogManager.getLogger(BaseURI.class);
 
     /** ServerData Object for scheme, name, port etc. */
     private ServerData serverData =
@@ -150,9 +147,9 @@ public abstract class BaseURI
      */
     private void init(ServerData serverData)
     {
-        log.debug("init(" + serverData + ")");
+        log.debug("init({})", serverData);
 
-        if(serverData != null)
+        if (serverData != null)
         {
             // We must clone this, because if BaseURI is used in a pull tool,
             // then the fields might be changed. If we don't clone, this might pull
@@ -202,6 +199,7 @@ public abstract class BaseURI
      *
      * @return A String with the script name.
      */
+    @Override
     public String getScriptName()
     {
         return serverData.getScriptName();
@@ -222,6 +220,7 @@ public abstract class BaseURI
      *
      * @return A String with the context path.
      */
+    @Override
     public String getContextPath()
     {
         return serverData.getContextPath();
@@ -242,6 +241,7 @@ public abstract class BaseURI
      *
      * @return A String with the server name.
      */
+    @Override
     public String getServerName()
     {
         return serverData.getServerName();
@@ -262,6 +262,7 @@ public abstract class BaseURI
      *
      * @return A String with the server port.
      */
+    @Override
     public int getServerPort()
     {
         int serverPort = serverData.getServerPort();
@@ -335,6 +336,7 @@ public abstract class BaseURI
      * @return The current Server scheme
      *
      */
+    @Override
     public String getServerScheme()
     {
         String serverScheme = serverData.getServerScheme();
@@ -357,6 +359,7 @@ public abstract class BaseURI
      *
      * @return A String containing the reference.
      */
+    @Override
     public String getReference()
     {
         return hasReference() ? reference : "";
@@ -384,7 +387,7 @@ public abstract class BaseURI
     /**
      * Set a Response Object to use when creating the
      * response string.
-     * 
+     *
      * @param response the servlet response
      */
     protected void setResponse(HttpServletResponse response)
@@ -448,7 +451,7 @@ public abstract class BaseURI
      * <p>
      * This is a convenience method to be
      * used in the Link output routines of derived classes to
-     * easily append the correct server scheme. 
+     * easily append the correct server scheme.
      * </p>
      *
      * @param sb The StringBuilder to store the scheme and port information.

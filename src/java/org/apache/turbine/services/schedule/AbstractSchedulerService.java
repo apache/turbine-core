@@ -21,8 +21,8 @@ package org.apache.turbine.services.schedule;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.TurbineException;
@@ -37,7 +37,7 @@ import org.apache.turbine.util.TurbineException;
 public abstract class AbstractSchedulerService extends TurbineBaseService implements ScheduleService
 {
     /** Logging */
-    protected static Log log = LogFactory.getLog(ScheduleService.LOGGER_NAME);
+    protected static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);
 
     /** The queue */
     protected JobQueue<JobEntry> scheduleQueue = null;
@@ -359,7 +359,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
             }
             catch (Exception e)
             {
-                log.error("Error running a Scheduled Job: " + taskName, e);
+                log.error("Error running a Scheduled Job: {}", taskName, e);
                 enabled = false;
             }
             finally

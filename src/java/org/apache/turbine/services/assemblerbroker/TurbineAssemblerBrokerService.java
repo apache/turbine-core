@@ -30,8 +30,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.AnnotationProcessor;
@@ -57,8 +57,8 @@ public class TurbineAssemblerBrokerService
         implements AssemblerBrokerService
 {
     /** Logging */
-    private static Log log
-            = LogFactory.getLog(TurbineAssemblerBrokerService.class);
+    private static Logger log
+            = LogManager.getLogger(TurbineAssemblerBrokerService.class);
 
     /** A structure that holds the registered AssemblerFactories */
     private Map<Class<?>, List<?>> factories = null;
@@ -102,7 +102,7 @@ public class TurbineAssemblerBrokerService
     {
         List<Object> names = getConfiguration().getList(type);
 
-        log.info("Registering " + names.size() + " " + type + " factories.");
+        log.info("Registering {} {} factories.", Integer.valueOf(names.size()), type);
 
         for (Iterator<Object> it = names.iterator(); it.hasNext(); )
         {
@@ -217,17 +217,11 @@ public class TurbineAssemblerBrokerService
         if (isCaching && assemblerCache.containsKey(key))
         {
             assembler = (T) assemblerCache.get(key);
-            if (log.isDebugEnabled())
-            {
-                log.debug("Found " + key + " in the cache!");
-            }
+            log.debug("Found {} in the cache!", key);
         }
         else
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Loading " + key);
-            }
+            log.debug("Loading {}", key);
             List<AssemblerFactory<T>> facs = getFactoryGroup(type);
 
             for (Iterator<AssemblerFactory<T>> it = facs.iterator(); (assembler == null) && it.hasNext();)
@@ -283,11 +277,11 @@ public class TurbineAssemblerBrokerService
         if (isCaching && loaderCache.containsKey(type))
         {
             loader = (Loader<T>) loaderCache.get(type);
-            log.debug("Found " + type + " loader in the cache!");
+            log.debug("Found {} loader in the cache!", type);
         }
         else
         {
-            log.debug("Getting Loader for " + type);
+            log.debug("Getting Loader for {}", type);
             List<AssemblerFactory<T>> facs = getFactoryGroup(type);
 
             for (Iterator<AssemblerFactory<T>> it = facs.iterator(); (loader == null) && it.hasNext();)
@@ -304,7 +298,7 @@ public class TurbineAssemblerBrokerService
 
         if (loader == null)
         {
-            log.warn("Loader for " + type + " is null.");
+            log.warn("Loader for {} is null.", type);
         }
 
         return loader;

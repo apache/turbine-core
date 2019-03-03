@@ -22,8 +22,8 @@ package org.apache.turbine.services.localization;
 import java.util.Locale;
 import java.util.MissingResourceException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.fulcrum.localization.LocalizationService;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.services.pull.ApplicationTool;
@@ -39,7 +39,7 @@ import org.apache.turbine.util.RunData;
 public class LocalizationTool implements ApplicationTool
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(LocalizationTool.class);
+    private static Logger log = LogManager.getLogger(LocalizationTool.class);
 
     /** Fulcrum Localization component */
     @TurbineService

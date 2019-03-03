@@ -63,6 +63,8 @@ public class ServletUtils
             return null;
         }
 
+        final String expandedText;
+
         // attempt to make it relative
         if (!text.startsWith("/") && !text.startsWith("./")
                 && !text.startsWith("\\") && !text.startsWith(".\\"))
@@ -70,22 +72,23 @@ public class ServletUtils
             StringBuilder sb = new StringBuilder();
             sb.append("./");
             sb.append(text);
-            text = sb.toString();
+            expandedText = sb.toString();
+        }
+        else
+        {
+            expandedText = text;
         }
 
         ServletContext context = config.getServletContext();
-        String base = context.getRealPath("/");
-
-        base = (StringUtils.isEmpty(base))
-            ? Turbine.getApplicationRoot()
-            : base;
+        String base = StringUtils.defaultIfEmpty(context.getRealPath("/"),
+                Turbine.getApplicationRoot());
 
         if (StringUtils.isEmpty(base))
         {
-            return text;
+            return expandedText;
         }
 
-        StringTokenizer tokenizer = new StringTokenizer(text, File.pathSeparator);
+        StringTokenizer tokenizer = new StringTokenizer(expandedText, File.pathSeparator);
         StringBuilder buffer = new StringBuilder();
         while (tokenizer.hasMoreTokens())
         {

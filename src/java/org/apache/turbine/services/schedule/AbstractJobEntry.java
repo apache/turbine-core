@@ -23,8 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -35,7 +35,7 @@ import org.apache.turbine.util.TurbineException;
 public abstract class AbstractJobEntry implements JobEntry
 {
     /** Logging */
-    protected static Log log = LogFactory.getLog(ScheduleService.LOGGER_NAME);
+    protected static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);
 
     /** indicates if job is currently running */
     private boolean jobIsActive = false;
@@ -288,7 +288,7 @@ public abstract class AbstractJobEntry implements JobEntry
                 // Do nothing.
         }
 
-        log.info("Next runtime for task " + this.getTask() + " is " + this.getNextRunDate());
+        log.info("Next runtime for task {} is {}", this::getTask, this::getNextRunDate);
     }
 
     /**

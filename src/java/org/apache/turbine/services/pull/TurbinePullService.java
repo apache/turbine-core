@@ -26,10 +26,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.pool.PoolService;
 import org.apache.fulcrum.security.model.turbine.TurbineUserManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.annotation.AnnotationProcessor;
 import org.apache.turbine.om.security.User;
@@ -123,7 +123,7 @@ public class TurbinePullService
         implements PullService
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(TurbinePullService.class);
+    private static Logger log = LogManager.getLogger(TurbinePullService.class);
 
     /** Reference to the pool service */
     private PoolService pool = null;
@@ -250,8 +250,7 @@ public class TurbinePullService
         // be refreshed on a per request basis.
         if (refreshToolsPerRequest)
         {
-            log.info("Pull Model tools will "
-                + "be refreshed on a per request basis.");
+            log.info("Pull Model tools will be refreshed on a per request basis.");
         }
     }
 
@@ -338,14 +337,12 @@ public class TurbinePullService
                 // Add the tool to the list being built.
                 tools.add(new ToolData(toolName, toolClassName, toolClass));
 
-                log.info("Tool " + toolClassName
-                    + " to add to the context as '$" + toolName + "'");
+                log.info("Tool {} to add to the context as '${}'", toolClassName, toolName);
             }
             // NoClassDefFoundError + ClassNotFoundException
             catch (Throwable e)
             {
-                log.error("Cannot instantiate tool class "
-                    + toolClassName + ": ", e);
+                log.error("Cannot instantiate tool class {}", toolClassName, e);
             }
         }
 
@@ -489,9 +486,8 @@ public class TurbinePullService
             }
             catch (Exception e)
             {
-                log.error("Could not instantiate global tool "
-                    + toolData.toolName + " from a "
-                    + toolData.toolClassName + " object", e);
+                log.error("Could not instantiate global tool {} from a {} object",
+                    toolData.toolName, toolData.toolClassName, e);
             }
         }
     }
@@ -521,9 +517,8 @@ public class TurbinePullService
             }
             catch (Exception e)
             {
-                log.error("Could not instantiate request tool "
-                    + toolData.toolName + " from a "
-                    + toolData.toolClassName + " object", e);
+                log.error("Could not instantiate request tool {} from a {} object",
+                        toolData.toolName, toolData.toolClassName, e);
             }
         }
     }
@@ -553,9 +548,8 @@ public class TurbinePullService
             }
             catch (Exception e)
             {
-                log.error("Could not instantiate request tool "
-                    + toolData.toolName + " from a "
-                    + toolData.toolClassName + " object", e);
+                log.error("Could not instantiate request tool {} from a {} object",
+                        toolData.toolName, toolData.toolClassName, e);
             }
         }
     }
@@ -629,22 +623,19 @@ public class TurbinePullService
                         }
 
                         // put the tool in the context
-                        log.debug("Adding " + tool + " to ctx as "
-                                + toolData.toolName);
+                        log.debug("Adding {} to ctx as {}", tool, toolData.toolName);
                         context.put(toolData.toolName, tool);
                     }
                     else
                     {
-                        log.info("Tool " + toolData.toolName
-                                + " was null, skipping it.");
+                        log.info("Tool {} was null, skipping it.", toolData.toolName);
                     }
                 }
             }
             catch (Exception e)
             {
-                log.error("Could not instantiate session tool "
-                    + toolData.toolName + " from a "
-                    + toolData.toolClassName + " object", e);
+                log.error("Could not instantiate session tool {} from a {} object",
+                        toolData.toolName, toolData.toolClassName, e);
             }
         }
     }
@@ -715,22 +706,19 @@ public class TurbinePullService
                         }
 
                         // put the tool in the context
-                        log.debug("Adding " + tool + " to ctx as "
-                                + toolData.toolName);
+                        log.debug("Adding {} to ctx as {}", tool, toolData.toolName);
                         context.put(toolData.toolName, tool);
                     }
                     else
                     {
-                        log.info("Tool " + toolData.toolName
-                                + " was null, skipping it.");
+                        log.info("Tool {} was null, skipping it.", toolData.toolName);
                     }
                 }
             }
             catch (Exception e)
             {
-                log.error("Could not instantiate session tool "
-                    + toolData.toolName + " from a "
-                    + toolData.toolClassName + " object", e);
+                log.error("Could not instantiate session tool {} from a {} object",
+                        toolData.toolName, toolData.toolClassName, e);
             }
         }
     }
@@ -799,23 +787,20 @@ public class TurbinePullService
                         }
 
                         // put the tool in the context
-                        log.debug("Adding " + tool + " to ctx as "
-                                + toolData.toolName);
+                        log.debug("Adding {} to ctx as {}", tool, toolData.toolName);
                         log.warn("Persistent scope tools are deprecated.");
                         context.put(toolData.toolName, tool);
                     }
                     else
                     {
-                        log.info("Tool " + toolData.toolName
-                                + " was null, skipping it.");
+                        log.info("Tool {} was null, skipping it.", toolData.toolName);
                     }
                 }
             }
             catch (Exception e)
             {
-                log.error("Could not instantiate perm tool "
-                    + toolData.toolName + " from a "
-                    + toolData.toolClassName + " object", e);
+                log.error("Could not instantiate perm tool {} from a {} object",
+                        toolData.toolName, toolData.toolClassName, e);
             }
         }
     }
@@ -882,23 +867,20 @@ public class TurbinePullService
                         }
 
                         // put the tool in the context
-                        log.debug("Adding " + tool + " to ctx as "
-                                + toolData.toolName);
+                        log.debug("Adding {} to ctx as {}", tool, toolData.toolName);
                         log.warn("Persistent scope tools are deprecated.");
                         context.put(toolData.toolName, tool);
                     }
                     else
                     {
-                        log.info("Tool " + toolData.toolName
-                                + " was null, skipping it.");
+                        log.info("Tool {} was null, skipping it.", toolData.toolName);
                     }
                 }
             }
             catch (Exception e)
             {
-                log.error("Could not instantiate perm tool "
-                    + toolData.toolName + " from a "
-                    + toolData.toolClassName + " object", e);
+                log.error("Could not instantiate perm tool {} from a {} object",
+                        toolData.toolName, toolData.toolClassName, e);
             }
         }
     }

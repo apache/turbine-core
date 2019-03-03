@@ -27,10 +27,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.parser.ParserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
@@ -52,7 +52,7 @@ public class TurbineURI
         extends BaseURI
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(TurbineURI.class);
+    private static final Logger log = LogManager.getLogger(TurbineURI.class);
 
     /** Contains the PathInfo and QueryData vectors */
     private List<URIParam> [] dataVectors = null;
@@ -794,10 +794,7 @@ public class TurbineURI
 					{
 					    if (val == null)
 					    {
-					        if (log.isWarnEnabled())
-					        {
-					            log.warn("Found a null value for " + key);
-					        }
+				            log.warn("Found a null value for {}", key);
 					        // For backwards compatibility:
 					        val = "null";
 					    }
@@ -815,7 +812,7 @@ public class TurbineURI
 				}
             	catch (UnsupportedEncodingException e)
             	{
-            		log.warn("Unsupported encoding " + encoding);
+            		log.warn("Unsupported encoding {}", encoding);
 				}
             }
         }

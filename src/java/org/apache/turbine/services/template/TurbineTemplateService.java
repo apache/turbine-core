@@ -27,11 +27,11 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.factory.FactoryException;
 import org.apache.fulcrum.factory.FactoryService;
 import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Assembler;
@@ -182,7 +182,7 @@ public class TurbineTemplateService
     implements TemplateService
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(TurbineTemplateService.class);
+    private static final Logger log = LogManager.getLogger(TurbineTemplateService.class);
 
     /** Represents Page Objects */
     public static final int PAGE_KEY = 0;
@@ -289,9 +289,9 @@ public class TurbineTemplateService
         useCache = Turbine.getConfiguration().getBoolean(TurbineConstants.MODULE_CACHE_KEY,
             TurbineConstants.MODULE_CACHE_DEFAULT);
 
-        log.debug("Default Extension: " + defaultExtension);
-        log.debug("Default Template:  " + defaultTemplate);
-        log.debug("Use Caching:       " + useCache);
+        log.debug("Default Extension: {}", defaultExtension);
+        log.debug("Default Template:  {}", defaultTemplate);
+        log.debug("Use Caching:       {}", Boolean.valueOf(useCache));
 
         templateEngineRegistry = new ConcurrentHashMap<String, TemplateEngineService>();
 
@@ -788,7 +788,7 @@ public class TurbineTemplateService
             String mapperClass =
                     conf.getString(mapperProperty.toString(), mapperClasses[i]);
 
-            log.info("Using " + mapperClass + " to map " + mapperNames[i] + " elements");
+            log.info("Using {} to map {} elements", mapperClass, mapperNames[i]);
 
             Mapper tm = null;
 

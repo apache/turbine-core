@@ -23,8 +23,8 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.uri.URIConstants;
@@ -44,12 +44,13 @@ import org.apache.turbine.util.uri.URIConstants;
 public class DetermineTargetValve
     extends AbstractValve
 {
-    private static final Log log
-        = LogFactory.getLog(DetermineTargetValve.class);
+    private static final Logger log
+        = LogManager.getLogger(DetermineTargetValve.class);
 
     /**
      * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
      */
+    @Override
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
@@ -76,10 +77,7 @@ public class DetermineTargetValve
 
         }
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("Screen Target is now: " + runData.getScreen());
-        }
+        log.debug("Screen Target is now: {}", runData::getScreen);
 
         // Pass control to the next Valve in the Pipeline
         context.invokeNext(pipelineData);

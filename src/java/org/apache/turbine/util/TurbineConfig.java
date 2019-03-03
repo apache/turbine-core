@@ -50,8 +50,8 @@ import javax.servlet.descriptor.JspConfigDescriptor;
 
 import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.activity.Initializable;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineConfiguration;
@@ -62,11 +62,11 @@ import org.apache.turbine.annotation.TurbineConfiguration;
  * If you need to use Turbine outside of a servlet container, you can
  * use this class for initialization of the Turbine servlet.
  * </p>
- * 
+ *
  * <pre>
  * TurbineConfig config = new TurbineConfig(".", "conf/TurbineResources.properties");
  * </pre>
- * 
+ *
  * <p>
  * All paths referenced in TurbineResources.properties and the path to
  * the properties file itself (the second argument) will be resolved
@@ -75,7 +75,7 @@ import org.apache.turbine.annotation.TurbineConfiguration;
  * discarding the references to objects created above. They are not needed,
  * once everything is initialized.
  * </p>
- * 
+ *
  * <p>
  * In order to initialize the Services Framework outside of the Turbine Servlet,
  * you need to call the <code>init()</code> method. By default, this will
@@ -96,7 +96,7 @@ import org.apache.turbine.annotation.TurbineConfiguration;
 public class TurbineConfig
         implements ServletConfig, ServletContext, Initializable, Disposable
 {
-	
+
     @TurbineConfiguration( TurbineConstants.SESSION_TIMEOUT_KEY )
     protected int timeout = TurbineConstants.SESSION_TIMEOUT_DEFAULT;
 
@@ -132,7 +132,7 @@ public class TurbineConfig
     private Turbine turbine;
 
     /** Logging */
-    private final Log log = LogFactory.getLog(this.getClass());
+    private final Logger log = LogManager.getLogger(this.getClass());
 
     /**
      * Constructs a new TurbineConfig.
@@ -269,16 +269,8 @@ public class TurbineConfig
 
         if (log.isDebugEnabled())
         {
-            StringBuilder sb = new StringBuilder();
-
-            sb.append("TurbineConfig.getRealPath: path '");
-            sb.append(path);
-            sb.append("' translated to '");
-            sb.append(f.getPath());
-            sb.append("' ");
-            sb.append(f.exists() ? "" : "not ");
-            sb.append("found");
-            log.debug(sb.toString());
+            log.debug("TurbineConfig.getRealPath: path '{}' translated to '{}' {}found",
+                    path, f.getPath(), f.exists() ? "" : "not ");
         }
 
         if (f.exists())
@@ -287,7 +279,7 @@ public class TurbineConfig
         }
         else
         {
-            log.error("getRealPath(\"" + path + "\") is undefined, returning null");
+            log.error("getRealPath(\"{}\") is undefined, returning null", path);
         }
 
         return result;

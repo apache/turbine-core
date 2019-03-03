@@ -1,5 +1,7 @@
 package org.apache.turbine.om.security;
 
+import java.util.Date;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -83,7 +85,7 @@ public interface User
      *
      * @return A Java Date with the last access date for the user.
      */
-    java.util.Date getLastAccessDate();
+    Date getLastAccessDate();
 
     /**
      * Gets the create date for this User.  This is the time at which
@@ -91,14 +93,14 @@ public interface User
      *
      * @return A Java Date with the date of creation for the user.
      */
-    java.util.Date getCreateDate();
+    Date getCreateDate();
 
     /**
      * Returns the user's last login date.
      *
      * @return A Java Date with the last login date for the user.
      */
-    java.util.Date getLastLogin();
+    Date getLastLogin();
 
     /**
      * Get an object from permanent storage.
@@ -211,7 +213,7 @@ public interface User
      *
      * @param lastLogin The last login date.
      */
-    void setLastLogin(java.util.Date lastLogin);
+    void setLastLogin(Date lastLogin);
 
     /**
      * Put an object into permanent storage.
@@ -251,7 +253,7 @@ public interface User
      *
      * @param date Creation date
      */
-    void setCreateDate(java.util.Date date);
+    void setCreateDate(Date date);
 
     /**
      * This method reports whether or not the user has been confirmed

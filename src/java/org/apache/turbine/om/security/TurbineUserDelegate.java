@@ -33,13 +33,12 @@ public interface TurbineUserDelegate {
 	 *
 	 * @return the userDelegate
 	 */
-	public abstract TurbineUser getUserDelegate();
+	TurbineUser getUserDelegate();
 
 	/**
 	 * Set the delegated user
 	 *
 	 * @param userDelegate the userDelegate to set
 	 */
-	public abstract void setUserDelegate(TurbineUser userDelegate);
-
+	void setUserDelegate(TurbineUser userDelegate);
 }

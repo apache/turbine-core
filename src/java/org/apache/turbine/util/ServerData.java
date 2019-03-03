@@ -24,10 +24,8 @@ package org.apache.turbine.util;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.util.uri.URIConstants;
 
 /**
@@ -59,7 +57,7 @@ public class ServerData
     private String  contextPath = null;
 
     /** Logging */
-    private static Log log = LogFactory.getLog(ServerData.class);
+    private static final Logger log = LogManager.getLogger(ServerData.class);
 
     /**
      * Constructor.
@@ -78,19 +76,11 @@ public class ServerData
     {
         if (log.isDebugEnabled())
         {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Constructor(");
-            sb.append(serverName);
-            sb.append(", ");
-            sb.append(serverPort);
-            sb.append(", ");
-            sb.append(serverScheme);
-            sb.append(", ");
-            sb.append(scriptName);
-            sb.append(", ");
-            sb.append(contextPath);
-            sb.append(")");
-            log.debug(sb.toString());
+            log.debug("Constructor({}, {}, {}, {}, {})", serverName,
+                    Integer.valueOf(serverPort),
+                    serverScheme,
+                    scriptName,
+                    contextPath);
         }
 
         setServerName(serverName);
@@ -107,7 +97,7 @@ public class ServerData
      */
     public ServerData(ServerData serverData)
     {
-        log.debug("Copy Constructor(" + serverData + ")");
+        log.debug("Copy Constructor({})", serverData);
 
         setServerName(serverData.getServerName());
         setServerPort(serverData.getServerPort());
@@ -136,6 +126,7 @@ public class ServerData
      *
      * @return A cloned object.
      */
+    @Override
     public Object clone()
     {
         log.debug("clone()");
@@ -159,7 +150,7 @@ public class ServerData
      */
     public void setServerName(String serverName)
     {
-        log.debug("setServerName(" + serverName + ")");
+        log.debug("setServerName({})", serverName);
         this.serverName = serverName;
     }
 
@@ -180,7 +171,7 @@ public class ServerData
      */
     public void setServerPort(int serverPort)
     {
-        log.debug("setServerPort(" + serverPort + ")");
+        log.debug("setServerPort({})", Integer.valueOf(serverPort));
         this.serverPort = serverPort;
     }
 
@@ -191,7 +182,7 @@ public class ServerData
      */
     public String getServerScheme()
     {
-        return StringUtils.isEmpty(serverScheme) ? "" : serverScheme;
+        return StringUtils.defaultIfEmpty(serverScheme, "");
     }
 
     /**
@@ -201,7 +192,7 @@ public class ServerData
      */
     public void setServerScheme(String serverScheme)
     {
-        log.debug("setServerScheme(" + serverScheme + ")");
+        log.debug("setServerScheme({})", serverScheme);
         this.serverScheme = serverScheme;
     }
 
@@ -212,7 +203,7 @@ public class ServerData
      */
     public String getScriptName()
     {
-        return StringUtils.isEmpty(scriptName) ? "" : scriptName;
+        return StringUtils.defaultIfEmpty(scriptName, "");
     }
 
     /**
@@ -222,7 +213,7 @@ public class ServerData
      */
     public void setScriptName(String scriptName)
     {
-        log.debug("setScriptName(" + scriptName + ")");
+        log.debug("setScriptName({})", scriptName);
         this.scriptName = scriptName;
     }
 
@@ -233,7 +224,7 @@ public class ServerData
      */
     public String getContextPath()
     {
-        return StringUtils.isEmpty(contextPath) ? "" : contextPath;
+        return StringUtils.defaultIfEmpty(contextPath, "");
     }
 
     /**
@@ -243,7 +234,7 @@ public class ServerData
      */
     public void setContextPath(String contextPath)
     {
-        log.debug("setContextPath(" + contextPath + ")");
+        log.debug("setContextPath({})", contextPath);
         this.contextPath = contextPath;
     }
 
@@ -274,6 +265,7 @@ public class ServerData
      *
      * @return The contents of this object as a String
      */
+    @Override
     public String toString()
     {
         StringBuilder url = new StringBuilder();

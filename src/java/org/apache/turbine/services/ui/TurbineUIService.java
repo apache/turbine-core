@@ -27,8 +27,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -60,7 +60,7 @@ public class TurbineUIService
         implements UIService
 {
     /** Logging. */
-    private static Log log = LogFactory.getLog(TurbineUIService.class);
+    private static final Logger log = LogManager.getLogger(TurbineUIService.class);
 
     /**
      * The location of the skins within the application resources directory.
@@ -271,8 +271,7 @@ public class TurbineUIService
             skins.remove(SKIN_PROPERTY_DEFAULT);
         }
         skins.remove(skinName);
-        log.debug("The skin \"" + skinName
-                + "\" was cleared (will also clear \"default\" skin).");
+        log.debug("The skin \"{}\" was cleared (will also clear \"default\" skin).", skinName);
     }
 
     /**
@@ -300,10 +299,7 @@ public class TurbineUIService
         sb.append('/').append(skinsDirectory);
         sb.append('/').append(skinName);
         sb.append('/').append(SKIN_PROPS_FILE);
-        if (log.isDebugEnabled())
-        {
-            log.debug("Loading selected skin from: " + sb.toString());
-        }
+        log.debug("Loading selected skin from: {}", sb::toString);
 
         try (InputStream is = servletService.getResourceAsStream(sb.toString()))
         {
@@ -313,18 +309,16 @@ public class TurbineUIService
         }
         catch (Exception e)
         {
-            log.error("Cannot load skin: " + skinName + ", from: "
-                    + sb.toString(), e);
+            log.error("Cannot load skin: {}, from: {}", skinName, sb.toString(), e);
             if (!StringUtils.equals(skinName, getWebappSkinName())
                     && !StringUtils.equals(skinName, SKIN_PROPERTY_DEFAULT))
             {
-                log.error("Attempting to return the skin configured for "
-                        + "webapp instead of " + skinName);
+                log.error("Attempting to return the skin configured for webapp instead of {}", skinName);
                 return getSkinProperties(getWebappSkinName());
             }
             else if (!StringUtils.equals(skinName, SKIN_PROPERTY_DEFAULT))
             {
-                log.error("Return the default skin instead of " + skinName);
+                log.error("Return the default skin instead of {}", skinName);
                 return skinProperties; // Already contains the default skin.
             }
             else

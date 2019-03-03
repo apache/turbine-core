@@ -24,8 +24,8 @@ package org.apache.turbine.services;
 import java.util.Hashtable;
 import java.util.Stack;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A generic implementation of <code>InitableBroker</code>.
@@ -70,7 +70,7 @@ public abstract class BaseInitableBroker
     protected Stack<String> stack = new Stack<String>();
 
     /** Logging */
-    private final Log log = LogFactory.getLog(this.getClass());
+    private final Logger log = LogManager.getLogger(this.getClass());
 
     /**
      * Default constructor of InitableBroker.
@@ -155,8 +155,7 @@ public abstract class BaseInitableBroker
         {
             // Shutdown of a nonexistent class was requested.
             // This does not hurt anything, so we log the error and continue.
-            log.error("Shutdown of a nonexistent class " +
-                    className + " was requested", e);
+            log.error("Shutdown of a nonexistent class {} was requested", className, e);
         }
     }
 

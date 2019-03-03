@@ -21,8 +21,8 @@ package org.apache.turbine.util;
  */
 
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * Some filter methods that have been orphaned in the Screen class.

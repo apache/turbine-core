@@ -74,24 +74,25 @@ import org.apache.turbine.util.uri.URIConstants;
 
 /**
  * <p>
- * Turbine is the main servlet for the entire system. If you
- * need to perform initialization of a service, then you should implement the
- * Services API and let your code be initialized by it.
+ * Turbine is the main servlet for the entire system. If you need to perform
+ * initialization of a service, then you should implement the Services API and
+ * let your code be initialized by it.
  * </p>
- * 
+ *
  * <p>
  * Turbine servlet recognizes the following initialization parameters.
  * </p>
- * 
+ *
  * <ul>
- * <li><code>properties</code> the path to TurbineResources.properties file
- * used to configure Turbine, relative to the application root.</li>
- * <li><code>configuration</code> the path to TurbineConfiguration.xml file
- * used to configure Turbine from various sources, relative
- * to the application root.</li>
+ * <li><code>properties</code> the path to TurbineResources.properties file used
+ * to configure Turbine, relative to the application root.</li>
+ * <li><code>configuration</code> the path to TurbineConfiguration.xml file used
+ * to configure Turbine from various sources, relative to the application
+ * root.</li>
  * <li><code>applicationRoot</code> this parameter defaults to the web context
  * of the servlet container. You can use this parameter to specify the directory
- * within the server's filesystem, that is the base of your web application.</li>
+ * within the server's filesystem, that is the base of your web
+ * application.</li>
  * </ul>
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
@@ -110,14 +111,9 @@ import org.apache.turbine.util.uri.URIConstants;
  * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
  * @version $Id$
  */
-@WebServlet(
-    name = "Turbine",
-    urlPatterns = {"/app"},
-    loadOnStartup = 1,
-    initParams={ @WebInitParam(name = TurbineConstants.APPLICATION_ROOT_KEY,
-                    value = TurbineConstants.APPLICATION_ROOT_DEFAULT),
-                 @WebInitParam(name = TurbineConfig.PROPERTIES_PATH_KEY,
-                    value = TurbineConfig.PROPERTIES_PATH_DEFAULT) } )
+@WebServlet(name = "Turbine", urlPatterns = { "/app" }, loadOnStartup = 1, initParams = {
+        @WebInitParam(name = TurbineConstants.APPLICATION_ROOT_KEY, value = TurbineConstants.APPLICATION_ROOT_DEFAULT),
+        @WebInitParam(name = TurbineConfig.PROPERTIES_PATH_KEY, value = TurbineConfig.PROPERTIES_PATH_DEFAULT) })
 @MultipartConfig
 public class Turbine extends HttpServlet
 {
@@ -125,22 +121,24 @@ public class Turbine extends HttpServlet
     private static final long serialVersionUID = -6317118078613623990L;
 
     /**
-     * Name of path info parameter used to indicate the redirected stage of
-     * a given user's initial Turbine request
+     * Name of path info parameter used to indicate the redirected stage of a
+     * given user's initial Turbine request
+     *
      * @deprecated
      */
     @Deprecated // not used
     public static final String REDIRECTED_PATHINFO_NAME = "redirected";
 
-    /** The base directory key @deprecated 
-     * */
+    /**
+     * The base directory key @deprecated
+     */
     @Deprecated // not used
     public static final String BASEDIR_KEY = "basedir";
 
     /**
      * In certain situations the init() method is called more than once,
-     * sometimes even concurrently. This causes bad things to happen,
-     * so we use this flag to prevent it.
+     * sometimes even concurrently. This causes bad things to happen, so we use
+     * this flag to prevent it.
      */
     private static boolean firstInit = true;
 
@@ -158,8 +156,7 @@ public class Turbine extends HttpServlet
     private static boolean firstDoGet = true;
 
     /**
-     * Keep all the properties of the web server in a convenient data
-     * structure
+     * Keep all the properties of the web server in a convenient data structure
      */
     private static volatile ServerData serverData = null;
 
@@ -173,9 +170,8 @@ public class Turbine extends HttpServlet
     private static ServletContext servletContext;
 
     /**
-     * The webapp root where the Turbine application
-     * is running in the servlet container.
-     * This might differ from the application root.
+     * The webapp root where the Turbine application is running in the servlet
+     * container. This might differ from the application root.
      */
     private static String webappRoot;
 
@@ -185,24 +181,18 @@ public class Turbine extends HttpServlet
     /** Which configuration method is being used */
     private enum ConfigurationStyle
     {
-        XML,
-        PROPERTIES,
-        JSON,
-        YAML,
-        UNSET
+        XML, PROPERTIES, JSON, YAML, UNSET
     }
 
-    /** Logging class from commons.logging - this may still work, due to jcl-over-slf4j */
-    //private static Log log = LogFactory.getLog(Turbine.class);
-    public static Logger log = LogManager.getLogger();
+    private static final Logger log = LogManager.getLogger(Turbine.class);
 
     /**
-     * This init method will load the default resources from a
-     * properties file.
+     * This init method will load the default resources from a properties file.
      *
      * This method is called by init(ServletConfig config)
      *
-     * @throws ServletException a servlet exception.
+     * @throws ServletException
+     *             a servlet exception.
      */
     @Override
     public void init() throws ServletException
@@ -227,8 +217,7 @@ public class Turbine extends HttpServlet
 
                 configure(config, context);
 
-                TemplateService templateService =
-                    (TemplateService)getServiceManager().getService(TemplateService.SERVICE_NAME);
+                TemplateService templateService = (TemplateService) getServiceManager().getService(TemplateService.SERVICE_NAME);
                 if (templateService == null)
                 {
                     throw new TurbineException("No Template Service configured!");
@@ -243,7 +232,7 @@ public class Turbine extends HttpServlet
             {
                 // save the exception to complain loudly later :-)
                 initFailure = e;
-                log.fatal("Turbine: init() failed: ", e);
+                log.fatal("Turbine: init() failed", e);
                 throw new ServletException("Turbine: init() failed", e);
             }
 
@@ -252,13 +241,17 @@ public class Turbine extends HttpServlet
     }
 
     /**
-     * Read the master configuration file in, configure logging
-     * and start up any early services.
+     * Read the master configuration file in, configure logging and start up any
+     * early services.
      *
-     * @param config The Servlet Configuration supplied by the container
-     * @param context The Servlet Context supplied by the container
+     * @param config
+     *            The Servlet Configuration supplied by the container
+     * @param context
+     *            The Servlet Context supplied by the container
      *
-     * @throws Exception A problem occurred while reading the configuration or performing early startup
+     * @throws Exception
+     *             A problem occurred while reading the configuration or
+     *             performing early startup
      */
 
     protected void configure(ServletConfig config, ServletContext context)
@@ -270,15 +263,16 @@ public class Turbine extends HttpServlet
         applicationRoot = findInitParameter(context, config,
                 TurbineConstants.APPLICATION_ROOT_KEY,
                 TurbineConstants.APPLICATION_ROOT_DEFAULT);
-        
+
         webappRoot = context.getRealPath("/");
         // log.info("Web Application root is " + webappRoot);
-        // log.info("Application root is "     + applicationRoot);
+        // log.info("Application root is " + applicationRoot);
 
         if (applicationRoot == null || applicationRoot.equals(TurbineConstants.WEB_CONTEXT))
         {
             applicationRoot = webappRoot;
-            // log.info("got empty or 'webContext' Application root. Application root now: " + applicationRoot);
+            // log.info("got empty or 'webContext' Application root. Application
+            // root now: " + applicationRoot);
         }
 
         // Set the applicationRoot for this webapp.
@@ -291,8 +285,8 @@ public class Turbine extends HttpServlet
         // a) By supplying an web.xml init parameter called "configuration"
         //
         // <init-param>
-        //   <param-name>configuration</param-name>
-        //   <param-value>/WEB-INF/conf/turbine.xml</param-value>
+        // <param-name>configuration</param-name>
+        // <param-value>/WEB-INF/conf/turbine.xml</param-value>
         // </init-param>
         //
         // This loads an XML based configuration file.
@@ -300,8 +294,8 @@ public class Turbine extends HttpServlet
         // b) By supplying an web.xml init parameter called "properties"
         //
         // <init-param>
-        //   <param-name>properties</param-name>
-        //   <param-value>/WEB-INF/conf/TurbineResources.properties</param-value>
+        // <param-name>properties</param-name>
+        // <param-value>/WEB-INF/conf/TurbineResources.properties</param-value>
         // </init-param>
         //
         // This loads a Properties based configuration file. Actually, these are
@@ -311,15 +305,14 @@ public class Turbine extends HttpServlet
         // known behaviour of loading a properties file called
         // /WEB-INF/conf/TurbineResources.properties relative to the
         // web application root.
-        
 
-        Path confPath =  configureApplication( config, context );
+        Path confPath = configureApplication(config, context);
 
         configureLogging(confPath);
-        
+
         //
         // Logging with log4j 2 is done via convention, finding in path
-   
+
         setTurbineServletConfig(config);
         setTurbineServletContext(context);
 
@@ -341,22 +334,19 @@ public class Turbine extends HttpServlet
         // the service manager is initialized.
         getServiceManager().init();
 
-        // Retrieve the pipeline class and then initialize it.  The pipeline
+        // Retrieve the pipeline class and then initialize it. The pipeline
         // handles the processing of a webrequest/response cycle.
-        String descriptorPath =
-            configuration.getString(
-              "pipeline.default.descriptor",
-                      TurbinePipeline.CLASSIC_PIPELINE);
+        String descriptorPath = configuration.getString(
+                "pipeline.default.descriptor",
+                TurbinePipeline.CLASSIC_PIPELINE);
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("Using descriptor path: " + descriptorPath);
-        }
+        log.debug("Using descriptor path: {}", descriptorPath);
 
-        // context resource path has to begin with slash, cft. context.getResource
-        if (!descriptorPath.startsWith( "/" ))
+        // context resource path has to begin with slash, cft.
+        // context.getResource
+        if (!descriptorPath.startsWith("/"))
         {
-            descriptorPath  = "/" + descriptorPath;
+            descriptorPath = "/" + descriptorPath;
         }
 
         try (InputStream reader = context.getResourceAsStream(descriptorPath))
@@ -372,21 +362,26 @@ public class Turbine extends HttpServlet
     }
 
     /**
-     * Checks configuraton style, resolves the location of the configuration and loads it to 
-     * internal {@link Configuration} object ({@link #configuration}).
-     *  
-     * @param config the Servlet Configuration
-     * @param context Servlet Context
-     * @return The resolved Configuration Path 
-     * @throws IOException if configuration path not found
-     * @throws ConfigurationException if failed to configure
+     * Checks configuraton style, resolves the location of the configuration and
+     * loads it to internal {@link Configuration} object
+     * ({@link #configuration}).
+     *
+     * @param config
+     *            the Servlet Configuration
+     * @param context
+     *            Servlet Context
+     * @return The resolved Configuration Path
+     * @throws IOException
+     *             if configuration path not found
+     * @throws ConfigurationException
+     *             if failed to configure
      */
-    protected Path configureApplication( ServletConfig config, ServletContext context )
-        throws IOException, ConfigurationException
+    protected Path configureApplication(ServletConfig config, ServletContext context)
+            throws IOException, ConfigurationException
     {
         ConfigurationStyle confStyle = ConfigurationStyle.UNSET;
         // first test
-        String confFile= findInitParameter(context, config,
+        String confFile = findInitParameter(context, config,
                 TurbineConfig.CONFIGURATION_PATH_KEY,
                 null);
         if (StringUtils.isNotEmpty(confFile))
@@ -397,8 +392,8 @@ public class Turbine extends HttpServlet
         {
             confFile = findInitParameter(context, config,
                     TurbineConfig.PROPERTIES_PATH_KEY,
-                                         null);
-            if (StringUtils.isNotEmpty((confFile)) )
+                    null);
+            if (StringUtils.isNotEmpty((confFile)))
             {
                 confStyle = ConfigurationStyle.PROPERTIES;
             }
@@ -406,104 +401,113 @@ public class Turbine extends HttpServlet
         // more tests ..
         // last test
         if (confStyle == ConfigurationStyle.UNSET)
-        {  // last resort
-             confFile = findInitParameter(context, config,
+        { // last resort
+            confFile = findInitParameter(context, config,
                     TurbineConfig.PROPERTIES_PATH_KEY,
                     TurbineConfig.PROPERTIES_PATH_DEFAULT);
-             confStyle = ConfigurationStyle.PROPERTIES;
+            confStyle = ConfigurationStyle.PROPERTIES;
         }
-        
+
         // First report
-        log.debug("Loading configuration (" + confStyle + ") from " + confFile);
+        log.debug("Loading configuration ({}) from {}", confStyle, confFile);
 
         // now begin loading
         Parameters params = new Parameters();
-        File confPath = getApplicationRootAsFile(); 
+        File confPath = getApplicationRootAsFile();
 
-        if (confFile.startsWith( "/" ))
+        if (confFile.startsWith("/"))
         {
-            confFile = confFile.substring( 1 ); // cft. RFC2396 should not start with a slash, if not absolute path
+            confFile = confFile.substring(1); // cft. RFC2396 should not start
+                                              // with a slash, if not absolute
+                                              // path
         }
 
-        Path confFileRelativePath =  Paths.get( confFile );// relative to later join
-        Path targetPath = Paths.get( confPath.toURI() );
-        targetPath = targetPath.resolve( confFileRelativePath );
+        Path confFileRelativePath = Paths.get(confFile);// relative to later
+                                                        // join
+        Path targetPath = Paths.get(confPath.toURI());
+        targetPath = targetPath.resolve(confFileRelativePath);
 
         // Get the target path directory
         Path targetPathDirectory = targetPath.getParent();
-        if ( targetPathDirectory != null )
+        if (targetPathDirectory != null)
         {
             // set the configuration path
             confPath = targetPathDirectory.normalize().toFile();
 
             Path targetFilePath = targetPath.getFileName();
-            if ( targetFilePath != null )
+            if (targetFilePath != null)
             {
                 // set the configuration file name
                 confFile = targetFilePath.toString();
             }
-            
+
         }
 
         switch (confStyle)
         {
             case XML:
-                // relative base path used for this and child configuration files
+                // relative base path used for this and child configuration
+                // files
                 CombinedConfigurationBuilder combinedBuilder = new CombinedConfigurationBuilder()
-                    .configure(params.fileBased()
-                        .setFileName(confFile)
-                        .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
-                        .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath.getCanonicalPath(), false)));
+                        .configure(params.fileBased()
+                                .setFileName(confFile)
+                                .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
+                                .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath.getCanonicalPath(), false)));
                 configuration = combinedBuilder.getConfiguration();
                 break;
 
             case PROPERTIES:
-                FileBasedConfigurationBuilder<PropertiesConfiguration> propertiesBuilder =
-                                new FileBasedConfigurationBuilder<>(
-                                                PropertiesConfiguration.class)
-                    .configure(params.properties()
-                        .setFileName(confFile)
-                        .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
-                        .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath.getCanonicalPath(), false)));
+                FileBasedConfigurationBuilder<PropertiesConfiguration> propertiesBuilder = new FileBasedConfigurationBuilder<>(
+                        PropertiesConfiguration.class)
+                                .configure(params.properties()
+                                        .setFileName(confFile)
+                                        .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
+                                        .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath.getCanonicalPath(), false)));
                 configuration = propertiesBuilder.getConfiguration();
                 break;
-            case JSON: case YAML:
+            case JSON:
+            case YAML:
                 throw new NotImplementedException("JSON or XAML configuration style not yet implemented!");
 
             default:
                 break;
         }
         // Now report our successful configuration to the world
-        log.info("Loaded configuration (" + confStyle + ") from " + confFile + " style: " + configuration.toString());
+        log.info("Loaded configuration ({}) from {} style: {}",
+                confStyle, confFile, configuration.toString());
 
         return targetPath;
     }
 
     /**
-     * Finds the specified servlet configuration/initialization
-     * parameter, looking first for a servlet-specific parameter, then
-     * for a global parameter, and using the provided default if not
-     * found.
-     * 
-     * @param context the servlet context
-     * @param config configuration object
-     * @param name name of parameter
-     * @param defaultValue of the parameter
+     * Finds the specified servlet configuration/initialization parameter,
+     * looking first for a servlet-specific parameter, then for a global
+     * parameter, and using the provided default if not found.
+     *
+     * @param context
+     *            the servlet context
+     * @param config
+     *            configuration object
+     * @param name
+     *            name of parameter
+     * @param defaultValue
+     *            of the parameter
      * @return String value of the parameter
      */
     protected String findInitParameter(ServletContext context,
             ServletConfig config, String name, String defaultValue)
     {
         String path = null;
+        String parameterName = name;
 
         // Try the name as provided first.
-        boolean usingNamespace = name.startsWith(TurbineConstants.CONFIG_NAMESPACE);
+        boolean usingNamespace = parameterName.startsWith(TurbineConstants.CONFIG_NAMESPACE);
         while (true)
         {
-            path = config.getInitParameter(name);
+            path = config.getInitParameter(parameterName);
             if (StringUtils.isEmpty(path))
             {
-                path = context.getInitParameter(name);
+                path = context.getInitParameter(parameterName);
                 if (StringUtils.isEmpty(path))
                 {
                     // The named parameter didn't yield a value.
@@ -514,7 +518,7 @@ public class Turbine extends HttpServlet
                     else
                     {
                         // Try again using Turbine's namespace.
-                        name = TurbineConstants.CONFIG_NAMESPACE + '.' + name;
+                        parameterName = TurbineConstants.CONFIG_NAMESPACE + '.' + parameterName;
                         usingNamespace = true;
                         continue;
                     }
@@ -530,7 +534,8 @@ public class Turbine extends HttpServlet
      * Initializes the services which need <code>PipelineData</code> to
      * initialize themselves (post startup).
      *
-     * @param data The first <code>GET</code> request.
+     * @param data
+     *            The first <code>GET</code> request.
      */
     public void init(PipelineData data)
     {
@@ -546,7 +551,7 @@ public class Turbine extends HttpServlet
                 saveServletInfo(data);
 
                 // Initialize services with the PipelineData instance
-                TurbineServices services = (TurbineServices)getServiceManager();
+                TurbineServices services = (TurbineServices) getServiceManager();
 
                 for (Iterator<String> i = services.getServiceNames(); i.hasNext();)
                 {
@@ -557,11 +562,11 @@ public class Turbine extends HttpServlet
                     {
                         try
                         {
-                            ((Initable)service).init(data);
+                            ((Initable) service).init(data);
                         }
                         catch (InitializationException e)
                         {
-                            log.warn("Could not initialize Initable " + serviceName + " with PipelineData", e);
+                            log.warn("Could not initialize Initable {} with PipelineData", serviceName, e);
                         }
                     }
                 }
@@ -614,9 +619,8 @@ public class Turbine extends HttpServlet
     }
 
     /**
-     * Get the script name. This is the initial script name.
-     * Actually this is probably not needed any more. I'll
-     * check. jvz.
+     * Get the script name. This is the initial script name. Actually this is
+     * probably not needed any more. I'll check. jvz.
      *
      * @return String initial script name.
      */
@@ -636,13 +640,13 @@ public class Turbine extends HttpServlet
     }
 
     /**
-     * Return all the Turbine Servlet information (Server Name, Port,
-     * Scheme in a ServerData structure. This is generated from the
-     * values set when initializing the Turbine and may not be correct
-     * if you're running in a clustered structure. You can provide default
-     * values in your configuration for cases where access is requied before
-     * your application is first accessed by a user.  This might be used
-     * if you need a DataURI and have no RunData object handy.
+     * Return all the Turbine Servlet information (Server Name, Port, Scheme in
+     * a ServerData structure. This is generated from the values set when
+     * initializing the Turbine and may not be correct if you're running in a
+     * clustered structure. You can provide default values in your configuration
+     * for cases where access is requied before your application is first
+     * accessed by a user. This might be used if you need a DataURI and have no
+     * RunData object handy.
      *
      * @return An initialized ServerData object
      */
@@ -650,8 +654,7 @@ public class Turbine extends HttpServlet
     {
         if (serverData == null)
         {
-            String serverName
-                    = configuration.getString(TurbineConstants.DEFAULT_SERVER_NAME_KEY);
+            String serverName = configuration.getString(TurbineConstants.DEFAULT_SERVER_NAME_KEY);
             if (serverName == null)
             {
                 log.error("ServerData Information requested from Turbine before first request!");
@@ -675,7 +678,8 @@ public class Turbine extends HttpServlet
     /**
      * Set the servlet config for this turbine webapp.
      *
-     * @param config New servlet config
+     * @param config
+     *            New servlet config
      */
     public static void setTurbineServletConfig(ServletConfig config)
     {
@@ -695,7 +699,8 @@ public class Turbine extends HttpServlet
     /**
      * Set the servlet context for this turbine webapp.
      *
-     * @param context New servlet context.
+     * @param context
+     *            New servlet context.
      */
     public static void setTurbineServletContext(ServletContext context)
     {
@@ -713,7 +718,7 @@ public class Turbine extends HttpServlet
     }
 
     /**
-     * The <code>Servlet</code> destroy method.  Invokes
+     * The <code>Servlet</code> destroy method. Invokes
      * <code>ServiceBroker</code> tear down method.
      */
     @Override
@@ -730,10 +735,14 @@ public class Turbine extends HttpServlet
     /**
      * The primary method invoked when the Turbine servlet is executed.
      *
-     * @param req Servlet request.
-     * @param res Servlet response.
-     * @throws IOException a servlet exception.
-     * @throws ServletException a servlet exception.
+     * @param req
+     *            Servlet request.
+     * @param res
+     *            Servlet response.
+     * @throws IOException
+     *             a servlet exception.
+     * @throws ServletException
+     *             a servlet exception.
      */
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -758,7 +767,7 @@ public class Turbine extends HttpServlet
                 pipelineData.put(RunData.class, runDataMap);
 
                 // If this is the first invocation, perform some
-                // initialization.  Certain services need RunData to initialize
+                // initialization. Certain services need RunData to initialize
                 // themselves.
                 if (firstDoGet)
                 {
@@ -784,10 +793,14 @@ public class Turbine extends HttpServlet
     /**
      * In this application doGet and doPost are the same thing.
      *
-     * @param req Servlet request.
-     * @param res Servlet response.
-     * @throws IOException a servlet exception.
-     * @throws ServletException a servlet exception.
+     * @param req
+     *            Servlet request.
+     * @param res
+     *            Servlet response.
+     * @throws IOException
+     *             a servlet exception.
+     * @throws ServletException
+     *             a servlet exception.
      */
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res)
@@ -808,20 +821,22 @@ public class Turbine extends HttpServlet
     }
 
     /**
-     * This method is about making sure that we catch and display
-     * errors to the screen in one fashion or another. What happens is
-     * that it will attempt to show the error using your user defined
-     * Error Screen. If that fails, then it will resort to just
-     * displaying the error and logging it all over the place
-     * including the servlet engine log file, the Turbine log file and
-     * on the screen.
+     * This method is about making sure that we catch and display errors to the
+     * screen in one fashion or another. What happens is that it will attempt to
+     * show the error using your user defined Error Screen. If that fails, then
+     * it will resort to just displaying the error and logging it all over the
+     * place including the servlet engine log file, the Turbine log file and on
+     * the screen.
      *
-     * @param pipelineData A Turbine PipelineData object.
-     * @param res Servlet response.
-     * @param t The exception to report.
+     * @param pipelineData
+     *            A Turbine PipelineData object.
+     * @param res
+     *            Servlet response.
+     * @param t
+     *            The exception to report.
      */
     protected void handleException(PipelineData pipelineData, HttpServletResponse res,
-                                       Throwable t)
+            Throwable t)
     {
         RunData data = (RunData) pipelineData;
         // make sure that the stack trace makes it the log
@@ -842,9 +857,9 @@ public class Turbine extends HttpServlet
             if (data.getTemplateInfo() != null)
             {
                 data.getTemplateInfo()
-                    .setScreenTemplate(configuration.getString(
-                            TurbineConstants.TEMPLATE_ERROR_KEY,
-                            TurbineConstants.TEMPLATE_ERROR_VM));
+                        .setScreenTemplate(configuration.getString(
+                                TurbineConstants.TEMPLATE_ERROR_KEY,
+                                TurbineConstants.TEMPLATE_ERROR_VM));
             }
 
             // Make sure to not execute an action.
@@ -867,14 +882,16 @@ public class Turbine extends HttpServlet
     /**
      * This method handles exception cases where no PipelineData object exists
      *
-     * @param res Servlet response.
-     * @param t The exception to report.
+     * @param res
+     *            Servlet response.
+     * @param t
+     *            The exception to report.
      */
     protected void handleHorribleException(HttpServletResponse res, Throwable t)
     {
         try
         {
-            res.setContentType( TurbineConstants.DEFAULT_TEXT_CONTENT_TYPE );
+            res.setContentType(TurbineConstants.DEFAULT_TEXT_CONTENT_TYPE);
             res.setStatus(200);
             PrintWriter writer = res.getWriter();
             writer.println("Horrible Exception: ");
@@ -889,11 +906,11 @@ public class Turbine extends HttpServlet
     }
 
     /**
-     * Save some information about this servlet so that
-     * it can be utilized by object instances that do not
-     * have direct access to PipelineData.
+     * Save some information about this servlet so that it can be utilized by
+     * object instances that do not have direct access to PipelineData.
      *
-     * @param data Turbine request data
+     * @param data
+     *            Turbine request data
      */
     public static synchronized void saveServletInfo(PipelineData data)
     {
@@ -909,55 +926,70 @@ public class Turbine extends HttpServlet
     }
 
     /**
-     * Checks Log4j 2 Context, loads log4File, if configured and configuration is not already located.
-     * @param logConf Configuration file path
-     * @throws IOException if path not found
+     * Checks Log4j 2 Context, loads log4File, if configured and configuration
+     * is not already located.
+     *
+     * @param logConf
+     *            Configuration file path
+     * @throws IOException
+     *             if path not found
      */
     protected void configureLogging(Path logConf) throws IOException
-    {   
+    {
         LoggerContext context = (LoggerContext) LogManager.getContext(false);
-        
-        if (context.getConfiguration().getConfigurationSource().getLocation() == null) {
-            Path log4jFile = resolveLog4j2( logConf.getParent() );
+
+        if (context.getConfiguration().getConfigurationSource().getLocation() == null)
+        {
+            Path log4jFile = resolveLog4j2(logConf.getParent());
             // configured + no other log4j configuration already found
-            if (log4jFile != null) {
+            if (log4jFile != null)
+            {
                 LogManager.getContext(null, false, log4jFile.toUri());
             }
         }
-        log.info( "resolved log4j2 location: {}", context.getConfiguration().getConfigurationSource().getLocation() );
+        log.info("resolved log4j2 location: {}", context.getConfiguration().getConfigurationSource().getLocation());
     }
-    
+
     /**
-     * Check {@value TurbineConstants#LOG4J2_CONFIG_FILE} in Turbine configuration.
-     * 
-     * @param logConfPath configuration directory
-     * @return Resolved log4j2 {@link Path} or null, if not found or configured "none".
+     * Check {@value TurbineConstants#LOG4J2_CONFIG_FILE} in Turbine
+     * configuration.
+     *
+     * @param logConfPath
+     *            configuration directory
+     * @return Resolved log4j2 {@link Path} or null, if not found or configured
+     *         "none".
      */
-    protected Path resolveLog4j2( Path logConfPath )
+    protected Path resolveLog4j2(Path logConfPath)
     {
         String log4jFile = configuration.getString(TurbineConstants.LOG4J2_CONFIG_FILE,
-                                                   TurbineConstants.LOG4J2_CONFIG_FILE_DEFAULT);
-                        
-        if (log4jFile.startsWith( "/" ))
+                TurbineConstants.LOG4J2_CONFIG_FILE_DEFAULT);
+
+        if (log4jFile.startsWith("/"))
         {
-            log4jFile = log4jFile.substring( 1 );
+            log4jFile = log4jFile.substring(1);
         }
         Path log4jTarget = null;
-        if (StringUtils.isNotEmpty(log4jFile) && !log4jFile.equalsIgnoreCase("none")) {
-            // log4j must either share path with configuration path or resolved relatively
-            
-            if ( logConfPath != null )
+        if (StringUtils.isNotEmpty(log4jFile) && !log4jFile.equalsIgnoreCase("none"))
+        {
+            // log4j must either share path with configuration path or resolved
+            // relatively
+
+            if (logConfPath != null)
             {
                 Path log4jFilePath = Paths.get(log4jFile);
-                Path logFilePath = logConfPath.resolve( log4jFilePath );
-                if ( logFilePath != null && logFilePath.toFile().exists() )
+                Path logFilePath = logConfPath.resolve(log4jFilePath);
+                if (logFilePath != null && logFilePath.toFile().exists())
                 {
                     log4jTarget = logFilePath.normalize();
-                } else {
+                }
+                else
+                {
                     // fall back just using the filename, if path match
-                    if (log4jFilePath != null && log4jFilePath.getParent() != null && logConfPath.endsWith(log4jFilePath.getParent() )) {
-                        logFilePath = logConfPath.resolve( log4jFilePath.getFileName());
-                        if ( logFilePath != null && logFilePath.toFile().exists() ) {
+                    if (log4jFilePath != null && log4jFilePath.getParent() != null && logConfPath.endsWith(log4jFilePath.getParent()))
+                    {
+                        logFilePath = logConfPath.resolve(log4jFilePath.getFileName());
+                        if (logFilePath != null && logFilePath.toFile().exists())
+                        {
                             log4jTarget = logFilePath.normalize();
                         }
                     }
@@ -966,10 +998,12 @@ public class Turbine extends HttpServlet
         }
         return log4jTarget;
     }
+
     /**
      * Set the application root for the webapp.
      *
-     * @param val New app root.
+     * @param val
+     *            New app root.
      */
     public static void setApplicationRoot(String val)
     {
@@ -987,8 +1021,7 @@ public class Turbine extends HttpServlet
     }
 
     /**
-     * Get the application root for this Turbine webapp as a
-     * file object.
+     * Get the application root for this Turbine webapp as a file object.
      *
      * @return File applicationRootFile
      */
@@ -998,11 +1031,11 @@ public class Turbine extends HttpServlet
     }
 
     /**
-     * Used to get the real path of configuration and resource
-     * information. This can be used by an app being
-     * developed in a standard CVS layout.
+     * Used to get the real path of configuration and resource information. This
+     * can be used by an app being developed in a standard CVS layout.
      *
-     * @param path path translated to the application root
+     * @param path
+     *            path translated to the application root
      * @return the real path
      */
     public static String getRealPath(String path)
@@ -1030,7 +1063,9 @@ public class Turbine extends HttpServlet
      *
      * @return the default input encoding.
      *
-     * @deprecated Use {@link org.apache.turbine.pipeline.DefaultSetEncodingValve} to set default encoding
+     * @deprecated Use
+     *             {@link org.apache.turbine.pipeline.DefaultSetEncodingValve}
+     *             to set default encoding
      */
     @Deprecated
     public static String getDefaultInputEncoding()
@@ -1040,6 +1075,7 @@ public class Turbine extends HttpServlet
 
     /**
      * Static Helper method for looking up the RunDataService
+     *
      * @return A RunDataService
      */
     private RunDataService getRunDataService()

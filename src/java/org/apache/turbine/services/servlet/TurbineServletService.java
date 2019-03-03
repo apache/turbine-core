@@ -28,8 +28,8 @@ import java.net.URL;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.ServletUtils;
@@ -52,7 +52,7 @@ public class TurbineServletService
         extends TurbineBaseService implements ServletService
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(TurbineServletService.class);
+    private static final Logger log = LogManager.getLogger(TurbineServletService.class);
 
     /** The servlet context for this servlet */
     private ServletContext servletContext = null;
@@ -91,6 +91,7 @@ public class TurbineServletService
      * @return an URL object or null is the uri is malformed or
      * can't be resolved
      */
+    @Override
     public URL getResource(String uri)
     {
         if (servletContext == null)
@@ -128,6 +129,7 @@ public class TurbineServletService
      * @param uri the URI to resolve
      * @return an InputStream on the URI content or null
      */
+    @Override
     public InputStream getResourceAsStream(String uri)
     {
         if (servletContext == null)
@@ -148,6 +150,7 @@ public class TurbineServletService
      * @param uri the URI to resolve
      * @return the full system path of this URI
      */
+    @Override
     public String getRealPath(String uri)
     {
         if (getServletContext() == null || uri == null)
@@ -166,6 +169,7 @@ public class TurbineServletService
      *
      * @return turbine servlet config
      */
+    @Override
     public ServletConfig getServletConfig()
     {
         return servletConfig;
@@ -177,6 +181,7 @@ public class TurbineServletService
      *
      * @return turbine servlet context
      */
+    @Override
     public ServletContext getServletContext()
     {
         return servletContext;
@@ -189,6 +194,7 @@ public class TurbineServletService
      *
      * @return String
      */
+    @Override
     public String getServerScheme()
     {
         return Turbine.getServerScheme();
@@ -201,6 +207,7 @@ public class TurbineServletService
      *
      * @return String
      */
+    @Override
     public String getServerName()
     {
         return Turbine.getServerName();
@@ -213,6 +220,7 @@ public class TurbineServletService
      *
      * @return String
      */
+    @Override
     public String getServerPort()
     {
         return Turbine.getServerPort();
@@ -224,6 +232,7 @@ public class TurbineServletService
      *
      * @return String
      */
+    @Override
     public String getContextPath()
     {
         return Turbine.getContextPath();

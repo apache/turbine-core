@@ -24,9 +24,9 @@ package org.apache.turbine.modules.layouts;
 import java.io.StringReader;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.xslt.XSLTService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.annotation.TurbineService;
@@ -61,7 +61,7 @@ import org.apache.velocity.context.Context;
 public class VelocityXslLayout extends Layout
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(VelocityXslLayout.class);
+    private static Logger log = LogManager.getLogger(VelocityXslLayout.class);
 
     /** The prefix for lookup up layout pages */
     private final String prefix = Layout.PREFIX + "/";
@@ -97,7 +97,7 @@ public class VelocityXslLayout extends Layout
 
         String screenName = data.getScreen();
 
-        log.debug("Loading Screen " + screenName);
+        log.debug("Loading Screen {}", screenName);
 
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
@@ -116,7 +116,7 @@ public class VelocityXslLayout extends Layout
         // (done by the TemplateInfo object)
         String templateName = data.getTemplateInfo().getLayoutTemplate();
 
-        log.debug("Now trying to render layout " + templateName);
+        log.debug("Now trying to render layout {}", templateName);
 
         // Now, generate the layout template.
         String temp = velocityService.handleRequest(context,

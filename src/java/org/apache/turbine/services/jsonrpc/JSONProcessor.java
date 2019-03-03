@@ -23,8 +23,8 @@ import java.io.CharArrayWriter;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jabsorb.JSONRPCBridge;
 import org.jabsorb.JSONRPCResult;
 import org.json.JSONArray;
@@ -39,7 +39,7 @@ import org.json.JSONObject;
 public class JSONProcessor
 {
     /** Log. */
-    private static Log log = LogFactory.getLog(JSONProcessor.class);
+    private static Logger log = LogManager.getLogger(JSONProcessor.class);
 
     /**
      * Process a JSON RPC call
@@ -76,14 +76,11 @@ public class JSONProcessor
         }
         catch (JSONException e)
         {
-            log.error(".processCall(): can't parse call: " + cdata, e);
+            log.error(".processCall(): can't parse call: {}", cdata, e);
             json_res = JSONRPCResult.MSG_ERR_PARSE;
         }
         // Write the response
-        if (log.isDebugEnabled())
-        {
-            log.debug(".processCall():  returns " + json_res.toString());
-        }
+        log.debug(".processCall():  returns ", json_res::toString);
         return json_res;
     }
 

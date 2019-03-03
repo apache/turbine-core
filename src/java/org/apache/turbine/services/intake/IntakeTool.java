@@ -25,14 +25,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.fulcrum.intake.IntakeException;
 import org.apache.fulcrum.intake.IntakeService;
 import org.apache.fulcrum.intake.Retrievable;
 import org.apache.fulcrum.intake.model.Group;
 import org.apache.fulcrum.parser.ValueParser;
 import org.apache.fulcrum.pool.Recyclable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
@@ -52,7 +53,7 @@ public class IntakeTool
         implements ApplicationTool, Recyclable
 {
     /** Used for logging */
-    protected static final Log log = LogFactory.getLog(IntakeTool.class);
+    protected static final Logger log = LogManager.getLogger(IntakeTool.class);
 
     /** Constant for default key */
     public static final String DEFAULT_KEY = "_0";
@@ -113,7 +114,7 @@ public class IntakeTool
 
         String[] groupKeys = pp.getStrings(INTAKE_GRP);
         String[] groupNames = null;
-        if (groupKeys == null || groupKeys.length == 0)
+        if (ArrayUtils.isEmpty(groupKeys))
         {
             groupNames = intakeService.getGroupNames();
         }
@@ -124,7 +125,6 @@ public class IntakeTool
             {
                 groupNames[i] = intakeService.getGroupName(groupKeys[i]);
             }
-
         }
 
         for (int i = groupNames.length - 1; i >= 0; i--)
@@ -136,10 +136,8 @@ public class IntakeTool
 
                 if (foundGroups != null)
                 {
-                    for (Group group : foundGroups)
-                    {
-                        groups.put(group.getObjectKey(), group);
-                    }
+                    foundGroups.forEach(
+                            group -> groups.put(group.getObjectKey(), group));
                 }
             }
             catch (IntakeException e)
@@ -462,7 +460,7 @@ public class IntakeTool
             }
             catch (IntakeException ie)
             {
-                log.error("Tried to release unknown group " + group.getIntakeGroupName(), ie);
+                log.error("Tried to release unknown group {}", group.getIntakeGroupName(), ie);
             }
         }
     }
@@ -528,8 +526,8 @@ public class IntakeTool
             }
             catch (IntakeException ie)
             {
-                log.error("Tried to release unknown group "
-                        + group.getIntakeGroupName());
+                log.error("Tried to release unknown group {}",
+                        group.getIntakeGroupName(), ie);
             }
         }
 

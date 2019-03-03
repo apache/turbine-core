@@ -157,7 +157,7 @@ public class SecurityServiceTest extends BaseUnit5Test
 
         boolean ugrFound = false;
         TurbineUserGroupRole ugrTest = null;
-        for (TurbineUserGroupRole ugr : ((TurbineUser) user).getUserGroupRoleSet())
+        for (TurbineUserGroupRole ugr : user.getUserGroupRoleSet())
         {
             if (ugr.getUser().equals(user) && ugr.getGroup().equals(group) && ugr.getRole().equals(role))
             {

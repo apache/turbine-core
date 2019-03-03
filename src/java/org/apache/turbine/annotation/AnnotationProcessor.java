@@ -28,9 +28,9 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.ServiceManager;
@@ -48,7 +48,7 @@ import org.apache.turbine.util.TurbineException;
 public class AnnotationProcessor
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(AnnotationProcessor.class);
+    private static Logger log = LogManager.getLogger(AnnotationProcessor.class);
 
     /** Annotation cache */
     private static ConcurrentMap<String, Annotation[]> annotationCache = new ConcurrentHashMap<String, Annotation[]>();
@@ -75,19 +75,19 @@ public class AnnotationProcessor
         }
         return annotations;
     }
-    
+
     public enum ConditionType
     {
-        COMPOUND, ANY; 
+        COMPOUND, ANY;
     }
-    
+
     /**
      * Check if the object given is authorized to be executed based on its annotations
-     * 
+     *
      * The method will return false if one of the annotations denies execution
-     * 
+     *
      * @see #isAuthorized(AccessibleObject, TurbineAccessControlList, ConditionType)
-     * 
+     *
      * @param <A> ACL instance
      * @param object accessible object to test
      * @param acl access control list
@@ -100,7 +100,7 @@ public class AnnotationProcessor
 
     /**
      * Check if the object given is authorized to be executed based on its annotations
-     * The method's return value depends on the conditonType, refer to the ConditionType 
+     * The method's return value depends on the conditonType, refer to the ConditionType
      *
      * @param <A> ACL instance
      * @param object the object
@@ -120,7 +120,7 @@ public class AnnotationProcessor
                 TurbineRequiredRole trr = (TurbineRequiredRole) annotation;
                 String[] roleNames = trr.value();
                 String group = trr.group();
-                
+
                 if (StringUtils.isEmpty(group)) // global group
                 {
                     for (String roleName : roleNames)
@@ -170,7 +170,7 @@ public class AnnotationProcessor
                 TurbineRequiredPermission trp = (TurbineRequiredPermission) annotation;
                 String[] permissionNames = trp.value();
                 String group = trp.group();
-                
+
                 if (StringUtils.isEmpty(group)) // global group
                 {
                     for (String permissionName : permissionNames)
@@ -214,10 +214,10 @@ public class AnnotationProcessor
                 }
             }
         }
-        
+
         return true;
     }
-    
+
     /**
      * Search for annotated fields of the object and inject the appropriate
      * objects
@@ -291,19 +291,11 @@ public class AnnotationProcessor
 
         try
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Injection of " + loader + " into object " + object);
-            }
+            log.debug("Injection of {} into object {}", loader, object);
 
             field.set(object, loader);
         }
-        catch (IllegalArgumentException e)
-        {
-            throw new TurbineException("Could not inject loader "
-                    + loader + " into object " + object, e);
-        }
-        catch (IllegalAccessException e)
+        catch (IllegalArgumentException | IllegalAccessException e)
         {
             throw new TurbineException("Could not inject loader "
                     + loader + " into object " + object, e);
@@ -320,6 +312,7 @@ public class AnnotationProcessor
      *
      * @throws TurbineException if configuration cannot be set
      */
+    @SuppressWarnings("boxing")
     private static void injectTurbineConfiguration(Object object, Configuration conf, Field field, TurbineConfiguration annotation) throws TurbineException
     {
         Class<?> type = field.getType();
@@ -329,29 +322,28 @@ public class AnnotationProcessor
         {
             if (Configuration.class.isAssignableFrom(type))
             {
+                final Configuration injectConfiguration;
                 // Check for annotation value
                 if (StringUtils.isNotEmpty(key))
                 {
-                    conf = conf.subset(key);
+                    injectConfiguration = conf.subset(key);
+                }
+                else
+                {
+                    injectConfiguration = conf;
                 }
 
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Injection of " + conf + " into object " + object);
-                }
+                log.debug("Injection of {} into object {}", injectConfiguration, object);
 
                 field.setAccessible(true);
-                field.set(object, conf);
+                field.set(object, injectConfiguration);
             }
             else if (conf.containsKey(key))
             {
                 if ( String.class.isAssignableFrom( type ) )
                 {
                     String value = conf.getString(key);
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Injection of " + value + " into object " + object);
-                    }
+                    log.debug("Injection of {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.set(object, value);
@@ -359,10 +351,7 @@ public class AnnotationProcessor
                 else if ( Boolean.TYPE.isAssignableFrom( type ) )
                 {
                     boolean value = conf.getBoolean(key);
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Injection of " + value + " into object " + object);
-                    }
+                    log.debug("Injection of {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setBoolean(object, value);
@@ -370,10 +359,7 @@ public class AnnotationProcessor
                 else if ( Integer.TYPE.isAssignableFrom( type ) )
                 {
                     int value = conf.getInt(key);
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Injection of " + value + " into object " + object);
-                    }
+                    log.debug("Injection of {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setInt(object, value);
@@ -381,10 +367,7 @@ public class AnnotationProcessor
                 else if ( Long.TYPE.isAssignableFrom( type ) )
                 {
                     long value = conf.getLong(key);
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Injection of " + value + " into object " + object);
-                    }
+                    log.debug("Injection of {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setLong(object, value);
@@ -392,10 +375,7 @@ public class AnnotationProcessor
                 else if ( Short.TYPE.isAssignableFrom( type ) )
                 {
                     short value = conf.getShort(key);
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Injection of " + value + " into object " + object);
-                    }
+                    log.debug("Injection of {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setShort(object, value);
@@ -403,10 +383,7 @@ public class AnnotationProcessor
                 else if ( Long.TYPE.isAssignableFrom( type ) )
                 {
                     long value = conf.getLong(key);
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Injection of " + value + " into object " + object);
-                    }
+                    log.debug("Injection of {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setLong(object, value);
@@ -414,10 +391,7 @@ public class AnnotationProcessor
                 else if ( Float.TYPE.isAssignableFrom( type ) )
                 {
                     float value = conf.getFloat(key);
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Injection of " + value + " into object " + object);
-                    }
+                    log.debug("Injection of {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setFloat(object, value);
@@ -425,10 +399,7 @@ public class AnnotationProcessor
                 else if ( Double.TYPE.isAssignableFrom( type ) )
                 {
                     double value = conf.getDouble(key);
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Injection of " + value + " into object " + object);
-                    }
+                    log.debug("Injection of {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setDouble(object, value);
@@ -436,10 +407,7 @@ public class AnnotationProcessor
                 else if ( Byte.TYPE.isAssignableFrom( type ) )
                 {
                     byte value = conf.getByte(key);
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Injection of " + value + " into object " + object);
-                    }
+                    log.debug("Injection of {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setByte(object, value);
@@ -447,22 +415,14 @@ public class AnnotationProcessor
                 else if ( List.class.isAssignableFrom( type ) )
                 {
                     List<Object> values = conf.getList(key);
-                    if (log.isDebugEnabled())
-                    {
-                        log.debug("Injection of " + values + " into object " + object);
-                    }
+                    log.debug("Injection of {} into object {}", values, object);
 
                     field.setAccessible(true);
                     field.set(object, values);
                 }
             }
         }
-        catch (IllegalArgumentException e)
-        {
-            throw new TurbineException("Could not inject configuration "
-                    + conf + " into object " + object, e);
-        }
-        catch (IllegalAccessException e)
+        catch (IllegalArgumentException | IllegalAccessException e)
         {
             throw new TurbineException("Could not inject configuration "
                     + conf + " into object " + object, e);
@@ -499,7 +459,7 @@ public class AnnotationProcessor
                     {
                         serviceName = (String)f.get(null);
                     }
-                    catch (Exception e)
+                    catch (IllegalArgumentException | IllegalAccessException e)
                     {
                         continue;
                     }
@@ -511,7 +471,7 @@ public class AnnotationProcessor
                     {
                         serviceName = (String)f.get(null);
                     }
-                    catch (Exception e)
+                    catch (IllegalArgumentException | IllegalAccessException e)
                     {
                         continue;
                     }
@@ -526,29 +486,18 @@ public class AnnotationProcessor
             serviceName = field.getType().getName();
         }
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("Looking up service for injection: " + serviceName + " for object " + object);
-        }
+        log.debug("Looking up service for injection: {} for object {}", serviceName, object);
 
         Object service = manager.getService(serviceName); // throws Exception on unknown service
         field.setAccessible(true);
 
         try
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Injection of " + serviceName + " into object " + object);
-            }
+            log.debug("Injection of {} into object {}", serviceName, object);
 
             field.set(object, service);
         }
-        catch (IllegalArgumentException e)
-        {
-            throw new TurbineException("Could not inject service "
-                    + serviceName + " into object " + object, e);
-        }
-        catch (IllegalAccessException e)
+        catch (IllegalArgumentException | IllegalAccessException e)
         {
             throw new TurbineException("Could not inject service "
                     + serviceName + " into object " + object, e);

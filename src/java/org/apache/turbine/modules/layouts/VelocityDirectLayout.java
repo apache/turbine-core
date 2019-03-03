@@ -1,6 +1,8 @@
 package org.apache.turbine.modules.layouts;
 
 
+import org.apache.logging.log4j.LogManager;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -21,8 +23,7 @@ package org.apache.turbine.modules.layouts;
  */
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Layout;
@@ -51,7 +52,7 @@ public class VelocityDirectLayout
     extends Layout
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(VelocityDirectLayout.class);
+    private static Logger log = LogManager.getLogger(VelocityDirectLayout.class);
 
     /** The prefix for lookup up layout pages */
     private String prefix = Layout.PREFIX + "/";
@@ -92,7 +93,7 @@ public class VelocityDirectLayout
         data.getResponse().setLocale(data.getLocale());
         data.getResponse().setContentType(data.getContentType());
 
-        log.debug("Now trying to render layout " + templateName);
+        log.debug("Now trying to render layout {}", templateName);
 
         // Finally, generate the layout template and send it to the browser
         velocityService.handleRequest(context,

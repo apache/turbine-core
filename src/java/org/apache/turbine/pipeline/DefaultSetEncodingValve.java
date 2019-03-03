@@ -26,8 +26,8 @@ import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.util.LocaleUtils;
 import org.apache.turbine.util.TurbineException;
@@ -46,7 +46,7 @@ import org.apache.turbine.util.TurbineException;
 public class DefaultSetEncodingValve
     extends AbstractValve
 {
-    private static final Log log = LogFactory.getLog(DefaultSetEncodingValve.class);
+    private static final Logger log = LogManager.getLogger(DefaultSetEncodingValve.class);
 
     /**
      * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
@@ -65,10 +65,7 @@ public class DefaultSetEncodingValve
         {
             requestEncoding = LocaleUtils.getDefaultInputEncoding();
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("Changing Input Encoding to " + requestEncoding);
-            }
+            log.debug("Changing Input Encoding to {}", requestEncoding);
 
             try
             {

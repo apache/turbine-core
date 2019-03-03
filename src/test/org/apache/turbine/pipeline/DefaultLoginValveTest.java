@@ -22,9 +22,9 @@ package org.apache.turbine.pipeline;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -44,7 +44,6 @@ import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -95,7 +94,7 @@ public class DefaultLoginValveTest extends BaseTestCase
     /**
      * Tests the Valve.
      */
-    @Test 
+    @Test
     public void testDefaults() throws Exception
     {
         Vector<String> v = new Vector<String>();
@@ -126,7 +125,7 @@ public class DefaultLoginValveTest extends BaseTestCase
     /**
      * Tests the LogoutAction.
      */
-    @Test 
+    @Test
     public void testLogout() throws Exception
     {
         User user = securityService.getUser("username");

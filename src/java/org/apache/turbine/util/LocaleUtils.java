@@ -22,9 +22,9 @@ package org.apache.turbine.util;
 import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.mimetype.MimeTypeService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.ServiceManager;
@@ -38,7 +38,7 @@ import org.apache.turbine.services.TurbineServices;
 public class LocaleUtils
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(LocaleUtils.class);
+    private static final Logger log = LogManager.getLogger(LocaleUtils.class);
 
     /** The default locale. */
     private static Locale defaultLocale = null;
@@ -58,10 +58,7 @@ public class LocaleUtils
                 .getString(TurbineConstants.PARAMETER_ENCODING_KEY,
                         TurbineConstants.PARAMETER_ENCODING_DEFAULT);
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("Input Encoding has been set to " + inputEncoding);
-        }
+        log.debug("Input Encoding has been set to {}", inputEncoding);
 
         return inputEncoding;
     }
@@ -109,7 +106,7 @@ public class LocaleUtils
             defaultCharSet = Turbine.getConfiguration()
                     .getString(TurbineConstants.LOCALE_DEFAULT_CHARSET_KEY,
                             TurbineConstants.LOCALE_DEFAULT_CHARSET_DEFAULT);
-            log.debug("defaultCharSet = " + defaultCharSet + " (From Properties)");
+            log.debug("defaultCharSet = {} (From Properties)", defaultCharSet);
         }
 
         String charset = defaultCharSet;
@@ -119,7 +116,7 @@ public class LocaleUtils
             log.debug("Default charset is empty!");
             /* Default charset isn't specified, get the locale specific one. */
             Locale locale = getDefaultLocale();
-            log.debug("Locale is " + locale);
+            log.debug("Locale is {}", locale);
 
             if (!locale.equals(Locale.US))
             {
@@ -136,11 +133,11 @@ public class LocaleUtils
                 }
                 charset = mimeTypeService.getCharSet(locale);
 
-                log.debug("Charset now " + charset);
+                log.debug("Charset now {}", charset);
             }
         }
 
-        log.debug("Returning default Charset of " + charset);
+        log.debug("Returning default Charset of {}", charset);
         return charset;
     }
 

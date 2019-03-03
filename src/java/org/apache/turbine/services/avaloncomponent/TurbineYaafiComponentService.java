@@ -114,7 +114,7 @@ public class TurbineYaafiComponentService
 
         // determine the home directory
         File home = new File(getServiceBroker().getApplicationRoot());
-        log.info("Using the following home : " + home.getAbsolutePath());
+        log.info("Using the following home : {}", home::getAbsolutePath);
 
         // create the configuration for YAAFI
         ServiceContainerConfiguration config =
@@ -130,8 +130,7 @@ public class TurbineYaafiComponentService
         }
         catch (Exception e)
         {
-            String msg = "Initializing YAAFI failed";
-            log.error(msg,e);
+            log.error("Initializing YAAFI failed", e);
             throw e;
         }
     }
@@ -283,12 +282,6 @@ public class TurbineYaafiComponentService
         try
         {
             return this.lookup(roleName);
-        }
-        catch (ServiceException e)
-        {
-            String msg = "Unable to get the following service : " + roleName;
-            log.error(msg);
-            throw new InstantiationException(msg);
         }
         catch (Throwable t)
         {

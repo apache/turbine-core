@@ -30,8 +30,8 @@ import java.util.List;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
@@ -92,7 +92,7 @@ public class TurbineVelocityService
     private static final String ABSOLUTE_PREFIX = "file://";
 
     /** Logging */
-    private static final Log log = LogFactory.getLog(TurbineVelocityService.class);
+    private static final Logger log = LogManager.getLogger(TurbineVelocityService.class);
 
     /** Encoding used when reading the templates. */
     private String defaultInputEncoding;
@@ -211,7 +211,7 @@ public class TurbineVelocityService
     @Override
 	public Object methodException(Context context, @SuppressWarnings("rawtypes") Class clazz, String method, Exception e, Info info)
     {
-        log.error("Class " + clazz.getName() + "." + method + " threw Exception", e);
+        log.error("Class {}.{} threw Exception", clazz.getName(), method, e);
 
         if (!catchErrors)
         {
@@ -529,7 +529,7 @@ public class TurbineVelocityService
             for (Object p : paths)
             {
             	String path = (String)p;
-                log.debug("Translating " + path);
+                log.debug("Translating {}", path);
 
                 if (path.startsWith(JAR_PREFIX))
                 {
@@ -545,7 +545,7 @@ public class TurbineVelocityService
                         // Add the path after the jar path separator again to the new url.
                             : (Turbine.getRealPath(path.substring(11, jarSepIndex)) + path.substring(jarSepIndex));
 
-                        log.debug("Result (absolute jar path): " + path);
+                        log.debug("Result (absolute jar path): {}", path);
                     }
                 }
                 else if(path.startsWith(ABSOLUTE_PREFIX))
@@ -553,17 +553,17 @@ public class TurbineVelocityService
                     // skip file:// -> 7 chars
                     path = Turbine.getRealPath(path.substring(7));
 
-                    log.debug("Result (absolute URL Path): " + path);
+                    log.debug("Result (absolute URL Path): {}", path);
                 }
                 // Test if this might be some sort of URL that we haven't encountered yet.
                 else if(path.indexOf("://") < 0)
                 {
                     path = Turbine.getRealPath(path);
 
-                    log.debug("Result (normal fs reference): " + path);
+                    log.debug("Result (normal fs reference): {}", path);
                 }
 
-                log.debug("Adding " + key + " -> " + path);
+                log.debug("Adding {} -> {}", key, path);
                 // Re-Add this property to the configuration object
                 velocity.addProperty(key, path);
             }

@@ -1,5 +1,7 @@
 package org.apache.turbine.util;
 
+import java.util.ArrayList;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -22,7 +24,6 @@ package org.apache.turbine.util;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Used for adding and accessing messages that relate to a specific form and field. Allows to query for messages by form
@@ -73,11 +74,11 @@ public class FormMessages
      */
     public void setMessage( String formName, String fieldName, String messageName )
     {
-        fieldName = formName + "-" + fieldName;
+        String formFieldName = formName + "-" + fieldName;
         addValue( forms_messages, formName, messageName );
-        addValue( fields_messages, fieldName, messageName );
-        addValue( messages_fields, messageName, fieldName );
-        addValue( forms_fields, formName, fieldName );
+        addValue( fields_messages, formFieldName, messageName );
+        addValue( messages_fields, messageName, formFieldName );
+        addValue( forms_fields, formName, formFieldName );
     }
 
     /**
@@ -101,7 +102,9 @@ public class FormMessages
         {
             values = table.get( key );
             if ( !values.contains( value ) )
+            {
                 values.add( value );
+            }
         }
     }
 

@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.factory.FactoryService;
 import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.fulcrum.security.model.turbine.TurbineUserManager;
@@ -36,6 +34,8 @@ import org.apache.fulcrum.security.util.EntityExistsException;
 import org.apache.fulcrum.security.util.PasswordMismatchException;
 import org.apache.fulcrum.security.util.UnknownEntityException;
 import org.apache.fulcrum.security.util.UserSet;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.om.security.TurbineUserDelegate;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
@@ -53,7 +53,7 @@ import org.apache.turbine.util.ObjectUtils;
  * <ol>
  * <li>either in a method with the same name (and very similar signature)</li>
  * <li>or mapped to method names as listed below:
- * 
+ *
  * <ul>
  * <li>method(s) in this manager -&gt; Fulcrum manager method(s)
  * <li>{@link #createAccount(User, String)}createAccount -&gt; addUser(User, String)
@@ -63,10 +63,10 @@ import org.apache.turbine.util.ObjectUtils;
  * <li>{@link #retrieveList(Object)} -&gt; getAllUsers()
  * <li>{@link #accountExists(String)}, {@link #accountExists(User)} -&gt; checkExists(String), checkExists(User)
  * </ul>
- * 
+ *
  * </li>
  * </ol>
- * 
+ *
  * In this way all public methods of Fulcrum {@link TurbineUserManager} interface are used by reference of the Fulcrum delegate {@link #umDelegate}
  * and wrapped by this manager.
  *
@@ -85,7 +85,7 @@ public class DefaultUserManager implements UserManager
 
 
     /** Logging */
-    private static Log log = LogFactory.getLog(DefaultUserManager.class);
+    private static final Logger log = LogManager.getLogger(DefaultUserManager.class);
 
     /**
      * Wrap a Fulcrum user object into a Turbine user object

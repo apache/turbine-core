@@ -23,11 +23,9 @@ package org.apache.turbine.services.uniqueid;
 
 import java.security.MessageDigest;
 
-
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -45,7 +43,7 @@ public class TurbineUniqueIdService
         implements UniqueIdService
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(TurbineUniqueIdService.class);
+    private static final Logger log = LogManager.getLogger(TurbineUniqueIdService.class);
 
     /** The identifier of this instance of turbine. */
     protected static String turbineId = "UNKNOWN";
@@ -77,8 +75,8 @@ public class TurbineUniqueIdService
             byte [] bytesId = md.digest(url.getBytes("UTF-8"));
             turbineId = new String(Base64.encodeBase64(bytesId),"UTF-8");
 
-            log.info("This is Turbine instance running at: " + url);
-            log.info("The instance id is #" + turbineId);
+            log.info("This is Turbine instance running at: {}", url);
+            log.info("The instance id is #{}", turbineId);
             setInit(true);
         }
         catch (Exception e)
@@ -94,7 +92,7 @@ public class TurbineUniqueIdService
     @Override
     public void shutdown()
     {
-        log.info("Turbine instance running at " + turbineURL + " shutting down.");
+        log.info("Turbine instance running at {} shutting down.", turbineURL);
     }
 
     /**
@@ -107,6 +105,7 @@ public class TurbineUniqueIdService
      *
      * @return A String with the instance identifier.
      */
+    @Override
     public String getInstanceId()
     {
         return turbineId;
@@ -119,6 +118,7 @@ public class TurbineUniqueIdService
      * @return A String with the non-random looking instance
      * identifier.
      */
+    @Override
     public String getUniqueId()
     {
         int current;
@@ -142,6 +142,7 @@ public class TurbineUniqueIdService
      *
      * @return A String with the random looking instance identifier.
      */
+    @Override
     public String getPseudorandomId()
     {
         return GenerateUniqueId.getIdentifier();

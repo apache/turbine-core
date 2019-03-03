@@ -1,5 +1,7 @@
 package org.apache.turbine.services.schedule;
 
+import org.apache.logging.log4j.LogManager;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,8 +21,7 @@ package org.apache.turbine.services.schedule;
  * under the License.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.modules.ScheduledJobLoader;
 
 /**
@@ -41,7 +42,7 @@ public class WorkerThread
     private JobEntry je = null;
 
     /** Logging */
-    private static Log log = LogFactory.getLog(ScheduleService.LOGGER_NAME);
+    private static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);
 
     /**
      * Creates a new worker to run the specified <code>JobEntry</code>.
@@ -75,8 +76,8 @@ public class WorkerThread
         }
         catch (Exception e)
         {
-            log.error("Error in WorkerThread for scheduled job #" +
-                    je.getJobId() + ", task: " + je.getTask(), e);
+            log.error("Error in WorkerThread for scheduled job #{}, task: {}",
+                    Integer.valueOf(je.getJobId()), je.getTask(), e);
         }
         finally
         {
@@ -95,7 +96,7 @@ public class WorkerThread
      */
     private final void logStateChange(String state)
     {
-        log.debug("Scheduled job #" + je.getJobId() + ' ' + state +
-                ", task: " + je.getTask());
+        log.error("Scheduled job #{} {}, task: {}",
+                Integer.valueOf(je.getJobId()), state, je.getTask());
     }
 }

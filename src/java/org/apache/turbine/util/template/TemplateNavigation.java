@@ -1,6 +1,8 @@
 package org.apache.turbine.util.template;
 
 
+import org.apache.logging.log4j.LogManager;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -21,8 +23,7 @@ package org.apache.turbine.util.template;
  */
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.modules.NavigationLoader;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
@@ -45,7 +46,7 @@ import org.apache.turbine.util.RunData;
 public class TemplateNavigation
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(TemplateNavigation.class);
+    private static final Logger log = LogManager.getLogger(TemplateNavigation.class);
 
     /* The RunData object. */
     private RunData data;
@@ -72,7 +73,7 @@ public class TemplateNavigation
      */
     public TemplateNavigation setTemplate(String template)
     {
-        log.debug("setTemplate(" + template + ")");
+        log.debug("setTemplate({})", template);
         this.template = template;
         return this;
     }

@@ -1,6 +1,8 @@
 package org.apache.turbine.services.jsp.util;
 
 
+import org.apache.logging.log4j.LogManager;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -21,8 +23,7 @@ package org.apache.turbine.services.jsp.util;
  */
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.modules.NavigationLoader;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
@@ -46,7 +47,7 @@ import org.apache.turbine.util.RunData;
 public class JspNavigation
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(JspNavigation.class);
+    private static Logger log = LogManager.getLogger(JspNavigation.class);
 
     /* The RunData object */
     private final RunData data;
@@ -82,8 +83,7 @@ public class JspNavigation
             log.error(message, e);
             try
             {
-                data.getResponse().getWriter().print("Error processing navigation template: "
-                        + template + " using module: " + module);
+                data.getResponse().getWriter().print(message);
             }
             catch (java.io.IOException ioe)
             {

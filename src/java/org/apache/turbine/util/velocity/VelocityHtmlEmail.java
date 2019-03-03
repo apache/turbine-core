@@ -1,6 +1,8 @@
 package org.apache.turbine.util.velocity;
 
 
+import java.net.MalformedURLException;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -25,10 +27,10 @@ import java.net.URL;
 import java.util.Hashtable;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.TurbineServices;
@@ -83,7 +85,7 @@ import org.apache.velocity.context.Context;
 public class VelocityHtmlEmail extends HtmlEmail
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(VelocityHtmlEmail.class);
+    private static final Logger log = LogManager.getLogger(VelocityHtmlEmail.class);
 
     /**
      * The html template to process, relative to VM's template
@@ -247,9 +249,9 @@ public class VelocityHtmlEmail extends HtmlEmail
             cid = super.embed(url, name);
             embmap.put(name, cid);
         }
-        catch (Exception e)
+        catch (MalformedURLException | EmailException e)
         {
-            log.error("cannot embed " + surl + ": ", e);
+            log.error("cannot embed {}", surl, e);
         }
         return cid;
     }

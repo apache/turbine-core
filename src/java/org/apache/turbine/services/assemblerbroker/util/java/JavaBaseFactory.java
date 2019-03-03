@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.GenericLoader;
 import org.apache.turbine.modules.Loader;
@@ -46,7 +46,7 @@ public abstract class JavaBaseFactory<T extends Assembler>
     private static List<String> packages = GenericLoader.getPackages();
 
     /** Logging */
-    protected Log log = LogFactory.getLog(this.getClass());
+    protected Logger log = LogManager.getLogger(this.getClass());
 
     /**
      * A cache for previously obtained Class instances, which we keep in order
@@ -66,10 +66,7 @@ public abstract class JavaBaseFactory<T extends Assembler>
     {
         T assembler = null;
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("Class Fragment is " + name);
-        }
+        log.debug("Class Fragment is {}", name);
 
         if (StringUtils.isNotEmpty(name))
         {
@@ -80,10 +77,7 @@ public abstract class JavaBaseFactory<T extends Assembler>
                 sb.append(p).append('.').append(packageName).append('.').append(name);
                 String className = sb.toString();
 
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Trying " + className);
-                }
+                log.debug("Trying {}", className);
 
                 try
                 {
@@ -103,45 +97,26 @@ public abstract class JavaBaseFactory<T extends Assembler>
                 catch (ClassNotFoundException cnfe)
                 {
                     // Do this so we loop through all the packages.
-                    log.debug(className + ": Not found");
+                    log.debug("{}: Not found", className);
                 }
                 catch (NoClassDefFoundError ncdfe)
                 {
                     // Do this so we loop through all the packages.
-                    log.debug(className + ": No Class Definition found");
-                }
-                catch (ClassCastException cce)
-                {
-                    // This means trouble!
-                    // Alternatively we can throw this exception so
-                    // that it will appear on the client browser
-                    log.error("Could not load "+className, cce);
-                    break; // for()
-                }
-                catch (InstantiationException ine)
-                {
-                    // This means trouble!
-                    // Alternatively we can throw this exception so
-                    // that it will appear on the client browser
-                    log.error("Could not load "+className, ine);
-                    break; // for()
-                }
-                catch (IllegalAccessException ilae)
-                {
-                    // This means trouble!
-                    // Alternatively we can throw this exception so
-                    // that it will appear on the client browser
-                    log.error("Could not load "+className, ilae);
-                    break; // for()
+                    log.debug("{}: No Class Definition found", className);
                 }
                 // With ClassCastException, InstantiationException we hit big problems
+                catch (ClassCastException | InstantiationException | IllegalAccessException e)
+                {
+                    // This means trouble!
+                    // Alternatively we can throw this exception so
+                    // that it will appear on the client browser
+                    log.error("Could not load {}", className, e);
+                    break; // for()
+                }
             }
         }
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("Returning: " + assembler);
-        }
+        log.debug("Returning: {}", assembler);
 
         return assembler;
     }

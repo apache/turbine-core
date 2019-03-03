@@ -22,8 +22,8 @@ package org.apache.turbine.modules.layouts;
 
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.annotation.TurbineService;
@@ -72,7 +72,7 @@ public class VelocityOnlyLayout
     extends Layout
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(VelocityOnlyLayout.class);
+    private static Logger log = LogManager.getLogger(VelocityOnlyLayout.class);
 
     /** The prefix for lookup up layout pages */
     private final String prefix = Layout.PREFIX + "/";
@@ -103,7 +103,7 @@ public class VelocityOnlyLayout
 
         String screenName = data.getScreen();
 
-        log.debug("Loading Screen " + screenName);
+        log.debug("Loading Screen {}", screenName);
 
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
@@ -126,7 +126,7 @@ public class VelocityOnlyLayout
         data.getResponse().setLocale(data.getLocale());
         data.getResponse().setContentType(data.getContentType());
 
-        log.debug("Now trying to render layout " + templateName);
+        log.debug("Now trying to render layout {}", templateName);
 
         // Finally, generate the layout template and send it to the browser
         velocityService.handleRequest(context,

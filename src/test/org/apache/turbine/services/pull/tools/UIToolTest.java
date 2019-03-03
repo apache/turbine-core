@@ -141,7 +141,7 @@ public class UIToolTest extends BaseTestCase
 
         String[] skinNames = ui.getSkinNames();
         // Remove the ".svn" dir that may be present.
-        skinNames = (String[]) ArrayUtils.removeElement(skinNames, ".svn");
+        skinNames = ArrayUtils.removeElement(skinNames, ".svn");
         assertEquals(2, skinNames.length);
 
         assertTrue(ArrayUtils.contains(skinNames, "myotherskin"));
