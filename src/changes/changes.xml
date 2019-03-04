@@ -26,7 +26,7 @@
   <body>
     <release version="5.0" date="in Subversion">
       <action type="update" dev="tv">
-        Change Assembler to interface
+        Change all Assembler modules to interfaces
       </action>
       <action type="update" dev="tv">
         Replace unmaintained UADetetctor with YAUAA
