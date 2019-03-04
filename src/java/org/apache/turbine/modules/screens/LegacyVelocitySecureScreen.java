@@ -56,9 +56,9 @@ public abstract class LegacyVelocitySecureScreen
     protected void doBuildTemplate(PipelineData pipelineData)
         throws Exception
     {
-        if (isAuthorized(getRunData(pipelineData)))
+        if (isAuthorized(pipelineData.getRunData()))
         {
-            doBuildTemplate(getRunData(pipelineData), velocity.getContext(pipelineData));
+            doBuildTemplate(pipelineData.getRunData(), velocity.getContext(pipelineData));
         }
     }
 

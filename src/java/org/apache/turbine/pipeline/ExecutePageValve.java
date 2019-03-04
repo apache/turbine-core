@@ -41,7 +41,7 @@ import org.apache.turbine.util.TurbineException;
  * @version $Id$
  */
 public class ExecutePageValve
-    extends AbstractValve
+    implements Valve
 {
     /** Injected service instance */
     @TurbineService

@@ -56,6 +56,6 @@ public class LegacyVelocityNavigation
     @Override
     protected void doBuildTemplate(PipelineData pipelineData, Context context) throws Exception
     {
-        doBuildTemplate(getRunData(pipelineData), context);
+        doBuildTemplate(pipelineData.getRunData(), context);
     }
 }

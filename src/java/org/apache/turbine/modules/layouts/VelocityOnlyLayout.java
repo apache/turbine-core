@@ -22,17 +22,11 @@ package org.apache.turbine.modules.layouts;
 
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineLoader;
-import org.apache.turbine.annotation.TurbineService;
-import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.velocity.VelocityService;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateNavigation;
 import org.apache.velocity.context.Context;
 
@@ -68,39 +62,19 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class VelocityOnlyLayout implements Layout
+public class VelocityOnlyLayout extends VelocityLayout
 {
-    /** Logging */
-    protected final Logger log = LogManager.getLogger(this.getClass());
-
-    /** The prefix for lookup up layout pages */
-    private static final String prefix = PREFIX + "/";
-
-    /** Injected service instance */
-    @TurbineService
-    private VelocityService velocityService;
-
     /** Injected loader instance */
     @TurbineLoader( Screen.class )
     private ScreenLoader screenLoader;
 
     /**
-     * Build the layout.  Also sets the ContentType and Locale headers
-     * of the HttpServletResponse object.
-     *
-     *
-     * @param pipelineData PipelineData
-     * @throws Exception generic exception
+     * @see org.apache.turbine.modules.layouts.VelocityLayout#populateContext(org.apache.turbine.pipeline.PipelineData, org.apache.velocity.context.Context)
      */
     @Override
-    public void doBuild(PipelineData pipelineData)
-        throws Exception
+    protected void populateContext(PipelineData pipelineData, Context context) throws Exception
     {
-        RunData data = getRunData(pipelineData);
-        // Get the context needed by Velocity.
-        Context context = velocityService.getContext(pipelineData);
-
-        String screenName = data.getScreen();
+        String screenName = pipelineData.getRunData().getScreen();
 
         log.debug("Loading Screen {}", screenName);
 
@@ -114,21 +88,6 @@ public class VelocityOnlyLayout implements Layout
 
         // variable to reference the navigation screen in the layout template
         context.put(TurbineConstants.NAVIGATION_PLACEHOLDER,
-                    new TemplateNavigation(data));
-
-        // Grab the layout template set in the VelocityPage.
-        // If null, then use the default layout template
-        // (done by the TemplateInfo object)
-        String templateName = data.getTemplateInfo().getLayoutTemplate();
-
-        // Set the locale and content type
-        data.getResponse().setLocale(data.getLocale());
-        data.getResponse().setContentType(data.getContentType());
-
-        log.debug("Now trying to render layout {}", templateName);
-
-        // Finally, generate the layout template and send it to the browser
-        velocityService.handleRequest(context,
-                prefix + templateName, data.getResponse().getOutputStream());
+                    new TemplateNavigation(pipelineData));
     }
 }

@@ -38,7 +38,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
 public class DetermineActionValve
-    extends AbstractValve
+    implements Valve
 {
     private static final Logger log
         = LogManager.getLogger(DetermineActionValve.class);
@@ -50,7 +50,7 @@ public class DetermineActionValve
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         if (! data.hasAction())
         {
             String action =

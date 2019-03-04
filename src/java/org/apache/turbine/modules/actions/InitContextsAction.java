@@ -60,7 +60,7 @@ public class InitContextsAction implements Action
     public void doPerform(PipelineData pipelineData)
             throws NamingException
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         // Context properties are specified in lines in the properties
         // file that begin with "context.contextname.", allowing
         // multiple named contexts to be used. Everything after the

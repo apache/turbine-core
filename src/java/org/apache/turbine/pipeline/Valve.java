@@ -96,6 +96,8 @@ public interface Valve
      * Initialize the valve before using in a pipeline.
      * @throws Exception if initialization fails
      */
-    void initialize()
-        throws Exception;
+    default void initialize() throws Exception
+    {
+        // empty
+    }
 }

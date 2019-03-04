@@ -421,7 +421,7 @@ public class TurbinePullService
     @Override
     public void populateContext(Context context, PipelineData pipelineData)
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
 
         populateWithRequestTools(context, pipelineData);
         // session tools (whether session-only or persistent are
@@ -814,7 +814,7 @@ public class TurbinePullService
         if (dataObject instanceof PipelineData)
         {
             pipelineData = (PipelineData)dataObject;
-            data = getRunData(pipelineData);
+            data = pipelineData.getRunData();
             if (tool instanceof PipelineDataApplicationTool)
             {
                 ((PipelineDataApplicationTool) tool).refresh(pipelineData);

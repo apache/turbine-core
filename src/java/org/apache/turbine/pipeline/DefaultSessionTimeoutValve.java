@@ -38,7 +38,7 @@ import org.apache.turbine.util.TurbineException;
  * @version $Id$
  */
 public class DefaultSessionTimeoutValve
-    extends AbstractValve
+    implements Valve
 {
     @TurbineConfiguration( TurbineConstants.SESSION_TIMEOUT_KEY )
     protected int timeout = TurbineConstants.SESSION_TIMEOUT_DEFAULT;
@@ -50,7 +50,7 @@ public class DefaultSessionTimeoutValve
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
-        RunData runData = getRunData(pipelineData);
+        RunData runData = pipelineData.getRunData();
         // If the session is new take this opportunity to
         // set the session timeout if specified in TR.properties
         if (runData.getSession().isNew() && timeout != TurbineConstants.SESSION_TIMEOUT_DEFAULT)

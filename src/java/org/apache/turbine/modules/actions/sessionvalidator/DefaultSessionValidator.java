@@ -84,7 +84,7 @@ public class DefaultSessionValidator
     public void doPerform(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         // Pull user from session.
         data.populate();
 

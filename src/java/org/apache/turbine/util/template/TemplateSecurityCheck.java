@@ -27,6 +27,7 @@ import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
 import org.apache.fulcrum.security.model.turbine.TurbineUserManager;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.util.RunData;
@@ -53,30 +54,33 @@ public class TemplateSecurityCheck
     private String message = "Sorry, you do not have permission to access this area.";
     private String failScreen;
     private String failTemplate;
-    private RunData data = null;
+
+    /* The RunData object. */
+    private final RunData data;
 
     /**
      * Constructor.
      *
-     * @param data A Turbine RunData object.
+     * @param pipelineData A Turbine PipelineData object.
      * @param message A String with the message to display upon
      * failure.
      */
-    public TemplateSecurityCheck(RunData data, String message)
+    public TemplateSecurityCheck(PipelineData pipelineData, String message)
     {
-        this(data);
-        this.message = message;
+        this(pipelineData);
+        setMessage(message);
     }
 
     /**
      * Generic Constructor.
      *
-     * @param data A Turbine RunData object.
+     * @param pipelineData A Turbine PipelineData object.
      */
-    public TemplateSecurityCheck(RunData data)
+    public TemplateSecurityCheck(PipelineData pipelineData)
     {
-        this.data = data;
-        TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+        this.data = pipelineData.getRunData();
+        TemplateService templateService = (TemplateService)TurbineServices.getInstance()
+                .getService(TemplateService.SERVICE_NAME);
         this.failScreen = templateService.getDefaultScreen();
     }
 

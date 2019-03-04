@@ -57,7 +57,7 @@ public class PlainJSONSecureAnnotatedScreen extends PlainJSONScreen
      * @throws Exception A generic exception.
      */
     protected boolean isAuthorized(PipelineData pipelineData) throws Exception {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         Method[] methods = getClass().getMethods();
         for (Method m : methods) {
             if (m.getName().equals( "doOutput" )) {

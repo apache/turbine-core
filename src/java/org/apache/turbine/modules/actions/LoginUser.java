@@ -85,7 +85,7 @@ public class LoginUser implements Action
     public void doPerform(PipelineData pipelineData)
             throws FulcrumSecurityException
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         String username = data.getParameters().getString(CGI_USERNAME, "");
         String password = data.getParameters().getString(CGI_PASSWORD, "");
 

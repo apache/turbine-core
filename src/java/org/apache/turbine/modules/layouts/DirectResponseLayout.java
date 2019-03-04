@@ -46,7 +46,7 @@ public class DirectResponseLayout implements Layout
     public void doBuild(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         if (!data.isOutSet())
         {
             throw new TurbineException(

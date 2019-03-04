@@ -104,7 +104,7 @@ public class VelocityScreen
     public String buildTemplate(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         String screenData = null;
 
         Context context = velocity.getContext(pipelineData);

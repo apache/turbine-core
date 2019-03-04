@@ -41,7 +41,7 @@ import org.apache.turbine.util.TurbineException;
  * @version $Id$
  */
 public class CleanUpValve
-    extends AbstractValve
+    implements Valve
 {
     /**
      * Creates a new instance.
@@ -78,7 +78,7 @@ public class CleanUpValve
      */
     protected void cleanUp(PipelineData pipelineData)
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         // If a module has set data.acl = null, remove acl from
         // the session.
         if (data.getACL() == null)

@@ -50,7 +50,7 @@ public abstract class LegacyVelocitySecureAction extends LegacyVelocityAction
     @Override
     public void perform(PipelineData pipelineData) throws Exception
     {
-        if (isAuthorized(getRunData(pipelineData)))
+        if (isAuthorized(pipelineData.getRunData()))
         {
             super.perform(pipelineData);
         }

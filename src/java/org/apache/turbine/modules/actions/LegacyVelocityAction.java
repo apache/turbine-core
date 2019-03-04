@@ -56,7 +56,7 @@ public abstract class LegacyVelocityAction extends VelocityAction
     public void doPerform(PipelineData pipelineData, Context context)
             throws Exception
     {
-        doPerform(getRunData(pipelineData), context);
+        doPerform(pipelineData.getRunData(), context);
     }
 
     /**
@@ -76,7 +76,7 @@ public abstract class LegacyVelocityAction extends VelocityAction
             initialize();
         }
 
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);
         Context context = velocity.getContext(pipelineData);
         executeEvents(pp, new Class<?>[]{ RunData.class, Context.class },

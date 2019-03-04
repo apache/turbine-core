@@ -106,7 +106,7 @@ public class JSONScreen extends RawScreen
     @Override
     protected void doOutput(PipelineData pipelineData) throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         data.declareDirectResponse();
         HttpServletRequest request = data.getRequest();
 

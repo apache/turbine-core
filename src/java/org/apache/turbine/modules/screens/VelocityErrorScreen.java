@@ -47,7 +47,7 @@ public class VelocityErrorScreen
     protected void doBuildTemplate(PipelineData pipelineData, Context context)
             throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER,
                 data.getStackTraceException().toString());
         context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER,

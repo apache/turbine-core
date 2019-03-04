@@ -61,7 +61,7 @@ public class BaseJspScreen
     public String buildTemplate(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
         // get the name of the template we want to use
         String templateName

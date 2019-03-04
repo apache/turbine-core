@@ -91,7 +91,7 @@ public class AccessController implements Action
     public void doPerform(PipelineData pipelineData)
     	throws FulcrumSecurityException
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         User user = data.getUser();
 
         if (!security.isAnonymousUser(user)

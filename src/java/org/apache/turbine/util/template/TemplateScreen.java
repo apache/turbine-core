@@ -24,11 +24,8 @@ import org.apache.logging.log4j.LogManager;
 
 
 import org.apache.logging.log4j.Logger;
-import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-import org.apache.turbine.util.RunData;
+import org.apache.turbine.pipeline.PipelineData;
 
 /**
  * Returns output of a Screen module.  An instance of this is
@@ -54,26 +51,21 @@ public class TemplateScreen
     /** Logging */
     private static final Logger log = LogManager.getLogger(TemplateScreen.class);
 
-    /* The RunData object. */
-    private final RunData data;
+    /* The PipelineData object. */
+    private final PipelineData pipelineData;
 
     /* The name of the screen template. */
     private String screen;
 
-    private final ScreenLoader screenLoader;
-
     /**
      * Constructor
      *
-     * @param data A Turbine RunData object.
+     * @param pipelineData A Turbine PipelineData object.
      */
-    public TemplateScreen(RunData data)
+    public TemplateScreen(PipelineData pipelineData)
     {
-        this.data = data;
-        this.screen = data.getScreen();
-        AssemblerBrokerService abs = (AssemblerBrokerService)TurbineServices.getInstance()
-            .getService(AssemblerBrokerService.SERVICE_NAME);
-        this.screenLoader = (ScreenLoader)abs.getLoader(Screen.class);
+        this.pipelineData = pipelineData;
+        this.screen = pipelineData.getRunData().getScreen();
     }
 
     /**
@@ -100,7 +92,7 @@ public class TemplateScreen
 
         try
         {
-            String results = screenLoader.eval(data, this.screen);
+            String results = ScreenLoader.getInstance().eval(pipelineData, this.screen);
 
             if (results != null)
             {

@@ -23,20 +23,14 @@ package org.apache.turbine.modules.layouts;
 
 import java.io.StringReader;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.fulcrum.xslt.XSLTService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.annotation.TurbineService;
-import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.template.TemplateNavigation;
 import org.apache.velocity.context.Context;
 
 /**
@@ -58,18 +52,8 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class VelocityXslLayout implements Layout
+public class VelocityXslLayout extends VelocityOnlyLayout
 {
-    /** Logging */
-    protected final Logger log = LogManager.getLogger(this.getClass());
-
-    /** The prefix for lookup up layout pages */
-    private static final String prefix = PREFIX + "/";
-
-    /** Injected service instance */
-    @TurbineService
-    private VelocityService velocityService;
-
     /** Injected service instance */
     @TurbineService
     private XSLTService xsltService;
@@ -89,27 +73,14 @@ public class VelocityXslLayout implements Layout
     public void doBuild(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         // Get the context needed by Velocity.
         Context context = velocityService.getContext(pipelineData);
 
         data.getResponse().setContentType(TurbineConstants.DEFAULT_HTML_CONTENT_TYPE);
 
-        String screenName = data.getScreen();
-
-        log.debug("Loading Screen {}", screenName);
-
-        // First, generate the screen and put it in the context so
-        // we can grab it the layout template.
-        String results = screenLoader.eval(pipelineData, screenName);
-        String returnValue = StringUtils.defaultIfEmpty(results, StringUtils.EMPTY);
-
-        // variable for the screen in the layout template
-        context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);
-
-        // variable to reference the navigation screen in the layout template
-        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER,
-                    new TemplateNavigation(data));
+        // Provide objects to Velocity context
+        populateContext(pipelineData, context);
 
         // Grab the layout template set in the VelocityPage.
         // If null, then use the default layout template

@@ -24,7 +24,6 @@ package org.apache.turbine.pipeline;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -33,15 +32,14 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
-class SimpleValve
-    extends AbstractValve
+class SimpleValve implements Valve
 {
     private String value;
 
     private Writer writer;
 
     /**
-     * The value for the associated <code>Writer</code> to write.
+     * @param value The value for the associated <code>Writer</code> to write.
      */
     public void setValue(String value)
     {
@@ -54,8 +52,9 @@ class SimpleValve
     }
 
     /**
-     * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
+     * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
      */
+    @Override
     public void invoke(PipelineData data, ValveContext context)
         throws IOException, TurbineException
     {

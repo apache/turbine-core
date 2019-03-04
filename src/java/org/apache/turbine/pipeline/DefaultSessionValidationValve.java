@@ -39,7 +39,7 @@ import org.apache.turbine.util.TurbineException;
  * @version $Id$
  */
 public class DefaultSessionValidationValve
-    extends AbstractValve
+    implements Valve
 {
     /** Injected loader instance */
     @TurbineLoader( Action.class )

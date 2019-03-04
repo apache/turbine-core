@@ -38,7 +38,7 @@ import org.apache.turbine.util.TurbineException;
  * @version $Id$
  */
 public class DetermineRedirectRequestedValve
-    extends AbstractValve
+    implements Valve
 {
     private static final Logger log = LogManager.getLogger(DetermineRedirectRequestedValve.class);
 
@@ -73,7 +73,7 @@ public class DetermineRedirectRequestedValve
     protected void redirectRequested(PipelineData pipelineData)
         throws IOException
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         // handle a redirect request
         boolean requestRedirected = StringUtils.isNotEmpty(data.getRedirectURI());
         if (requestRedirected)

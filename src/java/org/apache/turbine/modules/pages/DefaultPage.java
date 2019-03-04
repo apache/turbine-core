@@ -116,7 +116,7 @@ public class DefaultPage implements Page
     public void doBuild(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         // Template pages can use this to set up the context, so it is
         // available to the Action and Screen.  It does nothing here.
         doBuildBeforeAction(pipelineData);

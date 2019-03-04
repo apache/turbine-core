@@ -97,7 +97,7 @@ public class TemplatePage
     protected void doBuildAfterAction(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         // The Template Service at this point must fetch the Screen class
         // to match a given template. If the Screen class has already been
         // set by an action, skip this, because the user has the already

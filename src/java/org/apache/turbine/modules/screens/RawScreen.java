@@ -56,7 +56,7 @@ public abstract class RawScreen implements Screen
     public final String doBuild(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         data.getResponse().setContentType(getContentType(pipelineData));
         data.declareDirectResponse();
         doOutput(pipelineData);

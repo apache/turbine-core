@@ -2,6 +2,9 @@ package org.apache.turbine.pipeline;
 
 import java.util.Map;
 
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineRuntimeException;
+
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -65,4 +68,18 @@ public interface PipelineData extends AutoCloseable
      * @return the inner value or null if no such keys exist
      */
     <T> T get(Class<?> key, Class<T> innerKey);
+
+    /**
+     * Get RunData from PipelineData
+     *
+     * @return RunData extracted from PipelineData
+     */
+    default RunData getRunData()
+    {
+        if (!(this instanceof RunData))
+        {
+            throw new TurbineRuntimeException("Cannot cast to rundata from pipeline data.");
+        }
+        return (RunData) this;
+    }
 }

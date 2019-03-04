@@ -54,7 +54,7 @@ public class VelocityPage
     protected void doBuildBeforeAction(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         Context context = velocity.getContext(pipelineData);
         data.getTemplateInfo()
             .setTemplateContext(VelocityService.CONTEXT, context);

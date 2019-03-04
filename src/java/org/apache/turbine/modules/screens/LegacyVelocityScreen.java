@@ -60,6 +60,6 @@ public class LegacyVelocityScreen
                                    Context context)
             throws Exception
     {
-        doBuildTemplate(getRunData(pipelineData), context);
+        doBuildTemplate(pipelineData.getRunData(), context);
     }
 }

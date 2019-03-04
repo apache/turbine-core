@@ -45,7 +45,7 @@ public class DefaultAction implements Action
     public void doPerform(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         data.setMessage(data.getAction() + " has been executed!");
     }
 }

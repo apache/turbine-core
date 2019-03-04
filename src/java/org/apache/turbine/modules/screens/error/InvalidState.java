@@ -55,7 +55,7 @@ public class InvalidState implements Screen
     public String doBuild(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         StringBuilder body = new StringBuilder();
         body.append("<body>");
 

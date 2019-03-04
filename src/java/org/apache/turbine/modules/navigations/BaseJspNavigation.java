@@ -69,7 +69,7 @@ public class BaseJspNavigation
     public String buildTemplate(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         // get the name of the JSP we want to use
         String templateName = data.getTemplateInfo().getNavigationTemplate();
 

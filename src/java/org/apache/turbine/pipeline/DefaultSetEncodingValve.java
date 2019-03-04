@@ -44,7 +44,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
  */
 public class DefaultSetEncodingValve
-    extends AbstractValve
+    implements Valve
 {
     private static final Logger log = LogManager.getLogger(DefaultSetEncodingValve.class);
 
@@ -84,7 +84,7 @@ public class DefaultSetEncodingValve
             outputEncoding = requestEncoding;
         }
 
-        getRunData(pipelineData).setCharSet(outputEncoding);
+        pipelineData.getRunData().setCharSet(outputEncoding);
 
         // Pass control to the next Valve in the Pipeline
         context.invokeNext(pipelineData);

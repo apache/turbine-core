@@ -25,9 +25,9 @@ import org.apache.logging.log4j.LogManager;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.turbine.modules.NavigationLoader;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.util.RunData;
 
 /**
  * Returns output of a Navigation module.  An instance of this is
@@ -48,8 +48,8 @@ public class TemplateNavigation
     /** Logging */
     private static final Logger log = LogManager.getLogger(TemplateNavigation.class);
 
-    /* The RunData object. */
-    private RunData data;
+    /* The PipelineData object. */
+    private final PipelineData pipelineData;
 
     /* The name of the navigation template. */
     private String template = null;
@@ -57,11 +57,11 @@ public class TemplateNavigation
     /**
      * Constructor
      *
-     * @param data A Turbine RunData object.
+     * @param pipelineData A Turbine PipelineData object.
      */
-    public TemplateNavigation(RunData data)
+    public TemplateNavigation(PipelineData pipelineData)
     {
-        this.data = data;
+        this.pipelineData = pipelineData;
     }
 
     /**
@@ -97,8 +97,9 @@ public class TemplateNavigation
                 throw new Exception(returnValue);
             }
 
-            data.getTemplateInfo().setNavigationTemplate(template);
-            TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+            pipelineData.getRunData().getTemplateInfo().setNavigationTemplate(template);
+            TemplateService templateService = (TemplateService)TurbineServices.getInstance()
+                    .getService(TemplateService.SERVICE_NAME);
             module = templateService.getNavigationName(template);
 
             if (module == null)
@@ -107,7 +108,7 @@ public class TemplateNavigation
                 throw new Exception(returnValue);
             }
 
-            returnValue = NavigationLoader.getInstance().eval(data, module);
+            returnValue = NavigationLoader.getInstance().eval(pipelineData, module);
         }
         catch (Exception e)
         {

@@ -58,7 +58,7 @@ public class JspLayout implements Layout
     public void doBuild(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         data.getResponse().setContentType( TurbineConstants.DEFAULT_HTML_CONTENT_TYPE );
         data.declareDirectResponse();
 

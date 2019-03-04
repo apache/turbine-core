@@ -75,7 +75,7 @@ public class LogoutUser implements Action
     public void doPerform(PipelineData pipelineData)
             throws FulcrumSecurityException
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
 
         // Session validator did not run, so RunData is not populated
         User user = data.getUserFromSession();

@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  *
  * public void doOutput(PipelineData pipelineData) throws Exception
  * {
- *     RunData data = getRunData(pipelineData);
+ *     RunData data = pipelineData.getRunData();
  *     JSONStrategy strategy = null;
  *     
  *     try
@@ -98,7 +98,7 @@ public class PlainJSONScreen extends RawScreen
     @Override
     protected void doOutput(PipelineData pipelineData) throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         // read in json!
         String charset =  "UTF-8"; //request.getCharacterEncoding();
         

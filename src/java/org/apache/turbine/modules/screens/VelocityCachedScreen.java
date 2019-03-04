@@ -50,7 +50,7 @@ public class VelocityCachedScreen
     public String buildTemplate(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         Context context = velocity.getContext(pipelineData);
 
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();

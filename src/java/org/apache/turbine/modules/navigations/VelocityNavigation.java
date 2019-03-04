@@ -97,7 +97,7 @@ public class VelocityNavigation
     public String buildTemplate(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         Context context = velocity.getContext(pipelineData);
 
         String navigationTemplate = data.getTemplateInfo().getNavigationTemplate();

@@ -48,7 +48,7 @@ import org.apache.turbine.util.template.TemplateInfo;
  * @version $Id$
  */
 public class DefaultLoginValve
-    extends AbstractValve
+    implements Valve
 {
     /** Injected loader instance */
     @TurbineLoader( Action.class )
@@ -91,7 +91,7 @@ public class DefaultLoginValve
     protected void process(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = getRunData(pipelineData);
+        RunData data = pipelineData.getRunData();
         // Special case for login and logout, this must happen before the
         // session validator is executed in order either to allow a user to
         // even login, or to ensure that the session validator gets to
