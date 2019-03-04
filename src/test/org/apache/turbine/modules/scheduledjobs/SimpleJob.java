@@ -35,8 +35,7 @@ import org.apache.turbine.services.schedule.JobEntry;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
-public class SimpleJob
-        extends ScheduledJob
+public class SimpleJob implements ScheduledJob
 {
     /** Logging */
     private static Log log = LogFactory.getLog(SimpleJob.class);

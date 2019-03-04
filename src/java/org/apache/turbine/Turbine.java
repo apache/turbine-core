@@ -393,7 +393,7 @@ public class Turbine extends HttpServlet
             confFile = findInitParameter(context, config,
                     TurbineConfig.PROPERTIES_PATH_KEY,
                     null);
-            if (StringUtils.isNotEmpty((confFile)))
+            if (StringUtils.isNotEmpty(confFile))
             {
                 confStyle = ConfigurationStyle.PROPERTIES;
             }

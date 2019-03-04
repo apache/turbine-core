@@ -43,7 +43,7 @@ public interface TemplateService
     /**
      * The key under which this service is stored in TurbineServices.
      */
-    static final String SERVICE_NAME = "TemplateService";
+    String SERVICE_NAME = "TemplateService";
 
     /** Default Template Name. */
     String DEFAULT_TEMPLATE_KEY = "default.template";

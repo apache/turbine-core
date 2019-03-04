@@ -340,7 +340,7 @@ public class TurbineTemplateService
 
         int dotIndex = template.lastIndexOf(EXTENSION_SEPARATOR);
 
-        return (dotIndex < 0) ? getDefaultExtension() : template.substring(dotIndex + 1);
+        return dotIndex < 0 ? getDefaultExtension() : template.substring(dotIndex + 1);
     }
 
 
@@ -434,7 +434,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultPageName(String template)
     {
-        return (mapperRegistry[PAGE_KEY]).getDefaultName(template);
+        return mapperRegistry[PAGE_KEY].getDefaultName(template);
     }
 
     /**
@@ -448,7 +448,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultScreenName(String template)
     {
-        return (mapperRegistry[SCREEN_KEY]).getDefaultName(template);
+        return mapperRegistry[SCREEN_KEY].getDefaultName(template);
     }
 
     /**
@@ -462,7 +462,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultLayoutName(String template)
     {
-        return (mapperRegistry[LAYOUT_KEY]).getDefaultName(template);
+        return mapperRegistry[LAYOUT_KEY].getDefaultName(template);
     }
 
     /**
@@ -476,7 +476,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultNavigationName(String template)
     {
-        return (mapperRegistry[NAVIGATION_KEY]).getDefaultName(template);
+        return mapperRegistry[NAVIGATION_KEY].getDefaultName(template);
     }
 
     /**
@@ -490,7 +490,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultLayoutTemplateName(String template)
     {
-        return (mapperRegistry[LAYOUT_TEMPLATE_KEY]).getDefaultName(template);
+        return mapperRegistry[LAYOUT_TEMPLATE_KEY].getDefaultName(template);
     }
 
     /**
@@ -505,8 +505,7 @@ public class TurbineTemplateService
     {
         ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);
         String template = pp.get(URIConstants.CGI_TEMPLATE_PARAM);
-        return (template != null) ?
-            getDefaultPageName(template) : getDefaultPage();
+        return template != null ? getDefaultPageName(template) : getDefaultPage();
     }
 
     /**
@@ -521,8 +520,7 @@ public class TurbineTemplateService
     {
         ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);
         String template = pp.get(URIConstants.CGI_TEMPLATE_PARAM);
-        return (template != null) ?
-            getDefaultLayoutName(template) : getDefaultLayout();
+        return template != null ? getDefaultLayoutName(template) : getDefaultLayout();
     }
 
     /**
@@ -537,7 +535,7 @@ public class TurbineTemplateService
     public String getScreenName(String template)
         throws Exception
     {
-        return (mapperRegistry[SCREEN_KEY]).getMappedName(template);
+        return mapperRegistry[SCREEN_KEY].getMappedName(template);
     }
 
     /**
@@ -552,7 +550,7 @@ public class TurbineTemplateService
     public String getLayoutName(String template)
         throws Exception
     {
-        return (mapperRegistry[LAYOUT_KEY]).getMappedName(template);
+        return mapperRegistry[LAYOUT_KEY].getMappedName(template);
     }
 
     /**
@@ -567,7 +565,7 @@ public class TurbineTemplateService
     public String getNavigationName(String template)
         throws Exception
     {
-        return (mapperRegistry[NAVIGATION_KEY]).getMappedName(template);
+        return mapperRegistry[NAVIGATION_KEY].getMappedName(template);
     }
 
     /**
@@ -583,7 +581,7 @@ public class TurbineTemplateService
     public String getScreenTemplateName(String template)
         throws Exception
     {
-        return (mapperRegistry[SCREEN_TEMPLATE_KEY]).getMappedName(template);
+        return mapperRegistry[SCREEN_TEMPLATE_KEY].getMappedName(template);
     }
 
     /**
@@ -598,7 +596,7 @@ public class TurbineTemplateService
     public String getLayoutTemplateName(String template)
         throws Exception
     {
-        return (mapperRegistry[LAYOUT_TEMPLATE_KEY]).getMappedName(template);
+        return mapperRegistry[LAYOUT_TEMPLATE_KEY].getMappedName(template);
     }
 
     /**
@@ -614,7 +612,7 @@ public class TurbineTemplateService
     public String getNavigationTemplateName(String template)
         throws Exception
     {
-        return (mapperRegistry[NAVIGATION_TEMPLATE_KEY]).getMappedName(template);
+        return mapperRegistry[NAVIGATION_TEMPLATE_KEY].getMappedName(template);
     }
 
     /**
@@ -807,12 +805,12 @@ public class TurbineTemplateService
             tm.setDefaultProperty(mapperDefaultProperty[i]);
             tm.setSeparator(mapperSeparator[i]);
 
-            if ((mapperLoader[i] != null) && (tm instanceof ClassMapper))
+            if (mapperLoader[i] != null && tm instanceof ClassMapper)
             {
                 ((ClassMapper) tm).setLoader(mapperLoader[i]);
             }
 
-            if ((mapperPrefix[i] != null) && (tm instanceof BaseTemplateMapper))
+            if (mapperPrefix[i] != null && tm instanceof BaseTemplateMapper)
             {
                 ((BaseTemplateMapper) tm).setPrefix(mapperPrefix[i]);
             }

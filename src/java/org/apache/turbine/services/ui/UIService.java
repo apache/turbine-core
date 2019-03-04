@@ -38,26 +38,26 @@ public interface UIService extends Service
     /**
      * The service identifier.
      */
-    public String SERVICE_NAME = "UIService";
+    String SERVICE_NAME = "UIService";
 
     /**
      * Refresh all skins.
      */
-    public void refresh();
+    void refresh();
 
     /**
      * Refresh a particular skin.
      *
      * @param skinName the name of the skin to clear.
      */
-    public void refresh(String skinName);
+    void refresh(String skinName);
 
     /**
      * Provide access to the list of available skin names.
      *
      * @return the available skin names.
      */
-    public String[] getSkinNames();
+    String[] getSkinNames();
 
     /**
      * Get the name of the default skin name for the web application from the
@@ -68,7 +68,7 @@ public interface UIService extends Service
      *
      * @return the name of the default skin for the web application.
      */
-    public String getWebappSkinName();
+    String getWebappSkinName();
 
     /**
      * Retrieve a skin property from the named skin.  If the property is not
@@ -84,7 +84,7 @@ public interface UIService extends Service
      * default skin), the webapp skin, the default skin or <code>null</code>,
      * depending on whether or not the property or skins exist.
      */
-    public String get(String skinName, String key);
+    String get(String skinName, String key);
 
     /**
      * Retrieve a skin property from the default skin for the webapp.  If the
@@ -98,7 +98,7 @@ public interface UIService extends Service
      * default skin), the default skin or <code>null</code>, depending on
      * whether or not the property or skins exist.
      */
-    public String get(String key);
+    String get(String key);
 
     /**
      * Retrieve the URL for an image that is part of a skin. The images are
@@ -114,7 +114,7 @@ public interface UIService extends Service
      * @param serverData the serverData to use as the basis for the URL.
      * @return the image URL
      */
-    public String image(String skinName, String imageId, ServerData serverData);
+    String image(String skinName, String imageId, ServerData serverData);
 
     /**
      * Retrieve the URL for an image that is part of a skin. The images are
@@ -124,7 +124,7 @@ public interface UIService extends Service
      * @param imageId the id of the image whose URL will be generated.
      * @return the image URL
      */
-    public String image(String skinName, String imageId);
+    String image(String skinName, String imageId);
 
     /**
      * Retrieve the URL for the style sheet that is part of a skin. The style is
@@ -140,7 +140,7 @@ public interface UIService extends Service
      * @param serverData the serverData to use as the basis for the URL.
      * @return the CSS URL
      */
-    public String getStylecss(String skinName, ServerData serverData);
+    String getStylecss(String skinName, ServerData serverData);
 
     /**
      * Retrieve the URL for the style sheet that is part of a skin. The style is
@@ -150,7 +150,7 @@ public interface UIService extends Service
      * @param skinName the name of the skin to retrieve the style sheet from.
      * @return the CSS URL
      */
-    public String getStylecss(String skinName);
+    String getStylecss(String skinName);
 
     /**
      * Retrieve the URL for a given script that is part of a skin. The script is
@@ -166,7 +166,7 @@ public interface UIService extends Service
      * @param serverData the serverData to use as the basis for the URL.
      * @return the script URL
      */
-    public String getScript(String skinName, String filename,
+    String getScript(String skinName, String filename,
             ServerData serverData);
 
     /**
@@ -177,6 +177,6 @@ public interface UIService extends Service
      * @param filename the name of the script file.
      * @return the script URL
      */
-    public String getScript(String skinName, String filename);
+    String getScript(String skinName, String filename);
 
 }

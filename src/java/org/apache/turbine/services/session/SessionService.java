@@ -22,6 +22,7 @@ package org.apache.turbine.services.session;
 
 
 import java.util.Collection;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.turbine.om.security.User;
@@ -43,7 +44,7 @@ public interface SessionService extends Service
     /**
      * The key under which this service is stored in TurbineServices.
      */
-    static final String SERVICE_NAME = "SessionService";
+    String SERVICE_NAME = "SessionService";
 
     /**
      * Gets all active sessions
@@ -114,5 +115,4 @@ public interface SessionService extends Service
      * @return Collection of HtttSession objects
      */
     Collection<HttpSession> getSessionsForUser(User user);
-
 }

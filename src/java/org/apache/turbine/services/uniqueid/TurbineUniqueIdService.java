@@ -1,6 +1,8 @@
 package org.apache.turbine.services.uniqueid;
 
 
+import java.nio.charset.StandardCharsets;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -22,6 +24,7 @@ package org.apache.turbine.services.uniqueid;
 
 
 import java.security.MessageDigest;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.LogManager;
@@ -46,11 +49,11 @@ public class TurbineUniqueIdService
     private static final Logger log = LogManager.getLogger(TurbineUniqueIdService.class);
 
     /** The identifier of this instance of turbine. */
-    protected static String turbineId = "UNKNOWN";
+    private static String turbineId = "UNKNOWN";
 
-    protected static String turbineURL = "UNKNOWN";
+    private static String turbineURL = "UNKNOWN";
 
-    protected static int counter;
+    private static AtomicInteger counter;
 
 
     /**
@@ -63,19 +66,22 @@ public class TurbineUniqueIdService
     {
         try
         {
+            counter = new AtomicInteger();
+
             // This might be a problem if the unique Id Service runs
             // before Turbine got its first request. In this case,
             // getDefaultServerData will return just a dummy value
             // which is the same for all instances of Turbine.
             //
             // TODO This needs definitely further working.
-            String url = Turbine.getDefaultServerData().toString();
+            turbineURL = Turbine.getDefaultServerData().toString();
 
             MessageDigest md = MessageDigest.getInstance("MD5");
-            byte [] bytesId = md.digest(url.getBytes("UTF-8"));
-            turbineId = new String(Base64.encodeBase64(bytesId),"UTF-8");
+            byte [] bytesId = md.digest(turbineURL.getBytes(StandardCharsets.UTF_8));
+            turbineId = new String(Base64.encodeBase64(bytesId),
+                    StandardCharsets.UTF_8);
 
-            log.info("This is Turbine instance running at: {}", url);
+            log.info("This is Turbine instance running at: {}", turbineURL);
             log.info("The instance id is #{}", turbineId);
             setInit(true);
         }
@@ -99,8 +105,8 @@ public class TurbineUniqueIdService
      * <p> Returns an identifier of this Turbine instance that is unique
      * both on the server and worldwide.  This identifier is computed
      * as an MD5 sum of the URL (including schema, address, port if
-     * different that 80/443 respecively, context and servlet name).
-     * There is an overwhelming probalility that this id will be
+     * different that 80/443 respectively, context and servlet name).
+     * There is an overwhelming probability that this id will be
      * different that all other Turbine instances online.
      *
      * @return A String with the instance identifier.
@@ -113,7 +119,7 @@ public class TurbineUniqueIdService
 
     /**
      * <p> Returns an identifier that is unique within this turbine
-     * instance, but does not have random-like apearance.
+     * instance, but does not have random-like appearance.
      *
      * @return A String with the non-random looking instance
      * identifier.
@@ -121,11 +127,7 @@ public class TurbineUniqueIdService
     @Override
     public String getUniqueId()
     {
-        int current;
-        synchronized (TurbineUniqueIdService.class)
-        {
-            current = counter++;
-        }
+        int current = counter.getAndIncrement();
         String id = Integer.toString(current);
 
         // If you manage to get more than 100 million of ids, you'll

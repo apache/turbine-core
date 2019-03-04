@@ -51,7 +51,7 @@ public interface PipelineDataApplicationTool
      *
      * @param data initialization data
      */
-    public void init(Object data);
+    void init(Object data);
 
     /**
      * Refresh the application tool. This is
@@ -62,5 +62,5 @@ public interface PipelineDataApplicationTool
      *
      * @param data The current PipelineData Object
      */
-    public void refresh(PipelineData data);
+    void refresh(PipelineData data);
 }

@@ -64,6 +64,6 @@ public interface ValveContext
      * @throws TurbineException No further Valves configured in the
      * Pipeline currently being processed.
      */
-    public void invokeNext(PipelineData pipelineData)
+    void invokeNext(PipelineData pipelineData)
         throws IOException, TurbineException;
 }

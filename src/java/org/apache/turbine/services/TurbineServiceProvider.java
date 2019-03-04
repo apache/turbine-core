@@ -39,7 +39,7 @@ public interface TurbineServiceProvider
      * @return an instance of the service
      * @throws InstantiationException the service could not be instantiated
      */
-    public Object get(String roleName) throws InstantiationException;
+    Object get(String roleName) throws InstantiationException;
 
     /**
      * Releases the instance you got before. This is only really
@@ -47,12 +47,12 @@ public interface TurbineServiceProvider
      *
      * @param component the component to release
      */
-    public void release(Object component);
+    void release(Object component);
 
     /**
      * Is the service known to the service container?
      * @param roleName the name of the requested service
      * @return true if the service is known to the provider
      */
-    public boolean exists(String roleName);
+    boolean exists(String roleName);
 }

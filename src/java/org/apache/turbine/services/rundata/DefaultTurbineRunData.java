@@ -262,8 +262,7 @@ public class DefaultTurbineRunData
         ParameterParser parameters = getParameterParser();
         HttpServletRequest request = getRequest();
 
-        if ((parameters != null) &&
-                (parameters.getRequest() != request))
+        if (parameters != null && parameters.getRequest() != request)
         {
             parameters.setRequest(request);
         }
@@ -283,8 +282,7 @@ public class DefaultTurbineRunData
         CookieParser cookies = getCookieParser();
         HttpServletRequest request = getRequest();
 
-        if ((cookies != null) &&
-                (cookies.getRequest() != request))
+        if (cookies != null && cookies.getRequest() != request)
         {
             cookies.setData(request, getResponse());
         }
@@ -363,7 +361,8 @@ public class DefaultTurbineRunData
     /**
      * Sets the access control list.
      *
-     * To delete ACL from session use key {@link TurbineConstants#ACL_SESSION_KEY}. Invalidate session, if session persist.
+     * To delete ACL from session use key {@link TurbineConstants#ACL_SESSION_KEY}.
+     * Invalidate session, if session persist.
      *
      * @param acl an access control list.
      */
@@ -381,8 +380,8 @@ public class DefaultTurbineRunData
     @Override
     public boolean hasAction()
     {
-        return (StringUtils.isNotEmpty(this.action)
-          && !this.action.equalsIgnoreCase("null"));
+        return StringUtils.isNotEmpty(this.action)
+          && !this.action.equalsIgnoreCase("null");
     }
 
     /**
@@ -395,7 +394,7 @@ public class DefaultTurbineRunData
     @Override
     public String getAction()
     {
-        return (hasAction() ? this.action : "");
+        return hasAction() ? this.action : "";
     }
 
     /**
@@ -501,7 +500,7 @@ public class DefaultTurbineRunData
     @Override
     public String getScreen()
     {
-        return (hasScreen() ? this.screen : "");
+        return hasScreen() ? this.screen : "";
     }
 
     /**
@@ -698,7 +697,7 @@ public class DefaultTurbineRunData
     @Override
     public String getTitle()
     {
-        return (this.title == null ? "" : this.title);
+        return this.title == null ? "" : this.title;
     }
 
     /**

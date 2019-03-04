@@ -258,7 +258,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
             String key = keys.next();
             String[] keyParts = StringUtils.split(key, ".");
 
-            if ((keyParts.length == 3)
+            if (keyParts.length == 3
                     && (keyParts[0] + ".").equals(SERVICE_PREFIX)
                     && ("." + keyParts[2]).equals(CLASSNAME_SUFFIX))
             {

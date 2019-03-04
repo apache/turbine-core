@@ -89,13 +89,13 @@ public interface Valve
      * @throws IOException Thrown by a subsequent Valve.
      * @throws TurbineException Thrown by a subsequent Valve.
      */
-    public void invoke(PipelineData pipelineData, ValveContext context)
+    void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException;
 
     /**
      * Initialize the valve before using in a pipeline.
      * @throws Exception if initialization fails
      */
-    public void initialize()
+    void initialize()
         throws Exception;
 }

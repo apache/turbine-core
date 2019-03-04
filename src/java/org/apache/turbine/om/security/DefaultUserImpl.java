@@ -401,7 +401,7 @@ public class DefaultUserImpl implements User
      * @return A Java Date with the last access date for the user.
      */
     @Override
-    public java.util.Date getLastAccessDate()
+    public Date getLastAccessDate()
     {
         if (lastAccessDate == null)
         {
@@ -417,7 +417,7 @@ public class DefaultUserImpl implements User
     @Override
     public void setLastAccessDate()
     {
-        lastAccessDate = new java.util.Date();
+        lastAccessDate = new Date();
     }
 
     /**
@@ -630,9 +630,9 @@ public class DefaultUserImpl implements User
      * @return The creation date of the user
      */
     @Override
-    public java.util.Date getCreateDate()
+    public Date getCreateDate()
     {
-        return (java.util.Date)getPerm(CREATE_DATE, new java.util.Date());
+        return (Date)getPerm(CREATE_DATE, new Date());
     }
 
     /**
@@ -641,7 +641,7 @@ public class DefaultUserImpl implements User
      * @param createDate The new creation date of the user
      */
     @Override
-    public void setCreateDate(java.util.Date createDate)
+    public void setCreateDate(Date createDate)
     {
         setPerm(CREATE_DATE, createDate);
     }
@@ -652,9 +652,9 @@ public class DefaultUserImpl implements User
      * @return The date of the last login of the user
      */
     @Override
-    public java.util.Date getLastLogin()
+    public Date getLastLogin()
     {
-        return (java.util.Date) getPerm(User.LAST_LOGIN);
+        return (Date) getPerm(User.LAST_LOGIN);
     }
 
     /**
@@ -663,7 +663,7 @@ public class DefaultUserImpl implements User
      * @param lastLogin The new the date of the last login of the user
      */
     @Override
-    public void setLastLogin(java.util.Date lastLogin)
+    public void setLastLogin(Date lastLogin)
     {
         setPerm(User.LAST_LOGIN, lastLogin);
     }
@@ -677,7 +677,7 @@ public class DefaultUserImpl implements User
     public boolean hasLoggedIn()
     {
         Boolean loggedIn = (Boolean) getTemp(User.HAS_LOGGED_IN);
-        return (loggedIn != null && loggedIn.booleanValue());
+        return loggedIn != null && loggedIn.booleanValue();
     }
 
     /**
@@ -704,7 +704,7 @@ public class DefaultUserImpl implements User
     public boolean isConfirmed()
     {
         String value = getConfirmed();
-        return (value != null && value.equals(User.CONFIRM_DATA));
+        return value != null && value.equals(User.CONFIRM_DATA);
     }
 
     /**
@@ -716,7 +716,7 @@ public class DefaultUserImpl implements User
     public void updateLastLogin()
         throws Exception
     {
-        setLastLogin(new java.util.Date());
+        setLastLogin(new Date());
     }
 
     /* (non-Javadoc)

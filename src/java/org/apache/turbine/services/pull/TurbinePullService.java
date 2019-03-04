@@ -339,8 +339,7 @@ public class TurbinePullService
 
                 log.info("Tool {} to add to the context as '${}'", toolClassName, toolName);
             }
-            // NoClassDefFoundError + ClassNotFoundException
-            catch (Throwable e)
+            catch (NoClassDefFoundError | ClassNotFoundException e)
             {
                 log.error("Cannot instantiate tool class {}", toolClassName, e);
             }
@@ -403,13 +402,10 @@ public class TurbinePullService
         		.getInstance()
         		.getService(TurbineUserManager.ROLE);
 
-        if (!userManager.isAnonymousUser(user))
+        if (!userManager.isAnonymousUser(user) && user.hasLoggedIn())
         {
-            if (user.hasLoggedIn())
-            {
-                populateWithSessionTools(authorizedTools, context, data, user);
-                populateWithPermTools(persistentTools, context, data, user);
-            }
+            populateWithSessionTools(authorizedTools, context, data, user);
+            populateWithPermTools(persistentTools, context, data, user);
         }
     }
 
@@ -425,9 +421,7 @@ public class TurbinePullService
     @Override
     public void populateContext(Context context, PipelineData pipelineData)
     {
-       // Map runDataMap = (Map) pipelineData.get(RunData.class);
-       // RunData data = (RunData)runDataMap.get(RunData.class);
-        RunData data = (RunData)pipelineData;
+        RunData data = getRunData(pipelineData);
 
         populateWithRequestTools(context, pipelineData);
         // session tools (whether session-only or persistent are
@@ -447,20 +441,17 @@ public class TurbinePullService
         // We should either store the session pull tools in the session or
         // make Turbine.loginAction() copy the session pull tools into the
         // new user object.
-        populateWithSessionTools(sessionTools, context, pipelineData, user);
+        populateWithSessionTools(sessionTools, context, data, user);
 
         TurbineUserManager userManager =
         	(TurbineUserManager)TurbineServices
         		.getInstance()
         		.getService(TurbineUserManager.ROLE);
 
-        if (!userManager.isAnonymousUser(user))
+        if (!userManager.isAnonymousUser(user) && user.hasLoggedIn())
         {
-            if (user.hasLoggedIn())
-            {
-                populateWithSessionTools(authorizedTools, context, pipelineData, user);
-                populateWithPermTools(persistentTools, context, pipelineData, user);
-            }
+            populateWithSessionTools(authorizedTools, context, data, user);
+            populateWithPermTools(persistentTools, context, pipelineData, user);
         }
     }
 
@@ -471,9 +462,8 @@ public class TurbinePullService
      */
     private void populateWithGlobalTools(Context context)
     {
-        for (Iterator<ToolData> it = globalTools.iterator(); it.hasNext();)
+        for (ToolData toolData : globalTools)
         {
-            ToolData toolData = it.next();
             try
             {
                 Object tool = toolData.toolClass.newInstance();
@@ -496,14 +486,13 @@ public class TurbinePullService
      * Populate the given context with the request-scope tools
      *
      * @param context a Velocity Context to populate
-     * @param pipelineData a RunData instance
+     * @param data a RunData or PipelineData instance
      */
-    private void populateWithRequestTools(Context context, RunData data)
+    private void populateWithRequestTools(Context context, Object data)
     {
         // Iterate the tools
-        for (Iterator<ToolData> it = requestTools.iterator(); it.hasNext();)
+        for (ToolData toolData : requestTools)
         {
-            ToolData toolData = it.next();
             try
             {
                 // Fetch Object through the Pool.
@@ -523,130 +512,12 @@ public class TurbinePullService
         }
     }
 
-
-    /**
-     * Populate the given context with the request-scope tools
-     *
-     * @param context a Velocity Context to populate
-     * @param pipelineData a RunData instance
-     */
-    private void populateWithRequestTools(Context context, PipelineData pipelineData)
-    {
-        // Iterate the tools
-        for (Iterator<ToolData> it = requestTools.iterator(); it.hasNext();)
-        {
-            ToolData toolData = it.next();
-            try
-            {
-                // Fetch Object through the Pool.
-                Object tool = pool.getInstance(toolData.toolClass);
-
-                initTool(tool, pipelineData);
-
-                // put the tool in the context
-                context.put(toolData.toolName, tool);
-            }
-            catch (Exception e)
-            {
-                log.error("Could not instantiate request tool {} from a {} object",
-                        toolData.toolName, toolData.toolClassName, e);
-            }
-        }
-    }
-
     /**
      * Populate the given context with the session-scoped tools.
      *
-     * @param tools The list of tools with which to populate the
-     * session.
+     * @param tools The list of tools with which to populate the session.
      * @param context The context to populate.
-     * @param pipelineData The current RunData object
-     * @param user The <code>User</code> object whose storage to
-     * retrieve the tool from.
-     */
-    private void populateWithSessionTools(List<ToolData> tools, Context context,
-            PipelineData pipelineData, User user)
-    {
-        //Map runDataMap = (Map)pipelineData.get(RunData.class);
-        //RunData data = (RunData) runDataMap.get(RunData.class);
-        RunData runData = (RunData)pipelineData;
-        // Iterate the tools
-        for (Iterator<ToolData> it = tools.iterator(); it.hasNext();)
-        {
-            ToolData toolData = it.next();
-            try
-            {
-                // ensure that tool is created only once for a user
-                // by synchronizing against the user object
-                synchronized (runData.getSession())
-                {
-                    // first try and fetch the tool from the user's
-                    // hashtable
-                    Object tool = runData.getSession().getAttribute(
-                            SESSION_TOOLS_ATTRIBUTE_PREFIX
-                            + toolData.toolClassName);
-
-                    if (tool == null)
-                    {
-                        // if not there, an instance must be fetched from
-                        // the pool
-                        tool = pool.getInstance(toolData.toolClass);
-
-                        // session tools are init'd with the User object
-                        initTool(tool, user);
-                    }
-
-                    // *NOT* else
-                    if(tool != null)
-                    {
-                        // store the newly created tool in the session
-                        runData.getSession().setAttribute(
-                                SESSION_TOOLS_ATTRIBUTE_PREFIX
-                                + tool.getClass().getName(), tool);
-
-                        // This is a semantics change. In the old
-                        // Turbine, Session tools were initialized and
-                        // then refreshed every time they were pulled
-                        // into the context if "refreshToolsPerRequest"
-                        // was wanted.
-                        //
-                        // RunDataApplicationTools now have a parameter
-                        // for refresh. If it is not refreshed immediately
-                        // after init(), the parameter value will be undefined
-                        // until the 2nd run. So we refresh all the session
-                        // tools on every run, even if we just init'ed it.
-                        //
-
-                        if (refreshToolsPerRequest)
-                        {
-                            refreshTool(tool, pipelineData);
-                        }
-
-                        // put the tool in the context
-                        log.debug("Adding {} to ctx as {}", tool, toolData.toolName);
-                        context.put(toolData.toolName, tool);
-                    }
-                    else
-                    {
-                        log.info("Tool {} was null, skipping it.", toolData.toolName);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                log.error("Could not instantiate session tool {} from a {} object",
-                        toolData.toolName, toolData.toolClassName, e);
-            }
-        }
-    }
-
-    /**
-     * Populate the given context with the session-scoped tools.
-     *
-     * @param tools The list of tools with which to populate the
-     * session.
-     * @param context The context to populate.
-     * @param pipelineData The current RunData object
+     * @param data The current RunData object
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
      */
@@ -654,9 +525,8 @@ public class TurbinePullService
             RunData data, User user)
     {
         // Iterate the tools
-        for (Iterator<ToolData> it = tools.iterator(); it.hasNext();)
+        for (ToolData toolData : tools)
         {
-            ToolData toolData = it.next();
             try
             {
                 // ensure that tool is created only once for a user
@@ -723,25 +593,22 @@ public class TurbinePullService
         }
     }
 
-
-
     /**
      * Populate the given context with the perm-scoped tools.
      *
      * @param tools The list of tools with which to populate the
      * session.
      * @param context The context to populate.
-     * @param pipelineData The current RunData object
+     * @param data The current RunData or PipelineData object
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
      */
     private void populateWithPermTools(List<ToolData> tools, Context context,
-            PipelineData pipelineData, User user)
+            Object data, User user)
     {
         // Iterate the tools
-        for (Iterator<ToolData> it = tools.iterator(); it.hasNext();)
+        for (ToolData toolData : tools)
         {
-            ToolData toolData = it.next();
             try
             {
                 // ensure that tool is created only once for a user
@@ -766,87 +633,7 @@ public class TurbinePullService
                     }
 
                     // *NOT* else
-                    if(tool != null)
-                    {
-                        // This is a semantics change. In the old
-                        // Turbine, Session tools were initialized and
-                        // then refreshed every time they were pulled
-                        // into the context if "refreshToolsPerRequest"
-                        // was wanted.
-                        //
-                        // RunDataApplicationTools now have a parameter
-                        // for refresh. If it is not refreshed immediately
-                        // after init(), the parameter value will be undefined
-                        // until the 2nd run. So we refresh all the session
-                        // tools on every run, even if we just init'ed it.
-                        //
-
-                        if (refreshToolsPerRequest)
-                        {
-                            refreshTool(tool, pipelineData);
-                        }
-
-                        // put the tool in the context
-                        log.debug("Adding {} to ctx as {}", tool, toolData.toolName);
-                        log.warn("Persistent scope tools are deprecated.");
-                        context.put(toolData.toolName, tool);
-                    }
-                    else
-                    {
-                        log.info("Tool {} was null, skipping it.", toolData.toolName);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                log.error("Could not instantiate perm tool {} from a {} object",
-                        toolData.toolName, toolData.toolClassName, e);
-            }
-        }
-    }
-
-    /**
-     * Populate the given context with the perm-scoped tools.
-     *
-     * @param tools The list of tools with which to populate the
-     * session.
-     * @param context The context to populate.
-     * @param pipelineData The current RunData object
-     * @param user The <code>User</code> object whose storage to
-     * retrieve the tool from.
-     */
-    private void populateWithPermTools(List<ToolData> tools, Context context,
-            RunData data, User user)
-    {
-        // Iterate the tools
-        for (Iterator<ToolData> it = tools.iterator(); it.hasNext();)
-        {
-            ToolData toolData = it.next();
-            try
-            {
-                // ensure that tool is created only once for a user
-                // by synchronizing against the user object
-                synchronized (user)
-                {
-                    // first try and fetch the tool from the user's
-                    // hashtable
-                    Object tool = user.getPerm(toolData.toolClassName);
-
-                    if (tool == null)
-                    {
-                        // if not there, an instance must be fetched from
-                        // the pool
-                        tool = pool.getInstance(toolData.toolClass);
-
-                        // session tools are init'd with the User object
-                        initTool(tool, user);
-
-                        // store the newly created tool in the user's hashtable
-                        user.setPerm(toolData.toolClassName, tool);
-                    }
-
-                    // *NOT* else
-                    if(tool != null)
+                    if (tool != null)
                     {
                         // This is a semantics change. In the old
                         // Turbine, Session tools were initialized and
@@ -1045,7 +832,8 @@ public class TurbinePullService
 
     private RunData getRunData(PipelineData pipelineData)
     {
-        if(!(pipelineData instanceof RunData)){
+        if (!(pipelineData instanceof RunData))
+        {
             throw new RuntimeException("Can't cast to rundata from pipeline data.");
         }
         return (RunData)pipelineData;

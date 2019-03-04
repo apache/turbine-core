@@ -44,7 +44,7 @@ public interface PipelineData extends AutoCloseable
      * @param name the key class
      * @param value the value map
      */
-    public void put(Class<?> name, Map<Class<?>, ? super Object> value);
+    void put(Class<?> name, Map<Class<?>, ? super Object> value);
 
     /**
      * Get the configured map of objects for the given key
@@ -52,7 +52,7 @@ public interface PipelineData extends AutoCloseable
      * @param name the key class
      * @return the value map or null if no such key exists
      */
-    public Map<Class<?>, ? super Object> get(Class<?> name);
+    Map<Class<?>, ? super Object> get(Class<?> name);
 
     /**
      * Get a value from the configured map of objects for the given keys
@@ -64,5 +64,5 @@ public interface PipelineData extends AutoCloseable
      *
      * @return the inner value or null if no such keys exist
      */
-    public <T> T get(Class<?> key, Class<T> innerKey);
+    <T> T get(Class<?> key, Class<T> innerKey);
 }

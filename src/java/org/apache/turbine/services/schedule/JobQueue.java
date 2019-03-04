@@ -188,7 +188,7 @@ public class JobQueue<J extends JobEntry>
             {
                 Long time1 = Long.valueOf(o1.getNextRuntime());
                 Long time2 = Long.valueOf(o2.getNextRuntime());
-                return (time1.compareTo(time2));
+                return time1.compareTo(time2);
             }
         };
 

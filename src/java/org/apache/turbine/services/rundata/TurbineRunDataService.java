@@ -129,8 +129,7 @@ public class TurbineRunDataService
                 value = conf.getString(key);
                 for (int j = 0; j < plist.length; j++)
                 {
-                    if (key.endsWith(plist[j]) &&
-                            (key.length() > (plist[j].length() + 1)))
+                    if (key.endsWith(plist[j]) && key.length() > plist[j].length() + 1)
                     {
                         key = key.substring(0, key.length() - plist[j].length() - 1);
                         config = (String[]) configurations.get(key);
@@ -221,9 +220,7 @@ public class TurbineRunDataService
         // to each and every module. Since each thread has its own RunData
         // object, it is not necessary to perform synchronization for
         // the data within this object.
-        if ((req == null)
-            || (res == null)
-            || (config == null))
+        if (req == null || res == null || config == null)
         {
             throw new IllegalArgumentException("HttpServletRequest, "
                 + "HttpServletResponse or ServletConfig was null.");

@@ -49,7 +49,7 @@ public final class Log4j2Logger
      *            the message
      */
     @Override
-    public final void debug(final String message)
+    public void debug(final String message)
     {
         m_logger.debug(message);
     }
@@ -63,7 +63,7 @@ public final class Log4j2Logger
      *            the throwable
      */
     @Override
-    public final void debug(final String message, final Throwable throwable)
+    public void debug(final String message, final Throwable throwable)
     {
         m_logger.debug(message, throwable);
     }
@@ -74,7 +74,7 @@ public final class Log4j2Logger
      * @return true if "debug" messages will be logged
      */
     @Override
-    public final boolean isDebugEnabled()
+    public boolean isDebugEnabled()
     {
         return m_logger.isDebugEnabled();
     }
@@ -86,7 +86,7 @@ public final class Log4j2Logger
      *            the message
      */
     @Override
-    public final void info(final String message)
+    public void info(final String message)
     {
         m_logger.info(message);
     }
@@ -100,7 +100,7 @@ public final class Log4j2Logger
      *            the throwable
      */
     @Override
-    public final void info(final String message, final Throwable throwable)
+    public void info(final String message, final Throwable throwable)
     {
         m_logger.info(message, throwable);
     }
@@ -111,7 +111,7 @@ public final class Log4j2Logger
      * @return true if "info" messages will be logged
      */
     @Override
-    public final boolean isInfoEnabled()
+    public boolean isInfoEnabled()
     {
         return m_logger.isInfoEnabled();
     }
@@ -123,7 +123,7 @@ public final class Log4j2Logger
      *            the message
      */
     @Override
-    public final void warn(final String message)
+    public void warn(final String message)
     {
         m_logger.warn(message);
     }
@@ -137,7 +137,7 @@ public final class Log4j2Logger
      *            the throwable
      */
     @Override
-    public final void warn(final String message, final Throwable throwable)
+    public void warn(final String message, final Throwable throwable)
     {
         m_logger.warn(message, throwable);
     }
@@ -148,7 +148,7 @@ public final class Log4j2Logger
      * @return true if "warn" messages will be logged
      */
     @Override
-    public final boolean isWarnEnabled()
+    public boolean isWarnEnabled()
     {
         return m_logger.isWarnEnabled();
     }
@@ -160,7 +160,7 @@ public final class Log4j2Logger
      *            the message
      */
     @Override
-    public final void error(final String message)
+    public void error(final String message)
     {
         m_logger.error(message);
     }
@@ -174,7 +174,7 @@ public final class Log4j2Logger
      *            the throwable
      */
     @Override
-    public final void error(final String message, final Throwable throwable)
+    public void error(final String message, final Throwable throwable)
     {
         m_logger.error(message, throwable);
     }
@@ -185,7 +185,7 @@ public final class Log4j2Logger
      * @return true if "error" messages will be logged
      */
     @Override
-    public final boolean isErrorEnabled()
+    public boolean isErrorEnabled()
     {
         return m_logger.isErrorEnabled();
     }
@@ -197,7 +197,7 @@ public final class Log4j2Logger
      *            the message
      */
     @Override
-    public final void fatalError(final String message)
+    public void fatalError(final String message)
     {
         m_logger.fatal(message);
     }
@@ -211,7 +211,7 @@ public final class Log4j2Logger
      *            the throwable
      */
     @Override
-    public final void fatalError(final String message, final Throwable throwable)
+    public void fatalError(final String message, final Throwable throwable)
     {
         m_logger.fatal(message, throwable);
     }
@@ -222,7 +222,7 @@ public final class Log4j2Logger
      * @return true if "fatalError" messages will be logged
      */
     @Override
-    public final boolean isFatalErrorEnabled()
+    public boolean isFatalErrorEnabled()
     {
         return m_logger.isFatalEnabled();
     }
@@ -237,7 +237,7 @@ public final class Log4j2Logger
      * @return the new logger
      */
     @Override
-    public final Logger getChildLogger(final String name)
+    public Logger getChildLogger(final String name)
     {
         return new Log4j2Logger(LogManager.getLogger(m_logger.getName() + "." + name));
     }

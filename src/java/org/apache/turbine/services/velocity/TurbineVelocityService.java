@@ -127,7 +127,7 @@ public class TurbineVelocityService
     {
         try
         {
-            initVelocity();
+            velocity = getInitializedVelocityEngine();
 
             // We can only load the Pull Model ToolBox
             // if the Pull service has been listed in the TR.props
@@ -455,8 +455,9 @@ public class TurbineVelocityService
      * Turbine configuration which relates to velocity.
      *
      * @throws Exception An Error occurred.
+     * @return an initialized VelocityEngine instance
      */
-    private synchronized void initVelocity()
+    private VelocityEngine getInitializedVelocityEngine()
         throws Exception
     {
         // Get the configuration for this service.
@@ -467,9 +468,11 @@ public class TurbineVelocityService
         // backward compatibility, can be overridden in the configuration
         conf.setProperty(RuntimeConstants.RUNTIME_LOG_NAME, "velocity");
 
-        velocity = new VelocityEngine();
+        VelocityEngine velocity = new VelocityEngine();
         setVelocityProperties(velocity, conf);
         velocity.init();
+
+        return velocity;
     }
 
 
