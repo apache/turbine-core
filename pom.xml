@@ -547,7 +547,7 @@
             <suppressionFile>${project.basedir}/suppression-owasp-fp.xml</suppressionFile>
             </suppressionFiles>
         </configuration>
-      </plugin>   
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -921,7 +921,6 @@
       <artifactId>commons-lang3</artifactId>
       <version>3.8.1</version>
     </dependency>
-    <!-- may be removed if no substitution is needed any more in Turbine configuration -->
     <dependency>
        <groupId>org.apache.commons</groupId>
        <artifactId>commons-text</artifactId>
@@ -1213,6 +1212,7 @@
     <dependency.check.skip>true</dependency.check.skip>
     <torque.version>4.0</torque.version>
     <jacoco.skip>true</jacoco.skip>
+    <doclint>none</doclint>
   </properties>
 
 </project>
