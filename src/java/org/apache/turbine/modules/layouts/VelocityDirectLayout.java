@@ -48,14 +48,13 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class VelocityDirectLayout
-    extends Layout
+public class VelocityDirectLayout implements Layout
 {
     /** Logging */
-    private static Logger log = LogManager.getLogger(VelocityDirectLayout.class);
+    protected final Logger log = LogManager.getLogger(this.getClass());
 
     /** The prefix for lookup up layout pages */
-    private String prefix = Layout.PREFIX + "/";
+    private static final String prefix = PREFIX + "/";
 
     /** Injected service instance */
     @TurbineService

@@ -68,12 +68,10 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class AccessController
-        extends Action
+public class AccessController implements Action
 {
-
     /** Logging */
-    private static Logger log = LogManager.getLogger(AccessController.class);
+    private static final Logger log = LogManager.getLogger(AccessController.class);
 
     /** Injected service instance */
     @TurbineService

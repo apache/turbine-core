@@ -26,36 +26,28 @@ package org.apache.turbine.modules;
 import org.apache.turbine.services.schedule.JobEntry;
 
 /**
- * All Scheduled jobs should extend this.  The class that extends
- * ScheduledJobs should contain the code that you actually want to
+ * All Scheduled jobs should implement this.  The class that implements
+ * ScheduledJob should contain the code that you actually want to
  * execute at a specific time.  The name of this class is what you
  * register in the JobEntry.
  *
  * @author <a href="mailto:mbryson@mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
-public abstract class ScheduledJob implements Assembler
+@FunctionalInterface
+public interface ScheduledJob extends Assembler
 {
     /** Prefix for scheduler job related classes */
-    public static final String PREFIX = "scheduledjobs";
+    String PREFIX = "scheduledjobs";
 
     /** The key for the scheduler job cache size if module caching is on. */
-    public static final String CACHE_SIZE_KEY = "scheduledjob.cache.size";
+    String CACHE_SIZE_KEY = "scheduledjob.cache.size";
 
     /** The default size of the scheduler job cache if module caching is on. */
-    public static final int CACHE_SIZE_DEFAULT = 10;
+    int CACHE_SIZE_DEFAULT = 10;
 
     /** Represents Scheduled Job Objects */
-    public static final String NAME = "scheduledjob";
-
-    /**
-     * @see org.apache.turbine.modules.Assembler#getPrefix()
-     */
-    @Override
-    public String getPrefix()
-    {
-        return PREFIX;
-    }
+    String NAME = "scheduledjob";
 
     /**
      * Run the Jobentry from the scheduler queue.
@@ -63,6 +55,5 @@ public abstract class ScheduledJob implements Assembler
      * @param job The job to run.
      * @throws Exception if something goes wrong
      */
-    public abstract void run(JobEntry job)
-            throws Exception;
+    void run(JobEntry job) throws Exception;
 }

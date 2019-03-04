@@ -42,7 +42,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public abstract class RawScreen extends Screen
+public abstract class RawScreen implements Screen
 {
     /**
      * Build the Screen.  This method actually makes a call to the
@@ -53,7 +53,7 @@ public abstract class RawScreen extends Screen
      * @throws Exception a generic exception.
      */
     @Override
-    protected final String doBuild(PipelineData pipelineData)
+    public final String doBuild(PipelineData pipelineData)
             throws Exception
     {
         RunData data = getRunData(pipelineData);

@@ -49,8 +49,7 @@ import org.apache.turbine.util.template.TemplateInfo;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public abstract class TemplateScreen
-    extends Screen
+public abstract class TemplateScreen implements Screen
 {
     /** Logging */
     protected Logger log = LogManager.getLogger(this.getClass());
@@ -104,7 +103,7 @@ public abstract class TemplateScreen
      * @throws Exception A generic exception.
      */
     @Override
-    protected String doBuild(PipelineData pipelineData)
+    public String doBuild(PipelineData pipelineData)
             throws Exception
     {
         String out = null;

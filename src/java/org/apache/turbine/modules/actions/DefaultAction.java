@@ -33,7 +33,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class DefaultAction extends Action
+public class DefaultAction implements Action
 {
     /**
      * Execute the action.
@@ -48,5 +48,4 @@ public class DefaultAction extends Action
         RunData data = getRunData(pipelineData);
         data.setMessage(data.getAction() + " has been executed!");
     }
-
 }

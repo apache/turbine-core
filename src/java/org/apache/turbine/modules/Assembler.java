@@ -47,12 +47,4 @@ public interface Assembler
         }
         return (RunData) pipelineData;
     }
-
-    /**
-     * Abstract method to provide the prefix for module related classes and
-     * templates
-     *
-     * @return the prefix
-     */
-    String getPrefix();
 }

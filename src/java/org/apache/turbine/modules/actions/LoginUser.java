@@ -20,10 +20,10 @@ package org.apache.turbine.modules.actions;
  */
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 import org.apache.fulcrum.security.util.DataBackendException;
 import org.apache.fulcrum.security.util.FulcrumSecurityException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.annotation.TurbineService;
@@ -45,8 +45,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class LoginUser
-        extends Action
+public class LoginUser implements Action
 {
     /** CGI Parameter for the user name */
     public static final String CGI_USERNAME = "username";
@@ -139,7 +138,7 @@ public class LoginUser
 
             // Set Error Message and clean out the user.
             data.setMessage(loginError);
-            
+
             User anonymousUser = security.getAnonymousUser();
             data.setUser(anonymousUser);
 

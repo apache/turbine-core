@@ -33,7 +33,6 @@ import org.apache.turbine.pipeline.PipelineData;
  */
 public class LayoutLoader
     extends GenericLoader<Layout>
-    implements Loader<Layout>
 {
     /** The single instance of this class. */
     private static LayoutLoader instance = new LayoutLoader();
@@ -44,7 +43,9 @@ public class LayoutLoader
      */
     private LayoutLoader()
     {
-        super(Layout.class);
+        super(Layout.class,
+                () -> Turbine.getConfiguration().getInt(Layout.CACHE_SIZE_KEY,
+                        Layout.CACHE_SIZE_DEFAULT));
     }
 
     /**
@@ -62,15 +63,6 @@ public class LayoutLoader
     }
 
     /**
-     * @see org.apache.turbine.modules.Loader#getCacheSize()
-     */
-    @Override
-    public int getCacheSize()
-    {
-        return LayoutLoader.getConfiguredCacheSize();
-    }
-
-    /**
      * The method through which this class is accessed.
      *
      * @return The single instance of this class.
@@ -78,16 +70,5 @@ public class LayoutLoader
     public static LayoutLoader getInstance()
     {
         return instance;
-    }
-
-    /**
-     * Helper method to get the configured cache size for this module
-     *
-     * @return the configure cache size
-     */
-    private static int getConfiguredCacheSize()
-    {
-        return Turbine.getConfiguration().getInt(Layout.CACHE_SIZE_KEY,
-                Layout.CACHE_SIZE_DEFAULT);
     }
 }

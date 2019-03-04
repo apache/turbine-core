@@ -49,7 +49,7 @@ public abstract class VelocitySecureAction extends VelocityAction
      * @throws Exception a generic exception.
      */
     @Override
-    protected void perform(PipelineData pipelineData) throws Exception
+    public void perform(PipelineData pipelineData) throws Exception
     {
         if (isAuthorized(pipelineData))
         {

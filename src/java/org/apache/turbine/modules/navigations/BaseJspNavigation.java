@@ -22,7 +22,6 @@ package org.apache.turbine.modules.navigations;
 
 
 import org.apache.turbine.annotation.TurbineService;
-import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.jsp.JspService;
 import org.apache.turbine.util.RunData;
@@ -40,7 +39,7 @@ public class BaseJspNavigation
         extends TemplateNavigation
 {
     /** The prefix for lookup up navigation pages */
-    private final String prefix = Navigation.PREFIX + "/";
+    private static final String prefix = PREFIX + "/";
 
     /** Injected service instance */
     @TurbineService

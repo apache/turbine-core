@@ -33,7 +33,6 @@ import org.apache.turbine.pipeline.PipelineData;
  */
 public class ActionLoader
     extends GenericLoader<Action>
-    implements Loader<Action>
 {
     /** The single instance of this class. */
     private static ActionLoader instance = new ActionLoader();
@@ -44,7 +43,9 @@ public class ActionLoader
      */
     private ActionLoader()
     {
-        super(Action.class);
+        super(Action.class,
+                () -> Turbine.getConfiguration().getInt(Action.CACHE_SIZE_KEY,
+                        Action.CACHE_SIZE_DEFAULT));
     }
 
     /**
@@ -62,15 +63,6 @@ public class ActionLoader
     }
 
     /**
-     * @see org.apache.turbine.modules.Loader#getCacheSize()
-     */
-    @Override
-    public int getCacheSize()
-    {
-        return ActionLoader.getConfiguredCacheSize();
-    }
-
-    /**
      * The method through which this class is accessed.
      *
      * @return The single instance of this class.
@@ -78,16 +70,5 @@ public class ActionLoader
     public static ActionLoader getInstance()
     {
         return instance;
-    }
-
-    /**
-     * Helper method to get the configured cache size for this module
-     *
-     * @return the configure cache size
-     */
-    private static int getConfiguredCacheSize()
-    {
-        return Turbine.getConfiguration().getInt(Action.CACHE_SIZE_KEY,
-                Action.CACHE_SIZE_DEFAULT);
     }
 }

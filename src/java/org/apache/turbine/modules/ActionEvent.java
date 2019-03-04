@@ -83,7 +83,7 @@ import org.apache.turbine.pipeline.PipelineData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public abstract class ActionEvent extends Action
+public abstract class ActionEvent implements Action
 {
 	/** Logging */
 	protected Logger log = LogManager.getLogger(this.getClass());

@@ -31,8 +31,7 @@ import org.apache.turbine.pipeline.PipelineData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public abstract class TemplateNavigation
-        extends Navigation
+public abstract class TemplateNavigation implements Navigation
 {
     /**
      * WebMacro Navigations extending this class should override this
@@ -60,7 +59,7 @@ public abstract class TemplateNavigation
      * @throws Exception a generic exception.
      */
     @Override
-    protected String doBuild(PipelineData pipelineData)
+    public String doBuild(PipelineData pipelineData)
             throws Exception
     {
         doBuildTemplate(pipelineData);

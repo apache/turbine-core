@@ -38,8 +38,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class LogoutUser
-        extends Action
+public class LogoutUser implements Action
 {
     /** Injected service instance */
     @TurbineService
@@ -102,7 +101,7 @@ public class LogoutUser
         // Retrieve an anonymous user.
         User anonymousUser = security.getAnonymousUser();
         data.setUser(anonymousUser);
-        data.save();        
+        data.save();
 
         // In the event that the current screen or related navigations
         // require acl info, we cannot wait for Turbine to handle

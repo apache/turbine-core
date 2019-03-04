@@ -35,7 +35,6 @@ import org.apache.turbine.pipeline.PipelineData;
  */
 public class ScreenLoader
     extends GenericLoader<Screen>
-    implements Loader<Screen>
 {
     /** The single instance of this class. */
     private static ScreenLoader instance = new ScreenLoader();
@@ -46,7 +45,9 @@ public class ScreenLoader
      */
     private ScreenLoader()
     {
-        super(Screen.class);
+        super(Screen.class,
+                () -> Turbine.getConfiguration().getInt(Screen.CACHE_SIZE_KEY,
+                        Screen.CACHE_SIZE_DEFAULT));
     }
 
     /**
@@ -85,15 +86,6 @@ public class ScreenLoader
 	}
 
     /**
-     * @see org.apache.turbine.modules.Loader#getCacheSize()
-     */
-    @Override
-    public int getCacheSize()
-    {
-        return ScreenLoader.getConfiguredCacheSize();
-    }
-
-    /**
      * The method through which this class is accessed.
      *
      * @return The single instance of this class.
@@ -101,16 +93,5 @@ public class ScreenLoader
     public static ScreenLoader getInstance()
     {
         return instance;
-    }
-
-    /**
-     * Helper method to get the configured cache size for this module
-     *
-     * @return the configure cache size
-     */
-    private static int getConfiguredCacheSize()
-    {
-        return Turbine.getConfiguration().getInt(Screen.CACHE_SIZE_KEY,
-                Screen.CACHE_SIZE_DEFAULT);
     }
 }

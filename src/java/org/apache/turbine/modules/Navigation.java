@@ -22,38 +22,30 @@ package org.apache.turbine.modules;
 import org.apache.turbine.pipeline.PipelineData;
 
 /**
- * This is the base class that defines what a Navigation module is.
+ * This is the interface that defines what a Navigation module is.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public abstract class Navigation implements Assembler
+@FunctionalInterface
+public interface Navigation extends Assembler
 {
     /** Prefix for navigation related classes and templates */
-    public static final String PREFIX = "navigations";
+    String PREFIX = "navigations";
 
     /** Property for the size of the navigation cache if caching is on */
-    public static final String CACHE_SIZE_KEY = "navigation.cache.size";
+    String CACHE_SIZE_KEY = "navigation.cache.size";
 
     /** The default size for the navigation cache */
-    public static final int CACHE_SIZE_DEFAULT = 10;
+    int CACHE_SIZE_DEFAULT = 10;
 
     /** Represents Navigation Objects */
-    public static final String NAME = "navigation";
+    String NAME = "navigation";
 
     /**
-     * @see org.apache.turbine.modules.Assembler#getPrefix()
-     */
-    @Override
-    public String getPrefix()
-    {
-        return PREFIX;
-    }
-
-    /**
-     * A subclass must override this method to build itself.
+     * A subclass must implement this method to build itself.
      * Subclasses override this method to store the navigation in
      * RunData or to write the navigation to the output stream
      * referenced in RunData.
@@ -62,18 +54,17 @@ public abstract class Navigation implements Assembler
      * @return the content of the navigation module
      * @throws Exception a generic exception.
      */
-    protected abstract String doBuild(PipelineData pipelineData) throws Exception;
+    String doBuild(PipelineData pipelineData) throws Exception;
 
     /**
      * Subclasses can override this method to add additional
-     * functionality.  This method is protected to force clients to
-     * use NavigationLoader to build a Navigation.
+     * functionality.
      *
      * @param pipelineData Turbine information.
      * @return the content of the navigation module
      * @throws Exception a generic exception.
      */
-    protected String build(PipelineData pipelineData)
+    default String build(PipelineData pipelineData)
         throws Exception
     {
         return doBuild(pipelineData);

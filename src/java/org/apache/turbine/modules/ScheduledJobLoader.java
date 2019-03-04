@@ -34,7 +34,6 @@ import org.apache.turbine.services.schedule.JobEntry;
  */
 public class ScheduledJobLoader
     extends GenericLoader<ScheduledJob>
-    implements Loader<ScheduledJob>
 {
     /** The single instance of this class. */
     private static ScheduledJobLoader instance = new ScheduledJobLoader();
@@ -45,7 +44,9 @@ public class ScheduledJobLoader
      */
     private ScheduledJobLoader()
     {
-        super(ScheduledJob.class);
+        super(ScheduledJob.class,
+                () -> Turbine.getConfiguration().getInt(ScheduledJob.CACHE_SIZE_KEY,
+                        ScheduledJob.CACHE_SIZE_DEFAULT));
     }
 
     /**
@@ -86,15 +87,6 @@ public class ScheduledJobLoader
     }
 
     /**
-     * @see org.apache.turbine.modules.Loader#getCacheSize()
-     */
-    @Override
-    public int getCacheSize()
-    {
-        return ScheduledJobLoader.getConfiguredCacheSize();
-    }
-
-    /**
      * The method through which this class is accessed.
      *
      * @return The single instance of this class.
@@ -102,16 +94,5 @@ public class ScheduledJobLoader
     public static ScheduledJobLoader getInstance()
     {
         return instance;
-    }
-
-    /**
-     * Helper method to get the configured cache size for this module
-     *
-     * @return the configure cache size
-     */
-    private static int getConfiguredCacheSize()
-    {
-        return Turbine.getConfiguration().getInt(ScheduledJob.CACHE_SIZE_KEY,
-                ScheduledJob.CACHE_SIZE_DEFAULT);
     }
 }

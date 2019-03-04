@@ -22,52 +22,43 @@ package org.apache.turbine.modules;
 import org.apache.turbine.pipeline.PipelineData;
 
 /**
- * This is the base class that defines what a Layout module is.
+ * This is the interface that defines what a Layout module is.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public abstract class Layout implements Assembler
+@FunctionalInterface
+public interface Layout extends Assembler
 {
     /** Prefix for layout related classes and templates */
-    public static final String PREFIX = "layouts";
+    String PREFIX = "layouts";
 
     /** Property for the size of the layout cache if caching is on */
-    public static final String CACHE_SIZE_KEY = "layout.cache.size";
+    String CACHE_SIZE_KEY = "layout.cache.size";
 
     /** The default size for the layout cache */
-    public static final int CACHE_SIZE_DEFAULT = 10;
+    int CACHE_SIZE_DEFAULT = 10;
 
     /** Represents Layout Objects */
-    public static final String NAME = "layout";
+    String NAME = "layout";
 
     /**
-     * @see org.apache.turbine.modules.Assembler#getPrefix()
-     */
-    @Override
-    public String getPrefix()
-    {
-        return PREFIX;
-    }
-
-    /**
-     * A subclass must override this method to perform itself.  The
+     * A subclass must implement this method to perform itself.  The
      * Action can also set the screen that is associated with PipelineData.
      * @param pipelineData Turbine information.
      * @throws Exception a generic exception.
      */
-    protected abstract void doBuild(PipelineData pipelineData) throws Exception;
+    void doBuild(PipelineData pipelineData) throws Exception;
 
     /**
      * Subclasses can override this method to add additional
-     * functionality.  This method is protected to force clients to
-     * use ActionLoader to perform an Action.
+     * functionality.
      *
      * @param pipelineData Turbine information.
      * @throws Exception a generic exception.
      */
-    protected void build(PipelineData pipelineData) throws Exception
+    default void build(PipelineData pipelineData) throws Exception
     {
         doBuild(pipelineData);
     }

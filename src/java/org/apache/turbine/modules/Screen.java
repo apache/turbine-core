@@ -25,38 +25,30 @@ import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
 /**
- * This is the base class which defines the Screen modules.
+ * This is the interface which defines the Screen modules.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public abstract class Screen implements Assembler
+@FunctionalInterface
+public interface Screen extends Assembler
 {
     /** Prefix for screen related classes and templates */
-    public static final String PREFIX = "screens";
+    String PREFIX = "screens";
 
     /** Property for the size of the screen cache if caching is on */
-    public static final String CACHE_SIZE_KEY = "screen.cache.size";
+    String CACHE_SIZE_KEY = "screen.cache.size";
 
     /** The default size for the screen cache */
-    public static final int CACHE_SIZE_DEFAULT = 50;
+    int CACHE_SIZE_DEFAULT = 50;
 
     /** Represents Screen Objects */
-    public static final String NAME = "screen";
+    String NAME = "screen";
 
     /**
-     * @see org.apache.turbine.modules.Assembler#getPrefix()
-     */
-    @Override
-    public String getPrefix()
-    {
-        return PREFIX;
-    }
-
-    /**
-     * A subclass must override this method to build itself.
+     * A subclass must implement this method to build itself.
      * Subclasses override this method to store the screen in RunData
      * or to write the screen to the output stream referenced in
      * RunData.
@@ -64,18 +56,17 @@ public abstract class Screen implements Assembler
      * @return the content of the screen
      * @throws Exception a generic exception.
      */
-    protected abstract String doBuild(PipelineData pipelineData) throws Exception;
+    String doBuild(PipelineData pipelineData) throws Exception;
 
     /**
      * Subclasses can override this method to add additional
-     * functionality.  This method is protected to force clients to
-     * use ScreenLoader to build a Screen.
+     * functionality.
      *
      * @param pipelineData Turbine information.
      * @return the content of the screen
      * @throws Exception a generic exception.
      */
-    protected String build(PipelineData pipelineData)
+    default String build(PipelineData pipelineData)
         throws Exception
     {
         return doBuild(pipelineData);
@@ -95,7 +86,7 @@ public abstract class Screen implements Assembler
      * @param pipelineData Turbine information.
      * @return A String with the Layout.
      */
-    public String getLayout(PipelineData pipelineData)
+    default String getLayout(PipelineData pipelineData)
     {
         RunData data = getRunData(pipelineData);
         return data.getLayout();
@@ -107,7 +98,7 @@ public abstract class Screen implements Assembler
      * @param pipelineData Turbine information.
      * @param layout The layout name.
      */
-    public void setLayout(PipelineData pipelineData, String layout)
+    default void setLayout(PipelineData pipelineData, String layout)
     {
         RunData data = getRunData(pipelineData);
         data.setLayout(layout);

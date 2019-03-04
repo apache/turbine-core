@@ -20,6 +20,7 @@ package org.apache.turbine.modules;
  */
 
 import java.util.List;
+import java.util.function.IntSupplier;
 import java.util.stream.Collectors;
 
 import org.apache.turbine.Turbine;
@@ -44,7 +45,10 @@ public abstract class GenericLoader<T extends Assembler> implements Loader<T>
     protected AssemblerBrokerService ab;
 
     /** Class of loaded assembler */
-    private Class<T> assemblerClass;
+    private final Class<T> assemblerClass;
+
+    /** Supplier of configured cache for this assembler Class */
+    private final IntSupplier cacheSizeSupplier;
 
     /** @serial This can be serialized */
     private boolean reload = false;
@@ -59,11 +63,13 @@ public abstract class GenericLoader<T extends Assembler> implements Loader<T>
      * Basic constructor for creating a loader.
      *
      * @param assemblerClass Class of loaded assembler
+     * @param cacheSizeSupplier Supplier of configured cache size for this assembler Class
      */
-    public GenericLoader(Class<T> assemblerClass)
+    public GenericLoader(Class<T> assemblerClass, IntSupplier cacheSizeSupplier)
     {
         super();
         this.assemblerClass = assemblerClass;
+        this.cacheSizeSupplier = cacheSizeSupplier;
         this.ab = (AssemblerBrokerService)TurbineServices.getInstance()
                 .getService(AssemblerBrokerService.SERVICE_NAME);
     }
@@ -203,5 +209,14 @@ public abstract class GenericLoader<T extends Assembler> implements Loader<T>
         }
 
         return asm;
+    }
+
+    /**
+     * @see org.apache.turbine.modules.Loader#getCacheSize()
+     */
+    @Override
+    public int getCacheSize()
+    {
+        return cacheSizeSupplier.getAsInt();
     }
 }

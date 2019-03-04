@@ -39,11 +39,10 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
-public class JspLayout
-    extends Layout
+public class JspLayout implements Layout
 {
     /** The prefix for lookup up layout pages */
-    private String prefix = Layout.PREFIX + "/";
+    private static final String prefix = PREFIX + "/";
 
     /** Injected service instance */
     @TurbineService

@@ -41,7 +41,7 @@ import org.apache.turbine.util.RunData;
  * a hit to the database for each and every connection that a user
  * makes.
  * </p>
- * 
+ *
  * <p>
  * This action is special in that it should only be executed by the
  * Turbine servlet.
@@ -50,7 +50,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
-public abstract class SessionValidator extends Action
+public abstract class SessionValidator implements Action
 {
 
     @TurbineService

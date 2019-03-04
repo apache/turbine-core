@@ -40,7 +40,7 @@ public class BaseJspScreen
         extends TemplateScreen
 {
     /** The prefix for lookup up screen pages */
-    private String prefix = getPrefix() + "/";
+    private static final String prefix = PREFIX + "/";
 
     /** Injected service instance */
     @TurbineService

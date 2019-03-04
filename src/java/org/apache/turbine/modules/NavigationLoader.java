@@ -33,7 +33,6 @@ import org.apache.turbine.pipeline.PipelineData;
  */
 public class NavigationLoader
     extends GenericLoader<Navigation>
-    implements Loader<Navigation>
 {
     /** The single instance of this class. */
     private static NavigationLoader instance = new NavigationLoader();
@@ -44,7 +43,9 @@ public class NavigationLoader
      */
     private NavigationLoader()
     {
-        super(Navigation.class);
+        super(Navigation.class,
+                () -> Turbine.getConfiguration().getInt(Navigation.CACHE_SIZE_KEY,
+                        Navigation.CACHE_SIZE_DEFAULT));
     }
 
     /**
@@ -81,15 +82,6 @@ public class NavigationLoader
     }
 
     /**
-     * @see org.apache.turbine.modules.Loader#getCacheSize()
-     */
-    @Override
-    public int getCacheSize()
-    {
-        return NavigationLoader.getConfiguredCacheSize();
-    }
-
-    /**
      * The method through which this class is accessed.
      *
      * @return The single instance of this class.
@@ -97,16 +89,5 @@ public class NavigationLoader
     public static NavigationLoader getInstance()
     {
         return instance;
-    }
-
-    /**
-     * Helper method to get the configured cache size for this module
-     *
-     * @return the configure cache size
-     */
-    private static int getConfiguredCacheSize()
-    {
-        return Turbine.getConfiguration().getInt(Navigation.CACHE_SIZE_KEY,
-                Navigation.CACHE_SIZE_DEFAULT);
     }
 }

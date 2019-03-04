@@ -67,7 +67,7 @@ public abstract class VelocityAction extends VelocityActionEvent
      * @throws Exception a generic exception.
      */
     @Override
-    protected void perform(PipelineData pipelineData) throws Exception
+    public void perform(PipelineData pipelineData) throws Exception
     {
         try
         {

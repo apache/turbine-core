@@ -89,11 +89,10 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class DefaultPage
-    extends Page
+public class DefaultPage implements Page
 {
     /** Logging */
-    protected Logger log = LogManager.getLogger(this.getClass());
+    protected final Logger log = LogManager.getLogger(this.getClass());
 
     /** Injected loader instance */
     @TurbineLoader( Action.class )

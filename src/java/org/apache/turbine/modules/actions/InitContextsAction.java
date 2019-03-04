@@ -41,8 +41,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class InitContextsAction
-        extends Action
+public class InitContextsAction implements Action
 {
     /** Injected configuration instance */
     @TurbineConfiguration

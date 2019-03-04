@@ -48,7 +48,7 @@ public abstract class LegacyVelocitySecureAction extends LegacyVelocityAction
      * @throws Exception a generic exception.
      */
     @Override
-    protected void perform(PipelineData pipelineData) throws Exception
+    public void perform(PipelineData pipelineData) throws Exception
     {
         if (isAuthorized(getRunData(pipelineData)))
         {

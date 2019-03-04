@@ -68,14 +68,13 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class VelocityOnlyLayout
-    extends Layout
+public class VelocityOnlyLayout implements Layout
 {
     /** Logging */
-    private static Logger log = LogManager.getLogger(VelocityOnlyLayout.class);
+    protected final Logger log = LogManager.getLogger(this.getClass());
 
     /** The prefix for lookup up layout pages */
-    private final String prefix = Layout.PREFIX + "/";
+    private static final String prefix = PREFIX + "/";
 
     /** Injected service instance */
     @TurbineService

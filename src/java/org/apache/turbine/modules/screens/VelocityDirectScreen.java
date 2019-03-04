@@ -40,9 +40,6 @@ import org.apache.velocity.context.Context;
 public class VelocityDirectScreen
     extends VelocityScreen
 {
-    /** The prefix for lookup up screen pages */
-    private String prefix = getPrefix() + "/";
-
     /**
      * This builds the Velocity template.
      *

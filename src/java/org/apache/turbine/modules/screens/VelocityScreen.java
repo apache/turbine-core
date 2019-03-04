@@ -49,7 +49,7 @@ public class VelocityScreen
     extends TemplateScreen
 {
     /** The prefix for lookup up screen pages */
-    private final String prefix = getPrefix() + "/";
+    protected static final String prefix = PREFIX + "/";
 
     /** Injected service instance */
     @TurbineService

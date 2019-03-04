@@ -33,7 +33,6 @@ import org.apache.turbine.pipeline.PipelineData;
  */
 public class PageLoader
     extends GenericLoader<Page>
-    implements Loader<Page>
 {
     /** The single instance of this class. */
     private static PageLoader instance = new PageLoader();
@@ -44,7 +43,9 @@ public class PageLoader
      */
     private PageLoader()
     {
-        super(Page.class);
+        super(Page.class,
+                () -> Turbine.getConfiguration().getInt(Page.CACHE_SIZE_KEY,
+                        Page.CACHE_SIZE_DEFAULT));
     }
 
     /**
@@ -63,15 +64,6 @@ public class PageLoader
     }
 
     /**
-     * @see org.apache.turbine.modules.Loader#getCacheSize()
-     */
-    @Override
-    public int getCacheSize()
-    {
-        return PageLoader.getConfiguredCacheSize();
-    }
-
-    /**
      * The method through which this class is accessed.
      *
      * @return The single instance of this class.
@@ -79,16 +71,5 @@ public class PageLoader
     public static PageLoader getInstance()
     {
         return instance;
-    }
-
-    /**
-     * Helper method to get the configured cache size for this module
-     *
-     * @return the configure cache size
-     */
-    private static int getConfiguredCacheSize()
-    {
-        return Turbine.getConfiguration().getInt(Page.CACHE_SIZE_KEY,
-                Page.CACHE_SIZE_DEFAULT);
     }
 }

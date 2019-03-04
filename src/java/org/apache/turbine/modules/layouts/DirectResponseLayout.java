@@ -34,7 +34,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class DirectResponseLayout extends Layout
+public class DirectResponseLayout implements Layout
 {
     /**
      * Ensures that a direct response has been declared.
@@ -44,7 +44,7 @@ public class DirectResponseLayout extends Layout
      */
     @Override
     public void doBuild(PipelineData pipelineData)
-    throws Exception
+            throws Exception
     {
         RunData data = getRunData(pipelineData);
         if (!data.isOutSet())

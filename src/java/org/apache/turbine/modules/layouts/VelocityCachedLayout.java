@@ -48,14 +48,13 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class VelocityCachedLayout
-    extends Layout
+public class VelocityCachedLayout implements Layout
 {
     /** Logging */
-    private static Logger log = LogManager.getLogger(VelocityCachedLayout.class);
+    protected final Logger log = LogManager.getLogger(this.getClass());
 
     /** The prefix for lookup up layout pages */
-    private String prefix = getPrefix() + "/";
+    private static final String prefix = PREFIX + "/";
 
     /** Injected service instance */
     @TurbineService

@@ -43,8 +43,7 @@ import org.apache.turbine.util.uri.TurbineURI;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class InvalidState
-    extends Screen
+public class InvalidState implements Screen
 {
     /**
      * Build the Screen.
@@ -59,7 +58,7 @@ public class InvalidState
         RunData data = getRunData(pipelineData);
         StringBuilder body = new StringBuilder();
         body.append("<body>");
-        
+
         StringBuilder message = new StringBuilder();
         StringBuilder sb = new StringBuilder();
         sb.append("<b>There has been an error.</b>")
