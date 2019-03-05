@@ -51,7 +51,7 @@ public class DetermineActionValve
         throws IOException, TurbineException
     {
         RunData data = pipelineData.getRunData();
-        if (! data.hasAction())
+        if (!data.hasAction())
         {
             String action =
                 data.getParameters().getString(URIConstants.CGI_ACTION_PARAM);
@@ -59,7 +59,6 @@ public class DetermineActionValve
             if (action != null)
             {
                 data.setAction(action);
-
                 log.debug("Set action from request parameter");
             }
             else

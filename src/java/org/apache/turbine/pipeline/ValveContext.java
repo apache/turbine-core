@@ -43,6 +43,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Revision$ $Date$
  */
+@FunctionalInterface
 public interface ValveContext
 {
     /**

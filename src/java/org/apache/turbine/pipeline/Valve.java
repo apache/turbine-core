@@ -42,6 +42,7 @@ import org.apache.turbine.util.TurbineException;
  *
  * @see #invoke(PipelineData, ValveContext)
  */
+@FunctionalInterface
 public interface Valve
 {
     /**

@@ -41,8 +41,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * @author <a href="mailto:james@jamestaylor.org">James Taylor</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
-public class DetermineTargetValve
-    implements Valve
+public class DetermineTargetValve implements Valve
 {
     private static final Logger log
         = LogManager.getLogger(DetermineTargetValve.class);
@@ -55,26 +54,19 @@ public class DetermineTargetValve
         throws IOException, TurbineException
     {
         RunData runData = pipelineData.getRunData();
-        if (! runData.hasScreen())
+        if (!runData.hasScreen())
         {
             String target = runData.getParameters().getString(URIConstants.CGI_SCREEN_PARAM);
 
             if (target != null)
             {
                 runData.setScreen(target);
-
                 log.debug("Set screen target from request parameter");
             }
             else
             {
-            /*    data.setScreen(Turbine.getConfiguration().getString(
-                    Turbine.TEMPLATE_HOMEPAGE));
-
-                log.debug("Set target using default value");
-                */
 				log.debug("No target screen");
             }
-
         }
 
         log.debug("Screen Target is now: {}", runData::getScreen);

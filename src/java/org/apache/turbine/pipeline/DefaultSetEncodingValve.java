@@ -64,7 +64,6 @@ public class DefaultSetEncodingValve
         if (requestEncoding == null)
         {
             requestEncoding = LocaleUtils.getDefaultInputEncoding();
-
             log.debug("Changing Input Encoding to {}", requestEncoding);
 
             try
