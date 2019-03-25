@@ -1205,7 +1205,7 @@
     <!-- maven.compiler setting in turbine parent -->
     <!-- TODO: Change for release: remove development part in path "/turbine/development" --> 
     <turbine.site.path>turbine/development/turbine-5.0</turbine.site.path>
-    <fulcrum.intake>2.0.0-SNAPSHOT</fulcrum.intake>
+    <fulcrum.intake>2.0.0</fulcrum.intake>
     <fulcrum.security>1.1.3-SNAPSHOT</fulcrum.security>
     <slf4j.version>1.7.25</slf4j.version>
     <log4j2.version>2.11.1</log4j2.version>
