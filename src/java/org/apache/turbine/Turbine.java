@@ -951,7 +951,7 @@ public class Turbine extends HttpServlet
     }
 
     /**
-     * Check {@value TurbineConstants#LOG4J2_CONFIG_FILE} in Turbine
+     * Check {@linkplain TurbineConstants#LOG4J2_CONFIG_FILE} in Turbine
      * configuration.
      *
      * @param logConfPath

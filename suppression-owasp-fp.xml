@@ -19,6 +19,23 @@
 -->
 <!-- general cft. https://jeremylong.github.io/DependencyCheck/general/suppression.html -->
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
+  <!-- suppress c3p0 warning until quartz v1.1.2 is released (in fulcrum quartz), which fixes https://github.com/quartz-scheduler/quartz/issues/316 -->
+  <suppress>
+     <notes><![CDATA[
+     file name: c3p0-0.9.5.2.jar
+     ]]></notes>
+     <gav regex="true">^com\.mchange:c3p0:.*$</gav>
+     <cve>CVE-2018-20433</cve>
+  </suppress>  
+  <!-- suppress guava < 24.1.1 as jython is only optional (in turbine) -->
+  <suppress>
+   <notes><![CDATA[
+   file name: jython-standalone-2.7.1.jar (shaded: com.google.guava:guava:22.0-android)
+   ]]></notes>
+   <gav regex="true">^com\.google\.guava:guava:.*$</gav>
+   <cve>CVE-2018-10237</cve>
+</suppress>
+  
   <!-- https://issues.apache.org/jira/browse/LOG4J2-1863 i.e. log4j 2.8.2 fixes, but affected versions match only log4j2 2.x, not log4j 1.x -->
   <suppress>
      <notes><![CDATA[

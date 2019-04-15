@@ -400,7 +400,7 @@ public class QuartzSchedulerService
 	 * Builds a {@link JobEntryQuartz} from Quartz trigger/job.
 	 *
 	 * The developer should be aware to set identity/context properly, i.e. to
-     * {@value JobEntryQuartz#DEFAULT_JOB_GROUP_NAME}, if adding triggers/jobs.
+     * {@link JobEntryQuartz#DEFAULT_JOB_GROUP_NAME}, if adding triggers/jobs.
 	 *
 	 * @param trigger a Quartz {@link Trigger}.
 	 * @param jd a Quartz {@link JobDetail} (built from a {@link org.quartz.Job} with {@link JobBuilder}).

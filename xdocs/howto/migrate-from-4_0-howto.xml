@@ -154,6 +154,45 @@
 </section>
 
 
+<section name="Migrating to Functioal Interfaces and Rundata">
+	
+	<p>Functional interfaces are now used instead of abstract classes. Rundata should be removed and instead of PipelineData used, but we keep it for now. 
+     As a result <strong>AbstractValve was removed</strong> and with it the method <strong>getRunData(pipelineData)</strong> is gone.
+     You may retrieve the Rundata casted object now with <strong>pipelineData.getRunData()</strong>.
+	</p>
+	
+<source>
+<![CDATA[
+        // old
+        // RunData rundata = getRunData(pipelineData)
+        RunData rundata = pipelineData.getRunData();
+
+]]>
+	</source>
+	
+	<p>
+		Assembler derived classes in package org.apache.turbine.modules (Action, LayoutScreen, Navigation, Page, ..) 
+        are now declared as java functional interfaces instead of abstract classes. 
+        Using them in child classes might be as easy as replacing <strong>extends</strong> with <strong>implements</strong> keyword in class declaration.
+        Remark: Method signature containing checked exceptions were not changed. To use Java 8 functional lamda functions you may 
+        catch and rethrow them wrapped into a RuntimeException.
+	</p>
+	
+<source>
+<![CDATA[
+
+  // old
+  // class MyAction extends Action
+
+  class MyAction implements Action
+  
+]]>
+</source>
+
+</section>
+
+
+
 <section name="Migrating file upload to Parts">
 	
 	<p>
