@@ -838,7 +838,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.3</version>
+        <version>0.8.4</version>
         <configuration>
             <skip>${jacoco.skip}</skip>
             <excludes>
@@ -1033,13 +1033,11 @@
          <artifactId>commons-configuration</artifactId>
          <version>1.10</version>
     </dependency>
-    <!-- using snapshot, until released -->
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-security-api</artifactId>
       <version>${fulcrum.security}</version>
     </dependency>
-     <!-- using snapshot, until released -->
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-security-memory</artifactId>
@@ -1223,7 +1221,7 @@
     <turbine.site.path>turbine/development/turbine-5.0</turbine.site.path>
     <fulcrum.intake>2.0.0</fulcrum.intake>
     <fulcrum.security>1.1.3</fulcrum.security>
-    <slf4j.version>1.7.25</slf4j.version>
+    <slf4j.version>1.7.26</slf4j.version>
     <log4j2.version>2.11.2</log4j2.version>
     <dependency.check.skip>true</dependency.check.skip>
     <torque.version>4.0</torque.version>
