@@ -481,9 +481,9 @@
   </contributors>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/core/trunk</connection>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/trunk</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/trunk</developerConnection>
-    <url>http://svn.apache.org/viewcvs/turbine/core/trunk/</url>
+    <url>https://svn.apache.org/viewcvs/turbine/core/trunk/</url>
   </scm>
 
   <build>
