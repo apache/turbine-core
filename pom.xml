@@ -26,7 +26,7 @@
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
-  <version>5.0-SNAPSHOT</version>
+  <version>5.0</version>
   <description>Turbine is a servlet based framework that allows experienced Java
     developers to quickly build secure web applications. Parts of Turbine
     can also be used independently of the web portion of Turbine as
@@ -481,9 +481,9 @@
   </contributors>
 
   <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/trunk</developerConnection>
-    <url>https://svn.apache.org/viewcvs/turbine/core/trunk/</url>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/tags/turbine-5.0</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/tags/turbine-5.0</developerConnection>
+    <url>https://svn.apache.org/viewcvs/turbine/core/tags/turbine-5.0</url>
   </scm>
 
   <build>
