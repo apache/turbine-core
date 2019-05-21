@@ -44,4 +44,17 @@
      <sha1>5af35056b4d257e4b64b9e8069c0746e8b08629f</sha1>
      <cve>CVE-2017-5645</cve>
   </suppress>
+  <!--  jython-standalone is only optional, but check this
+  jython-standalone-2.7.1.jar\META-INF/maven/org.apache.commons/commons-compress/pom.xml (pkg:maven/org.apache.commons/commons-compress@1.14, cpe:2.3:a:apache:commons-compress:1.14:*:*:*:*:*:*:*) : CVE-2018-11771, CVE-2018-1324.
+  jython-standalone-2.7.1.jar bundles dependencies of the project inside the JAR itself, unshaded.
+    -->
+  <suppress>
+   <notes><![CDATA[
+   file name: jython-standalone-2.7.1.jar (shaded: org.apache.commons:commons-compress:1.14)
+   ]]></notes>
+   <gav regex="true">^org\.apache\.commons:commons-compress:.*$</gav>
+   <cpe>cpe:/a:apache:commons-compress</cpe>
+   </suppress>
+
+
 </suppressions>
