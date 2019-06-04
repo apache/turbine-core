@@ -55,7 +55,7 @@ public interface JsonRpcService
      *
      * @param session the session
      * @param key the name of the object in the session
-     * @param value the object to register
+     * @param value the object to register (not null)
      */
     void registerObject(HttpSession session, String key, Object value);
 
@@ -63,7 +63,7 @@ public interface JsonRpcService
      * Register an object with the {@link JSONRPCBridge} globally
      *
      * @param key the name of the object in the session
-     * @param value the object to register
+     * @param value the object to register (not null)
      */
     void registerObjectGlobal(String key, Object value);
 

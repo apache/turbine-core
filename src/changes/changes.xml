@@ -24,7 +24,9 @@
   </properties>
 
   <body>
-    <release version="5.0" date="in Subversion">
+     <release version="5.1" date="in Subversion">
+    </release>
+    <release version="5.0" date="2019-05-28">
       <action type="update" dev="tv">
         Change all Assembler modules to interfaces
       </action>

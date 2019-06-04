@@ -22,7 +22,7 @@
   <parent>
      <groupId>org.apache.turbine</groupId>
      <artifactId>turbine-parent</artifactId>
-     <version>5</version>
+     <version>6-SNAPSHOT</version>
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
@@ -1094,37 +1094,37 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-jcl</artifactId>
-      <version>${log4j2.version}</version>
+      <version>${turbine.log4j2.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
-      <version>${log4j2.version}</version>
+      <version>${turbine.log4j2.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>${log4j2.version}</version>
+      <version>${turbine.log4j2.version}</version>
     </dependency>
     <dependency>
        <groupId>org.apache.logging.log4j</groupId>
        <artifactId>log4j-core</artifactId>
-       <version>${log4j2.version}</version>
+       <version>${turbine.log4j2.version}</version>
     </dependency>
     <!-- support of log4j-web (autodetect of log4j2 in WEB-INF folder) 
          may allow to remove explicit log4j2 loading/configuration except for tests -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-web</artifactId>
-      <version>${log4j2.version}</version>
+      <version>${turbine.log4j2.version}</version>
       <optional>true</optional>
     </dependency>
     <!-- optional log4j1.2 bridge instead of log4j -->
     <dependency>
         <groupId>org.apache.logging.log4j</groupId>
         <artifactId>log4j-1.2-api</artifactId>
-        <version>${log4j2.version}</version>
+        <version>${turbine.log4j2.version}</version>
         <optional>true</optional>
     </dependency>
     <dependency>
@@ -1219,11 +1219,10 @@
   <properties>
     <!-- maven.compiler setting in turbine parent -->
     <!-- TODO: Change for release: remove development part in path "/turbine/development" --> 
-    <turbine.site.path>turbine/development/turbine-5.0</turbine.site.path>
+    <turbine.site.path>turbine/turbine-5.0</turbine.site.path>
     <fulcrum.intake>2.0.0</fulcrum.intake>
     <fulcrum.security>1.1.3</fulcrum.security>
     <slf4j.version>1.7.26</slf4j.version>
-    <log4j2.version>2.11.2</log4j2.version>
     <dependency.check.skip>true</dependency.check.skip>
     <torque.version>4.0</torque.version>
     <jacoco.skip>true</jacoco.skip>
