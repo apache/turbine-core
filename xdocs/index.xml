@@ -170,11 +170,23 @@ the current Turbine code.
 
 <ul>
     <li>
-        We have a <a href="http://turbine.apache.org/contact.html">Turbine mailing
+        We have a <a href="https://turbine.apache.org/contact.html">Turbine mailing
         lists</a> for discussion.</li>
     <li>
-        You can also access the <a href="http://svn.apache.org/viewvc/turbine/core/trunk/">Turbine SVN
+        Create issues and Comment in Apache JIRA system <a href="https://issues.apache.org/jira/projects/TRB/">Turbine
+        </a></li>
+    <li>
+        You can also access the <a href="https://svn.apache.org/viewvc/turbine/core/trunk/">Turbine SVN
         repository</a></li>
+   
+     <li>
+        You can access the <a href="https://github.com/apache/turbine-core/">Turbine Git trunk branch (read only)
+        repository</a></li>
+  
+    <li>
+        You can access the <a href="https://github.com/apache/turbine-archetypes/">Turbine Archetype Git (rw)
+        repository</a></li>
+ 
 </ul>
 
 </section>
