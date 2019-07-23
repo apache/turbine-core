@@ -20,9 +20,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-     <groupId>org.apache.turbine</groupId>
-     <artifactId>turbine-parent</artifactId>
-     <version>6-SNAPSHOT</version>
+    <groupId>org.apache.turbine</groupId>
+    <artifactId>turbine-parent</artifactId>
+    <version>6</version>
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
@@ -981,7 +981,7 @@
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-parser</artifactId>
-      <version>2.0.1-SNAPSHOT</version>
+      <version>${fulcrum.parser}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
@@ -1218,9 +1218,10 @@
 
   <properties>
     <!-- maven.compiler setting in turbine parent -->
-    <!-- TODO: Change for release: remove development part in path "/turbine/development" --> 
+    <!-- TODO: Change for release: remove development part in path "/turbine/development" -->
     <turbine.site.path>turbine/development/turbine-5.1</turbine.site.path>
     <fulcrum.intake>2.0.0</fulcrum.intake>
+    <fulcrum.parser>2.0.1</fulcrum.parser>
     <fulcrum.security>2.0.0-SNAPSHOT</fulcrum.security>
     <slf4j.version>1.7.26</slf4j.version>
     <dependency.check.skip>true</dependency.check.skip>
