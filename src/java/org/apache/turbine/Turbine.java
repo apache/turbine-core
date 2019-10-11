@@ -365,6 +365,8 @@ public class Turbine extends HttpServlet
      * Checks configuraton style, resolves the location of the configuration and
      * loads it to internal {@link Configuration} object
      * ({@link #configuration}).
+     * 
+     * Allows reading from a {@link CombinedConfigurationBuilder} xml configuration file.
      *
      * @param config
      *            the Servlet Configuration
@@ -463,6 +465,7 @@ public class Turbine extends HttpServlet
                                         .setFileName(confFile)
                                         .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
                                         .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath.getCanonicalPath(), false)));
+                // meta configuration : this may contain any commons configuration: system<>, jndi, env
                 configuration = propertiesBuilder.getConfiguration();
                 break;
             case JSON:

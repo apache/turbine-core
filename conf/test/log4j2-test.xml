@@ -20,11 +20,11 @@
 <Configuration status="info" verbose="true">
     <Appenders>
       <Console name="console" target="SYSTEM_OUT">
-	      <PatternLayout pattern="%d [%t] %-5p %c - %m%n"/>
-	    </Console>
-	    <File name="logfile" fileName="target/turbine-test.log">
-	      <PatternLayout pattern="%d [%t] %-5p %c - %m%n"/>
-	    </File>
+        <PatternLayout pattern="%d [%t] %-5p %c - %m%n"/>
+      </Console>
+      <File name="logfile" fileName="target/turbine-test.log">
+        <PatternLayout pattern="%d [%t] %-5p %c - %m%n"/>
+      </File>
     </Appenders>
     <Loggers>
        <Logger name="org.apache.fulcrum" level="info" additivity="false">
@@ -35,13 +35,27 @@
           <AppenderRef ref="console" level="info"/>
        </Logger>
        <Logger name="avalon" level="info" additivity="false">
-	      <AppenderRef ref="logfile"/>
-	    </Logger>
+        <AppenderRef ref="logfile"/>
+      </Logger>
       <Logger name="org.apache.logging.log4j" level="debug" additivity="false">
-	      <AppenderRef ref="logfile"/>
-	    </Logger>
-	    <Root level="error">
-	      <AppenderRef ref="logfile"/>
-	    </Root>
+        <AppenderRef ref="logfile"/>
+      </Logger>
+       <Logger name="org.testcontainers" level="debug" additivity="false">
+        <AppenderRef ref="console"/>
+      </Logger>
+       <Logger name="org.testcontainers.utility.RegistryAuthLocator" level="debug" additivity="false">
+        <AppenderRef ref="console"/>
+      </Logger> 
+       <Logger name="com.github.dockerjava" level="debug" additivity="false">
+        <AppenderRef ref="console"/>
+      </Logger>
+      <Logger name="org.apache.turbine.testcontainer" level="debug" additivity="false">
+          <AppenderRef ref="console"/>
+          <AppenderRef ref="logfile"/>
+      </Logger>
+      <Root level="error">
+          <AppenderRef ref="console"/>
+          <AppenderRef ref="logfile"/>
+      </Root>
     </Loggers>
 </Configuration>

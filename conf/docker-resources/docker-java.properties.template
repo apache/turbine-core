@@ -1,0 +1,18 @@
+# This file should contain the environment variables as
+# further info here: https://www.testcontainers.org/supported_docker_environment/
+
+# UNIX by default uses unix sockets
+#DOCKER_HOST=unix:///var/run/docker.sock
+# to override default
+#DOCKER_TLS_VERIFY=0
+
+# WINDOWS uses external network, use only secure connection
+# docker.io might use username and password encrypted in ~/.docker/config.json
+# use result of 'docker-machine env <nameOfVirtualMachine>'
+#DOCKER_TLS_VERIFY=1
+#DOCKER_HOST=tcp://<hostip>:2376
+#DOCKER_CERT_PATH=<path-to-cert>
+#DOCKER_MACHINE_NAME=nameofvirtualmachine (e.g. type virtualbox in Windows 7 or hyperv in Windows 10)
+#COMPOSE_CONVERT_WINDOWS_PATHS=true
+
+#api.version=1.39

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+<!--
+	This configuration file for Avalon components is used for testing the Fulcrum Components with
+	Turbine.
+-->
+
+<role-list>
+    <!-- Torque Component Role Configuration -->
+    <role name="org.apache.torque.avalon.Torque"
+          shorthand="torque"
+          default-class="org.apache.torque.avalon.TorqueComponent" />
+
+    <role
+        name="org.apache.fulcrum.cache.GlobalCacheService"
+        shorthand="cache"
+        default-class="org.apache.fulcrum.cache.impl.DefaultGlobalCacheService"/>
+
+    <role
+        name="org.apache.fulcrum.mimetype.MimeTypeService"
+        shorthand="mimetype"
+        default-class="org.apache.fulcrum.mimetype.DefaultMimeTypeService"/>
+
+    <role
+        name="org.apache.fulcrum.crypto.CryptoService"
+        shorthand="crypto"
+        default-class="org.apache.fulcrum.crypto.DefaultCryptoService"/>
+
+    <role
+        name="org.apache.fulcrum.localization.LocalizationService"
+        shorthand="localization"
+        default-class="org.apache.fulcrum.localization.DefaultLocalizationService"/>
+
+    <role
+        name="org.apache.fulcrum.intake.IntakeService"
+        shorthand="intake"
+        default-class="org.apache.fulcrum.intake.IntakeServiceImpl"/>
+
+    <role
+        name="org.apache.fulcrum.factory.FactoryService"
+        shorthand="factory"
+        default-class="org.apache.fulcrum.factory.DefaultFactoryService"/>
+
+    <role
+        name="org.apache.fulcrum.pool.PoolService"
+        shorthand="pool"
+        default-class="org.apache.fulcrum.pool.DefaultPoolService"/>
+
+    <role
+        name="org.apache.fulcrum.parser.ParserService"
+        shorthand="parser"
+        default-class="org.apache.fulcrum.parser.DefaultParserService"/>
+
+    <role
+        name="org.apache.fulcrum.xslt.XSLTService"
+        shorthand="xslt"
+        default-class="org.apache.fulcrum.xslt.DefaultXSLTService"/>
+
+    <!-- These components belong to the Fulcrum-Security services -->
+    <role
+        name="org.apache.fulcrum.security.SecurityService"
+        shorthand="securityService"
+        default-class="org.apache.fulcrum.security.BaseSecurityService"/>
+
+    <role
+            name="org.apache.fulcrum.security.UserManager"
+            shorthand="userManager"
+            early-init="true"
+            default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbineUserManagerImpl"/>
+
+    <role
+            name="org.apache.fulcrum.security.GroupManager"
+            shorthand="groupManager"
+            default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbineGroupManagerImpl"/>
+
+    <role
+            name="org.apache.fulcrum.security.RoleManager"
+            shorthand="roleManager"
+            default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbineRoleManagerImpl"/>
+
+    <role
+            name="org.apache.fulcrum.security.PermissionManager"
+            shorthand="permissionManager"
+            default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbinePermissionManagerImpl"/>
+
+    <role
+            name="org.apache.fulcrum.security.torque.peer.PeerManager"
+            shorthand="peerManager"
+            default-class="org.apache.fulcrum.security.torque.peer.PeerManagerDefaultImpl"/>
+
+    <role
+            name="org.apache.fulcrum.security.ModelManager"
+            shorthand="modelManager"
+            default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbineModelManagerImpl"/>
+
+    <role
+            name="org.apache.fulcrum.security.authenticator.Authenticator"
+            shorthand="authenticator"
+            default-class="org.apache.fulcrum.security.authenticator.TextMatchAuthenticator"/>
+
+
+    <role
+        name="org.apache.fulcrum.security.model.ACLFactory"
+        shorthand="aclFactory"
+        default-class="org.apache.fulcrum.security.model.turbine.TurbineACLFactory"/>
+
+</role-list>
+

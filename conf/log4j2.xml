@@ -53,7 +53,7 @@
          <Logger name="scheduler" level="info" additivity="false">
           <AppenderRef ref="scheduler"/>
         </Logger>
-         <Logger name="org.apache.turbine" level="info" additivity="false">
+        <Logger name="org.apache.turbine" level="info" additivity="false">
           <AppenderRef ref="turbine"/>
           <AppenderRef ref="console"/>
         </Logger>

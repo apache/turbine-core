@@ -40,6 +40,8 @@ import org.apache.fulcrum.security.util.RoleSet;
 import org.apache.fulcrum.security.util.UnknownEntityException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.torque.avalon.Torque;
+import org.apache.torque.avalon.TorqueComponent;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.ServiceManager;
@@ -89,6 +91,8 @@ public class DefaultSecurityService
     /** The instance of ModelManager the SecurityService uses */
     private TurbineModelManager modelManager;
 
+    private TorqueComponent backend;
+
     /**
      * The Group object that represents the <a href="#global">global group</a>.
      */
@@ -114,6 +118,8 @@ public class DefaultSecurityService
         this.roleManager = (RoleManager)manager.getService(RoleManager.ROLE);
         this.permissionManager = (PermissionManager)manager.getService(PermissionManager.ROLE);
         this.modelManager = (TurbineModelManager)manager.getService(TurbineModelManager.ROLE);
+        // to ensure that it is initialized, non local
+        this.backend = (TorqueComponent)manager.getService(Torque.ROLE);
 
         Configuration conf = getConfiguration();
 

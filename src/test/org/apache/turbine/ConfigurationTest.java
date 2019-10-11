@@ -167,7 +167,6 @@ public class ConfigurationTest extends BaseTestCase
         }
     }
 
-    @SuppressWarnings("boxing")
     @Test
     public void testCreateTurbineWithXMLBuilderConfiguration() throws Exception
     {

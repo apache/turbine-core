@@ -179,6 +179,8 @@ public class TurbineConfig
      *
      * This is a specialized constructor that allows to configure
      * Turbine easily in the common setups.
+     * 
+     * Check also {@link TurbineXmlConfig} to load a {@link #CONFIGURATION_PATH_KEY}.
      *
      * @param path The web application root (i.e. the path for file lookup).
      * @param properties the relative path to TurbineResources.properties file
