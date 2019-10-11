@@ -8,6 +8,7 @@
     <properties config-name="user" fileName="usersettings.properties" config-optional="true" config-forceCreate="true"/>
     <xml fileName="TurbineResources.xml"/>
     <properties config-name="turbine" fileName="TemplateService.properties" throwExceptionOnMissing="true"/>
+    <jndi/>
   </override>
   <additional>
     <!-- Configuration declarations that form a union configuration, always provide a unique config-name attribute  -->
