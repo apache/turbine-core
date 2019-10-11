@@ -542,7 +542,7 @@
      <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>5.0.0-M1</version>
+        <version>5.2.2</version>
         <executions>
            <execution>
                 <goals>
@@ -556,6 +556,8 @@
            <suppressionFiles>
             <suppressionFile>${project.basedir}/suppression-owasp-fp.xml</suppressionFile>
             </suppressionFiles>
+           <!-- no .NET code inside turbine -->
+           <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
         </configuration>
       </plugin>
       <plugin>
