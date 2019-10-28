@@ -35,6 +35,7 @@
           <AppenderRef ref="console" level="info"/>
        </Logger>
        <Logger name="avalon" level="info" additivity="false">
+        <AppenderRef ref="console"/>
         <AppenderRef ref="logfile"/>
       </Logger>
       <Logger name="org.apache.logging.log4j" level="debug" additivity="false">

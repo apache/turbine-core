@@ -4,6 +4,9 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import org.apache.fulcrum.security.entity.ExtendedUser;
 import org.apache.fulcrum.security.util.UnknownEntityException;
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +19,6 @@ import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.util.TurbineConfig;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
@@ -31,7 +33,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
  *
  * TODO
  * This test might be more useful in a running turbine environment,
- * e.g. created by archetypes. Only one problem remains the mapped port, which is known only at runtime.
+ * e.g. created by archetypes or in torque-test testing databases. 
  *
  * @author gkallidis
  *
@@ -39,9 +41,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @TestMethodOrder(OrderAnnotation.class)
 @Testcontainers
 @Tag("docker")
-// TODO disabled. requires manual port mapping in docker-manager/TorqueTest.properties, 
-// until not using Torque4.1 with xml configuration and overwriting user.settings.
-@Disabled
+// requires manual port mapping in docker-manager/TorqueTest.properties, 
+//@Disabled
 class UserManagerWithContainerTest {
 
    @TurbineService
@@ -63,14 +64,25 @@ class UserManagerWithContainerTest {
       tc = new TurbineConfig(".",
               "/conf/test/docker-manager/CompleteTurbineResources.properties");
       try {
-         // TODO get Torque component configuration and override torque.dsfactory.default.connection.url with url mapped port.
-         BuildContainerWithDockerfileTest.getConnection();
+         // get Torque component configuration and override torque.dsfactory.default.connection.url with url containing mapped port.
+         //Connection c = BuildContainerWithDockerfileTest.getConnection();
+         //MY_SQL_CONTAINER.getMappedPort( BuildContainerWithDockerfileTest.SERVICE_PORT );
+          
+         String jdbcConnectionString = BuildContainerWithDockerfileTest.generateJdbcUrl();
+         String customUrl = "torque.dsfactory.default.connection.url="+ jdbcConnectionString;
+         // override and set mapped port in url, which is known only at runtime.
+         File file = new File("./conf/test/docker-manager/torque.usersettings.properties");
+         try (FileOutputStream fop = new FileOutputStream(file )) {
+             if (!file.exists()) {
+                 file.createNewFile();
+             }
+             fop.write( customUrl.getBytes() );
+             fop.flush();
+         }
          tc.initialize();
       } catch (Exception e) {
          fail();
       }
-
-      //Torque.getInstance();
    }
 
    /**
@@ -85,7 +97,6 @@ class UserManagerWithContainerTest {
    @Test
    @Order(1)
    @Tag("docker")
-   @Disabled
    public void testCreateManagedUser()
            throws Exception
    {
@@ -103,13 +114,15 @@ class UserManagerWithContainerTest {
    @Test
    @Order(2)
    @Tag("docker")
-   @Disabled
+   //@Disabled
    void selectNewUser() {
       User ringo;
       try {
          ringo = turbineSecurityService.getUser("ringo");
          assertEquals("ringo", ringo.getFirstName());
+         
          deleteUser(ringo);
+         
       } catch (Exception sqle) {
           log.error( "new user error",sqle);
           fail();

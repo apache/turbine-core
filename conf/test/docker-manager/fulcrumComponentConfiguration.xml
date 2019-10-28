@@ -25,7 +25,7 @@
 <componentConfig>
     <!-- Torque Component -->
     <torque>
-       <configfile>conf/test/docker-manager/TorqueTest.properties</configfile>
+       <configfile>./conf/test/docker-manager/Torque4Test.xml</configfile>
     </torque>
     <cache cacheInitialSize="20" cacheCheckFrequency="5"/>
     <mimetype/>

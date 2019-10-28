@@ -75,7 +75,7 @@ class BuildContainerWithDockerfileTest {
    
    private static Logger log = LogManager.getLogger();
    
-   public static int SERVICEPORT = 3306;
+   public static int SERVICE_PORT = 3306;
 
    public static String DATABASE_NAME = "default";
 
@@ -93,7 +93,7 @@ class BuildContainerWithDockerfileTest {
 //                .add( "data.sql","/docker-entrypoint-initdb.d" ) 
 //            )
             .withDockerfile(new File(DOCKERFILE).toPath())
-        ).withExposedPorts( SERVICEPORT ) //.withStartupAttempts( 2 )
+        ).withExposedPorts( SERVICE_PORT ) //.withStartupAttempts( 2 )
          .withEnv(  "MYSQL_DATABASE", DATABASE_NAME )
          .withEnv( "MYSQL_USER", "userdb"  )
          .withEnv( "MYSQL_PASSWORD", "test1234" )
@@ -177,14 +177,14 @@ class BuildContainerWithDockerfileTest {
    // String.format("jdbc:tc:mysql:5.7.22://%s/%s", "dummy_host",
    // "test"); this will use database test, but allows e.g. custom cfg: ?TC_MY_CNF=x.cfg
    // TODO inform torque about mapped port, use overriding configuration in torque 4.1
-   private static String generateJdbcUrl() {
+   public static String generateJdbcUrl() {
       if (MY_SQL_CONTAINER == null) { return null; }
       if (!MY_SQL_CONTAINER.isRunning()) {
           MY_SQL_CONTAINER.start();
       }
 
       String serviceHost = MY_SQL_CONTAINER.getContainerIpAddress();
-      Integer mappedPort = MY_SQL_CONTAINER.getMappedPort(SERVICEPORT);// e.g. 32811
+      Integer mappedPort = MY_SQL_CONTAINER.getMappedPort(SERVICE_PORT);// e.g. 32811
       log.info("generate jdbc url from {}, mapped Port: {}, bounded port: {}", serviceHost, mappedPort, MY_SQL_CONTAINER.getBoundPortNumbers());
 
 //      if (MY_SQL_CONTAINER instanceof MySQLContainer) {
