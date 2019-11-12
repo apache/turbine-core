@@ -511,6 +511,7 @@ public class TurbineVelocityService
                 {
                     velocity.addProperty(key, value);
                 }
+                log.debug("Adding {} -> {}", key, value);
                 continue; // for()
             }
 
