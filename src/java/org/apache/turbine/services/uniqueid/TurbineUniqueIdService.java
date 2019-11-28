@@ -53,7 +53,7 @@ public class TurbineUniqueIdService
 
     private static String turbineURL = "UNKNOWN";
 
-    private static AtomicInteger counter;
+    private static final AtomicInteger counter = new AtomicInteger();
 
 
     /**
@@ -66,7 +66,7 @@ public class TurbineUniqueIdService
     {
         try
         {
-            counter = new AtomicInteger();
+            counter.set(0);
 
             // This might be a problem if the unique Id Service runs
             // before Turbine got its first request. In this case,

@@ -23,6 +23,7 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -77,13 +78,13 @@ public class DefaultSetEncodingValve
         }
 
         // Copy encoding charset to RunData to set a reasonable default for the response
-        String outputEncoding = LocaleUtils.getOverrideCharSet();
+        Charset outputEncoding = LocaleUtils.getOverrideCharset();
         if (outputEncoding == null)
         {
-            outputEncoding = requestEncoding;
+            outputEncoding = Charset.forName(requestEncoding);
         }
 
-        pipelineData.getRunData().setCharSet(outputEncoding);
+        pipelineData.getRunData().setCharset(outputEncoding);
 
         // Pass control to the next Valve in the Pipeline
         context.invokeNext(pipelineData);

@@ -21,6 +21,7 @@ package org.apache.turbine.services.rundata;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,10 +60,10 @@ import org.apache.turbine.util.template.TemplateInfo;
  * RunData service, if another implementation is not defined in
  * the default or specified RunData configuration.
  * TurbineRunData is an extension to RunData, which
- * is an interface to run-rime information that is passed
+ * is an interface to run-time information that is passed
  * within Turbine. This provides the threading mechanism for the
  * entire system because multiple requests can potentially come in
- * at the same time.  Thus, there is only one RunData implementation
+ * at the same time.  Thus, there is only one RunData instance
  * for each request that is being serviced.
  *
  * <p>DefaultTurbineRunData implements the Recyclable interface making
@@ -110,10 +111,10 @@ public class DefaultTurbineRunData
     private PrintWriter out;
 
     /** The HTTP charset. */
-    private String charSet;
+    private Charset charSet;
 
     /** The HTTP content type to return. */
-    private String contentType = "text/html";
+    private String contentType = TurbineConstants.DEFAULT_HTML_CONTENT_TYPE;
 
     /** If this is set, also set the status code to 302. */
     private String redirectURI;
@@ -233,7 +234,7 @@ public class DefaultTurbineRunData
         outSet = false;
         out = null;
         charSet = null;
-        contentType = "text/html";
+        contentType = TurbineConstants.DEFAULT_HTML_CONTENT_TYPE;
         redirectURI = null;
         statusCode = HttpServletResponse.SC_OK;
         errors.clear();
@@ -879,15 +880,7 @@ public class DefaultTurbineRunData
     @Override
     public String getCharSet()
     {
-        log.debug("getCharSet()");
-
-        if (StringUtils.isEmpty(charSet))
-        {
-            log.debug("Charset was null!");
-            charSet =  LocaleUtils.getDefaultCharSet();
-        }
-
-        return charSet;
+        return getCharset().name();
     }
 
     /**
@@ -898,7 +891,41 @@ public class DefaultTurbineRunData
     @Override
     public void setCharSet(String charSet)
     {
-        log.debug("setCharSet({})", charSet);
+        setCharset(Charset.forName(charSet));
+    }
+
+    /**
+     * Gets the charset. If it has not already been defined with
+     * setCharSet(), then a property named "locale.default.charset"
+     * is checked from the Resource Service and returned. If this
+     * property is undefined, the default charset of the locale
+     * is returned. If the locale is undefined, null is returned.
+     *
+     * @return the charset or null.
+     */
+    @Override
+    public Charset getCharset()
+    {
+        log.debug("getCharset()");
+
+        if (charSet == null)
+        {
+            log.debug("Charset was null!");
+            charSet =  LocaleUtils.getDefaultCharset();
+        }
+
+        return charSet;
+    }
+
+    /**
+     * Sets the charset.
+     *
+     * @param charSet the new charset.
+     */
+    @Override
+    public void setCharset(Charset charSet)
+    {
+        log.debug("setCharset({})", charSet);
         this.charSet = charSet;
     }
 
@@ -918,18 +945,18 @@ public class DefaultTurbineRunData
     {
         if (StringUtils.isNotEmpty(contentType))
         {
-            if (StringUtils.isEmpty(charSet))
+            if (charSet == null)
             {
                 if (contentType.startsWith("text/"))
                 {
-                    return contentType + "; charset=" + LocaleUtils.getDefaultCharSet();
+                    return contentType + "; charset=" + LocaleUtils.getDefaultCharset();
                 }
 
                 return contentType;
             }
             else
             {
-                return contentType + "; charset=" + charSet;
+                return contentType + "; charset=" + charSet.name();
             }
         }
 

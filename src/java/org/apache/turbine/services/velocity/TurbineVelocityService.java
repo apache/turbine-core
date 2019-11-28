@@ -25,11 +25,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
@@ -95,10 +95,10 @@ public class TurbineVelocityService
     private static final Logger log = LogManager.getLogger(TurbineVelocityService.class);
 
     /** Encoding used when reading the templates. */
-    private String defaultInputEncoding;
+    private Charset defaultInputEncoding;
 
     /** Encoding used by the outputstream when handling the requests. */
-    private String defaultOutputEncoding;
+    private Charset defaultOutputEncoding;
 
     /** Is the pullModelActive? */
     private boolean pullModelActive = false;
@@ -143,14 +143,24 @@ public class TurbineVelocityService
             // Register with the template service.
             registerConfiguration(VelocityService.VELOCITY_EXTENSION);
 
-            defaultInputEncoding = getConfiguration().getString("input.encoding", LocaleUtils.getDefaultInputEncoding());
+            String inputEncoding = getConfiguration().getString("input.encoding", LocaleUtils.getDefaultInputEncoding());
+            defaultInputEncoding = Charset.forName(inputEncoding);
 
-            String outputEncoding = LocaleUtils.getOverrideCharSet();
-            if (outputEncoding == null)
+            String outputEncodingString = getConfiguration().getString("output.encoding");
+            if (outputEncodingString == null)
             {
-                outputEncoding = defaultInputEncoding;
+                Charset outputEncoding = LocaleUtils.getOverrideCharset();
+                if (outputEncoding == null)
+                {
+                    outputEncoding = defaultInputEncoding;
+                }
+                
+                defaultOutputEncoding = outputEncoding;
             }
-            defaultOutputEncoding = getConfiguration().getString("output.encoding", defaultInputEncoding);
+            else
+            {
+                defaultOutputEncoding = Charset.forName(outputEncodingString);
+            }
 
             setInit(true);
         }
@@ -281,7 +291,7 @@ public class TurbineVelocityService
     {
         String results = null;
         OutputStreamWriter writer = null;
-        String charset = getOutputCharSet(context);
+        Charset charset = getOutputCharSet(context);
 
         try (ByteArrayOutputStream bytes = new ByteArrayOutputStream())
         {
@@ -289,7 +299,7 @@ public class TurbineVelocityService
 
             executeRequest(context, filename, writer);
             writer.flush();
-            results = bytes.toString(charset);
+            results = bytes.toString(charset.name());
         }
         catch (Exception e)
         {
@@ -316,7 +326,7 @@ public class TurbineVelocityService
                               OutputStream output)
             throws TurbineException
     {
-        String charset  = getOutputCharSet(context);
+        Charset charset  = getOutputCharSet(context);
 
         try (OutputStreamWriter writer = new OutputStreamWriter(output, charset))
         {
@@ -385,14 +395,14 @@ public class TurbineVelocityService
                                 Writer writer)
             throws Exception
     {
-        String encoding = getTemplateEncoding(context);
+        Charset encoding = getTemplateEncoding(context);
 
         if (encoding == null)
         {
           encoding = defaultOutputEncoding;
         }
 
-		velocity.mergeTemplate(filename, encoding, context, writer);
+		velocity.mergeTemplate(filename, encoding.name(), context, writer);
     }
 
     /**
@@ -401,17 +411,17 @@ public class TurbineVelocityService
      * @param context A Context.
      * @return The character set applied to the resulting String.
      */
-    private String getOutputCharSet(Context context)
+    private Charset getOutputCharSet(Context context)
     {
-        String charset = null;
+        Charset charset = null;
 
         Object data = context.get(VelocityService.RUNDATA_KEY);
         if ((data != null) && (data instanceof RunData))
         {
-            charset = ((RunData) data).getCharSet();
+            charset = ((RunData) data).getCharset();
         }
 
-        return (StringUtils.isEmpty(charset)) ? defaultOutputEncoding : charset;
+        return charset == null ? defaultOutputEncoding : charset;
     }
 
     /**
@@ -420,14 +430,14 @@ public class TurbineVelocityService
      * @param context A Context.
      * @return The encoding applied to the resulting String.
      */
-    private String getTemplateEncoding(Context context)
+    private Charset getTemplateEncoding(Context context)
     {
-        String encoding = null;
+        Charset encoding = null;
 
         Object data = context.get(VelocityService.RUNDATA_KEY);
         if ((data != null) && (data instanceof RunData))
         {
-            encoding = ((RunData) data).getTemplateEncoding();
+            encoding = Charset.forName(((RunData) data).getTemplateEncoding());
         }
 
         return encoding != null ? encoding : defaultInputEncoding;

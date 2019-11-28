@@ -1,5 +1,10 @@
 package org.apache.turbine.util;
 
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -29,6 +34,24 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 /**
  * This class provides utilities for handling locales and charsets
@@ -44,7 +67,7 @@ public class LocaleUtils
     private static Locale defaultLocale = null;
 
     /** The default charset. */
-    private static String defaultCharSet = null;
+    private static Charset defaultCharSet = null;
 
     /**
      * Returns the default input encoding for the servlet.
@@ -98,20 +121,37 @@ public class LocaleUtils
      *
      * @return the name of the default charset or null.
      */
+    @Deprecated
     public static String getDefaultCharSet()
+    {
+        return getDefaultCharset().name();
+    }
+
+    /**
+     * Gets the default charset defined by a property named
+     * "locale.default.charset"
+     *
+     * @return the default charset, never null.
+     */
+    public static Charset getDefaultCharset()
     {
         if (defaultCharSet == null)
         {
             /* Get the default charset and cache it in a static variable. */
-            defaultCharSet = Turbine.getConfiguration()
+            String charSet = Turbine.getConfiguration()
                     .getString(TurbineConstants.LOCALE_DEFAULT_CHARSET_KEY,
                             TurbineConstants.LOCALE_DEFAULT_CHARSET_DEFAULT);
-            log.debug("defaultCharSet = {} (From Properties)", defaultCharSet);
+            
+            if (StringUtils.isNotEmpty(charSet))
+            {
+                defaultCharSet = charSetForName(charSet);
+                log.debug("defaultCharSet = {} (From Properties)", defaultCharSet);
+            }
         }
 
-        String charset = defaultCharSet;
+        Charset charset = defaultCharSet;
 
-        if (StringUtils.isEmpty(charset)) // can happen if set explicitly in the configuration
+        if (charset == null) // can happen if set explicitly in the configuration
         {
             log.debug("Default charset is empty!");
             /* Default charset isn't specified, get the locale specific one. */
@@ -122,18 +162,26 @@ public class LocaleUtils
             {
                 log.debug("We don't have US Locale!");
                 ServiceManager serviceManager = TurbineServices.getInstance();
-                MimeTypeService mimeTypeService = null;
-                try
+                if (serviceManager.isRegistered(MimeTypeService.ROLE))
                 {
-                    mimeTypeService = (MimeTypeService) serviceManager.getService(MimeTypeService.ROLE);
-                }
-                catch (Exception e)
-                {
-                    throw new RuntimeException(e);
-                }
-                charset = mimeTypeService.getCharSet(locale);
+                    try
+                    {
+                        MimeTypeService mimeTypeService = (MimeTypeService) serviceManager.getService(MimeTypeService.ROLE);
+                        charset = charSetForName(mimeTypeService.getCharSet(locale));
+                    }
+                    catch (Exception e)
+                    {
+                        throw new RuntimeException(e);
+                    }
 
-                log.debug("Charset now {}", charset);
+                    log.debug("Charset now {}", charset);
+                }
+            }
+            
+            // The fallback to end all fallbacks
+            if (charset == null)
+            {
+                charset = StandardCharsets.ISO_8859_1;
             }
         }
 
@@ -148,9 +196,53 @@ public class LocaleUtils
      *
      * @return the name of the override charset or null.
      */
+    @Deprecated
     public static String getOverrideCharSet()
     {
         return Turbine.getConfiguration()
                 .getString(TurbineConstants.LOCALE_OVERRIDE_CHARSET_KEY);
     }
+
+    /**
+     * Gets the charset defined by a property named "locale.override.charset"
+     * This property has no default. If it exists, the output charset is always
+     * set to its value
+     *
+     * @return the override charset or null.
+     */
+    public static Charset getOverrideCharset()
+    {
+        String charset = Turbine.getConfiguration()
+                .getString(TurbineConstants.LOCALE_OVERRIDE_CHARSET_KEY);
+        
+        if (StringUtils.isEmpty(charset))
+        {
+            return null;
+        }
+        
+        return charSetForName(charset);
+    }
+
+    /**
+     * Get a Charset object for a given name
+     * This method does not throw exceptions on illegal input but returns null.
+     * 
+     * @param charSet the charset name
+     * 
+     * @return the Charset or null if it does not exist
+     */
+    private static Charset charSetForName(String charSet)
+    {
+        try
+        {
+            return Charset.forName(charSet);
+        }
+        catch (IllegalCharsetNameException | UnsupportedCharsetException e)
+        {
+            log.error("Illegal default charset {}", charSet);
+        }
+        
+        return null;
+    }
+    
 }

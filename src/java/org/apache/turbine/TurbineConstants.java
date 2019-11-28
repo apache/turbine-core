@@ -19,10 +19,10 @@ package org.apache.turbine;
  * under the License.
  */
 
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+
 import org.apache.turbine.pipeline.TurbinePipeline;
-
-
-
 
 /**
  * This interface contains all the constants used throughout
@@ -200,28 +200,22 @@ public interface TurbineConstants
 	String DEFAULT_DOCUMENT_TYPE_KEY = "default.doctype";
 
 	/** Default doctype root element. */
-	String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY
-			= "default.html.doctype.root.element";
+	String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY = "default.html.doctype.root.element";
 
 	/** Default value for the doctype root element */
-	String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_DEFAULT
-			= "HTML";
+	String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_DEFAULT = "HTML";
 
 	/** Default doctype dtd. */
-	String DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY
-			= "default.html.doctype.identifier";
+	String DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY = "default.html.doctype.identifier";
 
-	/** Default Doctype dtd value */
-	String DEFAULT_HTML_DOCTYPE_IDENTIFIER_DEFAULT
-			= "-//W3C//DTD HTML 4.01 Transitional//EN";
+	/** Default Doctype dtd value (empty for HTML5) */
+	String DEFAULT_HTML_DOCTYPE_IDENTIFIER_DEFAULT = "";
 
 	/** Default doctype url. */
-	String DEFAULT_HTML_DOCTYPE_URI_KEY
-			= "default.html.doctype.url";
+	String DEFAULT_HTML_DOCTYPE_URI_KEY = "default.html.doctype.url";
 
-	/** Default doctype url value. */
-	String DEFAULT_HTML_DOCTYPE_URI_DEFAULT
-			= "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd";
+	/** Default doctype url value. (empty for HTML5) */
+	String DEFAULT_HTML_DOCTYPE_URI_DEFAULT = "";
 
 	/** Define content types **/
 	String DEFAULT_HTML_CONTENT_TYPE = "text/html";
@@ -232,19 +226,19 @@ public interface TurbineConstants
 	String LOCALE_DEFAULT_LANGUAGE_KEY = "locale.default.language";
 
 	/** Default value for Language property */
-	String LOCALE_DEFAULT_LANGUAGE_DEFAULT = "en";
+	String LOCALE_DEFAULT_LANGUAGE_DEFAULT = Locale.US.getLanguage();
 
 	/** Default Country property */
 	String LOCALE_DEFAULT_COUNTRY_KEY = "locale.default.country";
 
 	/** Default value for Country property */
-	String LOCALE_DEFAULT_COUNTRY_DEFAULT = "US";
+	String LOCALE_DEFAULT_COUNTRY_DEFAULT = Locale.US.getCountry();
 
 	/** Default Charset property */
 	String LOCALE_DEFAULT_CHARSET_KEY = "locale.default.charset";
 
 	/** Default value for Charset property */
-	String LOCALE_DEFAULT_CHARSET_DEFAULT = "ISO-8859-1";
+	String LOCALE_DEFAULT_CHARSET_DEFAULT = StandardCharsets.ISO_8859_1.name();
 
     /** Override Charset property */
     String LOCALE_OVERRIDE_CHARSET_KEY = "locale.override.charset";
@@ -292,7 +286,7 @@ public interface TurbineConstants
     String PARAMETER_ENCODING_KEY = "input.encoding";
 
     /** Default Encoding for Parameter Parser */
-    String PARAMETER_ENCODING_DEFAULT = "ISO-8859-1";
+    String PARAMETER_ENCODING_DEFAULT = StandardCharsets.ISO_8859_1.name();
 
     /** Default serverName for ServerData */
     String DEFAULT_SERVER_NAME_KEY

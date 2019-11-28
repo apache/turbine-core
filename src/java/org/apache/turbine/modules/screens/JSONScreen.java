@@ -24,6 +24,8 @@ import java.io.CharArrayWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -111,7 +113,7 @@ public class JSONScreen extends RawScreen
         HttpServletRequest request = data.getRequest();
 
         // we require utf-8, cft
-        String charset =  "UTF-8"; //request.getCharacterEncoding();
+        Charset charset =  StandardCharsets.UTF_8; //request.getCharacterEncoding();
         BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), charset));
 
         // Read the request
@@ -131,7 +133,7 @@ public class JSONScreen extends RawScreen
         Object json_res = jsonRpcService.processCall(cdata, json_bridge, request);
 
         PrintWriter out = new PrintWriter(
-                new OutputStreamWriter(data.getResponse().getOutputStream(),charset));
+                new OutputStreamWriter(data.getResponse().getOutputStream(), charset));
         out.print(json_res.toString());
         out.flush();
         out.close();

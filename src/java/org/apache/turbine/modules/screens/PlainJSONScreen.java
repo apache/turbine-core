@@ -21,6 +21,8 @@ package org.apache.turbine.modules.screens;
 
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
@@ -100,9 +102,9 @@ public class PlainJSONScreen extends RawScreen
     {
         RunData data = pipelineData.getRunData();
         // read in json!
-        String charset =  "UTF-8"; //request.getCharacterEncoding();
+        Charset charset = StandardCharsets.UTF_8; //request.getCharacterEncoding();
         
-        String json_res =data.getMessage();
+        String json_res = data.getMessage();
 
         log.debug( "json_res output: {}", json_res );
         PrintWriter out = new PrintWriter(

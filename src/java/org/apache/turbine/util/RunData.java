@@ -23,6 +23,7 @@ package org.apache.turbine.util;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.Map;
 
@@ -413,6 +414,7 @@ public interface RunData extends PipelineData
      *
      * @return the name of the charset or null.
      */
+    @Deprecated
     String getCharSet();
 
     /**
@@ -420,7 +422,26 @@ public interface RunData extends PipelineData
      *
      * @param charset the name of the new charset.
      */
+    @Deprecated
     void setCharSet(String charset);
+
+    /**
+     * Gets the charset. If it has not already been defined with
+     * setCharSet(), then a property named "locale.default.charset"
+     * is checked from the Resource Service and returned. If this
+     * property is undefined, the default charset of the locale
+     * is returned. If the locale is undefined, null is returned.
+     *
+     * @return the charset or null.
+     */
+    Charset getCharset();
+
+    /**
+     * Sets the charset.
+     *
+     * @param charset the new charset.
+     */
+    void setCharset(Charset charset);
 
     /**
      * Gets the HTTP content type to return. If a charset
