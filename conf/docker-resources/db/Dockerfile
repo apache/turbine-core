@@ -15,3 +15,5 @@ ENV MYSQL_PASSWORD=${MYSQL_PASSWORD}
 ENV MYSQL_HOST=%
 # important container will not start without setting it:
 ENV MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+
+#EXPOSE 3306

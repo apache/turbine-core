@@ -435,7 +435,7 @@ public class TurbineVelocityService
         Charset encoding = null;
 
         Object data = context.get(VelocityService.RUNDATA_KEY);
-        if ((data != null) && (data instanceof RunData))
+        if ((data != null) && (data instanceof RunData) && (((RunData) data).getTemplateEncoding() != null) )
         {
             encoding = Charset.forName(((RunData) data).getTemplateEncoding());
         }

@@ -31,12 +31,12 @@ import org.testcontainers.junit.jupiter.Testcontainers;
  *
  * Requirements:
  * <li>Unix: (Debian stretch tested):set <code>DOCKER_HOST=unix:///var/run/docker.sock</code> in docker-java.properties 
- * (find the template in conf/docker-resources/db/dj.p.template) and comment all other environment keys.
+ * (find the template in conf/docker-resources/db/dj.p.template) and comment out all other environment keys.
  * <li>Windows 10: Docker Desktop should provide all required configuration by default or
- * you need to create local machine, e.g. with <code>docker-machine -d hyperv <vmname-default></code>
+ * you need to create a local machine, e.g. with <code>docker-machine -d hyperv <vmname-default></code>
  * For more information https://docs.docker.com/machine/get-started/, https://docs.docker.com/machine/drivers/hyper-v/.
  * <li>Windows 7/VirtualBox: copy DOCKER_* properties to ~/.docker-java.properties or docker-java.properties in classpath..
- * To get the environment run <code>docker-machine env default</code>, if your default docker machine is named default.
+ * To get the environment run: <code>docker-machine env default</code>, if your default docker machine is named default.
  * Verify the name with <code>docker-machine ls</code>.
  * 
  * Turbine pom.xml has folder conf/docker-resources enabled as test-resource, you may put the files there.
@@ -59,7 +59,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
  * <li>https://www.testcontainers.org/modules/databases/mysql/
  * <li>https://www.testcontainers.org/modules/databases/#using-an-init-script-from-a-file
  *
- * bugs: docker virtualbox vm seems to auto pause. 
+ * Bugs: docker virtualbox vm seems to auto pause. 
  * Check your docker vm with <code>docker-machine ls</code> and <code>docker-machine start <vmname></code>.
  *
  * @author gkallidis
