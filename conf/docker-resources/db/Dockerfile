@@ -1,7 +1,7 @@
 # no multi-stage 
 # mariadb use docker-entrypoint 
 
-FROM mysql:8.0.17
+FROM mysql:8.0.20
 
 # copy from path where dockerfile is
 COPY ./mysql/initdb.d /docker-entrypoint-initdb.d

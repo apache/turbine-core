@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
-    <version>7-SNAPSHOT</version>
+    <version>7</version>
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
@@ -530,28 +530,11 @@
     </pluginManagement>
 
     <plugins>
-      <!-- run optionally, use not as reporting plugin, as it exposes file paths to artifacts and
-        check each possible vulnerability carefully, find more info about how to read, false positives et al. here: 
-        https://jeremylong.github.io/DependencyCheck/dependency-check-maven/plugin-info.html or
-        https://github.com/jeremylong/DependencyCheck
-        CLI mvn phase
-        $>mvn verify -Ddependency.check.skip=false
-        or to invoke goal only:
-        $>mvn org.owasp:dependency-check-maven:check -Ddependency.check.skip=false
-      -->
+
      <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>5.2.2</version>
-        <executions>
-           <execution>
-                <goals>
-                    <goal>check</goal>
-                </goals>
-            </execution>
-        </executions>
         <configuration>
-           <skip>${dependency.check.skip}</skip>
            <!-- suppress false positive -->
            <suppressionFiles>
             <suppressionFile>${project.basedir}/suppression-owasp-fp.xml</suppressionFile>
@@ -563,12 +546,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version><!-- override parent -->
+         <version>3.0.0-M5</version>
         <configuration>
           <!--default setting is forkCount=1/reuseForks=true -->
           <reuseForks>false</reuseForks>
           <forkCount>1</forkCount>
           <excludedGroups>performance,docker</excludedGroups>
+          <!--useSystemClassLoader>false</useSystemClassLoader-->
         </configuration>
       </plugin>
       <plugin>
@@ -833,45 +817,6 @@
             </dependency>
         </dependencies>
       </plugin>
-      <!-- no fat jar  -->
-      <!-- remove, if using parent 6 or above, not activated, agent seems to block gpg agent ? -->
-      <!-- unskip this by setting -Djacoco.skip=true, cf. to pom property
-           Be aware, as we exclude tests itself, jacoco only starts, if not skipping tests, as it is a coverage tool!  -->
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.4</version>
-        <configuration>
-            <skip>${jacoco.skip}</skip>
-            <excludes>
-              <exclude>*/*Test*</exclude>
-            </excludes>
-        </configuration>
-        <executions>
-          <execution>
-            <id>default-prepare-agent</id>
-            <goals>
-            <goal>prepare-agent</goal>
-            </goals>
-           </execution>
-           <execution>
-              <id>report</id>
-              <phase>prepare-package</phase>
-              <goals>
-                <goal>report</goal>
-              </goals>
-           </execution>
-           <!--execution>
-              <id>check</id>
-              <goals>
-                <goal>check</goal>
-              </goals>
-              <configuration>
-                <haltOnFailure>false</haltOnFailure>
-               </configuration>
-            </execution-->
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
@@ -883,19 +828,6 @@
         <configuration>
           <aggregate>false</aggregate>
         </configuration>
-      </plugin>
-      <!-- since 2.7 running the old report requires to register it explicitely, otherwise the build may fail -->
-      <!-- TODO resolve log4j2 logback double binding in parent, wait for cobertura 2.8 probably, see https://github.com/mojohaus/cobertura-maven-plugin/issues/36 -->
-      <plugin> 
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>cobertura</report>
-            </reports>
-          </reportSet>
-        </reportSets>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -1153,14 +1085,14 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers</artifactId>
-      <version>1.12.2</version>
+      <version>${docker.testcontainers.version}</version>
       <scope>test</scope>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>1.12.2</version>
+      <version>${docker.testcontainers.version}</version>
       <scope>test</scope>
       <optional>true</optional>
     </dependency>
@@ -1171,21 +1103,6 @@
       <id>apache-release</id>
       <build>
         <plugins>
-           <plugin>
-            <groupId>org.owasp</groupId>
-            <artifactId>dependency-check-maven</artifactId>
-            <configuration>
-               <skip>false</skip>
-            </configuration>
-          </plugin>
-          <!-- if set active (e.g. by -Djacoco.skip=false), may block gpg agent, use -Dgpg.useagent=false or kill gpg agent before start -->
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <configuration>
-              <skip>${jacoco.skip}</skip><!-- by default true -->
-            </configuration>
-          </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-site-plugin</artifactId>
@@ -1230,7 +1147,6 @@
         </plugins>
       </build>
       <properties> 
-        <dependency.check.skip>false</dependency.check.skip>
         <doclint>none</doclint><!-- since javadoc v.3 this is the required instead of -Xdoclint:none, remove if turbine parent (v6) is correct again using profile java8  -->
       </properties>
     </profile>
@@ -1253,9 +1169,10 @@
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-surefire-plugin</artifactId>
+               <version>3.0.0-M5</version>
               <executions>
                 <execution>
-                  <id>default-test</id>
+                   <id>default-test</id>
                   <configuration>
                     <groups>docker</groups>
                     <excludedGroups>performance</excludedGroups>
@@ -1267,26 +1184,29 @@
       </build>
       <dependencies>
         <!-- docker testcontainer deps start here, until torque 4.1 is releases start it like:
+        inside IDE (add dependencies):
+        mvn eclipse:eclispe -Pdocker-testcontainer
 
+        outside IDE
         mvn test -Pdocker-testcontainer -Dtorque.version=4.1-SNAPSHOT
 
         -->
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
-            <version>1.12.2</version>
+            <version>${docker.testcontainers.version}</version>
             <scope>test</scope>
           </dependency>
           <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>1.12.2</version>
+            <version>${docker.testcontainers.version}</version>
             <scope>test</scope>
           </dependency>
           <dependency>
               <groupId>org.testcontainers</groupId>
               <artifactId>mysql</artifactId>
-              <version>1.12.2</version>
+              <version>${docker.testcontainers.version}</version>
               <scope>test</scope>
           </dependency>
           <dependency>
@@ -1303,7 +1223,7 @@
           <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.17</version>
+            <version>8.0.20</version>
           </dependency>
       </dependencies>
     </profile>
@@ -1316,10 +1236,11 @@
     <fulcrum.intake>2.0.1-SNAPSHOT</fulcrum.intake>
     <fulcrum.parser>2.0.1</fulcrum.parser>
     <fulcrum.security>2.0.0-SNAPSHOT</fulcrum.security>
-    <dependency.check.skip>true</dependency.check.skip>
     <torque.version>4.1-SNAPSHOT</torque.version>
-    <jacoco.skip>true</jacoco.skip>
     <doclint>none</doclint>
+    <docker.testcontainers.version>1.14.3</docker.testcontainers.version>
+    <jacoco.skip>true</jacoco.skip>
+    <argLine></argLine>
   </properties>
 
 </project>
