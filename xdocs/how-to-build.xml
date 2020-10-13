@@ -29,7 +29,7 @@
 <section name="How to build Turbine">
 
 <p>
-  Turbine is built using the <a href="http://maven.apache.org/">Maven-2</a> build
+  Turbine is built using the <a href="http://maven.apache.org/">Maven</a> build
   tool.  So to get started you should download and install Maven.
 </p>
 

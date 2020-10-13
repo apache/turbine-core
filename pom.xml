@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
-    <version>7</version>
+    <version>8-SNAPSHOT</version>
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
@@ -541,6 +541,7 @@
             </suppressionFiles>
            <!-- no .NET code inside turbine -->
            <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+           <skip>false</skip>
         </configuration>
       </plugin>
       <plugin>
@@ -859,12 +860,12 @@
     <dependency>
     	<groupId>commons-codec</groupId>
     	<artifactId>commons-codec</artifactId>
-      <version>1.13</version>
+      <version>1.15</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-configuration2</artifactId>
-      <version>2.5</version>
+      <version>2.7</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -874,12 +875,12 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.9</version>
+      <version>3.11</version>
     </dependency>
     <dependency>
        <groupId>org.apache.commons</groupId>
        <artifactId>commons-text</artifactId>
-       <version>1.7</version>
+       <version>1.9</version>
     </dependency>
     <dependency>
       <groupId>commons-beanutils</groupId>
@@ -889,7 +890,7 @@
     <dependency>
       <groupId>nl.basjes.parse.useragent</groupId>
       <artifactId>yauaa</artifactId>
-      <version>5.12</version>
+      <version>5.19</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
@@ -958,11 +959,12 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency> <!-- include optional dependencies from torque-runtime -->
+    <!-- use default dbcp2 from torque-runtime -->
+    <!--dependency> 
         <groupId>commons-dbcp</groupId>
         <artifactId>commons-dbcp</artifactId>
         <version>1.4</version>
-    </dependency>
+    </dependency-->
     <dependency>
          <groupId>commons-configuration</groupId>
          <artifactId>commons-configuration</artifactId>
@@ -986,11 +988,11 @@
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
-    <!-- suppress owasp warning until v1.1.2 is released, which fixes https://github.com/quartz-scheduler/quartz/issues/316 -->
+    <!--  owasp warning resolved in v1.1.2, which references quartz-2.3.0.jar, fixing CVE-2019-13990, https://github.com/quartz-scheduler/quartz/issues/467 -->
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-quartz</artifactId>
-      <version>1.1.1</version>
+      <version>1.1.2-SNAPSHOT</version>
     </dependency>
     <!-- suppress owasp CVE-2018-11771, CVE-2018-1324, as jython-standalone is optional.-->
     <dependency>
@@ -1072,7 +1074,7 @@
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
-      <version>2.2.9</version>
+      <version>2.5.1</version>
       <scope>test</scope>
     </dependency>
     <!-- testcontainer minimal shared resources -->
@@ -1236,9 +1238,9 @@
     <fulcrum.intake>2.0.1-SNAPSHOT</fulcrum.intake>
     <fulcrum.parser>2.0.1</fulcrum.parser>
     <fulcrum.security>2.0.0-SNAPSHOT</fulcrum.security>
-    <torque.version>4.1-SNAPSHOT</torque.version>
+    <torque.version>5.0</torque.version>
     <doclint>none</doclint>
-    <docker.testcontainers.version>1.14.3</docker.testcontainers.version>
+    <docker.testcontainers.version>1.15.0-rc2</docker.testcontainers.version>
     <jacoco.skip>true</jacoco.skip>
     <argLine></argLine>
   </properties>
