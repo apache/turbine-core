@@ -21,10 +21,14 @@ package org.apache.turbine.util.uri;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.fulcrum.parser.ParameterParser;
@@ -59,6 +63,9 @@ public class TurbineURI
 
     /** Local reference to the parser service for URI parameter folding */
     private ParserService parserService;
+
+    /** URI Parameter encoding as defined by the parser service */
+    private Charset parameterEncoding;
 
     /*
      * ========================================================================
@@ -258,9 +265,18 @@ public class TurbineURI
     private void init()
     {
         dataVectors = new List[2];
-        dataVectors[PATH_INFO]  = new ArrayList<URIParam>();
-        dataVectors[QUERY_DATA] = new ArrayList<URIParam>();
+        dataVectors[PATH_INFO]  = new ArrayList<>();
+        dataVectors[QUERY_DATA] = new ArrayList<>();
         parserService = (ParserService)TurbineServices.getInstance().getService(ParserService.ROLE);
+
+        try
+        {
+            parameterEncoding = Charset.forName(parserService.getParameterEncoding());
+        }
+        catch (IllegalCharsetNameException | UnsupportedCharsetException e)
+        {
+            log.error("Unsupported encoding {}", parserService.getParameterEncoding(), e);
+        }
     }
 
     /**
@@ -675,7 +691,7 @@ public class TurbineURI
     }
 
     /**
-     * Gets the current Query Data List.
+     * Gets the current Path Info List.
      *
      * @return A List which contains all query data keys. The keys
      * are URIParam objects.
@@ -751,7 +767,7 @@ public class TurbineURI
      */
     private void getPathInfoAsString(StringBuilder output)
     {
-        doEncode(output, dataVectors[PATH_INFO], '/', '/');
+        doEncode(output, dataVectors[PATH_INFO], "/", "/");
     }
 
     /**
@@ -761,60 +777,49 @@ public class TurbineURI
      */
     private void getQueryDataAsString(StringBuilder output)
     {
-        doEncode(output, dataVectors[QUERY_DATA], '&', '=');
+        doEncode(output, dataVectors[QUERY_DATA], "&", "=");
+    }
+
+    /**
+     * URL encode the given string, catching possible Exceptions
+     *
+     * @param string the string
+     * @return the encoded string
+     */
+    private String urlEncode(String string)
+    {
+        try
+        {
+            // Java10: return URLEncoder.encode(string, parameterEncoding);
+            return URLEncoder.encode(string, parameterEncoding.name());
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            log.warn("Unsupported encoding {}", parameterEncoding);
+        }
+
+        return StringUtils.EMPTY;
     }
 
     /**
      * Does the actual encoding for pathInfoAsString and queryDataAsString.
      *
-     * @param output The Stringbuffer that should contain the information.
-     * @param list A Collection
+     * @param output The String builder that should contain the information.
+     * @param list A list of key to value pairs
      * @param fieldDelim A char which is used to separate key/value pairs
      * @param valueDelim A char which is used to separate key and value
      */
-    private void doEncode(StringBuilder output, Collection<URIParam> list, char fieldDelim, char valueDelim)
+    private void doEncode(StringBuilder output, Collection<URIParam> list, String fieldDelim, String valueDelim)
     {
         if(!list.isEmpty())
         {
-        	String encoding = parserService.getParameterEncoding();
-
-            for(Iterator<URIParam> it = list.iterator(); it.hasNext();)
-            {
-            	try
-            	{
-					URIParam uriParam = it.next();
-					String key = URLEncoder.encode(uriParam.getKey(), encoding);
-					String val = null == uriParam.getValue()
-					        ? null : String.valueOf(uriParam.getValue());
-
-					output.append(key);
-					output.append(valueDelim);
-
-					if(StringUtils.isEmpty(val))
-					{
-					    if (val == null)
-					    {
-				            log.warn("Found a null value for {}", key);
-					        // For backwards compatibility:
-					        val = "null";
-					    }
-					    output.append(val);
-					}
-					else
-					{
-					    output.append(URLEncoder.encode(val, encoding));
-					}
-
-					if (it.hasNext())
-					{
-					    output.append(fieldDelim);
-					}
-				}
-            	catch (UnsupportedEncodingException e)
-            	{
-            		log.warn("Unsupported encoding {}", encoding);
-				}
-            }
+            output.append(list.stream()
+                    .map(uriParam ->
+                        String.join(
+                                valueDelim,
+                                urlEncode(uriParam.getKey()),
+                                urlEncode(Objects.toString(uriParam.getValue()))))
+                    .collect(Collectors.joining(fieldDelim)));
         }
     }
 
@@ -834,7 +839,6 @@ public class TurbineURI
             String value)
     {
         URIParam uriParam = new URIParam(parserService.convertAndTrim(name), value);
-
         dataVectors[type].add(uriParam); // Code so clean you can eat from...
     }
 
@@ -854,19 +858,17 @@ public class TurbineURI
     protected void add(int type,
             ParameterParser pp)
     {
-        for(Iterator<?> it = pp.keySet().iterator(); it.hasNext();)
+        for(String key : pp.keySet())
         {
-            String key = (String) it.next();
-
             if (!key.equalsIgnoreCase(CGI_ACTION_PARAM) &&
                     !key.equalsIgnoreCase(CGI_SCREEN_PARAM))
             {
                 String[] values = pp.getStrings(key);
                 if(values != null)
                 {
-                    for (int i = 0; i < values.length; i++)
+                    for (String value : values)
                     {
-                        add(type, key, values[i]);
+                        add(type, key, value);
                     }
                 }
                 else
@@ -910,17 +912,8 @@ public class TurbineURI
      */
     protected void remove (int type, String name)
     {
-        Collection<URIParam> c = dataVectors[type];
         String key = parserService.convertAndTrim(name);
 
-        for (Iterator<URIParam> it = c.iterator(); it.hasNext();)
-        {
-            URIParam uriParam = it.next();
-
-            if (key.equals(uriParam.getKey()))
-            {
-                it.remove();
-            }
-        }
+        dataVectors[type].removeIf(uriParam -> key.equals(uriParam.getKey()));
     }
 }

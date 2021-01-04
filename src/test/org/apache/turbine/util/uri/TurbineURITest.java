@@ -20,8 +20,10 @@ package org.apache.turbine.util.uri;
  */
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import javax.servlet.http.Part;
 
 import org.apache.fulcrum.parser.DefaultParameterParser;
 import org.apache.fulcrum.parser.ParameterParser;
@@ -34,6 +36,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
  * Testing of the TurbineURI class
@@ -100,8 +103,6 @@ public class TurbineURITest extends BaseTestCase
         assertFalse("TurbineURI must not have a pathInfo", turi.hasPathInfo());
         assertFalse("TurbineURI must not have a queryData", turi.hasQueryData());
 
-        assertFalse("TurbineURI should not have a queryData", turi.hasQueryData());
-        assertFalse("TurbineURI must not have a pathInfo", turi.hasPathInfo());
         turi.addQueryData("test", "x");
         assertTrue("TurbineURI must have a queryData", turi.hasQueryData());
         assertFalse("TurbineURI must not have a pathInfo", turi.hasPathInfo());
@@ -172,24 +173,23 @@ public class TurbineURITest extends BaseTestCase
         turi.removeQueryData("test");
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
 
-        // TRB-8
-        //
-        // This is commented out for now as it results in a ClassCastException.
-        // The 2_3 branch parser changes need to be merged into the fulcrum
-        // code.
-        //
-        // pp = new DefaultParameterParser();
-        // DiskFileItemFactory factory = new DiskFileItemFactory(10240, null);
-        // FileItem test = factory.createItem("upload-field",
-        // "application/octet-stream", false, null);
-        // pp.append("upload-field", test);
-        // // The following causes a ClassCastException with or without the
-        // TRB-8 fix.
-        // turi.add(1, pp); // 1 = query data
-        // assertEquals("/context/servlet/turbine?upload-field=",
-        // turi.getRelativeLink());
-        // turi.removeQueryData("upload-field");
-        // assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+        parserService.putParser(pp);
+        pp = parserService.getParser(DefaultParameterParser.class);
+        pp.add("test", "1");
+        pp.add("test", "2");
+        turi.add(1, pp); // 1 = query data
+        assertEquals("/context/servlet/turbine?test=1&test=2", turi.getRelativeLink());
+        turi.removeQueryData("test");
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+
+        parserService.putParser(pp);
+        pp = parserService.getParser(DefaultParameterParser.class);
+        Part part = Mockito.mock(Part.class);
+        pp.add("upload-field", part);
+        turi.add(1, pp); // 1 = query data
+        assertEquals("/context/servlet/turbine?upload-field=", turi.getRelativeLink());
+        turi.removeQueryData("upload-field");
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
     }
 
 }
