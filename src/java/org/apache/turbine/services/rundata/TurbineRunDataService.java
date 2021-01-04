@@ -19,10 +19,10 @@ package org.apache.turbine.services.rundata;
  * under the License.
  */
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -44,6 +44,7 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.TurbineRuntimeException;
 
 /**
  * The RunData Service provides the implementations for RunData and
@@ -74,10 +75,10 @@ public class TurbineRunDataService
         DefaultCookieParser.class.getName();
 
     /** The map of configurations. */
-    private final Map<String, Object> configurations = new HashMap<String, Object>();
+    private final ConcurrentMap<String, Object> configurations = new ConcurrentHashMap<>();
 
     /** A class cache. */
-    private final Map<String, Class<?>> classCache = new HashMap<String, Class<?>>();
+    private final ConcurrentMap<String, Class<?>> classCache = new ConcurrentHashMap<>();
 
     /** Private reference to the pool service for object recycling */
     private PoolService pool = null;
@@ -127,11 +128,12 @@ public class TurbineRunDataService
             {
                 key = i.next();
                 value = conf.getString(key);
-                for (int j = 0; j < plist.length; j++)
+                int j = 0;
+                for (String plistKey : plist)
                 {
-                    if (key.endsWith(plist[j]) && key.length() > plist[j].length() + 1)
+                    if (key.endsWith(plistKey) && key.length() > plistKey.length() + 1)
                     {
-                        key = key.substring(0, key.length() - plist[j].length() - 1);
+                        key = key.substring(0, key.length() - plistKey.length() - 1);
                         config = (String[]) configurations.get(key);
                         if (config == null)
                         {
@@ -141,6 +143,7 @@ public class TurbineRunDataService
                         config[j] = value;
                         break;
                     }
+                    j++;
                 }
             }
         }
@@ -236,26 +239,9 @@ public class TurbineRunDataService
         TurbineRunData data;
         try
         {
-    		Class<?> runDataClazz = classCache.get(cfg[0]);
-    		if (runDataClazz == null)
-    		{
-    		    runDataClazz = Class.forName(cfg[0]);
-    		    classCache.put(cfg[0], runDataClazz);
-    		}
-
-            Class<?> parameterParserClazz = classCache.get(cfg[1]);
-            if (parameterParserClazz == null)
-            {
-                parameterParserClazz = Class.forName(cfg[1]);
-                classCache.put(cfg[1], parameterParserClazz);
-            }
-
-            Class<?> cookieParserClazz = classCache.get(cfg[2]);
-            if (cookieParserClazz == null)
-            {
-                cookieParserClazz = Class.forName(cfg[2]);
-                classCache.put(cfg[2], cookieParserClazz);
-            }
+    		Class<?> runDataClazz = classCache.computeIfAbsent(cfg[0], className -> classForName(className));
+            Class<?> parameterParserClazz = classCache.computeIfAbsent(cfg[1], className -> classForName(className));
+            Class<?> cookieParserClazz = classCache.computeIfAbsent(cfg[2], className -> classForName(className));
 
             data = (TurbineRunData) pool.getInstance(runDataClazz);
             @SuppressWarnings("unchecked") // ok
@@ -281,7 +267,7 @@ public class TurbineRunDataService
         {
             throw new TurbineException("RunData configuration '" + key + "' is illegal caused a pool exception", pe);
         }
-        catch (ClassNotFoundException | ClassCastException | InstantiationException x)
+        catch (TurbineRuntimeException | ClassCastException | InstantiationException x)
         {
             throw new TurbineException("RunData configuration '" + key + "' is illegal", x);
         }
@@ -319,6 +305,19 @@ public class TurbineRunDataService
         else
         {
             return false;
+        }
+    }
+
+    @SuppressWarnings("unchecked") // ok
+    private <T> Class<T> classForName(String className) throws TurbineRuntimeException
+    {
+        try
+        {
+            return (Class<T>) Class.forName(className);
+        }
+        catch (ClassNotFoundException e)
+        {
+            throw new TurbineRuntimeException("Could not load class " + className, e);
         }
     }
 }
