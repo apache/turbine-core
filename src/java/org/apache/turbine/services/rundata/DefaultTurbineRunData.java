@@ -1305,7 +1305,7 @@ public class DefaultTurbineRunData
     }
 
     // ********************
-    // Miscellanous setters
+    // Miscellaneous setters
     // ********************
 
     /**
