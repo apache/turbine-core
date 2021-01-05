@@ -1,8 +1,5 @@
 package org.apache.turbine.services.urlmapper;
 
-import org.apache.fulcrum.parser.ParameterParser;
-import org.apache.turbine.services.Service;
-import org.apache.turbine.util.uri.TurbineURI;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -22,6 +19,10 @@ import org.apache.turbine.util.uri.TurbineURI;
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.turbine.services.Service;
+import org.apache.turbine.util.uri.TurbineURI;
 
 /**
  * The URL mapper service provides methods to map a set of parameters to a
