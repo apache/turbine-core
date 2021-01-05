@@ -1,6 +1,5 @@
 package org.apache.turbine.util.uri;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,6 +19,7 @@ package org.apache.turbine.util.uri;
  * under the License.
  */
 
+import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -72,5 +72,41 @@ public class URIParam
     public Object getValue()
     {
         return value;
+    }
+
+    /**
+     * Calculate hash code based on field values
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(key, value);
+    }
+
+    /**
+     * Calculate equality based on field values
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        URIParam other = (URIParam) obj;
+
+        return Objects.equals(getKey(), other.getKey()) ||
+                Objects.equals(getValue(), other.getValue());
+    }
+
+    /**
+     * Provide a string representation of the object
+     */
+    @Override
+    public String toString()
+    {
+        return "URIParam [key=" + key + ", value=" + value + "]";
     }
 }
