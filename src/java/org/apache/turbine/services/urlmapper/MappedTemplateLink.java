@@ -54,6 +54,7 @@ public class MappedTemplateLink extends TemplateLink
      */
     @TurbineService
     private URLMapperService urlMapperService;
+    
 
     /**
      * Builds the URL with all of the data URL-encoded as well as
@@ -95,7 +96,7 @@ public class MappedTemplateLink extends TemplateLink
      * tui.getRelativeLink();
      * </pre>
      *
-     * The above call to absoluteLink() would return the String:
+     * The above call to relativeLink() would return the String:
      * <p>
      * /servlets/Turbine/screen/UserScreen/user/jon
      * <p>
@@ -111,4 +112,5 @@ public class MappedTemplateLink extends TemplateLink
         urlMapperService.mapToURL(templateURI);
         return super.getRelativeLink();
     }
+    
 }

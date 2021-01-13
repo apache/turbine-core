@@ -35,5 +35,33 @@
                 <parameter key="view" />
             </ignore-parameters>
         </map>
+        <map>
+            <pattern>/(?&lt;contextPath&gt;\w+)/register</pattern>
+            <implicit-parameters>
+                <parameter key="media-type">html</parameter>
+                <parameter key="role">anon</parameter>
+                <parameter key="template">Registerone.vm</parameter>
+                <parameter key="js_pane">random-id-123-abc</parameter>
+            </implicit-parameters>
+        </map>
+        <map>
+            <pattern>/(?&lt;contextPath&gt;\w+)/contact</pattern>
+            <implicit-parameters>
+                <parameter key="media-type">html</parameter>
+                <parameter key="role">anon</parameter>
+                <parameter key="page">Contact</parameter>
+                <parameter key="js_pane">another-random-id-876-dfg</parameter>
+            </implicit-parameters>
+            <override-parameters>
+                <parameter key="role">anon</parameter>
+            </override-parameters>
+        </map>
+        <map>
+            <pattern>/(?&lt;contextPath&gt;\w+)/(?&lt;id&gt;\d+)/(?&lt;role&gt;\w+)/(?&lt;language&gt;\w+)</pattern>
+            <implicit-parameters>
+                <parameter key="media-type">html</parameter>
+                <parameter key="template">default.vm</parameter>
+            </implicit-parameters>
+        </map>
     </maps>
 </url-mapping>

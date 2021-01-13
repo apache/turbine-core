@@ -50,6 +50,9 @@ import org.apache.turbine.services.urlmapper.model.URLMappingContainer;
 import org.apache.turbine.util.uri.TurbineURI;
 import org.apache.turbine.util.uri.URIParam;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 /**
  * The URL mapper service provides methods to map a set of parameters to a
  * simplified URL and vice-versa. This service was inspired by the
@@ -140,6 +143,10 @@ public class TurbineURLMapperService
                         LinkedHashMap::new));
 
         Set<String> keys = new HashSet<>(uriParameterMap.keySet());
+        
+        if (keys.isEmpty() && uri.getQueryData().isEmpty() || uri.getPathInfo().isEmpty()) {
+        	return; // no mapping or mapping already done
+        }
 
         for (URLMapEntry urlMap : container.getMapEntries())
         {
@@ -306,14 +313,21 @@ public class TurbineURLMapperService
 
         try (InputStream reader = servletService.getResourceAsStream(configFile))
         {
-            JAXBContext jaxb = JAXBContext.newInstance(URLMappingContainer.class);
-            Unmarshaller unmarshaller = jaxb.createUnmarshaller();
-            container = (URLMappingContainer) unmarshaller.unmarshal(reader);
+            if (configFile.endsWith(".xml")) {
+	            JAXBContext jaxb = JAXBContext.newInstance(URLMappingContainer.class);
+	            Unmarshaller unmarshaller = jaxb.createUnmarshaller();
+	            container = (URLMappingContainer) unmarshaller.unmarshal(reader);
+            } else if (configFile.endsWith(".yml")) {
+            	// org.apache.commons.configuration2.YAMLConfiguration does only expose property like configuration values,
+            	// which is not what we need here -> java object deserialization.
+            	ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            	container = mapper.readValue(reader, URLMappingContainer.class);
+            }
         }
         catch (IOException | JAXBException e)
         {
             throw new InitializationException("Could not load configuration file " + configFile, e);
-        }
+        } 
 
         // Get groupNamesMap for every Pattern and store it in the entry
         try

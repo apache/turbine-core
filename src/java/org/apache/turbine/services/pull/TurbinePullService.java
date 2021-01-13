@@ -466,7 +466,7 @@ public class TurbinePullService
         {
             try
             {
-                Object tool = toolData.toolClass.newInstance();
+                Object tool = toolData.toolClass.getDeclaredConstructor().newInstance();
 
                 // global tools are init'd with a null data parameter
                 initTool(tool, null);

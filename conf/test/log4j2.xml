@@ -30,15 +30,18 @@
     <Loggers>
          <Logger name="org.apache.turbine" level="debug" additivity="false">
           <AppenderRef ref="logfile"/>
+          <AppenderRef ref="console"/>
         </Logger>
         <Logger name="avalon" level="info" additivity="false">
 	      <AppenderRef ref="logfile"/>
+	      <AppenderRef ref="console"/>
 	    </Logger>
       <Logger name="org.apache.logging.log4j" level="debug" additivity="false">
 	      <AppenderRef ref="logfile"/>
-	    </Logger>
-	    <Root level="error">
-	      <AppenderRef ref="logfile"/>
-	    </Root>
+	  </Logger>
+	  <Root>
+	      <AppenderRef ref="logfile" level="error"/>
+	      <AppenderRef ref="console" level="debug"/>
+	  </Root>
     </Loggers>
 </Configuration>

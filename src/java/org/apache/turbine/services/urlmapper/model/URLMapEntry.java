@@ -30,6 +30,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * The url map model class
  *
@@ -37,6 +40,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlType(name="map")
 @XmlAccessorType(XmlAccessType.NONE)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class URLMapEntry
 {
     private Pattern urlPattern;
@@ -52,6 +56,7 @@ public class URLMapEntry
      */
     @XmlElement(name="pattern")
     @XmlJavaTypeAdapter(XmlPatternAdapter.class)
+    @JsonProperty("pattern")
     public Pattern getUrlPattern()
     {
         return urlPattern;
@@ -70,6 +75,7 @@ public class URLMapEntry
      */
     @XmlElement(name="implicit-parameters")
     @XmlJavaTypeAdapter(XmlParameterAdapter.class)
+    @JsonProperty("implicit-parameters")
     public Map<String, String> getImplicitParameters()
     {
         return implicit;
@@ -88,6 +94,7 @@ public class URLMapEntry
      */
     @XmlElement(name="ignore-parameters")
     @XmlJavaTypeAdapter(XmlParameterAdapter.class)
+    @JsonProperty("ignore-parameters")
     public Map<String, String> getIgnoreParameters()
     {
         return ignore;
@@ -106,6 +113,7 @@ public class URLMapEntry
      */
     @XmlElement(name="override-parameters")
     @XmlJavaTypeAdapter(XmlParameterAdapter.class)
+    @JsonProperty("override-parameters")
     public Map<String, String> getOverrideParameters()
     {
         return override;
@@ -157,5 +165,10 @@ public class URLMapEntry
     public void setRelevantKeys(Set<String> relevantKeys)
     {
         this.relevantKeys = relevantKeys;
+    }
+    
+    @Override
+    public String toString() {
+    	return "URLMapEntry: [ pattern: " + urlPattern + ", implicit-parameters: " + implicit + ", override-parameters: " + override + ", ignore-parameters:" + ignore + " ]";
     }
 }

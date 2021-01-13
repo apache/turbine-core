@@ -29,6 +29,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * URL Map Container Model Class
  *
@@ -36,8 +39,10 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name="url-mapping")
 @XmlAccessorType(XmlAccessType.NONE)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class URLMappingContainer
 {
+
     /**
      * Name of this map.
      */
@@ -47,7 +52,8 @@ public class URLMappingContainer
     /**
      * The list of map entries
      */
-    private CopyOnWriteArrayList<URLMapEntry> urlMapEntries = new CopyOnWriteArrayList<>();
+    @JsonProperty("maps")
+    private List<URLMapEntry> urlMapEntries = new CopyOnWriteArrayList<>();
 
     /**
      * Set the name of this map.
