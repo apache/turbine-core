@@ -167,11 +167,18 @@ public class TurbineURLMapperServiceTest extends BaseTestCase {
             counters.add(i, new AtomicInteger(0));
             counterSum.add(i, new AtomicLong(0l));
         }
-        int calls = 1_000; // above 1000 the experiment begins ..
+        int calls = 10_000; // above 1024, set max total of parser pool2 in fulcrum component configuration   ..
         boolean parallel = false;
         IntStream range = IntStream.range(0, calls);
         if (parallel) range = range.parallel();
         SplittableRandom sr = new SplittableRandom();
+        
+//        range
+//        .peek(e -> System.out.println("current value: " + e))
+//        .forEach( actionInt -> {
+//        	runCheck(templateURIs, counterSum, counters, parallel, sr);
+//        });
+        
         Spliterator.OfInt spliterator1 = range.spliterator();
         Spliterator.OfInt spliterator2 = spliterator1.trySplit();
 
