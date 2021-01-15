@@ -85,19 +85,9 @@ public class TurbineURLMapperService
     private static final String CONFIGURATION_FILE_KEY = "configFile";
 
     /**
-     * The configuration file.
-     */
-    private String configFile;
-
-    /**
      * The container with the URL mappings.
      */
     private URLMappingContainer container;
-
-    /**
-     * Non-public method to read the names of regex groups from a Pattern
-     */
-    private Method namedGroupsMethod;
 
     /**
      * Regex pattern for group names
@@ -143,7 +133,7 @@ public class TurbineURLMapperService
                         LinkedHashMap::new));
 
         Set<String> keys = new HashSet<>(uriParameterMap.keySet());
-        
+
         if (keys.isEmpty() && uri.getQueryData().isEmpty() || uri.getPathInfo().isEmpty()) {
         	return; // no mapping or mapping already done
         }
@@ -251,35 +241,6 @@ public class TurbineURLMapperService
         }
     }
 
-    /**
-     * Get the named groups from a Pattern
-     * This method uses reflection to call a non-public method of the
-     * Pattern class
-     *
-     * @param regex the pattern
-     * @return a Map of group names to group indices
-     *
-     * @throws InvocationTargetException  if the underlying method throws an
-     *     exception.
-     * @throws IllegalArgumentException if the method is an instance method
-     *     and the specified object argument is not an instance of the class
-     *     or interface declaring the underlying method (or of a subclass or
-     *     implementor thereof); if the number of actual and formal parameters
-     *     differ; if an unwrapping conversion for primitive arguments fails;
-     *     or if, after possible unwrapping, a parameter value cannot be
-     *     converted to the corresponding formal parameter type by a method
-     *     invocation conversion.
-     * @throws IllegalAccessException if this Method object is enforcing Java
-     *     language access control and the underlying method is inaccessible.
-     */
-    private Map<String, Integer> getNamedGroups(Pattern regex)
-            throws IllegalAccessException, IllegalArgumentException, InvocationTargetException
-    {
-        @SuppressWarnings("unchecked")
-        Map<String, Integer> groupNamesMap = (Map<String, Integer>) namedGroupsMethod.invoke(regex);
-        return groupNamesMap;
-    }
-
     // ---- Service initialization ------------------------------------------
 
     /**
@@ -288,21 +249,9 @@ public class TurbineURLMapperService
     @Override
     public void init() throws InitializationException
     {
-        try
-        {
-            namedGroupsMethod = Pattern.class.getDeclaredMethod("namedGroups");
-            namedGroupsMethod.setAccessible(true);
-        }
-        catch (NoSuchMethodException | SecurityException e)
-        {
-            throw new InitializationException("Could not find method Pattern.getNamedGroups", e);
-        }
-
         Configuration cfg = getConfiguration();
 
-        ServletService servletService = (ServletService)TurbineServices.getInstance().getService(ServletService.SERVICE_NAME);
-
-        configFile = cfg.getString(CONFIGURATION_FILE_KEY, DEFAULT_CONFIGURATION_FILE);
+        String configFile = cfg.getString(CONFIGURATION_FILE_KEY, DEFAULT_CONFIGURATION_FILE);
 
         // context resource path has to begin with slash, cft.
         // context.getResource
@@ -311,13 +260,18 @@ public class TurbineURLMapperService
             configFile = "/" + configFile;
         }
 
+        ServletService servletService = (ServletService)TurbineServices.getInstance().getService(ServletService.SERVICE_NAME);
+
         try (InputStream reader = servletService.getResourceAsStream(configFile))
         {
-            if (configFile.endsWith(".xml")) {
+            if (configFile.endsWith(".xml"))
+            {
 	            JAXBContext jaxb = JAXBContext.newInstance(URLMappingContainer.class);
 	            Unmarshaller unmarshaller = jaxb.createUnmarshaller();
 	            container = (URLMappingContainer) unmarshaller.unmarshal(reader);
-            } else if (configFile.endsWith(".yml")) {
+            }
+            else if (configFile.endsWith(".yml"))
+            {
             	// org.apache.commons.configuration2.YAMLConfiguration does only expose property like configuration values,
             	// which is not what we need here -> java object deserialization.
             	ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
@@ -327,18 +281,23 @@ public class TurbineURLMapperService
         catch (IOException | JAXBException e)
         {
             throw new InitializationException("Could not load configuration file " + configFile, e);
-        } 
+        }
 
         // Get groupNamesMap for every Pattern and store it in the entry
         try
         {
+            Method namedGroupsMethod = Pattern.class.getDeclaredMethod("namedGroups");
+            namedGroupsMethod.setAccessible(true);
+
             for (URLMapEntry urlMap : container.getMapEntries())
             {
-                Map<String, Integer> groupNamesMap = getNamedGroups(urlMap.getUrlPattern());
+                @SuppressWarnings("unchecked")
+                Map<String, Integer> groupNamesMap = (Map<String, Integer>) namedGroupsMethod.invoke(urlMap.getUrlPattern());
                 urlMap.setGroupNamesMap(groupNamesMap);
             }
         }
-        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                | NoSuchMethodException | SecurityException e)
         {
             throw new InitializationException("Could not invoke method Pattern.getNamedGroups", e);
         }
@@ -354,6 +313,7 @@ public class TurbineURLMapperService
     @Override
     public void shutdown()
     {
+        container = null;
         setInit(false);
     }
 }
