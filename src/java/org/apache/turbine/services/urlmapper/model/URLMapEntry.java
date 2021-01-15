@@ -166,9 +166,10 @@ public class URLMapEntry
     {
         this.relevantKeys = relevantKeys;
     }
-    
+
     @Override
-    public String toString() {
+    public String toString()
+    {
     	return "URLMapEntry: [ pattern: " + urlPattern + ", implicit-parameters: " + implicit + ", override-parameters: " + override + ", ignore-parameters:" + ignore + " ]";
     }
 }
