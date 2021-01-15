@@ -19,9 +19,15 @@ package org.apache.turbine.services.urlmapper;
  * under the License.
  */
 
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Spliterator;
+import java.util.SplittableRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.IntConsumer;
@@ -38,22 +44,21 @@ import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.uri.TemplateURI;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class TurbineURLMapperServiceTest extends BaseTestCase {
+public class TurbineURLMapperServiceTest extends BaseTestCase
+{
     private TurbineConfig tc = null;
 
     private URLMapperService urlMapper = null;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() throws Exception
+    {
         tc =
                 new TurbineConfig(
                         ".",
@@ -64,8 +69,10 @@ public class TurbineURLMapperServiceTest extends BaseTestCase {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
-        if (tc != null) {
+    public void tearDown() throws Exception
+    {
+        if (tc != null)
+        {
             tc.dispose();
         }
     }
@@ -84,7 +91,8 @@ public class TurbineURLMapperServiceTest extends BaseTestCase {
      * @throws Exception
      */
     @Test
-    public void testMapToURL() throws Exception {
+    public void testMapToURL() throws Exception
+    {
         assertNotNull(urlMapper);
         HttpServletRequest request = getMockRequest();
         HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
@@ -126,7 +134,8 @@ public class TurbineURLMapperServiceTest extends BaseTestCase {
      * @throws Exception
      */
     @Test
-    public void testMapFromURL() throws Exception {
+    public void testMapFromURL() throws Exception
+    {
         assertNotNull(urlMapper);
         HttpServletRequest request = getMockRequest();
         HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
@@ -151,34 +160,38 @@ public class TurbineURLMapperServiceTest extends BaseTestCase {
         assertEquals("/wow/damn2/detail/4/bookId/123", uri.getRelativeLink());
         urlMapper.mapToURL(uri);
         assertEquals("/wow/book/123/4", uri.getRelativeLink());
-
     }
 
 
     @Tag("performance")
     @Test
-    public void testPerformance() throws Exception {
-
+    public void testPerformance() throws Exception
+    {
         assertNotNull(urlMapper);
         int templateURIs = 5;
-        List<AtomicLong> counterSum = new ArrayList();
-        List<AtomicInteger> counters = new ArrayList();
-        for (int i = 0; i < templateURIs; i++) {
+        List<AtomicLong> counterSum = new ArrayList<>();
+        List<AtomicInteger> counters = new ArrayList<>();
+        for (int i = 0; i < templateURIs; i++)
+        {
             counters.add(i, new AtomicInteger(0));
-            counterSum.add(i, new AtomicLong(0l));
+            counterSum.add(i, new AtomicLong(0L));
         }
         int calls = 10_000; // above 1024, set max total of parser pool2 in fulcrum component configuration   ..
         boolean parallel = false;
         IntStream range = IntStream.range(0, calls);
-        if (parallel) range = range.parallel();
+        if (parallel)
+        {
+            range = range.parallel();
+        }
+
         SplittableRandom sr = new SplittableRandom();
-        
+
 //        range
 //        .peek(e -> System.out.println("current value: " + e))
 //        .forEach( actionInt -> {
 //        	runCheck(templateURIs, counterSum, counters, parallel, sr);
 //        });
-        
+
         Spliterator.OfInt spliterator1 = range.spliterator();
         Spliterator.OfInt spliterator2 = spliterator1.trySplit();
 
@@ -193,14 +206,15 @@ public class TurbineURLMapperServiceTest extends BaseTestCase {
             runCheck(templateURIs, counterSum, counters, parallel, sr);
         });
 
-        for (int i = 0; i < counters.size() - 1; i++) {
+        for (int i = 0; i < counters.size() - 1; i++)
+        {
             long time = counterSum.get(i).longValue() / 1_000_000;
             int count = counters.get(i).get();
             TemplateURI turi = getURI(i);
             String relativeLink = turi.getRelativeLink();
             callMapToUrl(turi);
             System.out.printf("time = %dms (%d calls),average time = %5.3fmics, uri=%s, map=%s%n", time, count,
-                    (double) (count > 0 ? ((double) time * 1000 / (double) count) : 0),
+                    count > 0 ? ((double) time * 1000 / count) : 0,
                     relativeLink, turi.getRelativeLink());
         }
         System.out.printf("total time = %dms (%d total calls) parallel:%s%n",
@@ -210,13 +224,17 @@ public class TurbineURLMapperServiceTest extends BaseTestCase {
         );
     }
 
-    private void runCheck(int templateURIs, List<AtomicLong> counterSum, List<AtomicInteger> counters, boolean parallel, SplittableRandom sr) {
+    private void runCheck(int templateURIs, List<AtomicLong> counterSum, List<AtomicInteger> counters, boolean parallel, SplittableRandom sr)
+    {
         int randomNum = sr.nextInt(templateURIs);
         TemplateURI turi = getURI(randomNum);
         long time = System.nanoTime();
-        try {
+        try
+        {
             callMapToUrl(turi);
-        } finally {
+        }
+        finally
+        {
             time = System.nanoTime() - time;
         	counterSum.get(randomNum).addAndGet(time);
         	counters.get(randomNum).incrementAndGet();
@@ -229,9 +247,11 @@ public class TurbineURLMapperServiceTest extends BaseTestCase {
      * @param tnr
      * @return
      */
-    private TemplateURI getURI(int tnr) {
+    private TemplateURI getURI(int tnr)
+    {
         TemplateURI turi = null;
-        switch (tnr) {
+        switch (tnr)
+        {
             case 0:
                 turi = getURI1();
                 break;
@@ -253,17 +273,18 @@ public class TurbineURLMapperServiceTest extends BaseTestCase {
         return turi;
     }
 
-    private TemplateURI getURI1() {
+    private TemplateURI getURI1()
+    {
         TemplateURI uri = new TemplateURI(getRunData());
         uri.clearResponse(); // avoid encoding on mocked HTTPServletResponse
         uri.addPathInfo("bookId", 123);
         uri.setTemplate("Book.vm");
         uri.addQueryData("detail", 0);
         return uri;
-
     }
 
-    private TemplateURI getURI2() {
+    private TemplateURI getURI2()
+    {
         TemplateURI uri2 = new TemplateURI(getRunData());
         uri2.clearResponse();
         uri2.addPathInfo("bookId", 123);
@@ -274,7 +295,8 @@ public class TurbineURLMapperServiceTest extends BaseTestCase {
         return uri2;
     }
 
-    private TemplateURI getURI3() {
+    private TemplateURI getURI3()
+    {
         TemplateURI uri3 = new TemplateURI(getRunData());
         uri3.clearResponse();
         uri3.addPathInfo("id", 1234);
@@ -283,7 +305,8 @@ public class TurbineURLMapperServiceTest extends BaseTestCase {
         return uri3;
     }
 
-    private TemplateURI getURI4() {
+    private TemplateURI getURI4()
+    {
         TemplateURI uri4 = new TemplateURI(getRunData());
         uri4.clearResponse();
         uri4.addPathInfo("js_pane", "random-id-123-abc");
@@ -293,7 +316,8 @@ public class TurbineURLMapperServiceTest extends BaseTestCase {
         return uri4;
     }
 
-    private TemplateURI getURI5() {
+    private TemplateURI getURI5()
+    {
         TemplateURI uri5 = new TemplateURI(getRunData());
         uri5.clearResponse();
         uri5.addPathInfo("js_pane", "another-random-id-876-dfg");
@@ -303,21 +327,25 @@ public class TurbineURLMapperServiceTest extends BaseTestCase {
         return uri5;
     }
 
-
-    private RunData getRunData() {
+    private RunData getRunData()
+    {
         HttpServletRequest request = getMockRequest();
         HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
-        try {
+        try
+        {
             PipelineData pipelineData = getPipelineData(request, response, tc.getTurbine().getServletConfig());
             assertNotNull(pipelineData);
             return pipelineData.getRunData();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             fail();
         }
         return null;
     }
 
-    private void callMapToUrl(TemplateURI uri) {
+    private void callMapToUrl(TemplateURI uri)
+    {
         urlMapper.mapToURL(uri);
         assertTrue(uri.getPathInfo().isEmpty(), "path is not empty:" + uri.getPathInfo());
     }
