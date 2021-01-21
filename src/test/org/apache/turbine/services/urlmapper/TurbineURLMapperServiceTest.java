@@ -224,7 +224,8 @@ public class TurbineURLMapperServiceTest extends BaseTestCase
         );
     }
 
-    private void runCheck(int templateURIs, List<AtomicLong> counterSum, List<AtomicInteger> counters, boolean parallel, SplittableRandom sr)
+    private void runCheck(int templateURIs, List<AtomicLong> counterSum, List<AtomicInteger> counters, boolean parallel,
+                          SplittableRandom sr)
     {
         int randomNum = sr.nextInt(templateURIs);
         TemplateURI turi = getURI(randomNum);
@@ -236,8 +237,8 @@ public class TurbineURLMapperServiceTest extends BaseTestCase
         finally
         {
             time = System.nanoTime() - time;
-        	counterSum.get(randomNum).addAndGet(time);
-        	counters.get(randomNum).incrementAndGet();
+            counterSum.get(randomNum).addAndGet(time);
+            counters.get(randomNum).incrementAndGet();
         }
     }
 

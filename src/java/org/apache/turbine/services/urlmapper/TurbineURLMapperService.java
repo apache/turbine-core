@@ -57,21 +57,23 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
  * The URL mapper service provides methods to map a set of parameters to a
  * simplified URL and vice-versa. This service was inspired by the
  * Liferay Friendly URL Mapper.
- *
+ * <p>
  * A mapper valve and a link pull tool are provided for easy application.
  *
  * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
- *
  * @see URLMapperService
- * @see URLMapperTemplateLink
- * @see URLMapperContentLink
+ * @see MappedTemplateLink
  * @see URLMapperValve
+ *
+ * @version $Id$
  */
 public class TurbineURLMapperService
         extends TurbineBaseService
         implements URLMapperService
 {
-    /** Logging. */
+    /**
+     * Logging.
+     */
     private static final Logger log = LogManager.getLogger(TurbineURLMapperService.class);
 
     /**
@@ -110,7 +112,7 @@ public class TurbineURLMapperService
     private static final Set<String> DEFAULT_PARAMETERS = Stream.of(
             CONTEXT_PATH_PARAMETER,
             WEBAPP_ROOT_PARAMETER
-            ).collect(Collectors.toSet());
+    ).collect(Collectors.toSet());
 
     /**
      * Map a set of parameters (contained in TurbineURI PathInfo and QueryData)
@@ -134,8 +136,9 @@ public class TurbineURLMapperService
 
         Set<String> keys = new HashSet<>(uriParameterMap.keySet());
 
-        if (keys.isEmpty() && uri.getQueryData().isEmpty() || uri.getPathInfo().isEmpty()) {
-        	return; // no mapping or mapping already done
+        if (keys.isEmpty() && uri.getQueryData().isEmpty() || uri.getPathInfo().isEmpty())
+        {
+            return; // no mapping or mapping already done
         }
 
         for (URLMapEntry urlMap : container.getMapEntries())
@@ -174,12 +177,10 @@ public class TurbineURLMapperService
                     {
                         // remove
                         matcher.appendReplacement(sb, "");
-                    }
-                    else if (WEBAPP_ROOT_PARAMETER.equals(key))
+                    } else if (WEBAPP_ROOT_PARAMETER.equals(key))
                     {
                         matcher.appendReplacement(sb, uri.getScriptName());
-                    }
-                    else
+                    } else
                     {
                         matcher.appendReplacement(sb,
                                 Matcher.quoteReplacement(
@@ -202,7 +203,7 @@ public class TurbineURLMapperService
      * Map a simplified URL to a set of parameters
      *
      * @param url the URL
-     * @param pp a ParameterParser to use for parameter mangling
+     * @param pp  a ParameterParser to use for parameter mangling
      */
     @Override
     public void mapFromURL(String url, ParameterParser pp)
@@ -218,23 +219,23 @@ public class TurbineURLMapperService
                 if (groupNameMap != null)
                 {
                     groupNameMap.entrySet().stream()
-                        // ignore default parameters
-                        .filter(group -> !DEFAULT_PARAMETERS.contains(group.getKey()))
-                        .forEach(group ->
-                            pp.setString(group.getKey(), matcher.group(group.getValue().intValue())));
+                            // ignore default parameters
+                            .filter(group -> !DEFAULT_PARAMETERS.contains(group.getKey()))
+                            .forEach(group ->
+                                    pp.setString(group.getKey(), matcher.group(group.getValue().intValue())));
                 }
 
                 // add implicit parameters
                 urlMap.getImplicitParameters().entrySet().forEach(e ->
-                    pp.add(e.getKey(), e.getValue()));
+                        pp.add(e.getKey(), e.getValue()));
 
                 // add override parameters
                 urlMap.getOverrideParameters().entrySet().forEach(e ->
-                    pp.setString(e.getKey(), e.getValue()));
+                        pp.setString(e.getKey(), e.getValue()));
 
                 // remove ignore parameters
                 urlMap.getIgnoreParameters().keySet().forEach(k ->
-                    pp.remove(k));
+                        pp.remove(k));
 
                 break;
             }
@@ -260,22 +261,21 @@ public class TurbineURLMapperService
             configFile = "/" + configFile;
         }
 
-        ServletService servletService = (ServletService)TurbineServices.getInstance().getService(ServletService.SERVICE_NAME);
+        ServletService servletService = (ServletService) TurbineServices.getInstance().getService(ServletService.SERVICE_NAME);
 
         try (InputStream reader = servletService.getResourceAsStream(configFile))
         {
             if (configFile.endsWith(".xml"))
             {
-	            JAXBContext jaxb = JAXBContext.newInstance(URLMappingContainer.class);
-	            Unmarshaller unmarshaller = jaxb.createUnmarshaller();
-	            container = (URLMappingContainer) unmarshaller.unmarshal(reader);
-            }
-            else if (configFile.endsWith(".yml"))
+                JAXBContext jaxb = JAXBContext.newInstance(URLMappingContainer.class);
+                Unmarshaller unmarshaller = jaxb.createUnmarshaller();
+                container = (URLMappingContainer) unmarshaller.unmarshal(reader);
+            } else if (configFile.endsWith(".yml"))
             {
-            	// org.apache.commons.configuration2.YAMLConfiguration does only expose property like configuration values,
-            	// which is not what we need here -> java object deserialization.
-            	ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-            	container = mapper.readValue(reader, URLMappingContainer.class);
+                // org.apache.commons.configuration2.YAMLConfiguration does only expose property like configuration values,
+                // which is not what we need here -> java object deserialization.
+                ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+                container = mapper.readValue(reader, URLMappingContainer.class);
             }
         }
         catch (IOException | JAXBException e)
