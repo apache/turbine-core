@@ -1081,7 +1081,7 @@
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-testcontainer</artifactId>
-      <version>1.0.9-SNAPSHOT</version>
+      <version>1.0.9</version>
       <scope>test</scope>
     </dependency> 
     <dependency>
@@ -1098,6 +1098,10 @@
       <scope>test</scope>
       <optional>true</optional>
     </dependency>
+    <!-- do not add junit 4 support e.g. with org.junit.platform runner or launcher,
+          as it is not compatible with jupiter tags, will throw 
+         [WARNING] Couldn't load group class 'docker' in Surefire|Failsafe plugin
+    -->
   </dependencies>
 
   <profiles>
@@ -1182,15 +1186,19 @@
                 </execution>
               </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.0.0-M5</version>
+            </plugin>
           </plugins>
       </build>
       <dependencies>
-        <!-- docker testcontainer deps start here, until torque 4.1 is releases start it like:
+        <!-- docker testcontainer requires at least torque v5.0, start it like
         inside IDE (add dependencies):
-        mvn eclipse:eclispe -Pdocker-testcontainer
+        mvn eclipse:eclipse -Pdocker-testcontainer
 
-        outside IDE
-        mvn test -Pdocker-testcontainer -Dtorque.version=4.1-SNAPSHOT
+        from console:
+        mvn test -Pdocker-testcontainer
 
         -->
         <dependency>
@@ -1237,10 +1245,11 @@
     <turbine.site.path>turbine/development/turbine-5.1</turbine.site.path>
     <fulcrum.intake>2.0.1-SNAPSHOT</fulcrum.intake>
     <fulcrum.parser>2.0.1</fulcrum.parser>
-    <fulcrum.security>2.0.0-SNAPSHOT</fulcrum.security>
+    <fulcrum.security>2.0.0</fulcrum.security>
     <torque.version>5.0</torque.version>
+    <junit.platform>1.7.0</junit.platform>
     <doclint>none</doclint>
-    <docker.testcontainers.version>1.15.0-rc2</docker.testcontainers.version>
+    <docker.testcontainers.version>1.15.1</docker.testcontainers.version>
     <jacoco.skip>true</jacoco.skip>
     <argLine></argLine>
   </properties>

@@ -24,7 +24,7 @@
 	      <PatternLayout pattern="%d [%t] %-5p %c - %m%n"/>
 	    </Console>
 	    <File name="logfile" fileName="target/turbine-test.log">
-	      <PatternLayout pattern="%d [%t] %-5p %c - %m%n"/>
+	      <PatternLayout pattern="%d [%t] %-5p %c - %m%n" charset="UTF-8"/>
 	    </File>
     </Appenders>
     <Loggers>

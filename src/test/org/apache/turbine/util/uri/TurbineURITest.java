@@ -164,12 +164,14 @@ public class TurbineURITest extends BaseTestCase
 
         parserService.putParser(pp);
         pp = parserService.getParser(DefaultParameterParser.class);
-        pp.add("test", (String) null);
+        pp.add("test", "null");
+//        pp.add("test", (String) null); // isnotnull guarded
         turi.add(1, pp); // 1 = query data
         // Should make the following work so as to be consistent with directly
         // added values.
-        // assertEquals("/context/servlet/turbine?test=null",
-        // turi.getRelativeLink());
+        assertEquals("/context/servlet/turbine?test=null",
+        turi.getRelativeLink());
+        
         turi.removeQueryData("test");
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
 

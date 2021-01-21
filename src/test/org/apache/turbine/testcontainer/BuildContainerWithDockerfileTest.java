@@ -182,7 +182,7 @@ class BuildContainerWithDockerfileTest {
       if (!MY_SQL_CONTAINER.isRunning()) {
           MY_SQL_CONTAINER.start();
       }
-
+      
       String serviceHost = MY_SQL_CONTAINER.getContainerIpAddress();
       Integer mappedPort = MY_SQL_CONTAINER.getMappedPort(SERVICE_PORT);// e.g. 32811
       log.info("generate jdbc url from {}, mapped Port: {}, bounded port: {}", serviceHost, mappedPort, MY_SQL_CONTAINER.getBoundPortNumbers());
@@ -191,9 +191,11 @@ class BuildContainerWithDockerfileTest {
 //          String genJDBC = ((MySQLContainer)MY_SQL_CONTAINER).getJdbcUrl();
 //          log.info( "generated connect url: {}", genJDBC);   
 //      }
-      String targetJDBC = //genJDBC;
+      String targetJDBC = 
       String.format("jdbc:mysql://%s:%d/%s?loggerLevel=OFF", serviceHost,
                     mappedPort, DATABASE_NAME);
+      // changing the jdbc string prefix to  jdbc:tc:mysql does handle the test database setup, 
+      // https://www.testcontainers.org/modules/databases/jdbc/
       log.info( "used connect url: {}", targetJDBC);
       return targetJDBC;
    }
