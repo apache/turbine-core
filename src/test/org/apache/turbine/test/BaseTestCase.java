@@ -41,10 +41,10 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.parsers.FactoryConfigurationError;
 
 import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.xml.DOMConfigurator;
+import org.apache.logging.log4j.core.config.ConfigurationSource;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
@@ -65,43 +65,13 @@ import org.mockito.stubbing.Answer;
  */
 public abstract class BaseTestCase
 {
-    static File log4jFile = new File("conf/test/log4j.xml");
+    static File log4j2File = new File("conf/test/log4j2.xml");
 
     @BeforeClass
     public static void baseInit()
             throws Exception
     {
-
-        if (log4jFile.getName().endsWith(".xml"))
-        {
-            // load XML type configuration
-            // NOTE: Only system property expansion available
-            try
-            {
-                DOMConfigurator.configure(log4jFile.getAbsolutePath());
-            }
-            catch (FactoryConfigurationError e)
-            {
-                System.err.println("Could not configure Log4J from configuration file "
-                        + log4jFile + ": ");
-                e.printStackTrace();
-            }
-        }
-        else {
-            Properties p = new Properties();
-            try
-            {
-                p.load(new FileInputStream(log4jFile));
-                p.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, new File(".").getAbsolutePath());
-                PropertyConfigurator.configure(p);
-    
-            }
-            catch (FileNotFoundException fnf)
-            {
-                System.err.println("Could not open Log4J configuration file "
-                        + log4jFile);
-            }
-        }
+    	// auto load log4j2 file
     }
 
     protected RunData getRunData(HttpServletRequest request,HttpServletResponse response,ServletConfig config) throws Exception {

@@ -520,7 +520,7 @@ public class TemplateLink
      * tui.getRelativeLink();
      * </pre>
      *
-     * The above call to absoluteLink() would return the String:
+     * The above call to relativeLink() would return the String:
      * <p>
      * /servlets/Turbine/screen/UserScreen/user/jon
      * <p>

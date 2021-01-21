@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+<url-mapping name="default">
+    <maps>
+        <map>
+            <pattern>/(?&lt;contextPath&gt;\w+)/book/(?&lt;bookId&gt;\d+)</pattern>
+            <implicit-parameters>
+                <parameter key="template">Book.vm</parameter>
+                <parameter key="detail">0</parameter>
+            </implicit-parameters>
+        </map>
+        <map>
+            <pattern>/(?&lt;contextPath&gt;\w+)/book/(?&lt;bookId&gt;\d+)/(?&lt;detail&gt;\d)</pattern>
+            <implicit-parameters>
+                <parameter key="template">Book.vm</parameter>
+            </implicit-parameters>
+            <ignore-parameters>
+                <parameter key="view" />
+            </ignore-parameters>
+        </map>
+        <map>
+            <pattern>/(?&lt;contextPath&gt;\w+)/register</pattern>
+            <implicit-parameters>
+                <parameter key="media-type">html</parameter>
+                <parameter key="role">anon</parameter>
+                <parameter key="template">Registerone.vm</parameter>
+                <parameter key="js_pane">random-id-123-abc</parameter>
+            </implicit-parameters>
+        </map>
+        <map>
+            <pattern>/(?&lt;contextPath&gt;\w+)/contact</pattern>
+            <implicit-parameters>
+                <parameter key="media-type">html</parameter>
+                <parameter key="role">anon</parameter>
+                <parameter key="page">Contact</parameter>
+                <parameter key="js_pane">another-random-id-876-dfg</parameter>
+            </implicit-parameters>
+            <override-parameters>
+                <parameter key="role">anon</parameter>
+            </override-parameters>
+        </map>
+        <map>
+            <pattern>/(?&lt;contextPath&gt;\w+)/(?&lt;id&gt;\d+)/(?&lt;role&gt;\w+)/(?&lt;language&gt;\w+)</pattern>
+            <implicit-parameters>
+                <parameter key="media-type">html</parameter>
+                <parameter key="template">default.vm</parameter>
+            </implicit-parameters>
+        </map>
+    </maps>
+</url-mapping>

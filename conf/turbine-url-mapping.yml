@@ -1,0 +1,31 @@
+
+name: default
+maps:
+    - pattern: /(?<contextPath>\w+)/book/(?<bookId>\d+)
+      implicit-parameters:
+        template: Book.vm
+        detail: 0      
+    - pattern: /(?<contextPath>\w+)/book/(?<bookId>\d+)/(?<detail>\d)
+      implicit-parameters:
+        template: Book.vm
+      ignore-parameters:
+        view: null
+    - pattern: /(?<contextPath>\w+)/register
+      implicit-parameters:
+        media-type: html
+        role: anon
+        template: Registerone.vm
+        js_pane: random-id-123-abc
+    - pattern: /(?<contextPath>\w+)/contact
+      implicit-parameters:
+        media-type: html
+        page: Contact
+        js_pane: another-random-id-876-dfg       
+        role: anon
+      override-parameters:
+        role: anon
+    - pattern: /(?<contextPath>\w+)/(?<id>\d+)/(?<role>\w+)/(?<language>\w+)
+      implicit-parameters:
+        media-type: html
+        template: default.vm    
+                

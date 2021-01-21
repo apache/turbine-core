@@ -53,8 +53,15 @@
     <parser>
         <parameterEncoding>utf-8</parameterEncoding>
         <automaticUpload>true</automaticUpload>
+        <pool2>
+           <!--  cft. defaults in org.apache.commons.pool2.impl.BaseObjectPoolConfig and GenericKeyedObjectPoolConfig -->
+           <maxTotal>-1</maxTotal><!--  default no limit = -1,  other plausible values 1024, 2048 -->
+           <blockWhenExhausted>true</blockWhenExhausted><!--  default true -->
+           <maxWaitMillis>350</maxWaitMillis><!--  default 0 -->
+           <testOnReturn>true</testOnReturn>
+        </pool2>
     </parser>
-
+    
     <!-- These components belong to the Fulcrum-Security services -->
     <securityService/>
     <authenticator/>

@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
-    <version>8-SNAPSHOT</version>
+    <version>7</version>
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
@@ -547,14 +547,18 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-         <version>3.0.0-M5</version>
-        <configuration>
-          <!--default setting is forkCount=1/reuseForks=true -->
-          <reuseForks>false</reuseForks>
-          <forkCount>1</forkCount>
-          <excludedGroups>performance,docker</excludedGroups>
-          <!--useSystemClassLoader>false</useSystemClassLoader-->
-        </configuration>
+        <version>3.0.0-M5</version>
+        <executions>
+                <execution>
+                   <id>default-test</id>
+                    <configuration>
+                      <!--default setting is forkCount=1/reuseForks=true -->
+                      <reuseForks>false</reuseForks>
+                      <forkCount>1</forkCount>
+                      <excludedGroups>performance,docker,yaml</excludedGroups>
+                    </configuration>
+             </execution>
+         </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.torque</groupId>
@@ -888,6 +892,12 @@
       <version>1.9.4</version>
     </dependency>
     <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-yaml</artifactId>
+      <version>2.11.2</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>nl.basjes.parse.useragent</groupId>
       <artifactId>yauaa</artifactId>
       <version>5.19</version>
@@ -1181,7 +1191,7 @@
                    <id>default-test</id>
                   <configuration>
                     <groups>docker</groups>
-                    <excludedGroups>performance</excludedGroups>
+                    <excludedGroups>performance,yaml</excludedGroups>
                   </configuration>
                 </execution>
               </executions>
@@ -1237,6 +1247,37 @@
           </dependency>
       </dependencies>
     </profile>
+    <profile>
+        <id>yaml</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+      <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+               <version>3.0.0-M5</version>
+              <executions>
+                <execution>
+                   <id>default-test</id>
+                  <configuration><!-- to override excludedGroups set something else (bug?)-->
+                    <groups>yaml</groups>
+                     <excludedGroups>docker,performance</excludedGroups>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+          </plugins>
+      </build>
+      <dependencies>
+           <dependency>
+               <groupId>com.fasterxml.jackson.dataformat</groupId>
+               <artifactId>jackson-dataformat-yaml</artifactId>
+               <version>2.11.2</version>
+           </dependency>
+       </dependencies>
+    </profile>
   </profiles>
 
   <properties>
@@ -1255,3 +1296,4 @@
   </properties>
 
 </project>
+
