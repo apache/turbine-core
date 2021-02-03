@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
-    <version>7</version>
+    <version>8-SNAPSHOT</version>
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
@@ -532,6 +532,7 @@
     <plugins>
 
      <plugin>
+       <!-- hint: mvn verify  -->
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
         <configuration>
@@ -900,7 +901,7 @@
     <dependency>
       <groupId>nl.basjes.parse.useragent</groupId>
       <artifactId>yauaa</artifactId>
-      <version>5.19</version>
+      <version>5.21</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
@@ -970,11 +971,6 @@
       </exclusions>
     </dependency>
     <!-- use default dbcp2 from torque-runtime -->
-    <!--dependency> 
-        <groupId>commons-dbcp</groupId>
-        <artifactId>commons-dbcp</artifactId>
-        <version>1.4</version>
-    </dependency-->
     <dependency>
          <groupId>commons-configuration</groupId>
          <artifactId>commons-configuration</artifactId>
@@ -1108,10 +1104,16 @@
       <scope>test</scope>
       <optional>true</optional>
     </dependency>
-    <!-- do not add junit 4 support e.g. with org.junit.platform runner or launcher,
+     <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.13.1</version>
+        <scope>test</scope>
+      </dependency>
+      <!-- do not add junit 4 support e.g. with org.junit.platform runner or launcher,
           as it is not compatible with jupiter tags, will throw 
          [WARNING] Couldn't load group class 'docker' in Surefire|Failsafe plugin
-    -->
+       -->
   </dependencies>
 
   <profiles>
@@ -1252,6 +1254,7 @@
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
+      <!-- mvn test -Dtest=TurbineURLMapperYAMLServiceTest -Pyaml -->
       <build>
       <plugins>
             <plugin>

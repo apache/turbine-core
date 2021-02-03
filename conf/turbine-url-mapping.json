@@ -1,0 +1,45 @@
+{
+	"name": "default",
+	"maps": [
+		{
+			"pattern": "/(?<webAppRoot>[\\w]+)/(?<contextPath>\\w+)/register",
+			"implicit-parameters": {
+				"page": "Register",
+				"role": "anon"
+			}
+		},
+		{
+            "pattern": "/(?<webAppRoot>[\\w]+)/(?<contextPath>\\w+)/(?<language>\\w+)/register",
+            "implicit-parameters": {
+                "page": "Register",
+                "role": "anon"
+            },
+            "override-parameters": {
+                "role": "anon"
+            }
+        },
+        {
+            "pattern": "/(?<webAppRoot>[\\w]+)/(?<contextPath>\\w+)/contact",
+            "implicit-parameters": {
+                "page": "Contact",
+                "role": "anon"
+            },
+            "override-parameters": {
+                "role": "anon"
+            }
+        },
+		{
+            "pattern": "/(?<webAppRoot>[\\w]+)/(?<contextPath>\\w+)/(?<language>\\w+)/contact",
+            "implicit-parameters": {
+                "page": "Contact",
+                "role": "anon"
+            },
+            "override-parameters": {
+                "role": "anon"
+            },
+            "ignore-parameters": {
+                "language": null
+            }
+        }
+	]
+}

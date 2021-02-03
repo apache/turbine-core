@@ -182,18 +182,21 @@ public class TurbineURLMapperService
                         matcher.appendReplacement(sb, uri.getScriptName());
                     } else
                     {
+                        boolean ignore = urlMap.getIgnoreParameters().keySet().stream()
+                                .anyMatch( x-> x.equals( key ) );
                         matcher.appendReplacement(sb,
-                                Matcher.quoteReplacement(
-                                        Objects.toString(uriParameterMap.get(key))));
+                                 Matcher.quoteReplacement(
+                                        (!ignore)? Objects.toString(uriParameterMap.get(key)):""));
                         // Remove handled parameters (all of them!)
                         uri.removePathInfo(key);
                         uri.removeQueryData(key);
                     }
                 }
-
+                
                 matcher.appendTail(sb);
+                
                 // Clean up
-                uri.setScriptName(sb.toString().replace("//", "/"));
+                uri.setScriptName(sb.toString().replaceAll("/+", "/"));
                 break;
             }
         }
@@ -275,6 +278,10 @@ public class TurbineURLMapperService
                 // org.apache.commons.configuration2.YAMLConfiguration does only expose property like configuration values,
                 // which is not what we need here -> java object deserialization.
                 ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+                container = mapper.readValue(reader, URLMappingContainer.class);
+            } else if (configFile.endsWith(".json"))
+            {
+                ObjectMapper mapper = new ObjectMapper();
                 container = mapper.readValue(reader, URLMappingContainer.class);
             }
         }
