@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
-    <version>8-SNAPSHOT</version>
+    <version>7</version>
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
@@ -1077,6 +1077,18 @@
       <artifactId>velocity-engine-core</artifactId>
       <version>2.1</version>
     </dependency>
+    <!-- with the url mapper we need xml support -->
+ 	<dependency>
+        <groupId>jakarta.xml.bind</groupId>
+        <artifactId>jakarta.xml.bind-api</artifactId>
+        <version>2.3.3</version>
+    </dependency>
+    <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>2.3.3</version>
+        <scope>runtime</scope>
+    </dependency>
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
@@ -1110,10 +1122,6 @@
         <version>4.13.1</version>
         <scope>test</scope>
       </dependency>
-      <!-- do not add junit 4 support e.g. with org.junit.platform runner or launcher,
-          as it is not compatible with jupiter tags, will throw 
-         [WARNING] Couldn't load group class 'docker' in Surefire|Failsafe plugin
-       -->
   </dependencies>
 
   <profiles>
@@ -1164,9 +1172,6 @@
           </plugin>
         </plugins>
       </build>
-      <properties> 
-        <doclint>none</doclint><!-- since javadoc v.3 this is the required instead of -Xdoclint:none, remove if turbine parent (v6) is correct again using profile java8  -->
-      </properties>
     </profile>
     <profile>
       <id>docker-testcontainer</id>
@@ -1287,7 +1292,7 @@
     <!-- maven.compiler setting in turbine parent -->
     <!-- TODO: Change for release: remove development part in path "/turbine/development" -->
     <turbine.site.path>turbine/development/turbine-5.1</turbine.site.path>
-    <fulcrum.intake>2.0.1-SNAPSHOT</fulcrum.intake>
+    <fulcrum.intake>2.0.0</fulcrum.intake>
     <fulcrum.parser>2.0.1</fulcrum.parser>
     <fulcrum.security>2.0.0</fulcrum.security>
     <torque.version>5.0</torque.version>

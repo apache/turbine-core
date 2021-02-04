@@ -25,6 +25,35 @@
 
   <body>
      <release version="5.1" date="in Subversion">
+        <action type="update" dev="gk">
+        Update yauaa to 5.21 ( CVE-2020-13956),  junit to 4.13.1 (CVE-2020-15250)
+      </action>
+       <action type="add" dev="tv">
+        New service URL mapper implementation: render beautified URL and map parameters back when parsed.
+      </action>
+       <action type="update" dev="tv">
+         Add reasonable hashCode(), equals() and toString() methods to URIParam class
+      </action>
+       <action type="update" dev="gk">
+        Update testcontainers to 1.14.3, mysql 8.0.20, 
+        use dbcp2 dsfactory, add velocity 2.1 default backwards props in test props, update dependencies: commons-codec 1.15, comonsconfiguration2 2.7, commons-lang3 3.11, commons-test 1.9, torque 5.0, docker testcontainer to 1.15.0-rc2 to be able to use junit jupiter 2.7.0
+      </action>
+       <action type="update" dev="tv">
+        Better concurrency in TurbineRundataService
+      </action>
+      <action type="update" dev="tv">
+        Replace charset strings with Charset objects where possible
+      </action>
+       <action type="add" dev="gk">
+        Add Java Docker Testcontainers with minimal impact for default build in profile docker-testcontainer.
+      </action>
+        <action type="update" dev="painter">
+       Update turbine-parent 6 and fulcrum-parser 2.0.1
+      </action>   
+    <action type="update" dev="tv">
+         Add reasonable hashCode(), equals() and toString() methods to URIParam class
+      </action>
+      
     </release>
     <release version="5.0" date="2019-05-28">
       <action type="update" dev="tv">

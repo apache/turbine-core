@@ -19,6 +19,7 @@
 -->
 <pipeline name="default">
   <valves>
+    <!--valve>org.apache.turbine.services.urlmapper.URLMapperValve</valve-->
     <valve>org.apache.turbine.pipeline.DefaultSetEncodingValve</valve>
     <valve>org.apache.turbine.pipeline.DetermineActionValve</valve>
     <valve>org.apache.turbine.pipeline.DetermineTargetValve</valve>
