@@ -218,8 +218,8 @@ public class TurbineURLMapperServiceTest extends BaseTestCase
                     relativeLink, turi.getRelativeLink());
         }
         System.out.printf("total time = %dms (%d total calls) parallel:%s%n",
-                counterSum.stream().mapToInt(i -> i.intValue()).sum() / 1_000_000,
-                counters.stream().mapToInt(i -> i.intValue()).sum(),
+                counterSum.stream().mapToInt(AtomicLong::intValue).sum() / 1_000_000,
+                counters.stream().mapToInt(AtomicInteger::intValue).sum(),
                 parallel
         );
     }
