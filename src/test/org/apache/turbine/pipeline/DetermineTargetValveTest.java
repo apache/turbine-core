@@ -76,7 +76,7 @@ public class DetermineTargetValveTest extends BaseTestCase
      */
     @Test public void testScreenSet() throws Exception
     {
-        Vector<String> v = new Vector<String>();
+        Vector<String> v = new Vector<>();
         v.add(URIConstants.CGI_SCREEN_PARAM);
         when(request.getParameterNames()).thenReturn(v.elements());
 
@@ -95,7 +95,7 @@ public class DetermineTargetValveTest extends BaseTestCase
 
     @Test public void testScreenNotSet() throws Exception
     {
-        Vector<String> v = new Vector<String>();
+        Vector<String> v = new Vector<>();
         v.add(URIConstants.CGI_SCREEN_PARAM);
         when(request.getParameterNames()).thenReturn(v.elements());
 

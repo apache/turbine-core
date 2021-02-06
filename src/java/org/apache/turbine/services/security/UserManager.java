@@ -289,7 +289,7 @@ public interface UserManager
     /**
      * Return a Class object representing the system's chosen implementation of
      * of ACL interface for the given user
-     * 
+     *
      * @param <A> ACL class
      * @param user the user
      * @return systems's chosen implementation of ACL interface.

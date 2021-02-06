@@ -41,12 +41,12 @@ import org.apache.turbine.services.pull.ApplicationTool;
  * class, layour template, or anywhere else.  The get methods should be used in
  * your layout template(s) to construct the appropriate HTML tags.
  * </p>
- * 
+ *
  *<p>
  * Example usage of this tool to build the HEAD and BODY tags in your layout
  * templates:
  * </p>
- * 
+ *
  * <p>
  *  <code>
  *  ## Set defaults for all pages using this layout.  Anything set here can<br>
@@ -88,7 +88,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
  *     &gt;
  * </code>
  * </p>
- * 
+ *
  * <p>
  * Example usages of this tool in your screen templates:<br>
  *   <code>$page.addScript($content.getURI("myJavascript.js")<br>
@@ -107,22 +107,22 @@ public class HtmlPageAttributes
     private String title;
 
     /** Body Attributes */
-    private final Map<String, String> bodyAttributes = new LinkedHashMap<String, String>();
+    private final Map<String, String> bodyAttributes = new LinkedHashMap<>();
 
     /** Script references */
-    private final List<String> scripts = new ArrayList<String>();
+    private final List<String> scripts = new ArrayList<>();
 
     /** External references */
-    private final List<LinkTag> linkTags = new ArrayList<LinkTag>();
+    private final List<LinkTag> linkTags = new ArrayList<>();
 
     /** Inline styles */
-    private final List<String> styles = new ArrayList<String>();
+    private final List<String> styles = new ArrayList<>();
 
     /** Meta tags for the HEAD */
-    private final Map<String, String> metaTags = new LinkedHashMap<String, String>();
+    private final Map<String, String> metaTags = new LinkedHashMap<>();
 
     /** http-equiv tags */
-    private final Map<String, String> httpEquivs = new LinkedHashMap<String, String>();
+    private final Map<String, String> httpEquivs = new LinkedHashMap<>();
 
     /** Doctype */
     private String doctype = null;

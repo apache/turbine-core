@@ -42,6 +42,7 @@ public class JavaActionFactory
      * @param name name of the requested Assembler
      * @return an Assembler
      */
+    @Override
     public Action getAssembler(String name)
     {
         return getAssembler(Action.PREFIX, name);
@@ -52,6 +53,7 @@ public class JavaActionFactory
      *
      * @return a Loader
      */
+    @Override
     public Loader<Action> getLoader()
     {
         return ActionLoader.getInstance();
@@ -62,6 +64,7 @@ public class JavaActionFactory
      *
      * @return a class
      */
+    @Override
     public Class<Action> getManagedClass()
     {
         return Action.class;

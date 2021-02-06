@@ -43,7 +43,6 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.uri.URIConstants;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -84,7 +83,7 @@ public class ExecutePageValveTest extends BaseTestCase
 
     @Test public void testValve() throws Exception
     {
-        Vector<String> v = new Vector<String>();
+        Vector<String> v = new Vector<>();
         v.add(URIConstants.CGI_TEMPLATE_PARAM);
         when(request.getParameterNames()).thenReturn(v.elements());
 
@@ -118,7 +117,7 @@ public class ExecutePageValveTest extends BaseTestCase
 
     @Test public void testValveWithSecureAction() throws Exception
     {
-        Vector<String> v = new Vector<String>();
+        Vector<String> v = new Vector<>();
         v.add(URIConstants.CGI_TEMPLATE_PARAM);
         when(request.getParameterNames()).thenReturn(v.elements());
 

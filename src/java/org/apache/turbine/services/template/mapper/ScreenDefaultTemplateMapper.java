@@ -73,7 +73,7 @@ public class ScreenDefaultTemplateMapper
         log.debug("doMapping({})", template);
         // Copy our elements into an array
         List<String> components
-            = new ArrayList<String>(Arrays.asList(StringUtils.split(
+            = new ArrayList<>(Arrays.asList(StringUtils.split(
                                               template,
                                               String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR))));
         int componentSize = components.size() - 1 ;

@@ -44,7 +44,7 @@ import org.apache.turbine.util.RunData;
 public class DefaultPipelineData implements PipelineData
 {
     private final Map<Class<?>, Map<Class<?>, ? super Object>> map =
-        new HashMap<Class<?>, Map<Class<?>, ? super Object>>();
+        new HashMap<>();
 
     /**
      * Put a configured map of objects into the pipeline data object

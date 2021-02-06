@@ -22,7 +22,6 @@ import java.util.ArrayList;
  */
 
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -47,10 +46,10 @@ public class FormMessages
      */
     public FormMessages()
     {
-        forms_messages = new Hashtable<String, List<String>>();
-        fields_messages = new Hashtable<String, List<String>>();
-        messages_fields = new Hashtable<String, List<String>>();
-        forms_fields = new Hashtable<String, List<String>>();
+        forms_messages = new Hashtable<>();
+        fields_messages = new Hashtable<>();
+        messages_fields = new Hashtable<>();
+        forms_fields = new Hashtable<>();
     }
 
     /**
@@ -94,7 +93,7 @@ public class FormMessages
 
         if ( !table.containsKey( key ) )
         {
-            values = new ArrayList<String>();
+            values = new ArrayList<>();
             values.add( value );
             table.put( key, values );
         }
@@ -140,9 +139,9 @@ public class FormMessages
                 messageName = messages.get( i );
                 result[i].setMessage( messageName );
                 fields = getValues( messages_fields, messageName );
-                for ( int j = 0; j < fields.size(); j++ )
+                for (String field : fields)
                 {
-                    fieldName = fields.get( j );
+                    fieldName = field;
                     if ( formHasField( formName, fieldName ) )
                     {
                         result[i].setFieldName( fieldName );
@@ -192,9 +191,9 @@ public class FormMessages
     private boolean formHasField( String formName, String fieldName )
     {
         List<String> fields = getValues( forms_fields, formName );
-        for ( Iterator<String> iter = fields.iterator(); iter.hasNext(); )
+        for (String field : fields)
         {
-            if ( fieldName.equals( iter.next().toString() ) )
+            if ( fieldName.equals( field.toString() ) )
             {
                 return true;
             }

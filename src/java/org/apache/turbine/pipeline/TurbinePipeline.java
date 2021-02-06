@@ -62,12 +62,12 @@ public class TurbinePipeline
     /**
      * The set of Valves associated with this Pipeline.
      */
-    private CopyOnWriteArrayList<Valve> valves = new CopyOnWriteArrayList<Valve>();
+    private CopyOnWriteArrayList<Valve> valves = new CopyOnWriteArrayList<>();
 
     /**
      * The per-thread execution state for processing through this pipeline.
      */
-    private ThreadLocal<Iterator<Valve>> state = new ThreadLocal<Iterator<Valve>>();
+    private ThreadLocal<Iterator<Valve>> state = new ThreadLocal<>();
 
     /**
      * @see org.apache.turbine.pipeline.Pipeline#initialize()
@@ -137,7 +137,7 @@ public class TurbinePipeline
      */
     protected void setValves(Valve[] valves)
     {
-        this.valves = new CopyOnWriteArrayList<Valve>(valves);
+        this.valves = new CopyOnWriteArrayList<>(valves);
     }
 
     /**

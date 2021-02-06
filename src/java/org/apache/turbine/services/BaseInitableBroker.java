@@ -60,14 +60,14 @@ public abstract class BaseInitableBroker
         implements InitableBroker
 {
     /** A repository of Initable instances. */
-    protected Hashtable<String, Initable> initables = new Hashtable<String, Initable>();
+    protected Hashtable<String, Initable> initables = new Hashtable<>();
 
     /**
      * Names of classes being early-initialized are pushed onto this
      * stack.  A name appearing twice indicates a circular dependency
      * chain.
      */
-    protected Stack<String> stack = new Stack<String>();
+    protected Stack<String> stack = new Stack<>();
 
     /** Logging */
     private final Logger log = LogManager.getLogger(this.getClass());

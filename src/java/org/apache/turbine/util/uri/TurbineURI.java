@@ -894,10 +894,7 @@ public class TurbineURI
      */
     protected void add(int type, List<URIParam> list)
     {
-        for (URIParam uriParam : list)
-        {
-            dataVectors[type].add(uriParam);
-        }
+        dataVectors[type].addAll(list);
     }
 
     /**

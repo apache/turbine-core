@@ -293,7 +293,7 @@ public class TurbineTemplateService
         log.debug("Default Template:  {}", defaultTemplate);
         log.debug("Use Caching:       {}", Boolean.valueOf(useCache));
 
-        templateEngineRegistry = new ConcurrentHashMap<String, TemplateEngineService>();
+        templateEngineRegistry = new ConcurrentHashMap<>();
 
         initMapper(config);
         setInit(true);

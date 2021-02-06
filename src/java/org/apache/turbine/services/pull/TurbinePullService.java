@@ -315,7 +315,7 @@ public class TurbinePullService
     @SuppressWarnings("unchecked")
     private List<ToolData> getTools(Configuration toolConfig)
     {
-        List<ToolData> tools = new ArrayList<ToolData>();
+        List<ToolData> tools = new ArrayList<>();
 
         // There might not be any tools for this prefix
         // so return an empty list.

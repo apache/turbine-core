@@ -46,7 +46,7 @@ public class JobQueue<J extends JobEntry>
      */
     public JobQueue()
     {
-        queue = new Vector<J>(10);
+        queue = new Vector<>(10);
     }
 
     /**
@@ -181,15 +181,10 @@ public class JobQueue<J extends JobEntry>
      */
     private void sortQueue()
     {
-        Comparator<J> aComparator = new Comparator<J>()
-        {
-            @Override
-            public int compare(J o1, J o2)
-            {
-                Long time1 = Long.valueOf(o1.getNextRuntime());
-                Long time2 = Long.valueOf(o2.getNextRuntime());
-                return time1.compareTo(time2);
-            }
+        Comparator<J> aComparator = (o1, o2) -> {
+            Long time1 = Long.valueOf(o1.getNextRuntime());
+            Long time2 = Long.valueOf(o2.getNextRuntime());
+            return time1.compareTo(time2);
         };
 
         Collections.sort(queue, aComparator);

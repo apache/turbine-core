@@ -54,6 +54,7 @@ public class BaseService
      *
      * @param broker The ServiceBroker that instantiated this object.
      */
+    @Override
     public void setServiceBroker(ServiceBroker broker)
     {
         this.serviceBroker = broker;
@@ -64,6 +65,7 @@ public class BaseService
      *
      * @param name The name of this Service.
      */
+    @Override
     public void setName(String name)
     {
         this.name = name;
@@ -74,6 +76,7 @@ public class BaseService
      *
      * @return The name of this Service.
      */
+    @Override
     public String getName()
     {
         return name;
@@ -94,6 +97,7 @@ public class BaseService
      *
      * @return The Properties of this Service.
      */
+    @Override
     public Properties getProperties()
     {
         return ConfigurationConverter.getProperties(getConfiguration());
@@ -104,6 +108,7 @@ public class BaseService
      *
      * @return The Configuration of this Service.
      */
+    @Override
     public Configuration getConfiguration()
     {
         if (name == null)

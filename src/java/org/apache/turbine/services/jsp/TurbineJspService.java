@@ -242,9 +242,9 @@ public class TurbineJspService
     @Override
     public boolean templateExists(String template)
     {
-        for (int i = 0; i < templatePaths.length; i++)
+        for (String templatePath : templatePaths)
         {
-            if (templateExists(templatePaths[i], template))
+            if (templateExists(templatePath, template))
             {
                 return true;
             }

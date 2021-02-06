@@ -147,7 +147,7 @@ public abstract class BaseMapper
     {
         if (useCache)
         {
-            templateCache = new HashMap<String, String>(cacheSize);
+            templateCache = new HashMap<>(cacheSize);
         }
     }
 

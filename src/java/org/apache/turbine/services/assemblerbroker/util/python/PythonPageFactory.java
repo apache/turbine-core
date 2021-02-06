@@ -45,6 +45,7 @@ public class PythonPageFactory
      * @return an Assembler
      * @throws Exception generic exception
      */
+    @Override
     public Page getAssembler(String name)
         throws Exception
     {
@@ -67,6 +68,7 @@ public class PythonPageFactory
      *
      * @return a class
      */
+    @Override
     public Class<Page> getManagedClass()
     {
         return Page.class;

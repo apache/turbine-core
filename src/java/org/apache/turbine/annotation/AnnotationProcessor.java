@@ -51,7 +51,7 @@ public class AnnotationProcessor
     private static Logger log = LogManager.getLogger(AnnotationProcessor.class);
 
     /** Annotation cache */
-    private static ConcurrentMap<String, Annotation[]> annotationCache = new ConcurrentHashMap<String, Annotation[]>();
+    private static ConcurrentMap<String, Annotation[]> annotationCache = new ConcurrentHashMap<>();
 
     /**
      * Get cached annotations for field, class or method

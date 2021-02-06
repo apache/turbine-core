@@ -21,10 +21,11 @@ package org.apache.turbine.services.urlmapper;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -94,7 +95,12 @@ public class TurbineURLMapperService
     /**
      * Regex pattern for group names
      */
-    private static final Pattern namedGroupsPattern = Pattern.compile("\\(\\?<([a-zA-Z][a-zA-Z0-9]*)>.+?\\)");
+    private static final Pattern NAMED_GROUPS_PATTERN = Pattern.compile("\\(\\?<([a-zA-Z][a-zA-Z0-9]*)>.+?\\)");
+
+    /**
+     * Regex pattern for multiple slashes
+     */
+    private static final Pattern MULTI_SLASH_PATTERN = Pattern.compile("/+");
 
     /**
      * Symbolic group name for context path
@@ -109,10 +115,10 @@ public class TurbineURLMapperService
     /**
      * Symbolic group names that will not be added to parameters
      */
-    private static final Set<String> DEFAULT_PARAMETERS = Stream.of(
+    private static final Set<String> DEFAULT_PARAMETERS = new HashSet<>(Arrays.asList(
             CONTEXT_PATH_PARAMETER,
             WEBAPP_ROOT_PARAMETER
-    ).collect(Collectors.toSet());
+    ));
 
     /**
      * Map a set of parameters (contained in TurbineURI PathInfo and QueryData)
@@ -123,33 +129,30 @@ public class TurbineURLMapperService
     @Override
     public void mapToURL(TurbineURI uri)
     {
+        if (!uri.hasPathInfo() && !uri.hasQueryData())
+        {
+            return; // no mapping or mapping already done
+        }
+
+        List<URIParam> pathInfo = uri.getPathInfo();
+        List<URIParam> queryData = uri.getQueryData();
+
         // Create map from list, taking only the first appearance of a key
         // PathInfo takes precedence
-        Map<String, Object> uriParameterMap = Stream.concat(
-                uri.getPathInfo().stream(),
-                uri.getQueryData().stream())
-                .collect(Collectors.toMap(
+        Map<String, Object> uriParameterMap =
+                Stream.concat(pathInfo.stream(), queryData.stream())
+                    .collect(Collectors.toMap(
                         URIParam::getKey,
                         URIParam::getValue,
                         (e1, e2) -> e1,
                         LinkedHashMap::new));
 
-        Set<String> keys = new HashSet<>(uriParameterMap.keySet());
-
-        if (keys.isEmpty() && uri.getQueryData().isEmpty() || uri.getPathInfo().isEmpty())
-        {
-            return; // no mapping or mapping already done
-        }
-
         for (URLMapEntry urlMap : container.getMapEntries())
         {
-            Set<String> entryKeys = new HashSet<>();
+            Set<String> keys = new HashSet<>(uriParameterMap.keySet());
+            keys.removeAll(urlMap.getIgnoreParameters().keySet());
 
-            Map<String, Integer> groupNamesMap = urlMap.getGroupNamesMap();
-            if (groupNamesMap != null)
-            {
-                entryKeys.addAll(groupNamesMap.keySet());
-            }
+            Set<String> entryKeys = new HashSet<>(urlMap.getGroupNamesMap().keySet());
 
             Set<String> implicitKeysFound = urlMap.getImplicitParameters().entrySet().stream()
                     .filter(entry -> Objects.equals(uriParameterMap.get(entry.getKey()), entry.getValue()))
@@ -158,15 +161,13 @@ public class TurbineURLMapperService
 
             entryKeys.addAll(implicitKeysFound);
             implicitKeysFound.forEach(key -> {
-                uri.removePathInfo(key);
-                uri.removeQueryData(key);
+                pathInfo.removeIf(uriParam -> key.equals(uriParam.getKey()));
+                queryData.removeIf(uriParam -> key.equals(uriParam.getKey()));
             });
-
-            keys.removeAll(urlMap.getIgnoreParameters().keySet());
 
             if (entryKeys.containsAll(keys))
             {
-                Matcher matcher = namedGroupsPattern.matcher(urlMap.getUrlPattern().pattern());
+                Matcher matcher = NAMED_GROUPS_PATTERN.matcher(urlMap.getUrlPattern().pattern());
                 StringBuffer sb = new StringBuffer();
 
                 while (matcher.find())
@@ -188,15 +189,15 @@ public class TurbineURLMapperService
                                  Matcher.quoteReplacement(
                                         (!ignore)? Objects.toString(uriParameterMap.get(key)):""));
                         // Remove handled parameters (all of them!)
-                        uri.removePathInfo(key);
-                        uri.removeQueryData(key);
+                        pathInfo.removeIf(uriParam -> key.equals(uriParam.getKey()));
+                        queryData.removeIf(uriParam -> key.equals(uriParam.getKey()));
                     }
                 }
-                
+
                 matcher.appendTail(sb);
-                
+
                 // Clean up
-                uri.setScriptName(sb.toString().replaceAll("/+", "/"));
+                uri.setScriptName(MULTI_SLASH_PATTERN.matcher(sb).replaceAll("/"));
                 break;
             }
         }
@@ -217,16 +218,11 @@ public class TurbineURLMapperService
             if (matcher.matches())
             {
                 // extract parameters from URL
-                Map<String, Integer> groupNameMap = urlMap.getGroupNamesMap();
-
-                if (groupNameMap != null)
-                {
-                    groupNameMap.entrySet().stream()
-                            // ignore default parameters
-                            .filter(group -> !DEFAULT_PARAMETERS.contains(group.getKey()))
-                            .forEach(group ->
-                                    pp.setString(group.getKey(), matcher.group(group.getValue().intValue())));
-                }
+                urlMap.getGroupNamesMap().entrySet().stream()
+                        // ignore default parameters
+                        .filter(group -> !DEFAULT_PARAMETERS.contains(group.getKey()))
+                        .forEach(group ->
+                                pp.setString(group.getKey(), matcher.group(group.getValue().intValue())));
 
                 // add implicit parameters
                 urlMap.getImplicitParameters().entrySet().forEach(e ->
@@ -291,22 +287,17 @@ public class TurbineURLMapperService
         }
 
         // Get groupNamesMap for every Pattern and store it in the entry
-        try
+        for (URLMapEntry urlMap : container.getMapEntries())
         {
-            Method namedGroupsMethod = Pattern.class.getDeclaredMethod("namedGroups");
-            namedGroupsMethod.setAccessible(true);
+            int position = 1;
+            Map<String, Integer> groupNamesMap = new HashMap<>();
+            Matcher matcher = NAMED_GROUPS_PATTERN.matcher(urlMap.getUrlPattern().pattern());
 
-            for (URLMapEntry urlMap : container.getMapEntries())
+            while (matcher.find())
             {
-                @SuppressWarnings("unchecked")
-                Map<String, Integer> groupNamesMap = (Map<String, Integer>) namedGroupsMethod.invoke(urlMap.getUrlPattern());
-                urlMap.setGroupNamesMap(groupNamesMap);
+                groupNamesMap.put(matcher.group(1), Integer.valueOf(position++));
             }
-        }
-        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException e)
-        {
-            throw new InitializationException("Could not invoke method Pattern.getNamedGroups", e);
+            urlMap.setGroupNamesMap(groupNamesMap);
         }
 
         log.info("Loaded {} url-mappings from {}", Integer.valueOf(container.getMapEntries().size()), configFile);
@@ -320,7 +311,7 @@ public class TurbineURLMapperService
     @Override
     public void shutdown()
     {
-        container = null;
+        container.getMapEntries().clear();
         setInit(false);
     }
 }

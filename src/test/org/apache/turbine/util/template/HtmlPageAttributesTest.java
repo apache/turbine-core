@@ -40,7 +40,7 @@ import org.junit.jupiter.api.Test;
  */
 public class HtmlPageAttributesTest extends BaseTestCase
 {
-    
+
     @TurbineConfiguration( TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY )
     private String defaultHtmlDoctypeRootElement = TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_DEFAULT;
 
@@ -49,7 +49,7 @@ public class HtmlPageAttributesTest extends BaseTestCase
 
     @TurbineConfiguration( TurbineConstants.DEFAULT_HTML_DOCTYPE_URI_KEY )
     private String defaultHtmlDoctypeUri;
-    
+
     private static TurbineConfig tc = null;
 
     @BeforeAll
@@ -71,14 +71,14 @@ public class HtmlPageAttributesTest extends BaseTestCase
     {
         // do nothing
     }
-    
+
     @Test public void testBuildDoctype() throws TurbineException
     {
         HtmlPageAttributes page = new HtmlPageAttributes();
         assertEquals("<!DOCTYPE html>", page.getDoctype("html", null, null));
         assertEquals("<!DOCTYPE html>", page.getDoctype("html", "", ""));
         assertEquals("<!DOCTYPE html SYSTEM \"bla\">", page.getDoctype("html", "", "bla"));
-        
+
        // by default empty in HTML 5
         assertEquals("<!DOCTYPE HTML>",
                 page.getDoctype(TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_DEFAULT,

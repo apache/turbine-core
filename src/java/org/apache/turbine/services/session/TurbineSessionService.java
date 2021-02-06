@@ -67,7 +67,7 @@ public class TurbineSessionService
     @Override
     public Collection<HttpSession> getActiveSessions()
     {
-        return new ArrayList<HttpSession>(activeSessions.values());
+        return new ArrayList<>(activeSessions.values());
     }
 
     /**
@@ -124,7 +124,7 @@ public class TurbineSessionService
         Collection<User> users;
         // Pre-allocate a list which won't need expansion more
         // than once.
-        users = new ArrayList<User>((int) (activeSessions.size() * 0.7));
+        users = new ArrayList<>((int) (activeSessions.size() * 0.7));
         for (HttpSession session : activeSessions.values())
         {
             User u = getUserFromSession(session);
@@ -181,7 +181,7 @@ public class TurbineSessionService
     @Override
     public Collection<HttpSession> getSessionsForUser(User user)
     {
-        Collection<HttpSession> sessions = new ArrayList<HttpSession>();
+        Collection<HttpSession> sessions = new ArrayList<>();
         for (HttpSession session : activeSessions.values())
         {
             User u = this.getUserFromSession(session);
@@ -203,7 +203,7 @@ public class TurbineSessionService
     @Override
     public void init()
     {
-        this.activeSessions = new ConcurrentHashMap<String, HttpSession>();
+        this.activeSessions = new ConcurrentHashMap<>();
 
         setInit(true);
     }

@@ -154,7 +154,7 @@ public class TurbineVelocityService
                 {
                     outputEncoding = defaultInputEncoding;
                 }
-                
+
                 defaultOutputEncoding = outputEncoding;
             }
             else
@@ -512,9 +512,9 @@ public class TurbineVelocityService
                 Object value = conf.getProperty(key);
                 if (value instanceof List<?>)
                 {
-                    for (Iterator<?> itr = ((List<?>)value).iterator(); itr.hasNext();)
+                    for (Object name2 : ((List<?>) value))
                     {
-                        velocity.addProperty(key, itr.next());
+                        velocity.addProperty(key, name2);
                     }
                 }
                 else

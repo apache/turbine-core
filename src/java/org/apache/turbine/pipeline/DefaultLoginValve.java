@@ -120,7 +120,7 @@ public class DefaultLoginValve
                 {
                     // copy keys into a new list, so we can clear the session
                     // and not get ConcurrentModificationException
-                    List<String> nameList = new ArrayList<String>();
+                    List<String> nameList = new ArrayList<>();
                     while (names.hasMoreElements())
                     {
                         nameList.add(names.nextElement());

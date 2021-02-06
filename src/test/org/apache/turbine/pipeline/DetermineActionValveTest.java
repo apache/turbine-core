@@ -70,7 +70,7 @@ public class DetermineActionValveTest extends BaseTestCase
         request = getMockRequest();
         response = mock(HttpServletResponse.class);
 
-        Vector<String> v = new Vector<String>();
+        Vector<String> v = new Vector<>();
         v.add(URIConstants.CGI_ACTION_PARAM);
         when(request.getParameterNames()).thenReturn(v.elements());
 

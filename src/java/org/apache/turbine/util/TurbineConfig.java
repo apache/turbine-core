@@ -179,7 +179,7 @@ public class TurbineConfig
      *
      * This is a specialized constructor that allows to configure
      * Turbine easily in the common setups.
-     * 
+     *
      * Check also {@link TurbineXmlConfig} to load a {@link #CONFIGURATION_PATH_KEY}.
      *
      * @param path The web application root (i.e. the path for file lookup).
@@ -307,7 +307,7 @@ public class TurbineConfig
     @Override
     public Enumeration<String> getInitParameterNames()
     {
-        return new Vector<String>(initParams.keySet()).elements();
+        return new Vector<>(initParams.keySet()).elements();
     }
 
     /**
@@ -440,7 +440,7 @@ public class TurbineConfig
     @Override
     public Enumeration<String> getAttributeNames()
     {
-        return new Vector<String>(attributes.keySet()).elements();
+        return new Vector<>(attributes.keySet()).elements();
     }
 
     // Unimplemented methods follow

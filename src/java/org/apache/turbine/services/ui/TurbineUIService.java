@@ -20,7 +20,6 @@ package org.apache.turbine.services.ui;
  */
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -150,7 +149,7 @@ public class TurbineUIService
     /**
      * The skin Properties store.
      */
-    private ConcurrentHashMap<String, Properties> skins = new ConcurrentHashMap<String, Properties>();
+    private ConcurrentHashMap<String, Properties> skins = new ConcurrentHashMap<>();
 
     /**
      * Refresh the service by clearing all skins.
@@ -239,14 +238,9 @@ public class TurbineUIService
     public String[] getSkinNames()
     {
         File skinsDir = new File(servletService.getRealPath(skinsDirectory));
-        return skinsDir.list(new FilenameFilter()
-        {
-            @Override
-            public boolean accept(File dir, String name)
-            {
-                File directory = new File(dir, name);
-                return directory.isDirectory();
-            }
+        return skinsDir.list((dir, name) -> {
+            File directory = new File(dir, name);
+            return directory.isDirectory();
         });
     }
 

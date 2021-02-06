@@ -41,7 +41,7 @@ public class FormMessage
      */
     public FormMessage()
     {
-        fieldNames = new ArrayList<String>();
+        fieldNames = new ArrayList<>();
     }
 
     /**

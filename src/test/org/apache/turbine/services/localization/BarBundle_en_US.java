@@ -34,6 +34,7 @@ public class BarBundle_en_US extends ListResourceBundle
         { "key4", "value4" }
     };
 
+    @Override
     protected Object[][] getContents()
     {
         return CONTENTS;

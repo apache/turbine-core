@@ -97,7 +97,7 @@ public class DefaultLoginValveTest extends BaseTestCase
     @Test
     public void testDefaults() throws Exception
     {
-        Vector<String> v = new Vector<String>();
+        Vector<String> v = new Vector<>();
         v.add(LoginUser.CGI_USERNAME);
         v.add(LoginUser.CGI_PASSWORD);
         when(request.getParameterNames()).thenReturn(v.elements());

@@ -34,9 +34,9 @@ package org.apache.turbine.util;
  * printStackTrace()</code> methods, the stacktrace will contain
  * the information about all exceptions thrown and caught on the way.
  * </p>
- * 
+ *
  * <p> Running the following program </p>
- * 
+ *
  * <pre>
  *  1 import org.apache.turbine.util.TurbineException;
  *  2
@@ -69,10 +69,10 @@ package org.apache.turbine.util;
  * 29          throw new Exception("baz");
  * 30      }
  * 31 }
- * </pre> 
- * 
+ * </pre>
+ *
  * <p>Yields the following stacktrace: </p>
- * 
+ *
  * <pre>
  * java.lang.Exception: baz: bar: foo
  *    at Test.c(Test.java:29)

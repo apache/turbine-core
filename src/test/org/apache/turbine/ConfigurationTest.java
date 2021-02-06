@@ -56,7 +56,7 @@ public class ConfigurationTest extends BaseTestCase
 
     private TurbineConfig tc = null;
     private TurbineXmlConfig txc = null;
-    
+
     @After
     public void close() {
         if (tc != null) tc.dispose();
@@ -140,7 +140,7 @@ public class ConfigurationTest extends BaseTestCase
             throw e;
         }
     }
-    
+
     @Test
     public void testCreateTurbineWithIncludedConfiguration() throws Exception
     {
@@ -148,7 +148,7 @@ public class ConfigurationTest extends BaseTestCase
         try
         {
             tc.initialize();
-            
+
             Configuration configuration = Turbine.getConfiguration();
             assertNotNull("No Configuration Object found!", configuration);
             assertFalse("Make sure we have values", configuration.isEmpty());

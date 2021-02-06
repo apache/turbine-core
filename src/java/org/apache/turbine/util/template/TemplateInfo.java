@@ -64,7 +64,7 @@ public class TemplateInfo
     public TemplateInfo(RunData data)
     {
         this.data = data;
-        tempStorage = new HashMap<String, Object>(10);
+        tempStorage = new HashMap<>(10);
     }
 
     /**

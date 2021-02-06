@@ -30,7 +30,7 @@ import org.apache.turbine.util.RunData;
 
 public class PlainJSONSecureAnnotatedScreen extends PlainJSONScreen
 {
-    
+
     /**
      * This method overrides the method in JSONScreen to perform a security
      * check prior to producing the output.
@@ -48,12 +48,12 @@ public class PlainJSONSecureAnnotatedScreen extends PlainJSONScreen
     }
 
     /**
-     * Use this method to perform the necessary security check with Turbine annotations {@link TurbineRequiredRole} in 
+     * Use this method to perform the necessary security check with Turbine annotations {@link TurbineRequiredRole} in
      * a newly overridden {@link #doOutput(PipelineData)} method.
      *
      * @param pipelineData Turbine information.
      * @return <code>true</code> if the user is authorized to access the screen, by default it is required ACL is populated.
-     * If {@link TurbineRequiredRole} is not set, it is allowed by default 
+     * If {@link TurbineRequiredRole} is not set, it is allowed by default
      * @throws Exception A generic exception.
      */
     protected boolean isAuthorized(PipelineData pipelineData) throws Exception {

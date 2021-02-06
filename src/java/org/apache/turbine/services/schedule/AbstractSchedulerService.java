@@ -72,7 +72,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
         try
         {
             setEnabled(getConfiguration().getBoolean("enabled", true));
-            scheduleQueue = new JobQueue<JobEntry>();
+            scheduleQueue = new JobQueue<>();
             mainLoop = new MainLoop();
 
             @SuppressWarnings("unchecked") // Why is this cast necessary?

@@ -99,7 +99,7 @@ public class TemplateSecurityCheck
             return false;
         }
 
-        TurbineAccessControlList acl = data.getACL();
+        TurbineAccessControlList<?> acl = data.getACL();
         if (acl == null || !acl.hasRole(role))
         {
             data.setScreen(getFailScreen());
@@ -122,7 +122,7 @@ public class TemplateSecurityCheck
         throws Exception
     {
         boolean value = true;
-        TurbineAccessControlList acl = data.getACL();
+        TurbineAccessControlList<?> acl = data.getACL();
         if (acl == null || !acl.hasPermission(permission))
         {
             data.setScreen(getFailScreen());

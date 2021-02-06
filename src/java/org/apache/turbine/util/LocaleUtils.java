@@ -141,7 +141,7 @@ public class LocaleUtils
             String charSet = Turbine.getConfiguration()
                     .getString(TurbineConstants.LOCALE_DEFAULT_CHARSET_KEY,
                             TurbineConstants.LOCALE_DEFAULT_CHARSET_DEFAULT);
-            
+
             if (StringUtils.isNotEmpty(charSet))
             {
                 defaultCharSet = charSetForName(charSet);
@@ -177,7 +177,7 @@ public class LocaleUtils
                     log.debug("Charset now {}", charset);
                 }
             }
-            
+
             // The fallback to end all fallbacks
             if (charset == null)
             {
@@ -214,21 +214,21 @@ public class LocaleUtils
     {
         String charset = Turbine.getConfiguration()
                 .getString(TurbineConstants.LOCALE_OVERRIDE_CHARSET_KEY);
-        
+
         if (StringUtils.isEmpty(charset))
         {
             return null;
         }
-        
+
         return charSetForName(charset);
     }
 
     /**
      * Get a Charset object for a given name
      * This method does not throw exceptions on illegal input but returns null.
-     * 
+     *
      * @param charSet the charset name
-     * 
+     *
      * @return the Charset or null if it does not exist
      */
     private static Charset charSetForName(String charSet)
@@ -241,8 +241,8 @@ public class LocaleUtils
         {
             log.error("Illegal default charset {}", charSet);
         }
-        
+
         return null;
     }
-    
+
 }

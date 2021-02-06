@@ -42,6 +42,7 @@ public class JavaNavigationFactory
      * @param name name of the requested Assembler
      * @return an Assembler
      */
+    @Override
     public Navigation getAssembler(String name)
     {
         return getAssembler(Navigation.PREFIX, name);
@@ -63,6 +64,7 @@ public class JavaNavigationFactory
      *
      * @return a class
      */
+    @Override
     public Class<Navigation> getManagedClass()
     {
         return Navigation.class;

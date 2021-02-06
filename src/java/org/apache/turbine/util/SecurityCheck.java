@@ -110,7 +110,7 @@ public class SecurityCheck
             throws Exception
     {
         boolean value = false;
-        TurbineAccessControlList acl = data.getACL();
+        TurbineAccessControlList<?> acl = data.getACL();
         if (acl == null ||
             !acl.hasRole(role))
         {
@@ -173,7 +173,7 @@ public class SecurityCheck
             throws Exception
     {
         boolean value = false;
-        TurbineAccessControlList acl = data.getACL();
+        TurbineAccessControlList<?> acl = data.getACL();
         if (acl == null ||
             !acl.hasPermission(permission))
         {
@@ -217,7 +217,7 @@ public class SecurityCheck
                 securityService.getPermissionManager().addPermission(permissionObject);
 
                 Role role = null;
-                TurbineAccessControlList acl = data.getACL();
+                TurbineAccessControlList<?> acl = data.getACL();
                 RoleSet roles = acl.getRoles();
                 if(roles.size() > 0)
                 {

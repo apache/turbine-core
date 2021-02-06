@@ -132,10 +132,12 @@ public class JSONScreen extends RawScreen
         // Process the request
         Object json_res = jsonRpcService.processCall(cdata, json_bridge, request);
 
-        PrintWriter out = new PrintWriter(
-                new OutputStreamWriter(data.getResponse().getOutputStream(), charset));
-        out.print(json_res.toString());
-        out.flush();
-        out.close();
+        try (PrintWriter out = new PrintWriter(
+                new OutputStreamWriter(
+                    data.getResponse().getOutputStream(), charset)))
+        {
+            out.print(json_res.toString());
+            out.flush();
+        }
     }
 }

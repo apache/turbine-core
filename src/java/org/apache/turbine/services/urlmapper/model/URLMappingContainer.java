@@ -93,6 +93,6 @@ public class URLMappingContainer
      */
     protected void setMapEntries(List<URLMapEntry> newURLMapEntries)
     {
-        this.urlMapEntries = new CopyOnWriteArrayList<URLMapEntry>(newURLMapEntries);
+        this.urlMapEntries = new CopyOnWriteArrayList<>(newURLMapEntries);
     }
 }

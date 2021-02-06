@@ -29,12 +29,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Vector;
 
 import javax.servlet.ServletConfig;
@@ -42,17 +39,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
-import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.util.RunData;
 import org.junit.BeforeClass;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 /**
  * Base functionality to be extended by all Apache Turbine test cases.  Test
@@ -87,7 +78,7 @@ public abstract class BaseTestCase
        return runData;
     }
 
-    protected Map<String,Object> attributes = new HashMap<String,Object>();
+    protected Map<String,Object> attributes = new HashMap<>();
     protected int maxInactiveInterval = 0;
 
     @SuppressWarnings("boxing")
@@ -96,48 +87,26 @@ public abstract class BaseTestCase
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpSession session = mock(HttpSession.class);
 
-        doAnswer(new Answer<Object>()
-        {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable
-            {
-                String key = (String) invocation.getArguments()[0];
-                return attributes.get(key);
-            }
+        doAnswer(invocation -> {
+            String key = (String) invocation.getArguments()[0];
+            return attributes.get(key);
         }).when(session).getAttribute(anyString());
 
-        doAnswer(new Answer<Object>()
-        {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable
-            {
-                String key = (String) invocation.getArguments()[0];
-                Object value = invocation.getArguments()[1];
-                attributes.put(key, value);
-                return null;
-            }
+        doAnswer(invocation -> {
+            String key = (String) invocation.getArguments()[0];
+            Object value = invocation.getArguments()[1];
+            attributes.put(key, value);
+            return null;
         }).when(session).setAttribute(anyString(), any());
 
         when(session.getMaxInactiveInterval()).thenReturn(maxInactiveInterval);
 
-        doAnswer(new Answer<Integer>()
-        {
-            @Override
-            public Integer answer(InvocationOnMock invocation) throws Throwable
-            {
-                return Integer.valueOf(maxInactiveInterval);
-            }
-        }).when(session).getMaxInactiveInterval();
+        doAnswer(invocation -> Integer.valueOf(maxInactiveInterval)).when(session).getMaxInactiveInterval();
 
-        doAnswer(new Answer<Object>()
-        {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable
-            {
-                Integer value = (Integer) invocation.getArguments()[0];
-                maxInactiveInterval = value.intValue();
-                return null;
-            }
+        doAnswer(invocation -> {
+            Integer value = (Integer) invocation.getArguments()[0];
+            maxInactiveInterval = value.intValue();
+            return null;
         }).when(session).setMaxInactiveInterval(anyInt());
 
         when(session.isNew()).thenReturn(true);
@@ -158,7 +127,7 @@ public abstract class BaseTestCase
         when(request.getHeader("Content-type")).thenReturn("html/text");
         when(request.getHeader("Accept-Language")).thenReturn("en-US");
 
-        Vector<String> v = new Vector<String>();
+        Vector<String> v = new Vector<>();
         when(request.getParameterNames()).thenReturn(v.elements());
         return request;
     }

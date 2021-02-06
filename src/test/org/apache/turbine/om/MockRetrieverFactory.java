@@ -33,14 +33,7 @@ public class MockRetrieverFactory implements RetrieverFactory
     @Override
     public Retriever getInstance(String className) throws Exception
     {
-        return new Retriever()
-        {
-            @Override
-            public Object retrieve(String key) throws Exception
-            {
-                return new String(key);
-            }
-        };
+        return key -> new String(key);
     }
 
 }

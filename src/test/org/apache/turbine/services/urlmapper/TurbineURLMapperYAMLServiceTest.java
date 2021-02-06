@@ -199,11 +199,11 @@ public class TurbineURLMapperYAMLServiceTest extends BaseTestCase
 
 //	/**
 //	 * 		Not implemented Test for MappedTemplateLink:
-//	 * - To work with <i>MappedTemplateLink</i>, we need access to the urlmapperservice in order to 
+//	 * - To work with <i>MappedTemplateLink</i>, we need access to the urlmapperservice in order to
 //	 * - simulate a request without pipeline (setting velocity context and initializing the service):
 //	 */
 //   @Test
-//   public void testMappedURILink() {   
+//   public void testMappedURILink() {
 //   	MappedTemplateLink ml = MappedTemplateLink.class.getDeclaredConstructor().newInstance();
 //   	assertNotNull(ml);
 //   	ml.setUrlMapperService(urlMapper);

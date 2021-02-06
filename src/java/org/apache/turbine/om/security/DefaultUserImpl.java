@@ -68,7 +68,7 @@ public class DefaultUserImpl implements User
         super();
         setUserDelegate( user );
         setCreateDate(new Date());
-        tempStorage = new HashMap<String, Object>(10);
+        tempStorage = new HashMap<>(10);
         setHasLoggedIn(Boolean.FALSE);
     }
 
@@ -459,7 +459,7 @@ public class DefaultUserImpl implements User
 
             if (permStorage == null)
             {
-                permStorage = new HashMap<String, Object>();
+                permStorage = new HashMap<>();
             }
         }
 
@@ -492,7 +492,7 @@ public class DefaultUserImpl implements User
     {
         if (tempStorage == null)
         {
-            tempStorage = new HashMap<String, Object>();
+            tempStorage = new HashMap<>();
         }
         return tempStorage;
     }

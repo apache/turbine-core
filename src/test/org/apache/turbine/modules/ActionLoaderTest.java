@@ -124,7 +124,7 @@ public class ActionLoaderTest extends BaseTestCase
         when(request.getParameterValues("eventSubmit_doCauseexception")).thenReturn(new String[] { "foo" });
         RunData data = getRunData(request, response, config);
         PipelineData pipelineData = new DefaultPipelineData();
-        Map<Class<?>, Object> runDataMap = new HashMap<Class<?>, Object>();
+        Map<Class<?>, Object> runDataMap = new HashMap<>();
         runDataMap.put(RunData.class, data);
         pipelineData.put(RunData.class, runDataMap);
         data.setAction("VelocityActionThrowsException");
@@ -165,7 +165,7 @@ public class ActionLoaderTest extends BaseTestCase
         assertFalse(Turbine.getConfiguration().getBoolean("action.event.bubbleexception"));
         RunData data = getRunData(request, response, config);
         PipelineData pipelineData = new DefaultPipelineData();
-        Map<Class<?>, Object> runDataMap = new HashMap<Class<?>, Object>();
+        Map<Class<?>, Object> runDataMap = new HashMap<>();
         runDataMap.put(RunData.class, data);
         pipelineData.put(RunData.class, runDataMap);
         data.setAction("VelocityActionThrowsException");
@@ -204,7 +204,7 @@ public class ActionLoaderTest extends BaseTestCase
         when(request.getParameterValues("eventSubmit_doCauseexception")).thenReturn(new String[] { "foo" });
         RunData data = getRunData(request, response, config);
         PipelineData pipelineData = new DefaultPipelineData();
-        Map<Class<?>, Object> runDataMap = new HashMap<Class<?>, Object>();
+        Map<Class<?>, Object> runDataMap = new HashMap<>();
         runDataMap.put(RunData.class, data);
         pipelineData.put(RunData.class, runDataMap);
         data.setAction("VelocityActionThrowsException");
@@ -267,7 +267,7 @@ public class ActionLoaderTest extends BaseTestCase
     {
         RunData data = getRunData(request, response, config);
         PipelineData pipelineData = new DefaultPipelineData();
-        Map<Class<?>, Object> runDataMap = new HashMap<Class<?>, Object>();
+        Map<Class<?>, Object> runDataMap = new HashMap<>();
         runDataMap.put(RunData.class, data);
         pipelineData.put(RunData.class, runDataMap);
         data.setAction("ImaginaryAction");

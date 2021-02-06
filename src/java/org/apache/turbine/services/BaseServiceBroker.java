@@ -60,12 +60,12 @@ public abstract class BaseServiceBroker implements ServiceBroker
     /**
      * Mapping of Service names to class names, keep order.
      */
-    private final Map<String, Class<?>> mapping = new LinkedHashMap<String, Class<?>>();
+    private final Map<String, Class<?>> mapping = new LinkedHashMap<>();
 
     /**
      * A repository of Service instances.
      */
-    private final ConcurrentHashMap<String, Service> services = new ConcurrentHashMap<String, Service>();
+    private final ConcurrentHashMap<String, Service> services = new ConcurrentHashMap<>();
 
     /**
      * Lock access during service initialization
@@ -102,7 +102,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * the requirement of having init(Object) all
      * together.
      */
-    private final ConcurrentHashMap<String, Object> serviceObjects = new ConcurrentHashMap<String, Object>();
+    private final ConcurrentHashMap<String, Object> serviceObjects = new ConcurrentHashMap<>();
 
     /** Logging */
     private static final Logger log = LogManager.getLogger(BaseServiceBroker.class);
@@ -116,7 +116,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
     /**
      * mapping from service names to instances of TurbineServiceProviders
      */
-    private final ConcurrentHashMap<String, Service> serviceProviderInstanceMap = new ConcurrentHashMap<String, Service>();
+    private final ConcurrentHashMap<String, Service> serviceProviderInstanceMap = new ConcurrentHashMap<>();
 
     /**
      * Default constructor, protected as to only be usable by subclasses.
@@ -246,7 +246,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
     {
         // we need to temporarily store the earlyInit flags to avoid
         // ConcurrentModificationExceptions
-        Map<String, String> earlyInitFlags = new LinkedHashMap<String, String>();
+        Map<String, String> earlyInitFlags = new LinkedHashMap<>();
 
         /*
          * These keys returned in an order that corresponds
@@ -336,7 +336,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      */
     public Iterator<String> getServiceNames(String prefix)
     {
-        Set<String> keys = new LinkedHashSet<String>(mapping.keySet());
+        Set<String> keys = new LinkedHashSet<>(mapping.keySet());
         for(Iterator<String> key = keys.iterator(); key.hasNext();)
         {
             if (!key.next().startsWith(prefix))
@@ -500,7 +500,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
          * this will fix the problem for now.
          */
 
-        ArrayList<String> reverseServicesList = new ArrayList<String>();
+        ArrayList<String> reverseServicesList = new ArrayList<>();
 
         for (Iterator<String> serviceNames = getServiceNames(); serviceNames.hasNext();)
         {

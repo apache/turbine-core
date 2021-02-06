@@ -45,6 +45,7 @@ public class PythonNavigationFactory
      * @return an Assembler
      * @throws Exception generic exception
      */
+    @Override
     public Navigation getAssembler(String name)
         throws Exception
     {
@@ -67,6 +68,7 @@ public class PythonNavigationFactory
      *
      * @return a class
      */
+    @Override
     public Class<Navigation> getManagedClass()
     {
         return Navigation.class;

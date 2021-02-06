@@ -45,6 +45,7 @@ public class PythonScreenFactory
      * @return an Assembler
      * @throws Exception generic exception
      */
+    @Override
     public Screen getAssembler(String name)
         throws Exception
     {
@@ -67,6 +68,7 @@ public class PythonScreenFactory
      *
      * @return a class
      */
+    @Override
     public Class<Screen> getManagedClass()
     {
         return Screen.class;

@@ -42,6 +42,7 @@ public class JavaPageFactory
      * @param name name of the requested Assembler
      * @return an Assembler
      */
+    @Override
     public Page getAssembler(String name)
     {
         return getAssembler(Page.PREFIX, name);
@@ -63,6 +64,7 @@ public class JavaPageFactory
      *
      * @return a class
      */
+    @Override
     public Class<Page> getManagedClass()
     {
         return Page.class;

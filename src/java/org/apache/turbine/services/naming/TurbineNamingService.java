@@ -61,7 +61,7 @@ public class TurbineNamingService
     private static Map<String, Properties> contextPropsList = null;
 
     /** All initial contexts known to this service */
-    private final Map<String, InitialContext> initialContexts = new HashMap<String, InitialContext>();
+    private final Map<String, InitialContext> initialContexts = new HashMap<>();
 
     /**
      * Called the first time the Service is used.<br>
@@ -81,7 +81,7 @@ public class TurbineNamingService
         Configuration conf = Turbine.getConfiguration();
         try
         {
-            contextPropsList = new HashMap<String, Properties>();
+            contextPropsList = new HashMap<>();
 
             for (Iterator<String> contextKeys = conf.subset("context").getKeys();
                  contextKeys.hasNext();)
@@ -142,6 +142,7 @@ public class TurbineNamingService
      * @return The context with the specified name, or null if no
      * context exists with that name.
      */
+    @Override
     public Context getContext(String contextName)
     {
         // Get just the properties for the context with the specified

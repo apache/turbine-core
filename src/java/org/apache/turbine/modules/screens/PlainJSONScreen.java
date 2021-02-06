@@ -41,13 +41,13 @@ import org.slf4j.LoggerFactory;
  * <p>Here is an example from a subclass:
  *
  * <code>
- * 
+ *
  *
  * public void doOutput(PipelineData pipelineData) throws Exception
  * {
  *     RunData data = pipelineData.getRunData();
  *     JSONStrategy strategy = null;
- *     
+ *
  *     try
  *     {
  *        strategy = new XYStrategy();
@@ -60,7 +60,7 @@ import org.slf4j.LoggerFactory;
  *          String msg = new JSONObject().put("error", e.getMessage()).toString();
  *          data.setMessage( msg );
  *       }
- *     
+ *
  *     super.doOutput(data);
  * }
  * </code>
@@ -74,7 +74,7 @@ public class PlainJSONScreen extends RawScreen
     protected static final String JSON_TYPE = "application/json;charset=utf-8";
 
     protected final static int BUFFER_SIZE = 4096;
-    
+
     static final Logger log = LoggerFactory.getLogger(PlainJSONScreen.class);
 
     /** Injected service instance */
@@ -103,14 +103,16 @@ public class PlainJSONScreen extends RawScreen
         RunData data = pipelineData.getRunData();
         // read in json!
         Charset charset = StandardCharsets.UTF_8; //request.getCharacterEncoding();
-        
+
         String json_res = data.getMessage();
 
         log.debug( "json_res output: {}", json_res );
-        PrintWriter out = new PrintWriter(
-                new OutputStreamWriter(data.getResponse().getOutputStream(),charset));
-        out.print(json_res.toString());
-        out.flush();
-        out.close();
+        try (PrintWriter out = new PrintWriter(
+                new OutputStreamWriter(
+                    data.getResponse().getOutputStream(),charset)))
+        {
+            out.print(json_res.toString());
+            out.flush();
+        }
     }
 }

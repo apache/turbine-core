@@ -34,7 +34,7 @@ public interface TestComponent
         extends Component
 {
 
-    static final String ROLE = "org.apache.turbine.test.TestComponent";
+    String ROLE = "org.apache.turbine.test.TestComponent";
 
     void test();
 }

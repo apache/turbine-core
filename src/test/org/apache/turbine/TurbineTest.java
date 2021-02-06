@@ -83,8 +83,8 @@ public class TurbineTest extends BaseTestCase
     public void testDefaultInputEncoding() throws Exception
     {
         Turbine t = tc.getTurbine();
-        assertNotNull(t.getDefaultInputEncoding());
-        assertEquals(TurbineConstants.PARAMETER_ENCODING_DEFAULT, t.getDefaultInputEncoding());
+        assertNotNull(Turbine.getDefaultInputEncoding());
+        assertEquals(TurbineConstants.PARAMETER_ENCODING_DEFAULT, Turbine.getDefaultInputEncoding());
         t.destroy();
     }
 
@@ -92,8 +92,8 @@ public class TurbineTest extends BaseTestCase
     public void testNonDefaultEncoding()
     {
         Turbine t = tc.getTurbine();
-        t.getConfiguration().setProperty(TurbineConstants.PARAMETER_ENCODING_KEY, "UTF-8");
-        assertNotNull(t.getDefaultInputEncoding());
-        assertEquals("UTF-8", t.getDefaultInputEncoding());
+        Turbine.getConfiguration().setProperty(TurbineConstants.PARAMETER_ENCODING_KEY, "UTF-8");
+        assertNotNull(Turbine.getDefaultInputEncoding());
+        assertEquals("UTF-8", Turbine.getDefaultInputEncoding());
     }
 }

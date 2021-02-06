@@ -68,7 +68,7 @@ public class InitContextsAction implements Action
         // used by the InitialContext class to create a new context
         // instance.
 
-        Hashtable<String, Properties> contextPropsList = new Hashtable<String, Properties>();
+        Hashtable<String, Properties> contextPropsList = new Hashtable<>();
         for (Iterator<String> contextKeys = conf.getKeys("context."); contextKeys.hasNext();)
         {
             String key = contextKeys.next();

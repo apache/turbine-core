@@ -44,7 +44,6 @@ import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -85,7 +84,7 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
      */
     @Test public void testAnonymousUser() throws Exception
     {
-        Vector<String> v = new Vector<String>();
+        Vector<String> v = new Vector<>();
         v.add(LoginUser.CGI_USERNAME);
         v.add(LoginUser.CGI_PASSWORD);
         when(request.getParameterNames()).thenReturn(v.elements());
@@ -112,7 +111,7 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
 
     @Test public void testLoggedInUser() throws Exception
     {
-        Vector<String> v = new Vector<String>();
+        Vector<String> v = new Vector<>();
         v.add(LoginUser.CGI_USERNAME);
         v.add(LoginUser.CGI_PASSWORD);
         when(request.getParameterNames()).thenReturn(v.elements());

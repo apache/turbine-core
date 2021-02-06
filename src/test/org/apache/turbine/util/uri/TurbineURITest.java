@@ -171,7 +171,7 @@ public class TurbineURITest extends BaseTestCase
         // added values.
         assertEquals("/context/servlet/turbine?test=null",
         turi.getRelativeLink());
-        
+
         turi.removeQueryData("test");
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
 

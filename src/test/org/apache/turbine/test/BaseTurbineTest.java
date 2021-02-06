@@ -44,7 +44,7 @@ public abstract class BaseTurbineTest
     {
         if (turbineConfig == null)
         {
-            Map<String, String> initParams = new HashMap<String, String>();
+            Map<String, String> initParams = new HashMap<>();
             initParams.put(TurbineConfig.PROPERTIES_PATH_KEY, config); // "conf/test/TurbineResources.properties"
             initParams.put(TurbineConstants.LOGGING_ROOT_KEY, "target/test-logs");
 

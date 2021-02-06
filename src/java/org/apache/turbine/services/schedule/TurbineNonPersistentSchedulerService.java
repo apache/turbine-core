@@ -75,7 +75,7 @@ public class TurbineNonPersistentSchedulerService extends AbstractSchedulerServi
     {
         Configuration conf = getConfiguration();
         List<Object> jobProps = conf.getList("scheduler.jobs");
-        List<JobEntry> jobs = new ArrayList<JobEntry>();
+        List<JobEntry> jobs = new ArrayList<>();
 
         // If there are scheduler.jobs defined then set up a job vector
         // for the scheduleQueue

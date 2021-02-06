@@ -33,7 +33,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
  *
  * TODO
  * This test might be more useful in a running turbine environment,
- * e.g. created by archetypes or in torque-test testing databases. 
+ * e.g. created by archetypes or in torque-test testing databases.
  *
  * @author gkallidis
  *
@@ -41,7 +41,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @TestMethodOrder(OrderAnnotation.class)
 @Testcontainers
 @Tag("docker")
-// requires manual port mapping in docker-manager/TorqueTest.properties, 
+// requires manual port mapping in docker-manager/TorqueTest.properties,
 //@Disabled
 class UserManagerWithContainerTest {
 
@@ -51,12 +51,12 @@ class UserManagerWithContainerTest {
    static TurbineConfig tc;
 
    boolean onDeleteCascade = true;
-   
+
    private static Logger log = LogManager.getLogger();
-   
+
    @Container
    private static GenericContainer MY_SQL_CONTAINER = BuildContainerWithDockerfileTest.MY_SQL_CONTAINER;
-   
+
    @BeforeAll
    public static void init() {
 
@@ -67,7 +67,7 @@ class UserManagerWithContainerTest {
          // get Torque component configuration and override torque.dsfactory.default.connection.url with url containing mapped port.
          //Connection c = BuildContainerWithDockerfileTest.getConnection();
          //MY_SQL_CONTAINER.getMappedPort( BuildContainerWithDockerfileTest.SERVICE_PORT );
-          
+
          String jdbcConnectionString = BuildContainerWithDockerfileTest.generateJdbcUrl();
          String customUrl = "torque.dsfactory.default.connection.url="+ jdbcConnectionString;
          // override and set mapped port in url, which is known only at runtime.
@@ -110,7 +110,7 @@ class UserManagerWithContainerTest {
       assertTrue( turbineSecurityService.accountExists( user ) );
       //assertTrue( turbineSecurityService.getUserManager().checkExists( user ) );
    }
-   
+
    @Test
    @Order(2)
    @Tag("docker")
@@ -120,9 +120,9 @@ class UserManagerWithContainerTest {
       try {
          ringo = turbineSecurityService.getUser("ringo");
          assertEquals("ringo", ringo.getFirstName());
-         
+
          deleteUser(ringo);
-         
+
       } catch (Exception sqle) {
           log.error( "new user error",sqle);
           fail();

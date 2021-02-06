@@ -49,7 +49,7 @@ public class SessionData implements ApplicationTool
     @Override
     public void init(Object data)
     {
-        dataStorage = new HashMap<String, Object>();
+        dataStorage = new HashMap<>();
     }
 
     /**

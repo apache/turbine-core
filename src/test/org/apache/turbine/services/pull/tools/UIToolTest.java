@@ -52,7 +52,7 @@ public class UIToolTest extends BaseTestCase
     @BeforeClass
     public static void setUp() throws Exception
     {
-        Map<String, String> initParams = new HashMap<String, String>();
+        Map<String, String> initParams = new HashMap<>();
         initParams.put(TurbineConfig.PROPERTIES_PATH_KEY, "/conf/test/CompleteTurbineResources.properties"); // "conf/test/TurbineResources.properties"
         initParams.put(TurbineConstants.LOGGING_ROOT_KEY, "target/test-logs");
 

@@ -45,6 +45,7 @@ public class PythonActionFactory
      * @return an Assembler
      * @throws Exception generic exception
      */
+    @Override
     public Action getAssembler(String name)
         throws Exception
     {
@@ -56,6 +57,7 @@ public class PythonActionFactory
      *
      * @return a Loader
      */
+    @Override
     public Loader<Action> getLoader()
     {
         return ActionLoader.getInstance();
@@ -66,6 +68,7 @@ public class PythonActionFactory
      *
      * @return a class
      */
+    @Override
     public Class<Action> getManagedClass()
     {
         return Action.class;

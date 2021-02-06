@@ -42,6 +42,7 @@ public class JavaScreenFactory
      * @param name name of the requested Assembler
      * @return an Assembler
      */
+    @Override
     public Screen getAssembler(String name)
     {
         return getAssembler(Screen.PREFIX, name);
@@ -63,6 +64,7 @@ public class JavaScreenFactory
      *
      * @return a class
      */
+    @Override
     public Class<Screen> getManagedClass()
     {
         return Screen.class;

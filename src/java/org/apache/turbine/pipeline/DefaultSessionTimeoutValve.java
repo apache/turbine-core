@@ -36,8 +36,8 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
- * 
- * No replacement. Delegate session timeout to the container e.g. in web.xml, which allows to create a session at any place. 
+ *
+ * No replacement. Delegate session timeout to the container e.g. in web.xml, which allows to create a session at any place.
  */
 @Deprecated
 public class DefaultSessionTimeoutValve

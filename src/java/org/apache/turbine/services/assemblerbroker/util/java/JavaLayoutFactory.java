@@ -42,6 +42,7 @@ public class JavaLayoutFactory
      * @param name name of the requested Assembler
      * @return an Assembler
      */
+    @Override
     public Layout getAssembler(String name)
     {
         return getAssembler(Layout.PREFIX, name);
@@ -63,6 +64,7 @@ public class JavaLayoutFactory
      *
      * @return a class
      */
+    @Override
     public Class<Layout> getManagedClass()
     {
         return Layout.class;

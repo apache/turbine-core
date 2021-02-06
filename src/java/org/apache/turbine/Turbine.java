@@ -365,7 +365,7 @@ public class Turbine extends HttpServlet
      * Checks configuraton style, resolves the location of the configuration and
      * loads it to internal {@link Configuration} object
      * ({@link #configuration}).
-     * 
+     *
      * Allows reading from a {@link CombinedConfigurationBuilder} xml configuration file.
      *
      * @param config
@@ -764,7 +764,7 @@ public class Turbine extends HttpServlet
             try
             {
                 // Perform turbine specific initialization below.
-                Map<Class<?>, Object> runDataMap = new HashMap<Class<?>, Object>();
+                Map<Class<?>, Object> runDataMap = new HashMap<>();
                 runDataMap.put(RunData.class, pipelineData);
                 // put the data into the pipeline
                 pipelineData.put(RunData.class, runDataMap);

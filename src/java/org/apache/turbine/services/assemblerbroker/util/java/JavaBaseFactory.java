@@ -52,7 +52,7 @@ public abstract class JavaBaseFactory<T extends Assembler>
      * A cache for previously obtained Class instances, which we keep in order
      * to reduce the Class.forName() overhead (which can be sizable).
      */
-    private final ConcurrentHashMap<String, Class<T>> classCache = new ConcurrentHashMap<String, Class<T>>();
+    private final ConcurrentHashMap<String, Class<T>> classCache = new ConcurrentHashMap<>();
 
     /**
      * Get an Assembler.

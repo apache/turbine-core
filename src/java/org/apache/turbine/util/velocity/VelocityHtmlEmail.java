@@ -125,7 +125,7 @@ public class VelocityHtmlEmail extends HtmlEmail
     {
         this();
         this.context = context;
-        embmap = new Hashtable<String, String>();
+        embmap = new Hashtable<>();
     }
 
     /**

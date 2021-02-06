@@ -30,7 +30,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
  * Steps to run this
  *
  * Requirements:
- * <li>Unix: (Debian stretch tested):set <code>DOCKER_HOST=unix:///var/run/docker.sock</code> in docker-java.properties 
+ * <li>Unix: (Debian stretch tested):set <code>DOCKER_HOST=unix:///var/run/docker.sock</code> in docker-java.properties
  * (find the template in conf/docker-resources/db/dj.p.template) and comment out all other environment keys.
  * <li>Windows 10: Docker Desktop should provide all required configuration by default or
  * you need to create a local machine, e.g. with <code>docker-machine -d hyperv <vmname-default></code>
@@ -38,7 +38,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
  * <li>Windows 7/VirtualBox: copy DOCKER_* properties to ~/.docker-java.properties or docker-java.properties in classpath..
  * To get the environment run: <code>docker-machine env default</code>, if your default docker machine is named default.
  * Verify the name with <code>docker-machine ls</code>.
- * 
+ *
  * Turbine pom.xml has folder conf/docker-resources enabled as test-resource, you may put the files there.
  * You may need to copy machines/&lt;docker-machine-name&gt;/certs from DOCKER_CERT_PATH to local path ~/.docker/machine/certs
  *
@@ -48,10 +48,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
  * <li>To get results from <code>docker images</code>, you have to set the environment variables, see output from <code>docker-machine env <vmname></code>.
  *
  * Lookup of repository:
- * 
- * Testcontainers checks 
+ *
+ * Testcontainers checks
  * <li>~/.testcontainers.properties, then <code>classpath/testcontainers.properties</code>
- * <li>~/.docker-java.properties, then docker-java.properties -> set DOCKER_* properties, 
+ * <li>~/.docker-java.properties, then docker-java.properties -> set DOCKER_* properties,
  * may set DOCKER_CERT_PATHalways with forward slashes.
  * <li>At last also ~/.docker/config.json is checked for username/password for docker.io
  * Additional
@@ -59,7 +59,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
  * <li>https://www.testcontainers.org/modules/databases/mysql/
  * <li>https://www.testcontainers.org/modules/databases/#using-an-init-script-from-a-file
  *
- * Bugs: docker virtualbox vm seems to auto pause. 
+ * Bugs: docker virtualbox vm seems to auto pause.
  * Check your docker vm with <code>docker-machine ls</code> and <code>docker-machine start <vmname></code>.
  *
  * @author gkallidis
@@ -69,28 +69,28 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 @Tag("docker")
 class BuildContainerWithDockerfileTest {
-    
-  
+
+
    public static final String DOCKERFILE = "conf/docker-resources/db/Dockerfile";
-   
+
    private static Logger log = LogManager.getLogger();
-   
+
    public static int SERVICE_PORT = 3306;
 
    public static String DATABASE_NAME = "default";
 
    Connection connection;
-   
+
    @Container
    //@ClassRule
    public static GenericContainer MY_SQL_CONTAINER =   new GenericContainer<>(
            new ImageFromDockerfile()
 //           .withFileFromPath(
-//               ".", 
+//               ".",
 //               new File("./conf/docker-resources/db/mysql/initdb.d").toPath())
-//           .withDockerfileFromBuilder( 
+//           .withDockerfileFromBuilder(
 //                builder -> builder.from( "mysql:5.7.26" )
-//                .add( "data.sql","/docker-entrypoint-initdb.d" ) 
+//                .add( "data.sql","/docker-entrypoint-initdb.d" )
 //            )
             .withDockerfile(new File(DOCKERFILE).toPath())
         ).withExposedPorts( SERVICE_PORT ) //.withStartupAttempts( 2 )
@@ -98,13 +98,13 @@ class BuildContainerWithDockerfileTest {
          .withEnv( "MYSQL_USER", "userdb"  )
          .withEnv( "MYSQL_PASSWORD", "test1234" )
          .withEnv( "MYSQL_ROOT_PASSWORD","test1234" );
-   
+
 // reduce dependencies, but might use for debugging
 //    MY_SQL_CONTAINER = new MySQLContainer<>()
 //   .withDatabaseName( DATABASE_NAME).withUsername( "userdb" ).withPassword( "test1234" )
 //   .withInitScript( "./db/mysql/initdb.d/data.sql" )
 //   .withExposedPorts( SERVICEPORT )
-   
+
    @BeforeAll
    public static void init() {
 
@@ -148,7 +148,7 @@ class BuildContainerWithDockerfileTest {
          resultSet.close();
       }
    }
-   
+
    @Test
    @Order(3)
    void selectNewUser() throws SQLException {
@@ -173,7 +173,7 @@ class BuildContainerWithDockerfileTest {
          .getConnection(jdbcStr, "userdb", "test1234");
    }
 
-   // https://www.testcontainers.org/modules/databases/   
+   // https://www.testcontainers.org/modules/databases/
    // String.format("jdbc:tc:mysql:5.7.22://%s/%s", "dummy_host",
    // "test"); this will use database test, but allows e.g. custom cfg: ?TC_MY_CNF=x.cfg
    // TODO inform torque about mapped port, use overriding configuration in torque 4.1
@@ -182,22 +182,22 @@ class BuildContainerWithDockerfileTest {
       if (!MY_SQL_CONTAINER.isRunning()) {
           MY_SQL_CONTAINER.start();
       }
-      
+
       String serviceHost = MY_SQL_CONTAINER.getContainerIpAddress();
       Integer mappedPort = MY_SQL_CONTAINER.getMappedPort(SERVICE_PORT);// e.g. 32811
       log.info("generate jdbc url from {}, mapped Port: {}, bounded port: {}", serviceHost, mappedPort, MY_SQL_CONTAINER.getBoundPortNumbers());
 
 //      if (MY_SQL_CONTAINER instanceof MySQLContainer) {
 //          String genJDBC = ((MySQLContainer)MY_SQL_CONTAINER).getJdbcUrl();
-//          log.info( "generated connect url: {}", genJDBC);   
+//          log.info( "generated connect url: {}", genJDBC);
 //      }
-      String targetJDBC = 
+      String targetJDBC =
       String.format("jdbc:mysql://%s:%d/%s?loggerLevel=OFF", serviceHost,
                     mappedPort, DATABASE_NAME);
-      // changing the jdbc string prefix to  jdbc:tc:mysql does handle the test database setup, 
+      // changing the jdbc string prefix to  jdbc:tc:mysql does handle the test database setup,
       // https://www.testcontainers.org/modules/databases/jdbc/
       log.info( "used connect url: {}", targetJDBC);
       return targetJDBC;
    }
-   
+
 }

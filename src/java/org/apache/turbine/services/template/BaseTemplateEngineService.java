@@ -50,7 +50,7 @@ public abstract class BaseTemplateEngineService
      * 5) default navigation
      * 6) default error screen
      */
-    private final Hashtable<String, Object> configuration = new Hashtable<String, Object>();
+    private final Hashtable<String, Object> configuration = new Hashtable<>();
 
     /**
      * @see org.apache.turbine.services.template.TemplateEngineService#registerConfiguration
@@ -131,9 +131,9 @@ public abstract class BaseTemplateEngineService
             DEFAULT_SCREEN_TEMPLATE
         };
 
-        for (int i = 0; i < copyParams.length; i++)
+        for (String copyParam : copyParams)
         {
-            configuration.put(copyParams[i], config.getString(copyParams[i], ""));
+            configuration.put(copyParam, config.getString(copyParam, ""));
         }
     }
 

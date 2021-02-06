@@ -45,6 +45,7 @@ public class PythonLayoutFactory
      * @return an Assembler
      * @throws Exception generic exception
      */
+    @Override
     public Layout getAssembler(String name)
         throws Exception
     {
@@ -67,6 +68,7 @@ public class PythonLayoutFactory
      *
      * @return a class
      */
+    @Override
     public Class<Layout> getManagedClass()
     {
         return Layout.class;

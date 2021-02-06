@@ -47,7 +47,7 @@ public class OMTool implements ApplicationTool, Recyclable
 
     /** The cache of PullHelpers. **/
     private ConcurrentMap<String, OMTool.PullHelper> pullMap =
-            new ConcurrentHashMap<String, OMTool.PullHelper>();
+            new ConcurrentHashMap<>();
 
     /**
      *  The Factory responsible for retrieving the
@@ -61,7 +61,7 @@ public class OMTool implements ApplicationTool, Recyclable
      */
     public OMTool() throws Exception
     {
-        omMap = new ConcurrentHashMap<String, Object>();
+        omMap = new ConcurrentHashMap<>();
         String className = Turbine.getConfiguration().getString("tool.om.factory");
         this.omFactory = (RetrieverFactory)Class.forName(className).newInstance();
     }

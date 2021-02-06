@@ -67,7 +67,7 @@ public class IntakeTool
     /** ValueParser instance */
     protected ValueParser pp;
 
-    private final HashMap<String, Group> declaredGroups = new HashMap<String, Group>();
+    private final HashMap<String, Group> declaredGroups = new HashMap<>();
     private final StringBuilder allGroupsSB = new StringBuilder(256);
     private final StringBuilder groupSB = new StringBuilder(128);
 
@@ -101,8 +101,8 @@ public class IntakeTool
             {
                 groupCount = groupNames.length;
             }
-            groups = new HashMap<String, Group>((int) (1.25 * groupCount + 1));
-            pullMap = new HashMap<String, IntakeTool.PullHelper>((int) (1.25 * groupCount + 1));
+            groups = new HashMap<>((int) (1.25 * groupCount + 1));
+            pullMap = new HashMap<>((int) (1.25 * groupCount + 1));
 
             for (int i = groupCount - 1; i >= 0; i--)
             {
@@ -445,11 +445,11 @@ public class IntakeTool
 
 			if (groupKeys != null)
 			{
-		        for (int i = 0; i < groupKeys.length; i++)
-		        {
-		            if (!groupKeys[i].equals(group.getGID()))
+		        for (String groupKey : groupKeys)
+                {
+		            if (!groupKey.equals(group.getGID()))
 		            {
-		                 pp.add(INTAKE_GRP, groupKeys[i]);
+		                 pp.add(INTAKE_GRP, groupKey);
 		            }
                 }
 		    }

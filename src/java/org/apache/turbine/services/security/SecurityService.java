@@ -42,7 +42,7 @@ import org.apache.turbine.services.security.passive.PassiveUserManager;
  * The Security Service manages Users, Groups Roles and Permissions in the
  * system.
  * </p>
- * 
+ *
  * <p>
  * The task performed by the security service include creation and removal of
  * accounts, groups, roles, and permissions; assigning users roles in groups;
@@ -50,7 +50,7 @@ import org.apache.turbine.services.security.passive.PassiveUserManager;
  * representing these logical entities.
  * </p>
  *
- * <p> 
+ * <p>
  * Because of pluggable nature of the Services, it is possible to create
  * multiple implementations of SecurityService, for example employing database
  * and directory server as the data backend.
@@ -477,13 +477,13 @@ public interface SecurityService
      */
     void revokeAll(Role role)
             throws DataBackendException, UnknownEntityException;
-    
+
     /**
      * Revokes by default all permissions from a Role and if flag is set
      * all groups and users for this role
-     * 
+     *
      * This method is used when deleting a Role.
-     * 
+     *
      * @param role
      *            the Role
      * @param cascadeDelete
@@ -541,7 +541,7 @@ public interface SecurityService
 
     /**
      * Retrieve a Role object with specified name.
-     * 
+     *
      * @param <R> role class
      * @param name the name of the Role.
      * @return an object representing the Role with specified name.
@@ -741,12 +741,12 @@ public interface SecurityService
     void renamePermission(Permission permission, String name)
             throws DataBackendException, UnknownEntityException;
     /**
-     * Replaces transactionally the first given role with the second role for the given user. 
-     * 
+     * Replaces transactionally the first given role with the second role for the given user.
+     *
      * @param user the user.
      * @param role the old role
      * @param newRole the new role
-     * 
+     *
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the permission does not exist.

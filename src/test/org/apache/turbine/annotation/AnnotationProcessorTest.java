@@ -1,6 +1,11 @@
 package org.apache.turbine.annotation;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -23,8 +28,6 @@ package org.apache.turbine.annotation;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -39,7 +42,6 @@ import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -139,7 +141,7 @@ public class AnnotationProcessorTest
     public void testRequiredRoleMethodProcess() throws Exception
     {
         RunData data = mock(RunData.class);
-        TurbineAccessControlList acl = mock(TurbineAccessControlList.class);
+        TurbineAccessControlList<?> acl = mock(TurbineAccessControlList.class);
         Role role = mock(Role.class);
         when(role.getName()).thenReturn( "user" );
         // Group group = mock(Group.class);
@@ -164,7 +166,7 @@ public class AnnotationProcessorTest
     public void testRequiredRoleAdminMethodProcess() throws Exception
     {
         RunData data = mock(RunData.class);
-        TurbineAccessControlList acl = mock(TurbineAccessControlList.class);
+        TurbineAccessControlList<?> acl = mock(TurbineAccessControlList.class);
         Role role = mock(Role.class);
         when(role.getName()).thenReturn( "user" );
         // Group group = mock(Group.class);
@@ -187,7 +189,7 @@ public class AnnotationProcessorTest
     public void testUnguardedMethodWProcessDefault() throws Exception
     {
         RunData data = mock(RunData.class);
-        TurbineAccessControlList acl = mock(TurbineAccessControlList.class);
+        TurbineAccessControlList<?> acl = mock(TurbineAccessControlList.class);
         Role role = mock(Role.class);
         when(role.getName()).thenReturn( "user" );
         // Group group = mock(Group.class);
@@ -203,7 +205,7 @@ public class AnnotationProcessorTest
         }
     }
 
-    //@Disabled("For performance tests only") 
+    //@Disabled("For performance tests only")
     @Tag("performance") // ignore in surefire, activating seems to be still buggy ?
     @Test
     public void testProcessingPerformance() throws TurbineException

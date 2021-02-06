@@ -104,9 +104,9 @@ public class TurbineAssemblerBrokerService
 
         log.info("Registering {} {} factories.", Integer.valueOf(names.size()), type);
 
-        for (Iterator<Object> it = names.iterator(); it.hasNext(); )
+        for (Object name2 : names)
         {
-            String factory = (String) it.next();
+            String factory = (String) name2;
             try
             {
                 @SuppressWarnings("unchecked")
@@ -139,7 +139,7 @@ public class TurbineAssemblerBrokerService
     public void init()
         throws InitializationException
     {
-        factories = new HashMap<Class<?>, List<?>>();
+        factories = new HashMap<>();
 
         try
         {
@@ -171,8 +171,8 @@ public class TurbineAssemblerBrokerService
                 .getInt(TurbineConstants.MODULE_CACHE_SIZE_KEY,
                         TurbineConstants.MODULE_CACHE_SIZE_DEFAULT);
 
-            assemblerCache = new ConcurrentHashMap<String, Assembler>(cacheSize);
-            loaderCache = new ConcurrentHashMap<Class<?>, Loader<? extends Assembler>>(cacheSize);
+            assemblerCache = new ConcurrentHashMap<>(cacheSize);
+            loaderCache = new ConcurrentHashMap<>(cacheSize);
         }
 
         setInit(true);

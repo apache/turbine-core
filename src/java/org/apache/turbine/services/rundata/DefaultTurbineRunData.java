@@ -123,7 +123,7 @@ public class DefaultTurbineRunData
     private int statusCode = HttpServletResponse.SC_OK;
 
     /** This is a List to hold critical system errors. */
-    private final List<SystemError> errors = new ArrayList<SystemError>();
+    private final List<SystemError> errors = new ArrayList<>();
 
     /** JNDI Contexts. */
     private Map<String, Context> jndiContexts;
@@ -148,7 +148,7 @@ public class DefaultTurbineRunData
      * screen.  This is great for debugging variable values when an
      * exception is thrown.
      */
-    private final Map<String, Object> debugVariables = new HashMap<String, Object>();
+    private final Map<String, Object> debugVariables = new HashMap<>();
 
     /** Logging */
     private static final Logger log = LogManager.getLogger(DefaultTurbineRunData.class);
@@ -1054,7 +1054,7 @@ public class DefaultTurbineRunData
     {
         if (jndiContexts == null)
         {
-            jndiContexts = new HashMap<String, Context>();
+            jndiContexts = new HashMap<>();
         }
         return jndiContexts;
     }

@@ -54,7 +54,7 @@ public class MappedTemplateLink extends TemplateLink
      */
     @TurbineService
     private URLMapperService urlMapperService;
-    
+
 
     /**
      * Builds the URL with all of the data URL-encoded as well as
@@ -78,6 +78,7 @@ public class MappedTemplateLink extends TemplateLink
      *
      * @return A String with the built URL.
      */
+    @Override
     public String getAbsoluteLink()
     {
         urlMapperService.mapToURL(templateURI);
@@ -107,10 +108,11 @@ public class MappedTemplateLink extends TemplateLink
      *
      * @return A String with the built URL.
      */
+    @Override
     public String getRelativeLink()
     {
         urlMapperService.mapToURL(templateURI);
         return super.getRelativeLink();
     }
-    
+
 }

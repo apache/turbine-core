@@ -42,6 +42,7 @@ public class JavaScheduledJobFactory
      * @param name name of the requested Assembler
      * @return an Assembler
      */
+    @Override
     public ScheduledJob getAssembler(String name)
     {
         return getAssembler(ScheduledJob.PREFIX, name);
@@ -63,6 +64,7 @@ public class JavaScheduledJobFactory
      *
      * @return a class
      */
+    @Override
     public Class<ScheduledJob> getManagedClass()
     {
         return ScheduledJob.class;

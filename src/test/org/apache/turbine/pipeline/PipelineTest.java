@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.StringWriter;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -67,8 +66,8 @@ public class PipelineTest
     /**
      * Tests the Pipeline throughput.
      */
-    //@Disabled("For performance tests only") 
-    @Tag("performance") 
+    //@Disabled("For performance tests only")
+    @Tag("performance")
     @Test public void testPipelinePerformance() throws Exception
     {
         StringWriter writer = new StringWriter();

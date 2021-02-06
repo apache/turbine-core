@@ -256,7 +256,7 @@ public class DefaultUserManager implements UserManager
             throws DataBackendException
     {
         UserSet<org.apache.fulcrum.security.entity.User> uset = umDelegate.getAllUsers();
-        List<User> userList = new ArrayList<User>();
+        List<User> userList = new ArrayList<>();
 
         for (org.apache.fulcrum.security.entity.User u : uset)
         {

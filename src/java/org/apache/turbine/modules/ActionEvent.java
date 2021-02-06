@@ -119,7 +119,7 @@ public abstract class ActionEvent implements Action
 	/**
 	 * Cache for the methods to invoke
 	 */
-	private ConcurrentMap<String, Method> methodCache = new ConcurrentHashMap<String, Method>();
+	private ConcurrentMap<String, Method> methodCache = new ConcurrentHashMap<>();
 
 	/**
 	 * Retrieve a method of the given name and signature. The value is cached.

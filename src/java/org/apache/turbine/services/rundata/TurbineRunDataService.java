@@ -239,9 +239,9 @@ public class TurbineRunDataService
         TurbineRunData data;
         try
         {
-    		Class<?> runDataClazz = classCache.computeIfAbsent(cfg[0], className -> classForName(className));
-            Class<?> parameterParserClazz = classCache.computeIfAbsent(cfg[1], className -> classForName(className));
-            Class<?> cookieParserClazz = classCache.computeIfAbsent(cfg[2], className -> classForName(className));
+    		Class<?> runDataClazz = classCache.computeIfAbsent(cfg[0], this::classForName);
+            Class<?> parameterParserClazz = classCache.computeIfAbsent(cfg[1], this::classForName);
+            Class<?> cookieParserClazz = classCache.computeIfAbsent(cfg[2], this::classForName);
 
             data = (TurbineRunData) pool.getInstance(runDataClazz);
             @SuppressWarnings("unchecked") // ok

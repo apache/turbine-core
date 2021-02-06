@@ -260,7 +260,7 @@ public class QuartzSchedulerService
     @Override
     public List<? extends JobEntry> listJobs()
     {
-        List<JobEntryQuartz> jobs = new ArrayList<JobEntryQuartz>();
+        List<JobEntryQuartz> jobs = new ArrayList<>();
 
         try
         {
