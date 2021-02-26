@@ -146,6 +146,7 @@ public class DefaultLoginValveTest extends BaseTestCase
         user = runData.getUser();
         assertNotNull(user);
         assertTrue(securityService.isAnonymousUser(user));
+        assertTrue(securityService.isAnonymousUser( (User)session.getAttribute( User.SESSION_KEY )));
         assertFalse(user.hasLoggedIn());
     }
 

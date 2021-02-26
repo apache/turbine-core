@@ -52,6 +52,7 @@ import org.apache.turbine.util.uri.TurbineURI;
 import org.apache.turbine.util.uri.URIParam;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 /**
@@ -93,14 +94,14 @@ public class TurbineURLMapperService
     private URLMappingContainer container;
 
     /**
-     * Regex pattern for group names
+     * Regex pattern for group names, equivalent to the characters defined in java {@link Pattern} (private) groupname method.
      */
     private static final Pattern NAMED_GROUPS_PATTERN = Pattern.compile("\\(\\?<([a-zA-Z][a-zA-Z0-9]*)>.+?\\)");
 
     /**
      * Regex pattern for multiple slashes
      */
-    private static final Pattern MULTI_SLASH_PATTERN = Pattern.compile("/+");
+    private static final Pattern MULTI_SLASH_PATTERN = Pattern.compile("[/]+");
 
     /**
      * Symbolic group name for context path
@@ -160,10 +161,6 @@ public class TurbineURLMapperService
                     .collect(Collectors.toSet());
 
             entryKeys.addAll(implicitKeysFound);
-            implicitKeysFound.forEach(key -> {
-                pathInfo.removeIf(uriParam -> key.equals(uriParam.getKey()));
-                queryData.removeIf(uriParam -> key.equals(uriParam.getKey()));
-            });
 
             if (entryKeys.containsAll(keys))
             {
@@ -195,9 +192,15 @@ public class TurbineURLMapperService
                 }
 
                 matcher.appendTail(sb);
+                
+                implicitKeysFound.forEach(key -> {
+                    pathInfo.removeIf(uriParam -> key.equals(uriParam.getKey()));
+                    queryData.removeIf(uriParam -> key.equals(uriParam.getKey()));
+                });
 
                 // Clean up
-                uri.setScriptName(MULTI_SLASH_PATTERN.matcher(sb).replaceAll("/"));
+                uri.setScriptName(MULTI_SLASH_PATTERN.matcher(sb).replaceAll("/").replaceFirst( "/$", "" ));
+                
                 break;
             }
         }
@@ -214,6 +217,7 @@ public class TurbineURLMapperService
     {
         for (URLMapEntry urlMap : container.getMapEntries())
         {
+            url = url.replaceFirst( "/$", "" );
             Matcher matcher = urlMap.getUrlPattern().matcher(url);
             if (matcher.matches())
             {
@@ -277,7 +281,7 @@ public class TurbineURLMapperService
                 container = mapper.readValue(reader, URLMappingContainer.class);
             } else if (configFile.endsWith(".json"))
             {
-                ObjectMapper mapper = new ObjectMapper();
+                ObjectMapper mapper = JsonMapper.builder().build();
                 container = mapper.readValue(reader, URLMappingContainer.class);
             }
         }

@@ -21,53 +21,60 @@
 <document>
 
  <properties>
-  <title>URL Mapper Howto</title>
+  <title>URL Simplifier Howto</title>
  </properties>
 
 <body>
 
-<section>
+<section name="Introduction">
 
 <p>
-Unaltered Turbine URLs look like this:
+Unaltered Turbine URLs may look like this:
 <code>http://www.foo.com:8080/CONTEXT/servlet/MAPPING/template/Foo.vm</code>.<br/>
-But you want shorter URLs, or you don't like exposing the use of
-servlets in the URL.  Maybe this url would suit you better:
-<code>http://www.foo.com:8080/beautiful/world</code>
+But you want shorter URLs Maybe this url would suit you better:
+<code>http://www.foo.com:8080/CONTEXT/servlet/beautiful/world</code>
 </p>
 
+This HOWTO describes, how you can control the pathinfo or query part of a url (behind the webapproot and the context) and the context with a mapping (routing) file 
+defined in xml, json or yaml format to become more simplified or beautiful! 
 
 </section>
 
 <section name="Turbine Configuration">
 
 <p>
-You need to register the URL Mapper service in the pipeline by adding the service, the configuration 
+You need to
+<ul>
+<li>register the URL Mapper service in turbine configuration (TR.properties) </li>
+<li>register the valve in the pipeline (turbine-classic-pipeline.xml)</li>
+</ul> 
 </p>
 
-<p>
-In TurbineResources.properties, search URLMapperService, and if not found, add the following settings:
+
+<p>Consider the following example configuration:
+
+MappedTemplateLink is for now optional, you can add it as a separate tool or just replace the existing TemplateLink.
 </p>
 
 <source><![CDATA[
-
-# -------------------------------------------------------------------
-#
-#  U R L  M A P P E R  S E R V I C E
-#
-# -------------------------------------------------------------------
-
-# new mapper
-tool.request.mlink=org.apache.turbine.services.urlmapper.MappedTemplateLink
-
-services.URLMapperService.classname=org.apache.turbine.services.urlmapper.TurbineURLMapperService
-
-# xml, json and yml supported as extension
-services.URLMapperService.configFile = /conf/turbine-url-mapping.xml
-
+	# -------------------------------------------------------------------
+	#
+	#  U R L  M A P P E R  S E R V I C E
+	#
+	# -------------------------------------------------------------------
+	
+	# required
+	services.URLMapperService.classname=org.apache.turbine.services.urlmapper.TurbineURLMapperService
+	
+	# configFile is required here! xml, json and yml supported as extension.
+	services.URLMapperService.configFile = /conf/turbine-url-mapping.xml
+	
+	# new mapper (optional)
+	tool.request.mlink=org.apache.turbine.services.urlmapper.MappedTemplateLink
+	# tool.request.jlink= org.apache.turbine.services.pull.tools.TemplateLink
 ]]></source>
 
-<p>Add the valve into pipeline (pipeline.default.descriptor = /conf/turbine-classic-pipeline.xml). 
+<p>To resolve a provided / mapped URL add the valve into pipeline (pipeline.default.descriptor = /conf/turbine-classic-pipeline.xml). 
 </p>
 
 <source><![CDATA[
@@ -77,15 +84,50 @@ services.URLMapperService.configFile = /conf/turbine-url-mapping.xml
 
 ]]></source>
 
-<p>This will read the beautfied URL and alter into to what, the server requires as defined 
-in the URLMapperService's configfile . 
+<p>This will check if the provided URL matches any pattern, resolves it given in the path or implicitly as defined in
+
+the URLMapperService's configfile.</p> 
+
+</section>
+
+<section name="URL Mapping Mechanism">
+
+<p>The pattern format scheme is as follows, e.g. in JSON:</p>
+
+<source><![CDATA[
+ "pattern":  "/(?<webAppRoot>[.\\-\\w]+)/(?<contextPath>\\w+)/(?<resolvableParam>\\w+)/beautifulname"
+]]></source>
+
+<p>That is any specific parameter name or key, which should be resolved, has to be set like this</p> 
+
+<source><![CDATA[
+ /(?<resolvableParam>\\w+)
+]]></source>
+
+<p>Another condition to be met, is that the parameter name must follow the "Java Named Group pattern characters restriction":</p>
+
+<source><![CDATA[
+ NAMED_GROUPS_PATTERN = Pattern.compile("(?<([a-zA-Z][a-zA-Z0-9]*)>.+?)");
+]]></source>
+
+<p>
+Any parameter is resolved as a <i>group name</i>
+ (<a href="https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html">Java Pattern->Groups and Capturing->Group name</a>).
+ 
+These group names are predefined (symbolic group name)):
+ 
+<ul><li><strong>&lt;webAppRoot&gt;</strong></li><li><strong>&lt;contextPath&gt;</strong></li></ul>
+
+Be aware, that this does not allow replacing parameters containing other characters (e.g underscore or hyphens). You may use implicit parameter matching. 
+
+Following is an example for a configuration : 
 </p>
 
 <source><![CDATA[
 <url-mapping name="default">
     <maps>
         <map>
-            <pattern>/(?&lt;contextPath&gt;\w+)/book/(?&lt;bookId&gt;\d+)</pattern>
+            <pattern>/(?&lt;webAppRoot&gt;[.\\-\\w]+)/(?&lt;contextPath&gt;\w+)/book/(?&lt;bookId&gt;\d+)</pattern>
             <implicit-parameters>
                 <parameter key="template">Book.vm</parameter>
                 <parameter key="detail">0</parameter>
@@ -94,16 +136,98 @@ in the URLMapperService's configfile .
         ...
 ]]></source>
 
+<p>Three parameters are evaluated:
+
+<ul><li>a parameter name <strong>template</strong> and value <strong>Book.vm</strong></li>
+<li>a parameter <strong>detail</strong> and value <strong>0</strong></li>
+<li>a parameter <strong>bookId</strong> with <i>any</i> value, e.g. <strong>4</strong></li>
+</ul>
+This will be converted, if matched, to an URL like <strong>/book/4</strong>. 
+The pattern uses type restrictions for the value, e.g. number for the bookId and a extended character set for the webAppRoot, which will be applied in (back resolving) <strong>mapFromURL</strong>.
+</p>
+
+<p>Another example in <strong>JSON</strong> format with just more short URL by replacing two parameters:</p>
+
+<source><![CDATA[
+{
+  "name": "default",
+  "maps": [
+	{
+		"pattern": "/(?<webAppRoot>[\\w]+)/(?<contextPath>\\w+)/register",
+		"implicit-parameters": {
+			"page": "Register",
+			"role": "anon"
+		}
+	},
+        ...
+]]></source>
+
+</section>
+
+<section name="Turbine Service Description and Usage">
+
+<p>The main methods of the service <strong>TurbineURLMapperService</strong> are</p> 
+
+<ul>
+<li><strong>mapToUrl</strong>, which as the Javadoc explains "maps a set of parameters (contained in TurbineURI PathInfo and QueryData) to a TurbineURIs"</li>
+<li><strong>mapFromUrl</strong>, which "maps a simplified URL to a set of parameters"</li>
+</ul> 
+
+  <subsection name="Matrix">
+      <table>
+        <tr>
+         <th colspan="6">Turbine URL Simplifier Mapping Model</th>
+        </tr>
+        <tr>
+          <th>Mechanism</th><th>Method</th><th>Pattern</th><th>Implicit Param</th><th>Override Param</th><th>Ignore Param</th>
+        </tr>
+       
+        <tr><th>Converts Parameterized URL to simplified URL</th><th>mapToUrl</th><td>
+         "Match Group Name": The pattern of the target URL after evaluation of parameters. If a group name is set, a matching parameter key must be provided and the value will replace the group name in the target URL.</td>
+         <td>"Exact Filter", "Reduce": If a parameter key is is set implicitely, both key and value must exactly matched by a parameter pair in the provided (unmapped) URI. It will then be removed</td>
+         <td>- An override could be achieved by hard coding it in the pattern and filterign in implicit param. 
+         On the other hand you can then ignore the parameter</td>
+         <td>The parameter will be removed from the required parameter key set and also from the target URL if it is provided as a group name</td></tr>
+        
+        <tr><th>Resolves URL to Params for evaluating by the backend</th><th>mapFromUrl</th><td>
+        The pattern of the URL to be matched to evaluate parameter resolving</td>
+        <td>Param key/value will be set implicitely</td>
+        <td>Overrides (provided) URL parameter with provided value</td>
+        <td>will remove parameter key/value from result parameter list, even if provided as capturing group name</td></tr>
+      </table>
+    </subsection>
+    
+   <p>N.B. Symbolic group names wenapproot and context could not be ignored or overridden!</p>
+
 <p>
-Use it in the templates, e.g.
+The convenience class MappedTemplateLink class (of type TemplateLink) calls with its methods getRelative or getAbsoluteLink mapToUrl implicitely. 
+Use it in a velocity template like this:
 </p>
 
 <source><![CDATA[
-    $mlink.addPathInfo("world","nice").getRelativeLink()
-    ## may result into /beautiful/world
+  $mlink.addPathInfo("world","nice").getRelativeLink()
+  ## may result into /beautiful/world
 ]]></source>
 
 <p>
+<p>Alternatively you can use the service explicitely in Java, e.g. in a Java Action or other class:</p>
+
+<source><![CDATA[
+   // inside any assembler you may alternatively use annotation @TurbineService( "URLMapperService" ) urlMapper;
+   
+  URLMapperService urlMapper = (URLMapperService) TurbineServices.getInstance().getService(URLMapperService.SERVICE_NAME);
+
+  // Any turbineURI ..e.g. from PoolService or 
+  TurbineURI uri  ... 
+          
+  urlMapper.mapToURL( uri );
+  
+  // use it, e.g by putting it into a velocity context (org.apache.velocity.context.Context(
+  context.put("myLink", link);
+     
+]]></source>
+
+ 
 More examples ...
 </p>
 

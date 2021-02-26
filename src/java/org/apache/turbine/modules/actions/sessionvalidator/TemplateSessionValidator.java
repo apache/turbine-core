@@ -36,9 +36,6 @@ import org.apache.turbine.util.RunData;
  * <p>The Template Service requires a different Session Validator
  * because of the way it handles screens.
  *
- * <p>Note that you will need to set the template.login property to the
- * login template.
- *
  * @see TemplateSecureSessionValidator
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
@@ -75,7 +72,7 @@ public class TemplateSessionValidator
             data.save();
         }
 
-        // make sure we have some way to return a response
+        // Make sure we have some way to return a response
         if (!data.hasScreen() && StringUtils.isEmpty(
                 data.getTemplateInfo().getScreenTemplate()))
         {
@@ -91,7 +88,7 @@ public class TemplateSessionValidator
             handleFormCounterToken(data, false);
         }
 
-        // we do not want to allow both a screen and template parameter.
+        // We do not want to allow both a screen and template parameter.
         // The template parameter is dominant.
         if (data.getTemplateInfo().getScreenTemplate() != null)
         {

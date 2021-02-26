@@ -88,7 +88,7 @@ public class TurbineURLMapperJSONServiceTest extends BaseTestCase
     }
 
     @Test
-    public void testIgnoreParameterForShortURL() throws Exception
+    public void testDetailParameterForShortURL() throws Exception
     {
 
         PipelineData pipelineData = data;
@@ -115,19 +115,30 @@ public class TurbineURLMapperJSONServiceTest extends BaseTestCase
         assertEquals( "scheme://bob/wow/damn2/page/Contact/role/anon", uri2.getAbsoluteLink() );
 
         uri2.addPathInfo( "language", "en" );
-        assertEquals( "scheme://bob/wow/damn2/page/Contact/role/anon/language/en", uri2.getAbsoluteLink() );
+        uri2.addQueryData( "kind", "4" );
+        assertEquals( "scheme://bob/wow/damn2/page/Contact/role/anon/language/en?kind=4", uri2.getAbsoluteLink() );
 
         urlMapper.mapToURL( uri2 );
-        String expectedMappedURL = "/wow/damn2/contact";
+//        String expectedMappedURL = "/wow/damn2/contact/4";
+        // not ignored
+        String expectedMappedURL = "/wow/damn2/contact/4/en";
+
         assertEquals( expectedMappedURL, uri2.getRelativeLink() );
 
         pp.clear();
+    
+//        
+        // scheme://bob/wow/damn2/contact/4/de
+        log.info( "relative uri is now {}", uri2.getRelativeLink() );
         urlMapper.mapFromURL( uri2.getRelativeLink(), pp );
 
         log.info( "parameters: {}", pp );
-        assertEquals( 2, pp.keySet().size() );
+        assertEquals( 4, pp.keySet().size() );
         assertEquals( "anon", pp.getString( "role" ) );
         assertEquals( "Contact", pp.getString( "page" ) );
+        assertEquals( "4", pp.getString( "kind" ) );
+        // not ignored
+        assertEquals( "en", pp.getString( "language" ) );
 
         uri2 = new TemplateURI( pipelineData.getRunData() );
         uri2.clearResponse();
@@ -137,6 +148,68 @@ public class TurbineURLMapperJSONServiceTest extends BaseTestCase
         assertEquals( expectedMappedURL, uri2.getRelativeLink() );
 
     }
+    
+    @Test
+    public void testIgnoreParameterForShortURL() throws Exception
+    {
+
+        PipelineData pipelineData = data;
+
+        assertNotNull( urlMapper );
+
+        ParameterParser pp = pipelineData.get( Turbine.class, ParameterParser.class );
+        assertNotNull( pp );
+        assertTrue( pp.keySet().isEmpty() );
+        pp.clear();
+
+        urlMapper.mapFromURL( "/app/context/info", pp );
+
+        log.info( "parameters: {}", pp );
+        assertEquals( 2, pp.keySet().size() );
+        assertEquals( "anon", pp.getString( "role" ) );
+        assertEquals( "Info", pp.getString( "page" ) );
+
+        TemplateURI uri2 = new TemplateURI( pipelineData.getRunData() );
+        uri2.clearResponse();
+        uri2.addPathInfo( pp );
+
+        // this is an artifical url
+        assertEquals( "scheme://bob/wow/damn2/page/Info/role/anon", uri2.getAbsoluteLink() );
+
+        uri2.addPathInfo( "language", "en" );
+        uri2.addQueryData( "kind", "4" );
+        assertEquals( "scheme://bob/wow/damn2/page/Info/role/anon/language/en?kind=4", uri2.getAbsoluteLink() );
+
+        urlMapper.mapToURL( uri2 );
+
+        //  ignored
+        String expectedMappedURL = "/wow/damn2/info/4";
+
+        assertEquals( expectedMappedURL, uri2.getRelativeLink() );
+
+        pp.clear();
+       
+        uri2.addPathInfo( "de", "" );
+        // scheme://bob/wow/damn2/info/4/de/
+        log.info( "relative uri is now {}", uri2.getRelativeLink() );
+        urlMapper.mapFromURL( uri2.getRelativeLink(), pp );
+
+        log.info( "parameters: {}", pp );
+        assertEquals( 3, pp.keySet().size() );
+        assertEquals( "anon", pp.getString( "role" ) );
+        assertEquals( "Info", pp.getString( "page" ) );
+        assertEquals( "4", pp.getString( "kind" ) );
+        // language ignored
+
+        uri2 = new TemplateURI( pipelineData.getRunData() );
+        uri2.clearResponse();
+        uri2.addPathInfo( pp );
+
+        urlMapper.mapToURL( uri2 );
+        assertEquals( expectedMappedURL, uri2.getRelativeLink() );
+
+    }
+
 
     @Test
     public void testNonOptionalParameterForShortURL() throws Exception

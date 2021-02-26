@@ -154,7 +154,7 @@
 </section>
 
 
-<section name="Migrating to Functioal Interfaces and Rundata">
+<section name="Migrating to Functional Interfaces and Rundata">
 	
 	<p>Functional interfaces are now used instead of abstract classes. Rundata should be removed and instead of PipelineData used, but we keep it for now. 
      As a result <strong>AbstractValve was removed</strong> and with it the method <strong>getRunData(pipelineData)</strong> is gone.
@@ -193,7 +193,7 @@
 
 
 
-<section name="Migrating file upload to Parts">
+<section name="Migrating File Upload to Parts">
 	
 	<p>
 		In turbine-4.0.1 and prior, file uploads were processed through the

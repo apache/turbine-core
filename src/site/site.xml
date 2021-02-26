@@ -90,7 +90,8 @@
         <item name="Python Howto"        href="/howto/python-howto.html"/>
         <item name="Security Howto"      href="/howto/security-howto.html"/>
         <item name="Services Howto"      href="/howto/services-howto.html"/>
-        <item name="URL rewriting Howto" href="/howto/url-rewriting-howto.html"/>
+        <item name="URL Simplifier Howto" href="/howto/url-mapper-howto.html"/>
+        <item name="URL Rewriting Howto" href="/howto/url-rewriting-howto.html"/>
         <item name="Velocity Context Howto" href="/howto/context-howto.html"/>
         <item name="Velocity Site Howto" href="/howto/velocity-site-howto.html"/>
         <item name="VelocityOnlyLayout Howto" href="/howto/velocityonlylayout-howto.html"/>

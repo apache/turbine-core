@@ -203,7 +203,7 @@ TurbineFoo.fooMethod1();
     </p>
 
     <p>
-      init() and shutdown() applies to Turbine 2.1/2.2 This might change
+      init() and shutdown() applies to Turbine 2-5 This might change
       with the lifecycle interfaces in a later release.
     </p>
 </section>

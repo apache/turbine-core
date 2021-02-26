@@ -19,7 +19,6 @@
 -->
 <pipeline name="default">
   <valves>
-    <!--valve>org.apache.turbine.services.urlmapper.URLMapperValve</valve-->
     <valve>org.apache.turbine.pipeline.DefaultSetEncodingValve</valve>
     <valve>org.apache.turbine.pipeline.DetermineActionValve</valve>
     <valve>org.apache.turbine.pipeline.DetermineTargetValve</valve>
@@ -27,6 +26,7 @@
     <valve>org.apache.turbine.pipeline.DefaultLoginValve</valve>
     <valve>org.apache.turbine.pipeline.DefaultSessionValidationValve</valve>
     <valve>org.apache.turbine.pipeline.DefaultACLCreationValve</valve>
+    <valve>org.apache.turbine.services.urlmapper.URLMapperValve</valve>
     <valve>org.apache.turbine.pipeline.ExecutePageValve</valve>
     <valve>org.apache.turbine.pipeline.CleanUpValve</valve>
     <valve>org.apache.turbine.pipeline.DetermineRedirectRequestedValve</valve>

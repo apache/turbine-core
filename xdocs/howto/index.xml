@@ -43,7 +43,8 @@
         <li><a href="python-howto.html">Python Howto</a></li>
         <li><a href="security-howto.html">Security Howto</a></li>
         <li><a href="services-howto.html">Services Howto</a></li>
-        <li><a href="url-rewriting-howto.html">URL rewriting Howto</a></li>
+        <li><strong>NEW!</strong> <a href="url-mapper-howto.html">URL Simplifier Howto</a></li>
+        <li><a href="url-rewriting-howto.html">URL Rewriting Howto</a></li>
         <li><a href="context-howto.html">Velocity Context Howto</a></li>
         <li><a href="velocity-site-howto.html">Velocity Site Howto</a></li>
         <li><a href="velocityonlylayout-howto.html">VelocityOnlyLayout Howto</a></li>
