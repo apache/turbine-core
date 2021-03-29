@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
-    <version>7</version>
+    <version>8-SNAPSHOT</version>
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
@@ -968,6 +968,10 @@
             <groupId>avalon-logkit</groupId>
             <artifactId>avalon-logkit</artifactId>
         </exclusion>
+         <exclusion><!-- already provided -->
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-1.2-api</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <!-- use default dbcp2 from torque-runtime -->
@@ -1063,19 +1067,17 @@
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-web</artifactId>
       <version>${turbine.log4j2.version}</version>
-      <optional>true</optional>
     </dependency>
     <!-- optional log4j1.2 bridge instead of log4j -->
     <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-1.2-api</artifactId>
-        <version>${turbine.log4j2.version}</version>
-        <optional>true</optional>
+       <groupId>org.apache.logging.log4j</groupId>
+       <artifactId>log4j-1.2-api</artifactId>
+       <version>${turbine.log4j2.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.velocity</groupId>
       <artifactId>velocity-engine-core</artifactId>
-      <version>2.1</version>
+      <version>2.3</version>
     </dependency>
     <!-- with the url mapper we need xml support -->
  	<dependency>
@@ -1119,7 +1121,7 @@
      <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.13.1</version>
+        <version>4.13.2</version>
         <scope>test</scope>
       </dependency>
   </dependencies>
@@ -1296,7 +1298,6 @@
     <fulcrum.parser>2.0.1</fulcrum.parser>
     <fulcrum.security>2.0.0</fulcrum.security>
     <torque.version>5.0</torque.version>
-    <junit.platform>1.7.0</junit.platform>
     <doclint>none</doclint>
     <docker.testcontainers.version>1.15.1</docker.testcontainers.version>
     <jacoco.skip>true</jacoco.skip>
