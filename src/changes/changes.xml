@@ -25,6 +25,10 @@
 
   <body>
      <release version="5.1" date="in Subversion">
+        <action type="update" dev="painter">
+        Updated dependencies: yauaa to 5.23, commons-lang3 to 3.12, jython-standalone to 2.7.2
+        Update turbine-parent 8 (released)
+      </action>
         <action type="update" dev="gk">
         Update yauaa to 5.21 ( CVE-2020-13956),  junit to 4.13.1 (CVE-2020-15250)
       </action>
