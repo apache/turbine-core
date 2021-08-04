@@ -23,8 +23,11 @@ import org.apache.logging.log4j.LogManager;
 /**
  * A Log4J2 wrapper class for Logger.
  *
+ * Use org.apache.fulcrum.yaafi.framework.logger.Log4j2Logger instead.
+ * 
  * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
  */
+@Deprecated
 public final class Log4j2Logger
         implements Logger
 {

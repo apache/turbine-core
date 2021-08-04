@@ -252,7 +252,7 @@ public class TurbineYaafiComponentService
     }
 
     /**
-     * Create the Avalon logger to be passed to YAAFI
+     * Create the Avalon logger to be passed to YAAFI.
      * @return an Avalon Logger
      */
     protected Logger createAvalonLogger()

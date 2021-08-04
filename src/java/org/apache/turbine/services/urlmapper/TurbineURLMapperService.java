@@ -204,6 +204,8 @@ public class TurbineURLMapperService
                 break;
             }
         }
+        
+        log.debug("mapped to uri: {} ", uri);
     }
 
     /**
@@ -239,6 +241,8 @@ public class TurbineURLMapperService
                 // remove ignore parameters
                 urlMap.getIgnoreParameters().keySet().forEach(k ->
                         pp.remove(k));
+                
+                log.debug("mapped {} params from url {} ", pp.getKeys().length, url);
 
                 break;
             }

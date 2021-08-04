@@ -446,7 +446,7 @@ public class DefaultUserImpl implements User
      * @return A Map.
      */
     @Override
-    public Map<String, Object> getPermStorage()
+    public synchronized Map<String, Object> getPermStorage()
     {
         if (permStorage == null)
         {
