@@ -27,7 +27,7 @@
  <body>
 
  <section name="What is Apache Turbine?">
-
+ 
  <p>
     Apache Turbine&#8482; is a servlet based framework that allows experienced Java
     developers to quickly build secure web applications. Parts of
@@ -188,6 +188,9 @@ the current Turbine code.
         repository</a></li>
  
 </ul>
+
+ <img src="images/logo.gif" alt="Apache Turbine"></img>
+
 
 </section>
 

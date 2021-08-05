@@ -32,10 +32,19 @@
   <skin>
     <groupId>org.apache.maven.skins</groupId>
     <artifactId>maven-fluido-skin</artifactId>
-    <version>1.8</version>
+    <version>1.9</version>
   </skin>
 
   <body>
+  
+     <head>
+      <![CDATA[ 
+      <link rel="icon" type="image/png" sizes="48x48" href="./images/favicon.ico"> 
+      <link rel="icon" type="image/png" sizes="48x48" href="../images/favicon.ico"> 
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">       
+       ]]>
+    </head>
+  
     <menu name="General Information">
       <item name="Overview"              href="/index.html"/>
       <item name="Features"              href="/features.html"/>
@@ -105,11 +114,22 @@
       <item name="How To Help"           href="/how-to-help.html"/>
       <item name="Todo"                  href="/todo.html"/>
     </menu>
+ 
+      
   </body>
-  <custom>
-      <fluidoSkin>
+  
+  <custom>   
+   <fluidoSkin>
         <topBarEnabled>false</topBarEnabled>
+        <!-- topBarIcon>
+        <name>Apache Turbine</name>
+        <alt>Apache Turbine</alt>
+        <src>/images/turbine-project-apache-separate.png</src>
+        <href>https://turbine.apache.org/</href>
+      </topBarIcon>
+      <topBarContainerStyle>width: 95%;</topBarContainerStyle-->
         <sideBarEnabled>true</sideBarEnabled>
       </fluidoSkin>
   </custom>
+  
 </project>
