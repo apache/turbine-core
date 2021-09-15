@@ -1,0 +1,375 @@
+<!DOCTYPE HTML>
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.apache.turbine.services.security;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">/*</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * Licensed to the Apache Software Foundation (ASF) under one</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * or more contributor license agreements.  See the NOTICE file</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * distributed with this work for additional information</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * regarding copyright ownership.  The ASF licenses this file</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * to you under the Apache License, Version 2.0 (the</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * "License"); you may not use this file except in compliance</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * with the License.  You may obtain a copy of the License at</a>
+<span class="sourceLineNo">011</span><a id="line.11"> *</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *   http://www.apache.org/licenses/LICENSE-2.0</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * Unless required by applicable law or agreed to in writing,</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * software distributed under the License is distributed on an</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * KIND, either express or implied.  See the License for the</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * specific language governing permissions and limitations</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * under the License.</a>
+<span class="sourceLineNo">020</span><a id="line.20"> */</a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">import java.util.List;</a>
+<span class="sourceLineNo">023</span><a id="line.23"></a>
+<span class="sourceLineNo">024</span><a id="line.24">import org.apache.commons.configuration2.Configuration;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import org.apache.fulcrum.security.acl.AccessControlList;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import org.apache.fulcrum.security.util.DataBackendException;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import org.apache.fulcrum.security.util.EntityExistsException;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import org.apache.fulcrum.security.util.PasswordMismatchException;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import org.apache.fulcrum.security.util.UnknownEntityException;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import org.apache.turbine.om.security.User;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import org.apache.turbine.services.InitializationException;</a>
+<span class="sourceLineNo">032</span><a id="line.32"></a>
+<span class="sourceLineNo">033</span><a id="line.33">/**</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * An UserManager performs {@link org.apache.turbine.om.security.User} objects</a>
+<span class="sourceLineNo">035</span><a id="line.35"> * related tasks on behalf of the</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * {@link org.apache.turbine.services.security.DefaultSecurityService}.</a>
+<span class="sourceLineNo">037</span><a id="line.37"> *</a>
+<span class="sourceLineNo">038</span><a id="line.38"> * The responsibilities of this class include loading data of an user from the</a>
+<span class="sourceLineNo">039</span><a id="line.39"> * storage and putting them into the</a>
+<span class="sourceLineNo">040</span><a id="line.40"> * {@link org.apache.turbine.om.security.User} objects, saving those data</a>
+<span class="sourceLineNo">041</span><a id="line.41"> * to the permanent storage, and authenticating users.</a>
+<span class="sourceLineNo">042</span><a id="line.42"> *</a>
+<span class="sourceLineNo">043</span><a id="line.43"> * @author &lt;a href="mailto:Rafal.Krzewski@e-point.pl"&gt;Rafal Krzewski&lt;/a&gt;</a>
+<span class="sourceLineNo">044</span><a id="line.44"> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;</a>
+<span class="sourceLineNo">045</span><a id="line.45"> * @version $Id$</a>
+<span class="sourceLineNo">046</span><a id="line.46"> */</a>
+<span class="sourceLineNo">047</span><a id="line.47">public interface UserManager</a>
+<span class="sourceLineNo">048</span><a id="line.48">{</a>
+<span class="sourceLineNo">049</span><a id="line.49">    /**</a>
+<span class="sourceLineNo">050</span><a id="line.50">     * Initializes the UserManager</a>
+<span class="sourceLineNo">051</span><a id="line.51">     *</a>
+<span class="sourceLineNo">052</span><a id="line.52">     * @param conf A Configuration object to init this Manager</a>
+<span class="sourceLineNo">053</span><a id="line.53">     *</a>
+<span class="sourceLineNo">054</span><a id="line.54">     * @throws InitializationException When something went wrong.</a>
+<span class="sourceLineNo">055</span><a id="line.55">     */</a>
+<span class="sourceLineNo">056</span><a id="line.56">    void init(Configuration conf)</a>
+<span class="sourceLineNo">057</span><a id="line.57">        throws InitializationException;</a>
+<span class="sourceLineNo">058</span><a id="line.58"></a>
+<span class="sourceLineNo">059</span><a id="line.59">    /**</a>
+<span class="sourceLineNo">060</span><a id="line.60">     * Check whether a specified user's account exists.</a>
+<span class="sourceLineNo">061</span><a id="line.61">     *</a>
+<span class="sourceLineNo">062</span><a id="line.62">     * The login name is used for looking up the account.</a>
+<span class="sourceLineNo">063</span><a id="line.63">     *</a>
+<span class="sourceLineNo">064</span><a id="line.64">     * @param user The user to be checked.</a>
+<span class="sourceLineNo">065</span><a id="line.65">     * @return true if the specified account exists</a>
+<span class="sourceLineNo">066</span><a id="line.66">     * @throws DataBackendException if there was an error accessing the data</a>
+<span class="sourceLineNo">067</span><a id="line.67">     *         backend.</a>
+<span class="sourceLineNo">068</span><a id="line.68">     */</a>
+<span class="sourceLineNo">069</span><a id="line.69">    boolean accountExists(User user)</a>
+<span class="sourceLineNo">070</span><a id="line.70">            throws DataBackendException;</a>
+<span class="sourceLineNo">071</span><a id="line.71"></a>
+<span class="sourceLineNo">072</span><a id="line.72">    /**</a>
+<span class="sourceLineNo">073</span><a id="line.73">     * Check whether a specified user's account exists.</a>
+<span class="sourceLineNo">074</span><a id="line.74">     *</a>
+<span class="sourceLineNo">075</span><a id="line.75">     * The login name is used for looking up the account.</a>
+<span class="sourceLineNo">076</span><a id="line.76">     *</a>
+<span class="sourceLineNo">077</span><a id="line.77">     * @param userName The name of the user to be checked.</a>
+<span class="sourceLineNo">078</span><a id="line.78">     * @return true if the specified account exists</a>
+<span class="sourceLineNo">079</span><a id="line.79">     * @throws DataBackendException if there was an error accessing the data</a>
+<span class="sourceLineNo">080</span><a id="line.80">     *         backend.</a>
+<span class="sourceLineNo">081</span><a id="line.81">     */</a>
+<span class="sourceLineNo">082</span><a id="line.82">    boolean accountExists(String userName)</a>
+<span class="sourceLineNo">083</span><a id="line.83">            throws DataBackendException;</a>
+<span class="sourceLineNo">084</span><a id="line.84"></a>
+<span class="sourceLineNo">085</span><a id="line.85">    /**</a>
+<span class="sourceLineNo">086</span><a id="line.86">     * Retrieve a user from persistent storage using username as the</a>
+<span class="sourceLineNo">087</span><a id="line.87">     * key.</a>
+<span class="sourceLineNo">088</span><a id="line.88">     *</a>
+<span class="sourceLineNo">089</span><a id="line.89">     * @param &lt;U&gt; user class</a>
+<span class="sourceLineNo">090</span><a id="line.90">     * @param username the name of the user.</a>
+<span class="sourceLineNo">091</span><a id="line.91">     * @return an User object.</a>
+<span class="sourceLineNo">092</span><a id="line.92">     * @throws UnknownEntityException if the user's record does not</a>
+<span class="sourceLineNo">093</span><a id="line.93">     *         exist in the database.</a>
+<span class="sourceLineNo">094</span><a id="line.94">     * @throws DataBackendException if there is a problem accessing the</a>
+<span class="sourceLineNo">095</span><a id="line.95">     *         storage.</a>
+<span class="sourceLineNo">096</span><a id="line.96">     */</a>
+<span class="sourceLineNo">097</span><a id="line.97">    &lt;U extends User&gt; U retrieve(String username)</a>
+<span class="sourceLineNo">098</span><a id="line.98">            throws UnknownEntityException, DataBackendException;</a>
+<span class="sourceLineNo">099</span><a id="line.99"></a>
+<span class="sourceLineNo">100</span><a id="line.100">    /**</a>
+<span class="sourceLineNo">101</span><a id="line.101">     * Retrieve a list of users that meet the specified criteria.</a>
+<span class="sourceLineNo">102</span><a id="line.102">     *</a>
+<span class="sourceLineNo">103</span><a id="line.103">     * As the keys for the criteria, you should use the constants that</a>
+<span class="sourceLineNo">104</span><a id="line.104">     * are defined in {@link User} interface, plus the names</a>
+<span class="sourceLineNo">105</span><a id="line.105">     * of the custom attributes you added to your user representation</a>
+<span class="sourceLineNo">106</span><a id="line.106">     * in the data storage. Use verbatim names of the attributes -</a>
+<span class="sourceLineNo">107</span><a id="line.107">     * without table name prefix in case of DB implementation.</a>
+<span class="sourceLineNo">108</span><a id="line.108">     *</a>
+<span class="sourceLineNo">109</span><a id="line.109">     * @param criteria The criteria of selection.</a>
+<span class="sourceLineNo">110</span><a id="line.110">     * @return a List of users meeting the criteria.</a>
+<span class="sourceLineNo">111</span><a id="line.111">     * @throws DataBackendException if there is a problem accessing the</a>
+<span class="sourceLineNo">112</span><a id="line.112">     *         storage.</a>
+<span class="sourceLineNo">113</span><a id="line.113">     */</a>
+<span class="sourceLineNo">114</span><a id="line.114">    List&lt;? extends User&gt; retrieveList(Object criteria)</a>
+<span class="sourceLineNo">115</span><a id="line.115">        throws DataBackendException;</a>
+<span class="sourceLineNo">116</span><a id="line.116"></a>
+<span class="sourceLineNo">117</span><a id="line.117">    /**</a>
+<span class="sourceLineNo">118</span><a id="line.118">     * Retrieve a user from persistent storage using username as the</a>
+<span class="sourceLineNo">119</span><a id="line.119">     * key, and authenticate the user. The implementation may chose</a>
+<span class="sourceLineNo">120</span><a id="line.120">     * to authenticate to the server as the user whose data is being</a>
+<span class="sourceLineNo">121</span><a id="line.121">     * retrieved.</a>
+<span class="sourceLineNo">122</span><a id="line.122">     *</a>
+<span class="sourceLineNo">123</span><a id="line.123">     * @param &lt;U&gt; user class</a>
+<span class="sourceLineNo">124</span><a id="line.124">     * @param username the name of the user.</a>
+<span class="sourceLineNo">125</span><a id="line.125">     * @param password the user supplied password.</a>
+<span class="sourceLineNo">126</span><a id="line.126">     * @return an User object.</a>
+<span class="sourceLineNo">127</span><a id="line.127">     * @throws PasswordMismatchException if the supplied password was incorrect.</a>
+<span class="sourceLineNo">128</span><a id="line.128">     * @throws UnknownEntityException if the user's record does not</a>
+<span class="sourceLineNo">129</span><a id="line.129">     *         exist in the database.</a>
+<span class="sourceLineNo">130</span><a id="line.130">     * @throws DataBackendException if there is a problem accessing the storage.</a>
+<span class="sourceLineNo">131</span><a id="line.131">     */</a>
+<span class="sourceLineNo">132</span><a id="line.132">    &lt;U extends User&gt; U retrieve(String username, String password)</a>
+<span class="sourceLineNo">133</span><a id="line.133">            throws PasswordMismatchException, UnknownEntityException,</a>
+<span class="sourceLineNo">134</span><a id="line.134">            DataBackendException;</a>
+<span class="sourceLineNo">135</span><a id="line.135"></a>
+<span class="sourceLineNo">136</span><a id="line.136">    /**</a>
+<span class="sourceLineNo">137</span><a id="line.137">     * Save an User object to persistent storage. User's record is</a>
+<span class="sourceLineNo">138</span><a id="line.138">     * required to exist in the storage.</a>
+<span class="sourceLineNo">139</span><a id="line.139">     *</a>
+<span class="sourceLineNo">140</span><a id="line.140">     * @param user an User object to store.</a>
+<span class="sourceLineNo">141</span><a id="line.141">     * @throws UnknownEntityException if the user's record does not</a>
+<span class="sourceLineNo">142</span><a id="line.142">     *         exist in the database.</a>
+<span class="sourceLineNo">143</span><a id="line.143">     * @throws DataBackendException if there is a problem accessing the storage.</a>
+<span class="sourceLineNo">144</span><a id="line.144">     */</a>
+<span class="sourceLineNo">145</span><a id="line.145">    void store(User user)</a>
+<span class="sourceLineNo">146</span><a id="line.146">            throws UnknownEntityException, DataBackendException;</a>
+<span class="sourceLineNo">147</span><a id="line.147"></a>
+<span class="sourceLineNo">148</span><a id="line.148">    /**</a>
+<span class="sourceLineNo">149</span><a id="line.149">     * Saves User data when the session is unbound. The user account is required</a>
+<span class="sourceLineNo">150</span><a id="line.150">     * to exist in the storage.</a>
+<span class="sourceLineNo">151</span><a id="line.151">     *</a>
+<span class="sourceLineNo">152</span><a id="line.152">     * LastLogin, AccessCounter, persistent pull tools, and any data stored</a>
+<span class="sourceLineNo">153</span><a id="line.153">     * in the permData hashtable that is not mapped to a column will be saved.</a>
+<span class="sourceLineNo">154</span><a id="line.154">     *</a>
+<span class="sourceLineNo">155</span><a id="line.155">     * @param user the user in the session</a>
+<span class="sourceLineNo">156</span><a id="line.156">     *</a>
+<span class="sourceLineNo">157</span><a id="line.157">     * @throws UnknownEntityException if the user's account does not</a>
+<span class="sourceLineNo">158</span><a id="line.158">     *            exist in the database.</a>
+<span class="sourceLineNo">159</span><a id="line.159">     * @throws DataBackendException if there is a problem accessing the</a>
+<span class="sourceLineNo">160</span><a id="line.160">     *            storage.</a>
+<span class="sourceLineNo">161</span><a id="line.161">     */</a>
+<span class="sourceLineNo">162</span><a id="line.162">    void saveOnSessionUnbind(User user)</a>
+<span class="sourceLineNo">163</span><a id="line.163">            throws UnknownEntityException, DataBackendException;</a>
+<span class="sourceLineNo">164</span><a id="line.164"></a>
+<span class="sourceLineNo">165</span><a id="line.165">    /**</a>
+<span class="sourceLineNo">166</span><a id="line.166">     * Authenticate an User with the specified password. If authentication</a>
+<span class="sourceLineNo">167</span><a id="line.167">     * is successful the method returns nothing. If there are any problems,</a>
+<span class="sourceLineNo">168</span><a id="line.168">     * exception was thrown.</a>
+<span class="sourceLineNo">169</span><a id="line.169">     *</a>
+<span class="sourceLineNo">170</span><a id="line.170">     * @param user an User object to authenticate.</a>
+<span class="sourceLineNo">171</span><a id="line.171">     * @param password the user supplied password.</a>
+<span class="sourceLineNo">172</span><a id="line.172">     * @throws PasswordMismatchException if the supplied password was incorrect.</a>
+<span class="sourceLineNo">173</span><a id="line.173">     * @throws UnknownEntityException if the user's record does not</a>
+<span class="sourceLineNo">174</span><a id="line.174">     *         exist in the database.</a>
+<span class="sourceLineNo">175</span><a id="line.175">     * @throws DataBackendException if there is a problem accessing the storage.</a>
+<span class="sourceLineNo">176</span><a id="line.176">     */</a>
+<span class="sourceLineNo">177</span><a id="line.177">    void authenticate(User user, String password)</a>
+<span class="sourceLineNo">178</span><a id="line.178">            throws PasswordMismatchException, UnknownEntityException,</a>
+<span class="sourceLineNo">179</span><a id="line.179">            DataBackendException;</a>
+<span class="sourceLineNo">180</span><a id="line.180"></a>
+<span class="sourceLineNo">181</span><a id="line.181">    /**</a>
+<span class="sourceLineNo">182</span><a id="line.182">     * Creates new user account with specified attributes.</a>
+<span class="sourceLineNo">183</span><a id="line.183">     *</a>
+<span class="sourceLineNo">184</span><a id="line.184">     * @param user the object describing account to be created.</a>
+<span class="sourceLineNo">185</span><a id="line.185">     * @param initialPassword password for the new user</a>
+<span class="sourceLineNo">186</span><a id="line.186">     * @throws UnknownEntityException if the user account cannot be created.</a>
+<span class="sourceLineNo">187</span><a id="line.187">     * @throws DataBackendException if there was an error accessing the data</a>
+<span class="sourceLineNo">188</span><a id="line.188">     *         backend.</a>
+<span class="sourceLineNo">189</span><a id="line.189">     * @throws EntityExistsException if the user account already exists.</a>
+<span class="sourceLineNo">190</span><a id="line.190">     */</a>
+<span class="sourceLineNo">191</span><a id="line.191">    void createAccount(User user, String initialPassword)</a>
+<span class="sourceLineNo">192</span><a id="line.192">            throws UnknownEntityException, EntityExistsException, DataBackendException;</a>
+<span class="sourceLineNo">193</span><a id="line.193"></a>
+<span class="sourceLineNo">194</span><a id="line.194">    /**</a>
+<span class="sourceLineNo">195</span><a id="line.195">     * Removes an user account from the system.</a>
+<span class="sourceLineNo">196</span><a id="line.196">     *</a>
+<span class="sourceLineNo">197</span><a id="line.197">     * @param user the object describing the account to be removed.</a>
+<span class="sourceLineNo">198</span><a id="line.198">     * @throws DataBackendException if there was an error accessing the data</a>
+<span class="sourceLineNo">199</span><a id="line.199">     *         backend.</a>
+<span class="sourceLineNo">200</span><a id="line.200">     * @throws UnknownEntityException if the user account is not present.</a>
+<span class="sourceLineNo">201</span><a id="line.201">     */</a>
+<span class="sourceLineNo">202</span><a id="line.202">    void removeAccount(User user)</a>
+<span class="sourceLineNo">203</span><a id="line.203">            throws UnknownEntityException, DataBackendException;</a>
+<span class="sourceLineNo">204</span><a id="line.204"></a>
+<span class="sourceLineNo">205</span><a id="line.205">    /**</a>
+<span class="sourceLineNo">206</span><a id="line.206">     * Change the password for an User.</a>
+<span class="sourceLineNo">207</span><a id="line.207">     *</a>
+<span class="sourceLineNo">208</span><a id="line.208">     * @param user an User to change password for.</a>
+<span class="sourceLineNo">209</span><a id="line.209">     * @param oldPassword the current password suplied by the user.</a>
+<span class="sourceLineNo">210</span><a id="line.210">     * @param newPassword the current password requested by the user.</a>
+<span class="sourceLineNo">211</span><a id="line.211">     * @throws PasswordMismatchException if the supplied password was incorrect.</a>
+<span class="sourceLineNo">212</span><a id="line.212">     * @throws UnknownEntityException if the user's record does not</a>
+<span class="sourceLineNo">213</span><a id="line.213">     *         exist in the database.</a>
+<span class="sourceLineNo">214</span><a id="line.214">     * @throws DataBackendException if there is a problem accessing the storage.</a>
+<span class="sourceLineNo">215</span><a id="line.215">     */</a>
+<span class="sourceLineNo">216</span><a id="line.216">    void changePassword(User user, String oldPassword,</a>
+<span class="sourceLineNo">217</span><a id="line.217">                        String newPassword)</a>
+<span class="sourceLineNo">218</span><a id="line.218">            throws PasswordMismatchException, UnknownEntityException,</a>
+<span class="sourceLineNo">219</span><a id="line.219">            DataBackendException;</a>
+<span class="sourceLineNo">220</span><a id="line.220"></a>
+<span class="sourceLineNo">221</span><a id="line.221">    /**</a>
+<span class="sourceLineNo">222</span><a id="line.222">     * Forcibly sets new password for an User.</a>
+<span class="sourceLineNo">223</span><a id="line.223">     *</a>
+<span class="sourceLineNo">224</span><a id="line.224">     * This is supposed by the administrator to change the forgotten or</a>
+<span class="sourceLineNo">225</span><a id="line.225">     * compromised passwords. Certain implementatations of this feature</a>
+<span class="sourceLineNo">226</span><a id="line.226">     * would require administrative level access to the authenticating</a>
+<span class="sourceLineNo">227</span><a id="line.227">     * server / program.</a>
+<span class="sourceLineNo">228</span><a id="line.228">     *</a>
+<span class="sourceLineNo">229</span><a id="line.229">     * @param user an User to change password for.</a>
+<span class="sourceLineNo">230</span><a id="line.230">     * @param password the new password.</a>
+<span class="sourceLineNo">231</span><a id="line.231">     * @throws UnknownEntityException if the user's record does not</a>
+<span class="sourceLineNo">232</span><a id="line.232">     *            exist in the database.</a>
+<span class="sourceLineNo">233</span><a id="line.233">     * @throws DataBackendException if there is a problem accessing the storage.</a>
+<span class="sourceLineNo">234</span><a id="line.234">     */</a>
+<span class="sourceLineNo">235</span><a id="line.235">    void forcePassword(User user, String password)</a>
+<span class="sourceLineNo">236</span><a id="line.236">            throws UnknownEntityException, DataBackendException;</a>
+<span class="sourceLineNo">237</span><a id="line.237"></a>
+<span class="sourceLineNo">238</span><a id="line.238">    /**</a>
+<span class="sourceLineNo">239</span><a id="line.239">     * Constructs an User object to represent an anonymous user of the</a>
+<span class="sourceLineNo">240</span><a id="line.240">     * application.</a>
+<span class="sourceLineNo">241</span><a id="line.241">     *</a>
+<span class="sourceLineNo">242</span><a id="line.242">     * @param &lt;U&gt; user class</a>
+<span class="sourceLineNo">243</span><a id="line.243">     * @return An anonymous Turbine User.</a>
+<span class="sourceLineNo">244</span><a id="line.244">     * @throws UnknownEntityException</a>
+<span class="sourceLineNo">245</span><a id="line.245">     *             if the anonymous User object couldn't be constructed.</a>
+<span class="sourceLineNo">246</span><a id="line.246">     */</a>
+<span class="sourceLineNo">247</span><a id="line.247">    &lt;U extends User&gt; U getAnonymousUser() throws UnknownEntityException;</a>
+<span class="sourceLineNo">248</span><a id="line.248"></a>
+<span class="sourceLineNo">249</span><a id="line.249">    /**</a>
+<span class="sourceLineNo">250</span><a id="line.250">     * Checks whether a passed user object matches the anonymous user pattern</a>
+<span class="sourceLineNo">251</span><a id="line.251">     * according to the configured user manager</a>
+<span class="sourceLineNo">252</span><a id="line.252">     *</a>
+<span class="sourceLineNo">253</span><a id="line.253">     * @param u a user object</a>
+<span class="sourceLineNo">254</span><a id="line.254">     *</a>
+<span class="sourceLineNo">255</span><a id="line.255">     * @return True if this is an anonymous user</a>
+<span class="sourceLineNo">256</span><a id="line.256">     *</a>
+<span class="sourceLineNo">257</span><a id="line.257">     */</a>
+<span class="sourceLineNo">258</span><a id="line.258">    boolean isAnonymousUser(User u);</a>
+<span class="sourceLineNo">259</span><a id="line.259"></a>
+<span class="sourceLineNo">260</span><a id="line.260">    /**</a>
+<span class="sourceLineNo">261</span><a id="line.261">     * Construct a blank User object.</a>
+<span class="sourceLineNo">262</span><a id="line.262">     *</a>
+<span class="sourceLineNo">263</span><a id="line.263">     * This method calls getUserClass, and then creates a new object using the</a>
+<span class="sourceLineNo">264</span><a id="line.264">     * default constructor.</a>
+<span class="sourceLineNo">265</span><a id="line.265">     *</a>
+<span class="sourceLineNo">266</span><a id="line.266">     * @param &lt;U&gt; user class</a>
+<span class="sourceLineNo">267</span><a id="line.267">     * @return an object implementing User interface.</a>
+<span class="sourceLineNo">268</span><a id="line.268">     * @throws DataBackendException</a>
+<span class="sourceLineNo">269</span><a id="line.269">     *             if the object could not be instantiated.</a>
+<span class="sourceLineNo">270</span><a id="line.270">     */</a>
+<span class="sourceLineNo">271</span><a id="line.271">    &lt;U extends User&gt; U getUserInstance() throws DataBackendException;</a>
+<span class="sourceLineNo">272</span><a id="line.272"></a>
+<span class="sourceLineNo">273</span><a id="line.273">    /**</a>
+<span class="sourceLineNo">274</span><a id="line.274">     * Construct a blank User object.</a>
+<span class="sourceLineNo">275</span><a id="line.275">     *</a>
+<span class="sourceLineNo">276</span><a id="line.276">     * This method calls getUserClass, and then creates a new object using the</a>
+<span class="sourceLineNo">277</span><a id="line.277">     * default constructor.</a>
+<span class="sourceLineNo">278</span><a id="line.278">     *</a>
+<span class="sourceLineNo">279</span><a id="line.279">     * @param &lt;U&gt; user class</a>
+<span class="sourceLineNo">280</span><a id="line.280">     * @param userName</a>
+<span class="sourceLineNo">281</span><a id="line.281">     *            The name of the user.</a>
+<span class="sourceLineNo">282</span><a id="line.282">     *</a>
+<span class="sourceLineNo">283</span><a id="line.283">     * @return an object implementing User interface.</a>
+<span class="sourceLineNo">284</span><a id="line.284">     * @throws DataBackendException</a>
+<span class="sourceLineNo">285</span><a id="line.285">     *             if the object could not be instantiated.</a>
+<span class="sourceLineNo">286</span><a id="line.286">     */</a>
+<span class="sourceLineNo">287</span><a id="line.287">    &lt;U extends User&gt; U getUserInstance(String userName) throws DataBackendException;</a>
+<span class="sourceLineNo">288</span><a id="line.288"></a>
+<span class="sourceLineNo">289</span><a id="line.289">    /**</a>
+<span class="sourceLineNo">290</span><a id="line.290">     * Return a Class object representing the system's chosen implementation of</a>
+<span class="sourceLineNo">291</span><a id="line.291">     * of ACL interface for the given user</a>
+<span class="sourceLineNo">292</span><a id="line.292">     *</a>
+<span class="sourceLineNo">293</span><a id="line.293">     * @param &lt;A&gt; ACL class</a>
+<span class="sourceLineNo">294</span><a id="line.294">     * @param user the user</a>
+<span class="sourceLineNo">295</span><a id="line.295">     * @return systems's chosen implementation of ACL interface.</a>
+<span class="sourceLineNo">296</span><a id="line.296">     * @throws UnknownEntityException</a>
+<span class="sourceLineNo">297</span><a id="line.297">     *             if the implementation of ACL interface could not be</a>
+<span class="sourceLineNo">298</span><a id="line.298">     *             determined, or does not exist.</a>
+<span class="sourceLineNo">299</span><a id="line.299">     */</a>
+<span class="sourceLineNo">300</span><a id="line.300">    &lt;A extends AccessControlList&gt; A getACL(User user) throws UnknownEntityException;</a>
+<span class="sourceLineNo">301</span><a id="line.301">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>
