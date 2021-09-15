@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
-    <version>8</version>
+    <version>9-SNAPSHOT</version>
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
@@ -481,11 +481,12 @@
   </contributors>
 
   <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/trunk</developerConnection>
-    <url>https://svn.apache.org/viewcvs/turbine/core/trunk/</url>
+    <connection>scm:git:https://gitbox.apache.org/repos/asf/turbine-core.git</connection>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/turbine-core.git</developerConnection>
+    <url>https://gitbox.apache.org/repos/asf/turbine-core.git</url>
   </scm>
 
+  
   <build>
     <sourceDirectory>src/java</sourceDirectory>
     <testSourceDirectory>src/test</testSourceDirectory>
@@ -1292,8 +1293,7 @@
 
   <properties>
     <!-- maven.compiler setting in turbine parent -->
-    <!-- TODO: Change for release: remove development part in path "/turbine/development" -->
-    <turbine.site.path>turbine/development/turbine-5.1</turbine.site.path>
+    <turbine.site.path>turbine-core</turbine.site.path>
     <fulcrum.intake>2.0.0</fulcrum.intake>
     <fulcrum.parser>2.0.1</fulcrum.parser>
     <fulcrum.security>2.0.1-SNAPSHOT</fulcrum.security>
