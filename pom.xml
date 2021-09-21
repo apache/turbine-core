@@ -482,8 +482,9 @@
 
   <scm>
     <connection>scm:git:https://gitbox.apache.org/repos/asf/turbine-core.git</connection>
-    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/turbine-core.git</developerConnection>
-    <url>https://gitbox.apache.org/repos/asf/turbine-core.git</url>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/turbine-core.git</developerConnection>    
+    <url>https://github.com/apache/${turbine.site.path}/tree/${project.scm.tag}</url>
+    <tag>HEAD</tag>
   </scm>
 
   
