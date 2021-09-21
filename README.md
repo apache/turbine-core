@@ -41,18 +41,18 @@ Activating Maven profile apache-release is not required, und may require a signi
 
     mvn clean site scm-publish:publish-scm -Papache-release    
     
-* Deploys Turbine release site to the Apache web site (cft. to https://svn.apache.org/repos/asf/turbine/site how to deploy main Turbine web site).
+* Deploys Turbine release site to the Apache web site (cft. to https://github.com/apache/turbine-site how to deploy main Turbine web site).
 CAVEAT: If you make a dry run or decide to rebuild a new site when publishing, delete the cache folder to avoid that no site might be deployt!
 By default this folder is user.home/turbine-sites/turbine, configured in Turbine parent property turbine.site.cache. 
 
 ### More about Releases
 
 Find more about release related command hints in 
-* https://svn.apache.org/repos/asf/turbine/fulcrum/trunk/README.txt
+* https://github.com/apache/turbine-fulcrum-build/
 * IMPORTANT: BEFORE running release, i.e. if the major.minor versino numbers changed, you have to update turbine.site.path in pom.xml to the new production path 
 (e.g. turbine/turbine-4.0 for version 4.0) removing the  "development/"-part of the path.
 * if updating the site for the new SNAPSHOT version add the new development path (e.g. turbine/development/turbine-5.1 for version 5.1-SNAPSHOT) AFTER the release.
-* Find the site structure here: https://svn.apache.org/repos/infra/websites/production/turbine/content/turbine/.
+* Find more about the site structure here: https://gitbox.apache.org/repos/asf#turbine.
 
 As of Turbine 2.3, you must also have the Torque plugin for Maven installed
 to build Turbine.  Information on how to install the plugin is available
