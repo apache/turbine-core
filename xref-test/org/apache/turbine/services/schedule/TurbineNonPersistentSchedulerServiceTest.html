@@ -1,193 +1,175 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" /><title>TurbineNonPersistentSchedulerServiceTest xref</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>TurbineNonPersistentSchedulerServiceTest xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
 </head>
 <body>
-<pre>
+<div id="overview"><a href="../../../../../../testapidocs/org/apache/turbine/services/schedule/TurbineNonPersistentSchedulerServiceTest.html">View Javadoc</a></div><pre>
 
-<a name="1" href="#1">1</a>   <strong>package</strong> <a href="../../../../../org/apache/turbine/services/schedule/package-summary.html">org.apache.turbine.services.schedule</a>;
-<a name="2" href="#2">2</a>   
-<a name="3" href="#3">3</a>   <em class="comment">/*</em>
-<a name="4" href="#4">4</a>   <em class="comment"> * Licensed to the Apache Software Foundation (ASF) under one</em>
-<a name="5" href="#5">5</a>   <em class="comment"> * or more contributor license agreements.  See the NOTICE file</em>
-<a name="6" href="#6">6</a>   <em class="comment"> * distributed with this work for additional information</em>
-<a name="7" href="#7">7</a>   <em class="comment"> * regarding copyright ownership.  The ASF licenses this file</em>
-<a name="8" href="#8">8</a>   <em class="comment"> * to you under the Apache License, Version 2.0 (the</em>
-<a name="9" href="#9">9</a>   <em class="comment"> * "License"); you may not use this file except in compliance</em>
-<a name="10" href="#10">10</a>  <em class="comment"> * with the License.  You may obtain a copy of the License at</em>
-<a name="11" href="#11">11</a>  <em class="comment"> *</em>
-<a name="12" href="#12">12</a>  <em class="comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
-<a name="13" href="#13">13</a>  <em class="comment"> *</em>
-<a name="14" href="#14">14</a>  <em class="comment"> * Unless required by applicable law or agreed to in writing,</em>
-<a name="15" href="#15">15</a>  <em class="comment"> * software distributed under the License is distributed on an</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * KIND, either express or implied.  See the License for the</em>
-<a name="18" href="#18">18</a>  <em class="comment"> * specific language governing permissions and limitations</em>
-<a name="19" href="#19">19</a>  <em class="comment"> * under the License.</em>
-<a name="20" href="#20">20</a>  <em class="comment"> */</em>
-<a name="21" href="#21">21</a>  
-<a name="22" href="#22">22</a>  <strong>import</strong> junit.framework.Test;
-<a name="23" href="#23">23</a>  <strong>import</strong> junit.framework.TestSuite;
-<a name="24" href="#24">24</a>  
-<a name="25" href="#25">25</a>  <strong>import</strong> org.apache.commons.configuration.BaseConfiguration;
-<a name="26" href="#26">26</a>  <strong>import</strong> org.apache.commons.configuration.Configuration;
-<a name="27" href="#27">27</a>  
-<a name="28" href="#28">28</a>  <strong>import</strong> org.apache.turbine.modules.scheduledjob.SimpleJob;
-<a name="29" href="#29">29</a>  <strong>import</strong> org.apache.turbine.services.ServiceManager;
-<a name="30" href="#30">30</a>  <strong>import</strong> org.apache.turbine.services.TurbineServices;
-<a name="31" href="#31">31</a>  <strong>import</strong> org.apache.turbine.test.BaseTestCase;
-<a name="32" href="#32">32</a>  
-<a name="33" href="#33">33</a>  <em>/**<em>*</em></em>
-<a name="34" href="#34">34</a>  <em> * Unit testing for the non-persistent implementation of the scheduler service.</em>
-<a name="35" href="#35">35</a>  <em> *</em>
-<a name="36" href="#36">36</a>  <em> * @author &lt;a href="<a href="mailto:quintonm@bellsouth.net" target="alexandria_uri">mailto:quintonm@bellsouth.net</a>">Quinton McCombs&lt;/a></em>
-<a name="37" href="#37">37</a>  <em> * @version $Id: TurbineNonPersistentSchedulerServiceTest.java 534527 2007-05-02 16:10:59Z tv $</em>
-<a name="38" href="#38">38</a>  <em> */</em>
-<a name="39" href="#39">39</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/apache/turbine/services/schedule/TurbineNonPersistentSchedulerServiceTest.html">TurbineNonPersistentSchedulerServiceTest</a> <strong>extends</strong> <a href="../../../../../org/apache/turbine/test/BaseTestCase.html">BaseTestCase</a>
-<a name="40" href="#40">40</a>  {
-<a name="41" href="#41">41</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> String PREFIX = <span class="string">"services."</span> + ScheduleService.SERVICE_NAME + '.';
-<a name="42" href="#42">42</a>  
-<a name="43" href="#43">43</a>      <strong>public</strong> <a href="../../../../../org/apache/turbine/services/schedule/TurbineNonPersistentSchedulerServiceTest.html">TurbineNonPersistentSchedulerServiceTest</a>(String name)
-<a name="44" href="#44">44</a>              throws Exception
-<a name="45" href="#45">45</a>      {
-<a name="46" href="#46">46</a>          <strong>super</strong>(name);
-<a name="47" href="#47">47</a>  
-<a name="48" href="#48">48</a>          ServiceManager serviceManager = TurbineServices.getInstance();
-<a name="49" href="#49">49</a>          serviceManager.setApplicationRoot(<span class="string">"."</span>);
-<a name="50" href="#50">50</a>  
-<a name="51" href="#51">51</a>          Configuration cfg = <strong>new</strong> BaseConfiguration();
-<a name="52" href="#52">52</a>          cfg.setProperty(PREFIX + <span class="string">"classname"</span>, TurbineNonPersistentSchedulerService.<strong>class</strong>.getName());
-<a name="53" href="#53">53</a>  
-<a name="54" href="#54">54</a>          cfg.setProperty(PREFIX + <span class="string">"scheduler.jobs"</span>, <span class="string">"SimpleJob"</span>);
-<a name="55" href="#55">55</a>          cfg.setProperty(PREFIX + <span class="string">"scheduler.job.SimpleJob.ID"</span>, <span class="string">"1"</span>);
-<a name="56" href="#56">56</a>          cfg.setProperty(PREFIX + <span class="string">"scheduler.job.SimpleJob.SECOND"</span>, <span class="string">"10"</span>);
-<a name="57" href="#57">57</a>          cfg.setProperty(PREFIX + <span class="string">"scheduler.job.SimpleJob.MINUTE"</span>, <span class="string">"-1"</span>);
-<a name="58" href="#58">58</a>          cfg.setProperty(PREFIX + <span class="string">"scheduler.job.SimpleJob.HOUR"</span>, <span class="string">"-1"</span>);
-<a name="59" href="#59">59</a>          cfg.setProperty(PREFIX + <span class="string">"scheduler.job.SimpleJob.WEEK_DAY"</span>, <span class="string">"-1"</span>);
-<a name="60" href="#60">60</a>          cfg.setProperty(PREFIX + <span class="string">"scheduler.job.SimpleJob.DAY_OF_MONTH"</span>, <span class="string">"-1"</span>);
-<a name="61" href="#61">61</a>          cfg.setProperty(PREFIX + <span class="string">"enabled"</span>, <span class="string">"true"</span>);
-<a name="62" href="#62">62</a>  
-<a name="63" href="#63">63</a>          serviceManager.setConfiguration(cfg);
-<a name="64" href="#64">64</a>  
-<a name="65" href="#65">65</a>          <strong>try</strong>
-<a name="66" href="#66">66</a>          {
-<a name="67" href="#67">67</a>              serviceManager.init();
-<a name="68" href="#68">68</a>          }
-<a name="69" href="#69">69</a>          <strong>catch</strong> (Exception e)
-<a name="70" href="#70">70</a>          {
-<a name="71" href="#71">71</a>              e.printStackTrace();
-<a name="72" href="#72">72</a>              fail();
-<a name="73" href="#73">73</a>          }
-<a name="74" href="#74">74</a>      }
-<a name="75" href="#75">75</a>  
-<a name="76" href="#76">76</a>      <strong>public</strong> <strong>static</strong> Test suite()
-<a name="77" href="#77">77</a>      {
-<a name="78" href="#78">78</a>          <strong>return</strong> <strong>new</strong> TestSuite(TurbineNonPersistentSchedulerServiceTest.<strong>class</strong>);
-<a name="79" href="#79">79</a>      }
-<a name="80" href="#80">80</a>  
-<a name="81" href="#81">81</a>      <em>/**<em>*</em></em>
-<a name="82" href="#82">82</a>  <em>     * Tests the ability to enable and disable the service.</em>
-<a name="83" href="#83">83</a>  <em>     */</em>
-<a name="84" href="#84">84</a>      <strong>public</strong> <strong>void</strong> testEnableDisable()
-<a name="85" href="#85">85</a>      {
-<a name="86" href="#86">86</a>          <strong>try</strong>
-<a name="87" href="#87">87</a>          {
-<a name="88" href="#88">88</a>              TurbineScheduler.startScheduler();
-<a name="89" href="#89">89</a>              assertEquals(<strong>true</strong>, TurbineScheduler.isEnabled());
-<a name="90" href="#90">90</a>  
-<a name="91" href="#91">91</a>              TurbineScheduler.stopScheduler();
-<a name="92" href="#92">92</a>              assertEquals(false, TurbineScheduler.isEnabled());
-<a name="93" href="#93">93</a>          }
-<a name="94" href="#94">94</a>          <strong>catch</strong> (Exception e)
-<a name="95" href="#95">95</a>          {
-<a name="96" href="#96">96</a>              e.printStackTrace();
-<a name="97" href="#97">97</a>              fail();
-<a name="98" href="#98">98</a>          }
-<a name="99" href="#99">99</a>      }
-<a name="100" href="#100">100</a> 
-<a name="101" href="#101">101</a>     <em>/**<em>*</em></em>
-<a name="102" href="#102">102</a> <em>     * Tests the ability to add and remove a job.  A list of jobs will be obtained from</em>
-<a name="103" href="#103">103</a> <em>     * the service to determine if the operation were successful.</em>
-<a name="104" href="#104">104</a> <em>     */</em>
-<a name="105" href="#105">105</a>     <strong>public</strong> <strong>void</strong> testAddRemoveJob()
-<a name="106" href="#106">106</a>     {
-<a name="107" href="#107">107</a>         <strong>try</strong>
-<a name="108" href="#108">108</a>         {
-<a name="109" href="#109">109</a>             <em class="comment">// get the current job count for later comparison</em>
-<a name="110" href="#110">110</a>             <strong>int</strong> jobCount = TurbineScheduler.listJobs().size();
-<a name="111" href="#111">111</a> 
-<a name="112" href="#112">112</a>             <em class="comment">// Add a new job entry</em>
-<a name="113" href="#113">113</a>             JobEntry je = <strong>new</strong> JobEntry();
-<a name="114" href="#114">114</a>             je.setJobId(jobCount + 1);
-<a name="115" href="#115">115</a>             je.setSecond(0);
-<a name="116" href="#116">116</a>             je.setMinute(1);
-<a name="117" href="#117">117</a>             je.setHour(-1);
-<a name="118" href="#118">118</a>             je.setDayOfMonth(-1);
-<a name="119" href="#119">119</a>             je.setWeekDay(-1);
-<a name="120" href="#120">120</a>             je.setTask(<span class="string">"SimpleJob"</span>);
-<a name="121" href="#121">121</a> 
-<a name="122" href="#122">122</a>             TurbineScheduler.addJob(je);
-<a name="123" href="#123">123</a>             assertEquals(jobCount + 1, TurbineScheduler.listJobs().size());
-<a name="124" href="#124">124</a> 
-<a name="125" href="#125">125</a>             TurbineScheduler.removeJob(je);
-<a name="126" href="#126">126</a>             assertEquals(jobCount, TurbineScheduler.listJobs().size());
-<a name="127" href="#127">127</a> 
-<a name="128" href="#128">128</a>         }
-<a name="129" href="#129">129</a>         <strong>catch</strong> (Exception e)
-<a name="130" href="#130">130</a>         {
-<a name="131" href="#131">131</a>             e.printStackTrace();
-<a name="132" href="#132">132</a>             fail();
-<a name="133" href="#133">133</a>         }
-<a name="134" href="#134">134</a>     }
-<a name="135" href="#135">135</a> 
-<a name="136" href="#136">136</a>     <em>/**<em>*</em></em>
-<a name="137" href="#137">137</a> <em>     * Tests the ability to retrieve the job added during initialization.</em>
-<a name="138" href="#138">138</a> <em>     */</em>
-<a name="139" href="#139">139</a>     <strong>public</strong> <strong>void</strong> testGetJob()
-<a name="140" href="#140">140</a>     {
-<a name="141" href="#141">141</a>         <strong>try</strong>
-<a name="142" href="#142">142</a>         {
-<a name="143" href="#143">143</a>             JobEntry je = TurbineScheduler.getJob(1);
-<a name="144" href="#144">144</a>             assertEquals(je.getJobId(), 1);
-<a name="145" href="#145">145</a>             assertEquals(je.getSecond(), 10);
-<a name="146" href="#146">146</a>             assertEquals(je.getMinute(), -1);
-<a name="147" href="#147">147</a>             assertEquals(je.getHour(), -1);
-<a name="148" href="#148">148</a>             assertEquals(je.getDayOfMonth(), -1);
-<a name="149" href="#149">149</a>             assertEquals(je.getWeekDay(), -1);
-<a name="150" href="#150">150</a>             assertEquals(je.getTask(), <span class="string">"SimpleJob"</span>);
-<a name="151" href="#151">151</a>         }
-<a name="152" href="#152">152</a>         <strong>catch</strong> (Exception e)
-<a name="153" href="#153">153</a>         {
-<a name="154" href="#154">154</a>             e.printStackTrace();
-<a name="155" href="#155">155</a>             fail();
-<a name="156" href="#156">156</a>         }
-<a name="157" href="#157">157</a>     }
-<a name="158" href="#158">158</a> 
-<a name="159" href="#159">159</a>     <em>/**<em>* Test to make sure a job actually runs.  Currently not work.</em></em>
-<a name="160" href="#160">160</a> <em>     * @TODO Must get testRunningJob to work.</em>
-<a name="161" href="#161">161</a> <em>     *</em>
-<a name="162" href="#162">162</a> <em>     */</em>
-<a name="163" href="#163">163</a>     <strong>public</strong> <strong>void</strong> OFFtestRunningJob()
-<a name="164" href="#164">164</a>     {
-<a name="165" href="#165">165</a>         <strong>try</strong>
-<a name="166" href="#166">166</a>         {
-<a name="167" href="#167">167</a>            <strong>int</strong> beforeCount = SimpleJob.getCounter();
-<a name="168" href="#168">168</a>            Thread.sleep(120000);
-<a name="169" href="#169">169</a>            <strong>int</strong> afterCount = SimpleJob.getCounter();
-<a name="170" href="#170">170</a>            assertTrue(beforeCount &lt; afterCount);
-<a name="171" href="#171">171</a> 
-<a name="172" href="#172">172</a>         }
-<a name="173" href="#173">173</a>         <strong>catch</strong> (Exception e)
-<a name="174" href="#174">174</a>         {
-<a name="175" href="#175">175</a>             e.printStackTrace();
-<a name="176" href="#176">176</a>             fail();
-<a name="177" href="#177">177</a>         }
-<a name="178" href="#178">178</a>     }
-<a name="179" href="#179">179</a> 
-<a name="180" href="#180">180</a> }
+<a class="jxr_linenumber" name="1" href="#1">1</a>   <strong class="jxr_keyword">package</strong> org.apache.turbine.services.schedule;
+<a class="jxr_linenumber" name="2" href="#2">2</a>   
+<a class="jxr_linenumber" name="3" href="#3">3</a>   <em class="jxr_comment">/*</em>
+<a class="jxr_linenumber" name="4" href="#4">4</a>   <em class="jxr_comment"> * Licensed to the Apache Software Foundation (ASF) under one</em>
+<a class="jxr_linenumber" name="5" href="#5">5</a>   <em class="jxr_comment"> * or more contributor license agreements.  See the NOTICE file</em>
+<a class="jxr_linenumber" name="6" href="#6">6</a>   <em class="jxr_comment"> * distributed with this work for additional information</em>
+<a class="jxr_linenumber" name="7" href="#7">7</a>   <em class="jxr_comment"> * regarding copyright ownership.  The ASF licenses this file</em>
+<a class="jxr_linenumber" name="8" href="#8">8</a>   <em class="jxr_comment"> * to you under the Apache License, Version 2.0 (the</em>
+<a class="jxr_linenumber" name="9" href="#9">9</a>   <em class="jxr_comment"> * "License"); you may not use this file except in compliance</em>
+<a class="jxr_linenumber" name="10" href="#10">10</a>  <em class="jxr_comment"> * with the License.  You may obtain a copy of the License at</em>
+<a class="jxr_linenumber" name="11" href="#11">11</a>  <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="12" href="#12">12</a>  <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
+<a class="jxr_linenumber" name="13" href="#13">13</a>  <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="14" href="#14">14</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing,</em>
+<a class="jxr_linenumber" name="15" href="#15">15</a>  <em class="jxr_comment"> * software distributed under the License is distributed on an</em>
+<a class="jxr_linenumber" name="16" href="#16">16</a>  <em class="jxr_comment"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</em>
+<a class="jxr_linenumber" name="17" href="#17">17</a>  <em class="jxr_comment"> * KIND, either express or implied.  See the License for the</em>
+<a class="jxr_linenumber" name="18" href="#18">18</a>  <em class="jxr_comment"> * specific language governing permissions and limitations</em>
+<a class="jxr_linenumber" name="19" href="#19">19</a>  <em class="jxr_comment"> * under the License.</em>
+<a class="jxr_linenumber" name="20" href="#20">20</a>  <em class="jxr_comment"> */</em>
+<a class="jxr_linenumber" name="21" href="#21">21</a>  
+<a class="jxr_linenumber" name="22" href="#22">22</a>  
+<a class="jxr_linenumber" name="23" href="#23">23</a>  
+<a class="jxr_linenumber" name="24" href="#24">24</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertEquals;
+<a class="jxr_linenumber" name="25" href="#25">25</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertFalse;
+<a class="jxr_linenumber" name="26" href="#26">26</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertThat;
+<a class="jxr_linenumber" name="27" href="#27">27</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertTrue;
+<a class="jxr_linenumber" name="28" href="#28">28</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.fail;
+<a class="jxr_linenumber" name="29" href="#29">29</a>  
+<a class="jxr_linenumber" name="30" href="#30">30</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.modules.scheduledjobs.SimpleJob;
+<a class="jxr_linenumber" name="31" href="#31">31</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.util.TurbineConfig;
+<a class="jxr_linenumber" name="32" href="#32">32</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.util.TurbineException;
+<a class="jxr_linenumber" name="33" href="#33">33</a>  <strong class="jxr_keyword">import</strong> org.hamcrest.CoreMatchers;
+<a class="jxr_linenumber" name="34" href="#34">34</a>  <strong class="jxr_keyword">import</strong> org.junit.After;
+<a class="jxr_linenumber" name="35" href="#35">35</a>  <strong class="jxr_keyword">import</strong> org.junit.Before;
+<a class="jxr_linenumber" name="36" href="#36">36</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
+<a class="jxr_linenumber" name="37" href="#37">37</a>  
+<a class="jxr_linenumber" name="38" href="#38">38</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="39" href="#39">39</a>  <em class="jxr_javadoccomment"> * Unit testing for the non-persistent implementation of the scheduler service.</em>
+<a class="jxr_linenumber" name="40" href="#40">40</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="41" href="#41">41</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:quintonm@bellsouth.net" target="alexandria_uri">mailto:quintonm@bellsouth.net</a>"&gt;Quinton McCombs&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="42" href="#42">42</a>  <em class="jxr_javadoccomment"> * @version $Id: TurbineNonPersistentSchedulerServiceTest.java 615328 2008-01-25 20:25:05Z tv $</em>
+<a class="jxr_linenumber" name="43" href="#43">43</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="44" href="#44">44</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/apache/turbine/services/schedule/TurbineNonPersistentSchedulerServiceTest.html">TurbineNonPersistentSchedulerServiceTest</a>
+<a class="jxr_linenumber" name="45" href="#45">45</a>  {
+<a class="jxr_linenumber" name="46" href="#46">46</a>      <strong class="jxr_keyword">private</strong> TurbineConfig tc = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="47" href="#47">47</a>  
+<a class="jxr_linenumber" name="48" href="#48">48</a>      @Before
+<a class="jxr_linenumber" name="49" href="#49">49</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setUp() <strong class="jxr_keyword">throws</strong> Exception
+<a class="jxr_linenumber" name="50" href="#50">50</a>      {
+<a class="jxr_linenumber" name="51" href="#51">51</a>          tc =
+<a class="jxr_linenumber" name="52" href="#52">52</a>              <strong class="jxr_keyword">new</strong> TurbineConfig(
+<a class="jxr_linenumber" name="53" href="#53">53</a>                  <span class="jxr_string">"."</span>,
+<a class="jxr_linenumber" name="54" href="#54">54</a>                  <span class="jxr_string">"/conf/test/TurbineNonPersistentSchedulerServiceTest.properties"</span>);
+<a class="jxr_linenumber" name="55" href="#55">55</a>          tc.initialize();
+<a class="jxr_linenumber" name="56" href="#56">56</a>      }
+<a class="jxr_linenumber" name="57" href="#57">57</a>  
+<a class="jxr_linenumber" name="58" href="#58">58</a>      @After
+<a class="jxr_linenumber" name="59" href="#59">59</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> tearDown() <strong class="jxr_keyword">throws</strong> Exception
+<a class="jxr_linenumber" name="60" href="#60">60</a>      {
+<a class="jxr_linenumber" name="61" href="#61">61</a>          <strong class="jxr_keyword">if</strong> (tc != <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="62" href="#62">62</a>          {
+<a class="jxr_linenumber" name="63" href="#63">63</a>              tc.dispose();
+<a class="jxr_linenumber" name="64" href="#64">64</a>          }
+<a class="jxr_linenumber" name="65" href="#65">65</a>      }
+<a class="jxr_linenumber" name="66" href="#66">66</a>  
+<a class="jxr_linenumber" name="67" href="#67">67</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="68" href="#68">68</a>  <em class="jxr_javadoccomment">     * Tests the ability to enable and disable the service.</em>
+<a class="jxr_linenumber" name="69" href="#69">69</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="70" href="#70">70</a>      @Test <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testEnableDisable()
+<a class="jxr_linenumber" name="71" href="#71">71</a>      {
+<a class="jxr_linenumber" name="72" href="#72">72</a>          <strong class="jxr_keyword">try</strong>
+<a class="jxr_linenumber" name="73" href="#73">73</a>          {
+<a class="jxr_linenumber" name="74" href="#74">74</a>              TurbineScheduler.startScheduler();
+<a class="jxr_linenumber" name="75" href="#75">75</a>              assertTrue(TurbineScheduler.isEnabled());
+<a class="jxr_linenumber" name="76" href="#76">76</a>  
+<a class="jxr_linenumber" name="77" href="#77">77</a>              TurbineScheduler.stopScheduler();
+<a class="jxr_linenumber" name="78" href="#78">78</a>              assertFalse(TurbineScheduler.isEnabled());
+<a class="jxr_linenumber" name="79" href="#79">79</a>          }
+<a class="jxr_linenumber" name="80" href="#80">80</a>          <strong class="jxr_keyword">catch</strong> (Exception e)
+<a class="jxr_linenumber" name="81" href="#81">81</a>          {
+<a class="jxr_linenumber" name="82" href="#82">82</a>              e.printStackTrace();
+<a class="jxr_linenumber" name="83" href="#83">83</a>              fail();
+<a class="jxr_linenumber" name="84" href="#84">84</a>          }
+<a class="jxr_linenumber" name="85" href="#85">85</a>      }
+<a class="jxr_linenumber" name="86" href="#86">86</a>  
+<a class="jxr_linenumber" name="87" href="#87">87</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="88" href="#88">88</a>  <em class="jxr_javadoccomment">     * Tests the ability to add and remove a job.  A list of jobs will be obtained from</em>
+<a class="jxr_linenumber" name="89" href="#89">89</a>  <em class="jxr_javadoccomment">     * the service to determine if the operation were successful.</em>
+<a class="jxr_linenumber" name="90" href="#90">90</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="91" href="#91">91</a>      @Test <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testAddRemoveJob()
+<a class="jxr_linenumber" name="92" href="#92">92</a>      {
+<a class="jxr_linenumber" name="93" href="#93">93</a>          <strong class="jxr_keyword">try</strong>
+<a class="jxr_linenumber" name="94" href="#94">94</a>          {
+<a class="jxr_linenumber" name="95" href="#95">95</a>              <em class="jxr_comment">// get the current job count for later comparison</em>
+<a class="jxr_linenumber" name="96" href="#96">96</a>              <strong class="jxr_keyword">int</strong> jobCount = TurbineScheduler.listJobs().size();
+<a class="jxr_linenumber" name="97" href="#97">97</a>  
+<a class="jxr_linenumber" name="98" href="#98">98</a>              <em class="jxr_comment">// Add a new job entry</em>
+<a class="jxr_linenumber" name="99" href="#99">99</a>              JobEntry je = TurbineScheduler.newJob(0, 1, -1, -1, -1, <span class="jxr_string">"SimpleJob"</span>);
+<a class="jxr_linenumber" name="100" href="#100">100</a> 
+<a class="jxr_linenumber" name="101" href="#101">101</a>             TurbineScheduler.addJob(je);
+<a class="jxr_linenumber" name="102" href="#102">102</a>             assertEquals(jobCount + 1, TurbineScheduler.listJobs().size());
+<a class="jxr_linenumber" name="103" href="#103">103</a>             
+<a class="jxr_linenumber" name="104" href="#104">104</a>             assertTrue(TurbineScheduler.listJobs().contains( je ));
+<a class="jxr_linenumber" name="105" href="#105">105</a>             TurbineScheduler.removeJob(je);
+<a class="jxr_linenumber" name="106" href="#106">106</a>             assertTrue(!TurbineScheduler.listJobs().contains( je ));
+<a class="jxr_linenumber" name="107" href="#107">107</a>             assertEquals(jobCount, TurbineScheduler.listJobs().size());
+<a class="jxr_linenumber" name="108" href="#108">108</a> 
+<a class="jxr_linenumber" name="109" href="#109">109</a>         }
+<a class="jxr_linenumber" name="110" href="#110">110</a>         <strong class="jxr_keyword">catch</strong> (Exception e)
+<a class="jxr_linenumber" name="111" href="#111">111</a>         {
+<a class="jxr_linenumber" name="112" href="#112">112</a>             e.printStackTrace();
+<a class="jxr_linenumber" name="113" href="#113">113</a>             fail();
+<a class="jxr_linenumber" name="114" href="#114">114</a>         }
+<a class="jxr_linenumber" name="115" href="#115">115</a>     }
+<a class="jxr_linenumber" name="116" href="#116">116</a> 
+<a class="jxr_linenumber" name="117" href="#117">117</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="118" href="#118">118</a> <em class="jxr_javadoccomment">     * Tests the ability to retrieve the job added during initialization.</em>
+<a class="jxr_linenumber" name="119" href="#119">119</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="120" href="#120">120</a>     @Test <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGetJob()
+<a class="jxr_linenumber" name="121" href="#121">121</a>     {
+<a class="jxr_linenumber" name="122" href="#122">122</a>         <strong class="jxr_keyword">try</strong>
+<a class="jxr_linenumber" name="123" href="#123">123</a>         {
+<a class="jxr_linenumber" name="124" href="#124">124</a> 			JobEntry je = TurbineScheduler.getJob(1);
+<a class="jxr_linenumber" name="125" href="#125">125</a> 			assertThat(je, CoreMatchers.instanceOf(JobEntryNonPersistent.<strong class="jxr_keyword">class</strong>));
+<a class="jxr_linenumber" name="126" href="#126">126</a> 			JobEntryNonPersistent jenp = (JobEntryNonPersistent)je;
+<a class="jxr_linenumber" name="127" href="#127">127</a>             assertEquals(1, jenp.getJobId());
+<a class="jxr_linenumber" name="128" href="#128">128</a>             assertEquals(1, jenp.getSecond());
+<a class="jxr_linenumber" name="129" href="#129">129</a>             assertEquals(-1, jenp.getMinute());
+<a class="jxr_linenumber" name="130" href="#130">130</a>             assertEquals(-1, jenp.getHour());
+<a class="jxr_linenumber" name="131" href="#131">131</a>             assertEquals(-1, jenp.getDayOfMonth());
+<a class="jxr_linenumber" name="132" href="#132">132</a>             assertEquals(-1, jenp.getWeekDay());
+<a class="jxr_linenumber" name="133" href="#133">133</a>             assertEquals(<span class="jxr_string">"SimpleJob"</span>, jenp.getTask());
+<a class="jxr_linenumber" name="134" href="#134">134</a>         }
+<a class="jxr_linenumber" name="135" href="#135">135</a>         <strong class="jxr_keyword">catch</strong> (TurbineException e)
+<a class="jxr_linenumber" name="136" href="#136">136</a>         {
+<a class="jxr_linenumber" name="137" href="#137">137</a>             e.printStackTrace();
+<a class="jxr_linenumber" name="138" href="#138">138</a>             fail();
+<a class="jxr_linenumber" name="139" href="#139">139</a>         }
+<a class="jxr_linenumber" name="140" href="#140">140</a>     }
+<a class="jxr_linenumber" name="141" href="#141">141</a> 
+<a class="jxr_linenumber" name="142" href="#142">142</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="143" href="#143">143</a> <em class="jxr_javadoccomment">     * Test to make sure a job actually runs.</em>
+<a class="jxr_linenumber" name="144" href="#144">144</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="145" href="#145">145</a>     @Test <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testRunningJob()
+<a class="jxr_linenumber" name="146" href="#146">146</a>     {
+<a class="jxr_linenumber" name="147" href="#147">147</a>         <strong class="jxr_keyword">try</strong>
+<a class="jxr_linenumber" name="148" href="#148">148</a>         {
+<a class="jxr_linenumber" name="149" href="#149">149</a>            <strong class="jxr_keyword">int</strong> beforeCount = SimpleJob.getCounter();
+<a class="jxr_linenumber" name="150" href="#150">150</a>            Thread.sleep(1200);
+<a class="jxr_linenumber" name="151" href="#151">151</a>            <strong class="jxr_keyword">int</strong> afterCount = SimpleJob.getCounter();
+<a class="jxr_linenumber" name="152" href="#152">152</a>            assertTrue(beforeCount &lt; afterCount);
+<a class="jxr_linenumber" name="153" href="#153">153</a> 
+<a class="jxr_linenumber" name="154" href="#154">154</a>         }
+<a class="jxr_linenumber" name="155" href="#155">155</a>         <strong class="jxr_keyword">catch</strong> (Exception e)
+<a class="jxr_linenumber" name="156" href="#156">156</a>         {
+<a class="jxr_linenumber" name="157" href="#157">157</a>             e.printStackTrace();
+<a class="jxr_linenumber" name="158" href="#158">158</a>             fail();
+<a class="jxr_linenumber" name="159" href="#159">159</a>         }
+<a class="jxr_linenumber" name="160" href="#160">160</a>     }
+<a class="jxr_linenumber" name="161" href="#161">161</a> 
+<a class="jxr_linenumber" name="162" href="#162">162</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
-

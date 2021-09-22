@@ -1,533 +1,555 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" /><title>IntakeTool xref</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>IntakeTool xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
 </head>
 <body>
 <div id="overview"><a href="../../../../../../apidocs/org/apache/turbine/services/intake/IntakeTool.html">View Javadoc</a></div><pre>
 
-<a name="1" href="#1">1</a>   <strong>package</strong> <a href="../../../../../org/apache/turbine/services/intake/package-summary.html">org.apache.turbine.services.intake</a>;
-<a name="2" href="#2">2</a>   
-<a name="3" href="#3">3</a>   <em class="comment">/*</em>
-<a name="4" href="#4">4</a>   <em class="comment"> * Licensed to the Apache Software Foundation (ASF) under one</em>
-<a name="5" href="#5">5</a>   <em class="comment"> * or more contributor license agreements.  See the NOTICE file</em>
-<a name="6" href="#6">6</a>   <em class="comment"> * distributed with this work for additional information</em>
-<a name="7" href="#7">7</a>   <em class="comment"> * regarding copyright ownership.  The ASF licenses this file</em>
-<a name="8" href="#8">8</a>   <em class="comment"> * to you under the Apache License, Version 2.0 (the</em>
-<a name="9" href="#9">9</a>   <em class="comment"> * "License"); you may not use this file except in compliance</em>
-<a name="10" href="#10">10</a>  <em class="comment"> * with the License.  You may obtain a copy of the License at</em>
-<a name="11" href="#11">11</a>  <em class="comment"> *</em>
-<a name="12" href="#12">12</a>  <em class="comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
-<a name="13" href="#13">13</a>  <em class="comment"> *</em>
-<a name="14" href="#14">14</a>  <em class="comment"> * Unless required by applicable law or agreed to in writing,</em>
-<a name="15" href="#15">15</a>  <em class="comment"> * software distributed under the License is distributed on an</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * KIND, either express or implied.  See the License for the</em>
-<a name="18" href="#18">18</a>  <em class="comment"> * specific language governing permissions and limitations</em>
-<a name="19" href="#19">19</a>  <em class="comment"> * under the License.</em>
-<a name="20" href="#20">20</a>  <em class="comment"> */</em>
-<a name="21" href="#21">21</a>  
-<a name="22" href="#22">22</a>  <strong>import</strong> java.util.HashMap;
-<a name="23" href="#23">23</a>  <strong>import</strong> java.util.Iterator;
-<a name="24" href="#24">24</a>  <strong>import</strong> java.util.List;
-<a name="25" href="#25">25</a>  <strong>import</strong> java.util.Map;
-<a name="26" href="#26">26</a>  
-<a name="27" href="#27">27</a>  <strong>import</strong> org.apache.commons.logging.Log;
-<a name="28" href="#28">28</a>  <strong>import</strong> org.apache.commons.logging.LogFactory;
-<a name="29" href="#29">29</a>  
-<a name="30" href="#30">30</a>  <strong>import</strong> org.apache.turbine.om.Retrievable;
-<a name="31" href="#31">31</a>  <strong>import</strong> org.apache.turbine.services.intake.model.Group;
-<a name="32" href="#32">32</a>  <strong>import</strong> org.apache.turbine.services.pull.ApplicationTool;
-<a name="33" href="#33">33</a>  <strong>import</strong> org.apache.turbine.util.RunData;
-<a name="34" href="#34">34</a>  <strong>import</strong> org.apache.turbine.util.TurbineException;
-<a name="35" href="#35">35</a>  <strong>import</strong> org.apache.turbine.util.parser.ValueParser;
-<a name="36" href="#36">36</a>  <strong>import</strong> org.apache.turbine.util.pool.Recyclable;
-<a name="37" href="#37">37</a>  
-<a name="38" href="#38">38</a>  <em>/**<em>*</em></em>
-<a name="39" href="#39">39</a>  <em> * The main class through which Intake is accessed.</em>
-<a name="40" href="#40">40</a>  <em> *</em>
-<a name="41" href="#41">41</a>  <em> * @author &lt;a href="<a href="mailto:jmcnally@collab.net" target="alexandria_uri">mailto:jmcnally@collab.net</a>">John D. McNally&lt;/a></em>
-<a name="42" href="#42">42</a>  <em> * @author &lt;a href="<a href="mailto:hps@intermeta.de" target="alexandria_uri">mailto:hps@intermeta.de</a>">Henning P. Schmiedehausen&lt;/a></em>
-<a name="43" href="#43">43</a>  <em> * @author &lt;a href="<a href="mailto:quintonm@bellsouth.net" target="alexandria_uri">mailto:quintonm@bellsouth.net</a>">Quinton McCombs&lt;/a></em>
-<a name="44" href="#44">44</a>  <em> * @version $Id: IntakeTool.java 534527 2007-05-02 16:10:59Z tv $</em>
-<a name="45" href="#45">45</a>  <em> */</em>
-<a name="46" href="#46">46</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/apache/turbine/services/intake/IntakeTool.html">IntakeTool</a>
-<a name="47" href="#47">47</a>          implements ApplicationTool, <a href="../../../../../org/apache/turbine/util/pool/Recyclable.html">Recyclable</a>
-<a name="48" href="#48">48</a>  {
-<a name="49" href="#49">49</a>      <em>/**<em>* Used for logging */</em></em>
-<a name="50" href="#50">50</a>      <strong>private</strong> <strong>static</strong> Log log = LogFactory.getLog(IntakeTool.<strong>class</strong>);
-<a name="51" href="#51">51</a>  
-<a name="52" href="#52">52</a>      <em>/**<em>* Constant for default key */</em></em>
-<a name="53" href="#53">53</a>      <strong>public</strong> <strong>static</strong> <strong>final</strong> String DEFAULT_KEY = <span class="string">"_0"</span>;
-<a name="54" href="#54">54</a>  
-<a name="55" href="#55">55</a>      <em>/**<em>* Constant for the hidden fieldname */</em></em>
-<a name="56" href="#56">56</a>      <strong>public</strong> <strong>static</strong> <strong>final</strong> String INTAKE_GRP = <span class="string">"intake-grp"</span>;
-<a name="57" href="#57">57</a>  
-<a name="58" href="#58">58</a>      <em>/**<em>* Groups from intake.xml */</em></em>
-<a name="59" href="#59">59</a>      <strong>private</strong> HashMap groups;
-<a name="60" href="#60">60</a>  
-<a name="61" href="#61">61</a>      <em>/**<em>* <a href="../../../../../org/apache/turbine/util/parser/ValueParser.html">ValueParser</a> instance */</em></em>
-<a name="62" href="#62">62</a>      <strong>private</strong> <a href="../../../../../org/apache/turbine/util/parser/ValueParser.html">ValueParser</a> pp;
-<a name="63" href="#63">63</a>  
-<a name="64" href="#64">64</a>      HashMap declaredGroups = <strong>new</strong> HashMap();
-<a name="65" href="#65">65</a>      StringBuffer allGroupsSB = <strong>new</strong> StringBuffer(256);
-<a name="66" href="#66">66</a>      StringBuffer groupSB = <strong>new</strong> StringBuffer(128);
-<a name="67" href="#67">67</a>  
-<a name="68" href="#68">68</a>      <em>/**<em>* The cache of PullHelpers. **/</em></em>
-<a name="69" href="#69">69</a>      <strong>private</strong> Map pullMap;
-<a name="70" href="#70">70</a>  
-<a name="71" href="#71">71</a>      <em>/**<em>*</em></em>
-<a name="72" href="#72">72</a>  <em>     * Constructor</em>
-<a name="73" href="#73">73</a>  <em>     */</em>
-<a name="74" href="#74">74</a>      <strong>public</strong> <a href="../../../../../org/apache/turbine/services/intake/IntakeTool.html">IntakeTool</a>()
-<a name="75" href="#75">75</a>      {
-<a name="76" href="#76">76</a>          String[] groupNames = TurbineIntake.getGroupNames();
-<a name="77" href="#77">77</a>          <strong>int</strong> groupCount = 0;
-<a name="78" href="#78">78</a>          <strong>if</strong> (groupNames != <strong>null</strong>)
-<a name="79" href="#79">79</a>          {
-<a name="80" href="#80">80</a>              groupCount = groupNames.length;
-<a name="81" href="#81">81</a>          }
-<a name="82" href="#82">82</a>          groups = <strong>new</strong> HashMap((<strong>int</strong>) (1.25 * groupCount + 1));
-<a name="83" href="#83">83</a>          pullMap = <strong>new</strong> HashMap((<strong>int</strong>) (1.25 * groupCount + 1));
-<a name="84" href="#84">84</a>  
-<a name="85" href="#85">85</a>          <strong>for</strong> (<strong>int</strong> i = groupCount - 1; i >= 0; i--)
-<a name="86" href="#86">86</a>          {
-<a name="87" href="#87">87</a>              pullMap.put(groupNames[i], <strong>new</strong> PullHelper(groupNames[i]));
-<a name="88" href="#88">88</a>          }
-<a name="89" href="#89">89</a>      }
-<a name="90" href="#90">90</a>  
-<a name="91" href="#91">91</a>      <em>/**<em>*</em></em>
-<a name="92" href="#92">92</a>  <em>     * Prepares intake for a single request</em>
-<a name="93" href="#93">93</a>  <em>     */</em>
-<a name="94" href="#94">94</a>      <strong>public</strong> <strong>void</strong> init(Object runData)
-<a name="95" href="#95">95</a>      {
-<a name="96" href="#96">96</a>          <strong>this</strong>.pp = ((RunData) runData).getParameters();
-<a name="97" href="#97">97</a>  
-<a name="98" href="#98">98</a>          String[] groupKeys = pp.getStrings(INTAKE_GRP);
-<a name="99" href="#99">99</a>          String[] groupNames = <strong>null</strong>;
-<a name="100" href="#100">100</a>         <strong>if</strong> (groupKeys == <strong>null</strong> || groupKeys.length == 0)
-<a name="101" href="#101">101</a>         {
-<a name="102" href="#102">102</a>             groupNames = TurbineIntake.getGroupNames();
-<a name="103" href="#103">103</a>         }
-<a name="104" href="#104">104</a>         <strong>else</strong>
-<a name="105" href="#105">105</a>         {
-<a name="106" href="#106">106</a>             groupNames = <strong>new</strong> String[groupKeys.length];
-<a name="107" href="#107">107</a>             <strong>for</strong> (<strong>int</strong> i = groupKeys.length - 1; i >= 0; i--)
-<a name="108" href="#108">108</a>             {
-<a name="109" href="#109">109</a>                 groupNames[i] = TurbineIntake.getGroupName(groupKeys[i]);
-<a name="110" href="#110">110</a>             }
-<a name="111" href="#111">111</a> 
-<a name="112" href="#112">112</a>         }
-<a name="113" href="#113">113</a> 
-<a name="114" href="#114">114</a>         <strong>for</strong> (<strong>int</strong> i = groupNames.length - 1; i >= 0; i--)
-<a name="115" href="#115">115</a>         {
-<a name="116" href="#116">116</a>             <strong>try</strong>
-<a name="117" href="#117">117</a>             {
-<a name="118" href="#118">118</a>                 List foundGroups = TurbineIntake.getGroup(groupNames[i])
-<a name="119" href="#119">119</a>                     .getObjects(pp);
-<a name="120" href="#120">120</a> 
-<a name="121" href="#121">121</a>                 <strong>if</strong> (foundGroups != <strong>null</strong>)
-<a name="122" href="#122">122</a>                 {
-<a name="123" href="#123">123</a>                     <strong>for</strong> (Iterator iter = foundGroups.iterator();
-<a name="124" href="#124">124</a>                          iter.hasNext();)
-<a name="125" href="#125">125</a>                     {
-<a name="126" href="#126">126</a>                         <a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> group = (Group) iter.next();
-<a name="127" href="#127">127</a>                         groups.put(group.getObjectKey(), group);
-<a name="128" href="#128">128</a>                     }
-<a name="129" href="#129">129</a>                 }
-<a name="130" href="#130">130</a>             }
-<a name="131" href="#131">131</a>             <strong>catch</strong> (Exception e)
-<a name="132" href="#132">132</a>             {
-<a name="133" href="#133">133</a>                 log.error(e);
-<a name="134" href="#134">134</a>             }
-<a name="135" href="#135">135</a>         }
-<a name="136" href="#136">136</a>     }
-<a name="137" href="#137">137</a> 
-<a name="138" href="#138">138</a>     <strong>public</strong> <strong>void</strong> addGroupsToParameters(<a href="../../../../../org/apache/turbine/util/parser/ValueParser.html">ValueParser</a> vp)
-<a name="139" href="#139">139</a>     {
-<a name="140" href="#140">140</a>         <strong>for</strong> (Iterator i = groups.values().iterator(); i.hasNext();)
-<a name="141" href="#141">141</a>         {
-<a name="142" href="#142">142</a>             <a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> group = (Group) i.next();
-<a name="143" href="#143">143</a>             <strong>if</strong> (!declaredGroups.containsKey(group.getIntakeGroupName()))
-<a name="144" href="#144">144</a>             {
-<a name="145" href="#145">145</a>                 declaredGroups.put(group.getIntakeGroupName(), <strong>null</strong>);
-<a name="146" href="#146">146</a>                 vp.add(<span class="string">"intake-grp"</span>, group.getGID());
-<a name="147" href="#147">147</a>             }
-<a name="148" href="#148">148</a>             vp.add(group.getGID(), group.getOID());
-<a name="149" href="#149">149</a>         }
-<a name="150" href="#150">150</a>         declaredGroups.clear();
-<a name="151" href="#151">151</a>     }
-<a name="152" href="#152">152</a> 
-<a name="153" href="#153">153</a>     <em>/**<em>*</em></em>
-<a name="154" href="#154">154</a> <em>     * A convenience method to write out the hidden form fields</em>
-<a name="155" href="#155">155</a> <em>     * that notify intake of the relevant groups.  It should be used</em>
-<a name="156" href="#156">156</a> <em>     * only in templates with 1 form.  In multiform templates, the groups</em>
-<a name="157" href="#157">157</a> <em>     * that are relevant for each form need to be declared using</em>
-<a name="158" href="#158">158</a> <em>     * $intake.newForm() and $intake.declareGroup($group) for the relevant</em>
-<a name="159" href="#159">159</a> <em>     * groups in the form.</em>
-<a name="160" href="#160">160</a> <em>     *</em>
-<a name="161" href="#161">161</a> <em>     */</em>
-<a name="162" href="#162">162</a>     <strong>public</strong> String declareGroups()
-<a name="163" href="#163">163</a>     {
-<a name="164" href="#164">164</a>         allGroupsSB.setLength(0);
-<a name="165" href="#165">165</a>         <strong>for</strong> (Iterator i = groups.values().iterator(); i.hasNext();)
-<a name="166" href="#166">166</a>         {
-<a name="167" href="#167">167</a>             declareGroup((Group) i.next(), allGroupsSB);
-<a name="168" href="#168">168</a>         }
-<a name="169" href="#169">169</a>         <strong>return</strong> allGroupsSB.toString();
-<a name="170" href="#170">170</a>     }
-<a name="171" href="#171">171</a> 
-<a name="172" href="#172">172</a>     <em>/**<em>*</em></em>
-<a name="173" href="#173">173</a> <em>     * A convenience method to write out the hidden form fields</em>
-<a name="174" href="#174">174</a> <em>     * that notify intake of the group.</em>
-<a name="175" href="#175">175</a> <em>     */</em>
-<a name="176" href="#176">176</a>     <strong>public</strong> String declareGroup(<a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> group)
-<a name="177" href="#177">177</a>     {
-<a name="178" href="#178">178</a>         groupSB.setLength(0);
-<a name="179" href="#179">179</a>         declareGroup(group, groupSB);
-<a name="180" href="#180">180</a>         <strong>return</strong> groupSB.toString();
-<a name="181" href="#181">181</a>     }
-<a name="182" href="#182">182</a> 
-<a name="183" href="#183">183</a>     <em>/**<em>*</em></em>
-<a name="184" href="#184">184</a> <em>     * xhtml valid hidden input field(s) that notifies intake of the</em>
-<a name="185" href="#185">185</a> <em>     * group's presence.</em>
-<a name="186" href="#186">186</a> <em>     */</em>
-<a name="187" href="#187">187</a>     <strong>public</strong> <strong>void</strong> declareGroup(<a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> group, StringBuffer sb)
-<a name="188" href="#188">188</a>     {
-<a name="189" href="#189">189</a>         <strong>if</strong> (!declaredGroups.containsKey(group.getIntakeGroupName()))
-<a name="190" href="#190">190</a>         {
-<a name="191" href="#191">191</a>             declaredGroups.put(group.getIntakeGroupName(), <strong>null</strong>);
-<a name="192" href="#192">192</a>             sb.append(<span class="string">"&lt;input type=\&quot;hidden\&quot; name=\&quot;"</span>)
-<a name="193" href="#193">193</a>                     .append(INTAKE_GRP)
-<a name="194" href="#194">194</a>                     .append(<span class="string">"\&quot; value=\&quot;"</span>)
-<a name="195" href="#195">195</a>                     .append(group.getGID())
-<a name="196" href="#196">196</a>                     .append(<span class="string">"\&quot;/>\n"</span>);
-<a name="197" href="#197">197</a>         }
-<a name="198" href="#198">198</a>         group.appendHtmlFormInput(sb);
-<a name="199" href="#199">199</a>     }
-<a name="200" href="#200">200</a> 
-<a name="201" href="#201">201</a>     <strong>public</strong> <strong>void</strong> newForm()
-<a name="202" href="#202">202</a>     {
-<a name="203" href="#203">203</a>         declaredGroups.clear();
-<a name="204" href="#204">204</a>         <strong>for</strong> (Iterator i = groups.values().iterator(); i.hasNext();)
-<a name="205" href="#205">205</a>         {
-<a name="206" href="#206">206</a>             ((<a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a>) i.next()).resetDeclared();
-<a name="207" href="#207">207</a>         }
-<a name="208" href="#208">208</a>     }
-<a name="209" href="#209">209</a> 
-<a name="210" href="#210">210</a>     <em>/**<em>*</em></em>
-<a name="211" href="#211">211</a> <em>     * Implementation of ApplicationTool interface is not needed for this</em>
-<a name="212" href="#212">212</a> <em>     * tool as it is request scoped</em>
-<a name="213" href="#213">213</a> <em>     */</em>
-<a name="214" href="#214">214</a>     <strong>public</strong> <strong>void</strong> refresh()
-<a name="215" href="#215">215</a>     {
-<a name="216" href="#216">216</a>         <em class="comment">// empty</em>
-<a name="217" href="#217">217</a>     }
-<a name="218" href="#218">218</a> 
-<a name="219" href="#219">219</a>     <em>/**<em>*</em></em>
-<a name="220" href="#220">220</a> <em>     * Inner class to present a nice interface to the template designer</em>
-<a name="221" href="#221">221</a> <em>     */</em>
-<a name="222" href="#222">222</a>     <strong>public</strong> <strong>class</strong> PullHelper
-<a name="223" href="#223">223</a>     {
-<a name="224" href="#224">224</a>         <em>/**<em>* Name of the group used by the pull helper */</em></em>
-<a name="225" href="#225">225</a>         String groupName;
-<a name="226" href="#226">226</a> 
-<a name="227" href="#227">227</a>         <em>/**<em>*</em></em>
-<a name="228" href="#228">228</a> <em>         * Private constructor to force use of factory method.</em>
-<a name="229" href="#229">229</a> <em>         *</em>
-<a name="230" href="#230">230</a> <em>         * @param groupName</em>
-<a name="231" href="#231">231</a> <em>         */</em>
-<a name="232" href="#232">232</a>         <strong>private</strong> PullHelper(String groupName)
-<a name="233" href="#233">233</a>         {
-<a name="234" href="#234">234</a>             <strong>this</strong>.groupName = groupName;
-<a name="235" href="#235">235</a>         }
-<a name="236" href="#236">236</a> 
-<a name="237" href="#237">237</a>         <em>/**<em>*</em></em>
-<a name="238" href="#238">238</a> <em>         * Populates the object with the default values from the XML File</em>
-<a name="239" href="#239">239</a> <em>         *</em>
-<a name="240" href="#240">240</a> <em>         * @return a Group object with the default values</em>
-<a name="241" href="#241">241</a> <em>         * @throws IntakeException</em>
-<a name="242" href="#242">242</a> <em>         */</em>
-<a name="243" href="#243">243</a>         <strong>public</strong> <a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> getDefault()
-<a name="244" href="#244">244</a>                 throws <a href="../../../../../org/apache/turbine/services/intake/IntakeException.html">IntakeException</a>
-<a name="245" href="#245">245</a>         {
-<a name="246" href="#246">246</a>             <strong>return</strong> setKey(DEFAULT_KEY);
-<a name="247" href="#247">247</a>         }
-<a name="248" href="#248">248</a> 
-<a name="249" href="#249">249</a>         <em>/**<em>*</em></em>
-<a name="250" href="#250">250</a> <em>         * Calls setKey(key,true)</em>
-<a name="251" href="#251">251</a> <em>         *</em>
-<a name="252" href="#252">252</a> <em>         * @param key</em>
-<a name="253" href="#253">253</a> <em>         * @return an Intake Group</em>
-<a name="254" href="#254">254</a> <em>         * @throws IntakeException</em>
-<a name="255" href="#255">255</a> <em>         */</em>
-<a name="256" href="#256">256</a>         <strong>public</strong> <a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> setKey(String key)
-<a name="257" href="#257">257</a>                 throws <a href="../../../../../org/apache/turbine/services/intake/IntakeException.html">IntakeException</a>
-<a name="258" href="#258">258</a>         {
-<a name="259" href="#259">259</a>             <strong>return</strong> setKey(key, <strong>true</strong>);
-<a name="260" href="#260">260</a>         }
-<a name="261" href="#261">261</a> 
-<a name="262" href="#262">262</a>         <em>/**<em>*</em></em>
-<a name="263" href="#263">263</a> <em>         *</em>
-<a name="264" href="#264">264</a> <em>         * @param key</em>
-<a name="265" href="#265">265</a> <em>         * @param create</em>
-<a name="266" href="#266">266</a> <em>         * @return an Intake Group</em>
-<a name="267" href="#267">267</a> <em>         * @throws IntakeException</em>
-<a name="268" href="#268">268</a> <em>         */</em>
-<a name="269" href="#269">269</a>         <strong>public</strong> <a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> setKey(String key, <strong>boolean</strong> create)
-<a name="270" href="#270">270</a>                 throws <a href="../../../../../org/apache/turbine/services/intake/IntakeException.html">IntakeException</a>
-<a name="271" href="#271">271</a>         {
-<a name="272" href="#272">272</a>             <a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> g = <strong>null</strong>;
-<a name="273" href="#273">273</a> 
-<a name="274" href="#274">274</a>             String inputKey = TurbineIntake.getGroupKey(groupName) + key;
-<a name="275" href="#275">275</a>             <strong>if</strong> (groups.containsKey(inputKey))
-<a name="276" href="#276">276</a>             {
-<a name="277" href="#277">277</a>                 g = (Group) groups.get(inputKey);
-<a name="278" href="#278">278</a>             }
-<a name="279" href="#279">279</a>             <strong>else</strong> <strong>if</strong> (create)
-<a name="280" href="#280">280</a>             {
-<a name="281" href="#281">281</a>                 g = TurbineIntake.getGroup(groupName);
-<a name="282" href="#282">282</a>                 groups.put(inputKey, g);
-<a name="283" href="#283">283</a>                 g.init(key, pp);
-<a name="284" href="#284">284</a>             }
-<a name="285" href="#285">285</a> 
-<a name="286" href="#286">286</a>             <strong>return</strong> g;
-<a name="287" href="#287">287</a>         }
-<a name="288" href="#288">288</a> 
-<a name="289" href="#289">289</a>         <em>/**<em>*</em></em>
-<a name="290" href="#290">290</a> <em>         * maps an Intake Group to the values from a Retrievable object.</em>
-<a name="291" href="#291">291</a> <em>         *</em>
-<a name="292" href="#292">292</a> <em>         * @param obj A retrievable object</em>
-<a name="293" href="#293">293</a> <em>         * @return an Intake Group</em>
-<a name="294" href="#294">294</a> <em>         */</em>
-<a name="295" href="#295">295</a>         <strong>public</strong> <a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> mapTo(<a href="../../../../../org/apache/turbine/om/Retrievable.html">Retrievable</a> obj)
-<a name="296" href="#296">296</a>                 throws <a href="../../../../../org/apache/turbine/services/intake/IntakeException.html">IntakeException</a>
-<a name="297" href="#297">297</a>         {
-<a name="298" href="#298">298</a>             <a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> g = <strong>null</strong>;
-<a name="299" href="#299">299</a> 
-<a name="300" href="#300">300</a>             <strong>try</strong>
-<a name="301" href="#301">301</a>             {
-<a name="302" href="#302">302</a>                 String inputKey = TurbineIntake.getGroupKey(groupName)
-<a name="303" href="#303">303</a>                         + obj.getQueryKey();
-<a name="304" href="#304">304</a>                 <strong>if</strong> (groups.containsKey(inputKey))
-<a name="305" href="#305">305</a>                 {
-<a name="306" href="#306">306</a>                     g = (Group) groups.get(inputKey);
-<a name="307" href="#307">307</a>                 }
-<a name="308" href="#308">308</a>                 <strong>else</strong>
-<a name="309" href="#309">309</a>                 {
-<a name="310" href="#310">310</a>                     g = TurbineIntake.getGroup(groupName);
-<a name="311" href="#311">311</a>                     groups.put(inputKey, g);
-<a name="312" href="#312">312</a>                 }
-<a name="313" href="#313">313</a>                 <strong>return</strong> g.init(obj);
-<a name="314" href="#314">314</a>             }
-<a name="315" href="#315">315</a>             <strong>catch</strong> (Exception e)
-<a name="316" href="#316">316</a>             {
-<a name="317" href="#317">317</a>                 log.error(e);
-<a name="318" href="#318">318</a>             }
-<a name="319" href="#319">319</a> 
-<a name="320" href="#320">320</a>             <strong>return</strong> <strong>null</strong>;
-<a name="321" href="#321">321</a>         }
-<a name="322" href="#322">322</a>     }
-<a name="323" href="#323">323</a> 
-<a name="324" href="#324">324</a>     <em>/**<em>*</em></em>
-<a name="325" href="#325">325</a> <em>     * get a specific group</em>
-<a name="326" href="#326">326</a> <em>     */</em>
-<a name="327" href="#327">327</a>     <strong>public</strong> PullHelper get(String groupName)
-<a name="328" href="#328">328</a>             throws <a href="../../../../../org/apache/turbine/services/intake/IntakeException.html">IntakeException</a>
-<a name="329" href="#329">329</a>     {
-<a name="330" href="#330">330</a>         <strong>return</strong> (PullHelper) pullMap.get(groupName);
-<a name="331" href="#331">331</a>     }
-<a name="332" href="#332">332</a> 
-<a name="333" href="#333">333</a>     <em>/**<em>*</em></em>
-<a name="334" href="#334">334</a> <em>     * Get a specific group</em>
-<a name="335" href="#335">335</a> <em>     *</em>
-<a name="336" href="#336">336</a> <em>     * @param throwExceptions if false, exceptions will be supressed.</em>
-<a name="337" href="#337">337</a> <em>     * @throws IntakeException could not retrieve group</em>
-<a name="338" href="#338">338</a> <em>     */</em>
-<a name="339" href="#339">339</a>     <strong>public</strong> PullHelper get(String groupName, <strong>boolean</strong> throwExceptions)
-<a name="340" href="#340">340</a>             throws <a href="../../../../../org/apache/turbine/services/intake/IntakeException.html">IntakeException</a>
-<a name="341" href="#341">341</a>     {
-<a name="342" href="#342">342</a>         <strong>return</strong> (PullHelper) pullMap.get(groupName);
-<a name="343" href="#343">343</a>     }
-<a name="344" href="#344">344</a> 
-<a name="345" href="#345">345</a>     <em>/**<em>*</em></em>
-<a name="346" href="#346">346</a> <em>     * Loops through all of the Groups and checks to see if</em>
-<a name="347" href="#347">347</a> <em>     * the data within the Group is valid.</em>
-<a name="348" href="#348">348</a> <em>     */</em>
-<a name="349" href="#349">349</a>     <strong>public</strong> <strong>boolean</strong> isAllValid()
-<a name="350" href="#350">350</a>     {
-<a name="351" href="#351">351</a>         <strong>boolean</strong> allValid = <strong>true</strong>;
-<a name="352" href="#352">352</a>         <strong>for</strong> (Iterator iter = groups.values().iterator(); iter.hasNext();)
-<a name="353" href="#353">353</a>         {
-<a name="354" href="#354">354</a>             <a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> group = (Group) iter.next();
-<a name="355" href="#355">355</a>             allValid &amp;= group.isAllValid();
-<a name="356" href="#356">356</a>         }
-<a name="357" href="#357">357</a>         <strong>return</strong> allValid;
-<a name="358" href="#358">358</a>     }
-<a name="359" href="#359">359</a> 
-<a name="360" href="#360">360</a>     <em>/**<em>*</em></em>
-<a name="361" href="#361">361</a> <em>     * Get a specific group by name and key.</em>
-<a name="362" href="#362">362</a> <em>     */</em>
-<a name="363" href="#363">363</a>     <strong>public</strong> <a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> get(String groupName, String key)
-<a name="364" href="#364">364</a>             throws <a href="../../../../../org/apache/turbine/services/intake/IntakeException.html">IntakeException</a>
-<a name="365" href="#365">365</a>     {
-<a name="366" href="#366">366</a>         <strong>if</strong> (groupName == <strong>null</strong>)
-<a name="367" href="#367">367</a>         {
-<a name="368" href="#368">368</a>             <strong>throw</strong> <strong>new</strong> <a href="../../../../../org/apache/turbine/services/intake/IntakeException.html">IntakeException</a>(<span class="string">"Intake.get: groupName == null"</span>);
-<a name="369" href="#369">369</a>         }
-<a name="370" href="#370">370</a>         <strong>if</strong> (key == <strong>null</strong>)
-<a name="371" href="#371">371</a>         {
-<a name="372" href="#372">372</a>             <strong>throw</strong> <strong>new</strong> <a href="../../../../../org/apache/turbine/services/intake/IntakeException.html">IntakeException</a>(<span class="string">"Intake.get: key == null"</span>);
-<a name="373" href="#373">373</a>         }
-<a name="374" href="#374">374</a> 
-<a name="375" href="#375">375</a>         PullHelper ph = get(groupName);
-<a name="376" href="#376">376</a>         <strong>return</strong> (ph == <strong>null</strong>) ? <strong>null</strong> : ph.setKey(key);
-<a name="377" href="#377">377</a>     }
-<a name="378" href="#378">378</a> 
-<a name="379" href="#379">379</a>     <em>/**<em>*</em></em>
-<a name="380" href="#380">380</a> <em>     * Get a specific group by name and key. Also specify</em>
-<a name="381" href="#381">381</a> <em>     * whether or not you want to create a new group.</em>
-<a name="382" href="#382">382</a> <em>     */</em>
-<a name="383" href="#383">383</a>     <strong>public</strong> <a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> get(String groupName, String key, <strong>boolean</strong> create)
-<a name="384" href="#384">384</a>             throws <a href="../../../../../org/apache/turbine/services/intake/IntakeException.html">IntakeException</a>
-<a name="385" href="#385">385</a>     {
-<a name="386" href="#386">386</a>         <strong>if</strong> (groupName == <strong>null</strong>)
-<a name="387" href="#387">387</a>         {
-<a name="388" href="#388">388</a>             <strong>throw</strong> <strong>new</strong> <a href="../../../../../org/apache/turbine/services/intake/IntakeException.html">IntakeException</a>(<span class="string">"Intake.get: groupName == null"</span>);
-<a name="389" href="#389">389</a>         }
-<a name="390" href="#390">390</a>         <strong>if</strong> (key == <strong>null</strong>)
-<a name="391" href="#391">391</a>         {
-<a name="392" href="#392">392</a>             <strong>throw</strong> <strong>new</strong> <a href="../../../../../org/apache/turbine/services/intake/IntakeException.html">IntakeException</a>(<span class="string">"Intake.get: key == null"</span>);
-<a name="393" href="#393">393</a>         }
-<a name="394" href="#394">394</a> 
-<a name="395" href="#395">395</a>         PullHelper ph = get(groupName);
-<a name="396" href="#396">396</a>         <strong>return</strong> (ph == <strong>null</strong>) ? <strong>null</strong> : ph.setKey(key, create);
-<a name="397" href="#397">397</a>     }
-<a name="398" href="#398">398</a> 
-<a name="399" href="#399">399</a>     <em>/**<em>*</em></em>
-<a name="400" href="#400">400</a> <em>     * Removes group.  Primary use is to remove a group that has</em>
-<a name="401" href="#401">401</a> <em>     * been processed by an action and is no longer appropriate</em>
-<a name="402" href="#402">402</a> <em>     * in the view (screen).</em>
-<a name="403" href="#403">403</a> <em>     */</em>
-<a name="404" href="#404">404</a>     <strong>public</strong> <strong>void</strong> remove(<a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> group)
-<a name="405" href="#405">405</a>     {
-<a name="406" href="#406">406</a>         <strong>if</strong> (group != <strong>null</strong>)
-<a name="407" href="#407">407</a>         {
-<a name="408" href="#408">408</a>             groups.remove(group.getObjectKey());
-<a name="409" href="#409">409</a>             group.removeFromRequest();
-<a name="410" href="#410">410</a> 
-<a name="411" href="#411">411</a>             String[] groupKeys = pp.getStrings(INTAKE_GRP);
-<a name="412" href="#412">412</a> 
-<a name="413" href="#413">413</a>             pp.remove(INTAKE_GRP);
-<a name="414" href="#414">414</a> 
-<a name="415" href="#415">415</a>             <strong>if</strong> (groupKeys != <strong>null</strong>)
-<a name="416" href="#416">416</a>             {
-<a name="417" href="#417">417</a>                 <strong>for</strong> (<strong>int</strong> i = 0; i &lt; groupKeys.length; i++)
-<a name="418" href="#418">418</a>                 {
-<a name="419" href="#419">419</a>                     <strong>if</strong> (!groupKeys[i].equals(group.getGID()))
-<a name="420" href="#420">420</a>                     {
-<a name="421" href="#421">421</a>                         pp.add(INTAKE_GRP, groupKeys[i]);
-<a name="422" href="#422">422</a>                     }
-<a name="423" href="#423">423</a>                 }
-<a name="424" href="#424">424</a>             }
-<a name="425" href="#425">425</a> 
-<a name="426" href="#426">426</a>             <strong>try</strong>
-<a name="427" href="#427">427</a>             {
-<a name="428" href="#428">428</a>                 TurbineIntake.releaseGroup(group);
-<a name="429" href="#429">429</a>             }
-<a name="430" href="#430">430</a>             <strong>catch</strong> (TurbineException se)
-<a name="431" href="#431">431</a>             {
-<a name="432" href="#432">432</a>                 log.error(<span class="string">"Tried to release unknown group "</span>
-<a name="433" href="#433">433</a>                         + group.getIntakeGroupName());
-<a name="434" href="#434">434</a>             }
-<a name="435" href="#435">435</a>         }
-<a name="436" href="#436">436</a>     }
-<a name="437" href="#437">437</a> 
-<a name="438" href="#438">438</a>     <em>/**<em>*</em></em>
-<a name="439" href="#439">439</a> <em>     * Removes all groups.  Primary use is to remove groups that have</em>
-<a name="440" href="#440">440</a> <em>     * been processed by an action and are no longer appropriate</em>
-<a name="441" href="#441">441</a> <em>     * in the view (screen).</em>
-<a name="442" href="#442">442</a> <em>     */</em>
-<a name="443" href="#443">443</a>     <strong>public</strong> <strong>void</strong> removeAll()
-<a name="444" href="#444">444</a>     {
-<a name="445" href="#445">445</a>         Object[] allGroups = groups.values().toArray();
-<a name="446" href="#446">446</a>         <strong>for</strong> (<strong>int</strong> i = allGroups.length - 1; i >= 0; i--)
-<a name="447" href="#447">447</a>         {
-<a name="448" href="#448">448</a>             <a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> group = (Group) allGroups[i];
-<a name="449" href="#449">449</a>             remove(group);
-<a name="450" href="#450">450</a>         }
-<a name="451" href="#451">451</a>     }
-<a name="452" href="#452">452</a> 
-<a name="453" href="#453">453</a>     <em>/**<em>*</em></em>
-<a name="454" href="#454">454</a> <em>     * Get a Map containing all the groups.</em>
-<a name="455" href="#455">455</a> <em>     *</em>
-<a name="456" href="#456">456</a> <em>     * @return the Group Map</em>
-<a name="457" href="#457">457</a> <em>     */</em>
-<a name="458" href="#458">458</a>     <strong>public</strong> Map getGroups()
-<a name="459" href="#459">459</a>     {
-<a name="460" href="#460">460</a>         <strong>return</strong> groups;
-<a name="461" href="#461">461</a>     }
-<a name="462" href="#462">462</a> 
-<a name="463" href="#463">463</a>     <em class="comment">// ****************** Recyclable implementation ************************</em>
-<a name="464" href="#464">464</a> 
-<a name="465" href="#465">465</a>     <strong>private</strong> <strong>boolean</strong> disposed;
-<a name="466" href="#466">466</a> 
-<a name="467" href="#467">467</a>     <em>/**<em>*</em></em>
-<a name="468" href="#468">468</a> <em>     * Recycles the object for a new client. Recycle methods with</em>
-<a name="469" href="#469">469</a> <em>     * parameters must be added to implementing object and they will be</em>
-<a name="470" href="#470">470</a> <em>     * automatically called by pool implementations when the object is</em>
-<a name="471" href="#471">471</a> <em>     * taken from the pool for a new client. The parameters must</em>
-<a name="472" href="#472">472</a> <em>     * correspond to the parameters of the constructors of the object.</em>
-<a name="473" href="#473">473</a> <em>     * For new objects, constructors can call their corresponding recycle</em>
-<a name="474" href="#474">474</a> <em>     * methods whenever applicable.</em>
-<a name="475" href="#475">475</a> <em>     * The recycle methods must call their super.</em>
-<a name="476" href="#476">476</a> <em>     */</em>
-<a name="477" href="#477">477</a>     <strong>public</strong> <strong>void</strong> recycle()
-<a name="478" href="#478">478</a>     {
-<a name="479" href="#479">479</a>         disposed = false;
-<a name="480" href="#480">480</a>     }
-<a name="481" href="#481">481</a> 
-<a name="482" href="#482">482</a>     <em>/**<em>*</em></em>
-<a name="483" href="#483">483</a> <em>     * Disposes the object after use. The method is called</em>
-<a name="484" href="#484">484</a> <em>     * when the object is returned to its pool.</em>
-<a name="485" href="#485">485</a> <em>     * The dispose method must call its super.</em>
-<a name="486" href="#486">486</a> <em>     */</em>
-<a name="487" href="#487">487</a>     <strong>public</strong> <strong>void</strong> dispose()
-<a name="488" href="#488">488</a>     {
-<a name="489" href="#489">489</a>         <strong>for</strong> (Iterator iter = groups.values().iterator(); iter.hasNext();)
-<a name="490" href="#490">490</a>         {
-<a name="491" href="#491">491</a>             <a href="../../../../../org/apache/turbine/services/intake/model/Group.html">Group</a> g = (Group) iter.next();
-<a name="492" href="#492">492</a> 
-<a name="493" href="#493">493</a>             <strong>try</strong>
-<a name="494" href="#494">494</a>             {
-<a name="495" href="#495">495</a>                 TurbineIntake.releaseGroup(g);
-<a name="496" href="#496">496</a>             }
-<a name="497" href="#497">497</a>             <strong>catch</strong> (TurbineException se)
-<a name="498" href="#498">498</a>             {
-<a name="499" href="#499">499</a>                 log.error(<span class="string">"Tried to release unknown group "</span>
-<a name="500" href="#500">500</a>                         + g.getIntakeGroupName());
-<a name="501" href="#501">501</a>             }
-<a name="502" href="#502">502</a>         }
-<a name="503" href="#503">503</a> 
-<a name="504" href="#504">504</a>         groups.clear();
-<a name="505" href="#505">505</a>         declaredGroups.clear();
-<a name="506" href="#506">506</a>         pp = <strong>null</strong>;
-<a name="507" href="#507">507</a> 
-<a name="508" href="#508">508</a>         disposed = <strong>true</strong>;
-<a name="509" href="#509">509</a>     }
-<a name="510" href="#510">510</a> 
-<a name="511" href="#511">511</a>     <em>/**<em>*</em></em>
-<a name="512" href="#512">512</a> <em>     * Checks whether the recyclable has been disposed.</em>
-<a name="513" href="#513">513</a> <em>     *</em>
-<a name="514" href="#514">514</a> <em>     * @return true, if the recyclable is disposed.</em>
-<a name="515" href="#515">515</a> <em>     */</em>
-<a name="516" href="#516">516</a>     <strong>public</strong> <strong>boolean</strong> isDisposed()
-<a name="517" href="#517">517</a>     {
-<a name="518" href="#518">518</a>         <strong>return</strong> disposed;
-<a name="519" href="#519">519</a>     }
-<a name="520" href="#520">520</a> }
+<a class="jxr_linenumber" name="1" href="#1">1</a>   <strong class="jxr_keyword">package</strong> org.apache.turbine.services.intake;
+<a class="jxr_linenumber" name="2" href="#2">2</a>   
+<a class="jxr_linenumber" name="3" href="#3">3</a>   
+<a class="jxr_linenumber" name="4" href="#4">4</a>   <em class="jxr_comment">/*</em>
+<a class="jxr_linenumber" name="5" href="#5">5</a>   <em class="jxr_comment"> * Licensed to the Apache Software Foundation (ASF) under one</em>
+<a class="jxr_linenumber" name="6" href="#6">6</a>   <em class="jxr_comment"> * or more contributor license agreements.  See the NOTICE file</em>
+<a class="jxr_linenumber" name="7" href="#7">7</a>   <em class="jxr_comment"> * distributed with this work for additional information</em>
+<a class="jxr_linenumber" name="8" href="#8">8</a>   <em class="jxr_comment"> * regarding copyright ownership.  The ASF licenses this file</em>
+<a class="jxr_linenumber" name="9" href="#9">9</a>   <em class="jxr_comment"> * to you under the Apache License, Version 2.0 (the</em>
+<a class="jxr_linenumber" name="10" href="#10">10</a>  <em class="jxr_comment"> * "License"); you may not use this file except in compliance</em>
+<a class="jxr_linenumber" name="11" href="#11">11</a>  <em class="jxr_comment"> * with the License.  You may obtain a copy of the License at</em>
+<a class="jxr_linenumber" name="12" href="#12">12</a>  <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="13" href="#13">13</a>  <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
+<a class="jxr_linenumber" name="14" href="#14">14</a>  <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="15" href="#15">15</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing,</em>
+<a class="jxr_linenumber" name="16" href="#16">16</a>  <em class="jxr_comment"> * software distributed under the License is distributed on an</em>
+<a class="jxr_linenumber" name="17" href="#17">17</a>  <em class="jxr_comment"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</em>
+<a class="jxr_linenumber" name="18" href="#18">18</a>  <em class="jxr_comment"> * KIND, either express or implied.  See the License for the</em>
+<a class="jxr_linenumber" name="19" href="#19">19</a>  <em class="jxr_comment"> * specific language governing permissions and limitations</em>
+<a class="jxr_linenumber" name="20" href="#20">20</a>  <em class="jxr_comment"> * under the License.</em>
+<a class="jxr_linenumber" name="21" href="#21">21</a>  <em class="jxr_comment"> */</em>
+<a class="jxr_linenumber" name="22" href="#22">22</a>  
+<a class="jxr_linenumber" name="23" href="#23">23</a>  
+<a class="jxr_linenumber" name="24" href="#24">24</a>  <strong class="jxr_keyword">import</strong> java.util.HashMap;
+<a class="jxr_linenumber" name="25" href="#25">25</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="26" href="#26">26</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
+<a class="jxr_linenumber" name="27" href="#27">27</a>  
+<a class="jxr_linenumber" name="28" href="#28">28</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.logging.Log;
+<a class="jxr_linenumber" name="29" href="#29">29</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.logging.LogFactory;
+<a class="jxr_linenumber" name="30" href="#30">30</a>  <strong class="jxr_keyword">import</strong> org.apache.fulcrum.intake.IntakeException;
+<a class="jxr_linenumber" name="31" href="#31">31</a>  <strong class="jxr_keyword">import</strong> org.apache.fulcrum.intake.IntakeServiceFacade;
+<a class="jxr_linenumber" name="32" href="#32">32</a>  <strong class="jxr_keyword">import</strong> org.apache.fulcrum.intake.Retrievable;
+<a class="jxr_linenumber" name="33" href="#33">33</a>  <strong class="jxr_keyword">import</strong> org.apache.fulcrum.intake.model.Group;
+<a class="jxr_linenumber" name="34" href="#34">34</a>  <strong class="jxr_keyword">import</strong> org.apache.fulcrum.parser.ValueParser;
+<a class="jxr_linenumber" name="35" href="#35">35</a>  <strong class="jxr_keyword">import</strong> org.apache.fulcrum.pool.Recyclable;
+<a class="jxr_linenumber" name="36" href="#36">36</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.services.pull.ApplicationTool;
+<a class="jxr_linenumber" name="37" href="#37">37</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.util.RunData;
+<a class="jxr_linenumber" name="38" href="#38">38</a>  
+<a class="jxr_linenumber" name="39" href="#39">39</a>  
+<a class="jxr_linenumber" name="40" href="#40">40</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="41" href="#41">41</a>  <em class="jxr_javadoccomment"> * The main class through which Intake is accessed.  Provides easy access</em>
+<a class="jxr_linenumber" name="42" href="#42">42</a>  <em class="jxr_javadoccomment"> * to the Fulcrum Intake component.</em>
+<a class="jxr_linenumber" name="43" href="#43">43</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="44" href="#44">44</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:jmcnally@collab.net" target="alexandria_uri">mailto:jmcnally@collab.net</a>"&gt;John D. McNally&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="45" href="#45">45</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:hps@intermeta.de" target="alexandria_uri">mailto:hps@intermeta.de</a>"&gt;Henning P. Schmiedehausen&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="46" href="#46">46</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:quintonm@bellsouth.net" target="alexandria_uri">mailto:quintonm@bellsouth.net</a>"&gt;Quinton McCombs&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="47" href="#47">47</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:epugh@upstate.com" target="alexandria_uri">mailto:epugh@upstate.com</a>"&gt;Eric Pugh&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="48" href="#48">48</a>  <em class="jxr_javadoccomment"> * @version $Id: IntakeTool.java 1706239 2015-10-01 13:18:35Z tv $</em>
+<a class="jxr_linenumber" name="49" href="#49">49</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="50" href="#50">50</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/apache/turbine/services/intake/IntakeTool.html">IntakeTool</a>
+<a class="jxr_linenumber" name="51" href="#51">51</a>          <strong class="jxr_keyword">implements</strong> ApplicationTool, Recyclable
+<a class="jxr_linenumber" name="52" href="#52">52</a>  {
+<a class="jxr_linenumber" name="53" href="#53">53</a>      <em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> Used for logging */</em>
+<a class="jxr_linenumber" name="54" href="#54">54</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Log log = LogFactory.getLog(IntakeTool.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="55" href="#55">55</a>  
+<a class="jxr_linenumber" name="56" href="#56">56</a>      <em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> Constant for default key */</em>
+<a class="jxr_linenumber" name="57" href="#57">57</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String DEFAULT_KEY = <span class="jxr_string">"_0"</span>;
+<a class="jxr_linenumber" name="58" href="#58">58</a>  
+<a class="jxr_linenumber" name="59" href="#59">59</a>      <em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> Constant for the hidden fieldname */</em>
+<a class="jxr_linenumber" name="60" href="#60">60</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> String INTAKE_GRP = <span class="jxr_string">"intake-grp"</span>;
+<a class="jxr_linenumber" name="61" href="#61">61</a>  
+<a class="jxr_linenumber" name="62" href="#62">62</a>      <em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> Groups from intake.xml */</em>
+<a class="jxr_linenumber" name="63" href="#63">63</a>      <strong class="jxr_keyword">protected</strong> HashMap&lt;String, Group&gt; groups;
+<a class="jxr_linenumber" name="64" href="#64">64</a>  
+<a class="jxr_linenumber" name="65" href="#65">65</a>      <em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> ValueParser instance */</em>
+<a class="jxr_linenumber" name="66" href="#66">66</a>      <strong class="jxr_keyword">protected</strong> ValueParser pp;
+<a class="jxr_linenumber" name="67" href="#67">67</a>  
+<a class="jxr_linenumber" name="68" href="#68">68</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> HashMap&lt;String, Group&gt; declaredGroups = <strong class="jxr_keyword">new</strong> HashMap&lt;String, Group&gt;();
+<a class="jxr_linenumber" name="69" href="#69">69</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> StringBuilder allGroupsSB = <strong class="jxr_keyword">new</strong> StringBuilder(256);
+<a class="jxr_linenumber" name="70" href="#70">70</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> StringBuilder groupSB = <strong class="jxr_keyword">new</strong> StringBuilder(128);
+<a class="jxr_linenumber" name="71" href="#71">71</a>  
+<a class="jxr_linenumber" name="72" href="#72">72</a>      <em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> The cache of PullHelpers. **/</em>
+<a class="jxr_linenumber" name="73" href="#73">73</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Map&lt;String, IntakeTool.PullHelper&gt; pullMap;
+<a class="jxr_linenumber" name="74" href="#74">74</a>  
+<a class="jxr_linenumber" name="75" href="#75">75</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="76" href="#76">76</a>  <em class="jxr_javadoccomment">     * Constructor</em>
+<a class="jxr_linenumber" name="77" href="#77">77</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="78" href="#78">78</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../org/apache/turbine/services/intake/IntakeTool.html">IntakeTool</a>()
+<a class="jxr_linenumber" name="79" href="#79">79</a>      {
+<a class="jxr_linenumber" name="80" href="#80">80</a>          String[] groupNames = IntakeServiceFacade.getGroupNames();
+<a class="jxr_linenumber" name="81" href="#81">81</a>          <strong class="jxr_keyword">int</strong> groupCount = 0;
+<a class="jxr_linenumber" name="82" href="#82">82</a>          <strong class="jxr_keyword">if</strong> (groupNames != <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="83" href="#83">83</a>          {
+<a class="jxr_linenumber" name="84" href="#84">84</a>              groupCount = groupNames.length;
+<a class="jxr_linenumber" name="85" href="#85">85</a>          }
+<a class="jxr_linenumber" name="86" href="#86">86</a>          groups = <strong class="jxr_keyword">new</strong> HashMap&lt;String, Group&gt;((<strong class="jxr_keyword">int</strong>) (1.25 * groupCount + 1));
+<a class="jxr_linenumber" name="87" href="#87">87</a>          pullMap = <strong class="jxr_keyword">new</strong> HashMap&lt;String, IntakeTool.PullHelper&gt;((<strong class="jxr_keyword">int</strong>) (1.25 * groupCount + 1));
+<a class="jxr_linenumber" name="88" href="#88">88</a>  
+<a class="jxr_linenumber" name="89" href="#89">89</a>          <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = groupCount - 1; i &gt;= 0; i--)
+<a class="jxr_linenumber" name="90" href="#90">90</a>          {
+<a class="jxr_linenumber" name="91" href="#91">91</a>              pullMap.put(groupNames[i], <strong class="jxr_keyword">new</strong> <a href="../../../../../org/apache/turbine/services/intake/IntakeTool.html">PullHelper</a>(groupNames[i]));
+<a class="jxr_linenumber" name="92" href="#92">92</a>          }
+<a class="jxr_linenumber" name="93" href="#93">93</a>      }
+<a class="jxr_linenumber" name="94" href="#94">94</a>  
+<a class="jxr_linenumber" name="95" href="#95">95</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="96" href="#96">96</a>  <em class="jxr_javadoccomment">     * Prepares intake for a single request</em>
+<a class="jxr_linenumber" name="97" href="#97">97</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="98" href="#98">98</a>      @Override
+<a class="jxr_linenumber" name="99" href="#99">99</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> init(Object runData)
+<a class="jxr_linenumber" name="100" href="#100">100</a>     {
+<a class="jxr_linenumber" name="101" href="#101">101</a>         <strong class="jxr_keyword">this</strong>.pp = ((RunData) runData).getParameters();
+<a class="jxr_linenumber" name="102" href="#102">102</a> 
+<a class="jxr_linenumber" name="103" href="#103">103</a>         String[] groupKeys = pp.getStrings(INTAKE_GRP);
+<a class="jxr_linenumber" name="104" href="#104">104</a>         String[] groupNames = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="105" href="#105">105</a>         <strong class="jxr_keyword">if</strong> (groupKeys == <strong class="jxr_keyword">null</strong> || groupKeys.length == 0)
+<a class="jxr_linenumber" name="106" href="#106">106</a>         {
+<a class="jxr_linenumber" name="107" href="#107">107</a>             groupNames = IntakeServiceFacade.getGroupNames();
+<a class="jxr_linenumber" name="108" href="#108">108</a>         }
+<a class="jxr_linenumber" name="109" href="#109">109</a>         <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="110" href="#110">110</a>         {
+<a class="jxr_linenumber" name="111" href="#111">111</a>             groupNames = <strong class="jxr_keyword">new</strong> String[groupKeys.length];
+<a class="jxr_linenumber" name="112" href="#112">112</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = groupKeys.length - 1; i &gt;= 0; i--)
+<a class="jxr_linenumber" name="113" href="#113">113</a>             {
+<a class="jxr_linenumber" name="114" href="#114">114</a>                 groupNames[i] = IntakeServiceFacade.getGroupName(groupKeys[i]);
+<a class="jxr_linenumber" name="115" href="#115">115</a>             }
+<a class="jxr_linenumber" name="116" href="#116">116</a> 
+<a class="jxr_linenumber" name="117" href="#117">117</a>         }
+<a class="jxr_linenumber" name="118" href="#118">118</a> 
+<a class="jxr_linenumber" name="119" href="#119">119</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = groupNames.length - 1; i &gt;= 0; i--)
+<a class="jxr_linenumber" name="120" href="#120">120</a>         {
+<a class="jxr_linenumber" name="121" href="#121">121</a>             <strong class="jxr_keyword">try</strong>
+<a class="jxr_linenumber" name="122" href="#122">122</a>             {
+<a class="jxr_linenumber" name="123" href="#123">123</a>                 List&lt;Group&gt; foundGroups = IntakeServiceFacade.getGroup(groupNames[i])
+<a class="jxr_linenumber" name="124" href="#124">124</a>                     .getObjects(pp);
+<a class="jxr_linenumber" name="125" href="#125">125</a> 
+<a class="jxr_linenumber" name="126" href="#126">126</a>                 <strong class="jxr_keyword">if</strong> (foundGroups != <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="127" href="#127">127</a>                 {
+<a class="jxr_linenumber" name="128" href="#128">128</a>                     <strong class="jxr_keyword">for</strong> (Group group : foundGroups)
+<a class="jxr_linenumber" name="129" href="#129">129</a>                     {
+<a class="jxr_linenumber" name="130" href="#130">130</a>                         groups.put(group.getObjectKey(), group);
+<a class="jxr_linenumber" name="131" href="#131">131</a>                     }
+<a class="jxr_linenumber" name="132" href="#132">132</a>                 }
+<a class="jxr_linenumber" name="133" href="#133">133</a>             }
+<a class="jxr_linenumber" name="134" href="#134">134</a>             <strong class="jxr_keyword">catch</strong> (IntakeException e)
+<a class="jxr_linenumber" name="135" href="#135">135</a>             {
+<a class="jxr_linenumber" name="136" href="#136">136</a>                 log.error(e);
+<a class="jxr_linenumber" name="137" href="#137">137</a>             }
+<a class="jxr_linenumber" name="138" href="#138">138</a>         }
+<a class="jxr_linenumber" name="139" href="#139">139</a>     }
+<a class="jxr_linenumber" name="140" href="#140">140</a> 
+<a class="jxr_linenumber" name="141" href="#141">141</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="142" href="#142">142</a> <em class="jxr_javadoccomment">     * Add all registered group ids to the value parser</em>
+<a class="jxr_linenumber" name="143" href="#143">143</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="144" href="#144">144</a> <em class="jxr_javadoccomment">     * @param vp the value parser</em>
+<a class="jxr_linenumber" name="145" href="#145">145</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="146" href="#146">146</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addGroupsToParameters(ValueParser vp)
+<a class="jxr_linenumber" name="147" href="#147">147</a>     {
+<a class="jxr_linenumber" name="148" href="#148">148</a>         <strong class="jxr_keyword">for</strong> (Group group : groups.values())
+<a class="jxr_linenumber" name="149" href="#149">149</a>         {
+<a class="jxr_linenumber" name="150" href="#150">150</a>             <strong class="jxr_keyword">if</strong> (!declaredGroups.containsKey(group.getIntakeGroupName()))
+<a class="jxr_linenumber" name="151" href="#151">151</a>             {
+<a class="jxr_linenumber" name="152" href="#152">152</a>                 declaredGroups.put(group.getIntakeGroupName(), <strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="153" href="#153">153</a>                 vp.add(<span class="jxr_string">"intake-grp"</span>, group.getGID());
+<a class="jxr_linenumber" name="154" href="#154">154</a>             }
+<a class="jxr_linenumber" name="155" href="#155">155</a>             vp.add(group.getGID(), group.getOID());
+<a class="jxr_linenumber" name="156" href="#156">156</a>         }
+<a class="jxr_linenumber" name="157" href="#157">157</a>         declaredGroups.clear();
+<a class="jxr_linenumber" name="158" href="#158">158</a>     }
+<a class="jxr_linenumber" name="159" href="#159">159</a> 
+<a class="jxr_linenumber" name="160" href="#160">160</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="161" href="#161">161</a> <em class="jxr_javadoccomment">     * A convenience method to write out the hidden form fields</em>
+<a class="jxr_linenumber" name="162" href="#162">162</a> <em class="jxr_javadoccomment">     * that notify intake of the relevant groups.  It should be used</em>
+<a class="jxr_linenumber" name="163" href="#163">163</a> <em class="jxr_javadoccomment">     * only in templates with 1 form.  In multiform templates, the groups</em>
+<a class="jxr_linenumber" name="164" href="#164">164</a> <em class="jxr_javadoccomment">     * that are relevant for each form need to be declared using</em>
+<a class="jxr_linenumber" name="165" href="#165">165</a> <em class="jxr_javadoccomment">     * $intake.newForm() and $intake.declareGroup($group) for the relevant</em>
+<a class="jxr_linenumber" name="166" href="#166">166</a> <em class="jxr_javadoccomment">     * groups in the form.</em>
+<a class="jxr_linenumber" name="167" href="#167">167</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="168" href="#168">168</a> <em class="jxr_javadoccomment">     * @return the HTML that declares all groups to Intake in hidden input fields</em>
+<a class="jxr_linenumber" name="169" href="#169">169</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="170" href="#170">170</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="171" href="#171">171</a>     <strong class="jxr_keyword">public</strong> String declareGroups()
+<a class="jxr_linenumber" name="172" href="#172">172</a>     {
+<a class="jxr_linenumber" name="173" href="#173">173</a>         allGroupsSB.setLength(0);
+<a class="jxr_linenumber" name="174" href="#174">174</a>         <strong class="jxr_keyword">for</strong> (Group group : groups.values())
+<a class="jxr_linenumber" name="175" href="#175">175</a>         {
+<a class="jxr_linenumber" name="176" href="#176">176</a>             declareGroup(group, allGroupsSB);
+<a class="jxr_linenumber" name="177" href="#177">177</a>         }
+<a class="jxr_linenumber" name="178" href="#178">178</a>         <strong class="jxr_keyword">return</strong> allGroupsSB.toString();
+<a class="jxr_linenumber" name="179" href="#179">179</a>     }
+<a class="jxr_linenumber" name="180" href="#180">180</a> 
+<a class="jxr_linenumber" name="181" href="#181">181</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="182" href="#182">182</a> <em class="jxr_javadoccomment">     * A convenience method to write out the hidden form fields</em>
+<a class="jxr_linenumber" name="183" href="#183">183</a> <em class="jxr_javadoccomment">     * that notify intake of the group.</em>
+<a class="jxr_linenumber" name="184" href="#184">184</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="185" href="#185">185</a> <em class="jxr_javadoccomment">     * @param group the group to declare</em>
+<a class="jxr_linenumber" name="186" href="#186">186</a> <em class="jxr_javadoccomment">     * @return the HTML that declares the group to Intake in a hidden input field</em>
+<a class="jxr_linenumber" name="187" href="#187">187</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="188" href="#188">188</a>     <strong class="jxr_keyword">public</strong> String declareGroup(Group group)
+<a class="jxr_linenumber" name="189" href="#189">189</a>     {
+<a class="jxr_linenumber" name="190" href="#190">190</a>         groupSB.setLength(0);
+<a class="jxr_linenumber" name="191" href="#191">191</a>         declareGroup(group, groupSB);
+<a class="jxr_linenumber" name="192" href="#192">192</a>         <strong class="jxr_keyword">return</strong> groupSB.toString();
+<a class="jxr_linenumber" name="193" href="#193">193</a>     }
+<a class="jxr_linenumber" name="194" href="#194">194</a> 
+<a class="jxr_linenumber" name="195" href="#195">195</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="196" href="#196">196</a> <em class="jxr_javadoccomment">     * xhtml valid hidden input field(s) that notifies intake of the</em>
+<a class="jxr_linenumber" name="197" href="#197">197</a> <em class="jxr_javadoccomment">     * group's presence.</em>
+<a class="jxr_linenumber" name="198" href="#198">198</a> <em class="jxr_javadoccomment">     * @param group the group to declare</em>
+<a class="jxr_linenumber" name="199" href="#199">199</a> <em class="jxr_javadoccomment">     * @param sb a String Builder where the hidden field HTML will be appended</em>
+<a class="jxr_linenumber" name="200" href="#200">200</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="201" href="#201">201</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> declareGroup(Group group, StringBuilder sb)
+<a class="jxr_linenumber" name="202" href="#202">202</a>     {
+<a class="jxr_linenumber" name="203" href="#203">203</a>         <strong class="jxr_keyword">if</strong> (!declaredGroups.containsKey(group.getIntakeGroupName()))
+<a class="jxr_linenumber" name="204" href="#204">204</a>         {
+<a class="jxr_linenumber" name="205" href="#205">205</a>             declaredGroups.put(group.getIntakeGroupName(), <strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="206" href="#206">206</a>             sb.append(<span class="jxr_string">"&lt;input type=\&quot;hidden\&quot; name=\&quot;"</span>)
+<a class="jxr_linenumber" name="207" href="#207">207</a>                     .append(INTAKE_GRP)
+<a class="jxr_linenumber" name="208" href="#208">208</a>                     .append(<span class="jxr_string">"\&quot; value=\&quot;"</span>)
+<a class="jxr_linenumber" name="209" href="#209">209</a>                     .append(group.getGID())
+<a class="jxr_linenumber" name="210" href="#210">210</a>                     .append(<span class="jxr_string">"\&quot;/&gt;\n"</span>);
+<a class="jxr_linenumber" name="211" href="#211">211</a>         }
+<a class="jxr_linenumber" name="212" href="#212">212</a>         group.appendHtmlFormInput(sb);
+<a class="jxr_linenumber" name="213" href="#213">213</a>     }
+<a class="jxr_linenumber" name="214" href="#214">214</a> 
+<a class="jxr_linenumber" name="215" href="#215">215</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="216" href="#216">216</a> <em class="jxr_javadoccomment">     * Declare that a new form starts</em>
+<a class="jxr_linenumber" name="217" href="#217">217</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="218" href="#218">218</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> newForm()
+<a class="jxr_linenumber" name="219" href="#219">219</a>     {
+<a class="jxr_linenumber" name="220" href="#220">220</a>         declaredGroups.clear();
+<a class="jxr_linenumber" name="221" href="#221">221</a>         <strong class="jxr_keyword">for</strong> (Group group : groups.values())
+<a class="jxr_linenumber" name="222" href="#222">222</a>         {
+<a class="jxr_linenumber" name="223" href="#223">223</a>             group.resetDeclared();
+<a class="jxr_linenumber" name="224" href="#224">224</a>         }
+<a class="jxr_linenumber" name="225" href="#225">225</a>     }
+<a class="jxr_linenumber" name="226" href="#226">226</a> 
+<a class="jxr_linenumber" name="227" href="#227">227</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="228" href="#228">228</a> <em class="jxr_javadoccomment">     * Implementation of ApplicationTool interface is not needed for this</em>
+<a class="jxr_linenumber" name="229" href="#229">229</a> <em class="jxr_javadoccomment">     * tool as it is request scoped</em>
+<a class="jxr_linenumber" name="230" href="#230">230</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="231" href="#231">231</a>     @Override
+<a class="jxr_linenumber" name="232" href="#232">232</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> refresh()
+<a class="jxr_linenumber" name="233" href="#233">233</a>     {
+<a class="jxr_linenumber" name="234" href="#234">234</a>         <em class="jxr_comment">// empty</em>
+<a class="jxr_linenumber" name="235" href="#235">235</a>     }
+<a class="jxr_linenumber" name="236" href="#236">236</a> 
+<a class="jxr_linenumber" name="237" href="#237">237</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="238" href="#238">238</a> <em class="jxr_javadoccomment">     * Inner class to present a nice interface to the template designer</em>
+<a class="jxr_linenumber" name="239" href="#239">239</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="240" href="#240">240</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../org/apache/turbine/services/intake/IntakeTool.html">PullHelper</a>
+<a class="jxr_linenumber" name="241" href="#241">241</a>     {
+<a class="jxr_linenumber" name="242" href="#242">242</a>         <em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> Name of the group used by the pull helper */</em>
+<a class="jxr_linenumber" name="243" href="#243">243</a>         String groupName;
+<a class="jxr_linenumber" name="244" href="#244">244</a> 
+<a class="jxr_linenumber" name="245" href="#245">245</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="246" href="#246">246</a> <em class="jxr_javadoccomment">         * Protected constructor to force use of factory method.</em>
+<a class="jxr_linenumber" name="247" href="#247">247</a> <em class="jxr_javadoccomment">         *</em>
+<a class="jxr_linenumber" name="248" href="#248">248</a> <em class="jxr_javadoccomment">         * @param groupName</em>
+<a class="jxr_linenumber" name="249" href="#249">249</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="250" href="#250">250</a>         <strong class="jxr_keyword">protected</strong> <a href="../../../../../org/apache/turbine/services/intake/IntakeTool.html">PullHelper</a>(String groupName)
+<a class="jxr_linenumber" name="251" href="#251">251</a>         {
+<a class="jxr_linenumber" name="252" href="#252">252</a>             <strong class="jxr_keyword">this</strong>.groupName = groupName;
+<a class="jxr_linenumber" name="253" href="#253">253</a>         }
+<a class="jxr_linenumber" name="254" href="#254">254</a> 
+<a class="jxr_linenumber" name="255" href="#255">255</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="256" href="#256">256</a> <em class="jxr_javadoccomment">         * Populates the object with the default values from the XML File</em>
+<a class="jxr_linenumber" name="257" href="#257">257</a> <em class="jxr_javadoccomment">         *</em>
+<a class="jxr_linenumber" name="258" href="#258">258</a> <em class="jxr_javadoccomment">         * @return a Group object with the default values</em>
+<a class="jxr_linenumber" name="259" href="#259">259</a> <em class="jxr_javadoccomment">         * @throws IntakeException</em>
+<a class="jxr_linenumber" name="260" href="#260">260</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="261" href="#261">261</a>         <strong class="jxr_keyword">public</strong> Group getDefault()
+<a class="jxr_linenumber" name="262" href="#262">262</a>                 <strong class="jxr_keyword">throws</strong> IntakeException
+<a class="jxr_linenumber" name="263" href="#263">263</a>         {
+<a class="jxr_linenumber" name="264" href="#264">264</a>             <strong class="jxr_keyword">return</strong> setKey(DEFAULT_KEY);
+<a class="jxr_linenumber" name="265" href="#265">265</a>         }
+<a class="jxr_linenumber" name="266" href="#266">266</a> 
+<a class="jxr_linenumber" name="267" href="#267">267</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="268" href="#268">268</a> <em class="jxr_javadoccomment">         * Calls setKey(key,true)</em>
+<a class="jxr_linenumber" name="269" href="#269">269</a> <em class="jxr_javadoccomment">         *</em>
+<a class="jxr_linenumber" name="270" href="#270">270</a> <em class="jxr_javadoccomment">         * @param key</em>
+<a class="jxr_linenumber" name="271" href="#271">271</a> <em class="jxr_javadoccomment">         * @return an Intake Group</em>
+<a class="jxr_linenumber" name="272" href="#272">272</a> <em class="jxr_javadoccomment">         * @throws IntakeException</em>
+<a class="jxr_linenumber" name="273" href="#273">273</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="274" href="#274">274</a>         <strong class="jxr_keyword">public</strong> Group setKey(String key)
+<a class="jxr_linenumber" name="275" href="#275">275</a>                 <strong class="jxr_keyword">throws</strong> IntakeException
+<a class="jxr_linenumber" name="276" href="#276">276</a>         {
+<a class="jxr_linenumber" name="277" href="#277">277</a>             <strong class="jxr_keyword">return</strong> setKey(key, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="278" href="#278">278</a>         }
+<a class="jxr_linenumber" name="279" href="#279">279</a> 
+<a class="jxr_linenumber" name="280" href="#280">280</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="281" href="#281">281</a> <em class="jxr_javadoccomment">         *</em>
+<a class="jxr_linenumber" name="282" href="#282">282</a> <em class="jxr_javadoccomment">         * @param key</em>
+<a class="jxr_linenumber" name="283" href="#283">283</a> <em class="jxr_javadoccomment">         * @param create</em>
+<a class="jxr_linenumber" name="284" href="#284">284</a> <em class="jxr_javadoccomment">         * @return an Intake Group</em>
+<a class="jxr_linenumber" name="285" href="#285">285</a> <em class="jxr_javadoccomment">         * @throws IntakeException</em>
+<a class="jxr_linenumber" name="286" href="#286">286</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="287" href="#287">287</a>         <strong class="jxr_keyword">public</strong> Group setKey(String key, <strong class="jxr_keyword">boolean</strong> create)
+<a class="jxr_linenumber" name="288" href="#288">288</a>                 <strong class="jxr_keyword">throws</strong> IntakeException
+<a class="jxr_linenumber" name="289" href="#289">289</a>         {
+<a class="jxr_linenumber" name="290" href="#290">290</a>             Group g = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="291" href="#291">291</a> 
+<a class="jxr_linenumber" name="292" href="#292">292</a>             String inputKey = IntakeServiceFacade.getGroupKey(groupName) + key;
+<a class="jxr_linenumber" name="293" href="#293">293</a>             <strong class="jxr_keyword">if</strong> (groups.containsKey(inputKey))
+<a class="jxr_linenumber" name="294" href="#294">294</a>             {
+<a class="jxr_linenumber" name="295" href="#295">295</a>                 g = groups.get(inputKey);
+<a class="jxr_linenumber" name="296" href="#296">296</a>             }
+<a class="jxr_linenumber" name="297" href="#297">297</a>             <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (create)
+<a class="jxr_linenumber" name="298" href="#298">298</a>             {
+<a class="jxr_linenumber" name="299" href="#299">299</a>                 g = IntakeServiceFacade.getGroup(groupName);
+<a class="jxr_linenumber" name="300" href="#300">300</a>                 groups.put(inputKey, g);
+<a class="jxr_linenumber" name="301" href="#301">301</a>                 g.init(key, pp);
+<a class="jxr_linenumber" name="302" href="#302">302</a>             }
+<a class="jxr_linenumber" name="303" href="#303">303</a> 
+<a class="jxr_linenumber" name="304" href="#304">304</a>             <strong class="jxr_keyword">return</strong> g;
+<a class="jxr_linenumber" name="305" href="#305">305</a>         }
+<a class="jxr_linenumber" name="306" href="#306">306</a> 
+<a class="jxr_linenumber" name="307" href="#307">307</a>         <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="308" href="#308">308</a> <em class="jxr_javadoccomment">         * maps an Intake Group to the values from a Retrievable object.</em>
+<a class="jxr_linenumber" name="309" href="#309">309</a> <em class="jxr_javadoccomment">         *</em>
+<a class="jxr_linenumber" name="310" href="#310">310</a> <em class="jxr_javadoccomment">         * @param obj A retrievable object</em>
+<a class="jxr_linenumber" name="311" href="#311">311</a> <em class="jxr_javadoccomment">         * @return an Intake Group</em>
+<a class="jxr_linenumber" name="312" href="#312">312</a> <em class="jxr_javadoccomment">         */</em>
+<a class="jxr_linenumber" name="313" href="#313">313</a>         <strong class="jxr_keyword">public</strong> Group mapTo(Retrievable obj)
+<a class="jxr_linenumber" name="314" href="#314">314</a>         {
+<a class="jxr_linenumber" name="315" href="#315">315</a>             Group g = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="316" href="#316">316</a> 
+<a class="jxr_linenumber" name="317" href="#317">317</a>             <strong class="jxr_keyword">try</strong>
+<a class="jxr_linenumber" name="318" href="#318">318</a>             {
+<a class="jxr_linenumber" name="319" href="#319">319</a>                 String inputKey = IntakeServiceFacade.getGroupKey(groupName)
+<a class="jxr_linenumber" name="320" href="#320">320</a>                         + obj.getQueryKey();
+<a class="jxr_linenumber" name="321" href="#321">321</a>                 <strong class="jxr_keyword">if</strong> (groups.containsKey(inputKey))
+<a class="jxr_linenumber" name="322" href="#322">322</a>                 {
+<a class="jxr_linenumber" name="323" href="#323">323</a>                     g = groups.get(inputKey);
+<a class="jxr_linenumber" name="324" href="#324">324</a>                 }
+<a class="jxr_linenumber" name="325" href="#325">325</a>                 <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="326" href="#326">326</a>                 {
+<a class="jxr_linenumber" name="327" href="#327">327</a>                     g = IntakeServiceFacade.getGroup(groupName);
+<a class="jxr_linenumber" name="328" href="#328">328</a>                     groups.put(inputKey, g);
+<a class="jxr_linenumber" name="329" href="#329">329</a>                 }
+<a class="jxr_linenumber" name="330" href="#330">330</a> 
+<a class="jxr_linenumber" name="331" href="#331">331</a>                 <strong class="jxr_keyword">return</strong> g.init(obj);
+<a class="jxr_linenumber" name="332" href="#332">332</a>             }
+<a class="jxr_linenumber" name="333" href="#333">333</a>             <strong class="jxr_keyword">catch</strong> (IntakeException e)
+<a class="jxr_linenumber" name="334" href="#334">334</a>             {
+<a class="jxr_linenumber" name="335" href="#335">335</a>                 log.error(e);
+<a class="jxr_linenumber" name="336" href="#336">336</a>             }
+<a class="jxr_linenumber" name="337" href="#337">337</a> 
+<a class="jxr_linenumber" name="338" href="#338">338</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="339" href="#339">339</a>         }
+<a class="jxr_linenumber" name="340" href="#340">340</a>     }
+<a class="jxr_linenumber" name="341" href="#341">341</a> 
+<a class="jxr_linenumber" name="342" href="#342">342</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="343" href="#343">343</a> <em class="jxr_javadoccomment">     * get a specific group</em>
+<a class="jxr_linenumber" name="344" href="#344">344</a> <em class="jxr_javadoccomment">     * @param groupName the name of the group</em>
+<a class="jxr_linenumber" name="345" href="#345">345</a> <em class="jxr_javadoccomment">     * @return a {@link PullHelper} wrapper around the group</em>
+<a class="jxr_linenumber" name="346" href="#346">346</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="347" href="#347">347</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../org/apache/turbine/services/intake/IntakeTool.html">PullHelper</a> get(String groupName)
+<a class="jxr_linenumber" name="348" href="#348">348</a>     {
+<a class="jxr_linenumber" name="349" href="#349">349</a>         <strong class="jxr_keyword">return</strong> pullMap.get(groupName);
+<a class="jxr_linenumber" name="350" href="#350">350</a>     }
+<a class="jxr_linenumber" name="351" href="#351">351</a> 
+<a class="jxr_linenumber" name="352" href="#352">352</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="353" href="#353">353</a> <em class="jxr_javadoccomment">     * Get a specific group</em>
+<a class="jxr_linenumber" name="354" href="#354">354</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="355" href="#355">355</a> <em class="jxr_javadoccomment">     * @param groupName the name of the group</em>
+<a class="jxr_linenumber" name="356" href="#356">356</a> <em class="jxr_javadoccomment">     * @param throwExceptions if false, exceptions will be suppressed.</em>
+<a class="jxr_linenumber" name="357" href="#357">357</a> <em class="jxr_javadoccomment">     * @return a {@link PullHelper} wrapper around the group</em>
+<a class="jxr_linenumber" name="358" href="#358">358</a> <em class="jxr_javadoccomment">     * @throws IntakeException could not retrieve group</em>
+<a class="jxr_linenumber" name="359" href="#359">359</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="360" href="#360">360</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../org/apache/turbine/services/intake/IntakeTool.html">PullHelper</a> get(String groupName, <strong class="jxr_keyword">boolean</strong> throwExceptions)
+<a class="jxr_linenumber" name="361" href="#361">361</a>             <strong class="jxr_keyword">throws</strong> IntakeException
+<a class="jxr_linenumber" name="362" href="#362">362</a>     {
+<a class="jxr_linenumber" name="363" href="#363">363</a>         <strong class="jxr_keyword">return</strong> pullMap.get(groupName);
+<a class="jxr_linenumber" name="364" href="#364">364</a>     }
+<a class="jxr_linenumber" name="365" href="#365">365</a> 
+<a class="jxr_linenumber" name="366" href="#366">366</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="367" href="#367">367</a> <em class="jxr_javadoccomment">     * Loops through all of the Groups and checks to see if</em>
+<a class="jxr_linenumber" name="368" href="#368">368</a> <em class="jxr_javadoccomment">     * the data within the Group is valid.</em>
+<a class="jxr_linenumber" name="369" href="#369">369</a> <em class="jxr_javadoccomment">     * @return true if all groups are valid</em>
+<a class="jxr_linenumber" name="370" href="#370">370</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="371" href="#371">371</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isAllValid()
+<a class="jxr_linenumber" name="372" href="#372">372</a>     {
+<a class="jxr_linenumber" name="373" href="#373">373</a>         <strong class="jxr_keyword">boolean</strong> allValid = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="374" href="#374">374</a>         <strong class="jxr_keyword">for</strong> (Group group : groups.values())
+<a class="jxr_linenumber" name="375" href="#375">375</a>         {
+<a class="jxr_linenumber" name="376" href="#376">376</a>             allValid &amp;= group.isAllValid();
+<a class="jxr_linenumber" name="377" href="#377">377</a>         }
+<a class="jxr_linenumber" name="378" href="#378">378</a>         <strong class="jxr_keyword">return</strong> allValid;
+<a class="jxr_linenumber" name="379" href="#379">379</a>     }
+<a class="jxr_linenumber" name="380" href="#380">380</a> 
+<a class="jxr_linenumber" name="381" href="#381">381</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="382" href="#382">382</a> <em class="jxr_javadoccomment">     * Get a specific group by name and key.</em>
+<a class="jxr_linenumber" name="383" href="#383">383</a> <em class="jxr_javadoccomment">     * @param groupName the name of the group</em>
+<a class="jxr_linenumber" name="384" href="#384">384</a> <em class="jxr_javadoccomment">     * @param key the key for the group</em>
+<a class="jxr_linenumber" name="385" href="#385">385</a> <em class="jxr_javadoccomment">     * @return the {@link Group}</em>
+<a class="jxr_linenumber" name="386" href="#386">386</a> <em class="jxr_javadoccomment">     * @throws IntakeException if the group could not be retrieved</em>
+<a class="jxr_linenumber" name="387" href="#387">387</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="388" href="#388">388</a>     <strong class="jxr_keyword">public</strong> Group get(String groupName, String key)
+<a class="jxr_linenumber" name="389" href="#389">389</a>             <strong class="jxr_keyword">throws</strong> IntakeException
+<a class="jxr_linenumber" name="390" href="#390">390</a>     {
+<a class="jxr_linenumber" name="391" href="#391">391</a>         <strong class="jxr_keyword">return</strong> get(groupName, key, <strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="392" href="#392">392</a>     }
+<a class="jxr_linenumber" name="393" href="#393">393</a> 
+<a class="jxr_linenumber" name="394" href="#394">394</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="395" href="#395">395</a> <em class="jxr_javadoccomment">     * Get a specific group by name and key. Also specify</em>
+<a class="jxr_linenumber" name="396" href="#396">396</a> <em class="jxr_javadoccomment">     * whether or not you want to create a new group.</em>
+<a class="jxr_linenumber" name="397" href="#397">397</a> <em class="jxr_javadoccomment">     * @param groupName the name of the group</em>
+<a class="jxr_linenumber" name="398" href="#398">398</a> <em class="jxr_javadoccomment">     * @param key the key for the group</em>
+<a class="jxr_linenumber" name="399" href="#399">399</a> <em class="jxr_javadoccomment">     * @param create true if a new group should be created</em>
+<a class="jxr_linenumber" name="400" href="#400">400</a> <em class="jxr_javadoccomment">     * @return the {@link Group}</em>
+<a class="jxr_linenumber" name="401" href="#401">401</a> <em class="jxr_javadoccomment">     * @throws IntakeException if the group could not be retrieved</em>
+<a class="jxr_linenumber" name="402" href="#402">402</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="403" href="#403">403</a>     <strong class="jxr_keyword">public</strong> Group get(String groupName, String key, <strong class="jxr_keyword">boolean</strong> create)
+<a class="jxr_linenumber" name="404" href="#404">404</a>             <strong class="jxr_keyword">throws</strong> IntakeException
+<a class="jxr_linenumber" name="405" href="#405">405</a>     {
+<a class="jxr_linenumber" name="406" href="#406">406</a>         <strong class="jxr_keyword">if</strong> (groupName == <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="407" href="#407">407</a>         {
+<a class="jxr_linenumber" name="408" href="#408">408</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IntakeException(<span class="jxr_string">"IntakeServiceFacade.get: groupName == null"</span>);
+<a class="jxr_linenumber" name="409" href="#409">409</a>         }
+<a class="jxr_linenumber" name="410" href="#410">410</a>         <strong class="jxr_keyword">if</strong> (key == <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="411" href="#411">411</a>         {
+<a class="jxr_linenumber" name="412" href="#412">412</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IntakeException(<span class="jxr_string">"IntakeServiceFacade.get: key == null"</span>);
+<a class="jxr_linenumber" name="413" href="#413">413</a>         }
+<a class="jxr_linenumber" name="414" href="#414">414</a> 
+<a class="jxr_linenumber" name="415" href="#415">415</a>         <a href="../../../../../org/apache/turbine/services/intake/IntakeTool.html">PullHelper</a> ph = get(groupName);
+<a class="jxr_linenumber" name="416" href="#416">416</a>         <strong class="jxr_keyword">return</strong> (ph == <strong class="jxr_keyword">null</strong>) ? <strong class="jxr_keyword">null</strong> : ph.setKey(key, create);
+<a class="jxr_linenumber" name="417" href="#417">417</a>     }
+<a class="jxr_linenumber" name="418" href="#418">418</a> 
+<a class="jxr_linenumber" name="419" href="#419">419</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="420" href="#420">420</a> <em class="jxr_javadoccomment">     * Removes group.  Primary use is to remove a group that has</em>
+<a class="jxr_linenumber" name="421" href="#421">421</a> <em class="jxr_javadoccomment">     * been processed by an action and is no longer appropriate</em>
+<a class="jxr_linenumber" name="422" href="#422">422</a> <em class="jxr_javadoccomment">     * in the view (screen).</em>
+<a class="jxr_linenumber" name="423" href="#423">423</a> <em class="jxr_javadoccomment">     * @param group the group instance to remove</em>
+<a class="jxr_linenumber" name="424" href="#424">424</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="425" href="#425">425</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> remove(Group group)
+<a class="jxr_linenumber" name="426" href="#426">426</a>     {
+<a class="jxr_linenumber" name="427" href="#427">427</a>         <strong class="jxr_keyword">if</strong> (group != <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="428" href="#428">428</a>         {
+<a class="jxr_linenumber" name="429" href="#429">429</a>             groups.remove(group.getObjectKey());
+<a class="jxr_linenumber" name="430" href="#430">430</a>             group.removeFromRequest();
+<a class="jxr_linenumber" name="431" href="#431">431</a> 
+<a class="jxr_linenumber" name="432" href="#432">432</a>             String[] groupKeys = pp.getStrings(INTAKE_GRP);
+<a class="jxr_linenumber" name="433" href="#433">433</a> 
+<a class="jxr_linenumber" name="434" href="#434">434</a>             pp.remove(INTAKE_GRP);
+<a class="jxr_linenumber" name="435" href="#435">435</a> 
+<a class="jxr_linenumber" name="436" href="#436">436</a> 			<strong class="jxr_keyword">if</strong> (groupKeys != <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="437" href="#437">437</a> 			{
+<a class="jxr_linenumber" name="438" href="#438">438</a> 		        <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; groupKeys.length; i++)
+<a class="jxr_linenumber" name="439" href="#439">439</a> 		        {
+<a class="jxr_linenumber" name="440" href="#440">440</a> 		            <strong class="jxr_keyword">if</strong> (!groupKeys[i].equals(group.getGID()))
+<a class="jxr_linenumber" name="441" href="#441">441</a> 		            {
+<a class="jxr_linenumber" name="442" href="#442">442</a> 		                 pp.add(INTAKE_GRP, groupKeys[i]);
+<a class="jxr_linenumber" name="443" href="#443">443</a> 		            }
+<a class="jxr_linenumber" name="444" href="#444">444</a>                 }
+<a class="jxr_linenumber" name="445" href="#445">445</a> 		    }
+<a class="jxr_linenumber" name="446" href="#446">446</a> 
+<a class="jxr_linenumber" name="447" href="#447">447</a>             <strong class="jxr_keyword">try</strong>
+<a class="jxr_linenumber" name="448" href="#448">448</a>             {
+<a class="jxr_linenumber" name="449" href="#449">449</a>                 IntakeServiceFacade.releaseGroup(group);
+<a class="jxr_linenumber" name="450" href="#450">450</a>             }
+<a class="jxr_linenumber" name="451" href="#451">451</a>             <strong class="jxr_keyword">catch</strong> (IntakeException ie)
+<a class="jxr_linenumber" name="452" href="#452">452</a>             {
+<a class="jxr_linenumber" name="453" href="#453">453</a>                 log.error(<span class="jxr_string">"Tried to release unknown group "</span>
+<a class="jxr_linenumber" name="454" href="#454">454</a>                         + group.getIntakeGroupName());
+<a class="jxr_linenumber" name="455" href="#455">455</a>             }
+<a class="jxr_linenumber" name="456" href="#456">456</a>         }
+<a class="jxr_linenumber" name="457" href="#457">457</a>     }
+<a class="jxr_linenumber" name="458" href="#458">458</a> 
+<a class="jxr_linenumber" name="459" href="#459">459</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="460" href="#460">460</a> <em class="jxr_javadoccomment">     * Removes all groups.  Primary use is to remove groups that have</em>
+<a class="jxr_linenumber" name="461" href="#461">461</a> <em class="jxr_javadoccomment">     * been processed by an action and are no longer appropriate</em>
+<a class="jxr_linenumber" name="462" href="#462">462</a> <em class="jxr_javadoccomment">     * in the view (screen).</em>
+<a class="jxr_linenumber" name="463" href="#463">463</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="464" href="#464">464</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> removeAll()
+<a class="jxr_linenumber" name="465" href="#465">465</a>     {
+<a class="jxr_linenumber" name="466" href="#466">466</a>         Object[] allGroups = groups.values().toArray();
+<a class="jxr_linenumber" name="467" href="#467">467</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = allGroups.length - 1; i &gt;= 0; i--)
+<a class="jxr_linenumber" name="468" href="#468">468</a>         {
+<a class="jxr_linenumber" name="469" href="#469">469</a>             Group group = (Group) allGroups[i];
+<a class="jxr_linenumber" name="470" href="#470">470</a>             remove(group);
+<a class="jxr_linenumber" name="471" href="#471">471</a>         }
+<a class="jxr_linenumber" name="472" href="#472">472</a>     }
+<a class="jxr_linenumber" name="473" href="#473">473</a> 
+<a class="jxr_linenumber" name="474" href="#474">474</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="475" href="#475">475</a> <em class="jxr_javadoccomment">     * Get a Map containing all the groups.</em>
+<a class="jxr_linenumber" name="476" href="#476">476</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="477" href="#477">477</a> <em class="jxr_javadoccomment">     * @return the Group Map</em>
+<a class="jxr_linenumber" name="478" href="#478">478</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="479" href="#479">479</a>     <strong class="jxr_keyword">public</strong> Map&lt;String, Group&gt; getGroups()
+<a class="jxr_linenumber" name="480" href="#480">480</a>     {
+<a class="jxr_linenumber" name="481" href="#481">481</a>         <strong class="jxr_keyword">return</strong> groups;
+<a class="jxr_linenumber" name="482" href="#482">482</a>     }
+<a class="jxr_linenumber" name="483" href="#483">483</a> 
+<a class="jxr_linenumber" name="484" href="#484">484</a>     <em class="jxr_comment">// ****************** Recyclable implementation ************************</em>
+<a class="jxr_linenumber" name="485" href="#485">485</a> 
+<a class="jxr_linenumber" name="486" href="#486">486</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> disposed;
+<a class="jxr_linenumber" name="487" href="#487">487</a> 
+<a class="jxr_linenumber" name="488" href="#488">488</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="489" href="#489">489</a> <em class="jxr_javadoccomment">     * Recycles the object for a new client. Recycle methods with</em>
+<a class="jxr_linenumber" name="490" href="#490">490</a> <em class="jxr_javadoccomment">     * parameters must be added to implementing object and they will be</em>
+<a class="jxr_linenumber" name="491" href="#491">491</a> <em class="jxr_javadoccomment">     * automatically called by pool implementations when the object is</em>
+<a class="jxr_linenumber" name="492" href="#492">492</a> <em class="jxr_javadoccomment">     * taken from the pool for a new client. The parameters must</em>
+<a class="jxr_linenumber" name="493" href="#493">493</a> <em class="jxr_javadoccomment">     * correspond to the parameters of the constructors of the object.</em>
+<a class="jxr_linenumber" name="494" href="#494">494</a> <em class="jxr_javadoccomment">     * For new objects, constructors can call their corresponding recycle</em>
+<a class="jxr_linenumber" name="495" href="#495">495</a> <em class="jxr_javadoccomment">     * methods whenever applicable.</em>
+<a class="jxr_linenumber" name="496" href="#496">496</a> <em class="jxr_javadoccomment">     * The recycle methods must call their super.</em>
+<a class="jxr_linenumber" name="497" href="#497">497</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="498" href="#498">498</a>     @Override
+<a class="jxr_linenumber" name="499" href="#499">499</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> recycle()
+<a class="jxr_linenumber" name="500" href="#500">500</a>     {
+<a class="jxr_linenumber" name="501" href="#501">501</a>         disposed = false;
+<a class="jxr_linenumber" name="502" href="#502">502</a>     }
+<a class="jxr_linenumber" name="503" href="#503">503</a> 
+<a class="jxr_linenumber" name="504" href="#504">504</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="505" href="#505">505</a> <em class="jxr_javadoccomment">     * Disposes the object after use. The method is called</em>
+<a class="jxr_linenumber" name="506" href="#506">506</a> <em class="jxr_javadoccomment">     * when the object is returned to its pool.</em>
+<a class="jxr_linenumber" name="507" href="#507">507</a> <em class="jxr_javadoccomment">     * The dispose method must call its super.</em>
+<a class="jxr_linenumber" name="508" href="#508">508</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="509" href="#509">509</a>     @Override
+<a class="jxr_linenumber" name="510" href="#510">510</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> dispose()
+<a class="jxr_linenumber" name="511" href="#511">511</a>     {
+<a class="jxr_linenumber" name="512" href="#512">512</a>         <strong class="jxr_keyword">for</strong> (Group group : groups.values())
+<a class="jxr_linenumber" name="513" href="#513">513</a>         {
+<a class="jxr_linenumber" name="514" href="#514">514</a>             <strong class="jxr_keyword">try</strong>
+<a class="jxr_linenumber" name="515" href="#515">515</a>             {
+<a class="jxr_linenumber" name="516" href="#516">516</a>                 IntakeServiceFacade.releaseGroup(group);
+<a class="jxr_linenumber" name="517" href="#517">517</a>             }
+<a class="jxr_linenumber" name="518" href="#518">518</a>             <strong class="jxr_keyword">catch</strong> (IntakeException ie)
+<a class="jxr_linenumber" name="519" href="#519">519</a>             {
+<a class="jxr_linenumber" name="520" href="#520">520</a>                 log.error(<span class="jxr_string">"Tried to release unknown group "</span>
+<a class="jxr_linenumber" name="521" href="#521">521</a>                         + group.getIntakeGroupName());
+<a class="jxr_linenumber" name="522" href="#522">522</a>             }
+<a class="jxr_linenumber" name="523" href="#523">523</a>         }
+<a class="jxr_linenumber" name="524" href="#524">524</a> 
+<a class="jxr_linenumber" name="525" href="#525">525</a>         groups.clear();
+<a class="jxr_linenumber" name="526" href="#526">526</a>         declaredGroups.clear();
+<a class="jxr_linenumber" name="527" href="#527">527</a>         pp = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="528" href="#528">528</a> 
+<a class="jxr_linenumber" name="529" href="#529">529</a>         disposed = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="530" href="#530">530</a>     }
+<a class="jxr_linenumber" name="531" href="#531">531</a> 
+<a class="jxr_linenumber" name="532" href="#532">532</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="533" href="#533">533</a> <em class="jxr_javadoccomment">     * Checks whether the recyclable has been disposed.</em>
+<a class="jxr_linenumber" name="534" href="#534">534</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="535" href="#535">535</a> <em class="jxr_javadoccomment">     * @return true, if the recyclable is disposed.</em>
+<a class="jxr_linenumber" name="536" href="#536">536</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="537" href="#537">537</a>     @Override
+<a class="jxr_linenumber" name="538" href="#538">538</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isDisposed()
+<a class="jxr_linenumber" name="539" href="#539">539</a>     {
+<a class="jxr_linenumber" name="540" href="#540">540</a>         <strong class="jxr_keyword">return</strong> disposed;
+<a class="jxr_linenumber" name="541" href="#541">541</a>     }
+<a class="jxr_linenumber" name="542" href="#542">542</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
-

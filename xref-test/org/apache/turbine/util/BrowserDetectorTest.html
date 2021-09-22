@@ -1,89 +1,89 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" /><title>BrowserDetectorTest xref</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>BrowserDetectorTest xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../stylesheet.css" />
 </head>
 <body>
-<pre>
+<div id="overview"><a href="../../../../../testapidocs/org/apache/turbine/util/BrowserDetectorTest.html">View Javadoc</a></div><pre>
 
-<a name="1" href="#1">1</a>   <strong>package</strong> <a href="../../../../org/apache/turbine/util/package-summary.html">org.apache.turbine.util</a>;
-<a name="2" href="#2">2</a>   
-<a name="3" href="#3">3</a>   <em class="comment">/*</em>
-<a name="4" href="#4">4</a>   <em class="comment"> * Licensed to the Apache Software Foundation (ASF) under one</em>
-<a name="5" href="#5">5</a>   <em class="comment"> * or more contributor license agreements.  See the NOTICE file</em>
-<a name="6" href="#6">6</a>   <em class="comment"> * distributed with this work for additional information</em>
-<a name="7" href="#7">7</a>   <em class="comment"> * regarding copyright ownership.  The ASF licenses this file</em>
-<a name="8" href="#8">8</a>   <em class="comment"> * to you under the Apache License, Version 2.0 (the</em>
-<a name="9" href="#9">9</a>   <em class="comment"> * "License"); you may not use this file except in compliance</em>
-<a name="10" href="#10">10</a>  <em class="comment"> * with the License.  You may obtain a copy of the License at</em>
-<a name="11" href="#11">11</a>  <em class="comment"> *</em>
-<a name="12" href="#12">12</a>  <em class="comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
-<a name="13" href="#13">13</a>  <em class="comment"> *</em>
-<a name="14" href="#14">14</a>  <em class="comment"> * Unless required by applicable law or agreed to in writing,</em>
-<a name="15" href="#15">15</a>  <em class="comment"> * software distributed under the License is distributed on an</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * KIND, either express or implied.  See the License for the</em>
-<a name="18" href="#18">18</a>  <em class="comment"> * specific language governing permissions and limitations</em>
-<a name="19" href="#19">19</a>  <em class="comment"> * under the License.</em>
-<a name="20" href="#20">20</a>  <em class="comment"> */</em>
-<a name="21" href="#21">21</a>  
-<a name="22" href="#22">22</a>  <strong>import</strong> org.apache.turbine.test.BaseTestCase;
-<a name="23" href="#23">23</a>  
-<a name="24" href="#24">24</a>  <em>/**<em>*</em></em>
-<a name="25" href="#25">25</a>  <em> * Testing of the BrowserDetector class.</em>
-<a name="26" href="#26">26</a>  <em> *</em>
-<a name="27" href="#27">27</a>  <em> * @author &lt;a href="<a href="mailto:seade@backstagetech.com.au" target="alexandria_uri">mailto:seade@backstagetech.com.au</a>">Scott Eade&lt;/a></em>
-<a name="28" href="#28">28</a>  <em> * @version $Id$</em>
-<a name="29" href="#29">29</a>  <em> */</em>
-<a name="30" href="#30">30</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../org/apache/turbine/util/BrowserDetectorTest.html">BrowserDetectorTest</a> <strong>extends</strong> <a href="../../../../org/apache/turbine/test/BaseTestCase.html">BaseTestCase</a>
-<a name="31" href="#31">31</a>  {
-<a name="32" href="#32">32</a>      <strong>public</strong> <a href="../../../../org/apache/turbine/util/BrowserDetectorTest.html">BrowserDetectorTest</a>(String name) throws Exception
-<a name="33" href="#33">33</a>      {
-<a name="34" href="#34">34</a>          <strong>super</strong>(name);
-<a name="35" href="#35">35</a>      }
-<a name="36" href="#36">36</a>  
-<a name="37" href="#37">37</a>      <strong>public</strong> <strong>void</strong> testFirefox()
-<a name="38" href="#38">38</a>      {
-<a name="39" href="#39">39</a>          String userAgent = <span class="string">"Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8) Gecko/20051111 Firefox/1.5"</span>;
-<a name="40" href="#40">40</a>          BrowserDetector bd = <strong>new</strong> BrowserDetector(userAgent);
-<a name="41" href="#41">41</a>          assertEquals(BrowserDetector.MOZILLA, bd.getBrowserName());
-<a name="42" href="#42">42</a>          <em class="comment">// Should this really be 5?</em>
-<a name="43" href="#43">43</a>          assertEquals(5f, bd.getBrowserVersion(), 0.0f);
-<a name="44" href="#44">44</a>          assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
-<a name="45" href="#45">45</a>      }
-<a name="46" href="#46">46</a>  
-<a name="47" href="#47">47</a>      <strong>public</strong> <strong>void</strong> testOpera()
-<a name="48" href="#48">48</a>      {
-<a name="49" href="#49">49</a>          String userAgent = <span class="string">"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; en) Opera 8.02"</span>;
-<a name="50" href="#50">50</a>          BrowserDetector bd = <strong>new</strong> BrowserDetector(userAgent);
-<a name="51" href="#51">51</a>          assertEquals(BrowserDetector.OPERA, bd.getBrowserName());
-<a name="52" href="#52">52</a>          assertEquals(8.02f, bd.getBrowserVersion(), 0.0f);
-<a name="53" href="#53">53</a>          assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
-<a name="54" href="#54">54</a>  
-<a name="55" href="#55">55</a>          userAgent = <span class="string">"Opera/7.51 (Windows NT 5.1; U) [en]"</span>;
-<a name="56" href="#56">56</a>          bd = <strong>new</strong> BrowserDetector(userAgent);
-<a name="57" href="#57">57</a>          assertEquals(BrowserDetector.OPERA, bd.getBrowserName());
-<a name="58" href="#58">58</a>          assertEquals(7.51f, bd.getBrowserVersion(), 0.0f);
-<a name="59" href="#59">59</a>          assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
-<a name="60" href="#60">60</a>      }
-<a name="61" href="#61">61</a>  
-<a name="62" href="#62">62</a>      <strong>public</strong> <strong>void</strong> testIE()
-<a name="63" href="#63">63</a>      {
-<a name="64" href="#64">64</a>          String userAgent = <span class="string">"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)"</span>;
-<a name="65" href="#65">65</a>          BrowserDetector bd = <strong>new</strong> BrowserDetector(userAgent);
-<a name="66" href="#66">66</a>          assertEquals(BrowserDetector.MSIE, bd.getBrowserName());
-<a name="67" href="#67">67</a>          assertEquals(6.0f, bd.getBrowserVersion(), 0.0f);
-<a name="68" href="#68">68</a>          assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
-<a name="69" href="#69">69</a>  
-<a name="70" href="#70">70</a>          userAgent = <span class="string">"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)"</span>;
-<a name="71" href="#71">71</a>          bd = <strong>new</strong> BrowserDetector(userAgent);
-<a name="72" href="#72">72</a>          assertEquals(BrowserDetector.MSIE, bd.getBrowserName());
-<a name="73" href="#73">73</a>          assertEquals(6.0f, bd.getBrowserVersion(), 0.0f);
-<a name="74" href="#74">74</a>          assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
-<a name="75" href="#75">75</a>      }
-<a name="76" href="#76">76</a>  }
+<a class="jxr_linenumber" name="1" href="#1">1</a>   <strong class="jxr_keyword">package</strong> org.apache.turbine.util;
+<a class="jxr_linenumber" name="2" href="#2">2</a>   
+<a class="jxr_linenumber" name="3" href="#3">3</a>   <em class="jxr_comment">/*</em>
+<a class="jxr_linenumber" name="4" href="#4">4</a>   <em class="jxr_comment"> * Licensed to the Apache Software Foundation (ASF) under one</em>
+<a class="jxr_linenumber" name="5" href="#5">5</a>   <em class="jxr_comment"> * or more contributor license agreements.  See the NOTICE file</em>
+<a class="jxr_linenumber" name="6" href="#6">6</a>   <em class="jxr_comment"> * distributed with this work for additional information</em>
+<a class="jxr_linenumber" name="7" href="#7">7</a>   <em class="jxr_comment"> * regarding copyright ownership.  The ASF licenses this file</em>
+<a class="jxr_linenumber" name="8" href="#8">8</a>   <em class="jxr_comment"> * to you under the Apache License, Version 2.0 (the</em>
+<a class="jxr_linenumber" name="9" href="#9">9</a>   <em class="jxr_comment"> * "License"); you may not use this file except in compliance</em>
+<a class="jxr_linenumber" name="10" href="#10">10</a>  <em class="jxr_comment"> * with the License.  You may obtain a copy of the License at</em>
+<a class="jxr_linenumber" name="11" href="#11">11</a>  <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="12" href="#12">12</a>  <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
+<a class="jxr_linenumber" name="13" href="#13">13</a>  <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="14" href="#14">14</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing,</em>
+<a class="jxr_linenumber" name="15" href="#15">15</a>  <em class="jxr_comment"> * software distributed under the License is distributed on an</em>
+<a class="jxr_linenumber" name="16" href="#16">16</a>  <em class="jxr_comment"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</em>
+<a class="jxr_linenumber" name="17" href="#17">17</a>  <em class="jxr_comment"> * KIND, either express or implied.  See the License for the</em>
+<a class="jxr_linenumber" name="18" href="#18">18</a>  <em class="jxr_comment"> * specific language governing permissions and limitations</em>
+<a class="jxr_linenumber" name="19" href="#19">19</a>  <em class="jxr_comment"> * under the License.</em>
+<a class="jxr_linenumber" name="20" href="#20">20</a>  <em class="jxr_comment"> */</em>
+<a class="jxr_linenumber" name="21" href="#21">21</a>  
+<a class="jxr_linenumber" name="22" href="#22">22</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertEquals;
+<a class="jxr_linenumber" name="23" href="#23">23</a>  
+<a class="jxr_linenumber" name="24" href="#24">24</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.test.BaseTestCase;
+<a class="jxr_linenumber" name="25" href="#25">25</a>  <strong class="jxr_keyword">import</strong> org.junit.Test;
+<a class="jxr_linenumber" name="26" href="#26">26</a>  
+<a class="jxr_linenumber" name="27" href="#27">27</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="28" href="#28">28</a>  <em class="jxr_javadoccomment"> * Testing of the BrowserDetector class.</em>
+<a class="jxr_linenumber" name="29" href="#29">29</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="30" href="#30">30</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:seade@backstagetech.com.au" target="alexandria_uri">mailto:seade@backstagetech.com.au</a>"&gt;Scott Eade&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="31" href="#31">31</a>  <em class="jxr_javadoccomment"> * @version $Id$</em>
+<a class="jxr_linenumber" name="32" href="#32">32</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="33" href="#33">33</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../org/apache/turbine/util/BrowserDetectorTest.html">BrowserDetectorTest</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../org/apache/turbine/test/BaseTestCase.html">BaseTestCase</a>
+<a class="jxr_linenumber" name="34" href="#34">34</a>  {
+<a class="jxr_linenumber" name="35" href="#35">35</a>  
+<a class="jxr_linenumber" name="36" href="#36">36</a>  
+<a class="jxr_linenumber" name="37" href="#37">37</a>      @Test <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testFirefox()
+<a class="jxr_linenumber" name="38" href="#38">38</a>      {
+<a class="jxr_linenumber" name="39" href="#39">39</a>          String userAgent = <span class="jxr_string">"Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8) Gecko/20051111 Firefox/1.5"</span>;
+<a class="jxr_linenumber" name="40" href="#40">40</a>          BrowserDetector bd = <strong class="jxr_keyword">new</strong> BrowserDetector(userAgent);
+<a class="jxr_linenumber" name="41" href="#41">41</a>          assertEquals(BrowserDetector.MOZILLA, bd.getBrowserName());
+<a class="jxr_linenumber" name="42" href="#42">42</a>          <em class="jxr_comment">// Should this really be 5?</em>
+<a class="jxr_linenumber" name="43" href="#43">43</a>          assertEquals(5f, bd.getBrowserVersion(), 0.0f);
+<a class="jxr_linenumber" name="44" href="#44">44</a>          assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
+<a class="jxr_linenumber" name="45" href="#45">45</a>      }
+<a class="jxr_linenumber" name="46" href="#46">46</a>  
+<a class="jxr_linenumber" name="47" href="#47">47</a>      @Test <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testOpera()
+<a class="jxr_linenumber" name="48" href="#48">48</a>      {
+<a class="jxr_linenumber" name="49" href="#49">49</a>          String userAgent = <span class="jxr_string">"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; en) Opera 8.02"</span>;
+<a class="jxr_linenumber" name="50" href="#50">50</a>          BrowserDetector bd = <strong class="jxr_keyword">new</strong> BrowserDetector(userAgent);
+<a class="jxr_linenumber" name="51" href="#51">51</a>          assertEquals(BrowserDetector.OPERA, bd.getBrowserName());
+<a class="jxr_linenumber" name="52" href="#52">52</a>          assertEquals(8.02f, bd.getBrowserVersion(), 0.0f);
+<a class="jxr_linenumber" name="53" href="#53">53</a>          assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
+<a class="jxr_linenumber" name="54" href="#54">54</a>  
+<a class="jxr_linenumber" name="55" href="#55">55</a>          userAgent = <span class="jxr_string">"Opera/7.51 (Windows NT 5.1; U) [en]"</span>;
+<a class="jxr_linenumber" name="56" href="#56">56</a>          bd = <strong class="jxr_keyword">new</strong> BrowserDetector(userAgent);
+<a class="jxr_linenumber" name="57" href="#57">57</a>          assertEquals(BrowserDetector.OPERA, bd.getBrowserName());
+<a class="jxr_linenumber" name="58" href="#58">58</a>          assertEquals(7.51f, bd.getBrowserVersion(), 0.0f);
+<a class="jxr_linenumber" name="59" href="#59">59</a>          assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
+<a class="jxr_linenumber" name="60" href="#60">60</a>      }
+<a class="jxr_linenumber" name="61" href="#61">61</a>  
+<a class="jxr_linenumber" name="62" href="#62">62</a>      @Test <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testIE()
+<a class="jxr_linenumber" name="63" href="#63">63</a>      {
+<a class="jxr_linenumber" name="64" href="#64">64</a>          String userAgent = <span class="jxr_string">"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)"</span>;
+<a class="jxr_linenumber" name="65" href="#65">65</a>          BrowserDetector bd = <strong class="jxr_keyword">new</strong> BrowserDetector(userAgent);
+<a class="jxr_linenumber" name="66" href="#66">66</a>          assertEquals(BrowserDetector.MSIE, bd.getBrowserName());
+<a class="jxr_linenumber" name="67" href="#67">67</a>          assertEquals(6.0f, bd.getBrowserVersion(), 0.0f);
+<a class="jxr_linenumber" name="68" href="#68">68</a>          assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
+<a class="jxr_linenumber" name="69" href="#69">69</a>  
+<a class="jxr_linenumber" name="70" href="#70">70</a>          userAgent = <span class="jxr_string">"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322)"</span>;
+<a class="jxr_linenumber" name="71" href="#71">71</a>          bd = <strong class="jxr_keyword">new</strong> BrowserDetector(userAgent);
+<a class="jxr_linenumber" name="72" href="#72">72</a>          assertEquals(BrowserDetector.MSIE, bd.getBrowserName());
+<a class="jxr_linenumber" name="73" href="#73">73</a>          assertEquals(6.0f, bd.getBrowserVersion(), 0.0f);
+<a class="jxr_linenumber" name="74" href="#74">74</a>          assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
+<a class="jxr_linenumber" name="75" href="#75">75</a>      }
+<a class="jxr_linenumber" name="76" href="#76">76</a>  }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
-

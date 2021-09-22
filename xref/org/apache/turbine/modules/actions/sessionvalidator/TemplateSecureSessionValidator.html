@@ -1,193 +1,202 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" /><title>TemplateSecureSessionValidator xref</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>TemplateSecureSessionValidator xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../../../stylesheet.css" />
 </head>
 <body>
 <div id="overview"><a href="../../../../../../../apidocs/org/apache/turbine/modules/actions/sessionvalidator/TemplateSecureSessionValidator.html">View Javadoc</a></div><pre>
 
-<a name="1" href="#1">1</a>   <strong>package</strong> <a href="../../../../../../org/apache/turbine/modules/actions/sessionvalidator/package-summary.html">org.apache.turbine.modules.actions.sessionvalidator</a>;
-<a name="2" href="#2">2</a>   
-<a name="3" href="#3">3</a>   <em class="comment">/*</em>
-<a name="4" href="#4">4</a>   <em class="comment"> * Licensed to the Apache Software Foundation (ASF) under one</em>
-<a name="5" href="#5">5</a>   <em class="comment"> * or more contributor license agreements.  See the NOTICE file</em>
-<a name="6" href="#6">6</a>   <em class="comment"> * distributed with this work for additional information</em>
-<a name="7" href="#7">7</a>   <em class="comment"> * regarding copyright ownership.  The ASF licenses this file</em>
-<a name="8" href="#8">8</a>   <em class="comment"> * to you under the Apache License, Version 2.0 (the</em>
-<a name="9" href="#9">9</a>   <em class="comment"> * "License"); you may not use this file except in compliance</em>
-<a name="10" href="#10">10</a>  <em class="comment"> * with the License.  You may obtain a copy of the License at</em>
-<a name="11" href="#11">11</a>  <em class="comment"> *</em>
-<a name="12" href="#12">12</a>  <em class="comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
-<a name="13" href="#13">13</a>  <em class="comment"> *</em>
-<a name="14" href="#14">14</a>  <em class="comment"> * Unless required by applicable law or agreed to in writing,</em>
-<a name="15" href="#15">15</a>  <em class="comment"> * software distributed under the License is distributed on an</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * KIND, either express or implied.  See the License for the</em>
-<a name="18" href="#18">18</a>  <em class="comment"> * specific language governing permissions and limitations</em>
-<a name="19" href="#19">19</a>  <em class="comment"> * under the License.</em>
-<a name="20" href="#20">20</a>  <em class="comment"> */</em>
-<a name="21" href="#21">21</a>  
-<a name="22" href="#22">22</a>  <strong>import</strong> org.apache.commons.configuration.Configuration;
-<a name="23" href="#23">23</a>  
-<a name="24" href="#24">24</a>  <strong>import</strong> org.apache.commons.lang.StringUtils;
-<a name="25" href="#25">25</a>  
-<a name="26" href="#26">26</a>  <strong>import</strong> org.apache.commons.logging.Log;
-<a name="27" href="#27">27</a>  <strong>import</strong> org.apache.commons.logging.LogFactory;
-<a name="28" href="#28">28</a>  
-<a name="29" href="#29">29</a>  <strong>import</strong> org.apache.turbine.Turbine;
-<a name="30" href="#30">30</a>  <strong>import</strong> org.apache.turbine.TurbineConstants;
-<a name="31" href="#31">31</a>  
-<a name="32" href="#32">32</a>  <strong>import</strong> org.apache.turbine.services.security.TurbineSecurity;
-<a name="33" href="#33">33</a>  
-<a name="34" href="#34">34</a>  <strong>import</strong> org.apache.turbine.util.RunData;
-<a name="35" href="#35">35</a>  <strong>import</strong> org.apache.turbine.util.TurbineException;
-<a name="36" href="#36">36</a>  
-<a name="37" href="#37">37</a>  <em>/**<em>*</em></em>
-<a name="38" href="#38">38</a>  <em> * SessionValidator that requires login for use with Template Services</em>
-<a name="39" href="#39">39</a>  <em> * like Velocity or WebMacro.</em>
-<a name="40" href="#40">40</a>  <em> *</em>
-<a name="41" href="#41">41</a>  <em> * &lt;br></em>
-<a name="42" href="#42">42</a>  <em> *</em>
-<a name="43" href="#43">43</a>  <em> * Templating services requires a different Session Validator</em>
-<a name="44" href="#44">44</a>  <em> * because of the way it handles screens.  If you use the WebMacro or</em>
-<a name="45" href="#45">45</a>  <em> * Velocity Service with the DefaultSessionValidator, users will be able to</em>
-<a name="46" href="#46">46</a>  <em> * bypass login by directly addressing the template using</em>
-<a name="47" href="#47">47</a>  <em> * template/index.wm.  This is because the Page class looks for the</em>
-<a name="48" href="#48">48</a>  <em> * keyword "template" in the Path information and if it finds it will</em>
-<a name="49" href="#49">49</a>  <em> * reset the screen using it's lookup mechanism and thereby bypass</em>
-<a name="50" href="#50">50</a>  <em> * Login.</em>
-<a name="51" href="#51">51</a>  <em> *</em>
-<a name="52" href="#52">52</a>  <em> * Note that you will need to set the template.login property to the</em>
-<a name="53" href="#53">53</a>  <em> * login template.</em>
-<a name="54" href="#54">54</a>  <em> *</em>
-<a name="55" href="#55">55</a>  <em> * @author &lt;a href="<a href="mailto:john.mcnally@clearink.com" target="alexandria_uri">mailto:john.mcnally@clearink.com</a>">John D. McNally&lt;/a></em>
-<a name="56" href="#56">56</a>  <em> * @author &lt;a href="<a href="mailto:mbryson@mont.mindspring.com" target="alexandria_uri">mailto:mbryson@mont.mindspring.com</a>">Dave Bryson&lt;/a></em>
-<a name="57" href="#57">57</a>  <em> * @author &lt;a href="<a href="mailto:hps@intermeta.de" target="alexandria_uri">mailto:hps@intermeta.de</a>">Henning P. Schmiedehausen&lt;/a></em>
-<a name="58" href="#58">58</a>  <em> * @version $Id: TemplateSecureSessionValidator.java 534527 2007-05-02 16:10:59Z tv $</em>
-<a name="59" href="#59">59</a>  <em> */</em>
-<a name="60" href="#60">60</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../../org/apache/turbine/modules/actions/sessionvalidator/TemplateSecureSessionValidator.html">TemplateSecureSessionValidator</a>
-<a name="61" href="#61">61</a>      <strong>extends</strong> <a href="../../../../../../org/apache/turbine/modules/actions/sessionvalidator/SessionValidator.html">SessionValidator</a>
-<a name="62" href="#62">62</a>  {
-<a name="63" href="#63">63</a>      <em>/**<em>* Logging */</em></em>
-<a name="64" href="#64">64</a>      <strong>private</strong> <strong>static</strong> Log log = LogFactory.getLog(
-<a name="65" href="#65">65</a>              TemplateSecureSessionValidator.<strong>class</strong>);
-<a name="66" href="#66">66</a>  
-<a name="67" href="#67">67</a>      <em>/**<em>*</em></em>
-<a name="68" href="#68">68</a>  <em>     * doPerform is virtually identical to DefaultSessionValidator</em>
-<a name="69" href="#69">69</a>  <em>     * except that it calls template methods instead of bare screen</em>
-<a name="70" href="#70">70</a>  <em>     * methods. For example, it uses &lt;code>setScreenTemplate&lt;/code> to</em>
-<a name="71" href="#71">71</a>  <em>     * load the tr.props TEMPLATE_LOGIN instead of the default's</em>
-<a name="72" href="#72">72</a>  <em>     * setScreen to TurbineConstants.SCREEN_LOGIN.</em>
-<a name="73" href="#73">73</a>  <em>     *</em>
-<a name="74" href="#74">74</a>  <em>     * @see DefaultSessionValidator</em>
-<a name="75" href="#75">75</a>  <em>     * @param data Turbine information.</em>
-<a name="76" href="#76">76</a>  <em>     * @throws TurbineException The anonymous user could not be obtained</em>
-<a name="77" href="#77">77</a>  <em>     *         from the security service</em>
-<a name="78" href="#78">78</a>  <em>     */</em>
-<a name="79" href="#79">79</a>      <strong>public</strong> <strong>void</strong> doPerform(<a href="../../../../../../org/apache/turbine/util/RunData.html">RunData</a> data)
-<a name="80" href="#80">80</a>              throws <a href="../../../../../../org/apache/turbine/util/TurbineException.html">TurbineException</a>
-<a name="81" href="#81">81</a>      {
-<a name="82" href="#82">82</a>          Configuration conf = Turbine.getConfiguration();
-<a name="83" href="#83">83</a>  
-<a name="84" href="#84">84</a>          <em class="comment">// Pull user from session.</em>
-<a name="85" href="#85">85</a>          data.populate();
-<a name="86" href="#86">86</a>  
-<a name="87" href="#87">87</a>          <em class="comment">// The user may have not logged in, so create a "guest/anonymous" user.</em>
-<a name="88" href="#88">88</a>          <strong>if</strong> (data.getUser() == <strong>null</strong>)
-<a name="89" href="#89">89</a>          {
-<a name="90" href="#90">90</a>              log.debug(<span class="string">"Fixing up empty User Object!"</span>);
-<a name="91" href="#91">91</a>              data.setUser(TurbineSecurity.getAnonymousUser());
-<a name="92" href="#92">92</a>              data.save();
-<a name="93" href="#93">93</a>          }
-<a name="94" href="#94">94</a>  
-<a name="95" href="#95">95</a>          <em class="comment">// This is the secure sessionvalidator, so user must be logged in.</em>
-<a name="96" href="#96">96</a>          <strong>if</strong> (!data.getUser().hasLoggedIn())
-<a name="97" href="#97">97</a>          {
-<a name="98" href="#98">98</a>              log.debug(<span class="string">"User is not logged in!"</span>);
-<a name="99" href="#99">99</a>  
-<a name="100" href="#100">100</a>             <em class="comment">// only set the message if nothing else has already set it</em>
-<a name="101" href="#101">101</a>             <em class="comment">// (e.g. the LogoutUser action).</em>
-<a name="102" href="#102">102</a>             <strong>if</strong> (StringUtils.isEmpty(data.getMessage()))
-<a name="103" href="#103">103</a>             {
-<a name="104" href="#104">104</a>                 data.setMessage(conf.getString(TurbineConstants.LOGIN_MESSAGE));
-<a name="105" href="#105">105</a>             }
-<a name="106" href="#106">106</a> 
-<a name="107" href="#107">107</a>             <em class="comment">// Set the screen template to the login page.</em>
-<a name="108" href="#108">108</a>             String loginTemplate =
-<a name="109" href="#109">109</a>                 conf.getString(TurbineConstants.TEMPLATE_LOGIN);
-<a name="110" href="#110">110</a> 
-<a name="111" href="#111">111</a>             log.debug(<span class="string">"Sending User to the Login Screen ("</span>
-<a name="112" href="#112">112</a>                     + loginTemplate + <span class="string">")"</span>);
-<a name="113" href="#113">113</a>             data.getTemplateInfo().setScreenTemplate(loginTemplate);
-<a name="114" href="#114">114</a> 
-<a name="115" href="#115">115</a>             <em class="comment">// We're not doing any actions buddy! (except action.login which</em>
-<a name="116" href="#116">116</a>             <em class="comment">// will have been performed already)</em>
-<a name="117" href="#117">117</a>             data.setAction(<strong>null</strong>);
-<a name="118" href="#118">118</a>         }
-<a name="119" href="#119">119</a> 
-<a name="120" href="#120">120</a>         log.debug(<span class="string">"Login Check finished!"</span>);
-<a name="121" href="#121">121</a> 
-<a name="122" href="#122">122</a>         <em class="comment">// Make sure we have some way to return a response.</em>
-<a name="123" href="#123">123</a>         <strong>if</strong> (!data.hasScreen() &amp;&amp; StringUtils.isEmpty(
-<a name="124" href="#124">124</a>                 data.getTemplateInfo().getScreenTemplate()))
-<a name="125" href="#125">125</a>         {
-<a name="126" href="#126">126</a>             String template = conf.getString(
-<a name="127" href="#127">127</a>                     TurbineConstants.TEMPLATE_HOMEPAGE);
-<a name="128" href="#128">128</a> 
-<a name="129" href="#129">129</a>             <strong>if</strong> (StringUtils.isNotEmpty(template))
-<a name="130" href="#130">130</a>             {
-<a name="131" href="#131">131</a>                 data.getTemplateInfo().setScreenTemplate(template);
-<a name="132" href="#132">132</a>             }
-<a name="133" href="#133">133</a>             <strong>else</strong>
-<a name="134" href="#134">134</a>             {
-<a name="135" href="#135">135</a>                 data.setScreen(conf.getString(
-<a name="136" href="#136">136</a>                         TurbineConstants.SCREEN_HOMEPAGE));
-<a name="137" href="#137">137</a>             }
-<a name="138" href="#138">138</a>         }
-<a name="139" href="#139">139</a> 
-<a name="140" href="#140">140</a>         <em class="comment">// The session_access_counter can be placed as a hidden field in</em>
-<a name="141" href="#141">141</a>         <em class="comment">// forms.  This can be used to prevent a user from using the</em>
-<a name="142" href="#142">142</a>         <em class="comment">// browsers back button and submitting stale data.</em>
-<a name="143" href="#143">143</a>         <em class="comment">// FIXME!! a template needs to be written to use this with templates.</em>
-<a name="144" href="#144">144</a> 
-<a name="145" href="#145">145</a>         <strong>if</strong> (data.getParameters().containsKey(<span class="string">"_session_access_counter"</span>)
-<a name="146" href="#146">146</a>                 &amp;&amp; !TurbineSecurity.isAnonymousUser(data.getUser()))
-<a name="147" href="#147">147</a>         {
-<a name="148" href="#148">148</a>             <em class="comment">// See comments in screens.error.InvalidState.</em>
-<a name="149" href="#149">149</a>             <strong>if</strong> (data.getParameters().getInt(<span class="string">"_session_access_counter"</span>)
-<a name="150" href="#150">150</a>                     &lt; (((Integer) data.getUser().getTemp(
-<a name="151" href="#151">151</a>                     <span class="string">"_session_access_counter"</span>)).intValue() - 1))
-<a name="152" href="#152">152</a>             {
-<a name="153" href="#153">153</a>                 <strong>if</strong> (data.getTemplateInfo().getScreenTemplate() != <strong>null</strong>)
-<a name="154" href="#154">154</a>                 {
-<a name="155" href="#155">155</a>                     data.getUser().setTemp(<span class="string">"prev_template"</span>,
-<a name="156" href="#156">156</a>                             data.getTemplateInfo().getScreenTemplate()
-<a name="157" href="#157">157</a>                             .replace('/', ','));
-<a name="158" href="#158">158</a>                     data.getTemplateInfo().setScreenTemplate(conf.getString(
-<a name="159" href="#159">159</a>                             TurbineConstants.TEMPLATE_INVALID_STATE));
-<a name="160" href="#160">160</a>                 }
-<a name="161" href="#161">161</a>                 <strong>else</strong>
-<a name="162" href="#162">162</a>                 {
-<a name="163" href="#163">163</a>                     data.getUser().setTemp(<span class="string">"prev_screen"</span>,
-<a name="164" href="#164">164</a>                                            data.getScreen().replace('/', ','));
-<a name="165" href="#165">165</a>                     data.setScreen(conf.getString(
-<a name="166" href="#166">166</a>                             TurbineConstants.SCREEN_INVALID_STATE));
-<a name="167" href="#167">167</a>                 }
-<a name="168" href="#168">168</a>                 data.getUser().setTemp(<span class="string">"prev_parameters"</span>, data.getParameters());
-<a name="169" href="#169">169</a>                 data.setAction(<span class="string">""</span>);
-<a name="170" href="#170">170</a>             }
-<a name="171" href="#171">171</a>         }
-<a name="172" href="#172">172</a> 
-<a name="173" href="#173">173</a>         <em class="comment">// We do not want to allow both a screen and template parameter.</em>
-<a name="174" href="#174">174</a>         <em class="comment">// The template parameter is dominant.</em>
-<a name="175" href="#175">175</a>         <strong>if</strong> (data.getTemplateInfo().getScreenTemplate() != <strong>null</strong>)
-<a name="176" href="#176">176</a>         {
-<a name="177" href="#177">177</a>             data.setScreen(<strong>null</strong>);
-<a name="178" href="#178">178</a>         }
-<a name="179" href="#179">179</a>     }
-<a name="180" href="#180">180</a> }
+<a class="jxr_linenumber" name="1" href="#1">1</a>   <strong class="jxr_keyword">package</strong> org.apache.turbine.modules.actions.sessionvalidator;
+<a class="jxr_linenumber" name="2" href="#2">2</a>   
+<a class="jxr_linenumber" name="3" href="#3">3</a>   <em class="jxr_comment">/*</em>
+<a class="jxr_linenumber" name="4" href="#4">4</a>   <em class="jxr_comment"> * Licensed to the Apache Software Foundation (ASF) under one</em>
+<a class="jxr_linenumber" name="5" href="#5">5</a>   <em class="jxr_comment"> * or more contributor license agreements.  See the NOTICE file</em>
+<a class="jxr_linenumber" name="6" href="#6">6</a>   <em class="jxr_comment"> * distributed with this work for additional information</em>
+<a class="jxr_linenumber" name="7" href="#7">7</a>   <em class="jxr_comment"> * regarding copyright ownership.  The ASF licenses this file</em>
+<a class="jxr_linenumber" name="8" href="#8">8</a>   <em class="jxr_comment"> * to you under the Apache License, Version 2.0 (the</em>
+<a class="jxr_linenumber" name="9" href="#9">9</a>   <em class="jxr_comment"> * "License"); you may not use this file except in compliance</em>
+<a class="jxr_linenumber" name="10" href="#10">10</a>  <em class="jxr_comment"> * with the License.  You may obtain a copy of the License at</em>
+<a class="jxr_linenumber" name="11" href="#11">11</a>  <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="12" href="#12">12</a>  <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
+<a class="jxr_linenumber" name="13" href="#13">13</a>  <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="14" href="#14">14</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing,</em>
+<a class="jxr_linenumber" name="15" href="#15">15</a>  <em class="jxr_comment"> * software distributed under the License is distributed on an</em>
+<a class="jxr_linenumber" name="16" href="#16">16</a>  <em class="jxr_comment"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</em>
+<a class="jxr_linenumber" name="17" href="#17">17</a>  <em class="jxr_comment"> * KIND, either express or implied.  See the License for the</em>
+<a class="jxr_linenumber" name="18" href="#18">18</a>  <em class="jxr_comment"> * specific language governing permissions and limitations</em>
+<a class="jxr_linenumber" name="19" href="#19">19</a>  <em class="jxr_comment"> * under the License.</em>
+<a class="jxr_linenumber" name="20" href="#20">20</a>  <em class="jxr_comment"> */</em>
+<a class="jxr_linenumber" name="21" href="#21">21</a>  
+<a class="jxr_linenumber" name="22" href="#22">22</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.configuration.Configuration;
+<a class="jxr_linenumber" name="23" href="#23">23</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.lang.StringUtils;
+<a class="jxr_linenumber" name="24" href="#24">24</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.logging.Log;
+<a class="jxr_linenumber" name="25" href="#25">25</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.logging.LogFactory;
+<a class="jxr_linenumber" name="26" href="#26">26</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.Turbine;
+<a class="jxr_linenumber" name="27" href="#27">27</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.TurbineConstants;
+<a class="jxr_linenumber" name="28" href="#28">28</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.annotation.TurbineConfiguration;
+<a class="jxr_linenumber" name="29" href="#29">29</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.annotation.TurbineService;
+<a class="jxr_linenumber" name="30" href="#30">30</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.om.security.User;
+<a class="jxr_linenumber" name="31" href="#31">31</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.pipeline.PipelineData;
+<a class="jxr_linenumber" name="32" href="#32">32</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.services.security.SecurityService;
+<a class="jxr_linenumber" name="33" href="#33">33</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.util.RunData;
+<a class="jxr_linenumber" name="34" href="#34">34</a>  
+<a class="jxr_linenumber" name="35" href="#35">35</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="36" href="#36">36</a>  <em class="jxr_javadoccomment"> * SessionValidator that requires login for use with Template Services</em>
+<a class="jxr_linenumber" name="37" href="#37">37</a>  <em class="jxr_javadoccomment"> * like Velocity or WebMacro.</em>
+<a class="jxr_linenumber" name="38" href="#38">38</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="39" href="#39">39</a>  <em class="jxr_javadoccomment"> * &lt;br&gt;</em>
+<a class="jxr_linenumber" name="40" href="#40">40</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="41" href="#41">41</a>  <em class="jxr_javadoccomment"> * Templating services requires a different Session Validator</em>
+<a class="jxr_linenumber" name="42" href="#42">42</a>  <em class="jxr_javadoccomment"> * because of the way it handles screens.  If you use the WebMacro or</em>
+<a class="jxr_linenumber" name="43" href="#43">43</a>  <em class="jxr_javadoccomment"> * Velocity Service with the DefaultSessionValidator, users will be able to</em>
+<a class="jxr_linenumber" name="44" href="#44">44</a>  <em class="jxr_javadoccomment"> * bypass login by directly addressing the template using</em>
+<a class="jxr_linenumber" name="45" href="#45">45</a>  <em class="jxr_javadoccomment"> * template/index.wm.  This is because the Page class looks for the</em>
+<a class="jxr_linenumber" name="46" href="#46">46</a>  <em class="jxr_javadoccomment"> * keyword "template" in the Path information and if it finds it will</em>
+<a class="jxr_linenumber" name="47" href="#47">47</a>  <em class="jxr_javadoccomment"> * reset the screen using it's lookup mechanism and thereby bypass</em>
+<a class="jxr_linenumber" name="48" href="#48">48</a>  <em class="jxr_javadoccomment"> * Login.</em>
+<a class="jxr_linenumber" name="49" href="#49">49</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="50" href="#50">50</a>  <em class="jxr_javadoccomment"> * Note that you will need to set the template.login property to the</em>
+<a class="jxr_linenumber" name="51" href="#51">51</a>  <em class="jxr_javadoccomment"> * login template.</em>
+<a class="jxr_linenumber" name="52" href="#52">52</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="53" href="#53">53</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:john.mcnally@clearink.com" target="alexandria_uri">mailto:john.mcnally@clearink.com</a>"&gt;John D. McNally&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="54" href="#54">54</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:mbryson@mont.mindspring.com" target="alexandria_uri">mailto:mbryson@mont.mindspring.com</a>"&gt;Dave Bryson&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="55" href="#55">55</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:hps@intermeta.de" target="alexandria_uri">mailto:hps@intermeta.de</a>"&gt;Henning P. Schmiedehausen&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="56" href="#56">56</a>  <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:peter@courcoux.biz" target="alexandria_uri">mailto:peter@courcoux.biz</a>"&gt;Peter Courcoux&lt;/a&gt;</em>
+<a class="jxr_linenumber" name="57" href="#57">57</a>  <em class="jxr_javadoccomment"> * @version $Id: TemplateSecureSessionValidator.java 1695634 2015-08-13 00:35:47Z tv $</em>
+<a class="jxr_linenumber" name="58" href="#58">58</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="59" href="#59">59</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../org/apache/turbine/modules/actions/sessionvalidator/TemplateSecureSessionValidator.html">TemplateSecureSessionValidator</a>
+<a class="jxr_linenumber" name="60" href="#60">60</a>      <strong class="jxr_keyword">extends</strong> <a href="../../../../../../org/apache/turbine/modules/actions/sessionvalidator/SessionValidator.html">SessionValidator</a>
+<a class="jxr_linenumber" name="61" href="#61">61</a>  {
+<a class="jxr_linenumber" name="62" href="#62">62</a>      <em class="jxr_javadoccomment">/**</em><em class="jxr_javadoccomment"> Logging */</em>
+<a class="jxr_linenumber" name="63" href="#63">63</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Log log = LogFactory.getLog(
+<a class="jxr_linenumber" name="64" href="#64">64</a>              TemplateSecureSessionValidator.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="65" href="#65">65</a>  
+<a class="jxr_linenumber" name="66" href="#66">66</a>      @TurbineService
+<a class="jxr_linenumber" name="67" href="#67">67</a>      <strong class="jxr_keyword">private</strong> <a href="../../../../../../org/apache/turbine/services/security/SecurityService.html">SecurityService</a> security;
+<a class="jxr_linenumber" name="68" href="#68">68</a>  
+<a class="jxr_linenumber" name="69" href="#69">69</a>      @TurbineConfiguration
+<a class="jxr_linenumber" name="70" href="#70">70</a>      <strong class="jxr_keyword">private</strong> Configuration conf;
+<a class="jxr_linenumber" name="71" href="#71">71</a>  
+<a class="jxr_linenumber" name="72" href="#72">72</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="73" href="#73">73</a>  <em class="jxr_javadoccomment">     * doPerform is virtually identical to DefaultSessionValidator</em>
+<a class="jxr_linenumber" name="74" href="#74">74</a>  <em class="jxr_javadoccomment">     * except that it calls template methods instead of bare screen</em>
+<a class="jxr_linenumber" name="75" href="#75">75</a>  <em class="jxr_javadoccomment">     * methods. For example, it uses &lt;code&gt;setScreenTemplate&lt;/code&gt; to</em>
+<a class="jxr_linenumber" name="76" href="#76">76</a>  <em class="jxr_javadoccomment">     * load the tr.props TEMPLATE_LOGIN instead of the default's</em>
+<a class="jxr_linenumber" name="77" href="#77">77</a>  <em class="jxr_javadoccomment">     * setScreen to TurbineConstants.SCREEN_LOGIN.</em>
+<a class="jxr_linenumber" name="78" href="#78">78</a>  <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="79" href="#79">79</a>  <em class="jxr_javadoccomment">     * @see DefaultSessionValidator</em>
+<a class="jxr_linenumber" name="80" href="#80">80</a>  <em class="jxr_javadoccomment">     * @param pipelineData Turbine information.</em>
+<a class="jxr_linenumber" name="81" href="#81">81</a>  <em class="jxr_javadoccomment">     * @throws Exception The anonymous user could not be obtained</em>
+<a class="jxr_linenumber" name="82" href="#82">82</a>  <em class="jxr_javadoccomment">     *         from the security service</em>
+<a class="jxr_linenumber" name="83" href="#83">83</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="84" href="#84">84</a>      @Override
+<a class="jxr_linenumber" name="85" href="#85">85</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> doPerform(<a href="../../../../../../org/apache/turbine/pipeline/PipelineData.html">PipelineData</a> pipelineData)
+<a class="jxr_linenumber" name="86" href="#86">86</a>      <strong class="jxr_keyword">throws</strong> Exception
+<a class="jxr_linenumber" name="87" href="#87">87</a>      {
+<a class="jxr_linenumber" name="88" href="#88">88</a>          <a href="../../../../../../org/apache/turbine/util/RunData.html">RunData</a> data = getRunData(pipelineData);
+<a class="jxr_linenumber" name="89" href="#89">89</a>          <em class="jxr_comment">// Pull user from session.</em>
+<a class="jxr_linenumber" name="90" href="#90">90</a>          data.populate();
+<a class="jxr_linenumber" name="91" href="#91">91</a>  
+<a class="jxr_linenumber" name="92" href="#92">92</a>          <em class="jxr_comment">// The user may have not logged in, so create a "guest/anonymous" user.</em>
+<a class="jxr_linenumber" name="93" href="#93">93</a>          <strong class="jxr_keyword">if</strong> (data.getUser() == <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="94" href="#94">94</a>          {
+<a class="jxr_linenumber" name="95" href="#95">95</a>              log.debug(<span class="jxr_string">"Fixing up empty User Object!"</span>);
+<a class="jxr_linenumber" name="96" href="#96">96</a>              <a href="../../../../../../org/apache/turbine/om/security/User.html">User</a> anonymousUser = security.getAnonymousUser();
+<a class="jxr_linenumber" name="97" href="#97">97</a>              data.setUser(anonymousUser);
+<a class="jxr_linenumber" name="98" href="#98">98</a>              data.save();
+<a class="jxr_linenumber" name="99" href="#99">99</a>          }
+<a class="jxr_linenumber" name="100" href="#100">100</a> 
+<a class="jxr_linenumber" name="101" href="#101">101</a>         <em class="jxr_comment">// This is the secure session validator, so user must be logged in.</em>
+<a class="jxr_linenumber" name="102" href="#102">102</a>         <strong class="jxr_keyword">if</strong> (!data.getUser().hasLoggedIn())
+<a class="jxr_linenumber" name="103" href="#103">103</a>         {
+<a class="jxr_linenumber" name="104" href="#104">104</a>             log.debug(<span class="jxr_string">"User is not logged in!"</span>);
+<a class="jxr_linenumber" name="105" href="#105">105</a> 
+<a class="jxr_linenumber" name="106" href="#106">106</a>             <em class="jxr_comment">// only set the message if nothing else has already set it</em>
+<a class="jxr_linenumber" name="107" href="#107">107</a>             <em class="jxr_comment">// (e.g. the LogoutUser action).</em>
+<a class="jxr_linenumber" name="108" href="#108">108</a>             <strong class="jxr_keyword">if</strong> (StringUtils.isEmpty(data.getMessage()))
+<a class="jxr_linenumber" name="109" href="#109">109</a>             {
+<a class="jxr_linenumber" name="110" href="#110">110</a>                 data.setMessage(conf.getString(TurbineConstants.LOGIN_MESSAGE));
+<a class="jxr_linenumber" name="111" href="#111">111</a>             }
+<a class="jxr_linenumber" name="112" href="#112">112</a> 
+<a class="jxr_linenumber" name="113" href="#113">113</a>             <em class="jxr_comment">// Set the screen template to the login page.</em>
+<a class="jxr_linenumber" name="114" href="#114">114</a>             String loginTemplate =
+<a class="jxr_linenumber" name="115" href="#115">115</a>                 conf.getString(TurbineConstants.TEMPLATE_LOGIN);
+<a class="jxr_linenumber" name="116" href="#116">116</a> 
+<a class="jxr_linenumber" name="117" href="#117">117</a>             log.debug(<span class="jxr_string">"Sending User to the Login Screen ("</span>
+<a class="jxr_linenumber" name="118" href="#118">118</a>                     + loginTemplate + <span class="jxr_string">")"</span>);
+<a class="jxr_linenumber" name="119" href="#119">119</a>             data.getTemplateInfo().setScreenTemplate(loginTemplate);
+<a class="jxr_linenumber" name="120" href="#120">120</a> 
+<a class="jxr_linenumber" name="121" href="#121">121</a>             <em class="jxr_comment">// We're not doing any actions buddy! (except action.login which</em>
+<a class="jxr_linenumber" name="122" href="#122">122</a>             <em class="jxr_comment">// will have been performed already)</em>
+<a class="jxr_linenumber" name="123" href="#123">123</a>             data.setAction(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="124" href="#124">124</a>         }
+<a class="jxr_linenumber" name="125" href="#125">125</a> 
+<a class="jxr_linenumber" name="126" href="#126">126</a>         log.debug(<span class="jxr_string">"Login Check finished!"</span>);
+<a class="jxr_linenumber" name="127" href="#127">127</a> 
+<a class="jxr_linenumber" name="128" href="#128">128</a>         <em class="jxr_comment">// Make sure we have some way to return a response.</em>
+<a class="jxr_linenumber" name="129" href="#129">129</a>         <strong class="jxr_keyword">if</strong> (!data.hasScreen() &amp;&amp; StringUtils.isEmpty(
+<a class="jxr_linenumber" name="130" href="#130">130</a>                 data.getTemplateInfo().getScreenTemplate()))
+<a class="jxr_linenumber" name="131" href="#131">131</a>         {
+<a class="jxr_linenumber" name="132" href="#132">132</a>             String template = conf.getString(
+<a class="jxr_linenumber" name="133" href="#133">133</a>                     TurbineConstants.TEMPLATE_HOMEPAGE);
+<a class="jxr_linenumber" name="134" href="#134">134</a> 
+<a class="jxr_linenumber" name="135" href="#135">135</a>             <strong class="jxr_keyword">if</strong> (StringUtils.isNotEmpty(template))
+<a class="jxr_linenumber" name="136" href="#136">136</a>             {
+<a class="jxr_linenumber" name="137" href="#137">137</a>                 data.getTemplateInfo().setScreenTemplate(template);
+<a class="jxr_linenumber" name="138" href="#138">138</a>             }
+<a class="jxr_linenumber" name="139" href="#139">139</a>             <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="140" href="#140">140</a>             {
+<a class="jxr_linenumber" name="141" href="#141">141</a>                 data.setScreen(conf.getString(
+<a class="jxr_linenumber" name="142" href="#142">142</a>                         TurbineConstants.SCREEN_HOMEPAGE));
+<a class="jxr_linenumber" name="143" href="#143">143</a>             }
+<a class="jxr_linenumber" name="144" href="#144">144</a>         }
+<a class="jxr_linenumber" name="145" href="#145">145</a> 
+<a class="jxr_linenumber" name="146" href="#146">146</a>         <em class="jxr_comment">// The session_access_counter can be placed as a hidden field in</em>
+<a class="jxr_linenumber" name="147" href="#147">147</a>         <em class="jxr_comment">// forms.  This can be used to prevent a user from using the</em>
+<a class="jxr_linenumber" name="148" href="#148">148</a>         <em class="jxr_comment">// browsers back button and submitting stale data.</em>
+<a class="jxr_linenumber" name="149" href="#149">149</a>         <em class="jxr_comment">// FIXME!! a template needs to be written to use this with templates.</em>
+<a class="jxr_linenumber" name="150" href="#150">150</a> 
+<a class="jxr_linenumber" name="151" href="#151">151</a>         <strong class="jxr_keyword">if</strong> (data.getParameters().containsKey(<span class="jxr_string">"_session_access_counter"</span>)
+<a class="jxr_linenumber" name="152" href="#152">152</a>                 &amp;&amp; !security.isAnonymousUser(data.getUser()))
+<a class="jxr_linenumber" name="153" href="#153">153</a>         {
+<a class="jxr_linenumber" name="154" href="#154">154</a>             <em class="jxr_comment">// See comments in screens.error.InvalidState.</em>
+<a class="jxr_linenumber" name="155" href="#155">155</a>             <strong class="jxr_keyword">if</strong> (data.getParameters().getInt(<span class="jxr_string">"_session_access_counter"</span>)
+<a class="jxr_linenumber" name="156" href="#156">156</a>                     &lt; (((Integer) data.getUser().getTemp(
+<a class="jxr_linenumber" name="157" href="#157">157</a>                     <span class="jxr_string">"_session_access_counter"</span>)).intValue() - 1))
+<a class="jxr_linenumber" name="158" href="#158">158</a>             {
+<a class="jxr_linenumber" name="159" href="#159">159</a>                 <strong class="jxr_keyword">if</strong> (data.getTemplateInfo().getScreenTemplate() != <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="160" href="#160">160</a>                 {
+<a class="jxr_linenumber" name="161" href="#161">161</a>                     data.getUser().setTemp(<span class="jxr_string">"prev_template"</span>,
+<a class="jxr_linenumber" name="162" href="#162">162</a>                             data.getTemplateInfo().getScreenTemplate()
+<a class="jxr_linenumber" name="163" href="#163">163</a>                             .replace('/', ','));
+<a class="jxr_linenumber" name="164" href="#164">164</a>                     data.getTemplateInfo().setScreenTemplate(conf.getString(
+<a class="jxr_linenumber" name="165" href="#165">165</a>                             TurbineConstants.TEMPLATE_INVALID_STATE));
+<a class="jxr_linenumber" name="166" href="#166">166</a>                 }
+<a class="jxr_linenumber" name="167" href="#167">167</a>                 <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="168" href="#168">168</a>                 {
+<a class="jxr_linenumber" name="169" href="#169">169</a>                     data.getUser().setTemp(<span class="jxr_string">"prev_screen"</span>,
+<a class="jxr_linenumber" name="170" href="#170">170</a>                                            data.getScreen().replace('/', ','));
+<a class="jxr_linenumber" name="171" href="#171">171</a>                     data.setScreen(conf.getString(
+<a class="jxr_linenumber" name="172" href="#172">172</a>                             TurbineConstants.SCREEN_INVALID_STATE));
+<a class="jxr_linenumber" name="173" href="#173">173</a>                 }
+<a class="jxr_linenumber" name="174" href="#174">174</a>                 data.getUser().setTemp(<span class="jxr_string">"prev_parameters"</span>, data.getParameters());
+<a class="jxr_linenumber" name="175" href="#175">175</a>                 data.setAction(<span class="jxr_string">""</span>);
+<a class="jxr_linenumber" name="176" href="#176">176</a>             }
+<a class="jxr_linenumber" name="177" href="#177">177</a>         }
+<a class="jxr_linenumber" name="178" href="#178">178</a> 
+<a class="jxr_linenumber" name="179" href="#179">179</a>         <em class="jxr_comment">// We do not want to allow both a screen and template parameter.</em>
+<a class="jxr_linenumber" name="180" href="#180">180</a>         <em class="jxr_comment">// The template parameter is dominant.</em>
+<a class="jxr_linenumber" name="181" href="#181">181</a>         <strong class="jxr_keyword">if</strong> (data.getTemplateInfo().getScreenTemplate() != <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="182" href="#182">182</a>         {
+<a class="jxr_linenumber" name="183" href="#183">183</a>             data.setScreen(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="184" href="#184">184</a>         }
+<a class="jxr_linenumber" name="185" href="#185">185</a> 
+<a class="jxr_linenumber" name="186" href="#186">186</a>         <em class="jxr_comment">// Comply with Turbine 4.0 standards</em>
+<a class="jxr_linenumber" name="187" href="#187">187</a>         pipelineData.get(Turbine.<strong class="jxr_keyword">class</strong>).put(User.<strong class="jxr_keyword">class</strong>, data.getUser());
+<a class="jxr_linenumber" name="188" href="#188">188</a>     }
+<a class="jxr_linenumber" name="189" href="#189">189</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
-
