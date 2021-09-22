@@ -1,293 +1,296 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="de">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package org.apache.turbine.services;<a name="line.1"></a>
-<span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span><a name="line.3"></a>
-<span class="sourceLineNo">004</span>/*<a name="line.4"></a>
-<span class="sourceLineNo">005</span> * Licensed to the Apache Software Foundation (ASF) under one<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * or more contributor license agreements.  See the NOTICE file<a name="line.6"></a>
-<span class="sourceLineNo">007</span> * distributed with this work for additional information<a name="line.7"></a>
-<span class="sourceLineNo">008</span> * regarding copyright ownership.  The ASF licenses this file<a name="line.8"></a>
-<span class="sourceLineNo">009</span> * to you under the Apache License, Version 2.0 (the<a name="line.9"></a>
-<span class="sourceLineNo">010</span> * "License"); you may not use this file except in compliance<a name="line.10"></a>
-<span class="sourceLineNo">011</span> * with the License.  You may obtain a copy of the License at<a name="line.11"></a>
-<span class="sourceLineNo">012</span> *<a name="line.12"></a>
-<span class="sourceLineNo">013</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.13"></a>
-<span class="sourceLineNo">014</span> *<a name="line.14"></a>
-<span class="sourceLineNo">015</span> * Unless required by applicable law or agreed to in writing,<a name="line.15"></a>
-<span class="sourceLineNo">016</span> * software distributed under the License is distributed on an<a name="line.16"></a>
-<span class="sourceLineNo">017</span> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY<a name="line.17"></a>
-<span class="sourceLineNo">018</span> * KIND, either express or implied.  See the License for the<a name="line.18"></a>
-<span class="sourceLineNo">019</span> * specific language governing permissions and limitations<a name="line.19"></a>
-<span class="sourceLineNo">020</span> * under the License.<a name="line.20"></a>
-<span class="sourceLineNo">021</span> */<a name="line.21"></a>
-<span class="sourceLineNo">022</span><a name="line.22"></a>
-<span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>import java.util.Hashtable;<a name="line.24"></a>
-<span class="sourceLineNo">025</span>import java.util.Stack;<a name="line.25"></a>
-<span class="sourceLineNo">026</span><a name="line.26"></a>
-<span class="sourceLineNo">027</span>import org.apache.commons.logging.Log;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import org.apache.commons.logging.LogFactory;<a name="line.28"></a>
-<span class="sourceLineNo">029</span><a name="line.29"></a>
-<span class="sourceLineNo">030</span>/**<a name="line.30"></a>
-<span class="sourceLineNo">031</span> * A generic implementation of &lt;code&gt;InitableBroker&lt;/code&gt;.<a name="line.31"></a>
-<span class="sourceLineNo">032</span> * Functionality provided by the broker includes:<a name="line.32"></a>
-<span class="sourceLineNo">033</span> *<a name="line.33"></a>
-<span class="sourceLineNo">034</span> * &lt;ul&gt;<a name="line.34"></a>
-<span class="sourceLineNo">035</span> *<a name="line.35"></a>
-<span class="sourceLineNo">036</span> * &lt;li&gt;Maintaining single instance of each &lt;code&gt;Initable&lt;/code&gt; in<a name="line.36"></a>
-<span class="sourceLineNo">037</span> * the system.&lt;/li&gt;<a name="line.37"></a>
-<span class="sourceLineNo">038</span> *<a name="line.38"></a>
-<span class="sourceLineNo">039</span> * &lt;li&gt;Early initialization of &lt;code&gt;Initables&lt;/code&gt; during system<a name="line.39"></a>
-<span class="sourceLineNo">040</span> * startup.&lt;/li&gt;<a name="line.40"></a>
-<span class="sourceLineNo">041</span> *<a name="line.41"></a>
-<span class="sourceLineNo">042</span> * &lt;li&gt;Late initialization of &lt;code&gt;Initables&lt;/code&gt; before they are<a name="line.42"></a>
-<span class="sourceLineNo">043</span> * used.&lt;/li&gt;<a name="line.43"></a>
-<span class="sourceLineNo">044</span> *<a name="line.44"></a>
-<span class="sourceLineNo">045</span> * &lt;li&gt;Providing instances of &lt;code&gt;Initables&lt;/code&gt; to requesting<a name="line.45"></a>
-<span class="sourceLineNo">046</span> * parties.&lt;/li&gt;<a name="line.46"></a>
-<span class="sourceLineNo">047</span> *<a name="line.47"></a>
-<span class="sourceLineNo">048</span> * &lt;li&gt;Maintaining dependencies between &lt;code&gt;Initables&lt;/code&gt; during<a name="line.48"></a>
-<span class="sourceLineNo">049</span> * early initalization phases, including circular dependencies<a name="line.49"></a>
-<span class="sourceLineNo">050</span> * detection.&lt;/li&gt;<a name="line.50"></a>
-<span class="sourceLineNo">051</span> *<a name="line.51"></a>
-<span class="sourceLineNo">052</span> * &lt;/ul&gt;<a name="line.52"></a>
-<span class="sourceLineNo">053</span> *<a name="line.53"></a>
-<span class="sourceLineNo">054</span> * @author &lt;a href="mailto:burton@apache.org"&gt;Kevin Burton&lt;/a&gt;<a name="line.54"></a>
-<span class="sourceLineNo">055</span> * @author &lt;a href="mailto:krzewski@e-point.pl"&gt;Rafal Krzewski&lt;/a&gt;<a name="line.55"></a>
-<span class="sourceLineNo">056</span> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;<a name="line.56"></a>
-<span class="sourceLineNo">057</span> * @version $Id: BaseInitableBroker.java 1706239 2015-10-01 13:18:35Z tv $<a name="line.57"></a>
-<span class="sourceLineNo">058</span> */<a name="line.58"></a>
-<span class="sourceLineNo">059</span>public abstract class BaseInitableBroker<a name="line.59"></a>
-<span class="sourceLineNo">060</span>        implements InitableBroker<a name="line.60"></a>
-<span class="sourceLineNo">061</span>{<a name="line.61"></a>
-<span class="sourceLineNo">062</span>    /** A repository of Initable instances. */<a name="line.62"></a>
-<span class="sourceLineNo">063</span>    protected Hashtable&lt;String, Initable&gt; initables = new Hashtable&lt;String, Initable&gt;();<a name="line.63"></a>
-<span class="sourceLineNo">064</span><a name="line.64"></a>
-<span class="sourceLineNo">065</span>    /**<a name="line.65"></a>
-<span class="sourceLineNo">066</span>     * Names of classes being early-initialized are pushed onto this<a name="line.66"></a>
-<span class="sourceLineNo">067</span>     * stack.  A name appearing twice indicates a circular dependency<a name="line.67"></a>
-<span class="sourceLineNo">068</span>     * chain.<a name="line.68"></a>
-<span class="sourceLineNo">069</span>     */<a name="line.69"></a>
-<span class="sourceLineNo">070</span>    protected Stack&lt;String&gt; stack = new Stack&lt;String&gt;();<a name="line.70"></a>
-<span class="sourceLineNo">071</span><a name="line.71"></a>
-<span class="sourceLineNo">072</span>    /** Logging */<a name="line.72"></a>
-<span class="sourceLineNo">073</span>    private final Log log = LogFactory.getLog(this.getClass());<a name="line.73"></a>
-<span class="sourceLineNo">074</span><a name="line.74"></a>
-<span class="sourceLineNo">075</span>    /**<a name="line.75"></a>
-<span class="sourceLineNo">076</span>     * Default constructor of InitableBroker.<a name="line.76"></a>
-<span class="sourceLineNo">077</span>     *<a name="line.77"></a>
-<span class="sourceLineNo">078</span>     * This constructor does nothing. Your brokers should be<a name="line.78"></a>
-<span class="sourceLineNo">079</span>     * singletons, therefore their constructors should be<a name="line.79"></a>
-<span class="sourceLineNo">080</span>     * private. They should also have public YourBroker getInstance()<a name="line.80"></a>
-<span class="sourceLineNo">081</span>     * methods.<a name="line.81"></a>
-<span class="sourceLineNo">082</span>     */<a name="line.82"></a>
-<span class="sourceLineNo">083</span>    protected BaseInitableBroker()<a name="line.83"></a>
-<span class="sourceLineNo">084</span>    {<a name="line.84"></a>
-<span class="sourceLineNo">085</span>        // empty<a name="line.85"></a>
-<span class="sourceLineNo">086</span>    }<a name="line.86"></a>
-<span class="sourceLineNo">087</span><a name="line.87"></a>
-<span class="sourceLineNo">088</span>    /**<a name="line.88"></a>
-<span class="sourceLineNo">089</span>     * Performs early initialization of an Initable class.<a name="line.89"></a>
-<span class="sourceLineNo">090</span>     *<a name="line.90"></a>
-<span class="sourceLineNo">091</span>     * @param className The name of the class to be initialized.<a name="line.91"></a>
-<span class="sourceLineNo">092</span>     * @param data An Object to be used for initialization activities.<a name="line.92"></a>
-<span class="sourceLineNo">093</span>     * @exception InitializationException Initialization was not successful.<a name="line.93"></a>
-<span class="sourceLineNo">094</span>     */<a name="line.94"></a>
-<span class="sourceLineNo">095</span>    @Override<a name="line.95"></a>
-<span class="sourceLineNo">096</span>    public void initClass(String className, Object data)<a name="line.96"></a>
-<span class="sourceLineNo">097</span>            throws InitializationException<a name="line.97"></a>
-<span class="sourceLineNo">098</span>    {<a name="line.98"></a>
-<span class="sourceLineNo">099</span>        // make sure that only one thread calls this method recursively<a name="line.99"></a>
-<span class="sourceLineNo">100</span>        synchronized (stack)<a name="line.100"></a>
-<span class="sourceLineNo">101</span>        {<a name="line.101"></a>
-<span class="sourceLineNo">102</span>            int pos = stack.search(className);<a name="line.102"></a>
-<span class="sourceLineNo">103</span>            if (pos != -1)<a name="line.103"></a>
-<span class="sourceLineNo">104</span>            {<a name="line.104"></a>
-<span class="sourceLineNo">105</span>                StringBuilder msg = new StringBuilder().append(className)<a name="line.105"></a>
-<span class="sourceLineNo">106</span>                        .append(" couldn't be initialized because of circular dependency chain:\n");<a name="line.106"></a>
-<span class="sourceLineNo">107</span>                for (int i = pos; i &gt; 0; i--)<a name="line.107"></a>
-<span class="sourceLineNo">108</span>                {<a name="line.108"></a>
-<span class="sourceLineNo">109</span>                    msg.append(stack.elementAt(stack.size() - i - 1) + "-&gt;");<a name="line.109"></a>
-<span class="sourceLineNo">110</span>                }<a name="line.110"></a>
-<span class="sourceLineNo">111</span>                msg.append(className).append('\n');<a name="line.111"></a>
-<span class="sourceLineNo">112</span><a name="line.112"></a>
-<span class="sourceLineNo">113</span>                throw new InitializationException(msg.toString());<a name="line.113"></a>
-<span class="sourceLineNo">114</span>            }<a name="line.114"></a>
-<span class="sourceLineNo">115</span>            try<a name="line.115"></a>
-<span class="sourceLineNo">116</span>            {<a name="line.116"></a>
-<span class="sourceLineNo">117</span>                stack.push(className);<a name="line.117"></a>
-<span class="sourceLineNo">118</span>                Initable instance = getInitableInstance(className);<a name="line.118"></a>
-<span class="sourceLineNo">119</span>                if (!instance.getInit())<a name="line.119"></a>
-<span class="sourceLineNo">120</span>                {<a name="line.120"></a>
-<span class="sourceLineNo">121</span>                    // this call might result in an indirect recursion<a name="line.121"></a>
-<span class="sourceLineNo">122</span>                    instance.init(data);<a name="line.122"></a>
-<span class="sourceLineNo">123</span>                }<a name="line.123"></a>
-<span class="sourceLineNo">124</span>            }<a name="line.124"></a>
-<span class="sourceLineNo">125</span>            finally<a name="line.125"></a>
-<span class="sourceLineNo">126</span>            {<a name="line.126"></a>
-<span class="sourceLineNo">127</span>                // Succeeded or not, make sure the name gets off the stack.<a name="line.127"></a>
-<span class="sourceLineNo">128</span>                stack.pop();<a name="line.128"></a>
-<span class="sourceLineNo">129</span>            }<a name="line.129"></a>
-<span class="sourceLineNo">130</span>        }<a name="line.130"></a>
-<span class="sourceLineNo">131</span>    }<a name="line.131"></a>
-<span class="sourceLineNo">132</span><a name="line.132"></a>
-<span class="sourceLineNo">133</span>    /**<a name="line.133"></a>
-<span class="sourceLineNo">134</span>     * Shuts down an &lt;code&gt;Initable&lt;/code&gt;.<a name="line.134"></a>
-<span class="sourceLineNo">135</span>     *<a name="line.135"></a>
-<span class="sourceLineNo">136</span>     * This method is used to release resources allocated by an<a name="line.136"></a>
-<span class="sourceLineNo">137</span>     * &lt;code&gt;Initable&lt;/code&gt;, and return it to its initial (uninitialized)<a name="line.137"></a>
-<span class="sourceLineNo">138</span>     * state.<a name="line.138"></a>
-<span class="sourceLineNo">139</span>     *<a name="line.139"></a>
-<span class="sourceLineNo">140</span>     * @param className The name of the class to be uninitialized.<a name="line.140"></a>
-<span class="sourceLineNo">141</span>     */<a name="line.141"></a>
-<span class="sourceLineNo">142</span>    @Override<a name="line.142"></a>
-<span class="sourceLineNo">143</span>    public void shutdownClass(String className)<a name="line.143"></a>
-<span class="sourceLineNo">144</span>    {<a name="line.144"></a>
-<span class="sourceLineNo">145</span>        try<a name="line.145"></a>
-<span class="sourceLineNo">146</span>        {<a name="line.146"></a>
-<span class="sourceLineNo">147</span>            Initable initable = getInitableInstance(className);<a name="line.147"></a>
-<span class="sourceLineNo">148</span>            if (initable.getInit())<a name="line.148"></a>
-<span class="sourceLineNo">149</span>            {<a name="line.149"></a>
-<span class="sourceLineNo">150</span>                initable.shutdown();<a name="line.150"></a>
-<span class="sourceLineNo">151</span>                ((BaseInitable) initable).setInit(false);<a name="line.151"></a>
-<span class="sourceLineNo">152</span>            }<a name="line.152"></a>
-<span class="sourceLineNo">153</span>        }<a name="line.153"></a>
-<span class="sourceLineNo">154</span>        catch (InstantiationException e)<a name="line.154"></a>
-<span class="sourceLineNo">155</span>        {<a name="line.155"></a>
-<span class="sourceLineNo">156</span>            // Shutdown of a nonexistent class was requested.<a name="line.156"></a>
-<span class="sourceLineNo">157</span>            // This does not hurt anything, so we log the error and continue.<a name="line.157"></a>
-<span class="sourceLineNo">158</span>            log.error("Shutdown of a nonexistent class " +<a name="line.158"></a>
-<span class="sourceLineNo">159</span>                    className + " was requested", e);<a name="line.159"></a>
-<span class="sourceLineNo">160</span>        }<a name="line.160"></a>
-<span class="sourceLineNo">161</span>    }<a name="line.161"></a>
-<span class="sourceLineNo">162</span><a name="line.162"></a>
-<span class="sourceLineNo">163</span>    /**<a name="line.163"></a>
-<span class="sourceLineNo">164</span>     * Provides an instance of Initable class ready to work.<a name="line.164"></a>
-<span class="sourceLineNo">165</span>     *<a name="line.165"></a>
-<span class="sourceLineNo">166</span>     * If the requested class couldn't be instantiated or initialized,<a name="line.166"></a>
-<span class="sourceLineNo">167</span>     * an InstantiationException will be thrown. You needn't handle<a name="line.167"></a>
-<span class="sourceLineNo">168</span>     * this exception in your code, since it indicates fatal<a name="line.168"></a>
-<span class="sourceLineNo">169</span>     * misconfiguration of the system.<a name="line.169"></a>
-<span class="sourceLineNo">170</span>     *<a name="line.170"></a>
-<span class="sourceLineNo">171</span>     * @param className The name of the Initable requested.<a name="line.171"></a>
-<span class="sourceLineNo">172</span>     * @return An instance of the requested Initable.<a name="line.172"></a>
-<span class="sourceLineNo">173</span>     * @exception InstantiationException if there was a problem<a name="line.173"></a>
-<span class="sourceLineNo">174</span>     * during instantiation or initialization of the Initable.<a name="line.174"></a>
-<span class="sourceLineNo">175</span>     */<a name="line.175"></a>
-<span class="sourceLineNo">176</span>    @Override<a name="line.176"></a>
-<span class="sourceLineNo">177</span>    public Initable getInitable(String className)<a name="line.177"></a>
-<span class="sourceLineNo">178</span>            throws InstantiationException<a name="line.178"></a>
-<span class="sourceLineNo">179</span>    {<a name="line.179"></a>
-<span class="sourceLineNo">180</span>        Initable initable;<a name="line.180"></a>
-<span class="sourceLineNo">181</span>        try<a name="line.181"></a>
-<span class="sourceLineNo">182</span>        {<a name="line.182"></a>
-<span class="sourceLineNo">183</span>            initable = getInitableInstance(className);<a name="line.183"></a>
-<span class="sourceLineNo">184</span>            if (!initable.getInit())<a name="line.184"></a>
-<span class="sourceLineNo">185</span>            {<a name="line.185"></a>
-<span class="sourceLineNo">186</span>                synchronized (initable.getClass())<a name="line.186"></a>
-<span class="sourceLineNo">187</span>                {<a name="line.187"></a>
-<span class="sourceLineNo">188</span>                    if (!initable.getInit())<a name="line.188"></a>
-<span class="sourceLineNo">189</span>                    {<a name="line.189"></a>
-<span class="sourceLineNo">190</span>                        initable.init();<a name="line.190"></a>
-<span class="sourceLineNo">191</span>                    }<a name="line.191"></a>
-<span class="sourceLineNo">192</span>                    if (!initable.getInit())<a name="line.192"></a>
-<span class="sourceLineNo">193</span>                    {<a name="line.193"></a>
-<span class="sourceLineNo">194</span>                        // this exception will be caught &amp; rethrown by this<a name="line.194"></a>
-<span class="sourceLineNo">195</span>                        // very method. getInit() returning false indicates<a name="line.195"></a>
-<span class="sourceLineNo">196</span>                        // some initialization issue, which in turn prevents<a name="line.196"></a>
-<span class="sourceLineNo">197</span>                        // the InitableBroker from passing a working<a name="line.197"></a>
-<span class="sourceLineNo">198</span>                        // instance of the initable to the client.<a name="line.198"></a>
-<span class="sourceLineNo">199</span>                        throw new InitializationException(<a name="line.199"></a>
-<span class="sourceLineNo">200</span>                                "init() failed to initialize class "<a name="line.200"></a>
-<span class="sourceLineNo">201</span>                                + className);<a name="line.201"></a>
-<span class="sourceLineNo">202</span>                    }<a name="line.202"></a>
-<span class="sourceLineNo">203</span>                }<a name="line.203"></a>
-<span class="sourceLineNo">204</span>            }<a name="line.204"></a>
-<span class="sourceLineNo">205</span>            return initable;<a name="line.205"></a>
-<span class="sourceLineNo">206</span>        }<a name="line.206"></a>
-<span class="sourceLineNo">207</span>        catch (InitializationException e)<a name="line.207"></a>
-<span class="sourceLineNo">208</span>        {<a name="line.208"></a>
-<span class="sourceLineNo">209</span>            throw new InstantiationException("Class " + className +<a name="line.209"></a>
-<span class="sourceLineNo">210</span>                    " failed to initialize", e);<a name="line.210"></a>
-<span class="sourceLineNo">211</span>        }<a name="line.211"></a>
-<span class="sourceLineNo">212</span>    }<a name="line.212"></a>
-<span class="sourceLineNo">213</span><a name="line.213"></a>
-<span class="sourceLineNo">214</span>    /**<a name="line.214"></a>
-<span class="sourceLineNo">215</span>     * Retrieves an instance of an Initable from the repository.<a name="line.215"></a>
-<span class="sourceLineNo">216</span>     *<a name="line.216"></a>
-<span class="sourceLineNo">217</span>     * If the requested class is not present in the repository, it is<a name="line.217"></a>
-<span class="sourceLineNo">218</span>     * instantiated and passed a reference to the broker, saved and<a name="line.218"></a>
-<span class="sourceLineNo">219</span>     * then returned.<a name="line.219"></a>
-<span class="sourceLineNo">220</span>     *<a name="line.220"></a>
-<span class="sourceLineNo">221</span>     * @param className The name of the class to be instantiated.<a name="line.221"></a>
-<span class="sourceLineNo">222</span>     * @exception InstantiationException if the requested class can't<a name="line.222"></a>
-<span class="sourceLineNo">223</span>     * be instantiated.<a name="line.223"></a>
-<span class="sourceLineNo">224</span>     */<a name="line.224"></a>
-<span class="sourceLineNo">225</span>    protected Initable getInitableInstance(String className)<a name="line.225"></a>
-<span class="sourceLineNo">226</span>            throws InstantiationException<a name="line.226"></a>
-<span class="sourceLineNo">227</span>    {<a name="line.227"></a>
-<span class="sourceLineNo">228</span>        Initable initable = initables.get(className);<a name="line.228"></a>
-<span class="sourceLineNo">229</span><a name="line.229"></a>
-<span class="sourceLineNo">230</span>        if (initable == null)<a name="line.230"></a>
-<span class="sourceLineNo">231</span>        {<a name="line.231"></a>
-<span class="sourceLineNo">232</span>            try<a name="line.232"></a>
-<span class="sourceLineNo">233</span>            {<a name="line.233"></a>
-<span class="sourceLineNo">234</span>                initable = (Initable) Class.forName(className).newInstance();<a name="line.234"></a>
-<span class="sourceLineNo">235</span>            }<a name="line.235"></a>
-<span class="sourceLineNo">236</span><a name="line.236"></a>
-<span class="sourceLineNo">237</span>                    // those two errors must be passed to the VM<a name="line.237"></a>
-<span class="sourceLineNo">238</span>            catch (ThreadDeath t)<a name="line.238"></a>
-<span class="sourceLineNo">239</span>            {<a name="line.239"></a>
-<span class="sourceLineNo">240</span>                throw t;<a name="line.240"></a>
-<span class="sourceLineNo">241</span>            }<a name="line.241"></a>
-<span class="sourceLineNo">242</span>            catch (OutOfMemoryError t)<a name="line.242"></a>
-<span class="sourceLineNo">243</span>            {<a name="line.243"></a>
-<span class="sourceLineNo">244</span>                throw t;<a name="line.244"></a>
-<span class="sourceLineNo">245</span>            }<a name="line.245"></a>
-<span class="sourceLineNo">246</span><a name="line.246"></a>
-<span class="sourceLineNo">247</span>            catch (Throwable t)<a name="line.247"></a>
-<span class="sourceLineNo">248</span>            {<a name="line.248"></a>
-<span class="sourceLineNo">249</span>                // Used to indicate error condition.<a name="line.249"></a>
-<span class="sourceLineNo">250</span>                String msg = null;<a name="line.250"></a>
-<span class="sourceLineNo">251</span><a name="line.251"></a>
-<span class="sourceLineNo">252</span>                if (t instanceof NoClassDefFoundError)<a name="line.252"></a>
-<span class="sourceLineNo">253</span>                {<a name="line.253"></a>
-<span class="sourceLineNo">254</span>                    msg = "A class referenced by " + className +<a name="line.254"></a>
-<span class="sourceLineNo">255</span>                            " is unavailable. Check your jars and classes.";<a name="line.255"></a>
-<span class="sourceLineNo">256</span>                }<a name="line.256"></a>
-<span class="sourceLineNo">257</span>                else if (t instanceof ClassNotFoundException)<a name="line.257"></a>
-<span class="sourceLineNo">258</span>                {<a name="line.258"></a>
-<span class="sourceLineNo">259</span>                    msg = "Class " + className +<a name="line.259"></a>
-<span class="sourceLineNo">260</span>                            " is unavailable. Check your jars and classes.";<a name="line.260"></a>
-<span class="sourceLineNo">261</span>                }<a name="line.261"></a>
-<span class="sourceLineNo">262</span>                else if (t instanceof ClassCastException)<a name="line.262"></a>
-<span class="sourceLineNo">263</span>                {<a name="line.263"></a>
-<span class="sourceLineNo">264</span>                    msg = "Class " + className +<a name="line.264"></a>
-<span class="sourceLineNo">265</span>                            " doesn't implement Initable.";<a name="line.265"></a>
-<span class="sourceLineNo">266</span>                }<a name="line.266"></a>
-<span class="sourceLineNo">267</span>                else<a name="line.267"></a>
-<span class="sourceLineNo">268</span>                {<a name="line.268"></a>
-<span class="sourceLineNo">269</span>                    msg = "Failed to instantiate " + className;<a name="line.269"></a>
-<span class="sourceLineNo">270</span>                }<a name="line.270"></a>
-<span class="sourceLineNo">271</span><a name="line.271"></a>
-<span class="sourceLineNo">272</span>                throw new InstantiationException(msg, t);<a name="line.272"></a>
-<span class="sourceLineNo">273</span>            }<a name="line.273"></a>
-<span class="sourceLineNo">274</span><a name="line.274"></a>
-<span class="sourceLineNo">275</span>            initable.setInitableBroker(this);<a name="line.275"></a>
-<span class="sourceLineNo">276</span>            initables.put(className, initable);<a name="line.276"></a>
-<span class="sourceLineNo">277</span>        }<a name="line.277"></a>
-<span class="sourceLineNo">278</span><a name="line.278"></a>
-<span class="sourceLineNo">279</span>        return initable;<a name="line.279"></a>
-<span class="sourceLineNo">280</span>    }<a name="line.280"></a>
-<span class="sourceLineNo">281</span><a name="line.281"></a>
-<span class="sourceLineNo">282</span>}<a name="line.282"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.apache.turbine.services;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3"></a>
+<span class="sourceLineNo">004</span><a id="line.4">/*</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * Licensed to the Apache Software Foundation (ASF) under one</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * or more contributor license agreements.  See the NOTICE file</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * distributed with this work for additional information</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * regarding copyright ownership.  The ASF licenses this file</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * to you under the Apache License, Version 2.0 (the</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * "License"); you may not use this file except in compliance</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * with the License.  You may obtain a copy of the License at</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *   http://www.apache.org/licenses/LICENSE-2.0</a>
+<span class="sourceLineNo">014</span><a id="line.14"> *</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * Unless required by applicable law or agreed to in writing,</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * software distributed under the License is distributed on an</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * KIND, either express or implied.  See the License for the</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * specific language governing permissions and limitations</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * under the License.</a>
+<span class="sourceLineNo">021</span><a id="line.21"> */</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23"></a>
+<span class="sourceLineNo">024</span><a id="line.24">import java.util.Hashtable;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import java.util.Stack;</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">import org.apache.logging.log4j.LogManager;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import org.apache.logging.log4j.Logger;</a>
+<span class="sourceLineNo">029</span><a id="line.29"></a>
+<span class="sourceLineNo">030</span><a id="line.30">/**</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * A generic implementation of &lt;code&gt;InitableBroker&lt;/code&gt;.</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * Functionality provided by the broker includes:</a>
+<span class="sourceLineNo">033</span><a id="line.33"> *</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * &lt;ul&gt;</a>
+<span class="sourceLineNo">035</span><a id="line.35"> *</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * &lt;li&gt;Maintaining single instance of each &lt;code&gt;Initable&lt;/code&gt; in</a>
+<span class="sourceLineNo">037</span><a id="line.37"> * the system.&lt;/li&gt;</a>
+<span class="sourceLineNo">038</span><a id="line.38"> *</a>
+<span class="sourceLineNo">039</span><a id="line.39"> * &lt;li&gt;Early initialization of &lt;code&gt;Initables&lt;/code&gt; during system</a>
+<span class="sourceLineNo">040</span><a id="line.40"> * startup.&lt;/li&gt;</a>
+<span class="sourceLineNo">041</span><a id="line.41"> *</a>
+<span class="sourceLineNo">042</span><a id="line.42"> * &lt;li&gt;Late initialization of &lt;code&gt;Initables&lt;/code&gt; before they are</a>
+<span class="sourceLineNo">043</span><a id="line.43"> * used.&lt;/li&gt;</a>
+<span class="sourceLineNo">044</span><a id="line.44"> *</a>
+<span class="sourceLineNo">045</span><a id="line.45"> * &lt;li&gt;Providing instances of &lt;code&gt;Initables&lt;/code&gt; to requesting</a>
+<span class="sourceLineNo">046</span><a id="line.46"> * parties.&lt;/li&gt;</a>
+<span class="sourceLineNo">047</span><a id="line.47"> *</a>
+<span class="sourceLineNo">048</span><a id="line.48"> * &lt;li&gt;Maintaining dependencies between &lt;code&gt;Initables&lt;/code&gt; during</a>
+<span class="sourceLineNo">049</span><a id="line.49"> * early initialization phases, including circular dependencies</a>
+<span class="sourceLineNo">050</span><a id="line.50"> * detection.&lt;/li&gt;</a>
+<span class="sourceLineNo">051</span><a id="line.51"> *</a>
+<span class="sourceLineNo">052</span><a id="line.52"> * &lt;/ul&gt;</a>
+<span class="sourceLineNo">053</span><a id="line.53"> *</a>
+<span class="sourceLineNo">054</span><a id="line.54"> * @author &lt;a href="mailto:burton@apache.org"&gt;Kevin Burton&lt;/a&gt;</a>
+<span class="sourceLineNo">055</span><a id="line.55"> * @author &lt;a href="mailto:krzewski@e-point.pl"&gt;Rafal Krzewski&lt;/a&gt;</a>
+<span class="sourceLineNo">056</span><a id="line.56"> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;</a>
+<span class="sourceLineNo">057</span><a id="line.57"> * @version $Id$</a>
+<span class="sourceLineNo">058</span><a id="line.58"> */</a>
+<span class="sourceLineNo">059</span><a id="line.59">public abstract class BaseInitableBroker</a>
+<span class="sourceLineNo">060</span><a id="line.60">        implements InitableBroker</a>
+<span class="sourceLineNo">061</span><a id="line.61">{</a>
+<span class="sourceLineNo">062</span><a id="line.62">    /** A repository of Initable instances. */</a>
+<span class="sourceLineNo">063</span><a id="line.63">    protected Hashtable&lt;String, Initable&gt; initables = new Hashtable&lt;&gt;();</a>
+<span class="sourceLineNo">064</span><a id="line.64"></a>
+<span class="sourceLineNo">065</span><a id="line.65">    /**</a>
+<span class="sourceLineNo">066</span><a id="line.66">     * Names of classes being early-initialized are pushed onto this</a>
+<span class="sourceLineNo">067</span><a id="line.67">     * stack.  A name appearing twice indicates a circular dependency</a>
+<span class="sourceLineNo">068</span><a id="line.68">     * chain.</a>
+<span class="sourceLineNo">069</span><a id="line.69">     */</a>
+<span class="sourceLineNo">070</span><a id="line.70">    protected Stack&lt;String&gt; stack = new Stack&lt;&gt;();</a>
+<span class="sourceLineNo">071</span><a id="line.71"></a>
+<span class="sourceLineNo">072</span><a id="line.72">    /** Logging */</a>
+<span class="sourceLineNo">073</span><a id="line.73">    private final Logger log = LogManager.getLogger(this.getClass());</a>
+<span class="sourceLineNo">074</span><a id="line.74"></a>
+<span class="sourceLineNo">075</span><a id="line.75">    /**</a>
+<span class="sourceLineNo">076</span><a id="line.76">     * Default constructor of InitableBroker.</a>
+<span class="sourceLineNo">077</span><a id="line.77">     *</a>
+<span class="sourceLineNo">078</span><a id="line.78">     * This constructor does nothing. Your brokers should be</a>
+<span class="sourceLineNo">079</span><a id="line.79">     * singletons, therefore their constructors should be</a>
+<span class="sourceLineNo">080</span><a id="line.80">     * private. They should also have public YourBroker getInstance()</a>
+<span class="sourceLineNo">081</span><a id="line.81">     * methods.</a>
+<span class="sourceLineNo">082</span><a id="line.82">     */</a>
+<span class="sourceLineNo">083</span><a id="line.83">    protected BaseInitableBroker()</a>
+<span class="sourceLineNo">084</span><a id="line.84">    {</a>
+<span class="sourceLineNo">085</span><a id="line.85">        // empty</a>
+<span class="sourceLineNo">086</span><a id="line.86">    }</a>
+<span class="sourceLineNo">087</span><a id="line.87"></a>
+<span class="sourceLineNo">088</span><a id="line.88">    /**</a>
+<span class="sourceLineNo">089</span><a id="line.89">     * Performs early initialization of an Initable class.</a>
+<span class="sourceLineNo">090</span><a id="line.90">     *</a>
+<span class="sourceLineNo">091</span><a id="line.91">     * @param className The name of the class to be initialized.</a>
+<span class="sourceLineNo">092</span><a id="line.92">     * @param data An Object to be used for initialization activities.</a>
+<span class="sourceLineNo">093</span><a id="line.93">     * @throws InitializationException Initialization was not successful.</a>
+<span class="sourceLineNo">094</span><a id="line.94">     */</a>
+<span class="sourceLineNo">095</span><a id="line.95">    @Override</a>
+<span class="sourceLineNo">096</span><a id="line.96">    public void initClass(String className, Object data)</a>
+<span class="sourceLineNo">097</span><a id="line.97">            throws InitializationException</a>
+<span class="sourceLineNo">098</span><a id="line.98">    {</a>
+<span class="sourceLineNo">099</span><a id="line.99">        // make sure that only one thread calls this method recursively</a>
+<span class="sourceLineNo">100</span><a id="line.100">        synchronized (stack)</a>
+<span class="sourceLineNo">101</span><a id="line.101">        {</a>
+<span class="sourceLineNo">102</span><a id="line.102">            int pos = stack.search(className);</a>
+<span class="sourceLineNo">103</span><a id="line.103">            if (pos != -1)</a>
+<span class="sourceLineNo">104</span><a id="line.104">            {</a>
+<span class="sourceLineNo">105</span><a id="line.105">                StringBuilder msg = new StringBuilder().append(className)</a>
+<span class="sourceLineNo">106</span><a id="line.106">                        .append(" couldn't be initialized because of circular dependency chain:\n");</a>
+<span class="sourceLineNo">107</span><a id="line.107">                for (int i = pos; i &gt; 0; i--)</a>
+<span class="sourceLineNo">108</span><a id="line.108">                {</a>
+<span class="sourceLineNo">109</span><a id="line.109">                    msg.append(stack.elementAt(stack.size() - i - 1) + "-&gt;");</a>
+<span class="sourceLineNo">110</span><a id="line.110">                }</a>
+<span class="sourceLineNo">111</span><a id="line.111">                msg.append(className).append('\n');</a>
+<span class="sourceLineNo">112</span><a id="line.112"></a>
+<span class="sourceLineNo">113</span><a id="line.113">                throw new InitializationException(msg.toString());</a>
+<span class="sourceLineNo">114</span><a id="line.114">            }</a>
+<span class="sourceLineNo">115</span><a id="line.115">            try</a>
+<span class="sourceLineNo">116</span><a id="line.116">            {</a>
+<span class="sourceLineNo">117</span><a id="line.117">                stack.push(className);</a>
+<span class="sourceLineNo">118</span><a id="line.118">                Initable instance = getInitableInstance(className);</a>
+<span class="sourceLineNo">119</span><a id="line.119">                if (!instance.getInit())</a>
+<span class="sourceLineNo">120</span><a id="line.120">                {</a>
+<span class="sourceLineNo">121</span><a id="line.121">                    // this call might result in an indirect recursion</a>
+<span class="sourceLineNo">122</span><a id="line.122">                    instance.init(data);</a>
+<span class="sourceLineNo">123</span><a id="line.123">                }</a>
+<span class="sourceLineNo">124</span><a id="line.124">            }</a>
+<span class="sourceLineNo">125</span><a id="line.125">            finally</a>
+<span class="sourceLineNo">126</span><a id="line.126">            {</a>
+<span class="sourceLineNo">127</span><a id="line.127">                // Succeeded or not, make sure the name gets off the stack.</a>
+<span class="sourceLineNo">128</span><a id="line.128">                stack.pop();</a>
+<span class="sourceLineNo">129</span><a id="line.129">            }</a>
+<span class="sourceLineNo">130</span><a id="line.130">        }</a>
+<span class="sourceLineNo">131</span><a id="line.131">    }</a>
+<span class="sourceLineNo">132</span><a id="line.132"></a>
+<span class="sourceLineNo">133</span><a id="line.133">    /**</a>
+<span class="sourceLineNo">134</span><a id="line.134">     * Shuts down an &lt;code&gt;Initable&lt;/code&gt;.</a>
+<span class="sourceLineNo">135</span><a id="line.135">     *</a>
+<span class="sourceLineNo">136</span><a id="line.136">     * This method is used to release resources allocated by an</a>
+<span class="sourceLineNo">137</span><a id="line.137">     * &lt;code&gt;Initable&lt;/code&gt;, and return it to its initial (uninitialized)</a>
+<span class="sourceLineNo">138</span><a id="line.138">     * state.</a>
+<span class="sourceLineNo">139</span><a id="line.139">     *</a>
+<span class="sourceLineNo">140</span><a id="line.140">     * @param className The name of the class to be uninitialized.</a>
+<span class="sourceLineNo">141</span><a id="line.141">     */</a>
+<span class="sourceLineNo">142</span><a id="line.142">    @Override</a>
+<span class="sourceLineNo">143</span><a id="line.143">    public void shutdownClass(String className)</a>
+<span class="sourceLineNo">144</span><a id="line.144">    {</a>
+<span class="sourceLineNo">145</span><a id="line.145">        try</a>
+<span class="sourceLineNo">146</span><a id="line.146">        {</a>
+<span class="sourceLineNo">147</span><a id="line.147">            Initable initable = getInitableInstance(className);</a>
+<span class="sourceLineNo">148</span><a id="line.148">            if (initable.getInit())</a>
+<span class="sourceLineNo">149</span><a id="line.149">            {</a>
+<span class="sourceLineNo">150</span><a id="line.150">                initable.shutdown();</a>
+<span class="sourceLineNo">151</span><a id="line.151">                ((BaseInitable) initable).setInit(false);</a>
+<span class="sourceLineNo">152</span><a id="line.152">            }</a>
+<span class="sourceLineNo">153</span><a id="line.153">        }</a>
+<span class="sourceLineNo">154</span><a id="line.154">        catch (InstantiationException e)</a>
+<span class="sourceLineNo">155</span><a id="line.155">        {</a>
+<span class="sourceLineNo">156</span><a id="line.156">            // Shutdown of a nonexistent class was requested.</a>
+<span class="sourceLineNo">157</span><a id="line.157">            // This does not hurt anything, so we log the error and continue.</a>
+<span class="sourceLineNo">158</span><a id="line.158">            log.error("Shutdown of a nonexistent class {} was requested", className, e);</a>
+<span class="sourceLineNo">159</span><a id="line.159">        }</a>
+<span class="sourceLineNo">160</span><a id="line.160">    }</a>
+<span class="sourceLineNo">161</span><a id="line.161"></a>
+<span class="sourceLineNo">162</span><a id="line.162">    /**</a>
+<span class="sourceLineNo">163</span><a id="line.163">     * Provides an instance of Initable class ready to work.</a>
+<span class="sourceLineNo">164</span><a id="line.164">     *</a>
+<span class="sourceLineNo">165</span><a id="line.165">     * If the requested class couldn't be instantiated or initialized,</a>
+<span class="sourceLineNo">166</span><a id="line.166">     * an InstantiationException will be thrown. You needn't handle</a>
+<span class="sourceLineNo">167</span><a id="line.167">     * this exception in your code, since it indicates fatal</a>
+<span class="sourceLineNo">168</span><a id="line.168">     * misconfiguration of the system.</a>
+<span class="sourceLineNo">169</span><a id="line.169">     *</a>
+<span class="sourceLineNo">170</span><a id="line.170">     * @param className The name of the Initable requested.</a>
+<span class="sourceLineNo">171</span><a id="line.171">     * @return An instance of the requested Initable.</a>
+<span class="sourceLineNo">172</span><a id="line.172">     * @throws InstantiationException if there was a problem</a>
+<span class="sourceLineNo">173</span><a id="line.173">     * during instantiation or initialization of the Initable.</a>
+<span class="sourceLineNo">174</span><a id="line.174">     */</a>
+<span class="sourceLineNo">175</span><a id="line.175">    @Override</a>
+<span class="sourceLineNo">176</span><a id="line.176">    public Initable getInitable(String className)</a>
+<span class="sourceLineNo">177</span><a id="line.177">            throws InstantiationException</a>
+<span class="sourceLineNo">178</span><a id="line.178">    {</a>
+<span class="sourceLineNo">179</span><a id="line.179">        Initable initable;</a>
+<span class="sourceLineNo">180</span><a id="line.180">        try</a>
+<span class="sourceLineNo">181</span><a id="line.181">        {</a>
+<span class="sourceLineNo">182</span><a id="line.182">            initable = getInitableInstance(className);</a>
+<span class="sourceLineNo">183</span><a id="line.183">            if (!initable.getInit())</a>
+<span class="sourceLineNo">184</span><a id="line.184">            {</a>
+<span class="sourceLineNo">185</span><a id="line.185">                synchronized (initable.getClass())</a>
+<span class="sourceLineNo">186</span><a id="line.186">                {</a>
+<span class="sourceLineNo">187</span><a id="line.187">                    if (!initable.getInit())</a>
+<span class="sourceLineNo">188</span><a id="line.188">                    {</a>
+<span class="sourceLineNo">189</span><a id="line.189">                        initable.init();</a>
+<span class="sourceLineNo">190</span><a id="line.190">                    }</a>
+<span class="sourceLineNo">191</span><a id="line.191">                    if (!initable.getInit())</a>
+<span class="sourceLineNo">192</span><a id="line.192">                    {</a>
+<span class="sourceLineNo">193</span><a id="line.193">                        // this exception will be caught &amp; rethrown by this</a>
+<span class="sourceLineNo">194</span><a id="line.194">                        // very method. getInit() returning false indicates</a>
+<span class="sourceLineNo">195</span><a id="line.195">                        // some initialization issue, which in turn prevents</a>
+<span class="sourceLineNo">196</span><a id="line.196">                        // the InitableBroker from passing a working</a>
+<span class="sourceLineNo">197</span><a id="line.197">                        // instance of the initable to the client.</a>
+<span class="sourceLineNo">198</span><a id="line.198">                        throw new InitializationException(</a>
+<span class="sourceLineNo">199</span><a id="line.199">                                "init() failed to initialize class "</a>
+<span class="sourceLineNo">200</span><a id="line.200">                                + className);</a>
+<span class="sourceLineNo">201</span><a id="line.201">                    }</a>
+<span class="sourceLineNo">202</span><a id="line.202">                }</a>
+<span class="sourceLineNo">203</span><a id="line.203">            }</a>
+<span class="sourceLineNo">204</span><a id="line.204">            return initable;</a>
+<span class="sourceLineNo">205</span><a id="line.205">        }</a>
+<span class="sourceLineNo">206</span><a id="line.206">        catch (InitializationException e)</a>
+<span class="sourceLineNo">207</span><a id="line.207">        {</a>
+<span class="sourceLineNo">208</span><a id="line.208">            throw new InstantiationException("Class " + className +</a>
+<span class="sourceLineNo">209</span><a id="line.209">                    " failed to initialize", e);</a>
+<span class="sourceLineNo">210</span><a id="line.210">        }</a>
+<span class="sourceLineNo">211</span><a id="line.211">    }</a>
+<span class="sourceLineNo">212</span><a id="line.212"></a>
+<span class="sourceLineNo">213</span><a id="line.213">    /**</a>
+<span class="sourceLineNo">214</span><a id="line.214">     * Retrieves an instance of an Initable from the repository.</a>
+<span class="sourceLineNo">215</span><a id="line.215">     *</a>
+<span class="sourceLineNo">216</span><a id="line.216">     * If the requested class is not present in the repository, it is</a>
+<span class="sourceLineNo">217</span><a id="line.217">     * instantiated and passed a reference to the broker, saved and</a>
+<span class="sourceLineNo">218</span><a id="line.218">     * then returned.</a>
+<span class="sourceLineNo">219</span><a id="line.219">     *</a>
+<span class="sourceLineNo">220</span><a id="line.220">     * @param className The name of the class to be instantiated.</a>
+<span class="sourceLineNo">221</span><a id="line.221">     *</a>
+<span class="sourceLineNo">222</span><a id="line.222">     * @return an instance of the requested class</a>
+<span class="sourceLineNo">223</span><a id="line.223">     *</a>
+<span class="sourceLineNo">224</span><a id="line.224">     * @throws InstantiationException if the requested class can't</a>
+<span class="sourceLineNo">225</span><a id="line.225">     * be instantiated.</a>
+<span class="sourceLineNo">226</span><a id="line.226">     */</a>
+<span class="sourceLineNo">227</span><a id="line.227">    protected Initable getInitableInstance(String className)</a>
+<span class="sourceLineNo">228</span><a id="line.228">            throws InstantiationException</a>
+<span class="sourceLineNo">229</span><a id="line.229">    {</a>
+<span class="sourceLineNo">230</span><a id="line.230">        Initable initable = initables.get(className);</a>
+<span class="sourceLineNo">231</span><a id="line.231"></a>
+<span class="sourceLineNo">232</span><a id="line.232">        if (initable == null)</a>
+<span class="sourceLineNo">233</span><a id="line.233">        {</a>
+<span class="sourceLineNo">234</span><a id="line.234">            try</a>
+<span class="sourceLineNo">235</span><a id="line.235">            {</a>
+<span class="sourceLineNo">236</span><a id="line.236">                initable = (Initable) Class.forName(className).newInstance();</a>
+<span class="sourceLineNo">237</span><a id="line.237">            }</a>
+<span class="sourceLineNo">238</span><a id="line.238"></a>
+<span class="sourceLineNo">239</span><a id="line.239">                    // those two errors must be passed to the VM</a>
+<span class="sourceLineNo">240</span><a id="line.240">            catch (ThreadDeath t)</a>
+<span class="sourceLineNo">241</span><a id="line.241">            {</a>
+<span class="sourceLineNo">242</span><a id="line.242">                throw t;</a>
+<span class="sourceLineNo">243</span><a id="line.243">            }</a>
+<span class="sourceLineNo">244</span><a id="line.244">            catch (OutOfMemoryError t)</a>
+<span class="sourceLineNo">245</span><a id="line.245">            {</a>
+<span class="sourceLineNo">246</span><a id="line.246">                throw t;</a>
+<span class="sourceLineNo">247</span><a id="line.247">            }</a>
+<span class="sourceLineNo">248</span><a id="line.248"></a>
+<span class="sourceLineNo">249</span><a id="line.249">            catch (Throwable t)</a>
+<span class="sourceLineNo">250</span><a id="line.250">            {</a>
+<span class="sourceLineNo">251</span><a id="line.251">                // Used to indicate error condition.</a>
+<span class="sourceLineNo">252</span><a id="line.252">                String msg = null;</a>
+<span class="sourceLineNo">253</span><a id="line.253"></a>
+<span class="sourceLineNo">254</span><a id="line.254">                if (t instanceof NoClassDefFoundError)</a>
+<span class="sourceLineNo">255</span><a id="line.255">                {</a>
+<span class="sourceLineNo">256</span><a id="line.256">                    msg = "A class referenced by " + className +</a>
+<span class="sourceLineNo">257</span><a id="line.257">                            " is unavailable. Check your jars and classes.";</a>
+<span class="sourceLineNo">258</span><a id="line.258">                }</a>
+<span class="sourceLineNo">259</span><a id="line.259">                else if (t instanceof ClassNotFoundException)</a>
+<span class="sourceLineNo">260</span><a id="line.260">                {</a>
+<span class="sourceLineNo">261</span><a id="line.261">                    msg = "Class " + className +</a>
+<span class="sourceLineNo">262</span><a id="line.262">                            " is unavailable. Check your jars and classes.";</a>
+<span class="sourceLineNo">263</span><a id="line.263">                }</a>
+<span class="sourceLineNo">264</span><a id="line.264">                else if (t instanceof ClassCastException)</a>
+<span class="sourceLineNo">265</span><a id="line.265">                {</a>
+<span class="sourceLineNo">266</span><a id="line.266">                    msg = "Class " + className +</a>
+<span class="sourceLineNo">267</span><a id="line.267">                            " doesn't implement Initable.";</a>
+<span class="sourceLineNo">268</span><a id="line.268">                }</a>
+<span class="sourceLineNo">269</span><a id="line.269">                else</a>
+<span class="sourceLineNo">270</span><a id="line.270">                {</a>
+<span class="sourceLineNo">271</span><a id="line.271">                    msg = "Failed to instantiate " + className;</a>
+<span class="sourceLineNo">272</span><a id="line.272">                }</a>
+<span class="sourceLineNo">273</span><a id="line.273"></a>
+<span class="sourceLineNo">274</span><a id="line.274">                throw new InstantiationException(msg, t);</a>
+<span class="sourceLineNo">275</span><a id="line.275">            }</a>
+<span class="sourceLineNo">276</span><a id="line.276"></a>
+<span class="sourceLineNo">277</span><a id="line.277">            initable.setInitableBroker(this);</a>
+<span class="sourceLineNo">278</span><a id="line.278">            initables.put(className, initable);</a>
+<span class="sourceLineNo">279</span><a id="line.279">        }</a>
+<span class="sourceLineNo">280</span><a id="line.280"></a>
+<span class="sourceLineNo">281</span><a id="line.281">        return initable;</a>
+<span class="sourceLineNo">282</span><a id="line.282">    }</a>
+<span class="sourceLineNo">283</span><a id="line.283"></a>
+<span class="sourceLineNo">284</span><a id="line.284">}</a>
 
 
 
@@ -350,5 +353,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>

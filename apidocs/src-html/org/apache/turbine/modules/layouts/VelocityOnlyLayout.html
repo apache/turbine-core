@@ -1,146 +1,105 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="de">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package org.apache.turbine.modules.layouts;<a name="line.1"></a>
-<span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span><a name="line.3"></a>
-<span class="sourceLineNo">004</span>/*<a name="line.4"></a>
-<span class="sourceLineNo">005</span> * Licensed to the Apache Software Foundation (ASF) under one<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * or more contributor license agreements.  See the NOTICE file<a name="line.6"></a>
-<span class="sourceLineNo">007</span> * distributed with this work for additional information<a name="line.7"></a>
-<span class="sourceLineNo">008</span> * regarding copyright ownership.  The ASF licenses this file<a name="line.8"></a>
-<span class="sourceLineNo">009</span> * to you under the Apache License, Version 2.0 (the<a name="line.9"></a>
-<span class="sourceLineNo">010</span> * "License"); you may not use this file except in compliance<a name="line.10"></a>
-<span class="sourceLineNo">011</span> * with the License.  You may obtain a copy of the License at<a name="line.11"></a>
-<span class="sourceLineNo">012</span> *<a name="line.12"></a>
-<span class="sourceLineNo">013</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.13"></a>
-<span class="sourceLineNo">014</span> *<a name="line.14"></a>
-<span class="sourceLineNo">015</span> * Unless required by applicable law or agreed to in writing,<a name="line.15"></a>
-<span class="sourceLineNo">016</span> * software distributed under the License is distributed on an<a name="line.16"></a>
-<span class="sourceLineNo">017</span> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY<a name="line.17"></a>
-<span class="sourceLineNo">018</span> * KIND, either express or implied.  See the License for the<a name="line.18"></a>
-<span class="sourceLineNo">019</span> * specific language governing permissions and limitations<a name="line.19"></a>
-<span class="sourceLineNo">020</span> * under the License.<a name="line.20"></a>
-<span class="sourceLineNo">021</span> */<a name="line.21"></a>
-<span class="sourceLineNo">022</span><a name="line.22"></a>
-<span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>import org.apache.commons.lang.StringUtils;<a name="line.24"></a>
-<span class="sourceLineNo">025</span>import org.apache.commons.logging.Log;<a name="line.25"></a>
-<span class="sourceLineNo">026</span>import org.apache.commons.logging.LogFactory;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import org.apache.turbine.TurbineConstants;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import org.apache.turbine.annotation.TurbineLoader;<a name="line.28"></a>
-<span class="sourceLineNo">029</span>import org.apache.turbine.annotation.TurbineService;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import org.apache.turbine.modules.Layout;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import org.apache.turbine.modules.Screen;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import org.apache.turbine.modules.ScreenLoader;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import org.apache.turbine.pipeline.PipelineData;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import org.apache.turbine.services.velocity.VelocityService;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import org.apache.turbine.util.RunData;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import org.apache.turbine.util.template.TemplateNavigation;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import org.apache.velocity.context.Context;<a name="line.37"></a>
-<span class="sourceLineNo">038</span><a name="line.38"></a>
-<span class="sourceLineNo">039</span>/**<a name="line.39"></a>
-<span class="sourceLineNo">040</span> * This Layout module allows Velocity templates to be used as layouts.<a name="line.40"></a>
-<span class="sourceLineNo">041</span> * Since dynamic content is supposed to be primarily located in<a name="line.41"></a>
-<span class="sourceLineNo">042</span> * screens and navigations there should be relatively few reasons to<a name="line.42"></a>
-<span class="sourceLineNo">043</span> * subclass this Layout.<a name="line.43"></a>
-<span class="sourceLineNo">044</span> *<a name="line.44"></a>
-<span class="sourceLineNo">045</span> * To get the same functionality as with VelocityECSLayout, you can use two<a name="line.45"></a>
-<span class="sourceLineNo">046</span> * supplied VelocityMacros, TurbineHtmlHead and TurbineHtmlBodyAttributes<a name="line.46"></a>
-<span class="sourceLineNo">047</span> * in your templates. These are used to put HtmlPageAttributes into a page<a name="line.47"></a>
-<span class="sourceLineNo">048</span> * before rendering.<a name="line.48"></a>
-<span class="sourceLineNo">049</span> *<a name="line.49"></a>
-<span class="sourceLineNo">050</span> * Use these macros should be used in the Layout template like this:<a name="line.50"></a>
-<span class="sourceLineNo">051</span> *<a name="line.51"></a>
-<span class="sourceLineNo">052</span> * ... set things like style sheets, scripts here.<a name="line.52"></a>
-<span class="sourceLineNo">053</span> * &amp;lt;html&amp;gt;<a name="line.53"></a>
-<span class="sourceLineNo">054</span> * #TurbineHtmlHead()<a name="line.54"></a>
-<span class="sourceLineNo">055</span> * &amp;lt;body #TurbineHtmlBodyAttributes() &amp;gt;<a name="line.55"></a>
-<span class="sourceLineNo">056</span> *  .... your body information<a name="line.56"></a>
-<span class="sourceLineNo">057</span> * &amp;lt;/body&amp;gt;<a name="line.57"></a>
-<span class="sourceLineNo">058</span> * &amp;lt;/html&amp;gt;<a name="line.58"></a>
-<span class="sourceLineNo">059</span> *<a name="line.59"></a>
-<span class="sourceLineNo">060</span> * As the layout template is rendered _after_ the screen template, you<a name="line.60"></a>
-<span class="sourceLineNo">061</span> * can of course, add information to the $page tool in your screen template.<a name="line.61"></a>
-<span class="sourceLineNo">062</span> * This will be added correctly to the &amp;lt;head&amp;gt;...&amp;lt;/head&amp;gt; and<a name="line.62"></a>
-<span class="sourceLineNo">063</span> * &amp;lt;body&amp;gt; tags.<a name="line.63"></a>
-<span class="sourceLineNo">064</span> *<a name="line.64"></a>
-<span class="sourceLineNo">065</span> * @author &lt;a href="mailto:john.mcnally@clearink.com"&gt;John D. McNally&lt;/a&gt;<a name="line.65"></a>
-<span class="sourceLineNo">066</span> * @author &lt;a href="mailto:mbryson@mont.mindspring.com"&gt;Dave Bryson&lt;/a&gt;<a name="line.66"></a>
-<span class="sourceLineNo">067</span> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;<a name="line.67"></a>
-<span class="sourceLineNo">068</span> * @author &lt;a href="mailto:peter@courcoux.biz"&gt;Peter Courcoux&lt;/a&gt;<a name="line.68"></a>
-<span class="sourceLineNo">069</span> * @version $Id: VelocityOnlyLayout.java 1709648 2015-10-20 17:08:10Z tv $<a name="line.69"></a>
-<span class="sourceLineNo">070</span> */<a name="line.70"></a>
-<span class="sourceLineNo">071</span>public class VelocityOnlyLayout<a name="line.71"></a>
-<span class="sourceLineNo">072</span>    extends Layout<a name="line.72"></a>
-<span class="sourceLineNo">073</span>{<a name="line.73"></a>
-<span class="sourceLineNo">074</span>    /** Logging */<a name="line.74"></a>
-<span class="sourceLineNo">075</span>    private static Log log = LogFactory.getLog(VelocityOnlyLayout.class);<a name="line.75"></a>
-<span class="sourceLineNo">076</span><a name="line.76"></a>
-<span class="sourceLineNo">077</span>    /** The prefix for lookup up layout pages */<a name="line.77"></a>
-<span class="sourceLineNo">078</span>    private final String prefix = Layout.PREFIX + "/";<a name="line.78"></a>
-<span class="sourceLineNo">079</span><a name="line.79"></a>
-<span class="sourceLineNo">080</span>    /** Injected service instance */<a name="line.80"></a>
-<span class="sourceLineNo">081</span>    @TurbineService<a name="line.81"></a>
-<span class="sourceLineNo">082</span>    private VelocityService velocityService;<a name="line.82"></a>
-<span class="sourceLineNo">083</span><a name="line.83"></a>
-<span class="sourceLineNo">084</span>    /** Injected loader instance */<a name="line.84"></a>
-<span class="sourceLineNo">085</span>    @TurbineLoader( Screen.class )<a name="line.85"></a>
-<span class="sourceLineNo">086</span>    private ScreenLoader screenLoader;<a name="line.86"></a>
-<span class="sourceLineNo">087</span><a name="line.87"></a>
-<span class="sourceLineNo">088</span>    /**<a name="line.88"></a>
-<span class="sourceLineNo">089</span>     * Build the layout.  Also sets the ContentType and Locale headers<a name="line.89"></a>
-<span class="sourceLineNo">090</span>     * of the HttpServletResponse object.<a name="line.90"></a>
-<span class="sourceLineNo">091</span>     *<a name="line.91"></a>
-<span class="sourceLineNo">092</span>     *<a name="line.92"></a>
-<span class="sourceLineNo">093</span>     * @param pipelineData PipelineData<a name="line.93"></a>
-<span class="sourceLineNo">094</span>     * @throws Exception generic exception<a name="line.94"></a>
-<span class="sourceLineNo">095</span>     */<a name="line.95"></a>
-<span class="sourceLineNo">096</span>    @Override<a name="line.96"></a>
-<span class="sourceLineNo">097</span>    public void doBuild(PipelineData pipelineData)<a name="line.97"></a>
-<span class="sourceLineNo">098</span>        throws Exception<a name="line.98"></a>
-<span class="sourceLineNo">099</span>    {<a name="line.99"></a>
-<span class="sourceLineNo">100</span>        RunData data = getRunData(pipelineData);<a name="line.100"></a>
-<span class="sourceLineNo">101</span>        // Get the context needed by Velocity.<a name="line.101"></a>
-<span class="sourceLineNo">102</span>        Context context = velocityService.getContext(pipelineData);<a name="line.102"></a>
-<span class="sourceLineNo">103</span><a name="line.103"></a>
-<span class="sourceLineNo">104</span>        String screenName = data.getScreen();<a name="line.104"></a>
-<span class="sourceLineNo">105</span><a name="line.105"></a>
-<span class="sourceLineNo">106</span>        log.debug("Loading Screen " + screenName);<a name="line.106"></a>
-<span class="sourceLineNo">107</span><a name="line.107"></a>
-<span class="sourceLineNo">108</span>        // First, generate the screen and put it in the context so<a name="line.108"></a>
-<span class="sourceLineNo">109</span>        // we can grab it the layout template.<a name="line.109"></a>
-<span class="sourceLineNo">110</span>        String results = screenLoader.eval(pipelineData, screenName);<a name="line.110"></a>
-<span class="sourceLineNo">111</span>        String returnValue = StringUtils.defaultIfEmpty(results, StringUtils.EMPTY);<a name="line.111"></a>
-<span class="sourceLineNo">112</span><a name="line.112"></a>
-<span class="sourceLineNo">113</span>        // variable for the screen in the layout template<a name="line.113"></a>
-<span class="sourceLineNo">114</span>        context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);<a name="line.114"></a>
-<span class="sourceLineNo">115</span><a name="line.115"></a>
-<span class="sourceLineNo">116</span>        // variable to reference the navigation screen in the layout template<a name="line.116"></a>
-<span class="sourceLineNo">117</span>        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER,<a name="line.117"></a>
-<span class="sourceLineNo">118</span>                    new TemplateNavigation(data));<a name="line.118"></a>
-<span class="sourceLineNo">119</span><a name="line.119"></a>
-<span class="sourceLineNo">120</span>        // Grab the layout template set in the VelocityPage.<a name="line.120"></a>
-<span class="sourceLineNo">121</span>        // If null, then use the default layout template<a name="line.121"></a>
-<span class="sourceLineNo">122</span>        // (done by the TemplateInfo object)<a name="line.122"></a>
-<span class="sourceLineNo">123</span>        String templateName = data.getTemplateInfo().getLayoutTemplate();<a name="line.123"></a>
-<span class="sourceLineNo">124</span><a name="line.124"></a>
-<span class="sourceLineNo">125</span>        // Set the locale and content type<a name="line.125"></a>
-<span class="sourceLineNo">126</span>        data.getResponse().setLocale(data.getLocale());<a name="line.126"></a>
-<span class="sourceLineNo">127</span>        data.getResponse().setContentType(data.getContentType());<a name="line.127"></a>
-<span class="sourceLineNo">128</span><a name="line.128"></a>
-<span class="sourceLineNo">129</span>        log.debug("Now trying to render layout " + templateName);<a name="line.129"></a>
-<span class="sourceLineNo">130</span><a name="line.130"></a>
-<span class="sourceLineNo">131</span>        // Finally, generate the layout template and send it to the browser<a name="line.131"></a>
-<span class="sourceLineNo">132</span>        velocityService.handleRequest(context,<a name="line.132"></a>
-<span class="sourceLineNo">133</span>                prefix + templateName, data.getResponse().getOutputStream());<a name="line.133"></a>
-<span class="sourceLineNo">134</span>    }<a name="line.134"></a>
-<span class="sourceLineNo">135</span>}<a name="line.135"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.apache.turbine.modules.layouts;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3"></a>
+<span class="sourceLineNo">004</span><a id="line.4">/*</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * Licensed to the Apache Software Foundation (ASF) under one</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * or more contributor license agreements.  See the NOTICE file</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * distributed with this work for additional information</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * regarding copyright ownership.  The ASF licenses this file</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * to you under the Apache License, Version 2.0 (the</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * "License"); you may not use this file except in compliance</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * with the License.  You may obtain a copy of the License at</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *   http://www.apache.org/licenses/LICENSE-2.0</a>
+<span class="sourceLineNo">014</span><a id="line.14"> *</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * Unless required by applicable law or agreed to in writing,</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * software distributed under the License is distributed on an</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * KIND, either express or implied.  See the License for the</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * specific language governing permissions and limitations</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * under the License.</a>
+<span class="sourceLineNo">021</span><a id="line.21"> */</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23"></a>
+<span class="sourceLineNo">024</span><a id="line.24">import org.apache.commons.lang3.StringUtils;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import org.apache.turbine.TurbineConstants;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import org.apache.turbine.annotation.TurbineLoader;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import org.apache.turbine.modules.Screen;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import org.apache.turbine.modules.ScreenLoader;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import org.apache.turbine.pipeline.PipelineData;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import org.apache.turbine.util.template.TemplateNavigation;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import org.apache.velocity.context.Context;</a>
+<span class="sourceLineNo">032</span><a id="line.32"></a>
+<span class="sourceLineNo">033</span><a id="line.33">/**</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * This Layout module allows Velocity templates to be used as layouts.</a>
+<span class="sourceLineNo">035</span><a id="line.35"> * Since dynamic content is supposed to be primarily located in</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * screens and navigations there should be relatively few reasons to</a>
+<span class="sourceLineNo">037</span><a id="line.37"> * subclass this Layout.</a>
+<span class="sourceLineNo">038</span><a id="line.38"> *</a>
+<span class="sourceLineNo">039</span><a id="line.39"> * To get the same functionality as with VelocityECSLayout, you can use two</a>
+<span class="sourceLineNo">040</span><a id="line.40"> * supplied VelocityMacros, TurbineHtmlHead and TurbineHtmlBodyAttributes</a>
+<span class="sourceLineNo">041</span><a id="line.41"> * in your templates. These are used to put HtmlPageAttributes into a page</a>
+<span class="sourceLineNo">042</span><a id="line.42"> * before rendering.</a>
+<span class="sourceLineNo">043</span><a id="line.43"> *</a>
+<span class="sourceLineNo">044</span><a id="line.44"> * Use these macros should be used in the Layout template like this:</a>
+<span class="sourceLineNo">045</span><a id="line.45"> *</a>
+<span class="sourceLineNo">046</span><a id="line.46"> * ... set things like style sheets, scripts here.</a>
+<span class="sourceLineNo">047</span><a id="line.47"> * &amp;lt;html&amp;gt;</a>
+<span class="sourceLineNo">048</span><a id="line.48"> * #TurbineHtmlHead()</a>
+<span class="sourceLineNo">049</span><a id="line.49"> * &amp;lt;body #TurbineHtmlBodyAttributes() &amp;gt;</a>
+<span class="sourceLineNo">050</span><a id="line.50"> *  .... your body information</a>
+<span class="sourceLineNo">051</span><a id="line.51"> * &amp;lt;/body&amp;gt;</a>
+<span class="sourceLineNo">052</span><a id="line.52"> * &amp;lt;/html&amp;gt;</a>
+<span class="sourceLineNo">053</span><a id="line.53"> *</a>
+<span class="sourceLineNo">054</span><a id="line.54"> * As the layout template is rendered _after_ the screen template, you</a>
+<span class="sourceLineNo">055</span><a id="line.55"> * can of course, add information to the $page tool in your screen template.</a>
+<span class="sourceLineNo">056</span><a id="line.56"> * This will be added correctly to the &amp;lt;head&amp;gt;...&amp;lt;/head&amp;gt; and</a>
+<span class="sourceLineNo">057</span><a id="line.57"> * &amp;lt;body&amp;gt; tags.</a>
+<span class="sourceLineNo">058</span><a id="line.58"> *</a>
+<span class="sourceLineNo">059</span><a id="line.59"> * @author &lt;a href="mailto:john.mcnally@clearink.com"&gt;John D. McNally&lt;/a&gt;</a>
+<span class="sourceLineNo">060</span><a id="line.60"> * @author &lt;a href="mailto:mbryson@mont.mindspring.com"&gt;Dave Bryson&lt;/a&gt;</a>
+<span class="sourceLineNo">061</span><a id="line.61"> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;</a>
+<span class="sourceLineNo">062</span><a id="line.62"> * @author &lt;a href="mailto:peter@courcoux.biz"&gt;Peter Courcoux&lt;/a&gt;</a>
+<span class="sourceLineNo">063</span><a id="line.63"> * @version $Id$</a>
+<span class="sourceLineNo">064</span><a id="line.64"> */</a>
+<span class="sourceLineNo">065</span><a id="line.65">public class VelocityOnlyLayout extends VelocityLayout</a>
+<span class="sourceLineNo">066</span><a id="line.66">{</a>
+<span class="sourceLineNo">067</span><a id="line.67">    /** Injected loader instance */</a>
+<span class="sourceLineNo">068</span><a id="line.68">    @TurbineLoader( Screen.class )</a>
+<span class="sourceLineNo">069</span><a id="line.69">    private ScreenLoader screenLoader;</a>
+<span class="sourceLineNo">070</span><a id="line.70"></a>
+<span class="sourceLineNo">071</span><a id="line.71">    /**</a>
+<span class="sourceLineNo">072</span><a id="line.72">     * @see org.apache.turbine.modules.layouts.VelocityLayout#populateContext(org.apache.turbine.pipeline.PipelineData, org.apache.velocity.context.Context)</a>
+<span class="sourceLineNo">073</span><a id="line.73">     */</a>
+<span class="sourceLineNo">074</span><a id="line.74">    @Override</a>
+<span class="sourceLineNo">075</span><a id="line.75">    protected void populateContext(PipelineData pipelineData, Context context) throws Exception</a>
+<span class="sourceLineNo">076</span><a id="line.76">    {</a>
+<span class="sourceLineNo">077</span><a id="line.77">        String screenName = pipelineData.getRunData().getScreen();</a>
+<span class="sourceLineNo">078</span><a id="line.78"></a>
+<span class="sourceLineNo">079</span><a id="line.79">        log.debug("Loading Screen {}", screenName);</a>
+<span class="sourceLineNo">080</span><a id="line.80"></a>
+<span class="sourceLineNo">081</span><a id="line.81">        // First, generate the screen and put it in the context so</a>
+<span class="sourceLineNo">082</span><a id="line.82">        // we can grab it the layout template.</a>
+<span class="sourceLineNo">083</span><a id="line.83">        String results = screenLoader.eval(pipelineData, screenName);</a>
+<span class="sourceLineNo">084</span><a id="line.84">        String returnValue = StringUtils.defaultIfEmpty(results, StringUtils.EMPTY);</a>
+<span class="sourceLineNo">085</span><a id="line.85"></a>
+<span class="sourceLineNo">086</span><a id="line.86">        // variable for the screen in the layout template</a>
+<span class="sourceLineNo">087</span><a id="line.87">        context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);</a>
+<span class="sourceLineNo">088</span><a id="line.88"></a>
+<span class="sourceLineNo">089</span><a id="line.89">        // variable to reference the navigation screen in the layout template</a>
+<span class="sourceLineNo">090</span><a id="line.90">        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER,</a>
+<span class="sourceLineNo">091</span><a id="line.91">                    new TemplateNavigation(pipelineData));</a>
+<span class="sourceLineNo">092</span><a id="line.92">    }</a>
+<span class="sourceLineNo">093</span><a id="line.93">}</a>
 
 
 
@@ -203,5 +162,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>

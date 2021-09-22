@@ -1,147 +1,153 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="de">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package org.apache.turbine.util;<a name="line.1"></a>
-<span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span><a name="line.3"></a>
-<span class="sourceLineNo">004</span>/*<a name="line.4"></a>
-<span class="sourceLineNo">005</span> * Licensed to the Apache Software Foundation (ASF) under one<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * or more contributor license agreements.  See the NOTICE file<a name="line.6"></a>
-<span class="sourceLineNo">007</span> * distributed with this work for additional information<a name="line.7"></a>
-<span class="sourceLineNo">008</span> * regarding copyright ownership.  The ASF licenses this file<a name="line.8"></a>
-<span class="sourceLineNo">009</span> * to you under the Apache License, Version 2.0 (the<a name="line.9"></a>
-<span class="sourceLineNo">010</span> * "License"); you may not use this file except in compliance<a name="line.10"></a>
-<span class="sourceLineNo">011</span> * with the License.  You may obtain a copy of the License at<a name="line.11"></a>
-<span class="sourceLineNo">012</span> *<a name="line.12"></a>
-<span class="sourceLineNo">013</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.13"></a>
-<span class="sourceLineNo">014</span> *<a name="line.14"></a>
-<span class="sourceLineNo">015</span> * Unless required by applicable law or agreed to in writing,<a name="line.15"></a>
-<span class="sourceLineNo">016</span> * software distributed under the License is distributed on an<a name="line.16"></a>
-<span class="sourceLineNo">017</span> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY<a name="line.17"></a>
-<span class="sourceLineNo">018</span> * KIND, either express or implied.  See the License for the<a name="line.18"></a>
-<span class="sourceLineNo">019</span> * specific language governing permissions and limitations<a name="line.19"></a>
-<span class="sourceLineNo">020</span> * under the License.<a name="line.20"></a>
-<span class="sourceLineNo">021</span> */<a name="line.21"></a>
-<span class="sourceLineNo">022</span><a name="line.22"></a>
-<span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>/**<a name="line.24"></a>
-<span class="sourceLineNo">025</span> * The base class of all exceptions thrown by Turbine.<a name="line.25"></a>
-<span class="sourceLineNo">026</span> *<a name="line.26"></a>
-<span class="sourceLineNo">027</span> * It is intended to ease the debugging by carrying on the information<a name="line.27"></a>
-<span class="sourceLineNo">028</span> * about the exception which was caught and provoked throwing the<a name="line.28"></a>
-<span class="sourceLineNo">029</span> * current exception. Catching and rethrowing may occur multiple<a name="line.29"></a>
-<span class="sourceLineNo">030</span> * times, and provided that all exceptions except the first one<a name="line.30"></a>
-<span class="sourceLineNo">031</span> * are descendands of &lt;code&gt;TurbineException&lt;/code&gt;, when the<a name="line.31"></a>
-<span class="sourceLineNo">032</span> * exception is finally printed out using any of the &lt;code&gt;<a name="line.32"></a>
-<span class="sourceLineNo">033</span> * printStackTrace()&lt;/code&gt; methods, the stacktrace will contain<a name="line.33"></a>
-<span class="sourceLineNo">034</span> * the information about all exceptions thrown and caught on<a name="line.34"></a>
-<span class="sourceLineNo">035</span> * the way.<a name="line.35"></a>
-<span class="sourceLineNo">036</span> * &lt;p&gt; Running the following program<a name="line.36"></a>
-<span class="sourceLineNo">037</span> * &lt;p&gt;&lt;blockquote&gt;&lt;pre&gt;<a name="line.37"></a>
-<span class="sourceLineNo">038</span> *  1 import org.apache.turbine.util.TurbineException;<a name="line.38"></a>
-<span class="sourceLineNo">039</span> *  2<a name="line.39"></a>
-<span class="sourceLineNo">040</span> *  3 public class Test {<a name="line.40"></a>
-<span class="sourceLineNo">041</span> *  4     public static void main( String[] args ) {<a name="line.41"></a>
-<span class="sourceLineNo">042</span> *  5         try {<a name="line.42"></a>
-<span class="sourceLineNo">043</span> *  6             a();<a name="line.43"></a>
-<span class="sourceLineNo">044</span> *  7         } catch(Exception e) {<a name="line.44"></a>
-<span class="sourceLineNo">045</span> *  8             e.printStackTrace();<a name="line.45"></a>
-<span class="sourceLineNo">046</span> *  9         }<a name="line.46"></a>
-<span class="sourceLineNo">047</span> * 10      }<a name="line.47"></a>
-<span class="sourceLineNo">048</span> * 11<a name="line.48"></a>
-<span class="sourceLineNo">049</span> * 12      public static void a() throws TurbineException {<a name="line.49"></a>
-<span class="sourceLineNo">050</span> * 13          try {<a name="line.50"></a>
-<span class="sourceLineNo">051</span> * 14              b();<a name="line.51"></a>
-<span class="sourceLineNo">052</span> * 15          } catch(Exception e) {<a name="line.52"></a>
-<span class="sourceLineNo">053</span> * 16              throw new TurbineException("foo", e);<a name="line.53"></a>
-<span class="sourceLineNo">054</span> * 17          }<a name="line.54"></a>
-<span class="sourceLineNo">055</span> * 18      }<a name="line.55"></a>
-<span class="sourceLineNo">056</span> * 19<a name="line.56"></a>
-<span class="sourceLineNo">057</span> * 20      public static void b() throws TurbineException {<a name="line.57"></a>
-<span class="sourceLineNo">058</span> * 21          try {<a name="line.58"></a>
-<span class="sourceLineNo">059</span> * 22              c();<a name="line.59"></a>
-<span class="sourceLineNo">060</span> * 23          } catch(Exception e) {<a name="line.60"></a>
-<span class="sourceLineNo">061</span> * 24              throw new TurbineException("bar", e);<a name="line.61"></a>
-<span class="sourceLineNo">062</span> * 25          }<a name="line.62"></a>
-<span class="sourceLineNo">063</span> * 26      }<a name="line.63"></a>
-<span class="sourceLineNo">064</span> * 27<a name="line.64"></a>
-<span class="sourceLineNo">065</span> * 28      public static void c() throws TurbineException {<a name="line.65"></a>
-<span class="sourceLineNo">066</span> * 29          throw new Exception("baz");<a name="line.66"></a>
-<span class="sourceLineNo">067</span> * 30      }<a name="line.67"></a>
-<span class="sourceLineNo">068</span> * 31 }<a name="line.68"></a>
-<span class="sourceLineNo">069</span> * &lt;/pre&gt;&lt;/blockquote&gt;<a name="line.69"></a>
-<span class="sourceLineNo">070</span> * &lt;p&gt;Yields the following stacktrace:<a name="line.70"></a>
-<span class="sourceLineNo">071</span> * &lt;p&gt;&lt;blockquote&gt;&lt;pre&gt;<a name="line.71"></a>
-<span class="sourceLineNo">072</span> * java.lang.Exception: baz: bar: foo<a name="line.72"></a>
-<span class="sourceLineNo">073</span> *    at Test.c(Test.java:29)<a name="line.73"></a>
-<span class="sourceLineNo">074</span> *    at Test.b(Test.java:22)<a name="line.74"></a>
-<span class="sourceLineNo">075</span> * rethrown as TurbineException: bar<a name="line.75"></a>
-<span class="sourceLineNo">076</span> *    at Test.b(Test.java:24)<a name="line.76"></a>
-<span class="sourceLineNo">077</span> *    at Test.a(Test.java:14)<a name="line.77"></a>
-<span class="sourceLineNo">078</span> * rethrown as TurbineException: foo<a name="line.78"></a>
-<span class="sourceLineNo">079</span> *    at Test.a(Test.java:16)<a name="line.79"></a>
-<span class="sourceLineNo">080</span> *    at Test.main(Test.java:6)<a name="line.80"></a>
-<span class="sourceLineNo">081</span> * &lt;/pre&gt;&lt;/blockquote&gt;&lt;br&gt;<a name="line.81"></a>
-<span class="sourceLineNo">082</span> *<a name="line.82"></a>
-<span class="sourceLineNo">083</span> * @author &lt;a href="mailto:Rafal.Krzewski@e-point.pl"&gt;Rafal Krzewski&lt;/a&gt;<a name="line.83"></a>
-<span class="sourceLineNo">084</span> * @author &lt;a href="mailto:dlr@finemaltcoding.com"&gt;Daniel Rall&lt;/a&gt;<a name="line.84"></a>
-<span class="sourceLineNo">085</span> * @author &lt;a href="mailto:quintonm@bellsouth.net"&gt;Quinton McCombs&lt;/a&gt;<a name="line.85"></a>
-<span class="sourceLineNo">086</span> */<a name="line.86"></a>
-<span class="sourceLineNo">087</span>public class TurbineException extends Exception<a name="line.87"></a>
-<span class="sourceLineNo">088</span>{<a name="line.88"></a>
-<span class="sourceLineNo">089</span>    /** Serial version */<a name="line.89"></a>
-<span class="sourceLineNo">090</span>    private static final long serialVersionUID = 6287570348053189763L;<a name="line.90"></a>
-<span class="sourceLineNo">091</span><a name="line.91"></a>
-<span class="sourceLineNo">092</span>    /**<a name="line.92"></a>
-<span class="sourceLineNo">093</span>     * Constructs a new &lt;code&gt;TurbineException&lt;/code&gt; without specified<a name="line.93"></a>
-<span class="sourceLineNo">094</span>     * detail message.<a name="line.94"></a>
-<span class="sourceLineNo">095</span>     */<a name="line.95"></a>
-<span class="sourceLineNo">096</span>    public TurbineException()<a name="line.96"></a>
-<span class="sourceLineNo">097</span>    {<a name="line.97"></a>
-<span class="sourceLineNo">098</span>        super();<a name="line.98"></a>
-<span class="sourceLineNo">099</span>    }<a name="line.99"></a>
-<span class="sourceLineNo">100</span><a name="line.100"></a>
-<span class="sourceLineNo">101</span>    /**<a name="line.101"></a>
-<span class="sourceLineNo">102</span>     * Constructs a new &lt;code&gt;TurbineException&lt;/code&gt; with specified<a name="line.102"></a>
-<span class="sourceLineNo">103</span>     * detail message.<a name="line.103"></a>
-<span class="sourceLineNo">104</span>     *<a name="line.104"></a>
-<span class="sourceLineNo">105</span>     * @param msg The error message.<a name="line.105"></a>
-<span class="sourceLineNo">106</span>     */<a name="line.106"></a>
-<span class="sourceLineNo">107</span>    public TurbineException(String msg)<a name="line.107"></a>
-<span class="sourceLineNo">108</span>    {<a name="line.108"></a>
-<span class="sourceLineNo">109</span>        super(msg);<a name="line.109"></a>
-<span class="sourceLineNo">110</span>    }<a name="line.110"></a>
-<span class="sourceLineNo">111</span><a name="line.111"></a>
-<span class="sourceLineNo">112</span>    /**<a name="line.112"></a>
-<span class="sourceLineNo">113</span>     * Constructs a new &lt;code&gt;TurbineException&lt;/code&gt; with specified<a name="line.113"></a>
-<span class="sourceLineNo">114</span>     * nested &lt;code&gt;Throwable&lt;/code&gt;.<a name="line.114"></a>
-<span class="sourceLineNo">115</span>     *<a name="line.115"></a>
-<span class="sourceLineNo">116</span>     * @param nested The exception or error that caused this exception<a name="line.116"></a>
-<span class="sourceLineNo">117</span>     *               to be thrown.<a name="line.117"></a>
-<span class="sourceLineNo">118</span>     */<a name="line.118"></a>
-<span class="sourceLineNo">119</span>    public TurbineException(Throwable nested)<a name="line.119"></a>
-<span class="sourceLineNo">120</span>    {<a name="line.120"></a>
-<span class="sourceLineNo">121</span>        super(nested);<a name="line.121"></a>
-<span class="sourceLineNo">122</span>    }<a name="line.122"></a>
-<span class="sourceLineNo">123</span><a name="line.123"></a>
-<span class="sourceLineNo">124</span>    /**<a name="line.124"></a>
-<span class="sourceLineNo">125</span>     * Constructs a new &lt;code&gt;TurbineException&lt;/code&gt; with specified<a name="line.125"></a>
-<span class="sourceLineNo">126</span>     * detail message and nested &lt;code&gt;Throwable&lt;/code&gt;.<a name="line.126"></a>
-<span class="sourceLineNo">127</span>     *<a name="line.127"></a>
-<span class="sourceLineNo">128</span>     * @param msg    The error message.<a name="line.128"></a>
-<span class="sourceLineNo">129</span>     * @param nested The exception or error that caused this exception<a name="line.129"></a>
-<span class="sourceLineNo">130</span>     *               to be thrown.<a name="line.130"></a>
-<span class="sourceLineNo">131</span>     */<a name="line.131"></a>
-<span class="sourceLineNo">132</span>    public TurbineException(String msg, Throwable nested)<a name="line.132"></a>
-<span class="sourceLineNo">133</span>    {<a name="line.133"></a>
-<span class="sourceLineNo">134</span>        super(msg, nested);<a name="line.134"></a>
-<span class="sourceLineNo">135</span>    }<a name="line.135"></a>
-<span class="sourceLineNo">136</span>}<a name="line.136"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.apache.turbine.util;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3"></a>
+<span class="sourceLineNo">004</span><a id="line.4">/*</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * Licensed to the Apache Software Foundation (ASF) under one</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * or more contributor license agreements.  See the NOTICE file</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * distributed with this work for additional information</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * regarding copyright ownership.  The ASF licenses this file</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * to you under the Apache License, Version 2.0 (the</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * "License"); you may not use this file except in compliance</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * with the License.  You may obtain a copy of the License at</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *   http://www.apache.org/licenses/LICENSE-2.0</a>
+<span class="sourceLineNo">014</span><a id="line.14"> *</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * Unless required by applicable law or agreed to in writing,</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * software distributed under the License is distributed on an</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * KIND, either express or implied.  See the License for the</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * specific language governing permissions and limitations</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * under the License.</a>
+<span class="sourceLineNo">021</span><a id="line.21"> */</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23"></a>
+<span class="sourceLineNo">024</span><a id="line.24">/**</a>
+<span class="sourceLineNo">025</span><a id="line.25"> * The base class of all exceptions thrown by Turbine.</a>
+<span class="sourceLineNo">026</span><a id="line.26"> *</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * &lt;p&gt;</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * It is intended to ease the debugging by carrying on the information</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * about the exception which was caught and provoked throwing the</a>
+<span class="sourceLineNo">030</span><a id="line.30"> * current exception. Catching and rethrowing may occur multiple</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * times, and provided that all exceptions except the first one</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * are descendands of &lt;code&gt;TurbineException&lt;/code&gt;, when the</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * exception is finally printed out using any of the &lt;code&gt;</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * printStackTrace()&lt;/code&gt; methods, the stacktrace will contain</a>
+<span class="sourceLineNo">035</span><a id="line.35"> * the information about all exceptions thrown and caught on the way.</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * &lt;/p&gt;</a>
+<span class="sourceLineNo">037</span><a id="line.37"> *</a>
+<span class="sourceLineNo">038</span><a id="line.38"> * &lt;p&gt; Running the following program &lt;/p&gt;</a>
+<span class="sourceLineNo">039</span><a id="line.39"> *</a>
+<span class="sourceLineNo">040</span><a id="line.40"> * &lt;pre&gt;</a>
+<span class="sourceLineNo">041</span><a id="line.41"> *  1 import org.apache.turbine.util.TurbineException;</a>
+<span class="sourceLineNo">042</span><a id="line.42"> *  2</a>
+<span class="sourceLineNo">043</span><a id="line.43"> *  3 public class Test {</a>
+<span class="sourceLineNo">044</span><a id="line.44"> *  4     public static void main( String[] args ) {</a>
+<span class="sourceLineNo">045</span><a id="line.45"> *  5         try {</a>
+<span class="sourceLineNo">046</span><a id="line.46"> *  6             a();</a>
+<span class="sourceLineNo">047</span><a id="line.47"> *  7         } catch(Exception e) {</a>
+<span class="sourceLineNo">048</span><a id="line.48"> *  8             e.printStackTrace();</a>
+<span class="sourceLineNo">049</span><a id="line.49"> *  9         }</a>
+<span class="sourceLineNo">050</span><a id="line.50"> * 10      }</a>
+<span class="sourceLineNo">051</span><a id="line.51"> * 11</a>
+<span class="sourceLineNo">052</span><a id="line.52"> * 12      public static void a() throws TurbineException {</a>
+<span class="sourceLineNo">053</span><a id="line.53"> * 13          try {</a>
+<span class="sourceLineNo">054</span><a id="line.54"> * 14              b();</a>
+<span class="sourceLineNo">055</span><a id="line.55"> * 15          } catch(Exception e) {</a>
+<span class="sourceLineNo">056</span><a id="line.56"> * 16              throw new TurbineException("foo", e);</a>
+<span class="sourceLineNo">057</span><a id="line.57"> * 17          }</a>
+<span class="sourceLineNo">058</span><a id="line.58"> * 18      }</a>
+<span class="sourceLineNo">059</span><a id="line.59"> * 19</a>
+<span class="sourceLineNo">060</span><a id="line.60"> * 20      public static void b() throws TurbineException {</a>
+<span class="sourceLineNo">061</span><a id="line.61"> * 21          try {</a>
+<span class="sourceLineNo">062</span><a id="line.62"> * 22              c();</a>
+<span class="sourceLineNo">063</span><a id="line.63"> * 23          } catch(Exception e) {</a>
+<span class="sourceLineNo">064</span><a id="line.64"> * 24              throw new TurbineException("bar", e);</a>
+<span class="sourceLineNo">065</span><a id="line.65"> * 25          }</a>
+<span class="sourceLineNo">066</span><a id="line.66"> * 26      }</a>
+<span class="sourceLineNo">067</span><a id="line.67"> * 27</a>
+<span class="sourceLineNo">068</span><a id="line.68"> * 28      public static void c() throws TurbineException {</a>
+<span class="sourceLineNo">069</span><a id="line.69"> * 29          throw new Exception("baz");</a>
+<span class="sourceLineNo">070</span><a id="line.70"> * 30      }</a>
+<span class="sourceLineNo">071</span><a id="line.71"> * 31 }</a>
+<span class="sourceLineNo">072</span><a id="line.72"> * &lt;/pre&gt;</a>
+<span class="sourceLineNo">073</span><a id="line.73"> *</a>
+<span class="sourceLineNo">074</span><a id="line.74"> * &lt;p&gt;Yields the following stacktrace: &lt;/p&gt;</a>
+<span class="sourceLineNo">075</span><a id="line.75"> *</a>
+<span class="sourceLineNo">076</span><a id="line.76"> * &lt;pre&gt;</a>
+<span class="sourceLineNo">077</span><a id="line.77"> * java.lang.Exception: baz: bar: foo</a>
+<span class="sourceLineNo">078</span><a id="line.78"> *    at Test.c(Test.java:29)</a>
+<span class="sourceLineNo">079</span><a id="line.79"> *    at Test.b(Test.java:22)</a>
+<span class="sourceLineNo">080</span><a id="line.80"> * rethrown as TurbineException: bar</a>
+<span class="sourceLineNo">081</span><a id="line.81"> *    at Test.b(Test.java:24)</a>
+<span class="sourceLineNo">082</span><a id="line.82"> *    at Test.a(Test.java:14)</a>
+<span class="sourceLineNo">083</span><a id="line.83"> * rethrown as TurbineException: foo</a>
+<span class="sourceLineNo">084</span><a id="line.84"> *    at Test.a(Test.java:16)</a>
+<span class="sourceLineNo">085</span><a id="line.85"> *    at Test.main(Test.java:6)</a>
+<span class="sourceLineNo">086</span><a id="line.86"> * &lt;/pre&gt;</a>
+<span class="sourceLineNo">087</span><a id="line.87"> *</a>
+<span class="sourceLineNo">088</span><a id="line.88"> * @author &lt;a href="mailto:Rafal.Krzewski@e-point.pl"&gt;Rafal Krzewski&lt;/a&gt;</a>
+<span class="sourceLineNo">089</span><a id="line.89"> * @author &lt;a href="mailto:dlr@finemaltcoding.com"&gt;Daniel Rall&lt;/a&gt;</a>
+<span class="sourceLineNo">090</span><a id="line.90"> * @author &lt;a href="mailto:quintonm@bellsouth.net"&gt;Quinton McCombs&lt;/a&gt;</a>
+<span class="sourceLineNo">091</span><a id="line.91"> */</a>
+<span class="sourceLineNo">092</span><a id="line.92">public class TurbineException extends Exception</a>
+<span class="sourceLineNo">093</span><a id="line.93">{</a>
+<span class="sourceLineNo">094</span><a id="line.94">    /** Serial version */</a>
+<span class="sourceLineNo">095</span><a id="line.95">    private static final long serialVersionUID = 6287570348053189763L;</a>
+<span class="sourceLineNo">096</span><a id="line.96"></a>
+<span class="sourceLineNo">097</span><a id="line.97">    /**</a>
+<span class="sourceLineNo">098</span><a id="line.98">     * Constructs a new &lt;code&gt;TurbineException&lt;/code&gt; without specified</a>
+<span class="sourceLineNo">099</span><a id="line.99">     * detail message.</a>
+<span class="sourceLineNo">100</span><a id="line.100">     */</a>
+<span class="sourceLineNo">101</span><a id="line.101">    public TurbineException()</a>
+<span class="sourceLineNo">102</span><a id="line.102">    {</a>
+<span class="sourceLineNo">103</span><a id="line.103">        super();</a>
+<span class="sourceLineNo">104</span><a id="line.104">    }</a>
+<span class="sourceLineNo">105</span><a id="line.105"></a>
+<span class="sourceLineNo">106</span><a id="line.106">    /**</a>
+<span class="sourceLineNo">107</span><a id="line.107">     * Constructs a new &lt;code&gt;TurbineException&lt;/code&gt; with specified</a>
+<span class="sourceLineNo">108</span><a id="line.108">     * detail message.</a>
+<span class="sourceLineNo">109</span><a id="line.109">     *</a>
+<span class="sourceLineNo">110</span><a id="line.110">     * @param msg The error message.</a>
+<span class="sourceLineNo">111</span><a id="line.111">     */</a>
+<span class="sourceLineNo">112</span><a id="line.112">    public TurbineException(String msg)</a>
+<span class="sourceLineNo">113</span><a id="line.113">    {</a>
+<span class="sourceLineNo">114</span><a id="line.114">        super(msg);</a>
+<span class="sourceLineNo">115</span><a id="line.115">    }</a>
+<span class="sourceLineNo">116</span><a id="line.116"></a>
+<span class="sourceLineNo">117</span><a id="line.117">    /**</a>
+<span class="sourceLineNo">118</span><a id="line.118">     * Constructs a new &lt;code&gt;TurbineException&lt;/code&gt; with specified</a>
+<span class="sourceLineNo">119</span><a id="line.119">     * nested &lt;code&gt;Throwable&lt;/code&gt;.</a>
+<span class="sourceLineNo">120</span><a id="line.120">     *</a>
+<span class="sourceLineNo">121</span><a id="line.121">     * @param nested The exception or error that caused this exception</a>
+<span class="sourceLineNo">122</span><a id="line.122">     *               to be thrown.</a>
+<span class="sourceLineNo">123</span><a id="line.123">     */</a>
+<span class="sourceLineNo">124</span><a id="line.124">    public TurbineException(Throwable nested)</a>
+<span class="sourceLineNo">125</span><a id="line.125">    {</a>
+<span class="sourceLineNo">126</span><a id="line.126">        super(nested);</a>
+<span class="sourceLineNo">127</span><a id="line.127">    }</a>
+<span class="sourceLineNo">128</span><a id="line.128"></a>
+<span class="sourceLineNo">129</span><a id="line.129">    /**</a>
+<span class="sourceLineNo">130</span><a id="line.130">     * Constructs a new &lt;code&gt;TurbineException&lt;/code&gt; with specified</a>
+<span class="sourceLineNo">131</span><a id="line.131">     * detail message and nested &lt;code&gt;Throwable&lt;/code&gt;.</a>
+<span class="sourceLineNo">132</span><a id="line.132">     *</a>
+<span class="sourceLineNo">133</span><a id="line.133">     * @param msg    The error message.</a>
+<span class="sourceLineNo">134</span><a id="line.134">     * @param nested The exception or error that caused this exception</a>
+<span class="sourceLineNo">135</span><a id="line.135">     *               to be thrown.</a>
+<span class="sourceLineNo">136</span><a id="line.136">     */</a>
+<span class="sourceLineNo">137</span><a id="line.137">    public TurbineException(String msg, Throwable nested)</a>
+<span class="sourceLineNo">138</span><a id="line.138">    {</a>
+<span class="sourceLineNo">139</span><a id="line.139">        super(msg, nested);</a>
+<span class="sourceLineNo">140</span><a id="line.140">    }</a>
+<span class="sourceLineNo">141</span><a id="line.141">}</a>
 
 
 
@@ -204,5 +210,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>

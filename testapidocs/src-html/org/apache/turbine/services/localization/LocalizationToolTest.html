@@ -1,132 +1,129 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="de">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package org.apache.turbine.services.localization;<a name="line.1"></a>
-<span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>/*<a name="line.3"></a>
-<span class="sourceLineNo">004</span> * Licensed to the Apache Software Foundation (ASF) under one<a name="line.4"></a>
-<span class="sourceLineNo">005</span> * or more contributor license agreements.  See the NOTICE file<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * distributed with this work for additional information<a name="line.6"></a>
-<span class="sourceLineNo">007</span> * regarding copyright ownership.  The ASF licenses this file<a name="line.7"></a>
-<span class="sourceLineNo">008</span> * to you under the Apache License, Version 2.0 (the<a name="line.8"></a>
-<span class="sourceLineNo">009</span> * "License"); you may not use this file except in compliance<a name="line.9"></a>
-<span class="sourceLineNo">010</span> * with the License.  You may obtain a copy of the License at<a name="line.10"></a>
-<span class="sourceLineNo">011</span> *<a name="line.11"></a>
-<span class="sourceLineNo">012</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.12"></a>
-<span class="sourceLineNo">013</span> *<a name="line.13"></a>
-<span class="sourceLineNo">014</span> * Unless required by applicable law or agreed to in writing,<a name="line.14"></a>
-<span class="sourceLineNo">015</span> * software distributed under the License is distributed on an<a name="line.15"></a>
-<span class="sourceLineNo">016</span> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY<a name="line.16"></a>
-<span class="sourceLineNo">017</span> * KIND, either express or implied.  See the License for the<a name="line.17"></a>
-<span class="sourceLineNo">018</span> * specific language governing permissions and limitations<a name="line.18"></a>
-<span class="sourceLineNo">019</span> * under the License.<a name="line.19"></a>
-<span class="sourceLineNo">020</span> */<a name="line.20"></a>
-<span class="sourceLineNo">021</span><a name="line.21"></a>
-<span class="sourceLineNo">022</span>import java.util.Vector;<a name="line.22"></a>
-<span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>import javax.servlet.ServletConfig;<a name="line.24"></a>
-<span class="sourceLineNo">025</span>import javax.servlet.http.HttpServletResponse;<a name="line.25"></a>
-<span class="sourceLineNo">026</span><a name="line.26"></a>
-<span class="sourceLineNo">027</span>import org.apache.turbine.om.security.User;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import org.apache.turbine.services.TurbineServices;<a name="line.28"></a>
-<span class="sourceLineNo">029</span>import org.apache.turbine.services.rundata.RunDataService;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import org.apache.turbine.test.BaseTestCase;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import org.apache.turbine.test.EnhancedMockHttpServletRequest;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import org.apache.turbine.util.RunData;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import org.apache.turbine.util.TurbineConfig;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import org.junit.AfterClass;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import org.junit.BeforeClass;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import org.junit.Test;<a name="line.36"></a>
-<span class="sourceLineNo">037</span><a name="line.37"></a>
-<span class="sourceLineNo">038</span>import com.mockobjects.servlet.MockHttpServletResponse;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import com.mockobjects.servlet.MockHttpSession;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>import com.mockobjects.servlet.MockServletConfig;<a name="line.40"></a>
-<span class="sourceLineNo">041</span><a name="line.41"></a>
-<span class="sourceLineNo">042</span>import static org.junit.Assert.*;<a name="line.42"></a>
-<span class="sourceLineNo">043</span>/**<a name="line.43"></a>
-<span class="sourceLineNo">044</span> * Unit test for Localization Tool.  Verifies that localization works the same using the<a name="line.44"></a>
-<span class="sourceLineNo">045</span> * deprecated Turbine localization service as well as the new Fulcrum Localization<a name="line.45"></a>
-<span class="sourceLineNo">046</span> * component.<a name="line.46"></a>
-<span class="sourceLineNo">047</span> *<a name="line.47"></a>
-<span class="sourceLineNo">048</span> * @author &lt;a href="mailto:epugh@upstate.com"&gt;Eric Pugh&lt;/a&gt;<a name="line.48"></a>
-<span class="sourceLineNo">049</span> * @version $Id: LocalizationToolTest.java 1606111 2014-06-27 14:46:47Z gk $<a name="line.49"></a>
-<span class="sourceLineNo">050</span> */<a name="line.50"></a>
-<span class="sourceLineNo">051</span>public class LocalizationToolTest extends BaseTestCase<a name="line.51"></a>
-<span class="sourceLineNo">052</span>{<a name="line.52"></a>
-<span class="sourceLineNo">053</span>    private static TurbineConfig tc = null;<a name="line.53"></a>
-<span class="sourceLineNo">054</span><a name="line.54"></a>
-<span class="sourceLineNo">055</span>    @Test public void testGet() throws Exception<a name="line.55"></a>
-<span class="sourceLineNo">056</span>    {<a name="line.56"></a>
-<span class="sourceLineNo">057</span>        LocalizationTool lt = new LocalizationTool();<a name="line.57"></a>
-<span class="sourceLineNo">058</span>        lt.init(getRunData());<a name="line.58"></a>
-<span class="sourceLineNo">059</span>        assertEquals("value1", lt.get("key1"));<a name="line.59"></a>
-<span class="sourceLineNo">060</span>        assertEquals("value3", lt.get("key3"));<a name="line.60"></a>
-<span class="sourceLineNo">061</span>    }<a name="line.61"></a>
-<span class="sourceLineNo">062</span>    @Test public void testGetLocale() throws Exception<a name="line.62"></a>
-<span class="sourceLineNo">063</span>    {<a name="line.63"></a>
-<span class="sourceLineNo">064</span>        LocalizationTool lt = new LocalizationTool();<a name="line.64"></a>
-<span class="sourceLineNo">065</span>        lt.init(getRunData());<a name="line.65"></a>
-<span class="sourceLineNo">066</span>        assertNotNull(lt.getLocale());<a name="line.66"></a>
-<span class="sourceLineNo">067</span>        assertEquals("US", lt.getLocale().getCountry());<a name="line.67"></a>
-<span class="sourceLineNo">068</span>        assertEquals("en", lt.getLocale().getLanguage());<a name="line.68"></a>
-<span class="sourceLineNo">069</span>    }<a name="line.69"></a>
-<span class="sourceLineNo">070</span>    @Test public void testInit() throws Exception<a name="line.70"></a>
-<span class="sourceLineNo">071</span>    {<a name="line.71"></a>
-<span class="sourceLineNo">072</span>        LocalizationTool lt = new LocalizationTool();<a name="line.72"></a>
-<span class="sourceLineNo">073</span>        lt.init(getRunData());<a name="line.73"></a>
-<span class="sourceLineNo">074</span>        assertNotNull(lt.getLocale());<a name="line.74"></a>
-<span class="sourceLineNo">075</span>    }<a name="line.75"></a>
-<span class="sourceLineNo">076</span>    @Test public void testRefresh() throws Exception<a name="line.76"></a>
-<span class="sourceLineNo">077</span>    {<a name="line.77"></a>
-<span class="sourceLineNo">078</span>        LocalizationTool lt = new LocalizationTool();<a name="line.78"></a>
-<span class="sourceLineNo">079</span>        lt.init(getRunData());<a name="line.79"></a>
-<span class="sourceLineNo">080</span>        assertNotNull(lt.getLocale());<a name="line.80"></a>
-<span class="sourceLineNo">081</span>        lt.refresh();<a name="line.81"></a>
-<span class="sourceLineNo">082</span>        assertNull(lt.getLocale());<a name="line.82"></a>
-<span class="sourceLineNo">083</span>    }<a name="line.83"></a>
-<span class="sourceLineNo">084</span>    private RunData getRunData() throws Exception<a name="line.84"></a>
-<span class="sourceLineNo">085</span>    {<a name="line.85"></a>
-<span class="sourceLineNo">086</span>        RunDataService rds = (RunDataService) TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME);<a name="line.86"></a>
-<span class="sourceLineNo">087</span>        EnhancedMockHttpServletRequest request = new EnhancedMockHttpServletRequest();<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        request.setupServerName("bob");<a name="line.88"></a>
-<span class="sourceLineNo">089</span>        request.setupGetProtocol("http");<a name="line.89"></a>
-<span class="sourceLineNo">090</span>        request.setupScheme("scheme");<a name="line.90"></a>
-<span class="sourceLineNo">091</span>        request.setupPathInfo("damn");<a name="line.91"></a>
-<span class="sourceLineNo">092</span>        request.setupGetServletPath("damn2");<a name="line.92"></a>
-<span class="sourceLineNo">093</span>        request.setupGetContextPath("wow");<a name="line.93"></a>
-<span class="sourceLineNo">094</span>        request.setupGetContentType("html/text");<a name="line.94"></a>
-<span class="sourceLineNo">095</span>        request.setupAddHeader("Content-type", "html/text");<a name="line.95"></a>
-<span class="sourceLineNo">096</span>        request.setupAddHeader("Accept-Language", "en-US");<a name="line.96"></a>
-<span class="sourceLineNo">097</span>        Vector&lt;String&gt; v = new Vector&lt;String&gt;();<a name="line.97"></a>
-<span class="sourceLineNo">098</span>        request.setupGetParameterNames(v.elements());<a name="line.98"></a>
-<span class="sourceLineNo">099</span>        MockHttpSession session = new MockHttpSession();<a name="line.99"></a>
-<span class="sourceLineNo">100</span>        session.setupGetAttribute(User.SESSION_KEY, null);<a name="line.100"></a>
-<span class="sourceLineNo">101</span>        request.setSession(session);<a name="line.101"></a>
-<span class="sourceLineNo">102</span>        HttpServletResponse response = new MockHttpServletResponse();<a name="line.102"></a>
-<span class="sourceLineNo">103</span>        ServletConfig config = new MockServletConfig();<a name="line.103"></a>
-<span class="sourceLineNo">104</span>        RunData runData = rds.getRunData(request, response, config);<a name="line.104"></a>
-<span class="sourceLineNo">105</span>        return runData;<a name="line.105"></a>
-<span class="sourceLineNo">106</span>    }<a name="line.106"></a>
-<span class="sourceLineNo">107</span>    @BeforeClass<a name="line.107"></a>
-<span class="sourceLineNo">108</span>    public static void setUp() throws Exception<a name="line.108"></a>
-<span class="sourceLineNo">109</span>    {<a name="line.109"></a>
-<span class="sourceLineNo">110</span>        tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");<a name="line.110"></a>
-<span class="sourceLineNo">111</span>        tc.initialize();<a name="line.111"></a>
-<span class="sourceLineNo">112</span>    }<a name="line.112"></a>
-<span class="sourceLineNo">113</span>    @AfterClass<a name="line.113"></a>
-<span class="sourceLineNo">114</span>    public static void tearDown() throws Exception<a name="line.114"></a>
-<span class="sourceLineNo">115</span>    {<a name="line.115"></a>
-<span class="sourceLineNo">116</span>        if (tc != null)<a name="line.116"></a>
-<span class="sourceLineNo">117</span>        {<a name="line.117"></a>
-<span class="sourceLineNo">118</span>            tc.dispose();<a name="line.118"></a>
-<span class="sourceLineNo">119</span>        } <a name="line.119"></a>
-<span class="sourceLineNo">120</span>    }<a name="line.120"></a>
-<span class="sourceLineNo">121</span>}<a name="line.121"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.apache.turbine.services.localization;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">/*</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * Licensed to the Apache Software Foundation (ASF) under one</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * or more contributor license agreements.  See the NOTICE file</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * distributed with this work for additional information</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * regarding copyright ownership.  The ASF licenses this file</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * to you under the Apache License, Version 2.0 (the</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * "License"); you may not use this file except in compliance</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * with the License.  You may obtain a copy of the License at</a>
+<span class="sourceLineNo">011</span><a id="line.11"> *</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *   http://www.apache.org/licenses/LICENSE-2.0</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * Unless required by applicable law or agreed to in writing,</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * software distributed under the License is distributed on an</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * KIND, either express or implied.  See the License for the</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * specific language governing permissions and limitations</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * under the License.</a>
+<span class="sourceLineNo">020</span><a id="line.20"> */</a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">import static org.junit.Assert.assertEquals;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import static org.junit.Assert.assertNotNull;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import static org.junit.Assert.assertNull;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import static org.mockito.Mockito.mock;</a>
+<span class="sourceLineNo">026</span><a id="line.26"></a>
+<span class="sourceLineNo">027</span><a id="line.27">import javax.servlet.ServletConfig;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import javax.servlet.http.HttpServletRequest;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import javax.servlet.http.HttpServletResponse;</a>
+<span class="sourceLineNo">030</span><a id="line.30"></a>
+<span class="sourceLineNo">031</span><a id="line.31">import org.apache.turbine.annotation.AnnotationProcessor;</a>
+<span class="sourceLineNo">032</span><a id="line.32">import org.apache.turbine.services.TurbineServices;</a>
+<span class="sourceLineNo">033</span><a id="line.33">import org.apache.turbine.services.rundata.RunDataService;</a>
+<span class="sourceLineNo">034</span><a id="line.34">import org.apache.turbine.test.BaseTestCase;</a>
+<span class="sourceLineNo">035</span><a id="line.35">import org.apache.turbine.util.RunData;</a>
+<span class="sourceLineNo">036</span><a id="line.36">import org.apache.turbine.util.TurbineConfig;</a>
+<span class="sourceLineNo">037</span><a id="line.37">import org.junit.AfterClass;</a>
+<span class="sourceLineNo">038</span><a id="line.38">import org.junit.Before;</a>
+<span class="sourceLineNo">039</span><a id="line.39">import org.junit.BeforeClass;</a>
+<span class="sourceLineNo">040</span><a id="line.40">import org.junit.Test;</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">/**</a>
+<span class="sourceLineNo">043</span><a id="line.43"> * Unit test for Localization Tool. Verifies that localization works the same using the</a>
+<span class="sourceLineNo">044</span><a id="line.44"> * deprecated Turbine localization service as well as the new Fulcrum Localization</a>
+<span class="sourceLineNo">045</span><a id="line.45"> * component.</a>
+<span class="sourceLineNo">046</span><a id="line.46"> *</a>
+<span class="sourceLineNo">047</span><a id="line.47"> * @author &lt;a href="mailto:epugh@upstate.com"&gt;Eric Pugh&lt;/a&gt;</a>
+<span class="sourceLineNo">048</span><a id="line.48"> * @version $Id$</a>
+<span class="sourceLineNo">049</span><a id="line.49"> */</a>
+<span class="sourceLineNo">050</span><a id="line.50">public class LocalizationToolTest extends BaseTestCase</a>
+<span class="sourceLineNo">051</span><a id="line.51">{</a>
+<span class="sourceLineNo">052</span><a id="line.52">    private static TurbineConfig tc = null;</a>
+<span class="sourceLineNo">053</span><a id="line.53">    private LocalizationTool lt;</a>
+<span class="sourceLineNo">054</span><a id="line.54"></a>
+<span class="sourceLineNo">055</span><a id="line.55">    @Before</a>
+<span class="sourceLineNo">056</span><a id="line.56">    public void initTool() throws Exception</a>
+<span class="sourceLineNo">057</span><a id="line.57">    {</a>
+<span class="sourceLineNo">058</span><a id="line.58">        lt = new LocalizationTool();</a>
+<span class="sourceLineNo">059</span><a id="line.59">        AnnotationProcessor.process(lt);</a>
+<span class="sourceLineNo">060</span><a id="line.60">        lt.init(getRunData());</a>
+<span class="sourceLineNo">061</span><a id="line.61">    }</a>
+<span class="sourceLineNo">062</span><a id="line.62"></a>
+<span class="sourceLineNo">063</span><a id="line.63">    @Test</a>
+<span class="sourceLineNo">064</span><a id="line.64">    public void testGet() throws Exception</a>
+<span class="sourceLineNo">065</span><a id="line.65">    {</a>
+<span class="sourceLineNo">066</span><a id="line.66">        assertEquals("value1", lt.get("key1"));</a>
+<span class="sourceLineNo">067</span><a id="line.67">        assertEquals("value3", lt.get("key3"));</a>
+<span class="sourceLineNo">068</span><a id="line.68">    }</a>
+<span class="sourceLineNo">069</span><a id="line.69"></a>
+<span class="sourceLineNo">070</span><a id="line.70">    @Test</a>
+<span class="sourceLineNo">071</span><a id="line.71">    public void testGetLocale() throws Exception</a>
+<span class="sourceLineNo">072</span><a id="line.72">    {</a>
+<span class="sourceLineNo">073</span><a id="line.73">        assertNotNull(lt.getLocale());</a>
+<span class="sourceLineNo">074</span><a id="line.74">        assertEquals("US", lt.getLocale().getCountry());</a>
+<span class="sourceLineNo">075</span><a id="line.75">        assertEquals("en", lt.getLocale().getLanguage());</a>
+<span class="sourceLineNo">076</span><a id="line.76">    }</a>
+<span class="sourceLineNo">077</span><a id="line.77"></a>
+<span class="sourceLineNo">078</span><a id="line.78">    @Test</a>
+<span class="sourceLineNo">079</span><a id="line.79">    public void testInit() throws Exception</a>
+<span class="sourceLineNo">080</span><a id="line.80">    {</a>
+<span class="sourceLineNo">081</span><a id="line.81">        assertNotNull(lt.getLocale());</a>
+<span class="sourceLineNo">082</span><a id="line.82">    }</a>
+<span class="sourceLineNo">083</span><a id="line.83"></a>
+<span class="sourceLineNo">084</span><a id="line.84">    @Test</a>
+<span class="sourceLineNo">085</span><a id="line.85">    public void testRefresh() throws Exception</a>
+<span class="sourceLineNo">086</span><a id="line.86">    {</a>
+<span class="sourceLineNo">087</span><a id="line.87">        assertNotNull(lt.getLocale());</a>
+<span class="sourceLineNo">088</span><a id="line.88">        lt.refresh();</a>
+<span class="sourceLineNo">089</span><a id="line.89">        assertNull(lt.getLocale());</a>
+<span class="sourceLineNo">090</span><a id="line.90">    }</a>
+<span class="sourceLineNo">091</span><a id="line.91"></a>
+<span class="sourceLineNo">092</span><a id="line.92">    private RunData getRunData() throws Exception</a>
+<span class="sourceLineNo">093</span><a id="line.93">    {</a>
+<span class="sourceLineNo">094</span><a id="line.94">        RunDataService rds = (RunDataService) TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME);</a>
+<span class="sourceLineNo">095</span><a id="line.95">        ServletConfig config = mock(ServletConfig.class);</a>
+<span class="sourceLineNo">096</span><a id="line.96">        HttpServletRequest request = getMockRequest();</a>
+<span class="sourceLineNo">097</span><a id="line.97">        HttpServletResponse response = mock(HttpServletResponse.class);</a>
+<span class="sourceLineNo">098</span><a id="line.98">        RunData runData = rds.getRunData(request, response, config);</a>
+<span class="sourceLineNo">099</span><a id="line.99">        return runData;</a>
+<span class="sourceLineNo">100</span><a id="line.100">    }</a>
+<span class="sourceLineNo">101</span><a id="line.101"></a>
+<span class="sourceLineNo">102</span><a id="line.102">    @BeforeClass</a>
+<span class="sourceLineNo">103</span><a id="line.103">    public static void setUp() throws Exception</a>
+<span class="sourceLineNo">104</span><a id="line.104">    {</a>
+<span class="sourceLineNo">105</span><a id="line.105">        tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");</a>
+<span class="sourceLineNo">106</span><a id="line.106">        tc.initialize();</a>
+<span class="sourceLineNo">107</span><a id="line.107">    }</a>
+<span class="sourceLineNo">108</span><a id="line.108"></a>
+<span class="sourceLineNo">109</span><a id="line.109">    @AfterClass</a>
+<span class="sourceLineNo">110</span><a id="line.110">    public static void tearDown() throws Exception</a>
+<span class="sourceLineNo">111</span><a id="line.111">    {</a>
+<span class="sourceLineNo">112</span><a id="line.112">        if (tc != null)</a>
+<span class="sourceLineNo">113</span><a id="line.113">        {</a>
+<span class="sourceLineNo">114</span><a id="line.114">            tc.dispose();</a>
+<span class="sourceLineNo">115</span><a id="line.115">        }</a>
+<span class="sourceLineNo">116</span><a id="line.116">    }</a>
+<span class="sourceLineNo">117</span><a id="line.117">}</a>
 
 
 
@@ -189,5 +186,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>

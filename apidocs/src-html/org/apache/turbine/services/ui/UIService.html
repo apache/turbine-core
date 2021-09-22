@@ -1,194 +1,194 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="de">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package org.apache.turbine.services.ui;<a name="line.1"></a>
-<span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>/*<a name="line.3"></a>
-<span class="sourceLineNo">004</span> * Licensed to the Apache Software Foundation (ASF) under one<a name="line.4"></a>
-<span class="sourceLineNo">005</span> * or more contributor license agreements.  See the NOTICE file<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * distributed with this work for additional information<a name="line.6"></a>
-<span class="sourceLineNo">007</span> * regarding copyright ownership.  The ASF licenses this file<a name="line.7"></a>
-<span class="sourceLineNo">008</span> * to you under the Apache License, Version 2.0 (the<a name="line.8"></a>
-<span class="sourceLineNo">009</span> * "License"); you may not use this file except in compliance<a name="line.9"></a>
-<span class="sourceLineNo">010</span> * with the License.  You may obtain a copy of the License at<a name="line.10"></a>
-<span class="sourceLineNo">011</span> *<a name="line.11"></a>
-<span class="sourceLineNo">012</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.12"></a>
-<span class="sourceLineNo">013</span> *<a name="line.13"></a>
-<span class="sourceLineNo">014</span> * Unless required by applicable law or agreed to in writing,<a name="line.14"></a>
-<span class="sourceLineNo">015</span> * software distributed under the License is distributed on an<a name="line.15"></a>
-<span class="sourceLineNo">016</span> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY<a name="line.16"></a>
-<span class="sourceLineNo">017</span> * KIND, either express or implied.  See the License for the<a name="line.17"></a>
-<span class="sourceLineNo">018</span> * specific language governing permissions and limitations<a name="line.18"></a>
-<span class="sourceLineNo">019</span> * under the License.<a name="line.19"></a>
-<span class="sourceLineNo">020</span> */<a name="line.20"></a>
-<span class="sourceLineNo">021</span><a name="line.21"></a>
-<span class="sourceLineNo">022</span>import org.apache.turbine.services.Service;<a name="line.22"></a>
-<span class="sourceLineNo">023</span>import org.apache.turbine.util.ServerData;<a name="line.23"></a>
-<span class="sourceLineNo">024</span><a name="line.24"></a>
-<span class="sourceLineNo">025</span>/**<a name="line.25"></a>
-<span class="sourceLineNo">026</span> * The UI service provides for shared access to User Interface (skin) files,<a name="line.26"></a>
-<span class="sourceLineNo">027</span> * as well as the ability for non-default skin files to inherit properties from<a name="line.27"></a>
-<span class="sourceLineNo">028</span> * a default skin.  Use {@link TurbineUI} to access skin properties from your screen<a name="line.28"></a>
-<span class="sourceLineNo">029</span> * classes and action code. UITool is provided as a pull tool for accessing<a name="line.29"></a>
-<span class="sourceLineNo">030</span> * skin properties from your templates.<a name="line.30"></a>
-<span class="sourceLineNo">031</span> *<a name="line.31"></a>
-<span class="sourceLineNo">032</span> * &lt;p&gt;Skins are lazy loaded in that they are not loaded until first used.<a name="line.32"></a>
-<span class="sourceLineNo">033</span> *<a name="line.33"></a>
-<span class="sourceLineNo">034</span> * @author &lt;a href="mailto:seade@backstagetech.com.au"&gt;Scott Eade&lt;/a&gt;<a name="line.34"></a>
-<span class="sourceLineNo">035</span> * @version $Id$<a name="line.35"></a>
-<span class="sourceLineNo">036</span> */<a name="line.36"></a>
-<span class="sourceLineNo">037</span>public interface UIService extends Service<a name="line.37"></a>
-<span class="sourceLineNo">038</span>{<a name="line.38"></a>
-<span class="sourceLineNo">039</span>    /**<a name="line.39"></a>
-<span class="sourceLineNo">040</span>     * The service identifier.<a name="line.40"></a>
-<span class="sourceLineNo">041</span>     */<a name="line.41"></a>
-<span class="sourceLineNo">042</span>    public String SERVICE_NAME = "UIService";<a name="line.42"></a>
-<span class="sourceLineNo">043</span><a name="line.43"></a>
-<span class="sourceLineNo">044</span>    /**<a name="line.44"></a>
-<span class="sourceLineNo">045</span>     * Refresh all skins.<a name="line.45"></a>
-<span class="sourceLineNo">046</span>     */<a name="line.46"></a>
-<span class="sourceLineNo">047</span>    public void refresh();<a name="line.47"></a>
-<span class="sourceLineNo">048</span><a name="line.48"></a>
-<span class="sourceLineNo">049</span>    /**<a name="line.49"></a>
-<span class="sourceLineNo">050</span>     * Refresh a particular skin.<a name="line.50"></a>
-<span class="sourceLineNo">051</span>     *<a name="line.51"></a>
-<span class="sourceLineNo">052</span>     * @param skinName the name of the skin to clear.<a name="line.52"></a>
-<span class="sourceLineNo">053</span>     */<a name="line.53"></a>
-<span class="sourceLineNo">054</span>    public void refresh(String skinName);<a name="line.54"></a>
-<span class="sourceLineNo">055</span><a name="line.55"></a>
-<span class="sourceLineNo">056</span>    /**<a name="line.56"></a>
-<span class="sourceLineNo">057</span>     * Provide access to the list of available skin names.<a name="line.57"></a>
-<span class="sourceLineNo">058</span>     *<a name="line.58"></a>
-<span class="sourceLineNo">059</span>     * @return the available skin names.<a name="line.59"></a>
-<span class="sourceLineNo">060</span>     */<a name="line.60"></a>
-<span class="sourceLineNo">061</span>    public String[] getSkinNames();<a name="line.61"></a>
-<span class="sourceLineNo">062</span><a name="line.62"></a>
-<span class="sourceLineNo">063</span>    /**<a name="line.63"></a>
-<span class="sourceLineNo">064</span>     * Get the name of the default skin name for the web application from the<a name="line.64"></a>
-<span class="sourceLineNo">065</span>     * TurbineResources.properties file. If the property is not present the<a name="line.65"></a>
-<span class="sourceLineNo">066</span>     * name of the default skin will be returned.  Note that the web application<a name="line.66"></a>
-<span class="sourceLineNo">067</span>     * skin name may be something other than default, in which case its<a name="line.67"></a>
-<span class="sourceLineNo">068</span>     * properties will default to the skin with the name "default".<a name="line.68"></a>
-<span class="sourceLineNo">069</span>     *<a name="line.69"></a>
-<span class="sourceLineNo">070</span>     * @return the name of the default skin for the web application.<a name="line.70"></a>
-<span class="sourceLineNo">071</span>     */<a name="line.71"></a>
-<span class="sourceLineNo">072</span>    public String getWebappSkinName();<a name="line.72"></a>
-<span class="sourceLineNo">073</span><a name="line.73"></a>
-<span class="sourceLineNo">074</span>    /**<a name="line.74"></a>
-<span class="sourceLineNo">075</span>     * Retrieve a skin property from the named skin.  If the property is not<a name="line.75"></a>
-<span class="sourceLineNo">076</span>     * defined in the named skin the value for the default skin will be<a name="line.76"></a>
-<span class="sourceLineNo">077</span>     * provided.  If the named skin does not exist then the skin configured for<a name="line.77"></a>
-<span class="sourceLineNo">078</span>     * the webapp will be used.  If the webapp skin does not exist the default<a name="line.78"></a>
-<span class="sourceLineNo">079</span>     * skin will be used.  If the default skin does not exist then<a name="line.79"></a>
-<span class="sourceLineNo">080</span>     * &lt;code&gt;null&lt;/code&gt; will be returned.<a name="line.80"></a>
-<span class="sourceLineNo">081</span>     *<a name="line.81"></a>
-<span class="sourceLineNo">082</span>     * @param skinName the name of the skin to retrieve the property from.<a name="line.82"></a>
-<span class="sourceLineNo">083</span>     * @param key the key to retrieve from the skin.<a name="line.83"></a>
-<span class="sourceLineNo">084</span>     * @return the value of the property for the named skin (defaulting to the<a name="line.84"></a>
-<span class="sourceLineNo">085</span>     * default skin), the webapp skin, the default skin or &lt;code&gt;null&lt;/code&gt;,<a name="line.85"></a>
-<span class="sourceLineNo">086</span>     * depending on whether or not the property or skins exist.<a name="line.86"></a>
-<span class="sourceLineNo">087</span>     */<a name="line.87"></a>
-<span class="sourceLineNo">088</span>    public String get(String skinName, String key);<a name="line.88"></a>
-<span class="sourceLineNo">089</span><a name="line.89"></a>
-<span class="sourceLineNo">090</span>    /**<a name="line.90"></a>
-<span class="sourceLineNo">091</span>     * Retrieve a skin property from the default skin for the webapp.  If the<a name="line.91"></a>
-<span class="sourceLineNo">092</span>     * property is not defined in the webapp skin the value for the default skin<a name="line.92"></a>
-<span class="sourceLineNo">093</span>     * will be provided.  If the webapp skin does not exist the default skin<a name="line.93"></a>
-<span class="sourceLineNo">094</span>     * will be used.  If the default skin does not exist then &lt;code&gt;null&lt;/code&gt;<a name="line.94"></a>
-<span class="sourceLineNo">095</span>     * will be returned.<a name="line.95"></a>
-<span class="sourceLineNo">096</span>     *<a name="line.96"></a>
-<span class="sourceLineNo">097</span>     * @param key the key to retrieve.<a name="line.97"></a>
-<span class="sourceLineNo">098</span>     * @return the value of the property for the webapp skin (defaulting to the<a name="line.98"></a>
-<span class="sourceLineNo">099</span>     * default skin), the default skin or &lt;code&gt;null&lt;/code&gt;, depending on<a name="line.99"></a>
-<span class="sourceLineNo">100</span>     * whether or not the property or skins exist.<a name="line.100"></a>
-<span class="sourceLineNo">101</span>     */<a name="line.101"></a>
-<span class="sourceLineNo">102</span>    public String get(String key);<a name="line.102"></a>
-<span class="sourceLineNo">103</span><a name="line.103"></a>
-<span class="sourceLineNo">104</span>    /**<a name="line.104"></a>
-<span class="sourceLineNo">105</span>     * Retrieve the URL for an image that is part of a skin. The images are<a name="line.105"></a>
-<span class="sourceLineNo">106</span>     * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.<a name="line.106"></a>
-<span class="sourceLineNo">107</span>     *<a name="line.107"></a>
-<span class="sourceLineNo">108</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.108"></a>
-<span class="sourceLineNo">109</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.109"></a>
-<span class="sourceLineNo">110</span>     * a load balanced situation. I think in most cases the image(String image)<a name="line.110"></a>
-<span class="sourceLineNo">111</span>     * method would probably be enough, but I'm not absolutely positive.<a name="line.111"></a>
-<span class="sourceLineNo">112</span>     *<a name="line.112"></a>
-<span class="sourceLineNo">113</span>     * @param skinName the name of the skin to retrieve the image from.<a name="line.113"></a>
-<span class="sourceLineNo">114</span>     * @param imageId the id of the image whose URL will be generated.<a name="line.114"></a>
-<span class="sourceLineNo">115</span>     * @param serverData the serverData to use as the basis for the URL.<a name="line.115"></a>
-<span class="sourceLineNo">116</span>     * @return the image URL<a name="line.116"></a>
-<span class="sourceLineNo">117</span>     */<a name="line.117"></a>
-<span class="sourceLineNo">118</span>    public String image(String skinName, String imageId, ServerData serverData);<a name="line.118"></a>
-<span class="sourceLineNo">119</span><a name="line.119"></a>
-<span class="sourceLineNo">120</span>    /**<a name="line.120"></a>
-<span class="sourceLineNo">121</span>     * Retrieve the URL for an image that is part of a skin. The images are<a name="line.121"></a>
-<span class="sourceLineNo">122</span>     * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.<a name="line.122"></a>
-<span class="sourceLineNo">123</span>     *<a name="line.123"></a>
-<span class="sourceLineNo">124</span>     * @param skinName the name of the skin to retrieve the image from.<a name="line.124"></a>
-<span class="sourceLineNo">125</span>     * @param imageId the id of the image whose URL will be generated.<a name="line.125"></a>
-<span class="sourceLineNo">126</span>     * @return the image URL<a name="line.126"></a>
-<span class="sourceLineNo">127</span>     */<a name="line.127"></a>
-<span class="sourceLineNo">128</span>    public String image(String skinName, String imageId);<a name="line.128"></a>
-<span class="sourceLineNo">129</span><a name="line.129"></a>
-<span class="sourceLineNo">130</span>    /**<a name="line.130"></a>
-<span class="sourceLineNo">131</span>     * Retrieve the URL for the style sheet that is part of a skin. The style is<a name="line.131"></a>
-<span class="sourceLineNo">132</span>     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the<a name="line.132"></a>
-<span class="sourceLineNo">133</span>     * filename skin.css<a name="line.133"></a>
-<span class="sourceLineNo">134</span>     *<a name="line.134"></a>
-<span class="sourceLineNo">135</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.135"></a>
-<span class="sourceLineNo">136</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.136"></a>
-<span class="sourceLineNo">137</span>     * a load balanced situation. I think in most cases the style() method would<a name="line.137"></a>
-<span class="sourceLineNo">138</span>     * probably be enough, but I'm not absolutely positive.<a name="line.138"></a>
-<span class="sourceLineNo">139</span>     *<a name="line.139"></a>
-<span class="sourceLineNo">140</span>     * @param skinName the name of the skin to retrieve the style sheet from.<a name="line.140"></a>
-<span class="sourceLineNo">141</span>     * @param serverData the serverData to use as the basis for the URL.<a name="line.141"></a>
-<span class="sourceLineNo">142</span>     * @return the CSS URL<a name="line.142"></a>
-<span class="sourceLineNo">143</span>     */<a name="line.143"></a>
-<span class="sourceLineNo">144</span>    public String getStylecss(String skinName, ServerData serverData);<a name="line.144"></a>
-<span class="sourceLineNo">145</span><a name="line.145"></a>
-<span class="sourceLineNo">146</span>    /**<a name="line.146"></a>
-<span class="sourceLineNo">147</span>     * Retrieve the URL for the style sheet that is part of a skin. The style is<a name="line.147"></a>
-<span class="sourceLineNo">148</span>     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the<a name="line.148"></a>
-<span class="sourceLineNo">149</span>     * filename skin.css<a name="line.149"></a>
-<span class="sourceLineNo">150</span>     *<a name="line.150"></a>
-<span class="sourceLineNo">151</span>     * @param skinName the name of the skin to retrieve the style sheet from.<a name="line.151"></a>
-<span class="sourceLineNo">152</span>     * @return the CSS URL<a name="line.152"></a>
-<span class="sourceLineNo">153</span>     */<a name="line.153"></a>
-<span class="sourceLineNo">154</span>    public String getStylecss(String skinName);<a name="line.154"></a>
-<span class="sourceLineNo">155</span><a name="line.155"></a>
-<span class="sourceLineNo">156</span>    /**<a name="line.156"></a>
-<span class="sourceLineNo">157</span>     * Retrieve the URL for a given script that is part of a skin. The script is<a name="line.157"></a>
-<span class="sourceLineNo">158</span>     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory.<a name="line.158"></a>
-<span class="sourceLineNo">159</span>     *<a name="line.159"></a>
-<span class="sourceLineNo">160</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.160"></a>
-<span class="sourceLineNo">161</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.161"></a>
-<span class="sourceLineNo">162</span>     * a load balanced situation. I think in most cases the style() method would<a name="line.162"></a>
-<span class="sourceLineNo">163</span>     * probably be enough, but I'm not absolutely positive.<a name="line.163"></a>
-<span class="sourceLineNo">164</span>     *<a name="line.164"></a>
-<span class="sourceLineNo">165</span>     * @param skinName the name of the skin to retrieve the image from.<a name="line.165"></a>
-<span class="sourceLineNo">166</span>     * @param filename the name of the script file.<a name="line.166"></a>
-<span class="sourceLineNo">167</span>     * @param serverData the serverData to use as the basis for the URL.<a name="line.167"></a>
-<span class="sourceLineNo">168</span>     * @return the script URL<a name="line.168"></a>
-<span class="sourceLineNo">169</span>     */<a name="line.169"></a>
-<span class="sourceLineNo">170</span>    public String getScript(String skinName, String filename,<a name="line.170"></a>
-<span class="sourceLineNo">171</span>            ServerData serverData);<a name="line.171"></a>
-<span class="sourceLineNo">172</span><a name="line.172"></a>
-<span class="sourceLineNo">173</span>    /**<a name="line.173"></a>
-<span class="sourceLineNo">174</span>     * Retrieve the URL for a given script that is part of a skin. The script is<a name="line.174"></a>
-<span class="sourceLineNo">175</span>     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory.<a name="line.175"></a>
-<span class="sourceLineNo">176</span>     *<a name="line.176"></a>
-<span class="sourceLineNo">177</span>     * @param skinName the name of the skin to retrieve the image from.<a name="line.177"></a>
-<span class="sourceLineNo">178</span>     * @param filename the name of the script file.<a name="line.178"></a>
-<span class="sourceLineNo">179</span>     * @return the script URL<a name="line.179"></a>
-<span class="sourceLineNo">180</span>     */<a name="line.180"></a>
-<span class="sourceLineNo">181</span>    public String getScript(String skinName, String filename);<a name="line.181"></a>
-<span class="sourceLineNo">182</span><a name="line.182"></a>
-<span class="sourceLineNo">183</span>}<a name="line.183"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.apache.turbine.services.ui;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">/*</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * Licensed to the Apache Software Foundation (ASF) under one</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * or more contributor license agreements.  See the NOTICE file</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * distributed with this work for additional information</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * regarding copyright ownership.  The ASF licenses this file</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * to you under the Apache License, Version 2.0 (the</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * "License"); you may not use this file except in compliance</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * with the License.  You may obtain a copy of the License at</a>
+<span class="sourceLineNo">011</span><a id="line.11"> *</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *   http://www.apache.org/licenses/LICENSE-2.0</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * Unless required by applicable law or agreed to in writing,</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * software distributed under the License is distributed on an</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * KIND, either express or implied.  See the License for the</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * specific language governing permissions and limitations</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * under the License.</a>
+<span class="sourceLineNo">020</span><a id="line.20"> */</a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">import org.apache.turbine.services.Service;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import org.apache.turbine.util.ServerData;</a>
+<span class="sourceLineNo">024</span><a id="line.24"></a>
+<span class="sourceLineNo">025</span><a id="line.25">/**</a>
+<span class="sourceLineNo">026</span><a id="line.26"> * The UI service provides for shared access to User Interface (skin) files,</a>
+<span class="sourceLineNo">027</span><a id="line.27"> * as well as the ability for non-default skin files to inherit properties from</a>
+<span class="sourceLineNo">028</span><a id="line.28"> * a default skin. UITool is provided as a pull tool for accessing</a>
+<span class="sourceLineNo">029</span><a id="line.29"> * skin properties from your templates.</a>
+<span class="sourceLineNo">030</span><a id="line.30"> *</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * &lt;p&gt;Skins are lazy loaded in that they are not loaded until first used.</a>
+<span class="sourceLineNo">032</span><a id="line.32"> *</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * @author &lt;a href="mailto:seade@backstagetech.com.au"&gt;Scott Eade&lt;/a&gt;</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * @version $Id$</a>
+<span class="sourceLineNo">035</span><a id="line.35"> */</a>
+<span class="sourceLineNo">036</span><a id="line.36">public interface UIService extends Service</a>
+<span class="sourceLineNo">037</span><a id="line.37">{</a>
+<span class="sourceLineNo">038</span><a id="line.38">    /**</a>
+<span class="sourceLineNo">039</span><a id="line.39">     * The service identifier.</a>
+<span class="sourceLineNo">040</span><a id="line.40">     */</a>
+<span class="sourceLineNo">041</span><a id="line.41">    String SERVICE_NAME = "UIService";</a>
+<span class="sourceLineNo">042</span><a id="line.42"></a>
+<span class="sourceLineNo">043</span><a id="line.43">    /**</a>
+<span class="sourceLineNo">044</span><a id="line.44">     * Refresh all skins.</a>
+<span class="sourceLineNo">045</span><a id="line.45">     */</a>
+<span class="sourceLineNo">046</span><a id="line.46">    void refresh();</a>
+<span class="sourceLineNo">047</span><a id="line.47"></a>
+<span class="sourceLineNo">048</span><a id="line.48">    /**</a>
+<span class="sourceLineNo">049</span><a id="line.49">     * Refresh a particular skin.</a>
+<span class="sourceLineNo">050</span><a id="line.50">     *</a>
+<span class="sourceLineNo">051</span><a id="line.51">     * @param skinName the name of the skin to clear.</a>
+<span class="sourceLineNo">052</span><a id="line.52">     */</a>
+<span class="sourceLineNo">053</span><a id="line.53">    void refresh(String skinName);</a>
+<span class="sourceLineNo">054</span><a id="line.54"></a>
+<span class="sourceLineNo">055</span><a id="line.55">    /**</a>
+<span class="sourceLineNo">056</span><a id="line.56">     * Provide access to the list of available skin names.</a>
+<span class="sourceLineNo">057</span><a id="line.57">     *</a>
+<span class="sourceLineNo">058</span><a id="line.58">     * @return the available skin names.</a>
+<span class="sourceLineNo">059</span><a id="line.59">     */</a>
+<span class="sourceLineNo">060</span><a id="line.60">    String[] getSkinNames();</a>
+<span class="sourceLineNo">061</span><a id="line.61"></a>
+<span class="sourceLineNo">062</span><a id="line.62">    /**</a>
+<span class="sourceLineNo">063</span><a id="line.63">     * Get the name of the default skin name for the web application from the</a>
+<span class="sourceLineNo">064</span><a id="line.64">     * TurbineResources.properties file. If the property is not present the</a>
+<span class="sourceLineNo">065</span><a id="line.65">     * name of the default skin will be returned.  Note that the web application</a>
+<span class="sourceLineNo">066</span><a id="line.66">     * skin name may be something other than default, in which case its</a>
+<span class="sourceLineNo">067</span><a id="line.67">     * properties will default to the skin with the name "default".</a>
+<span class="sourceLineNo">068</span><a id="line.68">     *</a>
+<span class="sourceLineNo">069</span><a id="line.69">     * @return the name of the default skin for the web application.</a>
+<span class="sourceLineNo">070</span><a id="line.70">     */</a>
+<span class="sourceLineNo">071</span><a id="line.71">    String getWebappSkinName();</a>
+<span class="sourceLineNo">072</span><a id="line.72"></a>
+<span class="sourceLineNo">073</span><a id="line.73">    /**</a>
+<span class="sourceLineNo">074</span><a id="line.74">     * Retrieve a skin property from the named skin.  If the property is not</a>
+<span class="sourceLineNo">075</span><a id="line.75">     * defined in the named skin the value for the default skin will be</a>
+<span class="sourceLineNo">076</span><a id="line.76">     * provided.  If the named skin does not exist then the skin configured for</a>
+<span class="sourceLineNo">077</span><a id="line.77">     * the webapp will be used.  If the webapp skin does not exist the default</a>
+<span class="sourceLineNo">078</span><a id="line.78">     * skin will be used.  If the default skin does not exist then</a>
+<span class="sourceLineNo">079</span><a id="line.79">     * &lt;code&gt;null&lt;/code&gt; will be returned.</a>
+<span class="sourceLineNo">080</span><a id="line.80">     *</a>
+<span class="sourceLineNo">081</span><a id="line.81">     * @param skinName the name of the skin to retrieve the property from.</a>
+<span class="sourceLineNo">082</span><a id="line.82">     * @param key the key to retrieve from the skin.</a>
+<span class="sourceLineNo">083</span><a id="line.83">     * @return the value of the property for the named skin (defaulting to the</a>
+<span class="sourceLineNo">084</span><a id="line.84">     * default skin), the webapp skin, the default skin or &lt;code&gt;null&lt;/code&gt;,</a>
+<span class="sourceLineNo">085</span><a id="line.85">     * depending on whether or not the property or skins exist.</a>
+<span class="sourceLineNo">086</span><a id="line.86">     */</a>
+<span class="sourceLineNo">087</span><a id="line.87">    String get(String skinName, String key);</a>
+<span class="sourceLineNo">088</span><a id="line.88"></a>
+<span class="sourceLineNo">089</span><a id="line.89">    /**</a>
+<span class="sourceLineNo">090</span><a id="line.90">     * Retrieve a skin property from the default skin for the webapp.  If the</a>
+<span class="sourceLineNo">091</span><a id="line.91">     * property is not defined in the webapp skin the value for the default skin</a>
+<span class="sourceLineNo">092</span><a id="line.92">     * will be provided.  If the webapp skin does not exist the default skin</a>
+<span class="sourceLineNo">093</span><a id="line.93">     * will be used.  If the default skin does not exist then &lt;code&gt;null&lt;/code&gt;</a>
+<span class="sourceLineNo">094</span><a id="line.94">     * will be returned.</a>
+<span class="sourceLineNo">095</span><a id="line.95">     *</a>
+<span class="sourceLineNo">096</span><a id="line.96">     * @param key the key to retrieve.</a>
+<span class="sourceLineNo">097</span><a id="line.97">     * @return the value of the property for the webapp skin (defaulting to the</a>
+<span class="sourceLineNo">098</span><a id="line.98">     * default skin), the default skin or &lt;code&gt;null&lt;/code&gt;, depending on</a>
+<span class="sourceLineNo">099</span><a id="line.99">     * whether or not the property or skins exist.</a>
+<span class="sourceLineNo">100</span><a id="line.100">     */</a>
+<span class="sourceLineNo">101</span><a id="line.101">    String get(String key);</a>
+<span class="sourceLineNo">102</span><a id="line.102"></a>
+<span class="sourceLineNo">103</span><a id="line.103">    /**</a>
+<span class="sourceLineNo">104</span><a id="line.104">     * Retrieve the URL for an image that is part of a skin. The images are</a>
+<span class="sourceLineNo">105</span><a id="line.105">     * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.</a>
+<span class="sourceLineNo">106</span><a id="line.106">     *</a>
+<span class="sourceLineNo">107</span><a id="line.107">     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server</a>
+<span class="sourceLineNo">108</span><a id="line.108">     * port change on a per request basis. I'm not sure if this would happen in</a>
+<span class="sourceLineNo">109</span><a id="line.109">     * a load balanced situation. I think in most cases the image(String image)</a>
+<span class="sourceLineNo">110</span><a id="line.110">     * method would probably be enough, but I'm not absolutely positive.</a>
+<span class="sourceLineNo">111</span><a id="line.111">     *</a>
+<span class="sourceLineNo">112</span><a id="line.112">     * @param skinName the name of the skin to retrieve the image from.</a>
+<span class="sourceLineNo">113</span><a id="line.113">     * @param imageId the id of the image whose URL will be generated.</a>
+<span class="sourceLineNo">114</span><a id="line.114">     * @param serverData the serverData to use as the basis for the URL.</a>
+<span class="sourceLineNo">115</span><a id="line.115">     * @return the image URL</a>
+<span class="sourceLineNo">116</span><a id="line.116">     */</a>
+<span class="sourceLineNo">117</span><a id="line.117">    String image(String skinName, String imageId, ServerData serverData);</a>
+<span class="sourceLineNo">118</span><a id="line.118"></a>
+<span class="sourceLineNo">119</span><a id="line.119">    /**</a>
+<span class="sourceLineNo">120</span><a id="line.120">     * Retrieve the URL for an image that is part of a skin. The images are</a>
+<span class="sourceLineNo">121</span><a id="line.121">     * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.</a>
+<span class="sourceLineNo">122</span><a id="line.122">     *</a>
+<span class="sourceLineNo">123</span><a id="line.123">     * @param skinName the name of the skin to retrieve the image from.</a>
+<span class="sourceLineNo">124</span><a id="line.124">     * @param imageId the id of the image whose URL will be generated.</a>
+<span class="sourceLineNo">125</span><a id="line.125">     * @return the image URL</a>
+<span class="sourceLineNo">126</span><a id="line.126">     */</a>
+<span class="sourceLineNo">127</span><a id="line.127">    String image(String skinName, String imageId);</a>
+<span class="sourceLineNo">128</span><a id="line.128"></a>
+<span class="sourceLineNo">129</span><a id="line.129">    /**</a>
+<span class="sourceLineNo">130</span><a id="line.130">     * Retrieve the URL for the style sheet that is part of a skin. The style is</a>
+<span class="sourceLineNo">131</span><a id="line.131">     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the</a>
+<span class="sourceLineNo">132</span><a id="line.132">     * filename skin.css</a>
+<span class="sourceLineNo">133</span><a id="line.133">     *</a>
+<span class="sourceLineNo">134</span><a id="line.134">     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server</a>
+<span class="sourceLineNo">135</span><a id="line.135">     * port change on a per request basis. I'm not sure if this would happen in</a>
+<span class="sourceLineNo">136</span><a id="line.136">     * a load balanced situation. I think in most cases the style() method would</a>
+<span class="sourceLineNo">137</span><a id="line.137">     * probably be enough, but I'm not absolutely positive.</a>
+<span class="sourceLineNo">138</span><a id="line.138">     *</a>
+<span class="sourceLineNo">139</span><a id="line.139">     * @param skinName the name of the skin to retrieve the style sheet from.</a>
+<span class="sourceLineNo">140</span><a id="line.140">     * @param serverData the serverData to use as the basis for the URL.</a>
+<span class="sourceLineNo">141</span><a id="line.141">     * @return the CSS URL</a>
+<span class="sourceLineNo">142</span><a id="line.142">     */</a>
+<span class="sourceLineNo">143</span><a id="line.143">    String getStylecss(String skinName, ServerData serverData);</a>
+<span class="sourceLineNo">144</span><a id="line.144"></a>
+<span class="sourceLineNo">145</span><a id="line.145">    /**</a>
+<span class="sourceLineNo">146</span><a id="line.146">     * Retrieve the URL for the style sheet that is part of a skin. The style is</a>
+<span class="sourceLineNo">147</span><a id="line.147">     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the</a>
+<span class="sourceLineNo">148</span><a id="line.148">     * filename skin.css</a>
+<span class="sourceLineNo">149</span><a id="line.149">     *</a>
+<span class="sourceLineNo">150</span><a id="line.150">     * @param skinName the name of the skin to retrieve the style sheet from.</a>
+<span class="sourceLineNo">151</span><a id="line.151">     * @return the CSS URL</a>
+<span class="sourceLineNo">152</span><a id="line.152">     */</a>
+<span class="sourceLineNo">153</span><a id="line.153">    String getStylecss(String skinName);</a>
+<span class="sourceLineNo">154</span><a id="line.154"></a>
+<span class="sourceLineNo">155</span><a id="line.155">    /**</a>
+<span class="sourceLineNo">156</span><a id="line.156">     * Retrieve the URL for a given script that is part of a skin. The script is</a>
+<span class="sourceLineNo">157</span><a id="line.157">     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory.</a>
+<span class="sourceLineNo">158</span><a id="line.158">     *</a>
+<span class="sourceLineNo">159</span><a id="line.159">     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server</a>
+<span class="sourceLineNo">160</span><a id="line.160">     * port change on a per request basis. I'm not sure if this would happen in</a>
+<span class="sourceLineNo">161</span><a id="line.161">     * a load balanced situation. I think in most cases the style() method would</a>
+<span class="sourceLineNo">162</span><a id="line.162">     * probably be enough, but I'm not absolutely positive.</a>
+<span class="sourceLineNo">163</span><a id="line.163">     *</a>
+<span class="sourceLineNo">164</span><a id="line.164">     * @param skinName the name of the skin to retrieve the image from.</a>
+<span class="sourceLineNo">165</span><a id="line.165">     * @param filename the name of the script file.</a>
+<span class="sourceLineNo">166</span><a id="line.166">     * @param serverData the serverData to use as the basis for the URL.</a>
+<span class="sourceLineNo">167</span><a id="line.167">     * @return the script URL</a>
+<span class="sourceLineNo">168</span><a id="line.168">     */</a>
+<span class="sourceLineNo">169</span><a id="line.169">    String getScript(String skinName, String filename,</a>
+<span class="sourceLineNo">170</span><a id="line.170">            ServerData serverData);</a>
+<span class="sourceLineNo">171</span><a id="line.171"></a>
+<span class="sourceLineNo">172</span><a id="line.172">    /**</a>
+<span class="sourceLineNo">173</span><a id="line.173">     * Retrieve the URL for a given script that is part of a skin. The script is</a>
+<span class="sourceLineNo">174</span><a id="line.174">     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory.</a>
+<span class="sourceLineNo">175</span><a id="line.175">     *</a>
+<span class="sourceLineNo">176</span><a id="line.176">     * @param skinName the name of the skin to retrieve the image from.</a>
+<span class="sourceLineNo">177</span><a id="line.177">     * @param filename the name of the script file.</a>
+<span class="sourceLineNo">178</span><a id="line.178">     * @return the script URL</a>
+<span class="sourceLineNo">179</span><a id="line.179">     */</a>
+<span class="sourceLineNo">180</span><a id="line.180">    String getScript(String skinName, String filename);</a>
+<span class="sourceLineNo">181</span><a id="line.181"></a>
+<span class="sourceLineNo">182</span><a id="line.182">}</a>
 
 
 
@@ -251,5 +251,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>

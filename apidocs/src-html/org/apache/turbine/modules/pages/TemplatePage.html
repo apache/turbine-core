@@ -1,140 +1,141 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="de">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package org.apache.turbine.modules.pages;<a name="line.1"></a>
-<span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span><a name="line.3"></a>
-<span class="sourceLineNo">004</span>/*<a name="line.4"></a>
-<span class="sourceLineNo">005</span> * Licensed to the Apache Software Foundation (ASF) under one<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * or more contributor license agreements.  See the NOTICE file<a name="line.6"></a>
-<span class="sourceLineNo">007</span> * distributed with this work for additional information<a name="line.7"></a>
-<span class="sourceLineNo">008</span> * regarding copyright ownership.  The ASF licenses this file<a name="line.8"></a>
-<span class="sourceLineNo">009</span> * to you under the Apache License, Version 2.0 (the<a name="line.9"></a>
-<span class="sourceLineNo">010</span> * "License"); you may not use this file except in compliance<a name="line.10"></a>
-<span class="sourceLineNo">011</span> * with the License.  You may obtain a copy of the License at<a name="line.11"></a>
-<span class="sourceLineNo">012</span> *<a name="line.12"></a>
-<span class="sourceLineNo">013</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.13"></a>
-<span class="sourceLineNo">014</span> *<a name="line.14"></a>
-<span class="sourceLineNo">015</span> * Unless required by applicable law or agreed to in writing,<a name="line.15"></a>
-<span class="sourceLineNo">016</span> * software distributed under the License is distributed on an<a name="line.16"></a>
-<span class="sourceLineNo">017</span> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY<a name="line.17"></a>
-<span class="sourceLineNo">018</span> * KIND, either express or implied.  See the License for the<a name="line.18"></a>
-<span class="sourceLineNo">019</span> * specific language governing permissions and limitations<a name="line.19"></a>
-<span class="sourceLineNo">020</span> * under the License.<a name="line.20"></a>
-<span class="sourceLineNo">021</span> */<a name="line.21"></a>
-<span class="sourceLineNo">022</span><a name="line.22"></a>
-<span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>import org.apache.turbine.annotation.TurbineService;<a name="line.24"></a>
-<span class="sourceLineNo">025</span>import org.apache.turbine.pipeline.PipelineData;<a name="line.25"></a>
-<span class="sourceLineNo">026</span>import org.apache.turbine.services.template.TemplateService;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import org.apache.turbine.util.RunData;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import org.apache.turbine.util.TurbineException;<a name="line.28"></a>
-<span class="sourceLineNo">029</span><a name="line.29"></a>
-<span class="sourceLineNo">030</span>/**<a name="line.30"></a>
-<span class="sourceLineNo">031</span> * When building sites using templates, Screens need only be defined<a name="line.31"></a>
-<span class="sourceLineNo">032</span> * for templates which require dynamic (database or object) data.<a name="line.32"></a>
-<span class="sourceLineNo">033</span> *<a name="line.33"></a>
-<span class="sourceLineNo">034</span> * &lt;p&gt;<a name="line.34"></a>
-<span class="sourceLineNo">035</span> *<a name="line.35"></a>
-<span class="sourceLineNo">036</span> * This page can be used on sites where the number of Screens can be<a name="line.36"></a>
-<span class="sourceLineNo">037</span> * much less than the number of templates.  The templates can be<a name="line.37"></a>
-<span class="sourceLineNo">038</span> * grouped in directories with common layouts.  Screen modules are<a name="line.38"></a>
-<span class="sourceLineNo">039</span> * then expected to be placed in packages corresponding with the<a name="line.39"></a>
-<span class="sourceLineNo">040</span> * templates' directories and follow a specific naming scheme.<a name="line.40"></a>
-<span class="sourceLineNo">041</span> *<a name="line.41"></a>
-<span class="sourceLineNo">042</span> * &lt;p&gt;<a name="line.42"></a>
-<span class="sourceLineNo">043</span> *<a name="line.43"></a>
-<span class="sourceLineNo">044</span> * The template parameter is parsed and and a Screen whose package<a name="line.44"></a>
-<span class="sourceLineNo">045</span> * matches the templates path and shares the same name minus any<a name="line.45"></a>
-<span class="sourceLineNo">046</span> * extension and beginning with a capital letter is searched for.  If<a name="line.46"></a>
-<span class="sourceLineNo">047</span> * not found, a Screen in a package matching the template's path with<a name="line.47"></a>
-<span class="sourceLineNo">048</span> * name Default is searched for.  If still not found, a Screen with<a name="line.48"></a>
-<span class="sourceLineNo">049</span> * name Default is looked for in packages corresponding to parent<a name="line.49"></a>
-<span class="sourceLineNo">050</span> * directories in the template's path until a match is found.<a name="line.50"></a>
-<span class="sourceLineNo">051</span> *<a name="line.51"></a>
-<span class="sourceLineNo">052</span> * &lt;p&gt;<a name="line.52"></a>
-<span class="sourceLineNo">053</span> *<a name="line.53"></a>
-<span class="sourceLineNo">054</span> * For example if data.getParameters().getString("template") returns<a name="line.54"></a>
-<span class="sourceLineNo">055</span> * /about_us/directions/driving.wm, the search follows<a name="line.55"></a>
-<span class="sourceLineNo">056</span> * about_us.directions.Driving, about_us.directions.Default,<a name="line.56"></a>
-<span class="sourceLineNo">057</span> * about_us.Default, Default, WebMacroSiteScreen (i.e. the default<a name="line.57"></a>
-<span class="sourceLineNo">058</span> * screen set in TurbineResources).<a name="line.58"></a>
-<span class="sourceLineNo">059</span> *<a name="line.59"></a>
-<span class="sourceLineNo">060</span> * &lt;p&gt;<a name="line.60"></a>
-<span class="sourceLineNo">061</span> *<a name="line.61"></a>
-<span class="sourceLineNo">062</span> * Only one Layout module is used, since it is expected that any<a name="line.62"></a>
-<span class="sourceLineNo">063</span> * dynamic content will be placed in navigations and screens.  The<a name="line.63"></a>
-<span class="sourceLineNo">064</span> * layout template to be used is found in a similar way to the Screen.<a name="line.64"></a>
-<span class="sourceLineNo">065</span> * For example the following paths will be searched in the layouts<a name="line.65"></a>
-<span class="sourceLineNo">066</span> * subdirectory: /about_us/directions/driving.wm,<a name="line.66"></a>
-<span class="sourceLineNo">067</span> * /about_us/directions/default.wm, /about_us/default.wm, /default.wm,<a name="line.67"></a>
-<span class="sourceLineNo">068</span> * where wm is the value of the template.default.extension property.<a name="line.68"></a>
-<span class="sourceLineNo">069</span> *<a name="line.69"></a>
-<span class="sourceLineNo">070</span> * &lt;p&gt;<a name="line.70"></a>
-<span class="sourceLineNo">071</span> *<a name="line.71"></a>
-<span class="sourceLineNo">072</span> * This approach allows a site with largely static content to be<a name="line.72"></a>
-<span class="sourceLineNo">073</span> * updated and added to regularly by those with little Java<a name="line.73"></a>
-<span class="sourceLineNo">074</span> * experience.<a name="line.74"></a>
-<span class="sourceLineNo">075</span> *<a name="line.75"></a>
-<span class="sourceLineNo">076</span> * @author &lt;a href="mailto:john.mcnally@clearink.com"&gt;John D. McNally&lt;/a&gt;<a name="line.76"></a>
-<span class="sourceLineNo">077</span> * @author &lt;a href="mailto:mbryson@mont.mindspring.com"&gt;Dave Bryson&lt;/a&gt;<a name="line.77"></a>
-<span class="sourceLineNo">078</span> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;<a name="line.78"></a>
-<span class="sourceLineNo">079</span> * @author &lt;a href="mailto:peter@courcoux.biz"&gt;Peter Courcoux&lt;/a&gt;<a name="line.79"></a>
-<span class="sourceLineNo">080</span> * @version $Id: TemplatePage.java 1695634 2015-08-13 00:35:47Z tv $<a name="line.80"></a>
-<span class="sourceLineNo">081</span> */<a name="line.81"></a>
-<span class="sourceLineNo">082</span>public class TemplatePage<a name="line.82"></a>
-<span class="sourceLineNo">083</span>    extends DefaultPage<a name="line.83"></a>
-<span class="sourceLineNo">084</span>{<a name="line.84"></a>
-<span class="sourceLineNo">085</span>    /** Injected service instance */<a name="line.85"></a>
-<span class="sourceLineNo">086</span>    @TurbineService<a name="line.86"></a>
-<span class="sourceLineNo">087</span>    private TemplateService templateService;<a name="line.87"></a>
-<span class="sourceLineNo">088</span><a name="line.88"></a>
-<span class="sourceLineNo">089</span>    /**<a name="line.89"></a>
-<span class="sourceLineNo">090</span>     * Works with TemplateService to set up default templates and<a name="line.90"></a>
-<span class="sourceLineNo">091</span>     * corresponding class modules.<a name="line.91"></a>
-<span class="sourceLineNo">092</span>     *<a name="line.92"></a>
-<span class="sourceLineNo">093</span>     * @param pipelineData Turbine information.<a name="line.93"></a>
-<span class="sourceLineNo">094</span>     * @exception Exception, a generic exception.<a name="line.94"></a>
-<span class="sourceLineNo">095</span>     */<a name="line.95"></a>
-<span class="sourceLineNo">096</span>    @Override<a name="line.96"></a>
-<span class="sourceLineNo">097</span>    protected void doBuildAfterAction(PipelineData pipelineData)<a name="line.97"></a>
-<span class="sourceLineNo">098</span>        throws Exception<a name="line.98"></a>
-<span class="sourceLineNo">099</span>    {<a name="line.99"></a>
-<span class="sourceLineNo">100</span>        RunData data = getRunData(pipelineData);<a name="line.100"></a>
-<span class="sourceLineNo">101</span>        // The Template Service at this point must fetch the Screen class<a name="line.101"></a>
-<span class="sourceLineNo">102</span>        // to match a given template. If the Screen class has already been<a name="line.102"></a>
-<span class="sourceLineNo">103</span>        // set by an action, skip this, because the user has the already<a name="line.103"></a>
-<span class="sourceLineNo">104</span>        // specified the Screen class he wants to use.<a name="line.104"></a>
-<span class="sourceLineNo">105</span>        if (!data.hasScreen())<a name="line.105"></a>
-<span class="sourceLineNo">106</span>        {<a name="line.106"></a>
-<span class="sourceLineNo">107</span>            // This is effectively getting the "template" parameter<a name="line.107"></a>
-<span class="sourceLineNo">108</span>            // from the parameter parser in rundata. This is coming<a name="line.108"></a>
-<span class="sourceLineNo">109</span>            // from the request for a template.<a name="line.109"></a>
-<span class="sourceLineNo">110</span>            String template = data.getTemplateInfo().getScreenTemplate();<a name="line.110"></a>
-<span class="sourceLineNo">111</span><a name="line.111"></a>
-<span class="sourceLineNo">112</span>            // Get the layout template and the correct Screen.<a name="line.112"></a>
-<span class="sourceLineNo">113</span>            String layoutTemplate =<a name="line.113"></a>
-<span class="sourceLineNo">114</span>                    templateService.getLayoutTemplateName(template);<a name="line.114"></a>
-<span class="sourceLineNo">115</span>            data.getTemplateInfo().setLayoutTemplate(layoutTemplate);<a name="line.115"></a>
-<span class="sourceLineNo">116</span><a name="line.116"></a>
-<span class="sourceLineNo">117</span>            String screen = templateService.getScreenName(template);<a name="line.117"></a>
-<span class="sourceLineNo">118</span><a name="line.118"></a>
-<span class="sourceLineNo">119</span>            if (screen == null)<a name="line.119"></a>
-<span class="sourceLineNo">120</span>            {<a name="line.120"></a>
-<span class="sourceLineNo">121</span>                String errMsg = "Couldn't map Template "<a name="line.121"></a>
-<span class="sourceLineNo">122</span>                    + template + " to any Screen class!";<a name="line.122"></a>
-<span class="sourceLineNo">123</span>                log.error(errMsg);<a name="line.123"></a>
-<span class="sourceLineNo">124</span>                throw new TurbineException(errMsg);<a name="line.124"></a>
-<span class="sourceLineNo">125</span>            }<a name="line.125"></a>
-<span class="sourceLineNo">126</span>            data.setScreen(screen);<a name="line.126"></a>
-<span class="sourceLineNo">127</span>        }<a name="line.127"></a>
-<span class="sourceLineNo">128</span>    }<a name="line.128"></a>
-<span class="sourceLineNo">129</span>}<a name="line.129"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.apache.turbine.modules.pages;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3"></a>
+<span class="sourceLineNo">004</span><a id="line.4">/*</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * Licensed to the Apache Software Foundation (ASF) under one</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * or more contributor license agreements.  See the NOTICE file</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * distributed with this work for additional information</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * regarding copyright ownership.  The ASF licenses this file</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * to you under the Apache License, Version 2.0 (the</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * "License"); you may not use this file except in compliance</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * with the License.  You may obtain a copy of the License at</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *   http://www.apache.org/licenses/LICENSE-2.0</a>
+<span class="sourceLineNo">014</span><a id="line.14"> *</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * Unless required by applicable law or agreed to in writing,</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * software distributed under the License is distributed on an</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * KIND, either express or implied.  See the License for the</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * specific language governing permissions and limitations</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * under the License.</a>
+<span class="sourceLineNo">021</span><a id="line.21"> */</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23"></a>
+<span class="sourceLineNo">024</span><a id="line.24">import org.apache.turbine.annotation.TurbineService;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import org.apache.turbine.pipeline.PipelineData;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import org.apache.turbine.services.template.TemplateService;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import org.apache.turbine.util.RunData;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import org.apache.turbine.util.TurbineException;</a>
+<span class="sourceLineNo">029</span><a id="line.29"></a>
+<span class="sourceLineNo">030</span><a id="line.30">/**</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * When building sites using templates, Screens need only be defined</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * for templates which require dynamic (database or object) data.</a>
+<span class="sourceLineNo">033</span><a id="line.33"> *</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * &lt;p&gt;</a>
+<span class="sourceLineNo">035</span><a id="line.35"> *</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * This page can be used on sites where the number of Screens can be</a>
+<span class="sourceLineNo">037</span><a id="line.37"> * much less than the number of templates.  The templates can be</a>
+<span class="sourceLineNo">038</span><a id="line.38"> * grouped in directories with common layouts.  Screen modules are</a>
+<span class="sourceLineNo">039</span><a id="line.39"> * then expected to be placed in packages corresponding with the</a>
+<span class="sourceLineNo">040</span><a id="line.40"> * templates' directories and follow a specific naming scheme.</a>
+<span class="sourceLineNo">041</span><a id="line.41"> *</a>
+<span class="sourceLineNo">042</span><a id="line.42"> * &lt;p&gt;</a>
+<span class="sourceLineNo">043</span><a id="line.43"> *</a>
+<span class="sourceLineNo">044</span><a id="line.44"> * The template parameter is parsed and and a Screen whose package</a>
+<span class="sourceLineNo">045</span><a id="line.45"> * matches the templates path and shares the same name minus any</a>
+<span class="sourceLineNo">046</span><a id="line.46"> * extension and beginning with a capital letter is searched for.  If</a>
+<span class="sourceLineNo">047</span><a id="line.47"> * not found, a Screen in a package matching the template's path with</a>
+<span class="sourceLineNo">048</span><a id="line.48"> * name Default is searched for.  If still not found, a Screen with</a>
+<span class="sourceLineNo">049</span><a id="line.49"> * name Default is looked for in packages corresponding to parent</a>
+<span class="sourceLineNo">050</span><a id="line.50"> * directories in the template's path until a match is found.</a>
+<span class="sourceLineNo">051</span><a id="line.51"> *</a>
+<span class="sourceLineNo">052</span><a id="line.52"> * &lt;p&gt;</a>
+<span class="sourceLineNo">053</span><a id="line.53"> *</a>
+<span class="sourceLineNo">054</span><a id="line.54"> * For example if data.getParameters().getString("template") returns</a>
+<span class="sourceLineNo">055</span><a id="line.55"> * /about_us/directions/driving.wm, the search follows</a>
+<span class="sourceLineNo">056</span><a id="line.56"> * about_us.directions.Driving, about_us.directions.Default,</a>
+<span class="sourceLineNo">057</span><a id="line.57"> * about_us.Default, Default, WebMacroSiteScreen (i.e. the default</a>
+<span class="sourceLineNo">058</span><a id="line.58"> * screen set in TurbineResources).</a>
+<span class="sourceLineNo">059</span><a id="line.59"> *</a>
+<span class="sourceLineNo">060</span><a id="line.60"> * &lt;p&gt;</a>
+<span class="sourceLineNo">061</span><a id="line.61"> *</a>
+<span class="sourceLineNo">062</span><a id="line.62"> * Only one Layout module is used, since it is expected that any</a>
+<span class="sourceLineNo">063</span><a id="line.63"> * dynamic content will be placed in navigations and screens.  The</a>
+<span class="sourceLineNo">064</span><a id="line.64"> * layout template to be used is found in a similar way to the Screen.</a>
+<span class="sourceLineNo">065</span><a id="line.65"> * For example the following paths will be searched in the layouts</a>
+<span class="sourceLineNo">066</span><a id="line.66"> * subdirectory: /about_us/directions/driving.wm,</a>
+<span class="sourceLineNo">067</span><a id="line.67"> * /about_us/directions/default.wm, /about_us/default.wm, /default.wm,</a>
+<span class="sourceLineNo">068</span><a id="line.68"> * where wm is the value of the template.default.extension property.</a>
+<span class="sourceLineNo">069</span><a id="line.69"> *</a>
+<span class="sourceLineNo">070</span><a id="line.70"> * &lt;p&gt;</a>
+<span class="sourceLineNo">071</span><a id="line.71"> *</a>
+<span class="sourceLineNo">072</span><a id="line.72"> * This approach allows a site with largely static content to be</a>
+<span class="sourceLineNo">073</span><a id="line.73"> * updated and added to regularly by those with little Java</a>
+<span class="sourceLineNo">074</span><a id="line.74"> * experience.</a>
+<span class="sourceLineNo">075</span><a id="line.75"> *</a>
+<span class="sourceLineNo">076</span><a id="line.76"> * @author &lt;a href="mailto:john.mcnally@clearink.com"&gt;John D. McNally&lt;/a&gt;</a>
+<span class="sourceLineNo">077</span><a id="line.77"> * @author &lt;a href="mailto:mbryson@mont.mindspring.com"&gt;Dave Bryson&lt;/a&gt;</a>
+<span class="sourceLineNo">078</span><a id="line.78"> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;</a>
+<span class="sourceLineNo">079</span><a id="line.79"> * @author &lt;a href="mailto:peter@courcoux.biz"&gt;Peter Courcoux&lt;/a&gt;</a>
+<span class="sourceLineNo">080</span><a id="line.80"> * @version $Id$</a>
+<span class="sourceLineNo">081</span><a id="line.81"> */</a>
+<span class="sourceLineNo">082</span><a id="line.82">public class TemplatePage</a>
+<span class="sourceLineNo">083</span><a id="line.83">    extends DefaultPage</a>
+<span class="sourceLineNo">084</span><a id="line.84">{</a>
+<span class="sourceLineNo">085</span><a id="line.85">    /** Injected service instance */</a>
+<span class="sourceLineNo">086</span><a id="line.86">    @TurbineService</a>
+<span class="sourceLineNo">087</span><a id="line.87">    private TemplateService templateService;</a>
+<span class="sourceLineNo">088</span><a id="line.88"></a>
+<span class="sourceLineNo">089</span><a id="line.89">    /**</a>
+<span class="sourceLineNo">090</span><a id="line.90">     * Works with TemplateService to set up default templates and</a>
+<span class="sourceLineNo">091</span><a id="line.91">     * corresponding class modules.</a>
+<span class="sourceLineNo">092</span><a id="line.92">     *</a>
+<span class="sourceLineNo">093</span><a id="line.93">     * @param pipelineData Turbine information.</a>
+<span class="sourceLineNo">094</span><a id="line.94">     * @throws Exception a generic exception.</a>
+<span class="sourceLineNo">095</span><a id="line.95">     */</a>
+<span class="sourceLineNo">096</span><a id="line.96">    @Override</a>
+<span class="sourceLineNo">097</span><a id="line.97">    protected void doBuildAfterAction(PipelineData pipelineData)</a>
+<span class="sourceLineNo">098</span><a id="line.98">        throws Exception</a>
+<span class="sourceLineNo">099</span><a id="line.99">    {</a>
+<span class="sourceLineNo">100</span><a id="line.100">        RunData data = pipelineData.getRunData();</a>
+<span class="sourceLineNo">101</span><a id="line.101">        // The Template Service at this point must fetch the Screen class</a>
+<span class="sourceLineNo">102</span><a id="line.102">        // to match a given template. If the Screen class has already been</a>
+<span class="sourceLineNo">103</span><a id="line.103">        // set by an action, skip this, because the user has the already</a>
+<span class="sourceLineNo">104</span><a id="line.104">        // specified the Screen class he wants to use.</a>
+<span class="sourceLineNo">105</span><a id="line.105">        if (!data.hasScreen())</a>
+<span class="sourceLineNo">106</span><a id="line.106">        {</a>
+<span class="sourceLineNo">107</span><a id="line.107">            // This is effectively getting the "template" parameter</a>
+<span class="sourceLineNo">108</span><a id="line.108">            // from the parameter parser in rundata. This is coming</a>
+<span class="sourceLineNo">109</span><a id="line.109">            // from the request for a template.</a>
+<span class="sourceLineNo">110</span><a id="line.110">            String template = data.getTemplateInfo().getScreenTemplate();</a>
+<span class="sourceLineNo">111</span><a id="line.111"></a>
+<span class="sourceLineNo">112</span><a id="line.112">            // Get the layout template and the correct Screen.</a>
+<span class="sourceLineNo">113</span><a id="line.113">            String layoutTemplate =</a>
+<span class="sourceLineNo">114</span><a id="line.114">                    templateService.getLayoutTemplateName(template);</a>
+<span class="sourceLineNo">115</span><a id="line.115">            data.getTemplateInfo().setLayoutTemplate(layoutTemplate);</a>
+<span class="sourceLineNo">116</span><a id="line.116"></a>
+<span class="sourceLineNo">117</span><a id="line.117">            String screen = templateService.getScreenName(template);</a>
+<span class="sourceLineNo">118</span><a id="line.118"></a>
+<span class="sourceLineNo">119</span><a id="line.119">            if (screen == null)</a>
+<span class="sourceLineNo">120</span><a id="line.120">            {</a>
+<span class="sourceLineNo">121</span><a id="line.121">                String errMsg = "Couldn't map Template "</a>
+<span class="sourceLineNo">122</span><a id="line.122">                    + template + " to any Screen class!";</a>
+<span class="sourceLineNo">123</span><a id="line.123">                log.error(errMsg);</a>
+<span class="sourceLineNo">124</span><a id="line.124">                throw new TurbineException(errMsg);</a>
+<span class="sourceLineNo">125</span><a id="line.125">            }</a>
+<span class="sourceLineNo">126</span><a id="line.126">            data.setScreen(screen);</a>
+<span class="sourceLineNo">127</span><a id="line.127">        }</a>
+<span class="sourceLineNo">128</span><a id="line.128">    }</a>
+<span class="sourceLineNo">129</span><a id="line.129">}</a>
 
 
 
@@ -197,5 +198,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>

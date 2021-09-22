@@ -1,150 +1,155 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="de">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package org.apache.turbine.modules.screens;<a name="line.1"></a>
-<span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>/*<a name="line.3"></a>
-<span class="sourceLineNo">004</span> * Licensed to the Apache Software Foundation (ASF) under one<a name="line.4"></a>
-<span class="sourceLineNo">005</span> * or more contributor license agreements.  See the NOTICE file<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * distributed with this work for additional information<a name="line.6"></a>
-<span class="sourceLineNo">007</span> * regarding copyright ownership.  The ASF licenses this file<a name="line.7"></a>
-<span class="sourceLineNo">008</span> * to you under the Apache License, Version 2.0 (the<a name="line.8"></a>
-<span class="sourceLineNo">009</span> * "License"); you may not use this file except in compliance<a name="line.9"></a>
-<span class="sourceLineNo">010</span> * with the License.  You may obtain a copy of the License at<a name="line.10"></a>
-<span class="sourceLineNo">011</span> *<a name="line.11"></a>
-<span class="sourceLineNo">012</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.12"></a>
-<span class="sourceLineNo">013</span> *<a name="line.13"></a>
-<span class="sourceLineNo">014</span> * Unless required by applicable law or agreed to in writing,<a name="line.14"></a>
-<span class="sourceLineNo">015</span> * software distributed under the License is distributed on an<a name="line.15"></a>
-<span class="sourceLineNo">016</span> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY<a name="line.16"></a>
-<span class="sourceLineNo">017</span> * KIND, either express or implied.  See the License for the<a name="line.17"></a>
-<span class="sourceLineNo">018</span> * specific language governing permissions and limitations<a name="line.18"></a>
-<span class="sourceLineNo">019</span> * under the License.<a name="line.19"></a>
-<span class="sourceLineNo">020</span> */<a name="line.20"></a>
-<span class="sourceLineNo">021</span><a name="line.21"></a>
-<span class="sourceLineNo">022</span>import java.io.BufferedReader;<a name="line.22"></a>
-<span class="sourceLineNo">023</span>import java.io.CharArrayWriter;<a name="line.23"></a>
-<span class="sourceLineNo">024</span>import java.io.InputStreamReader;<a name="line.24"></a>
-<span class="sourceLineNo">025</span>import java.io.OutputStreamWriter;<a name="line.25"></a>
-<span class="sourceLineNo">026</span>import java.io.PrintWriter;<a name="line.26"></a>
-<span class="sourceLineNo">027</span><a name="line.27"></a>
-<span class="sourceLineNo">028</span>import javax.servlet.http.HttpServletRequest;<a name="line.28"></a>
-<span class="sourceLineNo">029</span><a name="line.29"></a>
-<span class="sourceLineNo">030</span>import org.apache.turbine.annotation.TurbineService;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import org.apache.turbine.pipeline.PipelineData;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import org.apache.turbine.services.jsonrpc.JsonRpcService;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import org.apache.turbine.util.RunData;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import org.jabsorb.JSONRPCBridge;<a name="line.34"></a>
-<span class="sourceLineNo">035</span><a name="line.35"></a>
-<span class="sourceLineNo">036</span><a name="line.36"></a>
-<span class="sourceLineNo">037</span>/**<a name="line.37"></a>
-<span class="sourceLineNo">038</span> * A Screen class for dealing with JSON-RPC requests.  Typically you would<a name="line.38"></a>
-<span class="sourceLineNo">039</span> * extend this class and override the doOutput() method to use TurbineJsonRpc<a name="line.39"></a>
-<span class="sourceLineNo">040</span> * to register the POJOs that will provide the functions you are making<a name="line.40"></a>
-<span class="sourceLineNo">041</span> * available via JSON-RPC.  Use JSONSecureScreen if you need the user to be<a name="line.41"></a>
-<span class="sourceLineNo">042</span> * logged in prior to executing the functions you provide.<a name="line.42"></a>
-<span class="sourceLineNo">043</span> *<a name="line.43"></a>
-<span class="sourceLineNo">044</span> * &lt;p&gt;Here is an example from a superclass:<a name="line.44"></a>
-<span class="sourceLineNo">045</span> * &lt;code&gt;<a name="line.45"></a>
-<span class="sourceLineNo">046</span> * public void doOutput(PipelineData data) throws Exception<a name="line.46"></a>
-<span class="sourceLineNo">047</span> * {<a name="line.47"></a>
-<span class="sourceLineNo">048</span> *     User user = data.getUser();<a name="line.48"></a>
-<span class="sourceLineNo">049</span> *<a name="line.49"></a>
-<span class="sourceLineNo">050</span> *     MyJsonFunctions myFunctions = new MyJsonFunctions(user.getName());<a name="line.50"></a>
-<span class="sourceLineNo">051</span> *<a name="line.51"></a>
-<span class="sourceLineNo">052</span> *     // Session specific<a name="line.52"></a>
-<span class="sourceLineNo">053</span> *     TurbineJsonRpc.registerObject(data.getSession(), "myFunctions", myFunctions);<a name="line.53"></a>
-<span class="sourceLineNo">054</span> *<a name="line.54"></a>
-<span class="sourceLineNo">055</span> *     // Global<a name="line.55"></a>
-<span class="sourceLineNo">056</span> *     //TurbineJsonRpc.registerObjectGlobal("testGlobal", testObject);<a name="line.56"></a>
-<span class="sourceLineNo">057</span> *<a name="line.57"></a>
-<span class="sourceLineNo">058</span> *     super.doOutput(data);<a name="line.58"></a>
-<span class="sourceLineNo">059</span> * }<a name="line.59"></a>
-<span class="sourceLineNo">060</span> * &lt;/code&gt;<a name="line.60"></a>
-<span class="sourceLineNo">061</span> *<a name="line.61"></a>
-<span class="sourceLineNo">062</span> * &lt;p&gt;The class MyFunctions would be something like:<a name="line.62"></a>
-<span class="sourceLineNo">063</span> * &lt;code&gt;<a name="line.63"></a>
-<span class="sourceLineNo">064</span> * public class MyJsonFunctions<a name="line.64"></a>
-<span class="sourceLineNo">065</span> * {<a name="line.65"></a>
-<span class="sourceLineNo">066</span> *     private String getHello(String clientParameter)<a name="line.66"></a>
-<span class="sourceLineNo">067</span> *     {<a name="line.67"></a>
-<span class="sourceLineNo">068</span> *         return "Hello " + clientParameter;<a name="line.68"></a>
-<span class="sourceLineNo">069</span> *     }<a name="line.69"></a>
-<span class="sourceLineNo">070</span> * }<a name="line.70"></a>
-<span class="sourceLineNo">071</span> * &lt;/code&gt;<a name="line.71"></a>
-<span class="sourceLineNo">072</span> *<a name="line.72"></a>
-<span class="sourceLineNo">073</span> * &lt;p&gt;This code is derived from the com.metaparadigm.jsonrpc.JSONRPCServlet and (after upgrade) checked against <a name="line.73"></a>
-<span class="sourceLineNo">074</span> * org.jabsorb.JSONRPCServlet.<a name="line.74"></a>
-<span class="sourceLineNo">075</span> *<a name="line.75"></a>
-<span class="sourceLineNo">076</span> * @author brad@folkens.com<a name="line.76"></a>
-<span class="sourceLineNo">077</span> * @author &lt;a href="mailto:seade@backstagetech.com.au"&gt;Scott Eade&lt;/a&gt;<a name="line.77"></a>
-<span class="sourceLineNo">078</span> * @version $Id: JSONScreen.java 1718292 2015-12-07 10:23:44Z gk $<a name="line.78"></a>
-<span class="sourceLineNo">079</span> */<a name="line.79"></a>
-<span class="sourceLineNo">080</span>public class JSONScreen extends RawScreen<a name="line.80"></a>
-<span class="sourceLineNo">081</span>{<a name="line.81"></a>
-<span class="sourceLineNo">082</span>    protected static final String JSONRPC_CONTENT_TYPE = "application/json;charset=utf-8";<a name="line.82"></a>
-<span class="sourceLineNo">083</span><a name="line.83"></a>
-<span class="sourceLineNo">084</span>    protected final static int BUFFER_SIZE = 4096;<a name="line.84"></a>
-<span class="sourceLineNo">085</span><a name="line.85"></a>
-<span class="sourceLineNo">086</span>    /** Injected service instance */<a name="line.86"></a>
-<span class="sourceLineNo">087</span>    @TurbineService<a name="line.87"></a>
-<span class="sourceLineNo">088</span>    private JsonRpcService jsonRpcService;<a name="line.88"></a>
-<span class="sourceLineNo">089</span><a name="line.89"></a>
-<span class="sourceLineNo">090</span>    /**<a name="line.90"></a>
-<span class="sourceLineNo">091</span>     * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.pipeline.PipelineData)<a name="line.91"></a>
-<span class="sourceLineNo">092</span>     */<a name="line.92"></a>
-<span class="sourceLineNo">093</span>    @Override<a name="line.93"></a>
-<span class="sourceLineNo">094</span>    protected String getContentType(PipelineData pipelineData)<a name="line.94"></a>
-<span class="sourceLineNo">095</span>    {<a name="line.95"></a>
-<span class="sourceLineNo">096</span>        return JSONRPC_CONTENT_TYPE;<a name="line.96"></a>
-<span class="sourceLineNo">097</span>    }<a name="line.97"></a>
-<span class="sourceLineNo">098</span><a name="line.98"></a>
-<span class="sourceLineNo">099</span>    /**<a name="line.99"></a>
-<span class="sourceLineNo">100</span>     * Output the dynamic content.<a name="line.100"></a>
-<span class="sourceLineNo">101</span>     * <a name="line.101"></a>
-<span class="sourceLineNo">102</span>     * Encodign is UTF-8. @{@link #JSONRPC_CONTENT_TYPE}: {@value #JSONRPC_CONTENT_TYPE}.<a name="line.102"></a>
-<span class="sourceLineNo">103</span>     *<a name="line.103"></a>
-<span class="sourceLineNo">104</span>     * @param pipelineData The PipelineData object.<a name="line.104"></a>
-<span class="sourceLineNo">105</span>     */<a name="line.105"></a>
-<span class="sourceLineNo">106</span>    @Override<a name="line.106"></a>
-<span class="sourceLineNo">107</span>    protected void doOutput(PipelineData pipelineData) throws Exception<a name="line.107"></a>
-<span class="sourceLineNo">108</span>    {<a name="line.108"></a>
-<span class="sourceLineNo">109</span>        RunData data = getRunData(pipelineData);<a name="line.109"></a>
-<span class="sourceLineNo">110</span>        data.declareDirectResponse();<a name="line.110"></a>
-<span class="sourceLineNo">111</span>        HttpServletRequest request = data.getRequest();<a name="line.111"></a>
-<span class="sourceLineNo">112</span><a name="line.112"></a>
-<span class="sourceLineNo">113</span>        // we require utf-8, cft<a name="line.113"></a>
-<span class="sourceLineNo">114</span>        String charset =  "UTF-8"; //request.getCharacterEncoding();<a name="line.114"></a>
-<span class="sourceLineNo">115</span>        BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), charset));<a name="line.115"></a>
-<span class="sourceLineNo">116</span><a name="line.116"></a>
-<span class="sourceLineNo">117</span>        // Read the request<a name="line.117"></a>
-<span class="sourceLineNo">118</span>        CharArrayWriter cdata = new CharArrayWriter();<a name="line.118"></a>
-<span class="sourceLineNo">119</span>        char buf[] = new char[BUFFER_SIZE];<a name="line.119"></a>
-<span class="sourceLineNo">120</span>        int ret;<a name="line.120"></a>
-<span class="sourceLineNo">121</span>        while ((ret = in.read(buf, 0, BUFFER_SIZE)) != -1)<a name="line.121"></a>
-<span class="sourceLineNo">122</span>        {<a name="line.122"></a>
-<span class="sourceLineNo">123</span>            cdata.write(buf, 0, ret);<a name="line.123"></a>
-<span class="sourceLineNo">124</span>        }<a name="line.124"></a>
-<span class="sourceLineNo">125</span><a name="line.125"></a>
-<span class="sourceLineNo">126</span>        // Find the JSONRPCBridge for this session or create one<a name="line.126"></a>
-<span class="sourceLineNo">127</span>        // if it doesn't exist<a name="line.127"></a>
-<span class="sourceLineNo">128</span>        JSONRPCBridge json_bridge = jsonRpcService.getBridge(data.getSession());<a name="line.128"></a>
-<span class="sourceLineNo">129</span><a name="line.129"></a>
-<span class="sourceLineNo">130</span>        // Process the request<a name="line.130"></a>
-<span class="sourceLineNo">131</span>        Object json_res = jsonRpcService.processCall(cdata, json_bridge, request);<a name="line.131"></a>
-<span class="sourceLineNo">132</span><a name="line.132"></a>
-<span class="sourceLineNo">133</span>        PrintWriter out = new PrintWriter(<a name="line.133"></a>
-<span class="sourceLineNo">134</span>                new OutputStreamWriter(data.getResponse().getOutputStream(),charset));<a name="line.134"></a>
-<span class="sourceLineNo">135</span>        out.print(json_res.toString());<a name="line.135"></a>
-<span class="sourceLineNo">136</span>        out.flush();<a name="line.136"></a>
-<span class="sourceLineNo">137</span>        out.close();<a name="line.137"></a>
-<span class="sourceLineNo">138</span>    }<a name="line.138"></a>
-<span class="sourceLineNo">139</span>}<a name="line.139"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.apache.turbine.modules.screens;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">/*</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * Licensed to the Apache Software Foundation (ASF) under one</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * or more contributor license agreements.  See the NOTICE file</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * distributed with this work for additional information</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * regarding copyright ownership.  The ASF licenses this file</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * to you under the Apache License, Version 2.0 (the</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * "License"); you may not use this file except in compliance</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * with the License.  You may obtain a copy of the License at</a>
+<span class="sourceLineNo">011</span><a id="line.11"> *</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *   http://www.apache.org/licenses/LICENSE-2.0</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * Unless required by applicable law or agreed to in writing,</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * software distributed under the License is distributed on an</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * KIND, either express or implied.  See the License for the</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * specific language governing permissions and limitations</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * under the License.</a>
+<span class="sourceLineNo">020</span><a id="line.20"> */</a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">import java.io.BufferedReader;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import java.io.CharArrayWriter;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import java.io.InputStreamReader;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import java.io.OutputStreamWriter;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import java.io.PrintWriter;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import java.nio.charset.Charset;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import java.nio.charset.StandardCharsets;</a>
+<span class="sourceLineNo">029</span><a id="line.29"></a>
+<span class="sourceLineNo">030</span><a id="line.30">import javax.servlet.http.HttpServletRequest;</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">import org.apache.turbine.annotation.TurbineService;</a>
+<span class="sourceLineNo">033</span><a id="line.33">import org.apache.turbine.pipeline.PipelineData;</a>
+<span class="sourceLineNo">034</span><a id="line.34">import org.apache.turbine.services.jsonrpc.JsonRpcService;</a>
+<span class="sourceLineNo">035</span><a id="line.35">import org.apache.turbine.util.RunData;</a>
+<span class="sourceLineNo">036</span><a id="line.36">import org.jabsorb.JSONRPCBridge;</a>
+<span class="sourceLineNo">037</span><a id="line.37"></a>
+<span class="sourceLineNo">038</span><a id="line.38"></a>
+<span class="sourceLineNo">039</span><a id="line.39">/**</a>
+<span class="sourceLineNo">040</span><a id="line.40"> * A Screen class for dealing with JSON-RPC requests.  Typically you would</a>
+<span class="sourceLineNo">041</span><a id="line.41"> * extend this class and override the doOutput() method to use TurbineJsonRpc</a>
+<span class="sourceLineNo">042</span><a id="line.42"> * to register the POJOs that will provide the functions you are making</a>
+<span class="sourceLineNo">043</span><a id="line.43"> * available via JSON-RPC.  Use JSONSecureScreen if you need the user to be</a>
+<span class="sourceLineNo">044</span><a id="line.44"> * logged in prior to executing the functions you provide.</a>
+<span class="sourceLineNo">045</span><a id="line.45"> *</a>
+<span class="sourceLineNo">046</span><a id="line.46"> * &lt;p&gt;Here is an example from a superclass:</a>
+<span class="sourceLineNo">047</span><a id="line.47"> * &lt;code&gt;</a>
+<span class="sourceLineNo">048</span><a id="line.48"> * public void doOutput(PipelineData data) throws Exception</a>
+<span class="sourceLineNo">049</span><a id="line.49"> * {</a>
+<span class="sourceLineNo">050</span><a id="line.50"> *     User user = data.getUser();</a>
+<span class="sourceLineNo">051</span><a id="line.51"> *</a>
+<span class="sourceLineNo">052</span><a id="line.52"> *     MyJsonFunctions myFunctions = new MyJsonFunctions(user.getName());</a>
+<span class="sourceLineNo">053</span><a id="line.53"> *</a>
+<span class="sourceLineNo">054</span><a id="line.54"> *     // Session specific</a>
+<span class="sourceLineNo">055</span><a id="line.55"> *     TurbineJsonRpc.registerObject(data.getSession(), "myFunctions", myFunctions);</a>
+<span class="sourceLineNo">056</span><a id="line.56"> *</a>
+<span class="sourceLineNo">057</span><a id="line.57"> *     // Global</a>
+<span class="sourceLineNo">058</span><a id="line.58"> *     //TurbineJsonRpc.registerObjectGlobal("testGlobal", testObject);</a>
+<span class="sourceLineNo">059</span><a id="line.59"> *</a>
+<span class="sourceLineNo">060</span><a id="line.60"> *     super.doOutput(data);</a>
+<span class="sourceLineNo">061</span><a id="line.61"> * }</a>
+<span class="sourceLineNo">062</span><a id="line.62"> * &lt;/code&gt;</a>
+<span class="sourceLineNo">063</span><a id="line.63"> *</a>
+<span class="sourceLineNo">064</span><a id="line.64"> * &lt;p&gt;The class MyFunctions would be something like:</a>
+<span class="sourceLineNo">065</span><a id="line.65"> * &lt;code&gt;</a>
+<span class="sourceLineNo">066</span><a id="line.66"> * public class MyJsonFunctions</a>
+<span class="sourceLineNo">067</span><a id="line.67"> * {</a>
+<span class="sourceLineNo">068</span><a id="line.68"> *     private String getHello(String clientParameter)</a>
+<span class="sourceLineNo">069</span><a id="line.69"> *     {</a>
+<span class="sourceLineNo">070</span><a id="line.70"> *         return "Hello " + clientParameter;</a>
+<span class="sourceLineNo">071</span><a id="line.71"> *     }</a>
+<span class="sourceLineNo">072</span><a id="line.72"> * }</a>
+<span class="sourceLineNo">073</span><a id="line.73"> * &lt;/code&gt;</a>
+<span class="sourceLineNo">074</span><a id="line.74"> *</a>
+<span class="sourceLineNo">075</span><a id="line.75"> * &lt;p&gt;This code is derived from the com.metaparadigm.jsonrpc.JSONRPCServlet and (after upgrade) checked against</a>
+<span class="sourceLineNo">076</span><a id="line.76"> * org.jabsorb.JSONRPCServlet.</a>
+<span class="sourceLineNo">077</span><a id="line.77"> *</a>
+<span class="sourceLineNo">078</span><a id="line.78"> * @author brad@folkens.com</a>
+<span class="sourceLineNo">079</span><a id="line.79"> * @author &lt;a href="mailto:seade@backstagetech.com.au"&gt;Scott Eade&lt;/a&gt;</a>
+<span class="sourceLineNo">080</span><a id="line.80"> * @version $Id$</a>
+<span class="sourceLineNo">081</span><a id="line.81"> */</a>
+<span class="sourceLineNo">082</span><a id="line.82">public class JSONScreen extends RawScreen</a>
+<span class="sourceLineNo">083</span><a id="line.83">{</a>
+<span class="sourceLineNo">084</span><a id="line.84">    protected static final String JSONRPC_CONTENT_TYPE = "application/json;charset=utf-8";</a>
+<span class="sourceLineNo">085</span><a id="line.85"></a>
+<span class="sourceLineNo">086</span><a id="line.86">    protected final static int BUFFER_SIZE = 4096;</a>
+<span class="sourceLineNo">087</span><a id="line.87"></a>
+<span class="sourceLineNo">088</span><a id="line.88">    /** Injected service instance */</a>
+<span class="sourceLineNo">089</span><a id="line.89">    @TurbineService</a>
+<span class="sourceLineNo">090</span><a id="line.90">    protected JsonRpcService jsonRpcService;</a>
+<span class="sourceLineNo">091</span><a id="line.91"></a>
+<span class="sourceLineNo">092</span><a id="line.92">    /**</a>
+<span class="sourceLineNo">093</span><a id="line.93">     * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.pipeline.PipelineData)</a>
+<span class="sourceLineNo">094</span><a id="line.94">     */</a>
+<span class="sourceLineNo">095</span><a id="line.95">    @Override</a>
+<span class="sourceLineNo">096</span><a id="line.96">    protected String getContentType(PipelineData pipelineData)</a>
+<span class="sourceLineNo">097</span><a id="line.97">    {</a>
+<span class="sourceLineNo">098</span><a id="line.98">        return JSONRPC_CONTENT_TYPE;</a>
+<span class="sourceLineNo">099</span><a id="line.99">    }</a>
+<span class="sourceLineNo">100</span><a id="line.100"></a>
+<span class="sourceLineNo">101</span><a id="line.101">    /**</a>
+<span class="sourceLineNo">102</span><a id="line.102">     * Output the dynamic content.</a>
+<span class="sourceLineNo">103</span><a id="line.103">     *</a>
+<span class="sourceLineNo">104</span><a id="line.104">     * Encoding is UTF-8. @{@link #JSONRPC_CONTENT_TYPE}: {@value #JSONRPC_CONTENT_TYPE}.</a>
+<span class="sourceLineNo">105</span><a id="line.105">     *</a>
+<span class="sourceLineNo">106</span><a id="line.106">     * @param pipelineData The PipelineData object.</a>
+<span class="sourceLineNo">107</span><a id="line.107">     */</a>
+<span class="sourceLineNo">108</span><a id="line.108">    @Override</a>
+<span class="sourceLineNo">109</span><a id="line.109">    protected void doOutput(PipelineData pipelineData) throws Exception</a>
+<span class="sourceLineNo">110</span><a id="line.110">    {</a>
+<span class="sourceLineNo">111</span><a id="line.111">        RunData data = pipelineData.getRunData();</a>
+<span class="sourceLineNo">112</span><a id="line.112">        data.declareDirectResponse();</a>
+<span class="sourceLineNo">113</span><a id="line.113">        HttpServletRequest request = data.getRequest();</a>
+<span class="sourceLineNo">114</span><a id="line.114"></a>
+<span class="sourceLineNo">115</span><a id="line.115">        // we require utf-8, cft</a>
+<span class="sourceLineNo">116</span><a id="line.116">        Charset charset =  StandardCharsets.UTF_8; //request.getCharacterEncoding();</a>
+<span class="sourceLineNo">117</span><a id="line.117">        BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), charset));</a>
+<span class="sourceLineNo">118</span><a id="line.118"></a>
+<span class="sourceLineNo">119</span><a id="line.119">        // Read the request</a>
+<span class="sourceLineNo">120</span><a id="line.120">        CharArrayWriter cdata = new CharArrayWriter();</a>
+<span class="sourceLineNo">121</span><a id="line.121">        char buf[] = new char[BUFFER_SIZE];</a>
+<span class="sourceLineNo">122</span><a id="line.122">        int ret;</a>
+<span class="sourceLineNo">123</span><a id="line.123">        while ((ret = in.read(buf, 0, BUFFER_SIZE)) != -1)</a>
+<span class="sourceLineNo">124</span><a id="line.124">        {</a>
+<span class="sourceLineNo">125</span><a id="line.125">            cdata.write(buf, 0, ret);</a>
+<span class="sourceLineNo">126</span><a id="line.126">        }</a>
+<span class="sourceLineNo">127</span><a id="line.127"></a>
+<span class="sourceLineNo">128</span><a id="line.128">        // Find the JSONRPCBridge for this session or create one</a>
+<span class="sourceLineNo">129</span><a id="line.129">        // if it doesn't exist</a>
+<span class="sourceLineNo">130</span><a id="line.130">        JSONRPCBridge json_bridge = jsonRpcService.getBridge(data.getSession());</a>
+<span class="sourceLineNo">131</span><a id="line.131"></a>
+<span class="sourceLineNo">132</span><a id="line.132">        // Process the request</a>
+<span class="sourceLineNo">133</span><a id="line.133">        Object json_res = jsonRpcService.processCall(cdata, json_bridge, request);</a>
+<span class="sourceLineNo">134</span><a id="line.134"></a>
+<span class="sourceLineNo">135</span><a id="line.135">        try (PrintWriter out = new PrintWriter(</a>
+<span class="sourceLineNo">136</span><a id="line.136">                new OutputStreamWriter(</a>
+<span class="sourceLineNo">137</span><a id="line.137">                    data.getResponse().getOutputStream(), charset)))</a>
+<span class="sourceLineNo">138</span><a id="line.138">        {</a>
+<span class="sourceLineNo">139</span><a id="line.139">            out.print(json_res.toString());</a>
+<span class="sourceLineNo">140</span><a id="line.140">            out.flush();</a>
+<span class="sourceLineNo">141</span><a id="line.141">        }</a>
+<span class="sourceLineNo">142</span><a id="line.142">    }</a>
+<span class="sourceLineNo">143</span><a id="line.143">}</a>
 
 
 
@@ -207,5 +212,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>

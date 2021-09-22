@@ -1,118 +1,125 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="de">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
 </head>
 <body>
+<main role="main">
 <div class="sourceContainer">
-<pre><span class="sourceLineNo">001</span>package org.apache.turbine.services.schedule;<a name="line.1"></a>
-<span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span><a name="line.3"></a>
-<span class="sourceLineNo">004</span>/*<a name="line.4"></a>
-<span class="sourceLineNo">005</span> * Licensed to the Apache Software Foundation (ASF) under one<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * or more contributor license agreements.  See the NOTICE file<a name="line.6"></a>
-<span class="sourceLineNo">007</span> * distributed with this work for additional information<a name="line.7"></a>
-<span class="sourceLineNo">008</span> * regarding copyright ownership.  The ASF licenses this file<a name="line.8"></a>
-<span class="sourceLineNo">009</span> * to you under the Apache License, Version 2.0 (the<a name="line.9"></a>
-<span class="sourceLineNo">010</span> * "License"); you may not use this file except in compliance<a name="line.10"></a>
-<span class="sourceLineNo">011</span> * with the License.  You may obtain a copy of the License at<a name="line.11"></a>
-<span class="sourceLineNo">012</span> *<a name="line.12"></a>
-<span class="sourceLineNo">013</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.13"></a>
-<span class="sourceLineNo">014</span> *<a name="line.14"></a>
-<span class="sourceLineNo">015</span> * Unless required by applicable law or agreed to in writing,<a name="line.15"></a>
-<span class="sourceLineNo">016</span> * software distributed under the License is distributed on an<a name="line.16"></a>
-<span class="sourceLineNo">017</span> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY<a name="line.17"></a>
-<span class="sourceLineNo">018</span> * KIND, either express or implied.  See the License for the<a name="line.18"></a>
-<span class="sourceLineNo">019</span> * specific language governing permissions and limitations<a name="line.19"></a>
-<span class="sourceLineNo">020</span> * under the License.<a name="line.20"></a>
-<span class="sourceLineNo">021</span> */<a name="line.21"></a>
-<span class="sourceLineNo">022</span><a name="line.22"></a>
-<span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>import java.util.List;<a name="line.24"></a>
-<span class="sourceLineNo">025</span><a name="line.25"></a>
-<span class="sourceLineNo">026</span>import org.apache.commons.logging.Log;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import org.apache.commons.logging.LogFactory;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import org.apache.turbine.services.TurbineServices;<a name="line.28"></a>
-<span class="sourceLineNo">029</span>import org.apache.turbine.services.pull.ApplicationTool;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import org.apache.turbine.util.TurbineException;<a name="line.30"></a>
-<span class="sourceLineNo">031</span><a name="line.31"></a>
-<span class="sourceLineNo">032</span>/**<a name="line.32"></a>
-<span class="sourceLineNo">033</span> * This tool is used to retrieve information about the job scheduler.<a name="line.33"></a>
-<span class="sourceLineNo">034</span> *<a name="line.34"></a>
-<span class="sourceLineNo">035</span> * @author &lt;a href="mailto:qmccombs@nequalsone.com"&gt;Quinton McCombs&lt;/a&gt;<a name="line.35"></a>
-<span class="sourceLineNo">036</span> * @version $Id: SchedulerTool.java 1706239 2015-10-01 13:18:35Z tv $<a name="line.36"></a>
-<span class="sourceLineNo">037</span> */<a name="line.37"></a>
-<span class="sourceLineNo">038</span>public class SchedulerTool implements ApplicationTool<a name="line.38"></a>
-<span class="sourceLineNo">039</span>{<a name="line.39"></a>
-<span class="sourceLineNo">040</span>    /** Used for logging */<a name="line.40"></a>
-<span class="sourceLineNo">041</span>    private static Log log = LogFactory.getLog(ScheduleService.LOGGER_NAME);<a name="line.41"></a>
-<span class="sourceLineNo">042</span><a name="line.42"></a>
-<span class="sourceLineNo">043</span>    /**<a name="line.43"></a>
-<span class="sourceLineNo">044</span>     * Initialize the pull tool<a name="line.44"></a>
-<span class="sourceLineNo">045</span>     */<a name="line.45"></a>
-<span class="sourceLineNo">046</span>    @Override<a name="line.46"></a>
-<span class="sourceLineNo">047</span>    public void init(Object data)<a name="line.47"></a>
-<span class="sourceLineNo">048</span>    {<a name="line.48"></a>
-<span class="sourceLineNo">049</span>        if (!TurbineServices.getInstance().isRegistered(<a name="line.49"></a>
-<span class="sourceLineNo">050</span>                ScheduleService.SERVICE_NAME))<a name="line.50"></a>
-<span class="sourceLineNo">051</span>        {<a name="line.51"></a>
-<span class="sourceLineNo">052</span>            log.error("You can not use the SchedulerTool unless you enable "<a name="line.52"></a>
-<span class="sourceLineNo">053</span>                    +"the Scheduler Service!!!!");<a name="line.53"></a>
-<span class="sourceLineNo">054</span>        }<a name="line.54"></a>
-<span class="sourceLineNo">055</span>    }<a name="line.55"></a>
-<span class="sourceLineNo">056</span><a name="line.56"></a>
-<span class="sourceLineNo">057</span>    /**<a name="line.57"></a>
-<span class="sourceLineNo">058</span>     * Does nothing<a name="line.58"></a>
-<span class="sourceLineNo">059</span>     */<a name="line.59"></a>
-<span class="sourceLineNo">060</span>    @Override<a name="line.60"></a>
-<span class="sourceLineNo">061</span>    public void refresh()<a name="line.61"></a>
-<span class="sourceLineNo">062</span>    {<a name="line.62"></a>
-<span class="sourceLineNo">063</span>        // empty<a name="line.63"></a>
-<span class="sourceLineNo">064</span>    }<a name="line.64"></a>
-<span class="sourceLineNo">065</span><a name="line.65"></a>
-<span class="sourceLineNo">066</span>    /**<a name="line.66"></a>
-<span class="sourceLineNo">067</span>     * Gets the list of scheduled jobs.<a name="line.67"></a>
-<span class="sourceLineNo">068</span>     *<a name="line.68"></a>
-<span class="sourceLineNo">069</span>     * @return List of JobEntry objects.<a name="line.69"></a>
-<span class="sourceLineNo">070</span>     */<a name="line.70"></a>
-<span class="sourceLineNo">071</span>    public List&lt;? extends JobEntry&gt; getScheduledJobs()<a name="line.71"></a>
-<span class="sourceLineNo">072</span>    {<a name="line.72"></a>
-<span class="sourceLineNo">073</span>        return TurbineScheduler.listJobs();<a name="line.73"></a>
-<span class="sourceLineNo">074</span>    }<a name="line.74"></a>
-<span class="sourceLineNo">075</span><a name="line.75"></a>
-<span class="sourceLineNo">076</span>    /**<a name="line.76"></a>
-<span class="sourceLineNo">077</span>     * Determines if the scheduler service is currently enabled.<a name="line.77"></a>
-<span class="sourceLineNo">078</span>     * @return true if the scheduler is enabled<a name="line.78"></a>
-<span class="sourceLineNo">079</span>     */<a name="line.79"></a>
-<span class="sourceLineNo">080</span>    public boolean isEnabled()<a name="line.80"></a>
-<span class="sourceLineNo">081</span>    {<a name="line.81"></a>
-<span class="sourceLineNo">082</span>        return TurbineScheduler.isEnabled();<a name="line.82"></a>
-<span class="sourceLineNo">083</span>    }<a name="line.83"></a>
-<span class="sourceLineNo">084</span><a name="line.84"></a>
-<span class="sourceLineNo">085</span>    /**<a name="line.85"></a>
-<span class="sourceLineNo">086</span>     * Gets the job identified by the jobId.<a name="line.86"></a>
-<span class="sourceLineNo">087</span>     *<a name="line.87"></a>
-<span class="sourceLineNo">088</span>     * @param jobId Id of the job to retrieve.<a name="line.88"></a>
-<span class="sourceLineNo">089</span>     * @return The job.  Null if the jobId is not found.<a name="line.89"></a>
-<span class="sourceLineNo">090</span>     */<a name="line.90"></a>
-<span class="sourceLineNo">091</span>    public JobEntry getJob(String jobId)<a name="line.91"></a>
-<span class="sourceLineNo">092</span>    {<a name="line.92"></a>
-<span class="sourceLineNo">093</span>        JobEntry je = null;<a name="line.93"></a>
-<span class="sourceLineNo">094</span><a name="line.94"></a>
-<span class="sourceLineNo">095</span>        try<a name="line.95"></a>
-<span class="sourceLineNo">096</span>        {<a name="line.96"></a>
-<span class="sourceLineNo">097</span>            je = TurbineScheduler.getJob(Integer.parseInt(jobId));<a name="line.97"></a>
-<span class="sourceLineNo">098</span>        }<a name="line.98"></a>
-<span class="sourceLineNo">099</span>        catch (TurbineException e)<a name="line.99"></a>
-<span class="sourceLineNo">100</span>        {<a name="line.100"></a>
-<span class="sourceLineNo">101</span>            log.error("Could not retreive job id #" + jobId, e);<a name="line.101"></a>
-<span class="sourceLineNo">102</span>        }<a name="line.102"></a>
-<span class="sourceLineNo">103</span><a name="line.103"></a>
-<span class="sourceLineNo">104</span>        return je;<a name="line.104"></a>
-<span class="sourceLineNo">105</span>    }<a name="line.105"></a>
-<span class="sourceLineNo">106</span><a name="line.106"></a>
-<span class="sourceLineNo">107</span>}<a name="line.107"></a>
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.apache.turbine.services.schedule;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3"></a>
+<span class="sourceLineNo">004</span><a id="line.4">/*</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * Licensed to the Apache Software Foundation (ASF) under one</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * or more contributor license agreements.  See the NOTICE file</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * distributed with this work for additional information</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * regarding copyright ownership.  The ASF licenses this file</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * to you under the Apache License, Version 2.0 (the</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * "License"); you may not use this file except in compliance</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * with the License.  You may obtain a copy of the License at</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *   http://www.apache.org/licenses/LICENSE-2.0</a>
+<span class="sourceLineNo">014</span><a id="line.14"> *</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * Unless required by applicable law or agreed to in writing,</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * software distributed under the License is distributed on an</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * KIND, either express or implied.  See the License for the</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * specific language governing permissions and limitations</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * under the License.</a>
+<span class="sourceLineNo">021</span><a id="line.21"> */</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23"></a>
+<span class="sourceLineNo">024</span><a id="line.24">import java.util.List;</a>
+<span class="sourceLineNo">025</span><a id="line.25"></a>
+<span class="sourceLineNo">026</span><a id="line.26">import org.apache.logging.log4j.LogManager;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import org.apache.logging.log4j.Logger;</a>
+<span class="sourceLineNo">028</span><a id="line.28">import org.apache.turbine.annotation.TurbineService;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import org.apache.turbine.services.pull.ApplicationTool;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import org.apache.turbine.util.TurbineException;</a>
+<span class="sourceLineNo">031</span><a id="line.31"></a>
+<span class="sourceLineNo">032</span><a id="line.32">/**</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * This tool is used to retrieve information about the job scheduler.</a>
+<span class="sourceLineNo">034</span><a id="line.34"> *</a>
+<span class="sourceLineNo">035</span><a id="line.35"> * @author &lt;a href="mailto:qmccombs@nequalsone.com"&gt;Quinton McCombs&lt;/a&gt;</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * @version $Id$</a>
+<span class="sourceLineNo">037</span><a id="line.37"> */</a>
+<span class="sourceLineNo">038</span><a id="line.38">public class SchedulerTool implements ApplicationTool</a>
+<span class="sourceLineNo">039</span><a id="line.39">{</a>
+<span class="sourceLineNo">040</span><a id="line.40">    /** Used for logging */</a>
+<span class="sourceLineNo">041</span><a id="line.41">    private static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);</a>
+<span class="sourceLineNo">042</span><a id="line.42"></a>
+<span class="sourceLineNo">043</span><a id="line.43">    /**</a>
+<span class="sourceLineNo">044</span><a id="line.44">     * The scheduler service.</a>
+<span class="sourceLineNo">045</span><a id="line.45">     */</a>
+<span class="sourceLineNo">046</span><a id="line.46">    @TurbineService</a>
+<span class="sourceLineNo">047</span><a id="line.47">    private ScheduleService schedulerService;</a>
+<span class="sourceLineNo">048</span><a id="line.48"></a>
+<span class="sourceLineNo">049</span><a id="line.49">    /**</a>
+<span class="sourceLineNo">050</span><a id="line.50">     * Initialize the pull tool</a>
+<span class="sourceLineNo">051</span><a id="line.51">     */</a>
+<span class="sourceLineNo">052</span><a id="line.52">    @Override</a>
+<span class="sourceLineNo">053</span><a id="line.53">    public void init(Object data)</a>
+<span class="sourceLineNo">054</span><a id="line.54">    {</a>
+<span class="sourceLineNo">055</span><a id="line.55">        // Rely on injection</a>
+<span class="sourceLineNo">056</span><a id="line.56">        if (schedulerService == null)</a>
+<span class="sourceLineNo">057</span><a id="line.57">        {</a>
+<span class="sourceLineNo">058</span><a id="line.58">            log.error("You can not use the SchedulerTool unless you enable "</a>
+<span class="sourceLineNo">059</span><a id="line.59">                    +"the Scheduler Service!!!!");</a>
+<span class="sourceLineNo">060</span><a id="line.60">        }</a>
+<span class="sourceLineNo">061</span><a id="line.61">    }</a>
+<span class="sourceLineNo">062</span><a id="line.62"></a>
+<span class="sourceLineNo">063</span><a id="line.63">    /**</a>
+<span class="sourceLineNo">064</span><a id="line.64">     * Does nothing</a>
+<span class="sourceLineNo">065</span><a id="line.65">     */</a>
+<span class="sourceLineNo">066</span><a id="line.66">    @Override</a>
+<span class="sourceLineNo">067</span><a id="line.67">    public void refresh()</a>
+<span class="sourceLineNo">068</span><a id="line.68">    {</a>
+<span class="sourceLineNo">069</span><a id="line.69">        // empty</a>
+<span class="sourceLineNo">070</span><a id="line.70">    }</a>
+<span class="sourceLineNo">071</span><a id="line.71"></a>
+<span class="sourceLineNo">072</span><a id="line.72">    /**</a>
+<span class="sourceLineNo">073</span><a id="line.73">     * Gets the list of scheduled jobs.</a>
+<span class="sourceLineNo">074</span><a id="line.74">     *</a>
+<span class="sourceLineNo">075</span><a id="line.75">     * @return List of JobEntry objects.</a>
+<span class="sourceLineNo">076</span><a id="line.76">     */</a>
+<span class="sourceLineNo">077</span><a id="line.77">    public List&lt;? extends JobEntry&gt; getScheduledJobs()</a>
+<span class="sourceLineNo">078</span><a id="line.78">    {</a>
+<span class="sourceLineNo">079</span><a id="line.79">        return schedulerService.listJobs();</a>
+<span class="sourceLineNo">080</span><a id="line.80">    }</a>
+<span class="sourceLineNo">081</span><a id="line.81"></a>
+<span class="sourceLineNo">082</span><a id="line.82">    /**</a>
+<span class="sourceLineNo">083</span><a id="line.83">     * Determines if the scheduler service is currently enabled.</a>
+<span class="sourceLineNo">084</span><a id="line.84">     * @return true if the scheduler is enabled</a>
+<span class="sourceLineNo">085</span><a id="line.85">     */</a>
+<span class="sourceLineNo">086</span><a id="line.86">    public boolean isEnabled()</a>
+<span class="sourceLineNo">087</span><a id="line.87">    {</a>
+<span class="sourceLineNo">088</span><a id="line.88">        return schedulerService.isEnabled();</a>
+<span class="sourceLineNo">089</span><a id="line.89">    }</a>
+<span class="sourceLineNo">090</span><a id="line.90"></a>
+<span class="sourceLineNo">091</span><a id="line.91">    /**</a>
+<span class="sourceLineNo">092</span><a id="line.92">     * Gets the job identified by the jobId.</a>
+<span class="sourceLineNo">093</span><a id="line.93">     *</a>
+<span class="sourceLineNo">094</span><a id="line.94">     * @param jobId Id of the job to retrieve.</a>
+<span class="sourceLineNo">095</span><a id="line.95">     * @return The job.  Null if the jobId is not found.</a>
+<span class="sourceLineNo">096</span><a id="line.96">     */</a>
+<span class="sourceLineNo">097</span><a id="line.97">    public JobEntry getJob(String jobId)</a>
+<span class="sourceLineNo">098</span><a id="line.98">    {</a>
+<span class="sourceLineNo">099</span><a id="line.99">        JobEntry je = null;</a>
+<span class="sourceLineNo">100</span><a id="line.100"></a>
+<span class="sourceLineNo">101</span><a id="line.101">        try</a>
+<span class="sourceLineNo">102</span><a id="line.102">        {</a>
+<span class="sourceLineNo">103</span><a id="line.103">            je = schedulerService.getJob(Integer.parseInt(jobId));</a>
+<span class="sourceLineNo">104</span><a id="line.104">        }</a>
+<span class="sourceLineNo">105</span><a id="line.105">        catch (TurbineException e)</a>
+<span class="sourceLineNo">106</span><a id="line.106">        {</a>
+<span class="sourceLineNo">107</span><a id="line.107">            log.error("Could not retreive job id #{}", jobId, e);</a>
+<span class="sourceLineNo">108</span><a id="line.108">        }</a>
+<span class="sourceLineNo">109</span><a id="line.109"></a>
+<span class="sourceLineNo">110</span><a id="line.110">        return je;</a>
+<span class="sourceLineNo">111</span><a id="line.111">    }</a>
+<span class="sourceLineNo">112</span><a id="line.112"></a>
+<span class="sourceLineNo">113</span><a id="line.113">}</a>
 
 
 
@@ -175,5 +182,6 @@
 
 </pre>
 </div>
+</main>
 </body>
 </html>
