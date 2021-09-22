@@ -174,7 +174,7 @@
 <span class="sourceLineNo">166</span>     * Update the job for its next run time.<a name="line.166"></a>
 <span class="sourceLineNo">167</span>     *<a name="line.167"></a>
 <span class="sourceLineNo">168</span>     * @param je A JobEntry to be updated.<a name="line.168"></a>
-<span class="sourceLineNo">169</span>     * @throws TurbineException a generic exception.<a name="line.169"></a>
+<span class="sourceLineNo">169</span>     * @exception TurbineException a generic exception.<a name="line.169"></a>
 <span class="sourceLineNo">170</span>     */<a name="line.170"></a>
 <span class="sourceLineNo">171</span>    public synchronized void updateQueue(J je)<a name="line.171"></a>
 <span class="sourceLineNo">172</span>            throws TurbineException<a name="line.172"></a>
@@ -196,7 +196,7 @@
 <span class="sourceLineNo">188</span>            {<a name="line.188"></a>
 <span class="sourceLineNo">189</span>                Long time1 = Long.valueOf(o1.getNextRuntime());<a name="line.189"></a>
 <span class="sourceLineNo">190</span>                Long time2 = Long.valueOf(o2.getNextRuntime());<a name="line.190"></a>
-<span class="sourceLineNo">191</span>                return time1.compareTo(time2);<a name="line.191"></a>
+<span class="sourceLineNo">191</span>                return (time1.compareTo(time2));<a name="line.191"></a>
 <span class="sourceLineNo">192</span>            }<a name="line.192"></a>
 <span class="sourceLineNo">193</span>        };<a name="line.193"></a>
 <span class="sourceLineNo">194</span><a name="line.194"></a>

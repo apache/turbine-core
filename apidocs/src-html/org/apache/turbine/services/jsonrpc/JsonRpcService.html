@@ -40,13 +40,13 @@
 <span class="sourceLineNo">032</span> * The interface an JsonRpcService implements.<a name="line.32"></a>
 <span class="sourceLineNo">033</span> *<a name="line.33"></a>
 <span class="sourceLineNo">034</span> * @author &lt;a href="mailto:seade@backstagetech.com.au"&gt;Scott Eade&lt;/a&gt;<a name="line.34"></a>
-<span class="sourceLineNo">035</span> * @version $Id: JsonRpcService.java 1860619 2019-06-04 14:01:15Z gk $<a name="line.35"></a>
+<span class="sourceLineNo">035</span> * @version $Id: JsonRpcService.java 1706239 2015-10-01 13:18:35Z tv $<a name="line.35"></a>
 <span class="sourceLineNo">036</span> */<a name="line.36"></a>
 <span class="sourceLineNo">037</span>public interface JsonRpcService<a name="line.37"></a>
 <span class="sourceLineNo">038</span>        extends Service<a name="line.38"></a>
 <span class="sourceLineNo">039</span>{<a name="line.39"></a>
 <span class="sourceLineNo">040</span>    /** TurbineJsonRpcService. */<a name="line.40"></a>
-<span class="sourceLineNo">041</span>    String SERVICE_NAME = "JsonRpcService";<a name="line.41"></a>
+<span class="sourceLineNo">041</span>    public static final String SERVICE_NAME = "JsonRpcService";<a name="line.41"></a>
 <span class="sourceLineNo">042</span><a name="line.42"></a>
 <span class="sourceLineNo">043</span>    /**<a name="line.43"></a>
 <span class="sourceLineNo">044</span>     * Process a JSON RPC call<a name="line.44"></a>
@@ -55,7 +55,7 @@
 <span class="sourceLineNo">047</span>     * @param request the request<a name="line.47"></a>
 <span class="sourceLineNo">048</span>     * @return the return object of the JSON RPC call<a name="line.48"></a>
 <span class="sourceLineNo">049</span>     */<a name="line.49"></a>
-<span class="sourceLineNo">050</span>    Object processCall(CharArrayWriter cdata,<a name="line.50"></a>
+<span class="sourceLineNo">050</span>    public Object processCall(CharArrayWriter cdata,<a name="line.50"></a>
 <span class="sourceLineNo">051</span>            JSONRPCBridge json_bridge, HttpServletRequest request);<a name="line.51"></a>
 <span class="sourceLineNo">052</span><a name="line.52"></a>
 <span class="sourceLineNo">053</span>    /**<a name="line.53"></a>
@@ -63,17 +63,17 @@
 <span class="sourceLineNo">055</span>     *<a name="line.55"></a>
 <span class="sourceLineNo">056</span>     * @param session the session<a name="line.56"></a>
 <span class="sourceLineNo">057</span>     * @param key the name of the object in the session<a name="line.57"></a>
-<span class="sourceLineNo">058</span>     * @param value the object to register (not null)<a name="line.58"></a>
+<span class="sourceLineNo">058</span>     * @param value the object to register<a name="line.58"></a>
 <span class="sourceLineNo">059</span>     */<a name="line.59"></a>
-<span class="sourceLineNo">060</span>    void registerObject(HttpSession session, String key, Object value);<a name="line.60"></a>
+<span class="sourceLineNo">060</span>    public void registerObject(HttpSession session, String key, Object value);<a name="line.60"></a>
 <span class="sourceLineNo">061</span><a name="line.61"></a>
 <span class="sourceLineNo">062</span>    /**<a name="line.62"></a>
 <span class="sourceLineNo">063</span>     * Register an object with the {@link JSONRPCBridge} globally<a name="line.63"></a>
 <span class="sourceLineNo">064</span>     *<a name="line.64"></a>
 <span class="sourceLineNo">065</span>     * @param key the name of the object in the session<a name="line.65"></a>
-<span class="sourceLineNo">066</span>     * @param value the object to register (not null)<a name="line.66"></a>
+<span class="sourceLineNo">066</span>     * @param value the object to register<a name="line.66"></a>
 <span class="sourceLineNo">067</span>     */<a name="line.67"></a>
-<span class="sourceLineNo">068</span>    void registerObjectGlobal(String key, Object value);<a name="line.68"></a>
+<span class="sourceLineNo">068</span>    public void registerObjectGlobal(String key, Object value);<a name="line.68"></a>
 <span class="sourceLineNo">069</span><a name="line.69"></a>
 <span class="sourceLineNo">070</span>    /**<a name="line.70"></a>
 <span class="sourceLineNo">071</span>     * Get the {@link JSONRPCBridge} from the session<a name="line.71"></a>
@@ -81,14 +81,14 @@
 <span class="sourceLineNo">073</span>     * @param session the session<a name="line.73"></a>
 <span class="sourceLineNo">074</span>     * @return the {@link JSONRPCBridge} instance<a name="line.74"></a>
 <span class="sourceLineNo">075</span>     */<a name="line.75"></a>
-<span class="sourceLineNo">076</span>    JSONRPCBridge getBridge(HttpSession session);<a name="line.76"></a>
+<span class="sourceLineNo">076</span>    public JSONRPCBridge getBridge(HttpSession session);<a name="line.76"></a>
 <span class="sourceLineNo">077</span><a name="line.77"></a>
 <span class="sourceLineNo">078</span>    /**<a name="line.78"></a>
 <span class="sourceLineNo">079</span>     * Remove the {@link JSONRPCBridge} from the session<a name="line.79"></a>
 <span class="sourceLineNo">080</span>     *<a name="line.80"></a>
 <span class="sourceLineNo">081</span>     * @param session the session<a name="line.81"></a>
 <span class="sourceLineNo">082</span>     */<a name="line.82"></a>
-<span class="sourceLineNo">083</span>    void clearBridge(HttpSession session);<a name="line.83"></a>
+<span class="sourceLineNo">083</span>    public void clearBridge(HttpSession session);<a name="line.83"></a>
 <span class="sourceLineNo">084</span>}<a name="line.84"></a>
 
 

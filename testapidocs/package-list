@@ -1,5 +1,4 @@
 org.apache.turbine
-org.apache.turbine.annotation
 org.apache.turbine.modules
 org.apache.turbine.modules.actions
 org.apache.turbine.modules.layouts
@@ -19,7 +18,6 @@ org.apache.turbine.services.pull.tools
 org.apache.turbine.services.pull.util
 org.apache.turbine.services.rundata
 org.apache.turbine.services.schedule
-org.apache.turbine.services.security
 org.apache.turbine.services.template
 org.apache.turbine.services.template.modules.layouts
 org.apache.turbine.services.template.modules.layouts.existing
@@ -34,5 +32,4 @@ org.apache.turbine.services.velocity
 org.apache.turbine.test
 org.apache.turbine.util
 org.apache.turbine.util.parser
-org.apache.turbine.util.template
 org.apache.turbine.util.uri

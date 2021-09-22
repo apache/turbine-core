@@ -32,32 +32,32 @@
 <span class="sourceLineNo">024</span>import static org.junit.Assert.assertEquals;<a name="line.24"></a>
 <span class="sourceLineNo">025</span>import static org.junit.Assert.assertNotNull;<a name="line.25"></a>
 <span class="sourceLineNo">026</span><a name="line.26"></a>
-<span class="sourceLineNo">027</span>import java.io.File;<a name="line.27"></a>
-<span class="sourceLineNo">028</span><a name="line.28"></a>
-<span class="sourceLineNo">029</span>import org.apache.commons.configuration2.Configuration;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import org.apache.turbine.Turbine;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import org.apache.turbine.services.TurbineServices;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import org.apache.turbine.test.BaseTestCase;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import org.apache.turbine.util.TurbineConfig;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import org.apache.velocity.app.VelocityEngine;<a name="line.34"></a>
-<span class="sourceLineNo">035</span>import org.junit.AfterClass;<a name="line.35"></a>
-<span class="sourceLineNo">036</span>import org.junit.BeforeClass;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import org.junit.Test;<a name="line.37"></a>
-<span class="sourceLineNo">038</span><a name="line.38"></a>
-<span class="sourceLineNo">039</span>/**<a name="line.39"></a>
-<span class="sourceLineNo">040</span> * Tests startup of the Velocity Service and translation of various<a name="line.40"></a>
-<span class="sourceLineNo">041</span> * path patterns.<a name="line.41"></a>
-<span class="sourceLineNo">042</span> *<a name="line.42"></a>
-<span class="sourceLineNo">043</span> * @author &lt;a href="hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;<a name="line.43"></a>
-<span class="sourceLineNo">044</span> * @version $Id: PathConverterTest.java 1837261 2018-08-01 20:30:15Z tv $<a name="line.44"></a>
-<span class="sourceLineNo">045</span> */<a name="line.45"></a>
-<span class="sourceLineNo">046</span><a name="line.46"></a>
-<span class="sourceLineNo">047</span>public class PathConverterTest<a name="line.47"></a>
-<span class="sourceLineNo">048</span>    extends BaseTestCase<a name="line.48"></a>
-<span class="sourceLineNo">049</span>{<a name="line.49"></a>
-<span class="sourceLineNo">050</span>    private static TurbineConfig tc = null;<a name="line.50"></a>
-<span class="sourceLineNo">051</span>    private static VelocityService vs = null;<a name="line.51"></a>
-<span class="sourceLineNo">052</span><a name="line.52"></a>
+<span class="sourceLineNo">027</span>import org.apache.commons.collections.ExtendedProperties;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import org.apache.commons.configuration.Configuration;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import org.apache.turbine.Turbine;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import org.apache.turbine.services.TurbineServices;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import org.apache.turbine.test.BaseTestCase;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import org.apache.turbine.util.TurbineConfig;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.junit.AfterClass;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import org.junit.BeforeClass;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import org.junit.Test;<a name="line.35"></a>
+<span class="sourceLineNo">036</span><a name="line.36"></a>
+<span class="sourceLineNo">037</span>/**<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * Tests startup of the Velocity Service and translation of various<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * path patterns.<a name="line.39"></a>
+<span class="sourceLineNo">040</span> *<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * @author &lt;a href="hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;<a name="line.41"></a>
+<span class="sourceLineNo">042</span> * @version $Id: PathConverterTest.java 1606111 2014-06-27 14:46:47Z gk $<a name="line.42"></a>
+<span class="sourceLineNo">043</span> */<a name="line.43"></a>
+<span class="sourceLineNo">044</span><a name="line.44"></a>
+<span class="sourceLineNo">045</span>public class PathConverterTest<a name="line.45"></a>
+<span class="sourceLineNo">046</span>    extends BaseTestCase<a name="line.46"></a>
+<span class="sourceLineNo">047</span>{<a name="line.47"></a>
+<span class="sourceLineNo">048</span>    private static TurbineConfig tc = null;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>    private static VelocityService vs = null;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>    private static String fileSeperator = System.getProperty("file.separator");<a name="line.50"></a>
+<span class="sourceLineNo">051</span><a name="line.51"></a>
+<span class="sourceLineNo">052</span>    <a name="line.52"></a>
 <span class="sourceLineNo">053</span>    @BeforeClass<a name="line.53"></a>
 <span class="sourceLineNo">054</span>    public static void setUp() throws Exception {<a name="line.54"></a>
 <span class="sourceLineNo">055</span>        tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");<a name="line.55"></a>
@@ -85,49 +85,49 @@
 <span class="sourceLineNo">077</span>        throws Exception<a name="line.77"></a>
 <span class="sourceLineNo">078</span>    {<a name="line.78"></a>
 <span class="sourceLineNo">079</span>        Configuration conf = vs.getConfiguration();<a name="line.79"></a>
-<span class="sourceLineNo">080</span>        VelocityEngine ve = new VelocityEngine();<a name="line.80"></a>
-<span class="sourceLineNo">081</span>        ((TurbineVelocityService) vs).setVelocityProperties(ve, conf);<a name="line.81"></a>
-<span class="sourceLineNo">082</span><a name="line.82"></a>
-<span class="sourceLineNo">083</span>        String rootPath = Turbine.getRealPath("");<a name="line.83"></a>
-<span class="sourceLineNo">084</span><a name="line.84"></a>
-<span class="sourceLineNo">085</span>        String test1 = (String) ve.getProperty("test1.resource.loader.path");<a name="line.85"></a>
-<span class="sourceLineNo">086</span>        assertNotNull("No Test1 Property found", test1);<a name="line.86"></a>
-<span class="sourceLineNo">087</span>        assertEquals("Test1 Path translation failed", rootPath<a name="line.87"></a>
-<span class="sourceLineNo">088</span>                +File.separator+"relative"+File.separator+"path" , test1);<a name="line.88"></a>
-<span class="sourceLineNo">089</span><a name="line.89"></a>
-<span class="sourceLineNo">090</span>        String test2 = (String) ve.getProperty("test2.resource.loader.path");<a name="line.90"></a>
-<span class="sourceLineNo">091</span>        assertNotNull("No Test2 Property found", test2);<a name="line.91"></a>
-<span class="sourceLineNo">092</span>        assertEquals("Test2 Path translation failed", rootPath<a name="line.92"></a>
-<span class="sourceLineNo">093</span>                +File.separator+"absolute"+File.separator+"path" , test2);<a name="line.93"></a>
-<span class="sourceLineNo">094</span><a name="line.94"></a>
-<span class="sourceLineNo">095</span>        String test3 = (String) ve.getProperty("test3.resource.loader.path");<a name="line.95"></a>
-<span class="sourceLineNo">096</span>        assertNotNull("No Test3 Property found", test3);<a name="line.96"></a>
-<span class="sourceLineNo">097</span>        assertEquals("Test3 Path translation failed", rootPath<a name="line.97"></a>
-<span class="sourceLineNo">098</span>                +File.separator+"jar-file.jar!/", test3);<a name="line.98"></a>
-<span class="sourceLineNo">099</span><a name="line.99"></a>
-<span class="sourceLineNo">100</span>        String test4 = (String) ve.getProperty("test4.resource.loader.path");<a name="line.100"></a>
-<span class="sourceLineNo">101</span>        assertNotNull("No Test4 Property found", test4);<a name="line.101"></a>
-<span class="sourceLineNo">102</span>        assertEquals("Test4 Path translation failed", rootPath<a name="line.102"></a>
-<span class="sourceLineNo">103</span>                +File.separator+"jar-file.jar!/with/some/extensions" , test4);<a name="line.103"></a>
-<span class="sourceLineNo">104</span><a name="line.104"></a>
-<span class="sourceLineNo">105</span>        String test5 = (String) ve.getProperty("test5.resource.loader.path");<a name="line.105"></a>
-<span class="sourceLineNo">106</span>        assertNotNull("No Test5 Property found", test5);<a name="line.106"></a>
-<span class="sourceLineNo">107</span>        assertEquals("Test5 Path translation failed", rootPath<a name="line.107"></a>
-<span class="sourceLineNo">108</span>                +File.separator+"jar-file.jar" , test5);<a name="line.108"></a>
-<span class="sourceLineNo">109</span><a name="line.109"></a>
-<span class="sourceLineNo">110</span>        String test6 = (String) ve.getProperty("test6.resource.loader.path");<a name="line.110"></a>
-<span class="sourceLineNo">111</span>        assertNotNull("No Test6 Property found", test6);<a name="line.111"></a>
-<span class="sourceLineNo">112</span>        assertEquals("Test6 Path translation failed", "jar:http://jar.on.website/" , test6);<a name="line.112"></a>
-<span class="sourceLineNo">113</span><a name="line.113"></a>
-<span class="sourceLineNo">114</span>        String test7 = (String) ve.getProperty("test7.resource.loader.path");<a name="line.114"></a>
-<span class="sourceLineNo">115</span>        assertNotNull("No Test7 Property found", test7);<a name="line.115"></a>
-<span class="sourceLineNo">116</span>        assertEquals("Test7 Path translation failed", rootPath<a name="line.116"></a>
-<span class="sourceLineNo">117</span>                +File.separator+"file"+File.separator<a name="line.117"></a>
-<span class="sourceLineNo">118</span>                +"system"+File.separator+"reference" , test7);<a name="line.118"></a>
-<span class="sourceLineNo">119</span><a name="line.119"></a>
-<span class="sourceLineNo">120</span>        String test8 = (String) ve.getProperty("test8.resource.loader.path");<a name="line.120"></a>
-<span class="sourceLineNo">121</span>        assertNotNull("No Test8 Property found", test8);<a name="line.121"></a>
-<span class="sourceLineNo">122</span>        assertEquals("Test8 Path translation failed", "http://reference.on.website/" , test8);<a name="line.122"></a>
+<span class="sourceLineNo">080</span>        ExtendedProperties ep = ((TurbineVelocityService) vs).createVelocityProperties(conf);<a name="line.80"></a>
+<span class="sourceLineNo">081</span><a name="line.81"></a>
+<span class="sourceLineNo">082</span>        String rootPath = Turbine.getRealPath("");<a name="line.82"></a>
+<span class="sourceLineNo">083</span><a name="line.83"></a>
+<span class="sourceLineNo">084</span>        String [] test1 = ep.getStringArray("test1.resource.loader.path");<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        assertEquals("No Test1 Property found", 1, test1.length);<a name="line.85"></a>
+<span class="sourceLineNo">086</span>        assertEquals("Test1 Path translation failed", rootPath<a name="line.86"></a>
+<span class="sourceLineNo">087</span>                +fileSeperator+"relative"+fileSeperator+"path" , test1[0]);<a name="line.87"></a>
+<span class="sourceLineNo">088</span><a name="line.88"></a>
+<span class="sourceLineNo">089</span>        String [] test2 = ep.getStringArray("test2.resource.loader.path");<a name="line.89"></a>
+<span class="sourceLineNo">090</span>        assertEquals("No Test2 Property found", 1, test2.length);<a name="line.90"></a>
+<span class="sourceLineNo">091</span>        assertEquals("Test2 Path translation failed", rootPath<a name="line.91"></a>
+<span class="sourceLineNo">092</span>                +fileSeperator+"absolute"+fileSeperator+"path" , test2[0]);<a name="line.92"></a>
+<span class="sourceLineNo">093</span><a name="line.93"></a>
+<span class="sourceLineNo">094</span>        String [] test3 = ep.getStringArray("test3.resource.loader.path");<a name="line.94"></a>
+<span class="sourceLineNo">095</span>        assertEquals("No Test3 Property found", 1, test2.length);<a name="line.95"></a>
+<span class="sourceLineNo">096</span>        assertEquals("Test3 Path translation failed", rootPath<a name="line.96"></a>
+<span class="sourceLineNo">097</span>                +fileSeperator+"jar-file.jar!/", test3[0]);<a name="line.97"></a>
+<span class="sourceLineNo">098</span><a name="line.98"></a>
+<span class="sourceLineNo">099</span>        String [] test4 = ep.getStringArray("test4.resource.loader.path");<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        assertEquals("No Test4 Property found", 1, test4.length);<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        assertEquals("Test4 Path translation failed", rootPath<a name="line.101"></a>
+<span class="sourceLineNo">102</span>                +fileSeperator+"jar-file.jar!/with/some/extensions" , test4[0]);<a name="line.102"></a>
+<span class="sourceLineNo">103</span><a name="line.103"></a>
+<span class="sourceLineNo">104</span>        String [] test5 = ep.getStringArray("test5.resource.loader.path");<a name="line.104"></a>
+<span class="sourceLineNo">105</span>        assertEquals("No Test5 Property found", 1, test5.length);<a name="line.105"></a>
+<span class="sourceLineNo">106</span>        assertEquals("Test5 Path translation failed", rootPath<a name="line.106"></a>
+<span class="sourceLineNo">107</span>                +fileSeperator+"jar-file.jar" , test5[0]);<a name="line.107"></a>
+<span class="sourceLineNo">108</span><a name="line.108"></a>
+<span class="sourceLineNo">109</span>        String [] test6 = ep.getStringArray("test6.resource.loader.path");<a name="line.109"></a>
+<span class="sourceLineNo">110</span>        assertEquals("No Test6 Property found", 1, test6.length);<a name="line.110"></a>
+<span class="sourceLineNo">111</span>        assertEquals("Test6 Path translation failed", "jar:http://jar.on.website/" , test6[0]);<a name="line.111"></a>
+<span class="sourceLineNo">112</span><a name="line.112"></a>
+<span class="sourceLineNo">113</span>        String [] test7 = ep.getStringArray("test7.resource.loader.path");<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        assertEquals("No Test7 Property found", 1, test7.length);<a name="line.114"></a>
+<span class="sourceLineNo">115</span>        assertEquals("Test7 Path translation failed", rootPath<a name="line.115"></a>
+<span class="sourceLineNo">116</span>                +fileSeperator+"file"+fileSeperator<a name="line.116"></a>
+<span class="sourceLineNo">117</span>                +"system"+fileSeperator+"reference" , test7[0]);<a name="line.117"></a>
+<span class="sourceLineNo">118</span><a name="line.118"></a>
+<span class="sourceLineNo">119</span>        String [] test8 = ep.getStringArray("test8.resource.loader.path");<a name="line.119"></a>
+<span class="sourceLineNo">120</span>        assertEquals("No Test8 Property found", 1, test8.length);<a name="line.120"></a>
+<span class="sourceLineNo">121</span>        assertEquals("Test8 Path translation failed", "http://reference.on.website/" , test8[0]);<a name="line.121"></a>
+<span class="sourceLineNo">122</span><a name="line.122"></a>
 <span class="sourceLineNo">123</span>    }<a name="line.123"></a>
 <span class="sourceLineNo">124</span>}<a name="line.124"></a>
 

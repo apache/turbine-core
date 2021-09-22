@@ -29,10 +29,10 @@
 <span class="sourceLineNo">021</span> */<a name="line.21"></a>
 <span class="sourceLineNo">022</span><a name="line.22"></a>
 <span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>import org.apache.commons.lang3.StringUtils;<a name="line.24"></a>
-<span class="sourceLineNo">025</span>import org.apache.turbine.services.TurbineServices;<a name="line.25"></a>
-<span class="sourceLineNo">026</span>import org.apache.turbine.services.template.TemplateEngineService;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import org.apache.turbine.services.template.TemplateService;<a name="line.27"></a>
+<span class="sourceLineNo">024</span>import org.apache.commons.lang.StringUtils;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>import org.apache.turbine.services.template.TemplateEngineService;<a name="line.25"></a>
+<span class="sourceLineNo">026</span>import org.apache.turbine.services.template.TemplateService;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import org.apache.turbine.services.template.TurbineTemplate;<a name="line.27"></a>
 <span class="sourceLineNo">028</span><a name="line.28"></a>
 <span class="sourceLineNo">029</span>/**<a name="line.29"></a>
 <span class="sourceLineNo">030</span> * This is a pretty simple mapper which returns template pathes for<a name="line.30"></a>
@@ -40,7 +40,7 @@
 <span class="sourceLineNo">032</span> * to access a certain resource to actually render the template.<a name="line.32"></a>
 <span class="sourceLineNo">033</span> *<a name="line.33"></a>
 <span class="sourceLineNo">034</span> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;<a name="line.34"></a>
-<span class="sourceLineNo">035</span> * @version $Id: ScreenTemplateMapper.java 1844792 2018-10-24 21:47:54Z painter $<a name="line.35"></a>
+<span class="sourceLineNo">035</span> * @version $Id: ScreenTemplateMapper.java 1709648 2015-10-20 17:08:10Z tv $<a name="line.35"></a>
 <span class="sourceLineNo">036</span> */<a name="line.36"></a>
 <span class="sourceLineNo">037</span><a name="line.37"></a>
 <span class="sourceLineNo">038</span>public class ScreenTemplateMapper<a name="line.38"></a>
@@ -70,8 +70,8 @@
 <span class="sourceLineNo">062</span>        String [] components = StringUtils.split(template, String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR));<a name="line.62"></a>
 <span class="sourceLineNo">063</span><a name="line.63"></a>
 <span class="sourceLineNo">064</span>        // Last element decides, which template Service to use...<a name="line.64"></a>
-<span class="sourceLineNo">065</span>        TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);<a name="line.65"></a>
-<span class="sourceLineNo">066</span>        TemplateEngineService tes = templateService.getTemplateEngineService(components[components.length - 1]);<a name="line.66"></a>
+<span class="sourceLineNo">065</span>        TemplateEngineService tes =<a name="line.65"></a>
+<span class="sourceLineNo">066</span>            TurbineTemplate.getTemplateEngineService(components[components.length - 1]);<a name="line.66"></a>
 <span class="sourceLineNo">067</span><a name="line.67"></a>
 <span class="sourceLineNo">068</span>        String templatePackage = StringUtils.join(components, String.valueOf(separator));<a name="line.68"></a>
 <span class="sourceLineNo">069</span><a name="line.69"></a>

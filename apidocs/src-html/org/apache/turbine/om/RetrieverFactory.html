@@ -33,23 +33,20 @@
 <span class="sourceLineNo">025</span> * A factory that can provide retrievers<a name="line.25"></a>
 <span class="sourceLineNo">026</span> *<a name="line.26"></a>
 <span class="sourceLineNo">027</span> * @author &lt;a href="mailto:jmcnally@collab.net"&gt;John D. McNally&lt;/a&gt;<a name="line.27"></a>
-<span class="sourceLineNo">028</span> * @version $Id: RetrieverFactory.java 1812628 2017-10-19 12:34:25Z gk $<a name="line.28"></a>
-<span class="sourceLineNo">029</span> *<a name="line.29"></a>
-<span class="sourceLineNo">030</span> * @deprecated cft. deprecation comment in {@link OMTool}.<a name="line.30"></a>
-<span class="sourceLineNo">031</span> */<a name="line.31"></a>
-<span class="sourceLineNo">032</span>@Deprecated<a name="line.32"></a>
-<span class="sourceLineNo">033</span>public interface RetrieverFactory<a name="line.33"></a>
-<span class="sourceLineNo">034</span>{<a name="line.34"></a>
-<span class="sourceLineNo">035</span>    /**<a name="line.35"></a>
-<span class="sourceLineNo">036</span>     * Gets an object capable of retrieving objects of type "className"<a name="line.36"></a>
-<span class="sourceLineNo">037</span>     *<a name="line.37"></a>
-<span class="sourceLineNo">038</span>     * @param className the class name of the {@link Retriever} implementation<a name="line.38"></a>
-<span class="sourceLineNo">039</span>     * @return the {@link Retriever} instance<a name="line.39"></a>
-<span class="sourceLineNo">040</span>     * @throws Exception if the instance could not be provided<a name="line.40"></a>
-<span class="sourceLineNo">041</span>     */<a name="line.41"></a>
-<span class="sourceLineNo">042</span>    Retriever getInstance(String className)<a name="line.42"></a>
-<span class="sourceLineNo">043</span>        throws Exception;<a name="line.43"></a>
-<span class="sourceLineNo">044</span>}<a name="line.44"></a>
+<span class="sourceLineNo">028</span> * @version $Id: RetrieverFactory.java 1706239 2015-10-01 13:18:35Z tv $<a name="line.28"></a>
+<span class="sourceLineNo">029</span> */<a name="line.29"></a>
+<span class="sourceLineNo">030</span>public interface RetrieverFactory<a name="line.30"></a>
+<span class="sourceLineNo">031</span>{<a name="line.31"></a>
+<span class="sourceLineNo">032</span>    /**<a name="line.32"></a>
+<span class="sourceLineNo">033</span>     * Gets an object capable of retrieving objects of type "className"<a name="line.33"></a>
+<span class="sourceLineNo">034</span>     *<a name="line.34"></a>
+<span class="sourceLineNo">035</span>     * @param className the class name of the {@link Retriever} implementation<a name="line.35"></a>
+<span class="sourceLineNo">036</span>     * @return the {@link Retriever} instance<a name="line.36"></a>
+<span class="sourceLineNo">037</span>     * @throws Exception if the instance could not be provided<a name="line.37"></a>
+<span class="sourceLineNo">038</span>     */<a name="line.38"></a>
+<span class="sourceLineNo">039</span>    Retriever getInstance(String className)<a name="line.39"></a>
+<span class="sourceLineNo">040</span>        throws Exception;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>}<a name="line.41"></a>
 
 
 

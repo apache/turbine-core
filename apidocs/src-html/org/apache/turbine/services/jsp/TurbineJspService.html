@@ -35,10 +35,10 @@
 <span class="sourceLineNo">027</span>import javax.servlet.RequestDispatcher;<a name="line.27"></a>
 <span class="sourceLineNo">028</span>import javax.servlet.http.HttpServletRequest;<a name="line.28"></a>
 <span class="sourceLineNo">029</span><a name="line.29"></a>
-<span class="sourceLineNo">030</span>import org.apache.commons.configuration2.Configuration;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import org.apache.commons.lang3.StringUtils;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import org.apache.logging.log4j.LogManager;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import org.apache.logging.log4j.Logger;<a name="line.33"></a>
+<span class="sourceLineNo">030</span>import org.apache.commons.configuration.Configuration;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import org.apache.commons.lang.StringUtils;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import org.apache.commons.logging.Log;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.apache.commons.logging.LogFactory;<a name="line.33"></a>
 <span class="sourceLineNo">034</span>import org.apache.turbine.Turbine;<a name="line.34"></a>
 <span class="sourceLineNo">035</span>import org.apache.turbine.pipeline.PipelineData;<a name="line.35"></a>
 <span class="sourceLineNo">036</span>import org.apache.turbine.services.InitializationException;<a name="line.36"></a>
@@ -71,7 +71,7 @@
 <span class="sourceLineNo">063</span>    private int bufferSize;<a name="line.63"></a>
 <span class="sourceLineNo">064</span><a name="line.64"></a>
 <span class="sourceLineNo">065</span>    /** Logging */<a name="line.65"></a>
-<span class="sourceLineNo">066</span>    private static Logger log = LogManager.getLogger(TurbineJspService.class);<a name="line.66"></a>
+<span class="sourceLineNo">066</span>    private static Log log = LogFactory.getLog(TurbineJspService.class);<a name="line.66"></a>
 <span class="sourceLineNo">067</span><a name="line.67"></a>
 <span class="sourceLineNo">068</span>    /**<a name="line.68"></a>
 <span class="sourceLineNo">069</span>     * Load all configured components and initialize them. This is<a name="line.69"></a>
@@ -280,22 +280,22 @@
 <span class="sourceLineNo">272</span>     * required by &lt;a href="http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/ServletContext.html#getRequestDispatcher(java.lang.String)"&gt;<a name="line.272"></a>
 <span class="sourceLineNo">273</span>     * javax.servlet.RequestDispatcher&lt;/a&gt;<a name="line.273"></a>
 <span class="sourceLineNo">274</span>     *<a name="line.274"></a>
-<span class="sourceLineNo">275</span>     * @param template the name of the template<a name="line.275"></a>
+<span class="sourceLineNo">275</span>     * @param template<a name="line.275"></a>
 <span class="sourceLineNo">276</span>     * @return String<a name="line.276"></a>
 <span class="sourceLineNo">277</span>     */<a name="line.277"></a>
 <span class="sourceLineNo">278</span>    @Override<a name="line.278"></a>
 <span class="sourceLineNo">279</span>    public String getRelativeTemplateName(String template)<a name="line.279"></a>
 <span class="sourceLineNo">280</span>    {<a name="line.280"></a>
-<span class="sourceLineNo">281</span>        String relativeTemplate = warnAbsolute(template);<a name="line.281"></a>
+<span class="sourceLineNo">281</span>        template = warnAbsolute(template);<a name="line.281"></a>
 <span class="sourceLineNo">282</span><a name="line.282"></a>
 <span class="sourceLineNo">283</span>        // Find which template path the template is in<a name="line.283"></a>
 <span class="sourceLineNo">284</span>        // We have a 1:1 match between relative and absolute<a name="line.284"></a>
 <span class="sourceLineNo">285</span>        // pathes so we can use the index for translation.<a name="line.285"></a>
 <span class="sourceLineNo">286</span>        for (int i = 0; i &lt; templatePaths.length; i++)<a name="line.286"></a>
 <span class="sourceLineNo">287</span>        {<a name="line.287"></a>
-<span class="sourceLineNo">288</span>            if (templateExists(templatePaths[i], relativeTemplate))<a name="line.288"></a>
+<span class="sourceLineNo">288</span>            if (templateExists(templatePaths[i], template))<a name="line.288"></a>
 <span class="sourceLineNo">289</span>            {<a name="line.289"></a>
-<span class="sourceLineNo">290</span>                return relativeTemplatePaths[i] + "/" + relativeTemplate;<a name="line.290"></a>
+<span class="sourceLineNo">290</span>                return relativeTemplatePaths[i] + "/" + template;<a name="line.290"></a>
 <span class="sourceLineNo">291</span>            }<a name="line.291"></a>
 <span class="sourceLineNo">292</span>        }<a name="line.292"></a>
 <span class="sourceLineNo">293</span>        return null;<a name="line.293"></a>
@@ -311,12 +311,13 @@
 <span class="sourceLineNo">303</span>    {<a name="line.303"></a>
 <span class="sourceLineNo">304</span>        if (template.startsWith("/"))<a name="line.304"></a>
 <span class="sourceLineNo">305</span>        {<a name="line.305"></a>
-<span class="sourceLineNo">306</span>            log.warn("Template {} has a leading /, which is wrong!", template);<a name="line.306"></a>
-<span class="sourceLineNo">307</span>            return template.substring(1);<a name="line.307"></a>
-<span class="sourceLineNo">308</span>        }<a name="line.308"></a>
-<span class="sourceLineNo">309</span>        return template;<a name="line.309"></a>
-<span class="sourceLineNo">310</span>    }<a name="line.310"></a>
-<span class="sourceLineNo">311</span>}<a name="line.311"></a>
+<span class="sourceLineNo">306</span>            log.warn("Template " + template<a name="line.306"></a>
+<span class="sourceLineNo">307</span>                + " has a leading /, which is wrong!");<a name="line.307"></a>
+<span class="sourceLineNo">308</span>            return template.substring(1);<a name="line.308"></a>
+<span class="sourceLineNo">309</span>        }<a name="line.309"></a>
+<span class="sourceLineNo">310</span>        return template;<a name="line.310"></a>
+<span class="sourceLineNo">311</span>    }<a name="line.311"></a>
+<span class="sourceLineNo">312</span>}<a name="line.312"></a>
 
 
 

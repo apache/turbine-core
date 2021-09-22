@@ -78,12 +78,12 @@
 <span class="sourceLineNo">070</span> * }<a name="line.70"></a>
 <span class="sourceLineNo">071</span> * &lt;/code&gt;<a name="line.71"></a>
 <span class="sourceLineNo">072</span> *<a name="line.72"></a>
-<span class="sourceLineNo">073</span> * &lt;p&gt;This code is derived from the com.metaparadigm.jsonrpc.JSONRPCServlet and (after upgrade) checked against<a name="line.73"></a>
+<span class="sourceLineNo">073</span> * &lt;p&gt;This code is derived from the com.metaparadigm.jsonrpc.JSONRPCServlet and (after upgrade) checked against <a name="line.73"></a>
 <span class="sourceLineNo">074</span> * org.jabsorb.JSONRPCServlet.<a name="line.74"></a>
 <span class="sourceLineNo">075</span> *<a name="line.75"></a>
 <span class="sourceLineNo">076</span> * @author brad@folkens.com<a name="line.76"></a>
 <span class="sourceLineNo">077</span> * @author &lt;a href="mailto:seade@backstagetech.com.au"&gt;Scott Eade&lt;/a&gt;<a name="line.77"></a>
-<span class="sourceLineNo">078</span> * @version $Id: JSONScreen.java 1854797 2019-03-04 20:41:39Z tv $<a name="line.78"></a>
+<span class="sourceLineNo">078</span> * @version $Id: JSONScreen.java 1718292 2015-12-07 10:23:44Z gk $<a name="line.78"></a>
 <span class="sourceLineNo">079</span> */<a name="line.79"></a>
 <span class="sourceLineNo">080</span>public class JSONScreen extends RawScreen<a name="line.80"></a>
 <span class="sourceLineNo">081</span>{<a name="line.81"></a>
@@ -93,7 +93,7 @@
 <span class="sourceLineNo">085</span><a name="line.85"></a>
 <span class="sourceLineNo">086</span>    /** Injected service instance */<a name="line.86"></a>
 <span class="sourceLineNo">087</span>    @TurbineService<a name="line.87"></a>
-<span class="sourceLineNo">088</span>    protected JsonRpcService jsonRpcService;<a name="line.88"></a>
+<span class="sourceLineNo">088</span>    private JsonRpcService jsonRpcService;<a name="line.88"></a>
 <span class="sourceLineNo">089</span><a name="line.89"></a>
 <span class="sourceLineNo">090</span>    /**<a name="line.90"></a>
 <span class="sourceLineNo">091</span>     * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.pipeline.PipelineData)<a name="line.91"></a>
@@ -106,15 +106,15 @@
 <span class="sourceLineNo">098</span><a name="line.98"></a>
 <span class="sourceLineNo">099</span>    /**<a name="line.99"></a>
 <span class="sourceLineNo">100</span>     * Output the dynamic content.<a name="line.100"></a>
-<span class="sourceLineNo">101</span>     *<a name="line.101"></a>
-<span class="sourceLineNo">102</span>     * Encoding is UTF-8. @{@link #JSONRPC_CONTENT_TYPE}: {@value #JSONRPC_CONTENT_TYPE}.<a name="line.102"></a>
+<span class="sourceLineNo">101</span>     * <a name="line.101"></a>
+<span class="sourceLineNo">102</span>     * Encodign is UTF-8. @{@link #JSONRPC_CONTENT_TYPE}: {@value #JSONRPC_CONTENT_TYPE}.<a name="line.102"></a>
 <span class="sourceLineNo">103</span>     *<a name="line.103"></a>
 <span class="sourceLineNo">104</span>     * @param pipelineData The PipelineData object.<a name="line.104"></a>
 <span class="sourceLineNo">105</span>     */<a name="line.105"></a>
 <span class="sourceLineNo">106</span>    @Override<a name="line.106"></a>
 <span class="sourceLineNo">107</span>    protected void doOutput(PipelineData pipelineData) throws Exception<a name="line.107"></a>
 <span class="sourceLineNo">108</span>    {<a name="line.108"></a>
-<span class="sourceLineNo">109</span>        RunData data = pipelineData.getRunData();<a name="line.109"></a>
+<span class="sourceLineNo">109</span>        RunData data = getRunData(pipelineData);<a name="line.109"></a>
 <span class="sourceLineNo">110</span>        data.declareDirectResponse();<a name="line.110"></a>
 <span class="sourceLineNo">111</span>        HttpServletRequest request = data.getRequest();<a name="line.111"></a>
 <span class="sourceLineNo">112</span><a name="line.112"></a>

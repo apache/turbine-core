@@ -33,85 +33,95 @@
 <span class="sourceLineNo">025</span>import org.apache.turbine.util.RunData;<a name="line.25"></a>
 <span class="sourceLineNo">026</span><a name="line.26"></a>
 <span class="sourceLineNo">027</span>/**<a name="line.27"></a>
-<span class="sourceLineNo">028</span> * This is the interface which defines the Screen modules.<a name="line.28"></a>
+<span class="sourceLineNo">028</span> * This is the base class which defines the Screen modules.<a name="line.28"></a>
 <span class="sourceLineNo">029</span> *<a name="line.29"></a>
 <span class="sourceLineNo">030</span> * @author &lt;a href="mailto:mbryson@mont.mindspring.com"&gt;Dave Bryson&lt;/a&gt;<a name="line.30"></a>
 <span class="sourceLineNo">031</span> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;<a name="line.31"></a>
 <span class="sourceLineNo">032</span> * @author &lt;a href="mailto:peter@courcoux.biz"&gt;Peter Courcoux&lt;/a&gt;<a name="line.32"></a>
-<span class="sourceLineNo">033</span> * @version $Id: Screen.java 1854797 2019-03-04 20:41:39Z tv $<a name="line.33"></a>
+<span class="sourceLineNo">033</span> * @version $Id: Screen.java 1709648 2015-10-20 17:08:10Z tv $<a name="line.33"></a>
 <span class="sourceLineNo">034</span> */<a name="line.34"></a>
-<span class="sourceLineNo">035</span>@FunctionalInterface<a name="line.35"></a>
-<span class="sourceLineNo">036</span>public interface Screen extends Assembler<a name="line.36"></a>
+<span class="sourceLineNo">035</span>public abstract class Screen<a name="line.35"></a>
+<span class="sourceLineNo">036</span>    extends Assembler<a name="line.36"></a>
 <span class="sourceLineNo">037</span>{<a name="line.37"></a>
 <span class="sourceLineNo">038</span>    /** Prefix for screen related classes and templates */<a name="line.38"></a>
-<span class="sourceLineNo">039</span>    String PREFIX = "screens";<a name="line.39"></a>
+<span class="sourceLineNo">039</span>    public static final String PREFIX = "screens";<a name="line.39"></a>
 <span class="sourceLineNo">040</span><a name="line.40"></a>
 <span class="sourceLineNo">041</span>    /** Property for the size of the screen cache if caching is on */<a name="line.41"></a>
-<span class="sourceLineNo">042</span>    String CACHE_SIZE_KEY = "screen.cache.size";<a name="line.42"></a>
+<span class="sourceLineNo">042</span>    public static final String CACHE_SIZE_KEY = "screen.cache.size";<a name="line.42"></a>
 <span class="sourceLineNo">043</span><a name="line.43"></a>
 <span class="sourceLineNo">044</span>    /** The default size for the screen cache */<a name="line.44"></a>
-<span class="sourceLineNo">045</span>    int CACHE_SIZE_DEFAULT = 50;<a name="line.45"></a>
+<span class="sourceLineNo">045</span>    public static final int CACHE_SIZE_DEFAULT = 50;<a name="line.45"></a>
 <span class="sourceLineNo">046</span><a name="line.46"></a>
 <span class="sourceLineNo">047</span>    /** Represents Screen Objects */<a name="line.47"></a>
-<span class="sourceLineNo">048</span>    String NAME = "screen";<a name="line.48"></a>
+<span class="sourceLineNo">048</span>    public static final String NAME = "screen";<a name="line.48"></a>
 <span class="sourceLineNo">049</span><a name="line.49"></a>
 <span class="sourceLineNo">050</span>    /**<a name="line.50"></a>
-<span class="sourceLineNo">051</span>     * A subclass must implement this method to build itself.<a name="line.51"></a>
-<span class="sourceLineNo">052</span>     * Subclasses override this method to store the screen in RunData<a name="line.52"></a>
-<span class="sourceLineNo">053</span>     * or to write the screen to the output stream referenced in<a name="line.53"></a>
-<span class="sourceLineNo">054</span>     * RunData.<a name="line.54"></a>
-<span class="sourceLineNo">055</span>     * @param pipelineData Turbine information.<a name="line.55"></a>
-<span class="sourceLineNo">056</span>     * @return the content of the screen<a name="line.56"></a>
-<span class="sourceLineNo">057</span>     * @throws Exception a generic exception.<a name="line.57"></a>
-<span class="sourceLineNo">058</span>     */<a name="line.58"></a>
-<span class="sourceLineNo">059</span>    String doBuild(PipelineData pipelineData) throws Exception;<a name="line.59"></a>
-<span class="sourceLineNo">060</span><a name="line.60"></a>
-<span class="sourceLineNo">061</span>    /**<a name="line.61"></a>
-<span class="sourceLineNo">062</span>     * Subclasses can override this method to add additional<a name="line.62"></a>
-<span class="sourceLineNo">063</span>     * functionality.<a name="line.63"></a>
-<span class="sourceLineNo">064</span>     *<a name="line.64"></a>
-<span class="sourceLineNo">065</span>     * @param pipelineData Turbine information.<a name="line.65"></a>
-<span class="sourceLineNo">066</span>     * @return the content of the screen<a name="line.66"></a>
-<span class="sourceLineNo">067</span>     * @throws Exception a generic exception.<a name="line.67"></a>
-<span class="sourceLineNo">068</span>     */<a name="line.68"></a>
-<span class="sourceLineNo">069</span>    default String build(PipelineData pipelineData)<a name="line.69"></a>
-<span class="sourceLineNo">070</span>        throws Exception<a name="line.70"></a>
-<span class="sourceLineNo">071</span>    {<a name="line.71"></a>
-<span class="sourceLineNo">072</span>        return doBuild(pipelineData);<a name="line.72"></a>
-<span class="sourceLineNo">073</span>    }<a name="line.73"></a>
-<span class="sourceLineNo">074</span><a name="line.74"></a>
-<span class="sourceLineNo">075</span>    /**<a name="line.75"></a>
-<span class="sourceLineNo">076</span>     * If the Layout has not been defined by the Screen then set the<a name="line.76"></a>
-<span class="sourceLineNo">077</span>     * layout to be "DefaultLayout".  The Screen object can also<a name="line.77"></a>
-<span class="sourceLineNo">078</span>     * override this method to provide intelligent determination of<a name="line.78"></a>
-<span class="sourceLineNo">079</span>     * the Layout to execute.  You can also define that logic here as<a name="line.79"></a>
-<span class="sourceLineNo">080</span>     * well if you want it to apply on a global scale.  For example,<a name="line.80"></a>
-<span class="sourceLineNo">081</span>     * if you wanted to allow someone to define Layout "preferences"<a name="line.81"></a>
-<span class="sourceLineNo">082</span>     * where they could dynamically change the Layout for the entire<a name="line.82"></a>
-<span class="sourceLineNo">083</span>     * site.  The information for the request is passed in with the<a name="line.83"></a>
-<span class="sourceLineNo">084</span>     * PipelineData object.<a name="line.84"></a>
-<span class="sourceLineNo">085</span>     *<a name="line.85"></a>
-<span class="sourceLineNo">086</span>     * @param pipelineData Turbine information.<a name="line.86"></a>
-<span class="sourceLineNo">087</span>     * @return A String with the Layout.<a name="line.87"></a>
-<span class="sourceLineNo">088</span>     */<a name="line.88"></a>
-<span class="sourceLineNo">089</span>    default String getLayout(PipelineData pipelineData)<a name="line.89"></a>
-<span class="sourceLineNo">090</span>    {<a name="line.90"></a>
-<span class="sourceLineNo">091</span>        RunData data = pipelineData.getRunData();<a name="line.91"></a>
-<span class="sourceLineNo">092</span>        return data.getLayout();<a name="line.92"></a>
-<span class="sourceLineNo">093</span>    }<a name="line.93"></a>
-<span class="sourceLineNo">094</span><a name="line.94"></a>
-<span class="sourceLineNo">095</span>    /**<a name="line.95"></a>
-<span class="sourceLineNo">096</span>     * Set the layout for a Screen.<a name="line.96"></a>
-<span class="sourceLineNo">097</span>     *<a name="line.97"></a>
-<span class="sourceLineNo">098</span>     * @param pipelineData Turbine information.<a name="line.98"></a>
-<span class="sourceLineNo">099</span>     * @param layout The layout name.<a name="line.99"></a>
-<span class="sourceLineNo">100</span>     */<a name="line.100"></a>
-<span class="sourceLineNo">101</span>    default void setLayout(PipelineData pipelineData, String layout)<a name="line.101"></a>
-<span class="sourceLineNo">102</span>    {<a name="line.102"></a>
-<span class="sourceLineNo">103</span>        RunData data = pipelineData.getRunData();<a name="line.103"></a>
-<span class="sourceLineNo">104</span>        data.setLayout(layout);<a name="line.104"></a>
-<span class="sourceLineNo">105</span>    }<a name="line.105"></a>
-<span class="sourceLineNo">106</span>}<a name="line.106"></a>
+<span class="sourceLineNo">051</span>     * @see org.apache.turbine.modules.Assembler#getPrefix()<a name="line.51"></a>
+<span class="sourceLineNo">052</span>     */<a name="line.52"></a>
+<span class="sourceLineNo">053</span>    @Override<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    public String getPrefix()<a name="line.54"></a>
+<span class="sourceLineNo">055</span>    {<a name="line.55"></a>
+<span class="sourceLineNo">056</span>        return PREFIX;<a name="line.56"></a>
+<span class="sourceLineNo">057</span>    }<a name="line.57"></a>
+<span class="sourceLineNo">058</span><a name="line.58"></a>
+<span class="sourceLineNo">059</span>    /**<a name="line.59"></a>
+<span class="sourceLineNo">060</span>     * A subclass must override this method to build itself.<a name="line.60"></a>
+<span class="sourceLineNo">061</span>     * Subclasses override this method to store the screen in RunData<a name="line.61"></a>
+<span class="sourceLineNo">062</span>     * or to write the screen to the output stream referenced in<a name="line.62"></a>
+<span class="sourceLineNo">063</span>     * RunData.<a name="line.63"></a>
+<span class="sourceLineNo">064</span>     * @param pipelineData Turbine information.<a name="line.64"></a>
+<span class="sourceLineNo">065</span>     * @return the content of the screen<a name="line.65"></a>
+<span class="sourceLineNo">066</span>     * @exception Exception a generic exception.<a name="line.66"></a>
+<span class="sourceLineNo">067</span>     */<a name="line.67"></a>
+<span class="sourceLineNo">068</span>    protected abstract String doBuild(PipelineData pipelineData) throws Exception;<a name="line.68"></a>
+<span class="sourceLineNo">069</span><a name="line.69"></a>
+<span class="sourceLineNo">070</span>    /**<a name="line.70"></a>
+<span class="sourceLineNo">071</span>     * Subclasses can override this method to add additional<a name="line.71"></a>
+<span class="sourceLineNo">072</span>     * functionality.  This method is protected to force clients to<a name="line.72"></a>
+<span class="sourceLineNo">073</span>     * use ScreenLoader to build a Screen.<a name="line.73"></a>
+<span class="sourceLineNo">074</span>     *<a name="line.74"></a>
+<span class="sourceLineNo">075</span>     * @param pipelineData Turbine information.<a name="line.75"></a>
+<span class="sourceLineNo">076</span>     * @return the content of the screen<a name="line.76"></a>
+<span class="sourceLineNo">077</span>     * @exception Exception a generic exception.<a name="line.77"></a>
+<span class="sourceLineNo">078</span>     */<a name="line.78"></a>
+<span class="sourceLineNo">079</span>    protected String build(PipelineData pipelineData)<a name="line.79"></a>
+<span class="sourceLineNo">080</span>        throws Exception<a name="line.80"></a>
+<span class="sourceLineNo">081</span>    {<a name="line.81"></a>
+<span class="sourceLineNo">082</span>        return doBuild(pipelineData);<a name="line.82"></a>
+<span class="sourceLineNo">083</span>    }<a name="line.83"></a>
+<span class="sourceLineNo">084</span><a name="line.84"></a>
+<span class="sourceLineNo">085</span>    /**<a name="line.85"></a>
+<span class="sourceLineNo">086</span>     * If the Layout has not been defined by the Screen then set the<a name="line.86"></a>
+<span class="sourceLineNo">087</span>     * layout to be "DefaultLayout".  The Screen object can also<a name="line.87"></a>
+<span class="sourceLineNo">088</span>     * override this method to provide intelligent determination of<a name="line.88"></a>
+<span class="sourceLineNo">089</span>     * the Layout to execute.  You can also define that logic here as<a name="line.89"></a>
+<span class="sourceLineNo">090</span>     * well if you want it to apply on a global scale.  For example,<a name="line.90"></a>
+<span class="sourceLineNo">091</span>     * if you wanted to allow someone to define Layout "preferences"<a name="line.91"></a>
+<span class="sourceLineNo">092</span>     * where they could dynamically change the Layout for the entire<a name="line.92"></a>
+<span class="sourceLineNo">093</span>     * site.  The information for the request is passed in with the<a name="line.93"></a>
+<span class="sourceLineNo">094</span>     * PipelineData object.<a name="line.94"></a>
+<span class="sourceLineNo">095</span>     *<a name="line.95"></a>
+<span class="sourceLineNo">096</span>     * @param pipelineData Turbine information.<a name="line.96"></a>
+<span class="sourceLineNo">097</span>     * @return A String with the Layout.<a name="line.97"></a>
+<span class="sourceLineNo">098</span>     */<a name="line.98"></a>
+<span class="sourceLineNo">099</span>    public String getLayout(PipelineData pipelineData)<a name="line.99"></a>
+<span class="sourceLineNo">100</span>    {<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        RunData data = getRunData(pipelineData);<a name="line.101"></a>
+<span class="sourceLineNo">102</span>        return data.getLayout();<a name="line.102"></a>
+<span class="sourceLineNo">103</span>    }<a name="line.103"></a>
+<span class="sourceLineNo">104</span><a name="line.104"></a>
+<span class="sourceLineNo">105</span>    /**<a name="line.105"></a>
+<span class="sourceLineNo">106</span>     * Set the layout for a Screen.<a name="line.106"></a>
+<span class="sourceLineNo">107</span>     *<a name="line.107"></a>
+<span class="sourceLineNo">108</span>     * @param pipelineData Turbine information.<a name="line.108"></a>
+<span class="sourceLineNo">109</span>     * @param layout The layout name.<a name="line.109"></a>
+<span class="sourceLineNo">110</span>     */<a name="line.110"></a>
+<span class="sourceLineNo">111</span>    public void setLayout(PipelineData pipelineData, String layout)<a name="line.111"></a>
+<span class="sourceLineNo">112</span>    {<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        RunData data = getRunData(pipelineData);<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        data.setLayout(layout);<a name="line.114"></a>
+<span class="sourceLineNo">115</span>    }<a name="line.115"></a>
+<span class="sourceLineNo">116</span>}<a name="line.116"></a>
 
 
 

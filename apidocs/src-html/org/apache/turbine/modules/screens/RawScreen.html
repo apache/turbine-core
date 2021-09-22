@@ -48,9 +48,9 @@
 <span class="sourceLineNo">040</span> *<a name="line.40"></a>
 <span class="sourceLineNo">041</span> * @author &lt;a href="mailto:rkoenig@chez.com"&gt;Regis Koenig&lt;/a&gt;<a name="line.41"></a>
 <span class="sourceLineNo">042</span> * @author &lt;a href="mailto:peter@courcoux.biz"&gt;Peter Courcoux&lt;/a&gt;<a name="line.42"></a>
-<span class="sourceLineNo">043</span> * @version $Id: RawScreen.java 1854797 2019-03-04 20:41:39Z tv $<a name="line.43"></a>
+<span class="sourceLineNo">043</span> * @version $Id: RawScreen.java 1709648 2015-10-20 17:08:10Z tv $<a name="line.43"></a>
 <span class="sourceLineNo">044</span> */<a name="line.44"></a>
-<span class="sourceLineNo">045</span>public abstract class RawScreen implements Screen<a name="line.45"></a>
+<span class="sourceLineNo">045</span>public abstract class RawScreen extends Screen<a name="line.45"></a>
 <span class="sourceLineNo">046</span>{<a name="line.46"></a>
 <span class="sourceLineNo">047</span>    /**<a name="line.47"></a>
 <span class="sourceLineNo">048</span>     * Build the Screen.  This method actually makes a call to the<a name="line.48"></a>
@@ -58,13 +58,13 @@
 <span class="sourceLineNo">050</span>     *<a name="line.50"></a>
 <span class="sourceLineNo">051</span>     * @param pipelineData Turbine information.<a name="line.51"></a>
 <span class="sourceLineNo">052</span>     * @return A ConcreteElement.<a name="line.52"></a>
-<span class="sourceLineNo">053</span>     * @throws Exception a generic exception.<a name="line.53"></a>
+<span class="sourceLineNo">053</span>     * @exception Exception, a generic exception.<a name="line.53"></a>
 <span class="sourceLineNo">054</span>     */<a name="line.54"></a>
 <span class="sourceLineNo">055</span>    @Override<a name="line.55"></a>
-<span class="sourceLineNo">056</span>    public final String doBuild(PipelineData pipelineData)<a name="line.56"></a>
+<span class="sourceLineNo">056</span>    protected final String doBuild(PipelineData pipelineData)<a name="line.56"></a>
 <span class="sourceLineNo">057</span>            throws Exception<a name="line.57"></a>
 <span class="sourceLineNo">058</span>    {<a name="line.58"></a>
-<span class="sourceLineNo">059</span>        RunData data = pipelineData.getRunData();<a name="line.59"></a>
+<span class="sourceLineNo">059</span>        RunData data = getRunData(pipelineData);<a name="line.59"></a>
 <span class="sourceLineNo">060</span>        data.getResponse().setContentType(getContentType(pipelineData));<a name="line.60"></a>
 <span class="sourceLineNo">061</span>        data.declareDirectResponse();<a name="line.61"></a>
 <span class="sourceLineNo">062</span>        doOutput(pipelineData);<a name="line.62"></a>
@@ -86,7 +86,7 @@
 <span class="sourceLineNo">078</span>     * data.getResponse().getOutputStream();&lt;/pre&gt;.<a name="line.78"></a>
 <span class="sourceLineNo">079</span>     *<a name="line.79"></a>
 <span class="sourceLineNo">080</span>     * @param pipelineData Turbine information.<a name="line.80"></a>
-<span class="sourceLineNo">081</span>     * @throws Exception a generic exception.<a name="line.81"></a>
+<span class="sourceLineNo">081</span>     * @exception Exception, a generic exception.<a name="line.81"></a>
 <span class="sourceLineNo">082</span>     */<a name="line.82"></a>
 <span class="sourceLineNo">083</span>    protected abstract void doOutput(PipelineData pipelineData) throws Exception;<a name="line.83"></a>
 <span class="sourceLineNo">084</span><a name="line.84"></a>

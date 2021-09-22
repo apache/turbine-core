@@ -85,7 +85,7 @@
 <span class="sourceLineNo">077</span> * @author &lt;a href="mailto:mbryson@mont.mindspring.com"&gt;Dave Bryson&lt;/a&gt;<a name="line.77"></a>
 <span class="sourceLineNo">078</span> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;<a name="line.78"></a>
 <span class="sourceLineNo">079</span> * @author &lt;a href="mailto:peter@courcoux.biz"&gt;Peter Courcoux&lt;/a&gt;<a name="line.79"></a>
-<span class="sourceLineNo">080</span> * @version $Id: TemplatePage.java 1854797 2019-03-04 20:41:39Z tv $<a name="line.80"></a>
+<span class="sourceLineNo">080</span> * @version $Id: TemplatePage.java 1695634 2015-08-13 00:35:47Z tv $<a name="line.80"></a>
 <span class="sourceLineNo">081</span> */<a name="line.81"></a>
 <span class="sourceLineNo">082</span>public class TemplatePage<a name="line.82"></a>
 <span class="sourceLineNo">083</span>    extends DefaultPage<a name="line.83"></a>
@@ -99,13 +99,13 @@
 <span class="sourceLineNo">091</span>     * corresponding class modules.<a name="line.91"></a>
 <span class="sourceLineNo">092</span>     *<a name="line.92"></a>
 <span class="sourceLineNo">093</span>     * @param pipelineData Turbine information.<a name="line.93"></a>
-<span class="sourceLineNo">094</span>     * @throws Exception a generic exception.<a name="line.94"></a>
+<span class="sourceLineNo">094</span>     * @exception Exception, a generic exception.<a name="line.94"></a>
 <span class="sourceLineNo">095</span>     */<a name="line.95"></a>
 <span class="sourceLineNo">096</span>    @Override<a name="line.96"></a>
 <span class="sourceLineNo">097</span>    protected void doBuildAfterAction(PipelineData pipelineData)<a name="line.97"></a>
 <span class="sourceLineNo">098</span>        throws Exception<a name="line.98"></a>
 <span class="sourceLineNo">099</span>    {<a name="line.99"></a>
-<span class="sourceLineNo">100</span>        RunData data = pipelineData.getRunData();<a name="line.100"></a>
+<span class="sourceLineNo">100</span>        RunData data = getRunData(pipelineData);<a name="line.100"></a>
 <span class="sourceLineNo">101</span>        // The Template Service at this point must fetch the Screen class<a name="line.101"></a>
 <span class="sourceLineNo">102</span>        // to match a given template. If the Screen class has already been<a name="line.102"></a>
 <span class="sourceLineNo">103</span>        // set by an action, skip this, because the user has the already<a name="line.103"></a>

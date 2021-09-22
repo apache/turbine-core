@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="4.2.5" timestamp="2015-12-21T21:28:29.347">
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/Turbine.java">
+<violation beginline="504" endline="507" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.apache.turbine" class="Turbine" method="createRuntimeDirectories" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+<violation beginline="918" endline="921" begincolumn="13" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine" class="Turbine" method="handleException" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+<violation beginline="928" endline="931" begincolumn="13" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine" class="Turbine" method="handleException" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+<violation beginline="954" endline="957" begincolumn="13" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine" class="Turbine" method="handleException" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/modules/ActionEvent.java">
+<violation beginline="228" endline="232" begincolumn="33" endcolumn="33" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.apache.turbine.modules" class="ActionEvent" method="executeEvents" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/modules/actions/sessionvalidator/DefaultSessionValidator.java">
+<violation beginline="127" endline="136" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.apache.turbine.modules.actions.sessionvalidator" class="DefaultSessionValidator" method="doPerform" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/modules/actions/sessionvalidator/TemplateSecureSessionValidator.java">
+<violation beginline="155" endline="176" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.apache.turbine.modules.actions.sessionvalidator" class="TemplateSecureSessionValidator" method="doPerform" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/modules/actions/sessionvalidator/TemplateSessionValidator.java">
+<violation beginline="113" endline="134" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.apache.turbine.modules.actions.sessionvalidator" class="TemplateSessionValidator" method="doPerform" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/modules/pages/JspPage.java">
+<violation beginline="62" endline="66" begincolumn="9" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.modules.pages" class="JspPage" method="doBuildBeforeAction" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/modules/screens/TemplateScreen.java">
+<violation beginline="144" endline="147" begincolumn="9" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.modules.screens" class="TemplateScreen" method="setTemplate" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/pipeline/CleanUpValve.java">
+<violation beginline="91" endline="95" begincolumn="13" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.pipeline" class="CleanUpValve" method="cleanUp" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/services/jsp/TurbineJspService.java">
+<violation beginline="183" endline="186" begincolumn="13" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.services.jsp" class="TurbineJspService" method="handleRequest" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/services/jsp/util/JspNavigation.java">
+<violation beginline="86" endline="89" begincolumn="13" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.services.jsp.util" class="JspNavigation" method="setTemplate" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/services/jsp/util/JspScreenPlaceholder.java">
+<violation beginline="91" endline="94" begincolumn="13" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.services.jsp.util" class="JspScreenPlaceholder" method="exec" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/services/pull/TurbinePull.java">
+<violation beginline="163" endline="166" begincolumn="9" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.services.pull" class="TurbinePull" method="getTool" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/services/pull/TurbinePullService.java">
+<violation beginline="411" endline="415" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.apache.turbine.services.pull" class="TurbinePullService" method="populateContext" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+<violation beginline="462" endline="466" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.apache.turbine.services.pull" class="TurbinePullService" method="populateContext" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/services/servlet/TurbineServletService.java">
+<violation beginline="116" endline="119" begincolumn="9" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.services.servlet" class="TurbineServletService" method="getResource" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/services/template/mapper/ClassMapper.java">
+<violation beginline="151" endline="154" begincolumn="13" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.services.template.mapper" class="ClassMapper" method="doMapping" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/services/velocity/TurbineVelocityService.java">
+<violation beginline="307" endline="310" begincolumn="13" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.services.velocity" class="TurbineVelocityService" method="handleRequest" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+<violation beginline="353" endline="356" begincolumn="13" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.services.velocity" class="TurbineVelocityService" method="handleRequest" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+<violation beginline="394" endline="397" begincolumn="13" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.services.velocity" class="TurbineVelocityService" method="handleRequest" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/util/BrowserDetector.java">
+<violation beginline="209" endline="212" begincolumn="9" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.util" class="BrowserDetector" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+<violation beginline="228" endline="231" begincolumn="13" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.util" class="BrowserDetector" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+<violation beginline="260" endline="263" begincolumn="13" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.util" class="BrowserDetector" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+<violation beginline="317" endline="322" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.apache.turbine.util" class="BrowserDetector" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+<violation beginline="354" endline="365" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.apache.turbine.util" class="BrowserDetector" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/util/ObjectUtils.java">
+<violation beginline="133" endline="136" begincolumn="13" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.util" class="ObjectUtils" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+<violation beginline="149" endline="152" begincolumn="17" endcolumn="17" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.util" class="ObjectUtils" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+</file>
+<file name="/Users/thomas/Dev/workspace/Turbine-Core/target/checkout/src/java/org/apache/turbine/util/template/TemplateInfo.java">
+<violation beginline="118" endline="123" begincolumn="9" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.apache.turbine.util.template" class="TemplateInfo" method="setScreenTemplate" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+Avoid empty catch blocks
+</violation>
+</file>
+</pmd>

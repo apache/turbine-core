@@ -36,193 +36,160 @@
 <span class="sourceLineNo">028</span>import java.io.File;<a name="line.28"></a>
 <span class="sourceLineNo">029</span>import java.net.URL;<a name="line.29"></a>
 <span class="sourceLineNo">030</span><a name="line.30"></a>
-<span class="sourceLineNo">031</span>import org.apache.commons.configuration2.Configuration;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import org.apache.commons.configuration2.builder.fluent.Configurations;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import org.apache.commons.configuration2.io.FileLocatorUtils;<a name="line.33"></a>
+<span class="sourceLineNo">031</span>import org.apache.commons.configuration.Configuration;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import org.apache.commons.configuration.FileSystem;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.apache.commons.configuration.PropertiesConfiguration;<a name="line.33"></a>
 <span class="sourceLineNo">034</span>import org.apache.turbine.test.BaseTestCase;<a name="line.34"></a>
 <span class="sourceLineNo">035</span>import org.apache.turbine.util.TurbineConfig;<a name="line.35"></a>
 <span class="sourceLineNo">036</span>import org.apache.turbine.util.TurbineXmlConfig;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import org.junit.After;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import org.junit.Test;<a name="line.38"></a>
-<span class="sourceLineNo">039</span><a name="line.39"></a>
-<span class="sourceLineNo">040</span>/**<a name="line.40"></a>
-<span class="sourceLineNo">041</span> * Tests that the ConfigurationFactory and regular old properties methods both work.<a name="line.41"></a>
-<span class="sourceLineNo">042</span> * Verify the overriding of properties.<a name="line.42"></a>
-<span class="sourceLineNo">043</span> *<a name="line.43"></a>
-<span class="sourceLineNo">044</span> * @author &lt;a href="mailto:epugh@upstate.com"&gt;Eric Pugh&lt;/a&gt;<a name="line.44"></a>
-<span class="sourceLineNo">045</span> * @version $Id: ConfigurationTest.java 1838075 2018-08-15 09:39:20Z gk $<a name="line.45"></a>
-<span class="sourceLineNo">046</span> */<a name="line.46"></a>
-<span class="sourceLineNo">047</span>public class ConfigurationTest extends BaseTestCase<a name="line.47"></a>
-<span class="sourceLineNo">048</span>{<a name="line.48"></a>
-<span class="sourceLineNo">049</span>    public static final String SERVICE_PREFIX = "services.";<a name="line.49"></a>
-<span class="sourceLineNo">050</span><a name="line.50"></a>
-<span class="sourceLineNo">051</span>    /**<a name="line.51"></a>
-<span class="sourceLineNo">052</span>     * A &lt;code&gt;Service&lt;/code&gt; property determining its implementing<a name="line.52"></a>
-<span class="sourceLineNo">053</span>     * class name .<a name="line.53"></a>
-<span class="sourceLineNo">054</span>     */<a name="line.54"></a>
-<span class="sourceLineNo">055</span>    public static final String CLASSNAME_SUFFIX = ".classname";<a name="line.55"></a>
-<span class="sourceLineNo">056</span><a name="line.56"></a>
-<span class="sourceLineNo">057</span>    private TurbineConfig tc = null;<a name="line.57"></a>
-<span class="sourceLineNo">058</span>    private TurbineXmlConfig txc = null;<a name="line.58"></a>
-<span class="sourceLineNo">059</span>    <a name="line.59"></a>
-<span class="sourceLineNo">060</span>    @After<a name="line.60"></a>
-<span class="sourceLineNo">061</span>    public void close() {<a name="line.61"></a>
-<span class="sourceLineNo">062</span>        if (tc != null) tc.dispose();<a name="line.62"></a>
-<span class="sourceLineNo">063</span>        if (txc != null) txc.dispose();<a name="line.63"></a>
-<span class="sourceLineNo">064</span>    }<a name="line.64"></a>
-<span class="sourceLineNo">065</span><a name="line.65"></a>
-<span class="sourceLineNo">066</span>    @Test<a name="line.66"></a>
-<span class="sourceLineNo">067</span>    public void testCreateTurbineWithConfigurationXML() throws Exception<a name="line.67"></a>
-<span class="sourceLineNo">068</span>    {<a name="line.68"></a>
-<span class="sourceLineNo">069</span>        txc = new TurbineXmlConfig(".", "conf/test/TurbineConfiguration.xml");<a name="line.69"></a>
-<span class="sourceLineNo">070</span><a name="line.70"></a>
-<span class="sourceLineNo">071</span>        try<a name="line.71"></a>
-<span class="sourceLineNo">072</span>        {<a name="line.72"></a>
-<span class="sourceLineNo">073</span>            txc.initialize();<a name="line.73"></a>
-<span class="sourceLineNo">074</span><a name="line.74"></a>
-<span class="sourceLineNo">075</span>            Configuration configuration = Turbine.getConfiguration();<a name="line.75"></a>
-<span class="sourceLineNo">076</span>            assertNotNull("No Configuration Object found!", configuration);<a name="line.76"></a>
-<span class="sourceLineNo">077</span>            assertFalse("Make sure we have values", configuration.isEmpty());<a name="line.77"></a>
-<span class="sourceLineNo">078</span><a name="line.78"></a>
-<span class="sourceLineNo">079</span>            // overridden value<a name="line.79"></a>
-<span class="sourceLineNo">080</span>            String key = "module.cache";<a name="line.80"></a>
-<span class="sourceLineNo">081</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "true", configuration.getString(key));<a name="line.81"></a>
-<span class="sourceLineNo">082</span><a name="line.82"></a>
-<span class="sourceLineNo">083</span>            // non overridden value<a name="line.83"></a>
-<span class="sourceLineNo">084</span>            key = "scheduledjob.cache.size";<a name="line.84"></a>
-<span class="sourceLineNo">085</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "10", configuration.getString(key));<a name="line.85"></a>
-<span class="sourceLineNo">086</span>        }<a name="line.86"></a>
-<span class="sourceLineNo">087</span>        catch (Exception e)<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        {<a name="line.88"></a>
-<span class="sourceLineNo">089</span>            throw e;<a name="line.89"></a>
-<span class="sourceLineNo">090</span>        }<a name="line.90"></a>
-<span class="sourceLineNo">091</span>        finally<a name="line.91"></a>
-<span class="sourceLineNo">092</span>        {<a name="line.92"></a>
-<span class="sourceLineNo">093</span>            txc.dispose();<a name="line.93"></a>
-<span class="sourceLineNo">094</span>        }<a name="line.94"></a>
-<span class="sourceLineNo">095</span>    }<a name="line.95"></a>
-<span class="sourceLineNo">096</span><a name="line.96"></a>
-<span class="sourceLineNo">097</span>    @Test<a name="line.97"></a>
-<span class="sourceLineNo">098</span>    public void testCreateTurbineWithConfiguration() throws Exception<a name="line.98"></a>
-<span class="sourceLineNo">099</span>    {<a name="line.99"></a>
-<span class="sourceLineNo">100</span>        tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");<a name="line.100"></a>
-<span class="sourceLineNo">101</span><a name="line.101"></a>
-<span class="sourceLineNo">102</span>        try<a name="line.102"></a>
-<span class="sourceLineNo">103</span>        {<a name="line.103"></a>
-<span class="sourceLineNo">104</span>            tc.initialize();<a name="line.104"></a>
-<span class="sourceLineNo">105</span><a name="line.105"></a>
-<span class="sourceLineNo">106</span>            Configuration configuration = Turbine.getConfiguration();<a name="line.106"></a>
-<span class="sourceLineNo">107</span>            assertNotNull("No Configuration Object found!", configuration);<a name="line.107"></a>
-<span class="sourceLineNo">108</span>            assertFalse("Make sure we have values", configuration.isEmpty());<a name="line.108"></a>
-<span class="sourceLineNo">109</span><a name="line.109"></a>
-<span class="sourceLineNo">110</span>            String key = "scheduledjob.cache.size";<a name="line.110"></a>
-<span class="sourceLineNo">111</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "10", configuration.getString(key));<a name="line.111"></a>
-<span class="sourceLineNo">112</span>        }<a name="line.112"></a>
-<span class="sourceLineNo">113</span>        catch (Exception e)<a name="line.113"></a>
-<span class="sourceLineNo">114</span>        {<a name="line.114"></a>
-<span class="sourceLineNo">115</span>            throw e;<a name="line.115"></a>
-<span class="sourceLineNo">116</span>        }<a name="line.116"></a>
-<span class="sourceLineNo">117</span>        finally<a name="line.117"></a>
-<span class="sourceLineNo">118</span>        {<a name="line.118"></a>
-<span class="sourceLineNo">119</span>            tc.dispose();<a name="line.119"></a>
-<span class="sourceLineNo">120</span>        }<a name="line.120"></a>
-<span class="sourceLineNo">121</span>    }<a name="line.121"></a>
-<span class="sourceLineNo">122</span><a name="line.122"></a>
-<span class="sourceLineNo">123</span>    @Test<a name="line.123"></a>
-<span class="sourceLineNo">124</span>    public void testCreateConfigurationWithIncludedConfiguration() throws Exception<a name="line.124"></a>
-<span class="sourceLineNo">125</span>    {<a name="line.125"></a>
-<span class="sourceLineNo">126</span>        String confPath = Turbine.getRealPath( "/conf/test/usersettings.properties" );<a name="line.126"></a>
-<span class="sourceLineNo">127</span>        try<a name="line.127"></a>
-<span class="sourceLineNo">128</span>        {<a name="line.128"></a>
-<span class="sourceLineNo">129</span>            Configuration configuration = new Configurations().properties(confPath);<a name="line.129"></a>
-<span class="sourceLineNo">130</span>            assertNotNull("No Configuration Object found!", configuration);<a name="line.130"></a>
-<span class="sourceLineNo">131</span>            assertFalse("Make sure we have values", configuration.isEmpty());<a name="line.131"></a>
-<span class="sourceLineNo">132</span><a name="line.132"></a>
-<span class="sourceLineNo">133</span>            String key = "scheduledjob.cache.size";<a name="line.133"></a>
-<span class="sourceLineNo">134</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "100", configuration.getString(key));<a name="line.134"></a>
-<span class="sourceLineNo">135</span>            String key2 ="module.cache";<a name="line.135"></a>
-<span class="sourceLineNo">136</span>            assertEquals("Read a config value " + key2 + ", received:" + configuration.getString(key2), "false", configuration.getString(key2));<a name="line.136"></a>
-<span class="sourceLineNo">137</span>        }<a name="line.137"></a>
-<span class="sourceLineNo">138</span>        catch (Exception e)<a name="line.138"></a>
-<span class="sourceLineNo">139</span>        {<a name="line.139"></a>
-<span class="sourceLineNo">140</span>            throw e;<a name="line.140"></a>
-<span class="sourceLineNo">141</span>        }<a name="line.141"></a>
-<span class="sourceLineNo">142</span>    }<a name="line.142"></a>
-<span class="sourceLineNo">143</span>    <a name="line.143"></a>
-<span class="sourceLineNo">144</span>    @Test<a name="line.144"></a>
-<span class="sourceLineNo">145</span>    public void testCreateTurbineWithIncludedConfiguration() throws Exception<a name="line.145"></a>
-<span class="sourceLineNo">146</span>    {<a name="line.146"></a>
-<span class="sourceLineNo">147</span>        tc = new TurbineConfig(".", "/conf/test/usersettings.properties");<a name="line.147"></a>
-<span class="sourceLineNo">148</span>        try<a name="line.148"></a>
-<span class="sourceLineNo">149</span>        {<a name="line.149"></a>
-<span class="sourceLineNo">150</span>            tc.initialize();<a name="line.150"></a>
-<span class="sourceLineNo">151</span>            <a name="line.151"></a>
-<span class="sourceLineNo">152</span>            Configuration configuration = Turbine.getConfiguration();<a name="line.152"></a>
-<span class="sourceLineNo">153</span>            assertNotNull("No Configuration Object found!", configuration);<a name="line.153"></a>
-<span class="sourceLineNo">154</span>            assertFalse("Make sure we have values", configuration.isEmpty());<a name="line.154"></a>
-<span class="sourceLineNo">155</span><a name="line.155"></a>
-<span class="sourceLineNo">156</span>            String key = "scheduledjob.cache.size";<a name="line.156"></a>
-<span class="sourceLineNo">157</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "100", configuration.getString(key));<a name="line.157"></a>
-<span class="sourceLineNo">158</span>            String key2 ="module.cache";<a name="line.158"></a>
-<span class="sourceLineNo">159</span>            assertEquals("Read a config value " + key2 + ", received:" + configuration.getString(key2), "false", configuration.getString(key2));<a name="line.159"></a>
-<span class="sourceLineNo">160</span>        }<a name="line.160"></a>
-<span class="sourceLineNo">161</span>        catch (Exception e)<a name="line.161"></a>
-<span class="sourceLineNo">162</span>        {<a name="line.162"></a>
-<span class="sourceLineNo">163</span>            throw e;<a name="line.163"></a>
-<span class="sourceLineNo">164</span>        } finally<a name="line.164"></a>
-<span class="sourceLineNo">165</span>        {<a name="line.165"></a>
-<span class="sourceLineNo">166</span>            tc.dispose();<a name="line.166"></a>
-<span class="sourceLineNo">167</span>        }<a name="line.167"></a>
-<span class="sourceLineNo">168</span>    }<a name="line.168"></a>
-<span class="sourceLineNo">169</span><a name="line.169"></a>
-<span class="sourceLineNo">170</span>    @SuppressWarnings("boxing")<a name="line.170"></a>
-<span class="sourceLineNo">171</span>    @Test<a name="line.171"></a>
-<span class="sourceLineNo">172</span>    public void testCreateTurbineWithXMLBuilderConfiguration() throws Exception<a name="line.172"></a>
-<span class="sourceLineNo">173</span>    {<a name="line.173"></a>
-<span class="sourceLineNo">174</span>        String configurationRessourcePath ="conf/test/ConfigurationBuilder.xml";<a name="line.174"></a>
-<span class="sourceLineNo">175</span>        tc = new TurbineXmlConfig(".",configurationRessourcePath );<a name="line.175"></a>
-<span class="sourceLineNo">176</span><a name="line.176"></a>
-<span class="sourceLineNo">177</span>        try<a name="line.177"></a>
-<span class="sourceLineNo">178</span>        {<a name="line.178"></a>
-<span class="sourceLineNo">179</span>            tc.initialize();<a name="line.179"></a>
-<span class="sourceLineNo">180</span><a name="line.180"></a>
-<span class="sourceLineNo">181</span>            Configuration configuration = Turbine.getConfiguration();<a name="line.181"></a>
-<span class="sourceLineNo">182</span>            assertNotNull("No Configuration Object found!", configuration);<a name="line.182"></a>
-<span class="sourceLineNo">183</span>            assertFalse("Make sure we have values", configuration.isEmpty());<a name="line.183"></a>
-<span class="sourceLineNo">184</span><a name="line.184"></a>
-<span class="sourceLineNo">185</span>            //assertTrue("Test  combined configuration is"+ configuration, configuration instanceof CombinedConfiguration);<a name="line.185"></a>
-<span class="sourceLineNo">186</span><a name="line.186"></a>
-<span class="sourceLineNo">187</span>            // overridden value<a name="line.187"></a>
-<span class="sourceLineNo">188</span>            String key = "scheduledjob.cache.size";<a name="line.188"></a>
-<span class="sourceLineNo">189</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getInt(key), 100, configuration.getInt(key));<a name="line.189"></a>
-<span class="sourceLineNo">190</span><a name="line.190"></a>
-<span class="sourceLineNo">191</span>            // double overridden value<a name="line.191"></a>
-<span class="sourceLineNo">192</span>            key = "module.cache";<a name="line.192"></a>
-<span class="sourceLineNo">193</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getBoolean(key), false, configuration.getBoolean(key));<a name="line.193"></a>
-<span class="sourceLineNo">194</span>            // new property<a name="line.194"></a>
-<span class="sourceLineNo">195</span>            key = "tests.test";<a name="line.195"></a>
-<span class="sourceLineNo">196</span>            configuration.addProperty( key, 123 );<a name="line.196"></a>
-<span class="sourceLineNo">197</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getInt(key), 123, configuration.getInt(key));<a name="line.197"></a>
-<span class="sourceLineNo">198</span>            // not set<a name="line.198"></a>
-<span class="sourceLineNo">199</span>            key="test.nulltest3";<a name="line.199"></a>
-<span class="sourceLineNo">200</span>            assertEquals("Read a included config value " + key + ", received:" + configuration.getString(key), null, configuration.getString(key));<a name="line.200"></a>
-<span class="sourceLineNo">201</span>            // overridden value<a name="line.201"></a>
-<span class="sourceLineNo">202</span>            key="services.PullService.earlyInit";<a name="line.202"></a>
-<span class="sourceLineNo">203</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getBoolean(key), true, configuration.getBoolean(key));<a name="line.203"></a>
-<span class="sourceLineNo">204</span>            configuration.setProperty( key, false );<a name="line.204"></a>
-<span class="sourceLineNo">205</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getBoolean(key), false, configuration.getBoolean(key));<a name="line.205"></a>
-<span class="sourceLineNo">206</span><a name="line.206"></a>
-<span class="sourceLineNo">207</span>            // converts to URL, cft. RFC2396<a name="line.207"></a>
-<span class="sourceLineNo">208</span>            URL testURL = FileLocatorUtils.DEFAULT_FILE_SYSTEM.locateFromURL(new File( Turbine.getApplicationRoot()).toURI().toString() , configurationRessourcePath);<a name="line.208"></a>
-<span class="sourceLineNo">209</span>            assertNotNull( "Should be a valid URL",testURL);<a name="line.209"></a>
-<span class="sourceLineNo">210</span>        }<a name="line.210"></a>
-<span class="sourceLineNo">211</span>        finally<a name="line.211"></a>
-<span class="sourceLineNo">212</span>        {<a name="line.212"></a>
-<span class="sourceLineNo">213</span>            tc.dispose();<a name="line.213"></a>
-<span class="sourceLineNo">214</span>        }<a name="line.214"></a>
-<span class="sourceLineNo">215</span>    }<a name="line.215"></a>
-<span class="sourceLineNo">216</span><a name="line.216"></a>
-<span class="sourceLineNo">217</span>}<a name="line.217"></a>
+<span class="sourceLineNo">037</span>import org.junit.Test;<a name="line.37"></a>
+<span class="sourceLineNo">038</span><a name="line.38"></a>
+<span class="sourceLineNo">039</span>/**<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * Tests that the ConfigurationFactory and regular old properties methods both work.<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * Verify the overriding of properties.<a name="line.41"></a>
+<span class="sourceLineNo">042</span> *<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * @author &lt;a href="mailto:epugh@upstate.com"&gt;Eric Pugh&lt;/a&gt;<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * @version $Id: ConfigurationTest.java 1695636 2015-08-13 00:45:19Z tv $<a name="line.44"></a>
+<span class="sourceLineNo">045</span> */<a name="line.45"></a>
+<span class="sourceLineNo">046</span>public class ConfigurationTest extends BaseTestCase<a name="line.46"></a>
+<span class="sourceLineNo">047</span>{<a name="line.47"></a>
+<span class="sourceLineNo">048</span>    public static final String SERVICE_PREFIX = "services.";<a name="line.48"></a>
+<span class="sourceLineNo">049</span><a name="line.49"></a>
+<span class="sourceLineNo">050</span>    /**<a name="line.50"></a>
+<span class="sourceLineNo">051</span>     * A &lt;code&gt;Service&lt;/code&gt; property determining its implementing<a name="line.51"></a>
+<span class="sourceLineNo">052</span>     * class name .<a name="line.52"></a>
+<span class="sourceLineNo">053</span>     */<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    public static final String CLASSNAME_SUFFIX = ".classname";<a name="line.54"></a>
+<span class="sourceLineNo">055</span><a name="line.55"></a>
+<span class="sourceLineNo">056</span>    private TurbineConfig tc = null;<a name="line.56"></a>
+<span class="sourceLineNo">057</span>    private TurbineXmlConfig txc = null;<a name="line.57"></a>
+<span class="sourceLineNo">058</span><a name="line.58"></a>
+<span class="sourceLineNo">059</span>    @Test<a name="line.59"></a>
+<span class="sourceLineNo">060</span>    public void testCreateTurbineWithConfigurationXML() throws Exception<a name="line.60"></a>
+<span class="sourceLineNo">061</span>    {<a name="line.61"></a>
+<span class="sourceLineNo">062</span>        txc = new TurbineXmlConfig(".", "conf/test/TurbineConfiguration.xml");<a name="line.62"></a>
+<span class="sourceLineNo">063</span><a name="line.63"></a>
+<span class="sourceLineNo">064</span>        try<a name="line.64"></a>
+<span class="sourceLineNo">065</span>        {<a name="line.65"></a>
+<span class="sourceLineNo">066</span>            txc.initialize();<a name="line.66"></a>
+<span class="sourceLineNo">067</span><a name="line.67"></a>
+<span class="sourceLineNo">068</span>            Configuration configuration = Turbine.getConfiguration();<a name="line.68"></a>
+<span class="sourceLineNo">069</span>            assertNotNull("No Configuration Object found!", configuration);<a name="line.69"></a>
+<span class="sourceLineNo">070</span>            assertFalse("Make sure we have values", configuration.isEmpty());<a name="line.70"></a>
+<span class="sourceLineNo">071</span><a name="line.71"></a>
+<span class="sourceLineNo">072</span>            // overridden value<a name="line.72"></a>
+<span class="sourceLineNo">073</span>            String key = "module.cache";<a name="line.73"></a>
+<span class="sourceLineNo">074</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "true", configuration.getString(key));<a name="line.74"></a>
+<span class="sourceLineNo">075</span><a name="line.75"></a>
+<span class="sourceLineNo">076</span>            // non overridden value<a name="line.76"></a>
+<span class="sourceLineNo">077</span>            key = "scheduledjob.cache.size";<a name="line.77"></a>
+<span class="sourceLineNo">078</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "10", configuration.getString(key));<a name="line.78"></a>
+<span class="sourceLineNo">079</span>        }<a name="line.79"></a>
+<span class="sourceLineNo">080</span>        catch (Exception e)<a name="line.80"></a>
+<span class="sourceLineNo">081</span>        {<a name="line.81"></a>
+<span class="sourceLineNo">082</span>            throw e;<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        }<a name="line.83"></a>
+<span class="sourceLineNo">084</span>        finally<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        {<a name="line.85"></a>
+<span class="sourceLineNo">086</span>            txc.dispose();<a name="line.86"></a>
+<span class="sourceLineNo">087</span>        }<a name="line.87"></a>
+<span class="sourceLineNo">088</span>    }<a name="line.88"></a>
+<span class="sourceLineNo">089</span><a name="line.89"></a>
+<span class="sourceLineNo">090</span>    @Test<a name="line.90"></a>
+<span class="sourceLineNo">091</span>    public void testCreateTurbineWithConfiguration() throws Exception<a name="line.91"></a>
+<span class="sourceLineNo">092</span>    {<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");<a name="line.93"></a>
+<span class="sourceLineNo">094</span><a name="line.94"></a>
+<span class="sourceLineNo">095</span>        try<a name="line.95"></a>
+<span class="sourceLineNo">096</span>        {<a name="line.96"></a>
+<span class="sourceLineNo">097</span>            tc.initialize();<a name="line.97"></a>
+<span class="sourceLineNo">098</span><a name="line.98"></a>
+<span class="sourceLineNo">099</span>            Configuration configuration = Turbine.getConfiguration();<a name="line.99"></a>
+<span class="sourceLineNo">100</span>            assertNotNull("No Configuration Object found!", configuration);<a name="line.100"></a>
+<span class="sourceLineNo">101</span>            assertFalse("Make sure we have values", configuration.isEmpty());<a name="line.101"></a>
+<span class="sourceLineNo">102</span><a name="line.102"></a>
+<span class="sourceLineNo">103</span>            String key = "scheduledjob.cache.size";<a name="line.103"></a>
+<span class="sourceLineNo">104</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "10", configuration.getString(key));<a name="line.104"></a>
+<span class="sourceLineNo">105</span>        }<a name="line.105"></a>
+<span class="sourceLineNo">106</span>        catch (Exception e)<a name="line.106"></a>
+<span class="sourceLineNo">107</span>        {<a name="line.107"></a>
+<span class="sourceLineNo">108</span>            throw e;<a name="line.108"></a>
+<span class="sourceLineNo">109</span>        }<a name="line.109"></a>
+<span class="sourceLineNo">110</span>        finally<a name="line.110"></a>
+<span class="sourceLineNo">111</span>        {<a name="line.111"></a>
+<span class="sourceLineNo">112</span>            tc.dispose();<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        }<a name="line.113"></a>
+<span class="sourceLineNo">114</span>    }<a name="line.114"></a>
+<span class="sourceLineNo">115</span><a name="line.115"></a>
+<span class="sourceLineNo">116</span>    @Test<a name="line.116"></a>
+<span class="sourceLineNo">117</span>    public void testCreateTurbineWithIncludedConfiguration() throws Exception<a name="line.117"></a>
+<span class="sourceLineNo">118</span>    {<a name="line.118"></a>
+<span class="sourceLineNo">119</span>        String confPath = Turbine.getRealPath( "/conf/test/usersettings.properties" );<a name="line.119"></a>
+<span class="sourceLineNo">120</span>        try<a name="line.120"></a>
+<span class="sourceLineNo">121</span>        {<a name="line.121"></a>
+<span class="sourceLineNo">122</span>            Configuration configuration = new PropertiesConfiguration(confPath);<a name="line.122"></a>
+<span class="sourceLineNo">123</span>            assertNotNull("No Configuration Object found!", configuration);<a name="line.123"></a>
+<span class="sourceLineNo">124</span>            assertFalse("Make sure we have values", configuration.isEmpty());<a name="line.124"></a>
+<span class="sourceLineNo">125</span><a name="line.125"></a>
+<span class="sourceLineNo">126</span>            String key = "scheduledjob.cache.size";<a name="line.126"></a>
+<span class="sourceLineNo">127</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "100", configuration.getString(key));<a name="line.127"></a>
+<span class="sourceLineNo">128</span>            String key2 ="module.cache";<a name="line.128"></a>
+<span class="sourceLineNo">129</span>            assertEquals("Read a config value " + key2 + ", received:" + configuration.getString(key2), "false", configuration.getString(key2));<a name="line.129"></a>
+<span class="sourceLineNo">130</span>        }<a name="line.130"></a>
+<span class="sourceLineNo">131</span>        catch (Exception e)<a name="line.131"></a>
+<span class="sourceLineNo">132</span>        {<a name="line.132"></a>
+<span class="sourceLineNo">133</span>            throw e;<a name="line.133"></a>
+<span class="sourceLineNo">134</span>        }<a name="line.134"></a>
+<span class="sourceLineNo">135</span>    }<a name="line.135"></a>
+<span class="sourceLineNo">136</span><a name="line.136"></a>
+<span class="sourceLineNo">137</span>    @SuppressWarnings("boxing")<a name="line.137"></a>
+<span class="sourceLineNo">138</span>    @Test<a name="line.138"></a>
+<span class="sourceLineNo">139</span>    public void testCreateTurbineWithXMLBuilderConfiguration() throws Exception<a name="line.139"></a>
+<span class="sourceLineNo">140</span>    {<a name="line.140"></a>
+<span class="sourceLineNo">141</span>        String configurationRessourcePath ="conf/test/ConfigurationBuilder.xml";<a name="line.141"></a>
+<span class="sourceLineNo">142</span>        tc = new TurbineXmlConfig(".",configurationRessourcePath );<a name="line.142"></a>
+<span class="sourceLineNo">143</span><a name="line.143"></a>
+<span class="sourceLineNo">144</span>        try<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        {<a name="line.145"></a>
+<span class="sourceLineNo">146</span>            tc.initialize();<a name="line.146"></a>
+<span class="sourceLineNo">147</span><a name="line.147"></a>
+<span class="sourceLineNo">148</span>            Configuration configuration = Turbine.getConfiguration();<a name="line.148"></a>
+<span class="sourceLineNo">149</span>            assertNotNull("No Configuration Object found!", configuration);<a name="line.149"></a>
+<span class="sourceLineNo">150</span>            assertFalse("Make sure we have values", configuration.isEmpty());<a name="line.150"></a>
+<span class="sourceLineNo">151</span><a name="line.151"></a>
+<span class="sourceLineNo">152</span>            //assertTrue("Test  combined configuration is"+ configuration, configuration instanceof CombinedConfiguration);<a name="line.152"></a>
+<span class="sourceLineNo">153</span><a name="line.153"></a>
+<span class="sourceLineNo">154</span>            // overridden value<a name="line.154"></a>
+<span class="sourceLineNo">155</span>            String key = "scheduledjob.cache.size";<a name="line.155"></a>
+<span class="sourceLineNo">156</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getInt(key), 100, configuration.getInt(key));<a name="line.156"></a>
+<span class="sourceLineNo">157</span><a name="line.157"></a>
+<span class="sourceLineNo">158</span>            // double overridden value<a name="line.158"></a>
+<span class="sourceLineNo">159</span>            key = "module.cache";<a name="line.159"></a>
+<span class="sourceLineNo">160</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getBoolean(key), false, configuration.getBoolean(key));<a name="line.160"></a>
+<span class="sourceLineNo">161</span>            // new property<a name="line.161"></a>
+<span class="sourceLineNo">162</span>            key = "tests.test";<a name="line.162"></a>
+<span class="sourceLineNo">163</span>            configuration.addProperty( key, 123 );<a name="line.163"></a>
+<span class="sourceLineNo">164</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getInt(key), 123, configuration.getInt(key));<a name="line.164"></a>
+<span class="sourceLineNo">165</span>            // not set<a name="line.165"></a>
+<span class="sourceLineNo">166</span>            key="test.nulltest3";<a name="line.166"></a>
+<span class="sourceLineNo">167</span>            assertEquals("Read a included config value " + key + ", received:" + configuration.getString(key), null, configuration.getString(key));<a name="line.167"></a>
+<span class="sourceLineNo">168</span>            // overridden value<a name="line.168"></a>
+<span class="sourceLineNo">169</span>            key="services.PullService.earlyInit";<a name="line.169"></a>
+<span class="sourceLineNo">170</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getBoolean(key), true, configuration.getBoolean(key));<a name="line.170"></a>
+<span class="sourceLineNo">171</span>            configuration.setProperty( key, false );<a name="line.171"></a>
+<span class="sourceLineNo">172</span>            assertEquals("Read a config value " + key + ", received:" + configuration.getBoolean(key), false, configuration.getBoolean(key));<a name="line.172"></a>
+<span class="sourceLineNo">173</span><a name="line.173"></a>
+<span class="sourceLineNo">174</span>            // converts to URL, cft. RFC2396<a name="line.174"></a>
+<span class="sourceLineNo">175</span>            URL testURL = FileSystem.getDefaultFileSystem().locateFromURL(new File( Turbine.getApplicationRoot()).toURI().toString() , configurationRessourcePath);<a name="line.175"></a>
+<span class="sourceLineNo">176</span>            assertNotNull( "Should be a valid URL",testURL);<a name="line.176"></a>
+<span class="sourceLineNo">177</span>        }<a name="line.177"></a>
+<span class="sourceLineNo">178</span>        finally<a name="line.178"></a>
+<span class="sourceLineNo">179</span>        {<a name="line.179"></a>
+<span class="sourceLineNo">180</span>            tc.dispose();<a name="line.180"></a>
+<span class="sourceLineNo">181</span>        }<a name="line.181"></a>
+<span class="sourceLineNo">182</span>    }<a name="line.182"></a>
+<span class="sourceLineNo">183</span><a name="line.183"></a>
+<span class="sourceLineNo">184</span>}<a name="line.184"></a>
 
 
 

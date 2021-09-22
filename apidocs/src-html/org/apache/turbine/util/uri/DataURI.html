@@ -41,7 +41,7 @@
 <span class="sourceLineNo">033</span> * this, use TurbineURI or TemplateURI.<a name="line.33"></a>
 <span class="sourceLineNo">034</span> *<a name="line.34"></a>
 <span class="sourceLineNo">035</span> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;<a name="line.35"></a>
-<span class="sourceLineNo">036</span> * @version $Id: DataURI.java 1850675 2019-01-07 18:48:42Z painter $<a name="line.36"></a>
+<span class="sourceLineNo">036</span> * @version $Id: DataURI.java 1709648 2015-10-20 17:08:10Z tv $<a name="line.36"></a>
 <span class="sourceLineNo">037</span> *<a name="line.37"></a>
 <span class="sourceLineNo">038</span> */<a name="line.38"></a>
 <span class="sourceLineNo">039</span><a name="line.39"></a>
@@ -115,17 +115,17 @@
 <span class="sourceLineNo">107</span>     * encoded using HttpServletResponse.encodeUrl(). The resulting<a name="line.107"></a>
 <span class="sourceLineNo">108</span>     * URL is absolute; it starts with http/https...<a name="line.108"></a>
 <span class="sourceLineNo">109</span>     *<a name="line.109"></a>
-<span class="sourceLineNo">110</span>     * &lt;pre&gt;<a name="line.110"></a>
-<span class="sourceLineNo">111</span>     * TurbineURI tui = new TurbineURI (data, "UserScreen");<a name="line.111"></a>
-<span class="sourceLineNo">112</span>     * tui.addPathInfo("user","jon");<a name="line.112"></a>
-<span class="sourceLineNo">113</span>     * tui.getAbsoluteLink();<a name="line.113"></a>
-<span class="sourceLineNo">114</span>     * &lt;/pre&gt;<a name="line.114"></a>
-<span class="sourceLineNo">115</span>     *<a name="line.115"></a>
-<span class="sourceLineNo">116</span>     *  The above call to getAbsoluteLink() would return the String:<a name="line.116"></a>
-<span class="sourceLineNo">117</span>     *<a name="line.117"></a>
-<span class="sourceLineNo">118</span>     * &lt;p&gt;<a name="line.118"></a>
-<span class="sourceLineNo">119</span>     * http://www.server.com/servlets/Turbine/screen/UserScreen/user/jon<a name="line.119"></a>
-<span class="sourceLineNo">120</span>     * &lt;/p&gt;<a name="line.120"></a>
+<span class="sourceLineNo">110</span>     * &lt;p&gt;<a name="line.110"></a>
+<span class="sourceLineNo">111</span>     * &lt;code&gt;&lt;pre&gt;<a name="line.111"></a>
+<span class="sourceLineNo">112</span>     * TurbineURI tui = new TurbineURI (data, "UserScreen");<a name="line.112"></a>
+<span class="sourceLineNo">113</span>     * tui.addPathInfo("user","jon");<a name="line.113"></a>
+<span class="sourceLineNo">114</span>     * tui.getAbsoluteLink();<a name="line.114"></a>
+<span class="sourceLineNo">115</span>     * &lt;/pre&gt;&lt;/code&gt;<a name="line.115"></a>
+<span class="sourceLineNo">116</span>     *<a name="line.116"></a>
+<span class="sourceLineNo">117</span>     *  The above call to getAbsoluteLink() would return the String:<a name="line.117"></a>
+<span class="sourceLineNo">118</span>     *<a name="line.118"></a>
+<span class="sourceLineNo">119</span>     * &lt;p&gt;<a name="line.119"></a>
+<span class="sourceLineNo">120</span>     * http://www.server.com/servlets/Turbine/screen/UserScreen/user/jon<a name="line.120"></a>
 <span class="sourceLineNo">121</span>     *<a name="line.121"></a>
 <span class="sourceLineNo">122</span>     * @return A String with the built URL.<a name="line.122"></a>
 <span class="sourceLineNo">123</span>     */<a name="line.123"></a>
@@ -153,17 +153,17 @@
 <span class="sourceLineNo">145</span>     * encoded using HttpServletResponse.encodeUrl(). The resulting<a name="line.145"></a>
 <span class="sourceLineNo">146</span>     * URL is relative to the webserver root.<a name="line.146"></a>
 <span class="sourceLineNo">147</span>     *<a name="line.147"></a>
-<span class="sourceLineNo">148</span>     * &lt;pre&gt;<a name="line.148"></a>
-<span class="sourceLineNo">149</span>     * TurbineURI tui = new TurbineURI (data, "UserScreen");<a name="line.149"></a>
-<span class="sourceLineNo">150</span>     * tui.addPathInfo("user","jon");<a name="line.150"></a>
-<span class="sourceLineNo">151</span>     * tui.getRelativeLink();<a name="line.151"></a>
-<span class="sourceLineNo">152</span>     * &lt;/pre&gt;<a name="line.152"></a>
-<span class="sourceLineNo">153</span>     *<a name="line.153"></a>
-<span class="sourceLineNo">154</span>     *  The above call to getRelativeLink() would return the String:<a name="line.154"></a>
-<span class="sourceLineNo">155</span>     *<a name="line.155"></a>
-<span class="sourceLineNo">156</span>     * &lt;p&gt;<a name="line.156"></a>
-<span class="sourceLineNo">157</span>     * /servlets/Turbine/screen/UserScreen/user/jon<a name="line.157"></a>
-<span class="sourceLineNo">158</span>     * &lt;/p&gt;<a name="line.158"></a>
+<span class="sourceLineNo">148</span>     * &lt;p&gt;<a name="line.148"></a>
+<span class="sourceLineNo">149</span>     * &lt;code&gt;&lt;pre&gt;<a name="line.149"></a>
+<span class="sourceLineNo">150</span>     * TurbineURI tui = new TurbineURI (data, "UserScreen");<a name="line.150"></a>
+<span class="sourceLineNo">151</span>     * tui.addPathInfo("user","jon");<a name="line.151"></a>
+<span class="sourceLineNo">152</span>     * tui.getRelativeLink();<a name="line.152"></a>
+<span class="sourceLineNo">153</span>     * &lt;/pre&gt;&lt;/code&gt;<a name="line.153"></a>
+<span class="sourceLineNo">154</span>     *<a name="line.154"></a>
+<span class="sourceLineNo">155</span>     *  The above call to getRelativeLink() would return the String:<a name="line.155"></a>
+<span class="sourceLineNo">156</span>     *<a name="line.156"></a>
+<span class="sourceLineNo">157</span>     * &lt;p&gt;<a name="line.157"></a>
+<span class="sourceLineNo">158</span>     * /servlets/Turbine/screen/UserScreen/user/jon<a name="line.158"></a>
 <span class="sourceLineNo">159</span>     *<a name="line.159"></a>
 <span class="sourceLineNo">160</span>     * @return A String with the built URL.<a name="line.160"></a>
 <span class="sourceLineNo">161</span>     */<a name="line.161"></a>
@@ -192,12 +192,11 @@
 <span class="sourceLineNo">184</span>     * @return This URI as a String<a name="line.184"></a>
 <span class="sourceLineNo">185</span>     *<a name="line.185"></a>
 <span class="sourceLineNo">186</span>     */<a name="line.186"></a>
-<span class="sourceLineNo">187</span>    @Override<a name="line.187"></a>
-<span class="sourceLineNo">188</span>    public String toString()<a name="line.188"></a>
-<span class="sourceLineNo">189</span>    {<a name="line.189"></a>
-<span class="sourceLineNo">190</span>        return getAbsoluteLink();<a name="line.190"></a>
-<span class="sourceLineNo">191</span>    }<a name="line.191"></a>
-<span class="sourceLineNo">192</span>}<a name="line.192"></a>
+<span class="sourceLineNo">187</span>    public String toString()<a name="line.187"></a>
+<span class="sourceLineNo">188</span>    {<a name="line.188"></a>
+<span class="sourceLineNo">189</span>        return getAbsoluteLink();<a name="line.189"></a>
+<span class="sourceLineNo">190</span>    }<a name="line.190"></a>
+<span class="sourceLineNo">191</span>}<a name="line.191"></a>
 
 
 

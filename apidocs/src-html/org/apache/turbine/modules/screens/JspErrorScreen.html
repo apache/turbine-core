@@ -27,8 +27,8 @@
 <span class="sourceLineNo">019</span> * under the License.<a name="line.19"></a>
 <span class="sourceLineNo">020</span> */<a name="line.20"></a>
 <span class="sourceLineNo">021</span><a name="line.21"></a>
-<span class="sourceLineNo">022</span>import org.apache.turbine.TurbineConstants;<a name="line.22"></a>
-<span class="sourceLineNo">023</span>import org.apache.turbine.annotation.TurbineConfiguration;<a name="line.23"></a>
+<span class="sourceLineNo">022</span>import org.apache.turbine.Turbine;<a name="line.22"></a>
+<span class="sourceLineNo">023</span>import org.apache.turbine.TurbineConstants;<a name="line.23"></a>
 <span class="sourceLineNo">024</span>import org.apache.turbine.pipeline.PipelineData;<a name="line.24"></a>
 <span class="sourceLineNo">025</span><a name="line.25"></a>
 <span class="sourceLineNo">026</span>/**<a name="line.26"></a>
@@ -37,25 +37,26 @@
 <span class="sourceLineNo">029</span> * @author &lt;a href="mailto:ingo@raleigh.ibm.com"&gt;Ingo Schuster&lt;/a&gt;<a name="line.29"></a>
 <span class="sourceLineNo">030</span> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;<a name="line.30"></a>
 <span class="sourceLineNo">031</span> * @author &lt;a href="mailto:peter@courcoux.biz"&gt;Peter Courcoux&lt;/a&gt;<a name="line.31"></a>
-<span class="sourceLineNo">032</span> * @version $Id: JspErrorScreen.java 1773378 2016-12-09 13:19:59Z tv $<a name="line.32"></a>
+<span class="sourceLineNo">032</span> * @version $Id: JspErrorScreen.java 1695634 2015-08-13 00:35:47Z tv $<a name="line.32"></a>
 <span class="sourceLineNo">033</span> */<a name="line.33"></a>
 <span class="sourceLineNo">034</span>public class JspErrorScreen<a name="line.34"></a>
 <span class="sourceLineNo">035</span>    extends BaseJspScreen<a name="line.35"></a>
 <span class="sourceLineNo">036</span>{<a name="line.36"></a>
-<span class="sourceLineNo">037</span>    @TurbineConfiguration( TurbineConstants.TEMPLATE_ERROR_KEY )<a name="line.37"></a>
-<span class="sourceLineNo">038</span>    private String templateError = TurbineConstants.TEMPLATE_ERROR_JSP;<a name="line.38"></a>
-<span class="sourceLineNo">039</span><a name="line.39"></a>
-<span class="sourceLineNo">040</span>    /**<a name="line.40"></a>
-<span class="sourceLineNo">041</span>     * @param pipelineData Turbine information.<a name="line.41"></a>
-<span class="sourceLineNo">042</span>     * @throws Exception a generic exception.<a name="line.42"></a>
-<span class="sourceLineNo">043</span>     */<a name="line.43"></a>
-<span class="sourceLineNo">044</span>    @Override<a name="line.44"></a>
-<span class="sourceLineNo">045</span>    protected void doBuildTemplate(PipelineData pipelineData)<a name="line.45"></a>
-<span class="sourceLineNo">046</span>        throws Exception<a name="line.46"></a>
-<span class="sourceLineNo">047</span>    {<a name="line.47"></a>
-<span class="sourceLineNo">048</span>        setTemplate(pipelineData, templateError);<a name="line.48"></a>
-<span class="sourceLineNo">049</span>    }<a name="line.49"></a>
-<span class="sourceLineNo">050</span>}<a name="line.50"></a>
+<span class="sourceLineNo">037</span>    /**<a name="line.37"></a>
+<span class="sourceLineNo">038</span>     * @param pipelineData Turbine information.<a name="line.38"></a>
+<span class="sourceLineNo">039</span>     * @exception Exception a generic exception.<a name="line.39"></a>
+<span class="sourceLineNo">040</span>     */<a name="line.40"></a>
+<span class="sourceLineNo">041</span>    @Override<a name="line.41"></a>
+<span class="sourceLineNo">042</span>    protected void doBuildTemplate(PipelineData pipelineData)<a name="line.42"></a>
+<span class="sourceLineNo">043</span>        throws Exception<a name="line.43"></a>
+<span class="sourceLineNo">044</span>    {<a name="line.44"></a>
+<span class="sourceLineNo">045</span>        String errorTemplate = Turbine.getConfiguration()<a name="line.45"></a>
+<span class="sourceLineNo">046</span>                .getString(TurbineConstants.TEMPLATE_ERROR_KEY,<a name="line.46"></a>
+<span class="sourceLineNo">047</span>                           TurbineConstants.TEMPLATE_ERROR_JSP);<a name="line.47"></a>
+<span class="sourceLineNo">048</span><a name="line.48"></a>
+<span class="sourceLineNo">049</span>        setTemplate(pipelineData, errorTemplate);<a name="line.49"></a>
+<span class="sourceLineNo">050</span>    }<a name="line.50"></a>
+<span class="sourceLineNo">051</span>}<a name="line.51"></a>
 
 
 

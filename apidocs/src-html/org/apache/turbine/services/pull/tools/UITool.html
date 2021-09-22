@@ -8,394 +8,387 @@
 <div class="sourceContainer">
 <pre><span class="sourceLineNo">001</span>package org.apache.turbine.services.pull.tools;<a name="line.1"></a>
 <span class="sourceLineNo">002</span><a name="line.2"></a>
-<span class="sourceLineNo">003</span>import org.apache.logging.log4j.LogManager;<a name="line.3"></a>
-<span class="sourceLineNo">004</span><a name="line.4"></a>
-<span class="sourceLineNo">005</span>/*<a name="line.5"></a>
-<span class="sourceLineNo">006</span> * Licensed to the Apache Software Foundation (ASF) under one<a name="line.6"></a>
-<span class="sourceLineNo">007</span> * or more contributor license agreements.  See the NOTICE file<a name="line.7"></a>
-<span class="sourceLineNo">008</span> * distributed with this work for additional information<a name="line.8"></a>
-<span class="sourceLineNo">009</span> * regarding copyright ownership.  The ASF licenses this file<a name="line.9"></a>
-<span class="sourceLineNo">010</span> * to you under the Apache License, Version 2.0 (the<a name="line.10"></a>
-<span class="sourceLineNo">011</span> * "License"); you may not use this file except in compliance<a name="line.11"></a>
-<span class="sourceLineNo">012</span> * with the License.  You may obtain a copy of the License at<a name="line.12"></a>
+<span class="sourceLineNo">003</span>/*<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * Licensed to the Apache Software Foundation (ASF) under one<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * or more contributor license agreements.  See the NOTICE file<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * distributed with this work for additional information<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * regarding copyright ownership.  The ASF licenses this file<a name="line.7"></a>
+<span class="sourceLineNo">008</span> * to you under the Apache License, Version 2.0 (the<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * "License"); you may not use this file except in compliance<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * with the License.  You may obtain a copy of the License at<a name="line.10"></a>
+<span class="sourceLineNo">011</span> *<a name="line.11"></a>
+<span class="sourceLineNo">012</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.12"></a>
 <span class="sourceLineNo">013</span> *<a name="line.13"></a>
-<span class="sourceLineNo">014</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.14"></a>
-<span class="sourceLineNo">015</span> *<a name="line.15"></a>
-<span class="sourceLineNo">016</span> * Unless required by applicable law or agreed to in writing,<a name="line.16"></a>
-<span class="sourceLineNo">017</span> * software distributed under the License is distributed on an<a name="line.17"></a>
-<span class="sourceLineNo">018</span> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY<a name="line.18"></a>
-<span class="sourceLineNo">019</span> * KIND, either express or implied.  See the License for the<a name="line.19"></a>
-<span class="sourceLineNo">020</span> * specific language governing permissions and limitations<a name="line.20"></a>
-<span class="sourceLineNo">021</span> * under the License.<a name="line.21"></a>
-<span class="sourceLineNo">022</span> */<a name="line.22"></a>
-<span class="sourceLineNo">023</span><a name="line.23"></a>
-<span class="sourceLineNo">024</span>import org.apache.logging.log4j.Logger;<a name="line.24"></a>
-<span class="sourceLineNo">025</span>import org.apache.turbine.annotation.TurbineService;<a name="line.25"></a>
-<span class="sourceLineNo">026</span>import org.apache.turbine.om.security.User;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import org.apache.turbine.pipeline.PipelineData;<a name="line.27"></a>
-<span class="sourceLineNo">028</span>import org.apache.turbine.services.pull.ApplicationTool;<a name="line.28"></a>
-<span class="sourceLineNo">029</span>import org.apache.turbine.services.ui.UIService;<a name="line.29"></a>
-<span class="sourceLineNo">030</span>import org.apache.turbine.util.RunData;<a name="line.30"></a>
-<span class="sourceLineNo">031</span>import org.apache.turbine.util.ServerData;<a name="line.31"></a>
-<span class="sourceLineNo">032</span><a name="line.32"></a>
-<span class="sourceLineNo">033</span>/**<a name="line.33"></a>
-<span class="sourceLineNo">034</span> * Manages all UI elements for a Turbine Application. Any UI element can be<a name="line.34"></a>
-<span class="sourceLineNo">035</span> * accessed in any template using the $ui handle (assuming you use the default<a name="line.35"></a>
-<span class="sourceLineNo">036</span> * PullService configuration). So, for example, you could access the background<a name="line.36"></a>
-<span class="sourceLineNo">037</span> * color for your pages by using $ui.bgcolor<a name="line.37"></a>
-<span class="sourceLineNo">038</span> * &lt;p&gt;<a name="line.38"></a>
-<span class="sourceLineNo">039</span> * This implementation provides a single level of inheritance in that if a<a name="line.39"></a>
-<span class="sourceLineNo">040</span> * property does not exist in a non-default skin, the value from the default<a name="line.40"></a>
-<span class="sourceLineNo">041</span> * skin will be used. By only requiring values different to those stored in<a name="line.41"></a>
-<span class="sourceLineNo">042</span> * the default skin to appear in the non-default skins the amount of memory<a name="line.42"></a>
-<span class="sourceLineNo">043</span> * consumed in cases where the UserManager instance is used at a non-global<a name="line.43"></a>
-<span class="sourceLineNo">044</span> * scope will potentially be reduced due to the fact that a shared instance of<a name="line.44"></a>
-<span class="sourceLineNo">045</span> * the default skin properties can be used. Note that this inheritance only<a name="line.45"></a>
-<span class="sourceLineNo">046</span> * applies to property values - it does not apply to any images or stylesheets<a name="line.46"></a>
-<span class="sourceLineNo">047</span> * that may form part of your skins.<a name="line.47"></a>
-<span class="sourceLineNo">048</span> * &lt;p&gt;<a name="line.48"></a>
-<span class="sourceLineNo">049</span> * This is an application pull tool for the template system. You should not<a name="line.49"></a>
-<span class="sourceLineNo">050</span> * use it in a normal application!  Within Java code you should use TurbineUI.<a name="line.50"></a>
-<span class="sourceLineNo">051</span> * &lt;p&gt;<a name="line.51"></a>
-<span class="sourceLineNo">052</span> *<a name="line.52"></a>
-<span class="sourceLineNo">053</span> * This is an application pull tool for the template system. You should<a name="line.53"></a>
-<span class="sourceLineNo">054</span> * &lt;strong&gt;only&lt;/strong&gt; use it in a normal application to set the skin<a name="line.54"></a>
-<span class="sourceLineNo">055</span> * attribute for a user (setSkin(User user, String skin)) and to initialize it<a name="line.55"></a>
-<span class="sourceLineNo">056</span> * for the user, otherwise use TurbineUI is probably the way to go.<a name="line.56"></a>
-<span class="sourceLineNo">057</span> *<a name="line.57"></a>
-<span class="sourceLineNo">058</span> * @author &lt;a href="mailto:jvanzyl@periapt.com"&gt;Jason van Zyl&lt;/a&gt;<a name="line.58"></a>
-<span class="sourceLineNo">059</span> * @author &lt;a href="mailto:james_coltman@majorband.co.uk"&gt;James Coltman&lt;/a&gt;<a name="line.59"></a>
-<span class="sourceLineNo">060</span> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;<a name="line.60"></a>
-<span class="sourceLineNo">061</span> * @author &lt;a href="mailto:seade@backstagetech.com.au"&gt;Scott Eade&lt;/a&gt;<a name="line.61"></a>
-<span class="sourceLineNo">062</span> * @version $Id$<a name="line.62"></a>
-<span class="sourceLineNo">063</span> * @see UIService<a name="line.63"></a>
-<span class="sourceLineNo">064</span> */<a name="line.64"></a>
-<span class="sourceLineNo">065</span>public class UITool implements ApplicationTool<a name="line.65"></a>
-<span class="sourceLineNo">066</span>{<a name="line.66"></a>
-<span class="sourceLineNo">067</span>    /** Logging */<a name="line.67"></a>
-<span class="sourceLineNo">068</span>    private static final Logger log = LogManager.getLogger(UITool.class);<a name="line.68"></a>
-<span class="sourceLineNo">069</span><a name="line.69"></a>
-<span class="sourceLineNo">070</span>    /**<a name="line.70"></a>
-<span class="sourceLineNo">071</span>     * Attribute name of skinName value in User's temp hashmap.<a name="line.71"></a>
-<span class="sourceLineNo">072</span>     */<a name="line.72"></a>
-<span class="sourceLineNo">073</span>    public static final String SKIN_ATTRIBUTE = UITool.class.getName()+ ".skin";<a name="line.73"></a>
-<span class="sourceLineNo">074</span><a name="line.74"></a>
-<span class="sourceLineNo">075</span>    /**<a name="line.75"></a>
-<span class="sourceLineNo">076</span>     * The actual skin being used for the webapp.<a name="line.76"></a>
-<span class="sourceLineNo">077</span>     */<a name="line.77"></a>
-<span class="sourceLineNo">078</span>    private String skinName;<a name="line.78"></a>
-<span class="sourceLineNo">079</span><a name="line.79"></a>
-<span class="sourceLineNo">080</span>    /**<a name="line.80"></a>
-<span class="sourceLineNo">081</span>     * The UI service.<a name="line.81"></a>
-<span class="sourceLineNo">082</span>     */<a name="line.82"></a>
-<span class="sourceLineNo">083</span>    @TurbineService<a name="line.83"></a>
-<span class="sourceLineNo">084</span>    private UIService uiService;<a name="line.84"></a>
-<span class="sourceLineNo">085</span><a name="line.85"></a>
-<span class="sourceLineNo">086</span>    /**<a name="line.86"></a>
-<span class="sourceLineNo">087</span>     * Refresh the tool.<a name="line.87"></a>
-<span class="sourceLineNo">088</span>     */<a name="line.88"></a>
-<span class="sourceLineNo">089</span>    @Override<a name="line.89"></a>
-<span class="sourceLineNo">090</span>    public void refresh()<a name="line.90"></a>
-<span class="sourceLineNo">091</span>    {<a name="line.91"></a>
-<span class="sourceLineNo">092</span>        uiService.refresh(getSkin());<a name="line.92"></a>
-<span class="sourceLineNo">093</span>        log.debug("UITool refreshed for skin: {}", this::getSkin);<a name="line.93"></a>
-<span class="sourceLineNo">094</span>    }<a name="line.94"></a>
-<span class="sourceLineNo">095</span><a name="line.95"></a>
-<span class="sourceLineNo">096</span>    /**<a name="line.96"></a>
-<span class="sourceLineNo">097</span>     * Provide access to the list of available skin names.<a name="line.97"></a>
-<span class="sourceLineNo">098</span>     *<a name="line.98"></a>
-<span class="sourceLineNo">099</span>     * @return the available skin names.<a name="line.99"></a>
-<span class="sourceLineNo">100</span>     */<a name="line.100"></a>
-<span class="sourceLineNo">101</span>    public String[] getSkinNames()<a name="line.101"></a>
-<span class="sourceLineNo">102</span>    {<a name="line.102"></a>
-<span class="sourceLineNo">103</span>        return uiService.getSkinNames();<a name="line.103"></a>
-<span class="sourceLineNo">104</span>    }<a name="line.104"></a>
-<span class="sourceLineNo">105</span><a name="line.105"></a>
-<span class="sourceLineNo">106</span>    /**<a name="line.106"></a>
-<span class="sourceLineNo">107</span>     * Get the name of the default skin name for the web application from the<a name="line.107"></a>
-<span class="sourceLineNo">108</span>     * TurbineResources.properties file. If the property is not present the<a name="line.108"></a>
-<span class="sourceLineNo">109</span>     * name of the default skin will be returned.  Note that the web application<a name="line.109"></a>
-<span class="sourceLineNo">110</span>     * skin name may be something other than default, in which case its<a name="line.110"></a>
-<span class="sourceLineNo">111</span>     * properties will default to the skin with the name "default".<a name="line.111"></a>
-<span class="sourceLineNo">112</span>     *<a name="line.112"></a>
-<span class="sourceLineNo">113</span>     * @return the name of the default skin for the web application.<a name="line.113"></a>
-<span class="sourceLineNo">114</span>     */<a name="line.114"></a>
-<span class="sourceLineNo">115</span>    public String getWebappSkinName()<a name="line.115"></a>
-<span class="sourceLineNo">116</span>    {<a name="line.116"></a>
-<span class="sourceLineNo">117</span>        return uiService.getWebappSkinName();<a name="line.117"></a>
-<span class="sourceLineNo">118</span>    }<a name="line.118"></a>
-<span class="sourceLineNo">119</span><a name="line.119"></a>
-<span class="sourceLineNo">120</span>    /**<a name="line.120"></a>
-<span class="sourceLineNo">121</span>     * Retrieve a skin property.  If the property is not defined in the current<a name="line.121"></a>
-<span class="sourceLineNo">122</span>     * skin the value for the default skin will be provided.  If the current<a name="line.122"></a>
-<span class="sourceLineNo">123</span>     * skin does not exist then the skin configured for the webapp will be used.<a name="line.123"></a>
-<span class="sourceLineNo">124</span>     * If the webapp skin does not exist the default skin will be used.  If the<a name="line.124"></a>
-<span class="sourceLineNo">125</span>     * default skin does not exist then &lt;code&gt;null&lt;/code&gt; will be returned.<a name="line.125"></a>
-<span class="sourceLineNo">126</span>     *<a name="line.126"></a>
-<span class="sourceLineNo">127</span>     * @param key the key to retrieve from the skin.<a name="line.127"></a>
-<span class="sourceLineNo">128</span>     * @return the value of the property for the named skin (defaulting to the<a name="line.128"></a>
-<span class="sourceLineNo">129</span>     * default skin), the webapp skin, the default skin or &lt;code&gt;null&lt;/code&gt;,<a name="line.129"></a>
-<span class="sourceLineNo">130</span>     * depending on whether or not the property or skins exist.<a name="line.130"></a>
-<span class="sourceLineNo">131</span>     */<a name="line.131"></a>
-<span class="sourceLineNo">132</span>    public String get(String key)<a name="line.132"></a>
-<span class="sourceLineNo">133</span>    {<a name="line.133"></a>
-<span class="sourceLineNo">134</span>        return uiService.get(getSkin(), key);<a name="line.134"></a>
-<span class="sourceLineNo">135</span>    }<a name="line.135"></a>
-<span class="sourceLineNo">136</span><a name="line.136"></a>
-<span class="sourceLineNo">137</span>    /**<a name="line.137"></a>
-<span class="sourceLineNo">138</span>     * Retrieve the skin name.<a name="line.138"></a>
-<span class="sourceLineNo">139</span>     * @return the selected skin name<a name="line.139"></a>
-<span class="sourceLineNo">140</span>     */<a name="line.140"></a>
-<span class="sourceLineNo">141</span>    public String getSkin()<a name="line.141"></a>
-<span class="sourceLineNo">142</span>    {<a name="line.142"></a>
-<span class="sourceLineNo">143</span>        return skinName;<a name="line.143"></a>
-<span class="sourceLineNo">144</span>    }<a name="line.144"></a>
-<span class="sourceLineNo">145</span><a name="line.145"></a>
-<span class="sourceLineNo">146</span>    /**<a name="line.146"></a>
-<span class="sourceLineNo">147</span>     * Set the skin name to the skin from the TurbineResources.properties file.<a name="line.147"></a>
-<span class="sourceLineNo">148</span>     * If the property is not present use the "default" skin.<a name="line.148"></a>
-<span class="sourceLineNo">149</span>     */<a name="line.149"></a>
-<span class="sourceLineNo">150</span>    public void setSkin()<a name="line.150"></a>
-<span class="sourceLineNo">151</span>    {<a name="line.151"></a>
-<span class="sourceLineNo">152</span>        skinName = uiService.getWebappSkinName();<a name="line.152"></a>
-<span class="sourceLineNo">153</span>    }<a name="line.153"></a>
-<span class="sourceLineNo">154</span><a name="line.154"></a>
-<span class="sourceLineNo">155</span>    /**<a name="line.155"></a>
-<span class="sourceLineNo">156</span>     * Set the skin name to the specified skin.<a name="line.156"></a>
-<span class="sourceLineNo">157</span>     *<a name="line.157"></a>
-<span class="sourceLineNo">158</span>     * @param skinName the skin name to use.<a name="line.158"></a>
-<span class="sourceLineNo">159</span>     */<a name="line.159"></a>
-<span class="sourceLineNo">160</span>    public void setSkin(String skinName)<a name="line.160"></a>
-<span class="sourceLineNo">161</span>    {<a name="line.161"></a>
-<span class="sourceLineNo">162</span>        this.skinName = skinName;<a name="line.162"></a>
-<span class="sourceLineNo">163</span>    }<a name="line.163"></a>
-<span class="sourceLineNo">164</span><a name="line.164"></a>
-<span class="sourceLineNo">165</span>    /**<a name="line.165"></a>
-<span class="sourceLineNo">166</span>     * Set the skin name when the tool is configured to be loaded on a<a name="line.166"></a>
-<span class="sourceLineNo">167</span>     * per-request basis. By default it calls getSkin to return the skin<a name="line.167"></a>
-<span class="sourceLineNo">168</span>     * specified in TurbineResources.properties. Developers can write a subclass<a name="line.168"></a>
-<span class="sourceLineNo">169</span>     * of UITool that overrides this method to determine the skin to use based<a name="line.169"></a>
-<span class="sourceLineNo">170</span>     * on information held in the request.<a name="line.170"></a>
-<span class="sourceLineNo">171</span>     *<a name="line.171"></a>
-<span class="sourceLineNo">172</span>     * @param data a RunData instance<a name="line.172"></a>
-<span class="sourceLineNo">173</span>     */<a name="line.173"></a>
-<span class="sourceLineNo">174</span>    protected void setSkin(RunData data)<a name="line.174"></a>
-<span class="sourceLineNo">175</span>    {<a name="line.175"></a>
-<span class="sourceLineNo">176</span>        setSkin();<a name="line.176"></a>
-<span class="sourceLineNo">177</span>    }<a name="line.177"></a>
-<span class="sourceLineNo">178</span><a name="line.178"></a>
-<span class="sourceLineNo">179</span>    /**<a name="line.179"></a>
-<span class="sourceLineNo">180</span>     * Set the skin name when the tool is configured to be loaded on a<a name="line.180"></a>
-<span class="sourceLineNo">181</span>     * per-session basis. If the user's temp hashmap contains a value in the<a name="line.181"></a>
-<span class="sourceLineNo">182</span>     * attribute specified by the String constant SKIN_ATTRIBUTE then that is<a name="line.182"></a>
-<span class="sourceLineNo">183</span>     * returned. Otherwise it calls getSkin to return the skin specified in<a name="line.183"></a>
-<span class="sourceLineNo">184</span>     * TurbineResources.properties.<a name="line.184"></a>
-<span class="sourceLineNo">185</span>     *<a name="line.185"></a>
-<span class="sourceLineNo">186</span>     * @param user a User instance<a name="line.186"></a>
-<span class="sourceLineNo">187</span>     */<a name="line.187"></a>
-<span class="sourceLineNo">188</span>    protected void setSkin(User user)<a name="line.188"></a>
-<span class="sourceLineNo">189</span>    {<a name="line.189"></a>
-<span class="sourceLineNo">190</span>        if (user.getTemp(SKIN_ATTRIBUTE) == null)<a name="line.190"></a>
-<span class="sourceLineNo">191</span>        {<a name="line.191"></a>
-<span class="sourceLineNo">192</span>            setSkin();<a name="line.192"></a>
-<span class="sourceLineNo">193</span>        }<a name="line.193"></a>
-<span class="sourceLineNo">194</span>        else<a name="line.194"></a>
-<span class="sourceLineNo">195</span>        {<a name="line.195"></a>
-<span class="sourceLineNo">196</span>            setSkin((String) user.getTemp(SKIN_ATTRIBUTE));<a name="line.196"></a>
-<span class="sourceLineNo">197</span>        }<a name="line.197"></a>
-<span class="sourceLineNo">198</span>    }<a name="line.198"></a>
-<span class="sourceLineNo">199</span><a name="line.199"></a>
-<span class="sourceLineNo">200</span>    /**<a name="line.200"></a>
-<span class="sourceLineNo">201</span>     * Set the skin name in the user's temp hashmap for the current session.<a name="line.201"></a>
-<span class="sourceLineNo">202</span>     *<a name="line.202"></a>
-<span class="sourceLineNo">203</span>     * @param user a User instance<a name="line.203"></a>
-<span class="sourceLineNo">204</span>     * @param skin the skin name for the session<a name="line.204"></a>
-<span class="sourceLineNo">205</span>     */<a name="line.205"></a>
-<span class="sourceLineNo">206</span>    public static void setSkin(User user, String skin)<a name="line.206"></a>
-<span class="sourceLineNo">207</span>    {<a name="line.207"></a>
-<span class="sourceLineNo">208</span>        user.setTemp(SKIN_ATTRIBUTE, skin);<a name="line.208"></a>
-<span class="sourceLineNo">209</span>    }<a name="line.209"></a>
-<span class="sourceLineNo">210</span><a name="line.210"></a>
-<span class="sourceLineNo">211</span>    /**<a name="line.211"></a>
-<span class="sourceLineNo">212</span>     * Retrieve the URL for an image that is part of the skin. The images are<a name="line.212"></a>
-<span class="sourceLineNo">213</span>     * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.<a name="line.213"></a>
-<span class="sourceLineNo">214</span>     *<a name="line.214"></a>
-<span class="sourceLineNo">215</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.215"></a>
-<span class="sourceLineNo">216</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.216"></a>
-<span class="sourceLineNo">217</span>     * a load balanced situation. I think in most cases the image(String image)<a name="line.217"></a>
-<span class="sourceLineNo">218</span>     * method would probably be enough, but I'm not absolutely positive.<a name="line.218"></a>
-<span class="sourceLineNo">219</span>     *<a name="line.219"></a>
-<span class="sourceLineNo">220</span>     * @param imageId the id of the image whose URL will be generated.<a name="line.220"></a>
-<span class="sourceLineNo">221</span>     * @param data the RunData to use as the source of the ServerData to use as<a name="line.221"></a>
-<span class="sourceLineNo">222</span>     * the basis for the URL.<a name="line.222"></a>
-<span class="sourceLineNo">223</span>     * @return the image URL<a name="line.223"></a>
-<span class="sourceLineNo">224</span>     */<a name="line.224"></a>
-<span class="sourceLineNo">225</span>    public String image(String imageId, RunData data)<a name="line.225"></a>
-<span class="sourceLineNo">226</span>    {<a name="line.226"></a>
-<span class="sourceLineNo">227</span>        return image(imageId, data.getServerData());<a name="line.227"></a>
-<span class="sourceLineNo">228</span>    }<a name="line.228"></a>
-<span class="sourceLineNo">229</span><a name="line.229"></a>
-<span class="sourceLineNo">230</span>    /**<a name="line.230"></a>
-<span class="sourceLineNo">231</span>     * Retrieve the URL for an image that is part of the skin. The images are<a name="line.231"></a>
-<span class="sourceLineNo">232</span>     * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.<a name="line.232"></a>
-<span class="sourceLineNo">233</span>     *<a name="line.233"></a>
-<span class="sourceLineNo">234</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.234"></a>
-<span class="sourceLineNo">235</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.235"></a>
-<span class="sourceLineNo">236</span>     * a load balanced situation. I think in most cases the image(String image)<a name="line.236"></a>
-<span class="sourceLineNo">237</span>     * method would probably be enough, but I'm not absolutely positive.<a name="line.237"></a>
-<span class="sourceLineNo">238</span>     *<a name="line.238"></a>
-<span class="sourceLineNo">239</span>     * @param imageId the id of the image whose URL will be generated.<a name="line.239"></a>
-<span class="sourceLineNo">240</span>     * @param serverData the serverData to use as the basis for the URL.<a name="line.240"></a>
-<span class="sourceLineNo">241</span>     * @return the image URL<a name="line.241"></a>
-<span class="sourceLineNo">242</span>     */<a name="line.242"></a>
-<span class="sourceLineNo">243</span>    public String image(String imageId, ServerData serverData)<a name="line.243"></a>
-<span class="sourceLineNo">244</span>    {<a name="line.244"></a>
-<span class="sourceLineNo">245</span>        return uiService.image(getSkin(), imageId, serverData);<a name="line.245"></a>
-<span class="sourceLineNo">246</span>    }<a name="line.246"></a>
-<span class="sourceLineNo">247</span><a name="line.247"></a>
-<span class="sourceLineNo">248</span>    /**<a name="line.248"></a>
-<span class="sourceLineNo">249</span>     * Retrieve the URL for an image that is part of the skin. The images are<a name="line.249"></a>
-<span class="sourceLineNo">250</span>     * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.<a name="line.250"></a>
-<span class="sourceLineNo">251</span>     *<a name="line.251"></a>
-<span class="sourceLineNo">252</span>     * @param imageId the id of the image whose URL will be generated.<a name="line.252"></a>
-<span class="sourceLineNo">253</span>     * @return the image URL<a name="line.253"></a>
-<span class="sourceLineNo">254</span>     */<a name="line.254"></a>
-<span class="sourceLineNo">255</span>    public String image(String imageId)<a name="line.255"></a>
-<span class="sourceLineNo">256</span>    {<a name="line.256"></a>
-<span class="sourceLineNo">257</span>        return uiService.image(getSkin(), imageId);<a name="line.257"></a>
-<span class="sourceLineNo">258</span>    }<a name="line.258"></a>
-<span class="sourceLineNo">259</span><a name="line.259"></a>
-<span class="sourceLineNo">260</span>    /**<a name="line.260"></a>
-<span class="sourceLineNo">261</span>     * Retrieve the URL for the style sheet that is part of the skin. The style<a name="line.261"></a>
-<span class="sourceLineNo">262</span>     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the<a name="line.262"></a>
-<span class="sourceLineNo">263</span>     * filename skin.css<a name="line.263"></a>
-<span class="sourceLineNo">264</span>     *<a name="line.264"></a>
-<span class="sourceLineNo">265</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.265"></a>
-<span class="sourceLineNo">266</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.266"></a>
-<span class="sourceLineNo">267</span>     * a load balanced situation. I think in most cases the style() method would<a name="line.267"></a>
-<span class="sourceLineNo">268</span>     * probably be enough, but I'm not absolutely positive.<a name="line.268"></a>
-<span class="sourceLineNo">269</span>     *<a name="line.269"></a>
-<span class="sourceLineNo">270</span>     * @param data the RunData to use as the source of the ServerData to use as<a name="line.270"></a>
-<span class="sourceLineNo">271</span>     * the basis for the URL.<a name="line.271"></a>
-<span class="sourceLineNo">272</span>     * @return the CSS URL<a name="line.272"></a>
-<span class="sourceLineNo">273</span>     */<a name="line.273"></a>
-<span class="sourceLineNo">274</span>    public String getStylecss(RunData data)<a name="line.274"></a>
-<span class="sourceLineNo">275</span>    {<a name="line.275"></a>
-<span class="sourceLineNo">276</span>        return getStylecss(data.getServerData());<a name="line.276"></a>
-<span class="sourceLineNo">277</span>    }<a name="line.277"></a>
-<span class="sourceLineNo">278</span><a name="line.278"></a>
-<span class="sourceLineNo">279</span>    /**<a name="line.279"></a>
-<span class="sourceLineNo">280</span>     * Retrieve the URL for the style sheet that is part of the skin. The style<a name="line.280"></a>
-<span class="sourceLineNo">281</span>     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the<a name="line.281"></a>
-<span class="sourceLineNo">282</span>     * filename skin.css<a name="line.282"></a>
-<span class="sourceLineNo">283</span>     *<a name="line.283"></a>
-<span class="sourceLineNo">284</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.284"></a>
-<span class="sourceLineNo">285</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.285"></a>
-<span class="sourceLineNo">286</span>     * a load balanced situation. I think in most cases the style() method would<a name="line.286"></a>
-<span class="sourceLineNo">287</span>     * probably be enough, but I'm not absolutely positive.<a name="line.287"></a>
-<span class="sourceLineNo">288</span>     *<a name="line.288"></a>
-<span class="sourceLineNo">289</span>     * @param serverData the serverData to use as the basis for the URL.<a name="line.289"></a>
-<span class="sourceLineNo">290</span>     * @return the CSS URL<a name="line.290"></a>
-<span class="sourceLineNo">291</span>     */<a name="line.291"></a>
-<span class="sourceLineNo">292</span>    public String getStylecss(ServerData serverData)<a name="line.292"></a>
-<span class="sourceLineNo">293</span>    {<a name="line.293"></a>
-<span class="sourceLineNo">294</span>        return uiService.getStylecss(getSkin(), serverData);<a name="line.294"></a>
-<span class="sourceLineNo">295</span>    }<a name="line.295"></a>
-<span class="sourceLineNo">296</span><a name="line.296"></a>
-<span class="sourceLineNo">297</span>    /**<a name="line.297"></a>
-<span class="sourceLineNo">298</span>     * Retrieve the URL for the style sheet that is part of the skin. The style<a name="line.298"></a>
-<span class="sourceLineNo">299</span>     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the<a name="line.299"></a>
-<span class="sourceLineNo">300</span>     * filename skin.css<a name="line.300"></a>
-<span class="sourceLineNo">301</span>     * @return the CSS URL<a name="line.301"></a>
-<span class="sourceLineNo">302</span>     */<a name="line.302"></a>
-<span class="sourceLineNo">303</span>    public String getStylecss()<a name="line.303"></a>
-<span class="sourceLineNo">304</span>    {<a name="line.304"></a>
-<span class="sourceLineNo">305</span>        return uiService.getStylecss(getSkin());<a name="line.305"></a>
-<span class="sourceLineNo">306</span>    }<a name="line.306"></a>
-<span class="sourceLineNo">307</span><a name="line.307"></a>
-<span class="sourceLineNo">308</span>    /**<a name="line.308"></a>
-<span class="sourceLineNo">309</span>     * Retrieve the URL for a given script that is part of the skin. The script<a name="line.309"></a>
-<span class="sourceLineNo">310</span>     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory.<a name="line.310"></a>
-<span class="sourceLineNo">311</span>     *<a name="line.311"></a>
-<span class="sourceLineNo">312</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.312"></a>
-<span class="sourceLineNo">313</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.313"></a>
-<span class="sourceLineNo">314</span>     * a load balanced situation. I think in most cases the image(String image)<a name="line.314"></a>
-<span class="sourceLineNo">315</span>     * method would probably be enough, but I'm not absolutely positive.<a name="line.315"></a>
-<span class="sourceLineNo">316</span>     *<a name="line.316"></a>
-<span class="sourceLineNo">317</span>     * @param filename the name of the script file whose URL will be generated.<a name="line.317"></a>
-<span class="sourceLineNo">318</span>     * @param data the RunDate to use as the source of the ServerData to use as<a name="line.318"></a>
-<span class="sourceLineNo">319</span>     * the basis for the URL.<a name="line.319"></a>
-<span class="sourceLineNo">320</span>     * @return the script URL<a name="line.320"></a>
-<span class="sourceLineNo">321</span>     */<a name="line.321"></a>
-<span class="sourceLineNo">322</span>    public String getScript(String filename, RunData data)<a name="line.322"></a>
-<span class="sourceLineNo">323</span>    {<a name="line.323"></a>
-<span class="sourceLineNo">324</span>        return getScript(filename, data.getServerData());<a name="line.324"></a>
-<span class="sourceLineNo">325</span>    }<a name="line.325"></a>
-<span class="sourceLineNo">326</span><a name="line.326"></a>
-<span class="sourceLineNo">327</span>    /**<a name="line.327"></a>
-<span class="sourceLineNo">328</span>     * Retrieve the URL for a given script that is part of the skin. The script<a name="line.328"></a>
-<span class="sourceLineNo">329</span>     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory.<a name="line.329"></a>
-<span class="sourceLineNo">330</span>     *<a name="line.330"></a>
-<span class="sourceLineNo">331</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.331"></a>
-<span class="sourceLineNo">332</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.332"></a>
-<span class="sourceLineNo">333</span>     * a load balanced situation. I think in most cases the image(String image)<a name="line.333"></a>
-<span class="sourceLineNo">334</span>     * method would probably be enough, but I'm not absolutely positive.<a name="line.334"></a>
-<span class="sourceLineNo">335</span>     *<a name="line.335"></a>
-<span class="sourceLineNo">336</span>     * @param filename the name of the script file whose URL will be generated.<a name="line.336"></a>
-<span class="sourceLineNo">337</span>     * @param serverData the serverData to use as the basis for the URL.<a name="line.337"></a>
-<span class="sourceLineNo">338</span>     * @return the script URL<a name="line.338"></a>
-<span class="sourceLineNo">339</span>     */<a name="line.339"></a>
-<span class="sourceLineNo">340</span>    public String getScript(String filename, ServerData serverData)<a name="line.340"></a>
-<span class="sourceLineNo">341</span>    {<a name="line.341"></a>
-<span class="sourceLineNo">342</span>        return uiService.getScript(getSkin(), filename, serverData);<a name="line.342"></a>
-<span class="sourceLineNo">343</span>    }<a name="line.343"></a>
-<span class="sourceLineNo">344</span><a name="line.344"></a>
-<span class="sourceLineNo">345</span>    /**<a name="line.345"></a>
-<span class="sourceLineNo">346</span>     * Retrieve the URL for a given script that is part of the skin. The script<a name="line.346"></a>
-<span class="sourceLineNo">347</span>     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory.<a name="line.347"></a>
-<span class="sourceLineNo">348</span>     *<a name="line.348"></a>
-<span class="sourceLineNo">349</span>     * @param filename the name of the script file whose URL will be generated.<a name="line.349"></a>
-<span class="sourceLineNo">350</span>     * @return the script URL<a name="line.350"></a>
-<span class="sourceLineNo">351</span>     */<a name="line.351"></a>
-<span class="sourceLineNo">352</span>    public String getScript(String filename)<a name="line.352"></a>
-<span class="sourceLineNo">353</span>    {<a name="line.353"></a>
-<span class="sourceLineNo">354</span>        return uiService.getScript(getSkin(), filename);<a name="line.354"></a>
-<span class="sourceLineNo">355</span>    }<a name="line.355"></a>
-<span class="sourceLineNo">356</span><a name="line.356"></a>
-<span class="sourceLineNo">357</span>    /**<a name="line.357"></a>
-<span class="sourceLineNo">358</span>     * Initialize the UITool object.<a name="line.358"></a>
-<span class="sourceLineNo">359</span>     *<a name="line.359"></a>
-<span class="sourceLineNo">360</span>     * @param data This is null, RunData or User depending upon specified tool<a name="line.360"></a>
-<span class="sourceLineNo">361</span>     * scope.<a name="line.361"></a>
-<span class="sourceLineNo">362</span>     */<a name="line.362"></a>
-<span class="sourceLineNo">363</span>    @Override<a name="line.363"></a>
-<span class="sourceLineNo">364</span>    public void init(Object data)<a name="line.364"></a>
-<span class="sourceLineNo">365</span>    {<a name="line.365"></a>
-<span class="sourceLineNo">366</span>        if (data == null)<a name="line.366"></a>
-<span class="sourceLineNo">367</span>        {<a name="line.367"></a>
-<span class="sourceLineNo">368</span>            log.debug("UITool scope is global");<a name="line.368"></a>
-<span class="sourceLineNo">369</span>            setSkin();<a name="line.369"></a>
-<span class="sourceLineNo">370</span>        }<a name="line.370"></a>
-<span class="sourceLineNo">371</span>        else if (data instanceof RunData)<a name="line.371"></a>
-<span class="sourceLineNo">372</span>        {<a name="line.372"></a>
+<span class="sourceLineNo">014</span> * Unless required by applicable law or agreed to in writing,<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * software distributed under the License is distributed on an<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * KIND, either express or implied.  See the License for the<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * specific language governing permissions and limitations<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * under the License.<a name="line.19"></a>
+<span class="sourceLineNo">020</span> */<a name="line.20"></a>
+<span class="sourceLineNo">021</span><a name="line.21"></a>
+<span class="sourceLineNo">022</span>import org.apache.commons.logging.Log;<a name="line.22"></a>
+<span class="sourceLineNo">023</span>import org.apache.commons.logging.LogFactory;<a name="line.23"></a>
+<span class="sourceLineNo">024</span>import org.apache.turbine.om.security.User;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>import org.apache.turbine.pipeline.PipelineData;<a name="line.25"></a>
+<span class="sourceLineNo">026</span>import org.apache.turbine.services.pull.ApplicationTool;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import org.apache.turbine.services.ui.TurbineUI;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>import org.apache.turbine.services.ui.UIService;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>import org.apache.turbine.util.RunData;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import org.apache.turbine.util.ServerData;<a name="line.30"></a>
+<span class="sourceLineNo">031</span><a name="line.31"></a>
+<span class="sourceLineNo">032</span>/**<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * Manages all UI elements for a Turbine Application. Any UI element can be<a name="line.33"></a>
+<span class="sourceLineNo">034</span> * accessed in any template using the $ui handle (assuming you use the default<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * PullService configuration). So, for example, you could access the background<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * color for your pages by using $ui.bgcolor<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * &lt;p&gt;<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * This implementation provides a single level of inheritance in that if a<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * property does not exist in a non-default skin, the value from the default<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * skin will be used. By only requiring values different to those stored in<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * the default skin to appear in the non-default skins the amount of memory<a name="line.41"></a>
+<span class="sourceLineNo">042</span> * consumed in cases where the UserManager instance is used at a non-global<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * scope will potentially be reduced due to the fact that a shared instance of<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * the default skin properties can be used. Note that this inheritance only<a name="line.44"></a>
+<span class="sourceLineNo">045</span> * applies to property values - it does not apply to any images or stylesheets<a name="line.45"></a>
+<span class="sourceLineNo">046</span> * that may form part of your skins.<a name="line.46"></a>
+<span class="sourceLineNo">047</span> * &lt;p&gt;<a name="line.47"></a>
+<span class="sourceLineNo">048</span> * This is an application pull tool for the template system. You should not<a name="line.48"></a>
+<span class="sourceLineNo">049</span> * use it in a normal application!  Within Java code you should use TurbineUI.<a name="line.49"></a>
+<span class="sourceLineNo">050</span> * &lt;p&gt;<a name="line.50"></a>
+<span class="sourceLineNo">051</span> *<a name="line.51"></a>
+<span class="sourceLineNo">052</span> * This is an application pull tool for the template system. You should<a name="line.52"></a>
+<span class="sourceLineNo">053</span> * &lt;strong&gt;only&lt;/strong&gt; use it in a normal application to set the skin<a name="line.53"></a>
+<span class="sourceLineNo">054</span> * attribute for a user (setSkin(User user, String skin)) and to initialize it<a name="line.54"></a>
+<span class="sourceLineNo">055</span> * for the user, otherwise use TurbineUI is probably the way to go.<a name="line.55"></a>
+<span class="sourceLineNo">056</span> *<a name="line.56"></a>
+<span class="sourceLineNo">057</span> * @author &lt;a href="mailto:jvanzyl@periapt.com"&gt;Jason van Zyl&lt;/a&gt;<a name="line.57"></a>
+<span class="sourceLineNo">058</span> * @author &lt;a href="mailto:james_coltman@majorband.co.uk"&gt;James Coltman&lt;/a&gt;<a name="line.58"></a>
+<span class="sourceLineNo">059</span> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;<a name="line.59"></a>
+<span class="sourceLineNo">060</span> * @author &lt;a href="mailto:seade@backstagetech.com.au"&gt;Scott Eade&lt;/a&gt;<a name="line.60"></a>
+<span class="sourceLineNo">061</span> * @version $Id$<a name="line.61"></a>
+<span class="sourceLineNo">062</span> * @see UIService<a name="line.62"></a>
+<span class="sourceLineNo">063</span> */<a name="line.63"></a>
+<span class="sourceLineNo">064</span>public class UITool implements ApplicationTool<a name="line.64"></a>
+<span class="sourceLineNo">065</span>{<a name="line.65"></a>
+<span class="sourceLineNo">066</span>    /** Logging */<a name="line.66"></a>
+<span class="sourceLineNo">067</span>    private static Log log = LogFactory.getLog(UITool.class);<a name="line.67"></a>
+<span class="sourceLineNo">068</span><a name="line.68"></a>
+<span class="sourceLineNo">069</span>    /**<a name="line.69"></a>
+<span class="sourceLineNo">070</span>     * Attribute name of skinName value in User's temp hashmap.<a name="line.70"></a>
+<span class="sourceLineNo">071</span>     */<a name="line.71"></a>
+<span class="sourceLineNo">072</span>    public static final String SKIN_ATTRIBUTE = UITool.class.getName()+ ".skin";<a name="line.72"></a>
+<span class="sourceLineNo">073</span><a name="line.73"></a>
+<span class="sourceLineNo">074</span>    /**<a name="line.74"></a>
+<span class="sourceLineNo">075</span>     * The actual skin being used for the webapp.<a name="line.75"></a>
+<span class="sourceLineNo">076</span>     */<a name="line.76"></a>
+<span class="sourceLineNo">077</span>    private String skinName;<a name="line.77"></a>
+<span class="sourceLineNo">078</span><a name="line.78"></a>
+<span class="sourceLineNo">079</span>    /**<a name="line.79"></a>
+<span class="sourceLineNo">080</span>     * Refresh the tool.<a name="line.80"></a>
+<span class="sourceLineNo">081</span>     */<a name="line.81"></a>
+<span class="sourceLineNo">082</span>    @Override<a name="line.82"></a>
+<span class="sourceLineNo">083</span>    public void refresh()<a name="line.83"></a>
+<span class="sourceLineNo">084</span>    {<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        TurbineUI.refresh(getSkin());<a name="line.85"></a>
+<span class="sourceLineNo">086</span>        log.debug("UITool refreshed for skin: " + getSkin());<a name="line.86"></a>
+<span class="sourceLineNo">087</span>    }<a name="line.87"></a>
+<span class="sourceLineNo">088</span><a name="line.88"></a>
+<span class="sourceLineNo">089</span>    /**<a name="line.89"></a>
+<span class="sourceLineNo">090</span>     * Provide access to the list of available skin names.<a name="line.90"></a>
+<span class="sourceLineNo">091</span>     *<a name="line.91"></a>
+<span class="sourceLineNo">092</span>     * @return the available skin names.<a name="line.92"></a>
+<span class="sourceLineNo">093</span>     */<a name="line.93"></a>
+<span class="sourceLineNo">094</span>    public String[] getSkinNames()<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    {<a name="line.95"></a>
+<span class="sourceLineNo">096</span>        return TurbineUI.getSkinNames();<a name="line.96"></a>
+<span class="sourceLineNo">097</span>    }<a name="line.97"></a>
+<span class="sourceLineNo">098</span><a name="line.98"></a>
+<span class="sourceLineNo">099</span>    /**<a name="line.99"></a>
+<span class="sourceLineNo">100</span>     * Get the name of the default skin name for the web application from the<a name="line.100"></a>
+<span class="sourceLineNo">101</span>     * TurbineResources.properties file. If the property is not present the<a name="line.101"></a>
+<span class="sourceLineNo">102</span>     * name of the default skin will be returned.  Note that the web application<a name="line.102"></a>
+<span class="sourceLineNo">103</span>     * skin name may be something other than default, in which case its<a name="line.103"></a>
+<span class="sourceLineNo">104</span>     * properties will default to the skin with the name "default".<a name="line.104"></a>
+<span class="sourceLineNo">105</span>     *<a name="line.105"></a>
+<span class="sourceLineNo">106</span>     * @return the name of the default skin for the web application.<a name="line.106"></a>
+<span class="sourceLineNo">107</span>     */<a name="line.107"></a>
+<span class="sourceLineNo">108</span>    public String getWebappSkinName()<a name="line.108"></a>
+<span class="sourceLineNo">109</span>    {<a name="line.109"></a>
+<span class="sourceLineNo">110</span>        return TurbineUI.getWebappSkinName();<a name="line.110"></a>
+<span class="sourceLineNo">111</span>    }<a name="line.111"></a>
+<span class="sourceLineNo">112</span><a name="line.112"></a>
+<span class="sourceLineNo">113</span>    /**<a name="line.113"></a>
+<span class="sourceLineNo">114</span>     * Retrieve a skin property.  If the property is not defined in the current<a name="line.114"></a>
+<span class="sourceLineNo">115</span>     * skin the value for the default skin will be provided.  If the current<a name="line.115"></a>
+<span class="sourceLineNo">116</span>     * skin does not exist then the skin configured for the webapp will be used.<a name="line.116"></a>
+<span class="sourceLineNo">117</span>     * If the webapp skin does not exist the default skin will be used.  If the<a name="line.117"></a>
+<span class="sourceLineNo">118</span>     * default skin does not exist then &lt;code&gt;null&lt;/code&gt; will be returned.<a name="line.118"></a>
+<span class="sourceLineNo">119</span>     *<a name="line.119"></a>
+<span class="sourceLineNo">120</span>     * @param key the key to retrieve from the skin.<a name="line.120"></a>
+<span class="sourceLineNo">121</span>     * @return the value of the property for the named skin (defaulting to the<a name="line.121"></a>
+<span class="sourceLineNo">122</span>     * default skin), the webapp skin, the default skin or &lt;code&gt;null&lt;/code&gt;,<a name="line.122"></a>
+<span class="sourceLineNo">123</span>     * depending on whether or not the property or skins exist.<a name="line.123"></a>
+<span class="sourceLineNo">124</span>     */<a name="line.124"></a>
+<span class="sourceLineNo">125</span>    public String get(String key)<a name="line.125"></a>
+<span class="sourceLineNo">126</span>    {<a name="line.126"></a>
+<span class="sourceLineNo">127</span>        return TurbineUI.get(getSkin(), key);<a name="line.127"></a>
+<span class="sourceLineNo">128</span>    }<a name="line.128"></a>
+<span class="sourceLineNo">129</span><a name="line.129"></a>
+<span class="sourceLineNo">130</span>    /**<a name="line.130"></a>
+<span class="sourceLineNo">131</span>     * Retrieve the skin name.<a name="line.131"></a>
+<span class="sourceLineNo">132</span>     * @return the selected skin name<a name="line.132"></a>
+<span class="sourceLineNo">133</span>     */<a name="line.133"></a>
+<span class="sourceLineNo">134</span>    public String getSkin()<a name="line.134"></a>
+<span class="sourceLineNo">135</span>    {<a name="line.135"></a>
+<span class="sourceLineNo">136</span>        return skinName;<a name="line.136"></a>
+<span class="sourceLineNo">137</span>    }<a name="line.137"></a>
+<span class="sourceLineNo">138</span><a name="line.138"></a>
+<span class="sourceLineNo">139</span>    /**<a name="line.139"></a>
+<span class="sourceLineNo">140</span>     * Set the skin name to the skin from the TurbineResources.properties file.<a name="line.140"></a>
+<span class="sourceLineNo">141</span>     * If the property is not present use the "default" skin.<a name="line.141"></a>
+<span class="sourceLineNo">142</span>     */<a name="line.142"></a>
+<span class="sourceLineNo">143</span>    public void setSkin()<a name="line.143"></a>
+<span class="sourceLineNo">144</span>    {<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        skinName = TurbineUI.getWebappSkinName();<a name="line.145"></a>
+<span class="sourceLineNo">146</span>    }<a name="line.146"></a>
+<span class="sourceLineNo">147</span><a name="line.147"></a>
+<span class="sourceLineNo">148</span>    /**<a name="line.148"></a>
+<span class="sourceLineNo">149</span>     * Set the skin name to the specified skin.<a name="line.149"></a>
+<span class="sourceLineNo">150</span>     *<a name="line.150"></a>
+<span class="sourceLineNo">151</span>     * @param skinName the skin name to use.<a name="line.151"></a>
+<span class="sourceLineNo">152</span>     */<a name="line.152"></a>
+<span class="sourceLineNo">153</span>    public void setSkin(String skinName)<a name="line.153"></a>
+<span class="sourceLineNo">154</span>    {<a name="line.154"></a>
+<span class="sourceLineNo">155</span>        this.skinName = skinName;<a name="line.155"></a>
+<span class="sourceLineNo">156</span>    }<a name="line.156"></a>
+<span class="sourceLineNo">157</span><a name="line.157"></a>
+<span class="sourceLineNo">158</span>    /**<a name="line.158"></a>
+<span class="sourceLineNo">159</span>     * Set the skin name when the tool is configured to be loaded on a<a name="line.159"></a>
+<span class="sourceLineNo">160</span>     * per-request basis. By default it calls getSkin to return the skin<a name="line.160"></a>
+<span class="sourceLineNo">161</span>     * specified in TurbineResources.properties. Developers can write a subclass<a name="line.161"></a>
+<span class="sourceLineNo">162</span>     * of UITool that overrides this method to determine the skin to use based<a name="line.162"></a>
+<span class="sourceLineNo">163</span>     * on information held in the request.<a name="line.163"></a>
+<span class="sourceLineNo">164</span>     *<a name="line.164"></a>
+<span class="sourceLineNo">165</span>     * @param data a RunData instance<a name="line.165"></a>
+<span class="sourceLineNo">166</span>     */<a name="line.166"></a>
+<span class="sourceLineNo">167</span>    protected void setSkin(RunData data)<a name="line.167"></a>
+<span class="sourceLineNo">168</span>    {<a name="line.168"></a>
+<span class="sourceLineNo">169</span>        setSkin();<a name="line.169"></a>
+<span class="sourceLineNo">170</span>    }<a name="line.170"></a>
+<span class="sourceLineNo">171</span><a name="line.171"></a>
+<span class="sourceLineNo">172</span>    /**<a name="line.172"></a>
+<span class="sourceLineNo">173</span>     * Set the skin name when the tool is configured to be loaded on a<a name="line.173"></a>
+<span class="sourceLineNo">174</span>     * per-session basis. If the user's temp hashmap contains a value in the<a name="line.174"></a>
+<span class="sourceLineNo">175</span>     * attribute specified by the String constant SKIN_ATTRIBUTE then that is<a name="line.175"></a>
+<span class="sourceLineNo">176</span>     * returned. Otherwise it calls getSkin to return the skin specified in<a name="line.176"></a>
+<span class="sourceLineNo">177</span>     * TurbineResources.properties.<a name="line.177"></a>
+<span class="sourceLineNo">178</span>     *<a name="line.178"></a>
+<span class="sourceLineNo">179</span>     * @param user a User instance<a name="line.179"></a>
+<span class="sourceLineNo">180</span>     */<a name="line.180"></a>
+<span class="sourceLineNo">181</span>    protected void setSkin(User user)<a name="line.181"></a>
+<span class="sourceLineNo">182</span>    {<a name="line.182"></a>
+<span class="sourceLineNo">183</span>        if (user.getTemp(SKIN_ATTRIBUTE) == null)<a name="line.183"></a>
+<span class="sourceLineNo">184</span>        {<a name="line.184"></a>
+<span class="sourceLineNo">185</span>            setSkin();<a name="line.185"></a>
+<span class="sourceLineNo">186</span>        }<a name="line.186"></a>
+<span class="sourceLineNo">187</span>        else<a name="line.187"></a>
+<span class="sourceLineNo">188</span>        {<a name="line.188"></a>
+<span class="sourceLineNo">189</span>            setSkin((String) user.getTemp(SKIN_ATTRIBUTE));<a name="line.189"></a>
+<span class="sourceLineNo">190</span>        }<a name="line.190"></a>
+<span class="sourceLineNo">191</span>    }<a name="line.191"></a>
+<span class="sourceLineNo">192</span><a name="line.192"></a>
+<span class="sourceLineNo">193</span>    /**<a name="line.193"></a>
+<span class="sourceLineNo">194</span>     * Set the skin name in the user's temp hashmap for the current session.<a name="line.194"></a>
+<span class="sourceLineNo">195</span>     *<a name="line.195"></a>
+<span class="sourceLineNo">196</span>     * @param user a User instance<a name="line.196"></a>
+<span class="sourceLineNo">197</span>     * @param skin the skin name for the session<a name="line.197"></a>
+<span class="sourceLineNo">198</span>     */<a name="line.198"></a>
+<span class="sourceLineNo">199</span>    public static void setSkin(User user, String skin)<a name="line.199"></a>
+<span class="sourceLineNo">200</span>    {<a name="line.200"></a>
+<span class="sourceLineNo">201</span>        user.setTemp(SKIN_ATTRIBUTE, skin);<a name="line.201"></a>
+<span class="sourceLineNo">202</span>    }<a name="line.202"></a>
+<span class="sourceLineNo">203</span><a name="line.203"></a>
+<span class="sourceLineNo">204</span>    /**<a name="line.204"></a>
+<span class="sourceLineNo">205</span>     * Retrieve the URL for an image that is part of the skin. The images are<a name="line.205"></a>
+<span class="sourceLineNo">206</span>     * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.<a name="line.206"></a>
+<span class="sourceLineNo">207</span>     *<a name="line.207"></a>
+<span class="sourceLineNo">208</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.208"></a>
+<span class="sourceLineNo">209</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.209"></a>
+<span class="sourceLineNo">210</span>     * a load balanced situation. I think in most cases the image(String image)<a name="line.210"></a>
+<span class="sourceLineNo">211</span>     * method would probably be enough, but I'm not absolutely positive.<a name="line.211"></a>
+<span class="sourceLineNo">212</span>     *<a name="line.212"></a>
+<span class="sourceLineNo">213</span>     * @param imageId the id of the image whose URL will be generated.<a name="line.213"></a>
+<span class="sourceLineNo">214</span>     * @param data the RunData to use as the source of the ServerData to use as<a name="line.214"></a>
+<span class="sourceLineNo">215</span>     * the basis for the URL.<a name="line.215"></a>
+<span class="sourceLineNo">216</span>     * @return the image URL<a name="line.216"></a>
+<span class="sourceLineNo">217</span>     */<a name="line.217"></a>
+<span class="sourceLineNo">218</span>    public String image(String imageId, RunData data)<a name="line.218"></a>
+<span class="sourceLineNo">219</span>    {<a name="line.219"></a>
+<span class="sourceLineNo">220</span>        return image(imageId, data.getServerData());<a name="line.220"></a>
+<span class="sourceLineNo">221</span>    }<a name="line.221"></a>
+<span class="sourceLineNo">222</span><a name="line.222"></a>
+<span class="sourceLineNo">223</span>    /**<a name="line.223"></a>
+<span class="sourceLineNo">224</span>     * Retrieve the URL for an image that is part of the skin. The images are<a name="line.224"></a>
+<span class="sourceLineNo">225</span>     * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.<a name="line.225"></a>
+<span class="sourceLineNo">226</span>     *<a name="line.226"></a>
+<span class="sourceLineNo">227</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.227"></a>
+<span class="sourceLineNo">228</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.228"></a>
+<span class="sourceLineNo">229</span>     * a load balanced situation. I think in most cases the image(String image)<a name="line.229"></a>
+<span class="sourceLineNo">230</span>     * method would probably be enough, but I'm not absolutely positive.<a name="line.230"></a>
+<span class="sourceLineNo">231</span>     *<a name="line.231"></a>
+<span class="sourceLineNo">232</span>     * @param imageId the id of the image whose URL will be generated.<a name="line.232"></a>
+<span class="sourceLineNo">233</span>     * @param serverData the serverData to use as the basis for the URL.<a name="line.233"></a>
+<span class="sourceLineNo">234</span>     * @return the image URL<a name="line.234"></a>
+<span class="sourceLineNo">235</span>     */<a name="line.235"></a>
+<span class="sourceLineNo">236</span>    public String image(String imageId, ServerData serverData)<a name="line.236"></a>
+<span class="sourceLineNo">237</span>    {<a name="line.237"></a>
+<span class="sourceLineNo">238</span>        return TurbineUI.image(getSkin(), imageId, serverData);<a name="line.238"></a>
+<span class="sourceLineNo">239</span>    }<a name="line.239"></a>
+<span class="sourceLineNo">240</span><a name="line.240"></a>
+<span class="sourceLineNo">241</span>    /**<a name="line.241"></a>
+<span class="sourceLineNo">242</span>     * Retrieve the URL for an image that is part of the skin. The images are<a name="line.242"></a>
+<span class="sourceLineNo">243</span>     * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.<a name="line.243"></a>
+<span class="sourceLineNo">244</span>     *<a name="line.244"></a>
+<span class="sourceLineNo">245</span>     * @param imageId the id of the image whose URL will be generated.<a name="line.245"></a>
+<span class="sourceLineNo">246</span>     * @return the image URL<a name="line.246"></a>
+<span class="sourceLineNo">247</span>     */<a name="line.247"></a>
+<span class="sourceLineNo">248</span>    public String image(String imageId)<a name="line.248"></a>
+<span class="sourceLineNo">249</span>    {<a name="line.249"></a>
+<span class="sourceLineNo">250</span>        return TurbineUI.image(getSkin(), imageId);<a name="line.250"></a>
+<span class="sourceLineNo">251</span>    }<a name="line.251"></a>
+<span class="sourceLineNo">252</span><a name="line.252"></a>
+<span class="sourceLineNo">253</span>    /**<a name="line.253"></a>
+<span class="sourceLineNo">254</span>     * Retrieve the URL for the style sheet that is part of the skin. The style<a name="line.254"></a>
+<span class="sourceLineNo">255</span>     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the<a name="line.255"></a>
+<span class="sourceLineNo">256</span>     * filename skin.css<a name="line.256"></a>
+<span class="sourceLineNo">257</span>     *<a name="line.257"></a>
+<span class="sourceLineNo">258</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.258"></a>
+<span class="sourceLineNo">259</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.259"></a>
+<span class="sourceLineNo">260</span>     * a load balanced situation. I think in most cases the style() method would<a name="line.260"></a>
+<span class="sourceLineNo">261</span>     * probably be enough, but I'm not absolutely positive.<a name="line.261"></a>
+<span class="sourceLineNo">262</span>     *<a name="line.262"></a>
+<span class="sourceLineNo">263</span>     * @param data the RunData to use as the source of the ServerData to use as<a name="line.263"></a>
+<span class="sourceLineNo">264</span>     * the basis for the URL.<a name="line.264"></a>
+<span class="sourceLineNo">265</span>     * @return the CSS URL<a name="line.265"></a>
+<span class="sourceLineNo">266</span>     */<a name="line.266"></a>
+<span class="sourceLineNo">267</span>    public String getStylecss(RunData data)<a name="line.267"></a>
+<span class="sourceLineNo">268</span>    {<a name="line.268"></a>
+<span class="sourceLineNo">269</span>        return getStylecss(data.getServerData());<a name="line.269"></a>
+<span class="sourceLineNo">270</span>    }<a name="line.270"></a>
+<span class="sourceLineNo">271</span><a name="line.271"></a>
+<span class="sourceLineNo">272</span>    /**<a name="line.272"></a>
+<span class="sourceLineNo">273</span>     * Retrieve the URL for the style sheet that is part of the skin. The style<a name="line.273"></a>
+<span class="sourceLineNo">274</span>     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the<a name="line.274"></a>
+<span class="sourceLineNo">275</span>     * filename skin.css<a name="line.275"></a>
+<span class="sourceLineNo">276</span>     *<a name="line.276"></a>
+<span class="sourceLineNo">277</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.277"></a>
+<span class="sourceLineNo">278</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.278"></a>
+<span class="sourceLineNo">279</span>     * a load balanced situation. I think in most cases the style() method would<a name="line.279"></a>
+<span class="sourceLineNo">280</span>     * probably be enough, but I'm not absolutely positive.<a name="line.280"></a>
+<span class="sourceLineNo">281</span>     *<a name="line.281"></a>
+<span class="sourceLineNo">282</span>     * @param serverData the serverData to use as the basis for the URL.<a name="line.282"></a>
+<span class="sourceLineNo">283</span>     * @return the CSS URL<a name="line.283"></a>
+<span class="sourceLineNo">284</span>     */<a name="line.284"></a>
+<span class="sourceLineNo">285</span>    public String getStylecss(ServerData serverData)<a name="line.285"></a>
+<span class="sourceLineNo">286</span>    {<a name="line.286"></a>
+<span class="sourceLineNo">287</span>        return TurbineUI.getStylecss(getSkin(), serverData);<a name="line.287"></a>
+<span class="sourceLineNo">288</span>    }<a name="line.288"></a>
+<span class="sourceLineNo">289</span><a name="line.289"></a>
+<span class="sourceLineNo">290</span>    /**<a name="line.290"></a>
+<span class="sourceLineNo">291</span>     * Retrieve the URL for the style sheet that is part of the skin. The style<a name="line.291"></a>
+<span class="sourceLineNo">292</span>     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the<a name="line.292"></a>
+<span class="sourceLineNo">293</span>     * filename skin.css<a name="line.293"></a>
+<span class="sourceLineNo">294</span>     * @return the CSS URL<a name="line.294"></a>
+<span class="sourceLineNo">295</span>     */<a name="line.295"></a>
+<span class="sourceLineNo">296</span>    public String getStylecss()<a name="line.296"></a>
+<span class="sourceLineNo">297</span>    {<a name="line.297"></a>
+<span class="sourceLineNo">298</span>        return TurbineUI.getStylecss(getSkin());<a name="line.298"></a>
+<span class="sourceLineNo">299</span>    }<a name="line.299"></a>
+<span class="sourceLineNo">300</span><a name="line.300"></a>
+<span class="sourceLineNo">301</span>    /**<a name="line.301"></a>
+<span class="sourceLineNo">302</span>     * Retrieve the URL for a given script that is part of the skin. The script<a name="line.302"></a>
+<span class="sourceLineNo">303</span>     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory.<a name="line.303"></a>
+<span class="sourceLineNo">304</span>     *<a name="line.304"></a>
+<span class="sourceLineNo">305</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.305"></a>
+<span class="sourceLineNo">306</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.306"></a>
+<span class="sourceLineNo">307</span>     * a load balanced situation. I think in most cases the image(String image)<a name="line.307"></a>
+<span class="sourceLineNo">308</span>     * method would probably be enough, but I'm not absolutely positive.<a name="line.308"></a>
+<span class="sourceLineNo">309</span>     *<a name="line.309"></a>
+<span class="sourceLineNo">310</span>     * @param filename the name of the script file whose URL will be generated.<a name="line.310"></a>
+<span class="sourceLineNo">311</span>     * @param data the RunDate to use as the source of the ServerData to use as<a name="line.311"></a>
+<span class="sourceLineNo">312</span>     * the basis for the URL.<a name="line.312"></a>
+<span class="sourceLineNo">313</span>     * @return the script URL<a name="line.313"></a>
+<span class="sourceLineNo">314</span>     */<a name="line.314"></a>
+<span class="sourceLineNo">315</span>    public String getScript(String filename, RunData data)<a name="line.315"></a>
+<span class="sourceLineNo">316</span>    {<a name="line.316"></a>
+<span class="sourceLineNo">317</span>        return getScript(filename, data.getServerData());<a name="line.317"></a>
+<span class="sourceLineNo">318</span>    }<a name="line.318"></a>
+<span class="sourceLineNo">319</span><a name="line.319"></a>
+<span class="sourceLineNo">320</span>    /**<a name="line.320"></a>
+<span class="sourceLineNo">321</span>     * Retrieve the URL for a given script that is part of the skin. The script<a name="line.321"></a>
+<span class="sourceLineNo">322</span>     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory.<a name="line.322"></a>
+<span class="sourceLineNo">323</span>     *<a name="line.323"></a>
+<span class="sourceLineNo">324</span>     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server<a name="line.324"></a>
+<span class="sourceLineNo">325</span>     * port change on a per request basis. I'm not sure if this would happen in<a name="line.325"></a>
+<span class="sourceLineNo">326</span>     * a load balanced situation. I think in most cases the image(String image)<a name="line.326"></a>
+<span class="sourceLineNo">327</span>     * method would probably be enough, but I'm not absolutely positive.<a name="line.327"></a>
+<span class="sourceLineNo">328</span>     *<a name="line.328"></a>
+<span class="sourceLineNo">329</span>     * @param filename the name of the script file whose URL will be generated.<a name="line.329"></a>
+<span class="sourceLineNo">330</span>     * @param serverData the serverData to use as the basis for the URL.<a name="line.330"></a>
+<span class="sourceLineNo">331</span>     * @return the script URL<a name="line.331"></a>
+<span class="sourceLineNo">332</span>     */<a name="line.332"></a>
+<span class="sourceLineNo">333</span>    public String getScript(String filename, ServerData serverData)<a name="line.333"></a>
+<span class="sourceLineNo">334</span>    {<a name="line.334"></a>
+<span class="sourceLineNo">335</span>        return TurbineUI.getScript(getSkin(), filename, serverData);<a name="line.335"></a>
+<span class="sourceLineNo">336</span>    }<a name="line.336"></a>
+<span class="sourceLineNo">337</span><a name="line.337"></a>
+<span class="sourceLineNo">338</span>    /**<a name="line.338"></a>
+<span class="sourceLineNo">339</span>     * Retrieve the URL for a given script that is part of the skin. The script<a name="line.339"></a>
+<span class="sourceLineNo">340</span>     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory.<a name="line.340"></a>
+<span class="sourceLineNo">341</span>     *<a name="line.341"></a>
+<span class="sourceLineNo">342</span>     * @param filename the name of the script file whose URL will be generated.<a name="line.342"></a>
+<span class="sourceLineNo">343</span>     * @return the script URL<a name="line.343"></a>
+<span class="sourceLineNo">344</span>     */<a name="line.344"></a>
+<span class="sourceLineNo">345</span>    public String getScript(String filename)<a name="line.345"></a>
+<span class="sourceLineNo">346</span>    {<a name="line.346"></a>
+<span class="sourceLineNo">347</span>        return TurbineUI.getScript(getSkin(), filename);<a name="line.347"></a>
+<span class="sourceLineNo">348</span>    }<a name="line.348"></a>
+<span class="sourceLineNo">349</span><a name="line.349"></a>
+<span class="sourceLineNo">350</span>    /**<a name="line.350"></a>
+<span class="sourceLineNo">351</span>     * Initialize the UITool object.<a name="line.351"></a>
+<span class="sourceLineNo">352</span>     *<a name="line.352"></a>
+<span class="sourceLineNo">353</span>     * @param data This is null, RunData or User depending upon specified tool<a name="line.353"></a>
+<span class="sourceLineNo">354</span>     * scope.<a name="line.354"></a>
+<span class="sourceLineNo">355</span>     */<a name="line.355"></a>
+<span class="sourceLineNo">356</span>    @Override<a name="line.356"></a>
+<span class="sourceLineNo">357</span>    public void init(Object data)<a name="line.357"></a>
+<span class="sourceLineNo">358</span>    {<a name="line.358"></a>
+<span class="sourceLineNo">359</span>        if (data == null)<a name="line.359"></a>
+<span class="sourceLineNo">360</span>        {<a name="line.360"></a>
+<span class="sourceLineNo">361</span>            log.debug("UITool scope is global");<a name="line.361"></a>
+<span class="sourceLineNo">362</span>            setSkin();<a name="line.362"></a>
+<span class="sourceLineNo">363</span>        }<a name="line.363"></a>
+<span class="sourceLineNo">364</span>        else if (data instanceof RunData)<a name="line.364"></a>
+<span class="sourceLineNo">365</span>        {<a name="line.365"></a>
+<span class="sourceLineNo">366</span>            log.debug("UITool scope is request");<a name="line.366"></a>
+<span class="sourceLineNo">367</span>            setSkin((RunData) data);<a name="line.367"></a>
+<span class="sourceLineNo">368</span>        }<a name="line.368"></a>
+<span class="sourceLineNo">369</span>        else if (data instanceof PipelineData)<a name="line.369"></a>
+<span class="sourceLineNo">370</span>        {<a name="line.370"></a>
+<span class="sourceLineNo">371</span>            PipelineData pipelineData = (PipelineData) data;<a name="line.371"></a>
+<span class="sourceLineNo">372</span>            RunData runData = (RunData)pipelineData;<a name="line.372"></a>
 <span class="sourceLineNo">373</span>            log.debug("UITool scope is request");<a name="line.373"></a>
-<span class="sourceLineNo">374</span>            setSkin((RunData) data);<a name="line.374"></a>
+<span class="sourceLineNo">374</span>            setSkin(runData);<a name="line.374"></a>
 <span class="sourceLineNo">375</span>        }<a name="line.375"></a>
-<span class="sourceLineNo">376</span>        else if (data instanceof PipelineData)<a name="line.376"></a>
+<span class="sourceLineNo">376</span>        else if (data instanceof User)<a name="line.376"></a>
 <span class="sourceLineNo">377</span>        {<a name="line.377"></a>
-<span class="sourceLineNo">378</span>            PipelineData pipelineData = (PipelineData) data;<a name="line.378"></a>
-<span class="sourceLineNo">379</span>            RunData runData = (RunData)pipelineData;<a name="line.379"></a>
-<span class="sourceLineNo">380</span>            log.debug("UITool scope is request");<a name="line.380"></a>
-<span class="sourceLineNo">381</span>            setSkin(runData);<a name="line.381"></a>
-<span class="sourceLineNo">382</span>        }<a name="line.382"></a>
-<span class="sourceLineNo">383</span>        else if (data instanceof User)<a name="line.383"></a>
-<span class="sourceLineNo">384</span>        {<a name="line.384"></a>
-<span class="sourceLineNo">385</span>            log.debug("UITool scope is session");<a name="line.385"></a>
-<span class="sourceLineNo">386</span>            setSkin((User) data);<a name="line.386"></a>
-<span class="sourceLineNo">387</span>        }<a name="line.387"></a>
-<span class="sourceLineNo">388</span>    }<a name="line.388"></a>
-<span class="sourceLineNo">389</span><a name="line.389"></a>
-<span class="sourceLineNo">390</span>}<a name="line.390"></a>
+<span class="sourceLineNo">378</span>            log.debug("UITool scope is session");<a name="line.378"></a>
+<span class="sourceLineNo">379</span>            setSkin((User) data);<a name="line.379"></a>
+<span class="sourceLineNo">380</span>        }<a name="line.380"></a>
+<span class="sourceLineNo">381</span>    }<a name="line.381"></a>
+<span class="sourceLineNo">382</span><a name="line.382"></a>
+<span class="sourceLineNo">383</span>}<a name="line.383"></a>
 
 
 

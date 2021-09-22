@@ -27,145 +27,160 @@
 <span class="sourceLineNo">019</span> * specific language governing permissions and limitations<a name="line.19"></a>
 <span class="sourceLineNo">020</span> * under the License.<a name="line.20"></a>
 <span class="sourceLineNo">021</span> */<a name="line.21"></a>
-<span class="sourceLineNo">022</span>import static org.junit.jupiter.api.Assertions.assertEquals;<a name="line.22"></a>
-<span class="sourceLineNo">023</span>import static org.junit.jupiter.api.Assertions.assertNotNull;<a name="line.23"></a>
-<span class="sourceLineNo">024</span>import static org.junit.jupiter.api.Assertions.assertTrue;<a name="line.24"></a>
-<span class="sourceLineNo">025</span><a name="line.25"></a>
-<span class="sourceLineNo">026</span>import static org.mockito.Mockito.mock;<a name="line.26"></a>
-<span class="sourceLineNo">027</span>import static org.mockito.Mockito.when;<a name="line.27"></a>
-<span class="sourceLineNo">028</span><a name="line.28"></a>
-<span class="sourceLineNo">029</span>import java.util.Vector;<a name="line.29"></a>
-<span class="sourceLineNo">030</span><a name="line.30"></a>
-<span class="sourceLineNo">031</span>import javax.servlet.ServletConfig;<a name="line.31"></a>
-<span class="sourceLineNo">032</span>import javax.servlet.ServletOutputStream;<a name="line.32"></a>
-<span class="sourceLineNo">033</span>import javax.servlet.http.HttpServletRequest;<a name="line.33"></a>
-<span class="sourceLineNo">034</span>import javax.servlet.http.HttpServletResponse;<a name="line.34"></a>
-<span class="sourceLineNo">035</span><a name="line.35"></a>
-<span class="sourceLineNo">036</span>import org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl;<a name="line.36"></a>
-<span class="sourceLineNo">037</span>import org.apache.turbine.modules.actions.VelocityActionDoesNothing;<a name="line.37"></a>
-<span class="sourceLineNo">038</span>import org.apache.turbine.modules.actions.VelocitySecureActionDoesNothing;<a name="line.38"></a>
-<span class="sourceLineNo">039</span>import org.apache.turbine.om.security.DefaultUserImpl;<a name="line.39"></a>
-<span class="sourceLineNo">040</span>import org.apache.turbine.om.security.User;<a name="line.40"></a>
-<span class="sourceLineNo">041</span>import org.apache.turbine.test.BaseTestCase;<a name="line.41"></a>
-<span class="sourceLineNo">042</span>import org.apache.turbine.util.RunData;<a name="line.42"></a>
-<span class="sourceLineNo">043</span>import org.apache.turbine.util.TurbineConfig;<a name="line.43"></a>
-<span class="sourceLineNo">044</span>import org.apache.turbine.util.uri.URIConstants;<a name="line.44"></a>
-<span class="sourceLineNo">045</span>import org.junit.jupiter.api.AfterAll;<a name="line.45"></a>
-<span class="sourceLineNo">046</span>import org.junit.jupiter.api.AfterEach;<a name="line.46"></a>
-<span class="sourceLineNo">047</span>import org.junit.jupiter.api.BeforeAll;<a name="line.47"></a>
-<span class="sourceLineNo">048</span>import org.junit.jupiter.api.BeforeEach;<a name="line.48"></a>
-<span class="sourceLineNo">049</span>import org.junit.jupiter.api.Test;<a name="line.49"></a>
+<span class="sourceLineNo">022</span><a name="line.22"></a>
+<span class="sourceLineNo">023</span><a name="line.23"></a>
+<span class="sourceLineNo">024</span>import static org.junit.Assert.assertEquals;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>import static org.junit.Assert.assertNotNull;<a name="line.25"></a>
+<span class="sourceLineNo">026</span>import static org.junit.Assert.assertTrue;<a name="line.26"></a>
+<span class="sourceLineNo">027</span><a name="line.27"></a>
+<span class="sourceLineNo">028</span>import java.util.Vector;<a name="line.28"></a>
+<span class="sourceLineNo">029</span><a name="line.29"></a>
+<span class="sourceLineNo">030</span>import javax.servlet.http.HttpServletResponse;<a name="line.30"></a>
+<span class="sourceLineNo">031</span><a name="line.31"></a>
+<span class="sourceLineNo">032</span>import org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.apache.turbine.modules.actions.VelocityActionDoesNothing;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import org.apache.turbine.modules.actions.VelocitySecureActionDoesNothing;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import org.apache.turbine.om.security.DefaultUserImpl;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import org.apache.turbine.om.security.User;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import org.apache.turbine.test.BaseTestCase;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import org.apache.turbine.test.EnhancedMockHttpServletRequest;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import org.apache.turbine.test.EnhancedMockHttpServletResponse;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>import org.apache.turbine.test.EnhancedMockHttpSession;<a name="line.40"></a>
+<span class="sourceLineNo">041</span>import org.apache.turbine.util.RunData;<a name="line.41"></a>
+<span class="sourceLineNo">042</span>import org.apache.turbine.util.TurbineConfig;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>import org.apache.turbine.util.uri.URIConstants;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>import org.junit.AfterClass;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>import org.junit.Before;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import org.junit.BeforeClass;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import org.junit.Test;<a name="line.47"></a>
+<span class="sourceLineNo">048</span><a name="line.48"></a>
+<span class="sourceLineNo">049</span>import com.mockobjects.servlet.MockServletConfig;<a name="line.49"></a>
 <span class="sourceLineNo">050</span><a name="line.50"></a>
 <span class="sourceLineNo">051</span>/**<a name="line.51"></a>
 <span class="sourceLineNo">052</span> * Tests ExecutePageValve.<a name="line.52"></a>
 <span class="sourceLineNo">053</span> *<a name="line.53"></a>
 <span class="sourceLineNo">054</span> * @author &lt;a href="mailto:epugh@opensourceConnections.com"&gt;Eric Pugh&lt;/a&gt;<a name="line.54"></a>
 <span class="sourceLineNo">055</span> * @author &lt;a href="mailto:peter@courcoux.biz"&gt;Peter Courcoux&lt;/a&gt;<a name="line.55"></a>
-<span class="sourceLineNo">056</span> * @version $Id: ExecutePageValveTest.java 1853146 2019-02-07 16:14:46Z gk $<a name="line.56"></a>
+<span class="sourceLineNo">056</span> * @version $Id: ExecutePageValveTest.java 1706425 2015-10-02 14:47:51Z tv $<a name="line.56"></a>
 <span class="sourceLineNo">057</span> */<a name="line.57"></a>
 <span class="sourceLineNo">058</span>public class ExecutePageValveTest extends BaseTestCase<a name="line.58"></a>
 <span class="sourceLineNo">059</span>{<a name="line.59"></a>
 <span class="sourceLineNo">060</span>    private static TurbineConfig tc = null;<a name="line.60"></a>
-<span class="sourceLineNo">061</span>    private ServletConfig config = null;<a name="line.61"></a>
-<span class="sourceLineNo">062</span>    private HttpServletRequest request = null;<a name="line.62"></a>
-<span class="sourceLineNo">063</span>    private HttpServletResponse response = null;<a name="line.63"></a>
-<span class="sourceLineNo">064</span><a name="line.64"></a>
-<span class="sourceLineNo">065</span>    @BeforeAll<a name="line.65"></a>
-<span class="sourceLineNo">066</span>    public static void init()<a name="line.66"></a>
-<span class="sourceLineNo">067</span>    {<a name="line.67"></a>
-<span class="sourceLineNo">068</span>        tc = new TurbineConfig(<a name="line.68"></a>
-<span class="sourceLineNo">069</span>                            ".",<a name="line.69"></a>
-<span class="sourceLineNo">070</span>                            "/conf/test/CompleteTurbineResources.properties");<a name="line.70"></a>
-<span class="sourceLineNo">071</span>        tc.initialize();<a name="line.71"></a>
-<span class="sourceLineNo">072</span>    }<a name="line.72"></a>
-<span class="sourceLineNo">073</span><a name="line.73"></a>
-<span class="sourceLineNo">074</span>    @BeforeEach<a name="line.74"></a>
-<span class="sourceLineNo">075</span>    public void setUpBefore() throws Exception<a name="line.75"></a>
-<span class="sourceLineNo">076</span>    {<a name="line.76"></a>
-<span class="sourceLineNo">077</span>        config = mock(ServletConfig.class);<a name="line.77"></a>
-<span class="sourceLineNo">078</span>        request = getMockRequest();<a name="line.78"></a>
-<span class="sourceLineNo">079</span>        response = mock(HttpServletResponse.class);<a name="line.79"></a>
-<span class="sourceLineNo">080</span>        ServletOutputStream sos = mock(ServletOutputStream.class);<a name="line.80"></a>
-<span class="sourceLineNo">081</span><a name="line.81"></a>
-<span class="sourceLineNo">082</span>        when(response.getOutputStream()).thenReturn(sos);<a name="line.82"></a>
-<span class="sourceLineNo">083</span>    }<a name="line.83"></a>
-<span class="sourceLineNo">084</span><a name="line.84"></a>
-<span class="sourceLineNo">085</span>    @Test public void testValve() throws Exception<a name="line.85"></a>
-<span class="sourceLineNo">086</span>    {<a name="line.86"></a>
-<span class="sourceLineNo">087</span>        Vector&lt;String&gt; v = new Vector&lt;String&gt;();<a name="line.87"></a>
-<span class="sourceLineNo">088</span>        v.add(URIConstants.CGI_TEMPLATE_PARAM);<a name="line.88"></a>
-<span class="sourceLineNo">089</span>        when(request.getParameterNames()).thenReturn(v.elements());<a name="line.89"></a>
+<span class="sourceLineNo">061</span>    private MockServletConfig config = null;<a name="line.61"></a>
+<span class="sourceLineNo">062</span>    private EnhancedMockHttpServletRequest request = null;<a name="line.62"></a>
+<span class="sourceLineNo">063</span>    private EnhancedMockHttpSession session = null;<a name="line.63"></a>
+<span class="sourceLineNo">064</span>    private HttpServletResponse response = null;<a name="line.64"></a>
+<span class="sourceLineNo">065</span><a name="line.65"></a>
+<span class="sourceLineNo">066</span><a name="line.66"></a>
+<span class="sourceLineNo">067</span>    @BeforeClass<a name="line.67"></a>
+<span class="sourceLineNo">068</span>    public static void init() {<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        tc = new TurbineConfig(<a name="line.69"></a>
+<span class="sourceLineNo">070</span>                            ".",<a name="line.70"></a>
+<span class="sourceLineNo">071</span>                            "/conf/test/CompleteTurbineResources.properties");<a name="line.71"></a>
+<span class="sourceLineNo">072</span>        tc.initialize();<a name="line.72"></a>
+<span class="sourceLineNo">073</span>    }<a name="line.73"></a>
+<span class="sourceLineNo">074</span><a name="line.74"></a>
+<span class="sourceLineNo">075</span>    @Before<a name="line.75"></a>
+<span class="sourceLineNo">076</span>    public void setUpBefore() throws Exception<a name="line.76"></a>
+<span class="sourceLineNo">077</span>    {<a name="line.77"></a>
+<span class="sourceLineNo">078</span>        config = new MockServletConfig();<a name="line.78"></a>
+<span class="sourceLineNo">079</span>        config.setupNoParameters();<a name="line.79"></a>
+<span class="sourceLineNo">080</span>        request = new EnhancedMockHttpServletRequest();<a name="line.80"></a>
+<span class="sourceLineNo">081</span>        request.setupServerName("bob");<a name="line.81"></a>
+<span class="sourceLineNo">082</span>        request.setupGetProtocol("http");<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        request.setupScheme("scheme");<a name="line.83"></a>
+<span class="sourceLineNo">084</span>        request.setupPathInfo("damn");<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        request.setupGetServletPath("damn2");<a name="line.85"></a>
+<span class="sourceLineNo">086</span>        request.setupGetContextPath("wow");<a name="line.86"></a>
+<span class="sourceLineNo">087</span>        request.setupGetContentType("html/text");<a name="line.87"></a>
+<span class="sourceLineNo">088</span>        request.setupAddHeader("Content-type", "html/text");<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        request.setupAddHeader("Accept-Language", "en-US");<a name="line.89"></a>
 <span class="sourceLineNo">090</span><a name="line.90"></a>
-<span class="sourceLineNo">091</span>        when(request.getParameterValues(URIConstants.CGI_TEMPLATE_PARAM)).thenReturn(new String[] { "Index.vm" });<a name="line.91"></a>
-<span class="sourceLineNo">092</span><a name="line.92"></a>
-<span class="sourceLineNo">093</span>        RunData runData = getRunData(request, response, config);<a name="line.93"></a>
-<span class="sourceLineNo">094</span>        runData.setScreenTemplate("ExistPageWithLayout.vm");<a name="line.94"></a>
-<span class="sourceLineNo">095</span>        User tu = new DefaultUserImpl(new TurbineUserImpl());<a name="line.95"></a>
-<span class="sourceLineNo">096</span>        tu.setName("username");<a name="line.96"></a>
-<span class="sourceLineNo">097</span>        tu.setHasLoggedIn(Boolean.TRUE);<a name="line.97"></a>
-<span class="sourceLineNo">098</span>        String actionName = VelocityActionDoesNothing.class.getName();<a name="line.98"></a>
-<span class="sourceLineNo">099</span>        actionName = actionName.substring(actionName.lastIndexOf(".")+1);<a name="line.99"></a>
-<span class="sourceLineNo">100</span>        runData.setAction(actionName);<a name="line.100"></a>
-<span class="sourceLineNo">101</span>        runData.setUser(tu);<a name="line.101"></a>
-<span class="sourceLineNo">102</span><a name="line.102"></a>
-<span class="sourceLineNo">103</span>        Pipeline pipeline = new TurbinePipeline();<a name="line.103"></a>
-<span class="sourceLineNo">104</span><a name="line.104"></a>
-<span class="sourceLineNo">105</span>        PipelineData pipelineData = runData;<a name="line.105"></a>
-<span class="sourceLineNo">106</span>        ExecutePageValve valve = new ExecutePageValve();<a name="line.106"></a>
-<span class="sourceLineNo">107</span>        pipeline.addValve(valve);<a name="line.107"></a>
-<span class="sourceLineNo">108</span>        pipeline.initialize();<a name="line.108"></a>
-<span class="sourceLineNo">109</span><a name="line.109"></a>
-<span class="sourceLineNo">110</span>        int numberOfCalls = VelocityActionDoesNothing.numberOfCalls;<a name="line.110"></a>
-<span class="sourceLineNo">111</span>        pipeline.invoke(pipelineData);<a name="line.111"></a>
-<span class="sourceLineNo">112</span>        assertEquals(numberOfCalls +1,VelocityActionDoesNothing.numberOfCalls, "Assert action was called");<a name="line.112"></a>
-<span class="sourceLineNo">113</span>        User user = runData.getUser();<a name="line.113"></a>
-<span class="sourceLineNo">114</span>        assertNotNull(user);<a name="line.114"></a>
-<span class="sourceLineNo">115</span>        assertEquals("username", user.getName());<a name="line.115"></a>
-<span class="sourceLineNo">116</span>        assertTrue(user.hasLoggedIn());<a name="line.116"></a>
-<span class="sourceLineNo">117</span>    }<a name="line.117"></a>
+<span class="sourceLineNo">091</span>        session = new EnhancedMockHttpSession();<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        response = new EnhancedMockHttpServletResponse();<a name="line.92"></a>
+<span class="sourceLineNo">093</span><a name="line.93"></a>
+<span class="sourceLineNo">094</span>        request.setSession(session);<a name="line.94"></a>
+<span class="sourceLineNo">095</span><a name="line.95"></a>
+<span class="sourceLineNo">096</span>    }<a name="line.96"></a>
+<span class="sourceLineNo">097</span><a name="line.97"></a>
+<span class="sourceLineNo">098</span>    @Test public void testValve() throws Exception<a name="line.98"></a>
+<span class="sourceLineNo">099</span>    {<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        Vector&lt;String&gt; v = new Vector&lt;String&gt;();<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        v.add(URIConstants.CGI_TEMPLATE_PARAM);<a name="line.101"></a>
+<span class="sourceLineNo">102</span>        request.setupGetParameterNames(v.elements());<a name="line.102"></a>
+<span class="sourceLineNo">103</span>        String nulls[] = new String[1];<a name="line.103"></a>
+<span class="sourceLineNo">104</span>        nulls[0]="Index.vm";<a name="line.104"></a>
+<span class="sourceLineNo">105</span>        request.setupAddParameter(URIConstants.CGI_TEMPLATE_PARAM, nulls);<a name="line.105"></a>
+<span class="sourceLineNo">106</span><a name="line.106"></a>
+<span class="sourceLineNo">107</span>        RunData runData = getRunData(request, response, config);<a name="line.107"></a>
+<span class="sourceLineNo">108</span>        runData.setScreenTemplate("ExistPageWithLayout.vm");<a name="line.108"></a>
+<span class="sourceLineNo">109</span>        User tu = new DefaultUserImpl(new TurbineUserImpl());<a name="line.109"></a>
+<span class="sourceLineNo">110</span>        tu.setName("username");<a name="line.110"></a>
+<span class="sourceLineNo">111</span>        tu.setHasLoggedIn(Boolean.TRUE);<a name="line.111"></a>
+<span class="sourceLineNo">112</span>        String actionName = VelocityActionDoesNothing.class.getName();<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        actionName = actionName.substring(actionName.lastIndexOf(".")+1);<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        runData.setAction(actionName);<a name="line.114"></a>
+<span class="sourceLineNo">115</span>        runData.setUser(tu);<a name="line.115"></a>
+<span class="sourceLineNo">116</span><a name="line.116"></a>
+<span class="sourceLineNo">117</span>        Pipeline pipeline = new TurbinePipeline();<a name="line.117"></a>
 <span class="sourceLineNo">118</span><a name="line.118"></a>
-<span class="sourceLineNo">119</span>    @Test public void testValveWithSecureAction() throws Exception<a name="line.119"></a>
-<span class="sourceLineNo">120</span>    {<a name="line.120"></a>
-<span class="sourceLineNo">121</span>        Vector&lt;String&gt; v = new Vector&lt;String&gt;();<a name="line.121"></a>
-<span class="sourceLineNo">122</span>        v.add(URIConstants.CGI_TEMPLATE_PARAM);<a name="line.122"></a>
-<span class="sourceLineNo">123</span>        when(request.getParameterNames()).thenReturn(v.elements());<a name="line.123"></a>
-<span class="sourceLineNo">124</span><a name="line.124"></a>
-<span class="sourceLineNo">125</span>        when(request.getParameterValues(URIConstants.CGI_TEMPLATE_PARAM)).thenReturn(new String[] { "Index.vm" });<a name="line.125"></a>
-<span class="sourceLineNo">126</span><a name="line.126"></a>
-<span class="sourceLineNo">127</span>        RunData runData = getRunData(request, response, config);<a name="line.127"></a>
-<span class="sourceLineNo">128</span>        runData.setScreenTemplate("ExistPageWithLayout.vm");<a name="line.128"></a>
-<span class="sourceLineNo">129</span>        User tu = new DefaultUserImpl(new TurbineUserImpl());<a name="line.129"></a>
-<span class="sourceLineNo">130</span>        tu.setName("username");<a name="line.130"></a>
-<span class="sourceLineNo">131</span>        tu.setHasLoggedIn(Boolean.TRUE);<a name="line.131"></a>
-<span class="sourceLineNo">132</span>        String actionName = VelocitySecureActionDoesNothing.class.getName();<a name="line.132"></a>
-<span class="sourceLineNo">133</span>        actionName = actionName.substring(actionName.lastIndexOf(".")+1);<a name="line.133"></a>
-<span class="sourceLineNo">134</span>        runData.setAction(actionName);<a name="line.134"></a>
-<span class="sourceLineNo">135</span>        runData.setUser(tu);<a name="line.135"></a>
-<span class="sourceLineNo">136</span><a name="line.136"></a>
-<span class="sourceLineNo">137</span>        Pipeline pipeline = new TurbinePipeline();<a name="line.137"></a>
-<span class="sourceLineNo">138</span><a name="line.138"></a>
-<span class="sourceLineNo">139</span>        PipelineData pipelineData = runData;<a name="line.139"></a>
-<span class="sourceLineNo">140</span>        ExecutePageValve valve = new ExecutePageValve();<a name="line.140"></a>
-<span class="sourceLineNo">141</span>        pipeline.addValve(valve);<a name="line.141"></a>
-<span class="sourceLineNo">142</span>        pipeline.initialize();<a name="line.142"></a>
-<span class="sourceLineNo">143</span><a name="line.143"></a>
-<span class="sourceLineNo">144</span>        int numberOfCalls = VelocitySecureActionDoesNothing.numberOfCalls;<a name="line.144"></a>
-<span class="sourceLineNo">145</span>        int isAuthorizedCalls = VelocitySecureActionDoesNothing.isAuthorizedCalls;<a name="line.145"></a>
-<span class="sourceLineNo">146</span>        pipeline.invoke(pipelineData);<a name="line.146"></a>
-<span class="sourceLineNo">147</span>        assertEquals(numberOfCalls +1,VelocitySecureActionDoesNothing.numberOfCalls, "Assert action was called");<a name="line.147"></a>
-<span class="sourceLineNo">148</span>        assertEquals(isAuthorizedCalls +1,VelocitySecureActionDoesNothing.isAuthorizedCalls, "Assert authorization was called");<a name="line.148"></a>
-<span class="sourceLineNo">149</span>        User user = runData.getUser();<a name="line.149"></a>
-<span class="sourceLineNo">150</span>        assertNotNull(user);<a name="line.150"></a>
-<span class="sourceLineNo">151</span>        assertEquals("username", user.getName());<a name="line.151"></a>
-<span class="sourceLineNo">152</span>        assertTrue(user.hasLoggedIn());<a name="line.152"></a>
-<span class="sourceLineNo">153</span>    }<a name="line.153"></a>
-<span class="sourceLineNo">154</span><a name="line.154"></a>
-<span class="sourceLineNo">155</span>    @AfterAll<a name="line.155"></a>
-<span class="sourceLineNo">156</span>    public static void destroy()<a name="line.156"></a>
-<span class="sourceLineNo">157</span>    {<a name="line.157"></a>
-<span class="sourceLineNo">158</span>        tc.dispose();<a name="line.158"></a>
-<span class="sourceLineNo">159</span>    }<a name="line.159"></a>
-<span class="sourceLineNo">160</span>}<a name="line.160"></a>
+<span class="sourceLineNo">119</span>        PipelineData pipelineData = runData;<a name="line.119"></a>
+<span class="sourceLineNo">120</span>        ExecutePageValve valve = new ExecutePageValve();<a name="line.120"></a>
+<span class="sourceLineNo">121</span>        pipeline.addValve(valve);<a name="line.121"></a>
+<span class="sourceLineNo">122</span>        pipeline.initialize();<a name="line.122"></a>
+<span class="sourceLineNo">123</span><a name="line.123"></a>
+<span class="sourceLineNo">124</span>        int numberOfCalls = VelocityActionDoesNothing.numberOfCalls;<a name="line.124"></a>
+<span class="sourceLineNo">125</span>        pipeline.invoke(pipelineData);<a name="line.125"></a>
+<span class="sourceLineNo">126</span>        assertEquals("Assert action was called",numberOfCalls +1,VelocityActionDoesNothing.numberOfCalls);<a name="line.126"></a>
+<span class="sourceLineNo">127</span>        User user = runData.getUser();<a name="line.127"></a>
+<span class="sourceLineNo">128</span>        assertNotNull(user);<a name="line.128"></a>
+<span class="sourceLineNo">129</span>        assertEquals("username", user.getName());<a name="line.129"></a>
+<span class="sourceLineNo">130</span>        assertTrue(user.hasLoggedIn());<a name="line.130"></a>
+<span class="sourceLineNo">131</span>    }<a name="line.131"></a>
+<span class="sourceLineNo">132</span><a name="line.132"></a>
+<span class="sourceLineNo">133</span>    @Test public void testValveWithSecureAction() throws Exception<a name="line.133"></a>
+<span class="sourceLineNo">134</span>    {<a name="line.134"></a>
+<span class="sourceLineNo">135</span>        Vector&lt;String&gt; v = new Vector&lt;String&gt;();<a name="line.135"></a>
+<span class="sourceLineNo">136</span>        v.add(URIConstants.CGI_TEMPLATE_PARAM);<a name="line.136"></a>
+<span class="sourceLineNo">137</span>        request.setupGetParameterNames(v.elements());<a name="line.137"></a>
+<span class="sourceLineNo">138</span>        String nulls[] = new String[1];<a name="line.138"></a>
+<span class="sourceLineNo">139</span>        nulls[0]="Index.vm";<a name="line.139"></a>
+<span class="sourceLineNo">140</span>        request.setupAddParameter(URIConstants.CGI_TEMPLATE_PARAM, nulls);<a name="line.140"></a>
+<span class="sourceLineNo">141</span><a name="line.141"></a>
+<span class="sourceLineNo">142</span>        RunData runData = getRunData(request, response, config);<a name="line.142"></a>
+<span class="sourceLineNo">143</span>        runData.setScreenTemplate("ExistPageWithLayout.vm");<a name="line.143"></a>
+<span class="sourceLineNo">144</span>        User tu = new DefaultUserImpl(new TurbineUserImpl());<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        tu.setName("username");<a name="line.145"></a>
+<span class="sourceLineNo">146</span>        tu.setHasLoggedIn(Boolean.TRUE);<a name="line.146"></a>
+<span class="sourceLineNo">147</span>        String actionName = VelocitySecureActionDoesNothing.class.getName();<a name="line.147"></a>
+<span class="sourceLineNo">148</span>        actionName = actionName.substring(actionName.lastIndexOf(".")+1);<a name="line.148"></a>
+<span class="sourceLineNo">149</span>        runData.setAction(actionName);<a name="line.149"></a>
+<span class="sourceLineNo">150</span>        runData.setUser(tu);<a name="line.150"></a>
+<span class="sourceLineNo">151</span><a name="line.151"></a>
+<span class="sourceLineNo">152</span>        Pipeline pipeline = new TurbinePipeline();<a name="line.152"></a>
+<span class="sourceLineNo">153</span><a name="line.153"></a>
+<span class="sourceLineNo">154</span>        PipelineData pipelineData = runData;<a name="line.154"></a>
+<span class="sourceLineNo">155</span>        ExecutePageValve valve = new ExecutePageValve();<a name="line.155"></a>
+<span class="sourceLineNo">156</span>        pipeline.addValve(valve);<a name="line.156"></a>
+<span class="sourceLineNo">157</span>        pipeline.initialize();<a name="line.157"></a>
+<span class="sourceLineNo">158</span><a name="line.158"></a>
+<span class="sourceLineNo">159</span>        int numberOfCalls = VelocitySecureActionDoesNothing.numberOfCalls;<a name="line.159"></a>
+<span class="sourceLineNo">160</span>        int isAuthorizedCalls = VelocitySecureActionDoesNothing.isAuthorizedCalls;<a name="line.160"></a>
+<span class="sourceLineNo">161</span>        pipeline.invoke(pipelineData);<a name="line.161"></a>
+<span class="sourceLineNo">162</span>        assertEquals("Assert action was called",numberOfCalls +1,VelocitySecureActionDoesNothing.numberOfCalls);<a name="line.162"></a>
+<span class="sourceLineNo">163</span>        assertEquals("Assert authorization was called",isAuthorizedCalls +1,VelocitySecureActionDoesNothing.isAuthorizedCalls);<a name="line.163"></a>
+<span class="sourceLineNo">164</span>        User user = runData.getUser();<a name="line.164"></a>
+<span class="sourceLineNo">165</span>        assertNotNull(user);<a name="line.165"></a>
+<span class="sourceLineNo">166</span>        assertEquals("username", user.getName());<a name="line.166"></a>
+<span class="sourceLineNo">167</span>        assertTrue(user.hasLoggedIn());<a name="line.167"></a>
+<span class="sourceLineNo">168</span>    }<a name="line.168"></a>
+<span class="sourceLineNo">169</span><a name="line.169"></a>
+<span class="sourceLineNo">170</span>    @AfterClass<a name="line.170"></a>
+<span class="sourceLineNo">171</span>    public static void destroy()<a name="line.171"></a>
+<span class="sourceLineNo">172</span>    {<a name="line.172"></a>
+<span class="sourceLineNo">173</span>        tc.dispose();<a name="line.173"></a>
+<span class="sourceLineNo">174</span>    }<a name="line.174"></a>
+<span class="sourceLineNo">175</span>}<a name="line.175"></a>
 
 
 

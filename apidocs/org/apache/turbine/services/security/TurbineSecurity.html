@@ -1,0 +1,1415 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- NewPage -->
+<html lang="de">
+<head>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+<title>TurbineSecurity (Apache Turbine 4.0-M2 API)</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<script type="text/javascript"><!--
+    if (location.href.indexOf('is-external=true') == -1) {
+        parent.document.title="TurbineSecurity (Apache Turbine 4.0-M2 API)";
+    }
+//-->
+</script>
+<noscript>
+<div>JavaScript is disabled on your browser.</div>
+</noscript>
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav"><a name="navbar_top">
+<!--   -->
+</a><a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/TurbineSecurity.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../../deprecated-list.html">Deprecated</a></li>
+<li><a href="../../../../../index-all.html">Index</a></li>
+<li><a href="../../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li><a href="../../../../../org/apache/turbine/services/security/SecurityService.html" title="interface in org.apache.turbine.services.security"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../../org/apache/turbine/services/security/UserManager.html" title="interface in org.apache.turbine.services.security"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../../index.html?org/apache/turbine/services/security/TurbineSecurity.html" target="_top">Frames</a></li>
+<li><a href="TurbineSecurity.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_top">
+<li><a href="../../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_top");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_top">
+<!--   -->
+</a></div>
+<!-- ========= END OF TOP NAVBAR ========= -->
+<!-- ======== START OF CLASS DATA ======== -->
+<div class="header">
+<div class="subTitle">org.apache.turbine.services.security</div>
+<h2 title="Class TurbineSecurity" class="title">Class TurbineSecurity</h2>
+</div>
+<div class="contentContainer">
+<ul class="inheritance">
+<li><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">java.lang.Object</a></li>
+<li>
+<ul class="inheritance">
+<li>org.apache.turbine.services.security.TurbineSecurity</li>
+</ul>
+</li>
+</ul>
+<div class="description">
+<ul class="blockList">
+<li class="blockList">
+<hr>
+<br>
+<pre>public abstract class <a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.57">TurbineSecurity</a>
+extends <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></pre>
+<div class="block">This is a Facade class for SecurityService.
+
+ This class provides static methods that call related methods of the
+ implementation of SecurityService used by the System, according to
+ the settings in TurbineResources.
+ <br>
+
+ <a name="global">
+ <p> Certain Roles that the Users may have in the system may are not related
+ to any specific resource nor entity. They are assigned within a special group
+ named 'global' that can be referenced in the code as
+ <code>TurbineModelManager.GLOBAL_GROUP_NAME</code>.</div>
+<dl><dt><span class="strong">Version:</span></dt>
+  <dd>$Id: TurbineSecurity.java 1706239 2015-10-01 13:18:35Z tv $</dd>
+<dt><span class="strong">Author:</span></dt>
+  <dd><a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>, <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a></dd></dl>
+</li>
+</ul>
+</div>
+<div class="summary">
+<ul class="blockList">
+<li class="blockList">
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_summary">
+<!--   -->
+</a>
+<h3>Constructor Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Constructor Summary table, listing constructors, and an explanation">
+<caption><span>Constructors</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colOne" scope="col">Constructor and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colOne"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#TurbineSecurity()">TurbineSecurity</a></strong>()</code>&nbsp;</td>
+</tr>
+</table>
+</li>
+</ul>
+<!-- ========== METHOD SUMMARY =========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_summary">
+<!--   -->
+</a>
+<h3>Method Summary</h3>
+<table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Method Summary table, listing methods, and an explanation">
+<caption><span>Methods</span><span class="tabEnd">&nbsp;</span></caption>
+<tr>
+<th class="colFirst" scope="col">Modifier and Type</th>
+<th class="colLast" scope="col">Method and Description</th>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static boolean</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#accountExists(java.lang.String)">accountExists</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;userName)</code>
+<div class="block">Check whether a specified user's account exists.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static boolean</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#accountExists(org.apache.turbine.om.security.User)">accountExists</a></strong>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user)</code>
+<div class="block">Check whether a specified user's account exists.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#addGroup(org.apache.fulcrum.security.entity.Group)">addGroup</a></strong>(org.apache.fulcrum.security.entity.Group&nbsp;group)</code>
+<div class="block">Creates a new group with specified attributes.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#addPermission(org.apache.fulcrum.security.entity.Permission)">addPermission</a></strong>(org.apache.fulcrum.security.entity.Permission&nbsp;permission)</code>
+<div class="block">Creates a new permission with specified attributes.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#addRole(org.apache.fulcrum.security.entity.Role)">addRole</a></strong>(org.apache.fulcrum.security.entity.Role&nbsp;role)</code>
+<div class="block">Creates a new role with specified attributes.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#addUser(org.apache.turbine.om.security.User, java.lang.String)">addUser</a></strong>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user,
+              <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;password)</code>
+<div class="block">Creates new user account with specified attributes.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#changePassword(org.apache.turbine.om.security.User, java.lang.String, java.lang.String)">changePassword</a></strong>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user,
+                            <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;oldPassword,
+                            <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;newPassword)</code>
+<div class="block">Change the password for an User.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.entity.Group</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#createGroup(java.lang.String)">createGroup</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name)</code>
+<div class="block">Creates a new Group in the system.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.entity.Permission</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#createPermission(java.lang.String)">createPermission</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name)</code>
+<div class="block">Creates a new Permission in the system.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.entity.Role</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#createRole(java.lang.String)">createRole</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name)</code>
+<div class="block">Creates a new Role in the system.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#forcePassword(org.apache.turbine.om.security.User, java.lang.String)">forcePassword</a></strong>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user,
+                          <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;password)</code>
+<div class="block">Forcibly sets new password for an User.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.acl.AccessControlList</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getACL(org.apache.turbine.om.security.User)">getACL</a></strong>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user)</code>
+<div class="block">Constructs an AccessControlList for a specific user.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.util.GroupSet</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getAllGroups()">getAllGroups</a></strong>()</code>
+<div class="block">Retrieves all groups defined in the system.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.util.PermissionSet</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getAllPermissions()">getAllPermissions</a></strong>()</code>
+<div class="block">Retrieves all permissions defined in the system.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.util.RoleSet</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getAllRoles()">getAllRoles</a></strong>()</code>
+<div class="block">Retrieves all roles defined in the system.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getAnonymousUser()">getAnonymousUser</a></strong>()</code>
+<div class="block">Constructs an User object to represent an anonymous user of the
+ application.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getAuthenticatedUser(java.lang.String, java.lang.String)">getAuthenticatedUser</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;username,
+                                        <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;password)</code>
+<div class="block">Authenticates an user, and constructs an User object to represent
+ him/her.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.entity.Group</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getGlobalGroup()">getGlobalGroup</a></strong>()</code>
+<div class="block">Provides a reference to the Group object that represents the
+ <a name="global">global group</a>.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.entity.Group</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getGroupById(int)">getGroupById</a></strong>(int&nbsp;groupId)</code>
+<div class="block">Retrieve a Group object with specified Id.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.entity.Group</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getGroupByName(java.lang.String)">getGroupByName</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;groupName)</code>
+<div class="block">Retrieve a Group object with specified name.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.entity.Group</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getGroupInstance(java.lang.String)">getGroupInstance</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;groupName)</code>
+<div class="block">Construct a blank Group object.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.entity.Permission</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getPermissionById(int)">getPermissionById</a></strong>(int&nbsp;permissionId)</code>
+<div class="block">Retrieve a Permission object with specified Id.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.entity.Permission</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getPermissionByName(java.lang.String)">getPermissionByName</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permissionName)</code>
+<div class="block">Retrieve a Permission object with specified name.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.entity.Permission</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getPermissionInstance(java.lang.String)">getPermissionInstance</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permName)</code>
+<div class="block">Construct a blank Permission object.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.util.PermissionSet</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getPermissions(org.apache.fulcrum.security.entity.Role)">getPermissions</a></strong>(org.apache.fulcrum.security.entity.Role&nbsp;role)</code>
+<div class="block">Retrieves all permissions associated with a role.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.entity.Role</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getRoleById(int)">getRoleById</a></strong>(int&nbsp;roleId)</code>
+<div class="block">Retrieve a Role object with specified Id.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.entity.Role</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getRoleByName(java.lang.String)">getRoleByName</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;roleName)</code>
+<div class="block">Retrieve a Role object with specified name.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static org.apache.fulcrum.security.entity.Role</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getRoleInstance(java.lang.String)">getRoleInstance</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;roleName)</code>
+<div class="block">Construct a blank Role object.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="../../../../../org/apache/turbine/services/security/SecurityService.html" title="interface in org.apache.turbine.services.security">SecurityService</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getService()">getService</a></strong>()</code>
+<div class="block">Retrieves an implementation of SecurityService, base on the settings in
+ TurbineResources.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getUser(java.lang.String)">getUser</a></strong>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;username)</code>
+<div class="block">Constructs an User object to represent a registered user of the
+ application.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static <a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getUserInstance()">getUserInstance</a></strong>()</code>
+<div class="block">Construct a blank User object.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static <a href="../../../../../org/apache/turbine/services/security/UserManager.html" title="interface in org.apache.turbine.services.security">UserManager</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#getUserManager()">getUserManager</a></strong>()</code>
+<div class="block">Returns the configured UserManager.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#grant(org.apache.fulcrum.security.entity.Role, org.apache.fulcrum.security.entity.Permission)">grant</a></strong>(org.apache.fulcrum.security.entity.Role&nbsp;role,
+          org.apache.fulcrum.security.entity.Permission&nbsp;permission)</code>
+<div class="block">Grants a Role a Permission</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#grant(org.apache.turbine.om.security.User, org.apache.fulcrum.security.entity.Group, org.apache.fulcrum.security.entity.Role)">grant</a></strong>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user,
+          org.apache.fulcrum.security.entity.Group&nbsp;group,
+          org.apache.fulcrum.security.entity.Role&nbsp;role)</code>
+<div class="block">Grant an User a Role in a Group.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static boolean</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#isAnonymousUser(org.apache.turbine.om.security.User)">isAnonymousUser</a></strong>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user)</code>
+<div class="block">Checks whether a passed user object matches the anonymous user pattern
+ according to the configured service</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#removeGroup(org.apache.fulcrum.security.entity.Group)">removeGroup</a></strong>(org.apache.fulcrum.security.entity.Group&nbsp;group)</code>
+<div class="block">Removes a Group from the system.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#removePermission(org.apache.fulcrum.security.entity.Permission)">removePermission</a></strong>(org.apache.fulcrum.security.entity.Permission&nbsp;permission)</code>
+<div class="block">Removes a Permission from the system.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#removeRole(org.apache.fulcrum.security.entity.Role)">removeRole</a></strong>(org.apache.fulcrum.security.entity.Role&nbsp;role)</code>
+<div class="block">Removes a Role from the system.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#removeUser(org.apache.turbine.om.security.User)">removeUser</a></strong>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user)</code>
+<div class="block">Removes an user account from the system.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#renameGroup(org.apache.fulcrum.security.entity.Group, java.lang.String)">renameGroup</a></strong>(org.apache.fulcrum.security.entity.Group&nbsp;group,
+                      <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name)</code>
+<div class="block">Renames an existing Group.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#renamePermission(org.apache.fulcrum.security.entity.Permission, java.lang.String)">renamePermission</a></strong>(org.apache.fulcrum.security.entity.Permission&nbsp;permission,
+                                <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name)</code>
+<div class="block">Renames an existing Permission.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#renameRole(org.apache.fulcrum.security.entity.Role, java.lang.String)">renameRole</a></strong>(org.apache.fulcrum.security.entity.Role&nbsp;role,
+                    <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name)</code>
+<div class="block">Renames an existing Role.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#revoke(org.apache.fulcrum.security.entity.Role, org.apache.fulcrum.security.entity.Permission)">revoke</a></strong>(org.apache.fulcrum.security.entity.Role&nbsp;role,
+            org.apache.fulcrum.security.entity.Permission&nbsp;permission)</code>
+<div class="block">Revokes a Permission from a Role.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#revoke(org.apache.turbine.om.security.User, org.apache.fulcrum.security.entity.Group, org.apache.fulcrum.security.entity.Role)">revoke</a></strong>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user,
+            org.apache.fulcrum.security.entity.Group&nbsp;group,
+            org.apache.fulcrum.security.entity.Role&nbsp;role)</code>
+<div class="block">Revoke a Role in a Group from an User.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#revokeAll(org.apache.fulcrum.security.entity.Role)">revokeAll</a></strong>(org.apache.fulcrum.security.entity.Role&nbsp;role)</code>
+<div class="block">Revokes all permissions from a Role.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#revokeAll(org.apache.turbine.om.security.User)">revokeAll</a></strong>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user)</code>
+<div class="block">Revokes all roles from an User.</div>
+</td>
+</tr>
+<tr class="altColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#saveOnSessionUnbind(org.apache.turbine.om.security.User)">saveOnSessionUnbind</a></strong>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user)</code>
+<div class="block">Saves User data when the session is unbound.</div>
+</td>
+</tr>
+<tr class="rowColor">
+<td class="colFirst"><code>static void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/apache/turbine/services/security/TurbineSecurity.html#saveUser(org.apache.turbine.om.security.User)">saveUser</a></strong>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user)</code>
+<div class="block">Saves User's data in the permanent storage.</div>
+</td>
+</tr>
+</table>
+<ul class="blockList">
+<li class="blockList"><a name="methods_inherited_from_class_java.lang.Object">
+<!--   -->
+</a>
+<h3>Methods inherited from class&nbsp;java.lang.<a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true" title="class or interface in java.lang">Object</a></h3>
+<code><a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#clone()" title="class or interface in java.lang">clone</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#equals(java.lang.Object)" title="class or interface in java.lang">equals</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#finalize()" title="class or interface in java.lang">finalize</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#getClass()" title="class or interface in java.lang">getClass</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#hashCode()" title="class or interface in java.lang">hashCode</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notify()" title="class or interface in java.lang">notify</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#notifyAll()" title="class or interface in java.lang">notifyAll</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#toString()" title="class or interface in java.lang">toString</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait()" title="class or interface in java.lang">wait</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long)" title="class or interface in java.lang">wait</a>, <a href="http://download.oracle.com/javase/6/docs/api/java/lang/Object.html?is-external=true#wait(long, int)" title="class or interface in java.lang">wait</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="details">
+<ul class="blockList">
+<li class="blockList">
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<ul class="blockList">
+<li class="blockList"><a name="constructor_detail">
+<!--   -->
+</a>
+<h3>Constructor Detail</h3>
+<a name="TurbineSecurity()">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>TurbineSecurity</h4>
+<pre>public&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.57">TurbineSecurity</a>()</pre>
+</li>
+</ul>
+</li>
+</ul>
+<!-- ============ METHOD DETAIL ========== -->
+<ul class="blockList">
+<li class="blockList"><a name="method_detail">
+<!--   -->
+</a>
+<h3>Method Detail</h3>
+<a name="getService()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getService</h4>
+<pre>public static&nbsp;<a href="../../../../../org/apache/turbine/services/security/SecurityService.html" title="interface in org.apache.turbine.services.security">SecurityService</a>&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.65">getService</a>()</pre>
+<div class="block">Retrieves an implementation of SecurityService, base on the settings in
+ TurbineResources.</div>
+<dl><dt><span class="strong">Returns:</span></dt><dd>an implementation of SecurityService.</dd></dl>
+</li>
+</ul>
+<a name="getUserInstance()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getUserInstance</h4>
+<pre>public static&nbsp;<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.84">getUserInstance</a>()
+                            throws org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Construct a blank User object.
+
+ This method calls getUserClass, and then creates a new object using
+ the default constructor.</div>
+<dl><dt><span class="strong">Returns:</span></dt><dd>an object implementing User interface.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the object could not be instantiated.</dd></dl>
+</li>
+</ul>
+<a name="getUserManager()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getUserManager</h4>
+<pre>public static&nbsp;<a href="../../../../../org/apache/turbine/services/security/UserManager.html" title="interface in org.apache.turbine.services.security">UserManager</a>&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.95">getUserManager</a>()</pre>
+<div class="block">Returns the configured UserManager.</div>
+<dl><dt><span class="strong">Returns:</span></dt><dd>An UserManager object</dd></dl>
+</li>
+</ul>
+<a name="accountExists(org.apache.turbine.om.security.User)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>accountExists</h4>
+<pre>public static&nbsp;boolean&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.110">accountExists</a>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user)
+                             throws org.apache.fulcrum.security.util.DataBackendException</pre>
+<div class="block">Check whether a specified user's account exists.
+
+ The login name is used for looking up the account.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>user</code> - The user to be checked.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>true if the specified account exists</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd></dl>
+</li>
+</ul>
+<a name="accountExists(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>accountExists</h4>
+<pre>public static&nbsp;boolean&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.126">accountExists</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;userName)
+                             throws org.apache.fulcrum.security.util.DataBackendException</pre>
+<div class="block">Check whether a specified user's account exists.
+
+ The login name is used for looking up the account.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>userName</code> - The name of the user to be checked.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>true if the specified account exists</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd></dl>
+</li>
+</ul>
+<a name="getAuthenticatedUser(java.lang.String, java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAuthenticatedUser</h4>
+<pre>public static&nbsp;<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.144">getAuthenticatedUser</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;username,
+                        <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;password)
+                                 throws org.apache.fulcrum.security.util.DataBackendException,
+                                        org.apache.fulcrum.security.util.UnknownEntityException,
+                                        org.apache.fulcrum.security.util.PasswordMismatchException</pre>
+<div class="block">Authenticates an user, and constructs an User object to represent
+ him/her.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>username</code> - The user name.</dd><dd><code>password</code> - The user password.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>An authenticated Turbine User.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if user account is not present.</dd>
+<dd><code>org.apache.fulcrum.security.util.PasswordMismatchException</code> - if the supplied password was incorrect.</dd></dl>
+</li>
+</ul>
+<a name="getUser(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getUser</h4>
+<pre>public static&nbsp;<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.161">getUser</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;username)
+                    throws org.apache.fulcrum.security.util.DataBackendException,
+                           org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Constructs an User object to represent a registered user of the
+ application.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>username</code> - The user name.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>A Turbine User.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if user account is not present.</dd></dl>
+</li>
+</ul>
+<a name="getAnonymousUser()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAnonymousUser</h4>
+<pre>public static&nbsp;<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.175">getAnonymousUser</a>()
+                             throws org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Constructs an User object to represent an anonymous user of the
+ application.</div>
+<dl><dt><span class="strong">Returns:</span></dt><dd>An anonymous Turbine User.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the anonymous User object couldn't be
+         constructed.</dd></dl>
+</li>
+</ul>
+<a name="isAnonymousUser(org.apache.turbine.om.security.User)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>isAnonymousUser</h4>
+<pre>public static&nbsp;boolean&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.188">isAnonymousUser</a>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user)</pre>
+<div class="block">Checks whether a passed user object matches the anonymous user pattern
+ according to the configured service</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>user</code> - A user object</dd>
+<dt><span class="strong">Returns:</span></dt><dd>True if this is an anonymous user</dd></dl>
+</li>
+</ul>
+<a name="saveUser(org.apache.turbine.om.security.User)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>saveUser</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.203">saveUser</a>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user)
+                     throws org.apache.fulcrum.security.util.UnknownEntityException,
+                            org.apache.fulcrum.security.util.DataBackendException</pre>
+<div class="block">Saves User's data in the permanent storage. The user account is required
+ to exist in the storage.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>user</code> - The User object to save.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the user's account does not
+         exist in the database.</dd>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there is a problem accessing the
+         storage.</dd></dl>
+</li>
+</ul>
+<a name="saveOnSessionUnbind(org.apache.turbine.om.security.User)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>saveOnSessionUnbind</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.223">saveOnSessionUnbind</a>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user)
+                                throws org.apache.fulcrum.security.util.UnknownEntityException,
+                                       org.apache.fulcrum.security.util.DataBackendException</pre>
+<div class="block">Saves User data when the session is unbound. The user account is required
+ to exist in the storage.
+
+ LastLogin, AccessCounter, persistent pull tools, and any data stored
+ in the permData hashtable that is not mapped to a column will be saved.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>user</code> - the user in the session</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the user's account does not
+            exist in the database.</dd>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there is a problem accessing the
+            storage.</dd></dl>
+</li>
+</ul>
+<a name="changePassword(org.apache.turbine.om.security.User, java.lang.String, java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>changePassword</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.242">changePassword</a>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user,
+                  <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;oldPassword,
+                  <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;newPassword)
+                           throws org.apache.fulcrum.security.util.PasswordMismatchException,
+                                  org.apache.fulcrum.security.util.UnknownEntityException,
+                                  org.apache.fulcrum.security.util.DataBackendException</pre>
+<div class="block">Change the password for an User.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>user</code> - an User to change password for.</dd><dd><code>oldPassword</code> - the current password supplied by the user.</dd><dd><code>newPassword</code> - the current password requested by the user.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.PasswordMismatchException</code> - if the supplied password was
+         incorrect.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the user's record does not
+         exist in the database.</dd>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there is a problem accessing the
+         storage.</dd></dl>
+</li>
+</ul>
+<a name="forcePassword(org.apache.turbine.om.security.User, java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>forcePassword</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.265">forcePassword</a>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user,
+                 <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;password)
+                          throws org.apache.fulcrum.security.util.UnknownEntityException,
+                                 org.apache.fulcrum.security.util.DataBackendException</pre>
+<div class="block">Forcibly sets new password for an User.
+
+ This is supposed by the administrator to change the forgotten or
+ compromised passwords. Certain implementations of this feature
+ would require administrative level access to the authenticating
+ server / program.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>user</code> - an User to change password for.</dd><dd><code>password</code> - the new password.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the user's record does not
+         exist in the database.</dd>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there is a problem accessing the
+         storage.</dd></dl>
+</li>
+</ul>
+<a name="getACL(org.apache.turbine.om.security.User)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getACL</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.acl.AccessControlList&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.284">getACL</a>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user)
+                                                                throws org.apache.fulcrum.security.util.DataBackendException,
+                                                                       org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Constructs an AccessControlList for a specific user.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>user</code> - the user for whom the AccessControlList are to be retrieved</dd>
+<dt><span class="strong">Returns:</span></dt><dd>The AccessControList object constructed from the user object.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if user account is not present.</dd></dl>
+</li>
+</ul>
+<a name="grant(org.apache.turbine.om.security.User, org.apache.fulcrum.security.entity.Group, org.apache.fulcrum.security.entity.Role)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>grant</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.305">grant</a>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user,
+         org.apache.fulcrum.security.entity.Group&nbsp;group,
+         org.apache.fulcrum.security.entity.Role&nbsp;role)
+                  throws org.apache.fulcrum.security.util.DataBackendException,
+                         org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Grant an User a Role in a Group.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>user</code> - the user.</dd><dd><code>group</code> - the group.</dd><dd><code>role</code> - the role.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if user account, group or role is not
+         present.</dd></dl>
+</li>
+</ul>
+<a name="revoke(org.apache.turbine.om.security.User, org.apache.fulcrum.security.entity.Group, org.apache.fulcrum.security.entity.Role)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>revoke</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.322">revoke</a>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user,
+          org.apache.fulcrum.security.entity.Group&nbsp;group,
+          org.apache.fulcrum.security.entity.Role&nbsp;role)
+                   throws org.apache.fulcrum.security.util.DataBackendException,
+                          org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Revoke a Role in a Group from an User.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>user</code> - the user.</dd><dd><code>group</code> - the group.</dd><dd><code>role</code> - the role.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if user account, group or role is not
+         present.</dd></dl>
+</li>
+</ul>
+<a name="revokeAll(org.apache.turbine.om.security.User)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>revokeAll</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.338">revokeAll</a>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user)
+                      throws org.apache.fulcrum.security.util.DataBackendException,
+                             org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Revokes all roles from an User.
+
+ This method is used when deleting an account.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>user</code> - the User.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the account is not present.</dd></dl>
+</li>
+</ul>
+<a name="grant(org.apache.fulcrum.security.entity.Role, org.apache.fulcrum.security.entity.Permission)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>grant</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.353">grant</a>(org.apache.fulcrum.security.entity.Role&nbsp;role,
+         org.apache.fulcrum.security.entity.Permission&nbsp;permission)
+                  throws org.apache.fulcrum.security.util.DataBackendException,
+                         org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Grants a Role a Permission</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>role</code> - the Role.</dd><dd><code>permission</code> - the Permission.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if role or permission is not present.</dd></dl>
+</li>
+</ul>
+<a name="revoke(org.apache.fulcrum.security.entity.Role, org.apache.fulcrum.security.entity.Permission)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>revoke</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.368">revoke</a>(org.apache.fulcrum.security.entity.Role&nbsp;role,
+          org.apache.fulcrum.security.entity.Permission&nbsp;permission)
+                   throws org.apache.fulcrum.security.util.DataBackendException,
+                          org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Revokes a Permission from a Role.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>role</code> - the Role.</dd><dd><code>permission</code> - the Permission.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if role or permission is not present.</dd></dl>
+</li>
+</ul>
+<a name="revokeAll(org.apache.fulcrum.security.entity.Role)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>revokeAll</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.384">revokeAll</a>(org.apache.fulcrum.security.entity.Role&nbsp;role)
+                      throws org.apache.fulcrum.security.util.DataBackendException,
+                             org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Revokes all permissions from a Role.
+
+ This method is user when deleting a Role.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>role</code> - the Role</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the Role is not present.</dd></dl>
+</li>
+</ul>
+<a name="addUser(org.apache.turbine.om.security.User, java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addUser</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.405">addUser</a>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user,
+           <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;password)
+                    throws org.apache.fulcrum.security.util.DataBackendException,
+                           org.apache.fulcrum.security.util.EntityExistsException</pre>
+<div class="block">Creates new user account with specified attributes.
+
+ <strong>TODO</strong> throw more specific exception<br></div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>user</code> - the object describing account to be created.</dd><dd><code>password</code> - password for the new user</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.EntityExistsException</code> - if the user account already exists.</dd></dl>
+</li>
+</ul>
+<a name="removeUser(org.apache.turbine.om.security.User)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>removeUser</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.421">removeUser</a>(<a href="../../../../../org/apache/turbine/om/security/User.html" title="interface in org.apache.turbine.om.security">User</a>&nbsp;user)
+                       throws org.apache.fulcrum.security.util.DataBackendException,
+                              org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Removes an user account from the system.
+
+ <strong>TODO</strong> throw more specific exception<br></div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>user</code> - the object describing the account to be removed.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the user account is not present.</dd></dl>
+</li>
+</ul>
+<a name="getGlobalGroup()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getGlobalGroup</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.entity.Group&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.436">getGlobalGroup</a>()</pre>
+<div class="block">Provides a reference to the Group object that represents the
+ <a name="global">global group</a>.</div>
+<dl><dt><span class="strong">Returns:</span></dt><dd>a Group object that represents the global group.</dd></dl>
+</li>
+</ul>
+<a name="createGroup(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createGroup</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.entity.Group&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.449">createGroup</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name)
+                                                            throws org.apache.fulcrum.security.util.FulcrumSecurityException</pre>
+<div class="block">Creates a new Group in the system. This is a convenience
+ method.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>name</code> - The name of the new Group.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>An object representing the new Group.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.FulcrumSecurityException</code> - if the Group could not be created.</dd></dl>
+</li>
+</ul>
+<a name="createPermission(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createPermission</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.entity.Permission&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.463">createPermission</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name)
+                                                                      throws org.apache.fulcrum.security.util.FulcrumSecurityException</pre>
+<div class="block">Creates a new Permission in the system. This is a convenience
+ method.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>name</code> - The name of the new Permission.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>An object representing the new Permission.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.FulcrumSecurityException</code> - if the Permission could not be created.</dd></dl>
+</li>
+</ul>
+<a name="createRole(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>createRole</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.entity.Role&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.479">createRole</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name)
+                                                          throws org.apache.fulcrum.security.util.FulcrumSecurityException</pre>
+<div class="block">Creates a new Role in the system. This is a convenience
+ method.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>name</code> - The name of the Role.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>An object representing the new Role.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.FulcrumSecurityException</code> - if the Role could not be created.</dd></dl>
+</li>
+</ul>
+<a name="getGroupByName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getGroupByName</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.entity.Group&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.494">getGroupByName</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;groupName)
+                                                               throws org.apache.fulcrum.security.util.DataBackendException,
+                                                                      org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Retrieve a Group object with specified name.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>groupName</code> - The name of the Group to be retrieved.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>an object representing the Group with specified name.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the Group is not present.</dd></dl>
+</li>
+</ul>
+<a name="getGroupById(int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getGroupById</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.entity.Group&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.512">getGroupById</a>(int&nbsp;groupId)
+                                                             throws org.apache.fulcrum.security.util.DataBackendException,
+                                                                    org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Retrieve a Group object with specified Id.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>groupId</code> - the id of the Group.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>an object representing the Group with specified name.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the permission does not
+            exist in the database.</dd>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there is a problem accessing the
+            storage.</dd></dl>
+</li>
+</ul>
+<a name="getGroupInstance(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getGroupInstance</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.entity.Group&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.531">getGroupInstance</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;groupName)
+                                                                 throws org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Construct a blank Group object.
+
+ This method calls getGroupClass, and then creates a new object using
+ the default constructor.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>groupName</code> - The name of the Group</dd>
+<dt><span class="strong">Returns:</span></dt><dd>an object implementing Group interface.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the object could not be instantiated.</dd></dl>
+</li>
+</ul>
+<a name="getRoleInstance(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getRoleInstance</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.entity.Role&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.549">getRoleInstance</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;roleName)
+                                                               throws org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Construct a blank Role object.
+
+ This method calls getRoleClass, and then creates a new object using
+ the default constructor.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>roleName</code> - The name of the role.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>an object implementing Role interface.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the object could not be instantiated.</dd></dl>
+</li>
+</ul>
+<a name="getPermissionInstance(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getPermissionInstance</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.entity.Permission&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.566">getPermissionInstance</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permName)
+                                                                           throws org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Construct a blank Permission object.
+
+ This method calls getPermissionClass, and then creates a new object using
+ the default constructor.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>permName</code> - The name of the permission.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>an object implementing Permission interface.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the object could not be instantiated.</dd></dl>
+</li>
+</ul>
+<a name="getRoleByName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getRoleByName</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.entity.Role&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.581">getRoleByName</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;roleName)
+                                                             throws org.apache.fulcrum.security.util.DataBackendException,
+                                                                    org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Retrieve a Role object with specified name.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>roleName</code> - The name of the Role to be retrieved.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>an object representing the Role with specified name.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the Role is not present.</dd></dl>
+</li>
+</ul>
+<a name="getRoleById(int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getRoleById</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.entity.Role&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.599">getRoleById</a>(int&nbsp;roleId)
+                                                           throws org.apache.fulcrum.security.util.DataBackendException,
+                                                                  org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Retrieve a Role object with specified Id.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>roleId</code> - the id of the Role.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>an object representing the Role with specified name.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the permission does not
+            exist in the database.</dd>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there is a problem accessing the
+            storage.</dd></dl>
+</li>
+</ul>
+<a name="getPermissionByName(java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getPermissionByName</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.entity.Permission&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.615">getPermissionByName</a>(<a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;permissionName)
+                                                                         throws org.apache.fulcrum.security.util.DataBackendException,
+                                                                                org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Retrieve a Permission object with specified name.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>permissionName</code> - The name of the Permission to be retrieved.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>an object representing the Permission with specified name.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the Permission is not present.</dd></dl>
+</li>
+</ul>
+<a name="getPermissionById(int)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getPermissionById</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.entity.Permission&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.633">getPermissionById</a>(int&nbsp;permissionId)
+                                                                       throws org.apache.fulcrum.security.util.DataBackendException,
+                                                                              org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Retrieve a Permission object with specified Id.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>permissionId</code> - the id of the Permission.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>an object representing the Permission with specified name.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the permission does not
+            exist in the database.</dd>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there is a problem accessing the
+            storage.</dd></dl>
+</li>
+</ul>
+<a name="getAllGroups()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAllGroups</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.util.GroupSet&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.647">getAllGroups</a>()
+                                                              throws org.apache.fulcrum.security.util.DataBackendException</pre>
+<div class="block">Retrieves all groups defined in the system.</div>
+<dl><dt><span class="strong">Returns:</span></dt><dd>the names of all groups defined in the system.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd></dl>
+</li>
+</ul>
+<a name="getAllRoles()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAllRoles</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.util.RoleSet&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.660">getAllRoles</a>()
+                                                            throws org.apache.fulcrum.security.util.DataBackendException</pre>
+<div class="block">Retrieves all roles defined in the system.</div>
+<dl><dt><span class="strong">Returns:</span></dt><dd>the names of all roles defined in the system.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd></dl>
+</li>
+</ul>
+<a name="getAllPermissions()">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getAllPermissions</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.util.PermissionSet&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.673">getAllPermissions</a>()
+                                                                        throws org.apache.fulcrum.security.util.DataBackendException</pre>
+<div class="block">Retrieves all permissions defined in the system.</div>
+<dl><dt><span class="strong">Returns:</span></dt><dd>the names of all roles defined in the system.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd></dl>
+</li>
+</ul>
+<a name="getPermissions(org.apache.fulcrum.security.entity.Role)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>getPermissions</h4>
+<pre>public static&nbsp;org.apache.fulcrum.security.util.PermissionSet&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.688">getPermissions</a>(org.apache.fulcrum.security.entity.Role&nbsp;role)
+                                                                     throws org.apache.fulcrum.security.util.DataBackendException,
+                                                                            org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Retrieves all permissions associated with a role.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>role</code> - the role name, for which the permissions are to be retrieved.</dd>
+<dt><span class="strong">Returns:</span></dt><dd>the Permissions for the specified role</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the role is not present.</dd></dl>
+</li>
+</ul>
+<a name="addGroup(org.apache.fulcrum.security.entity.Group)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addGroup</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.702">addGroup</a>(org.apache.fulcrum.security.entity.Group&nbsp;group)
+                     throws org.apache.fulcrum.security.util.DataBackendException,
+                            org.apache.fulcrum.security.util.EntityExistsException</pre>
+<div class="block">Creates a new group with specified attributes.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>group</code> - the object describing the group to be created.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.EntityExistsException</code> - if the group already exists.</dd></dl>
+</li>
+</ul>
+<a name="addRole(org.apache.fulcrum.security.entity.Role)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addRole</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.716">addRole</a>(org.apache.fulcrum.security.entity.Role&nbsp;role)
+                    throws org.apache.fulcrum.security.util.DataBackendException,
+                           org.apache.fulcrum.security.util.EntityExistsException</pre>
+<div class="block">Creates a new role with specified attributes.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>role</code> - the objects describing the role to be created.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.EntityExistsException</code> - if the role already exists.</dd></dl>
+</li>
+</ul>
+<a name="addPermission(org.apache.fulcrum.security.entity.Permission)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>addPermission</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.730">addPermission</a>(org.apache.fulcrum.security.entity.Permission&nbsp;permission)
+                          throws org.apache.fulcrum.security.util.DataBackendException,
+                                 org.apache.fulcrum.security.util.EntityExistsException</pre>
+<div class="block">Creates a new permission with specified attributes.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>permission</code> - the objects describing the permission to be created.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.EntityExistsException</code> - if the permission already exists.</dd></dl>
+</li>
+</ul>
+<a name="removeGroup(org.apache.fulcrum.security.entity.Group)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>removeGroup</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.744">removeGroup</a>(org.apache.fulcrum.security.entity.Group&nbsp;group)
+                        throws org.apache.fulcrum.security.util.DataBackendException,
+                               org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Removes a Group from the system.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>group</code> - the object describing group to be removed.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the group does not exist.</dd></dl>
+</li>
+</ul>
+<a name="removeRole(org.apache.fulcrum.security.entity.Role)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>removeRole</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.757">removeRole</a>(org.apache.fulcrum.security.entity.Role&nbsp;role)
+                       throws org.apache.fulcrum.security.util.DataBackendException,
+                              org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Removes a Role from the system.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>role</code> - The object describing the role to be removed.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the role does not exist.</dd></dl>
+</li>
+</ul>
+<a name="removePermission(org.apache.fulcrum.security.entity.Permission)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>removePermission</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.771">removePermission</a>(org.apache.fulcrum.security.entity.Permission&nbsp;permission)
+                             throws org.apache.fulcrum.security.util.DataBackendException,
+                                    org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Removes a Permission from the system.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>permission</code> - The object describing the permission to be removed.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the permission does not exist.</dd></dl>
+</li>
+</ul>
+<a name="renameGroup(org.apache.fulcrum.security.entity.Group, java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>renameGroup</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.786">renameGroup</a>(org.apache.fulcrum.security.entity.Group&nbsp;group,
+               <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name)
+                        throws org.apache.fulcrum.security.util.DataBackendException,
+                               org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Renames an existing Group.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>group</code> - The object describing the group to be renamed.</dd><dd><code>name</code> - the new name for the group.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the group does not exist.</dd></dl>
+</li>
+</ul>
+<a name="renameRole(org.apache.fulcrum.security.entity.Role, java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockList">
+<li class="blockList">
+<h4>renameRole</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.801">renameRole</a>(org.apache.fulcrum.security.entity.Role&nbsp;role,
+              <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name)
+                       throws org.apache.fulcrum.security.util.DataBackendException,
+                              org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Renames an existing Role.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>role</code> - The object describing the role to be renamed.</dd><dd><code>name</code> - the new name for the role.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the role does not exist.</dd></dl>
+</li>
+</ul>
+<a name="renamePermission(org.apache.fulcrum.security.entity.Permission, java.lang.String)">
+<!--   -->
+</a>
+<ul class="blockListLast">
+<li class="blockList">
+<h4>renamePermission</h4>
+<pre>public static&nbsp;void&nbsp;<a href="../../../../../src-html/org/apache/turbine/services/security/TurbineSecurity.html#line.816">renamePermission</a>(org.apache.fulcrum.security.entity.Permission&nbsp;permission,
+                    <a href="http://download.oracle.com/javase/6/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;name)
+                             throws org.apache.fulcrum.security.util.DataBackendException,
+                                    org.apache.fulcrum.security.util.UnknownEntityException</pre>
+<div class="block">Renames an existing Permission.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>permission</code> - The object describing the permission to be renamed.</dd><dd><code>name</code> - the new name for the permission.</dd>
+<dt><span class="strong">Throws:</span></dt>
+<dd><code>org.apache.fulcrum.security.util.DataBackendException</code> - if there was an error accessing the data
+         backend.</dd>
+<dd><code>org.apache.fulcrum.security.util.UnknownEntityException</code> - if the permission does not exist.</dd></dl>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<!-- ========= END OF CLASS DATA ========= -->
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav"><a name="navbar_bottom">
+<!--   -->
+</a><a href="#skip-navbar_bottom" title="Skip navigation links"></a><a name="navbar_bottom_firstrow">
+<!--   -->
+</a>
+<ul class="navList" title="Navigation">
+<li><a href="../../../../../overview-summary.html">Overview</a></li>
+<li><a href="package-summary.html">Package</a></li>
+<li class="navBarCell1Rev">Class</li>
+<li><a href="class-use/TurbineSecurity.html">Use</a></li>
+<li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../../deprecated-list.html">Deprecated</a></li>
+<li><a href="../../../../../index-all.html">Index</a></li>
+<li><a href="../../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+<div class="subNav">
+<ul class="navList">
+<li><a href="../../../../../org/apache/turbine/services/security/SecurityService.html" title="interface in org.apache.turbine.services.security"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../../org/apache/turbine/services/security/UserManager.html" title="interface in org.apache.turbine.services.security"><span class="strong">Next Class</span></a></li>
+</ul>
+<ul class="navList">
+<li><a href="../../../../../index.html?org/apache/turbine/services/security/TurbineSecurity.html" target="_top">Frames</a></li>
+<li><a href="TurbineSecurity.html" target="_top">No Frames</a></li>
+</ul>
+<ul class="navList" id="allclasses_navbar_bottom">
+<li><a href="../../../../../allclasses-noframe.html">All Classes</a></li>
+</ul>
+<div>
+<script type="text/javascript"><!--
+  allClassesLink = document.getElementById("allclasses_navbar_bottom");
+  if(window==top) {
+    allClassesLink.style.display = "block";
+  }
+  else {
+    allClassesLink.style.display = "none";
+  }
+  //-->
+</script>
+</div>
+<div>
+<ul class="subNavList">
+<li>Summary:&nbsp;</li>
+<li>Nested&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#constructor_summary">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_summary">Method</a></li>
+</ul>
+<ul class="subNavList">
+<li>Detail:&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#constructor_detail">Constr</a>&nbsp;|&nbsp;</li>
+<li><a href="#method_detail">Method</a></li>
+</ul>
+</div>
+<a name="skip-navbar_bottom">
+<!--   -->
+</a></div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+<p class="legalCopy"><small>Copyright &#169; 2000-2015 <a href="http://www.apache.org/">The Apache Software Foundation</a>. All Rights Reserved.</small></p>
+</body>
+</html>
