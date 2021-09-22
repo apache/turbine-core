@@ -15,17 +15,6 @@
 # specific language governing permissions and limitations
 # under the License.
 
-# turbine.staged.apache.org
-#staging:
-#  profile: ~
-#  whoami:  asf-staging
-#  does subdir work for staging?
-#  subdir: turbine
-
 publish:
   whoami: asf-site
-  # current default
-  subdir: turbine
-  # adapt for development or released versions
-  # subdir: turbine/turbine-5.0
-  # subdir: turbine/development/turbine-5.1
+  subdir: turbine/turbine-2.3.3

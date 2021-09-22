@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Turbine - Turbine Services - Localization Service</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Jason van Zyl"></meta><meta name="email" content="jvanzyl@apache.org"></meta><meta name="author" content="Scott Eade"></meta><meta name="email" content="seade@backstagetech.com.au"></meta></head><body class="composite"><div id="banner"><a href="http://turbine.apache.org/" id="organizationLogo"><img alt="Apache Software Foundation" src="../images/turbine-project.png"></img></a><a href="http://turbine.apache.org/turbine/turbine-2.3.3/index.html" id="projectLogo"><img alt="turbine-2" src="../images/logo.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 21 November 2008
+                <span class="separator">|</span> Doc for  2.3.3
+                </div><div class="xright">
+        
+        <a href="http://turbine.apache.org/">Turbine Home</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="http://turbine.apache.org/fulcrum/">Fulcrum</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="http://turbine.apache.org/meta/">META</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuGeneral_Information"><h5>General Information</h5><ul><li class="none"><a href="../index.html">Overview</a></li><li class="none"><a href="../features.html">Features</a></li><li class="none"><a href="../fsd.html">Specification</a></li><li class="none"><a href="../getting-started.html">Getting Started</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="none"><a href="../changes-report.html">Changes</a></li><li class="none"><a href="../turbine-schema.html">Core DB Schema</a></li><li class="expanded"><a href="../services/index.html">Services</a><ul><li class="none"><a href="../services/assemblerbroker-service.html">Assembler Broker Service</a></li><li class="none"><a href="../services/avalon-component-service.html">Avalon Component Service</a></li><li class="none"><a href="../services/crypto-service.html">Crypto Service</a></li><li class="none"><a href="../services/cache-service.html">Cache Service</a></li><li class="none"><a href="../services/factory-service.html">Factory Service</a></li><li class="none"><a href="../services/intake-service.html">Intake Service</a></li><li class="none"><a href="../services/jsonrpc-service.html">JSON-RPC Service</a></li><li class="none"><a href="../services/jsp-service.html">JSP Service</a></li><li class="none"><strong><a href="../services/localization-service.html">Localization Service</a></strong></li><li class="none"><a href="../services/logging-service.html">Logging Service</a></li><li class="none"><a href="../services/mimetype-service.html">MimeType Service</a></li><li class="none"><a href="../services/naming-service.html">Naming Service</a></li><li class="none"><a href="../services/pool-service.html">Pool Service</a></li><li class="none"><a href="../services/pull-service.html">Pull Service</a></li><li class="none"><a href="../services/resources-service.html">Resources Service</a></li><li class="none"><a href="../services/rundata-service.html">RunData Service</a></li><li class="none"><a href="../services/scheduler-service.html">Scheduler Service</a></li><li class="expanded"><a href="../services/security-service.html">Security Service</a><ul><li class="none"><a href="../services/ldap-security-service.html">LDAP Security Service</a></li><li class="none"><a href="../services/torque-security-service.html">Torque Security Service</a></li><li class="none"><a href="../services/torque-security-schema.html">Torque Security Service Schema</a></li></ul></li><li class="none"><a href="../services/servlet-service.html">Servlet Service</a></li><li class="none"><a href="../services/session-service.html">Session Service</a></li><li class="none"><a href="../services/template-service.html">Template Service</a></li><li class="none"><a href="../services/ui-service.html">UI Service</a></li><li class="none"><a href="../services/uniqueid-service.html">Unique ID Service</a></li><li class="none"><a href="../services/upload-service.html">Upload Service</a></li><li class="none"><a href="../services/velocity-service.html">Velocity Service</a></li><li class="none"><a href="../services/xmlrpc-service.html">XML-RPC Service</a></li><li class="none"><a href="../services/xslt-service.html">XSLT Service</a></li><li class="none"><a href="../services/yaafi-component-service.html">Yaafi Component Service</a></li></ul></li><li class="collapsed"><a href="../howto/index.html">Howtos</a></li><li class="none"><a href="../apidocs/index.html">JavaDocs</a></li></ul></div><div id="menuDevelopment"><h5>Development</h5><ul><li class="none"><a href="../proposals.html">Proposals</a></li><li class="none"><a href="../how-to-help.html">How To Help</a></li><li class="none"><a href="../todo.html">Todo</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="../development-process.html">Development Process</a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/mavenlogo_builtby_w.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Localization_Service"></a><h2>Localization Service</h2>
+
+<p>
+There is a Turbine service that makes it easy to add localization support
+to your application.
+</p>
+
+</div><div class="section"><a name="Configuration"></a><h2>Configuration</h2>
+
+
+    <div class="source"><pre>
+# -------------------------------------------------------------------
+#
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.LocalizationService.classname=org.apache.turbine.services.localization.TurbineLocalizationService
+.
+.
+.
+# -------------------------------------------------------------------
+#
+#  L O C A L I Z A T I O N  S E R V I C E
+#
+# -------------------------------------------------------------------
+
+# Default ResourceBundle and language/country codes used by the
+# TurbineLocalizationService.
+#
+locale.default.bundle=MyBundle
+locale.default.language=en
+locale.default.country=
+.
+.
+.
+</pre></div>
+  
+
+</div><div class="section"><a name="Resource_Bundles"></a><h2>Resource Bundles</h2>
+
+<p>
+Resource bundles are basically property files.  You might have one for the "en"
+locale thus:
+</p>
+
+
+    <div class="source"><pre>
+LABEL_ORGANIZATION = organisation
+CURRENT_RECORD = Record {0} of {1}
+</pre></div>
+  
+
+<p>
+and another for the "en_US" locale thus:
+</p>
+
+
+    <div class="source"><pre>
+LABEL_ORGANIZATION = organization
+</pre></div>
+  
+
+<p>
+Please see the <em>java.util.ListResourceBundle</em> and
+<em>java.util.ResourceBundle</em> classes for more information.
+</p>
+
+</div><div class="section"><a name="Usage"></a><h2>Usage</h2>
+
+
+    <div class="source"><pre>
+TurbineServices.getInstance().getService(LocalizationService.LOCALIZATION)
+    .getString("LABEL_ORGANIZATION");
+</pre></div>
+  
+
+<p>
+Wow. That is a lot of typing. That could be easily shortened to this:
+</p>
+
+
+    <div class="source"><pre>
+Localization.getString("LABEL_ORGANIZATION");
+</pre></div>
+  
+
+<p>
+The hard example above was given as an example of using Services. The easy
+example is the one that you really should be using. Another cool feature
+of the Localization class is that you can pass in a HttpRequest object like
+this:
+</p>
+
+
+    <div class="source"><pre>
+Localization.getString("LABEL_ORGANIZATION", data.getRequest());
+</pre></div>
+  
+
+<p>
+This has the added effect of using the Accept-Language HTTP header to determine
+which language to display based on what setting the user has defined in
+the browser. Can you say Dynamic Localization? ;-)
+</p>
+
+<p>
+The Localization class also supports the formatting of localized strings containing 
+parameters, such as in
+</p>
+
+
+    <div class="source"><pre>
+Localization.format(Localization.getDefaultBundle(), 
+    Localization.getLocale(data.getRequest(),
+    "CURRENT_RECORD",
+    recno, all);
+</pre></div>
+  
+
+<p>
+This actually doesn't look too nice, however the call using the LocalizationTool
+from a Velocity template (see below) just deflates to
+</p>
+
+
+    <div class="source"><pre>
+$l10n.format("CURRENT_RECORD", $recno, $all);
+</pre></div>
+  
+
+</div><div class="section"><a name="Usage_from_a_template"></a><h2>Usage from a template</h2>
+
+<p>
+Turbine provides a <a href="../howto/pullmodel-howto.html">Pull tool</a> to make it
+very easy to access localized text from within your templates.  To configure
+this you need to add the following to your TurbineResouces.properties:
+</p>
+
+
+    <div class="source"><pre>
+tool.request.l10n = org.apache.turbine.services.localization.LocalizationTool
+</pre></div>
+  
+
+<p>
+You can then use it in your templates thus:
+</p>
+
+
+    <div class="source"><pre>
+$l10n.LABEL_ORGANIZATION
+</pre></div>
+  
+
+<p>
+A string with arguments can be used thus:
+</p>
+
+
+    <div class="source"><pre>
+// No arguments
+$l10n.LABEL_ORGANIZATION
+// One argument
+$l10n.format("STRING_KEY_ONE_ARG" "arg1")
+// Two arguments
+$l10n.format("CURRENT_RECORD" "1", "5")
+// Two arguments
+$l10n.format("STRING_KEY_3_OR_MORE_ARGS" ["arg1", "arg2", "arg3"])
+</pre></div>
+  
+
+</div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2000-2008, Apache Software Foundation</div><div class="clear"><hr></hr></div></div></body></html>

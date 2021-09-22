@@ -1,0 +1,4041 @@
+<html>
+<head>
+<title>unit tests coverage</title>
+<link rel ="stylesheet" type="text/css" href="../../../../../style.css" title="Style">
+</head>
+<body>
+<span class="title">Coverage report</span>
+<p>
+  <table cellspacing="0" cellpadding="0" class="report">
+  <tr class="report">
+    <th class="report">&nbsp;</th>
+    <th class="report">%line</th>
+    <th class="report">%branch</th>
+  </tr>
+  <tr class="report">
+    <td class="reportText"><span class="text">org.apache.turbine.services.intake.TurbineIntakeService</span></td>
+    <td class="reportValue"><table class="percentGraph" cellpadding="0" cellspacing="0" align="right"><tr><td><span class="text">48%&nbsp;</span></td><td><table class="percentGraph" cellpadding="0" cellspacing="0"><tr><td class="percentCovered" width="48"></td><td class="percentUnCovered" width="52.0"></td></tr></table></td></tr></table></td>
+    <td class="reportValue"><table class="percentGraph" cellpadding="0" cellspacing="0" align="right"><tr><td><span class="text">73%&nbsp;</span></td><td><table class="percentGraph" cellpadding="0" cellspacing="0"><tr><td class="percentCovered" width="73"></td><td class="percentUnCovered" width="27.0"></td></tr></table></td></tr></table></td>
+  </tr>
+  </table>
+  <p>
+  <table cellspacing="0" cellpadding="0" class="src">
+    <tr>
+      <td class="numLine">&nbsp;1</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">package</span> org.apache.turbine.services.intake;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;2</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;3</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">/*</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;4</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * Licensed to the Apache Software Foundation (ASF) under one</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;5</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * or more contributor license agreements.  See the NOTICE file</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;6</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * distributed with this work for additional information</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;7</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * regarding copyright ownership.  The ASF licenses this file</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;8</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * to you under the Apache License, Version 2.0 (the</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;9</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * "License"); you may not use this file except in compliance</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;10</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * with the License.  You may obtain a copy of the License at</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;11</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;12</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> *   http://www.apache.org/licenses/LICENSE-2.0</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;13</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;14</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * Unless required by applicable law or agreed to in writing,</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;15</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * software distributed under the License is distributed on an</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;16</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;17</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * KIND, either express or implied.  See the License for the</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;18</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * specific language governing permissions and limitations</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;19</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * under the License.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;20</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;21</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;22</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.beans.IntrospectionException;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;23</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.beans.PropertyDescriptor;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;24</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;25</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.io.File;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;26</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.io.FileInputStream;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;27</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.io.FileOutputStream;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;28</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.io.InputStream;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;29</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.io.ObjectInputStream;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;30</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.io.ObjectOutputStream;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;31</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.io.OutputStream;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;32</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;33</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.lang.reflect.Method;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;34</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;35</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.HashMap;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;36</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.HashSet;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;37</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Iterator;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;38</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.List;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;39</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Map;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;40</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Set;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;41</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> java.util.Vector;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;42</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;43</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> javax.servlet.ServletConfig;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;44</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;45</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.commons.lang.StringUtils;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;46</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;47</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.commons.logging.Log;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;48</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.commons.logging.LogFactory;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;49</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;50</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.commons.pool.KeyedObjectPool;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;51</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.commons.pool.KeyedPoolableObjectFactory;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;52</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.commons.pool.impl.StackKeyedObjectPool;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;53</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;54</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.turbine.Turbine;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;55</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.turbine.services.InitializationException;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;56</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.turbine.services.TurbineBaseService;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;57</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.turbine.services.intake.model.Group;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;58</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.turbine.services.intake.transform.XmlToAppData;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;59</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.turbine.services.intake.xmlmodel.AppData;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;60</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">import</span> org.apache.turbine.services.intake.xmlmodel.XmlGroup;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;61</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;62</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;63</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * This service provides access to input processing objects based</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;64</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * on an XML specification.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;65</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;66</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * @author &#60;a href="mailto:jmcnally@collab.net"&#62;John McNally&#60;/a&#62;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;67</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * @author &#60;a href="mailto:hps@intermeta.de"&#62;Henning P. Schmiedehausen&#60;/a&#62;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;68</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * @author &#60;a href="mailto:quintonm@bellsouth.net"&#62;Quinton McCombs&#60;/a&#62;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;69</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> * @version $Id: TurbineIntakeService.java 534527 2007-05-02 16:10:59Z tv $</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;70</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment"> */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;71</td>
+      <td class="nbHitsCovered">&nbsp;16</td>
+      <td class="src"><pre class="src">&nbsp;<span class="keyword">public</span> <span class="keyword">class</span> TurbineIntakeService</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;72</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">extends</span> TurbineBaseService</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;73</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        implements IntakeService</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;74</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;{</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;75</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">* Map of groupNames -&#62; appData elements */</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;76</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Map groupNames;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;77</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;78</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">* The cache of group names. */</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;79</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Map groupNameMap;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;80</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;81</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">* The cache of group keys. */</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;82</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Map groupKeyMap;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;83</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;84</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">* The cache of property getters. */</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;85</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Map getterMap;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;86</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;87</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">* The cache of property setters. */</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;88</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Map setterMap;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;89</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;90</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">* AppData -&#62; keyed Pools Map */</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;91</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Map keyedPools;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;92</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;93</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">* Used for logging */</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;94</td>
+      <td class="nbHitsCovered">&nbsp;20</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> Log log = LogFactory.getLog(TurbineIntakeService.<span class="keyword">class</span>);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;95</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;96</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;97</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Constructor. All Components need a public no argument constructor</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;98</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * to be a legal Component.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;99</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;100</td>
+      <td class="nbHitsCovered">&nbsp;16</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> TurbineIntakeService()</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;101</td>
+      <td class="nbHitsCovered">&nbsp;2</td>
+      <td class="src"><pre class="src">&nbsp;    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;102</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;103</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;104</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;105</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Called the first time the Service is used.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;106</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;107</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws InitializationException Something went wrong in the init</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;108</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *         stage</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;109</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;110</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">void</span> init()</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;111</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;            throws InitializationException</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;112</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;113</td>
+      <td class="nbHitsCovered">&nbsp;36</td>
+      <td class="src"><pre class="src">&nbsp;        Vector defaultXmlPathes = <span class="keyword">new</span> Vector();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;114</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;        defaultXmlPathes.add(XML_PATH_DEFAULT);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;115</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;116</td>
+      <td class="nbHitsCovered">&nbsp;43</td>
+      <td class="src"><pre class="src">&nbsp;        List xmlPathes = getConfiguration()</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;117</td>
+      <td class="nbHitsCovered">&nbsp;16</td>
+      <td class="src"><pre class="src">&nbsp;                .getList(XML_PATH, defaultXmlPathes);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;118</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;119</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;        Map appDataElements = <span class="keyword">null</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;120</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;121</td>
+      <td class="nbHitsCovered">&nbsp;43</td>
+      <td class="src"><pre class="src">&nbsp;        String serialDataPath = getConfiguration()</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;122</td>
+      <td class="nbHitsCovered">&nbsp;16</td>
+      <td class="src"><pre class="src">&nbsp;                .getString(SERIAL_XML, SERIAL_XML_DEFAULT);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;123</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;124</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (!serialDataPath.equalsIgnoreCase(<span class="string">"none"</span>))</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;125</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;126</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;            serialDataPath = Turbine.getRealPath(serialDataPath);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;127</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;128</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">else</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;129</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;130</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;            serialDataPath = <span class="keyword">null</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;131</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;132</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;133</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;        log.debug(<span class="string">"Path for serializing: "</span> + serialDataPath);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;134</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;135</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;        groupNames = <span class="keyword">new</span> HashMap();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;136</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;        groupKeyMap = <span class="keyword">new</span> HashMap();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;137</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;        groupNameMap = <span class="keyword">new</span> HashMap();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;138</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;        getterMap = <span class="keyword">new</span> HashMap();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;139</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;        setterMap = <span class="keyword">new</span> HashMap();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;140</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;        keyedPools = <span class="keyword">new</span> HashMap();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;141</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;142</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (xmlPathes == <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;143</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;144</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            String LOAD_ERROR = <span class="string">"No pathes for XML files were specified. "</span> +</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;145</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                    <span class="string">"Check that the property exists in "</span> +</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;146</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                    <span class="string">"TurbineResources.props and were loaded."</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;147</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;148</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            log.error(LOAD_ERROR);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;149</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> InitializationException(LOAD_ERROR);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;150</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;151</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;152</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;        Set xmlFiles = <span class="keyword">new</span> HashSet();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;153</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;154</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">long</span> timeStamp = 0;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;155</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;156</td>
+      <td class="nbHitsCovered">&nbsp;59</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">for</span> (Iterator it = xmlPathes.iterator(); it.hasNext();)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;157</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;158</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// Files are webapp.root relative</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;159</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;            String xmlPath = Turbine.getRealPath((String) it.next());</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;160</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;            File xmlFile = <span class="keyword">new</span> File(xmlPath);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;161</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;162</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;            log.debug(<span class="string">"Path for XML File: "</span> + xmlFile);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;163</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;164</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> (!xmlFile.canRead())</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;165</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;166</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                String READ_ERR = <span class="string">"Could not read input file "</span> + xmlPath;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;167</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;168</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                log.error(READ_ERR);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;169</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="keyword">throw</span> <span class="keyword">new</span> InitializationException(READ_ERR);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;170</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;171</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;172</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;            xmlFiles.add(xmlPath);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;173</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;174</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;            log.debug(<span class="string">"Added "</span> + xmlPath + <span class="string">" as File to parse"</span>);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;175</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;176</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// Get the timestamp of the youngest file to be compared with</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;177</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// a serialized file. If it is younger than the serialized file,</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;178</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// then we have to parse the XML anyway.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;179</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;            timeStamp =</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;180</td>
+      <td class="nbHitsCovered">&nbsp;25</td>
+      <td class="src"><pre class="src">&nbsp;                    (xmlFile.lastModified() &#62; timeStamp) ? xmlFile.lastModified() : timeStamp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;181</td>
+      <td class="nbHitsCovered">&nbsp;2</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;182</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;183</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;        Map serializedMap = loadSerialized(serialDataPath, timeStamp);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;184</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;185</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (serializedMap != <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;186</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;187</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// Use the serialized data as XML groups. Don't parse.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;188</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            appDataElements = serializedMap;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;189</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            log.debug(<span class="string">"Using the serialized map"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;190</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;191</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">else</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;192</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;193</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// Parse all the given XML files</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;194</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;            appDataElements = <span class="keyword">new</span> HashMap();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;195</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;196</td>
+      <td class="nbHitsCovered">&nbsp;59</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">for</span> (Iterator it = xmlFiles.iterator(); it.hasNext();)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;197</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;198</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;                String xmlPath = (String) it.next();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;199</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;                AppData appData = <span class="keyword">null</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;200</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;201</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;                log.debug(<span class="string">"Now parsing: "</span> + xmlPath);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;202</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="keyword">try</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;203</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;204</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;                    XmlToAppData xmlApp = <span class="keyword">new</span> XmlToAppData();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;205</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;                    appData = xmlApp.parseFile(xmlPath);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;206</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;207</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">catch</span> (Exception e)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;208</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;209</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    log.error(<span class="string">"Could not parse XML file "</span> + xmlPath, e);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;210</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;211</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    <span class="keyword">throw</span> <span class="keyword">new</span> InitializationException(<span class="string">"Could not parse XML file "</span> +</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;212</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;                            xmlPath, e);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;213</td>
+      <td class="nbHitsCovered">&nbsp;11</td>
+      <td class="src"><pre class="src">&nbsp;                }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;214</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;215</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;                appDataElements.put(appData, xmlPath);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;216</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;                log.debug(<span class="string">"Saving appData for "</span> + xmlPath);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;217</td>
+      <td class="nbHitsCovered">&nbsp;2</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;218</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;219</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;            saveSerialized(serialDataPath, appDataElements);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;220</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;221</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;222</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;223</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;224</td>
+      <td class="nbHitsCovered">&nbsp;50</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">for</span> (Iterator it = appDataElements.keySet().iterator(); it.hasNext();)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;225</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;226</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;                AppData appData = (AppData) it.next();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;227</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;228</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="keyword">int</span> maxPooledGroups = 0;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;229</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;                List glist = appData.getGroups();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;230</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;231</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;                String groupPrefix = appData.getGroupPrefix();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;232</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;233</td>
+      <td class="nbHitsCovered">&nbsp;71</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="keyword">for</span> (<span class="keyword">int</span> i = glist.size() - 1; i &#62;= 0; i--)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;234</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;235</td>
+      <td class="nbHitsCovered">&nbsp;53</td>
+      <td class="src"><pre class="src">&nbsp;                    XmlGroup g = (XmlGroup) glist.get(i);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;236</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;                    String groupName = g.getName();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;237</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;238</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;                    <span class="keyword">boolean</span> registerUnqualified = registerGroup(groupName, g, appData, <span class="keyword">true</span>);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;239</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;240</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;                    <span class="keyword">if</span> (!registerUnqual<span <span class="keyword">class</span>="keyword">if</span>ied)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;241</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;242</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        log.info(<span class="string">"Ignored redefinition of Group "</span> + groupName</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;243</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                                + <span class="string">" or Key "</span> + g.getKey()</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;244</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;                                + <span class="string">" from "</span> + appDataElements.get(appData));</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;245</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;246</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;247</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;                    <span class="keyword">if</span> (groupPrefix != <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;248</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;249</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        StringBuffer qualifiedName = <span class="keyword">new</span> StringBuffer();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;250</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        qualifiedName.append(groupPrefix)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;251</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                                .append(':')</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;252</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                                .append(groupName);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;253</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;254</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                        <span class="comment">// Add the fully qualified group name. Do _not_ check for</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;255</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                        <span class="comment">// the existence of the key if the unqualified registration succeeded</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;256</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                        <span class="comment">// (because then it was added by the registerGroup above).</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;257</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        <span class="keyword">if</span> (!registerGroup(qual<span <span class="keyword">class</span>="keyword">if</span>iedName.toString(), g, appData, !registerUnqual<span <span class="keyword">class</span>="keyword">if</span>ied))</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;258</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;259</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                            log.error(<span class="string">"Could not register fully qualified name "</span> + qualifiedName</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;260</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                                    + <span class="string">", maybe two XML files have the same prefix. Ignoring it."</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;261</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;                        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;262</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;                    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;263</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;264</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;                    maxPooledGroups =</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;265</td>
+      <td class="nbHitsCovered">&nbsp;76</td>
+      <td class="src"><pre class="src">&nbsp;                            Math.max(maxPooledGroups,</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;266</td>
+      <td class="nbHitsCovered">&nbsp;38</td>
+      <td class="src"><pre class="src">&nbsp;                                    Integer.parseInt(g.getPoolCapacity()));</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;267</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;268</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;                }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;269</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;270</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;                KeyedPoolableObjectFactory factory =</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;271</td>
+      <td class="nbHitsCovered">&nbsp;16</td>
+      <td class="src"><pre class="src">&nbsp;                        <span class="keyword">new</span> Group.GroupFactory(appData);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;272</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;                keyedPools.put(appData, <span class="keyword">new</span> StackKeyedObjectPool(factory, maxPooledGroups));</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;273</td>
+      <td class="nbHitsCovered">&nbsp;2</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;274</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;275</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;            setInit(<span class="keyword">true</span>);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;276</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;277</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">catch</span> (Exception e)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;278</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;279</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> InitializationException(</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;280</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    <span class="string">"TurbineIntakeService failed to initialize"</span>, e);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;281</td>
+      <td class="nbHitsCovered">&nbsp;2</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;282</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;283</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;284</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;285</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Called the first time the Service is used.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;286</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;287</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param config A ServletConfig.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;288</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @deprecated use init() instead.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;289</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;290</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">void</span> init(ServletConfig config)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;291</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            throws InitializationException</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;292</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;293</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        init();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;294</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;    }</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;295</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;296</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;297</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Registers a given group name in the system</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;298</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;299</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param groupName The name to register the group under</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;300</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param group The XML Group to register in</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;301</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param appData The app Data object where the group can be found</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;302</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param checkKey Whether to check if the key also exists.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;303</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;304</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return true if successful, false if not</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;305</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;306</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">boolean</span> registerGroup(String groupName, XmlGroup group, AppData appData, <span <span class="keyword">class</span>="keyword">boolean</span> checkKey)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;307</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;308</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (groupNames.keySet().contains(groupName))</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;309</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;310</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// This name already exists.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;311</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> false;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;312</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;313</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;314</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> keyExists = groupNameMap.keySet().contains(group.getKey());</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;315</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;316</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (checkKey &#38;&#38; keyExists)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;317</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;318</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// The key for this package is already registered for another group</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;319</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> false;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;320</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;321</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;322</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;        groupNames.put(groupName, appData);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;323</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;324</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;        groupKeyMap.put(groupName, group.getKey());</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;325</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;326</td>
+      <td class="nbHitsCovered">&nbsp;53</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (!keyExists)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;327</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;328</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// This key does not exist. Add it to the hash.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;329</td>
+      <td class="nbHitsCovered">&nbsp;53</td>
+      <td class="src"><pre class="src">&nbsp;            groupNameMap.put(group.getKey(), groupName);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;330</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;331</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;332</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;        List classNames = group.getMapToObjects();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;333</td>
+      <td class="nbHitsCovered">&nbsp;87</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">for</span> (Iterator iter2 = classNames.iterator(); iter2.hasNext();)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;334</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;335</td>
+      <td class="nbHitsCovered">&nbsp;6</td>
+      <td class="src"><pre class="src">&nbsp;            String className = (String) iter2.next();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;336</td>
+      <td class="nbHitsCovered">&nbsp;6</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> (!getterMap.containsKey(className))</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;337</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;338</td>
+      <td class="nbHitsCovered">&nbsp;6</td>
+      <td class="src"><pre class="src">&nbsp;                getterMap.put(className, <span class="keyword">new</span> HashMap());</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;339</td>
+      <td class="nbHitsCovered">&nbsp;15</td>
+      <td class="src"><pre class="src">&nbsp;                setterMap.put(className, <span class="keyword">new</span> HashMap());</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;340</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;341</td>
+      <td class="nbHitsCovered">&nbsp;1</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;342</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> <span class="keyword">true</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;343</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;344</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;345</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;346</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Tries to load a serialized Intake Group file. This</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;347</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * can reduce the startup time of Turbine.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;348</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;349</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param serialDataPath The path of the File to load.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;350</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;351</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return A map with appData objects loaded from the file</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;352</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *          or null if the map could not be loaded.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;353</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;354</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Map loadSerialized(String serialDataPath, <span class="keyword">long</span> timeStamp)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;355</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;356</td>
+      <td class="nbHitsCovered">&nbsp;34</td>
+      <td class="src"><pre class="src">&nbsp;        log.debug(<span class="string">"Entered loadSerialized("</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;357</td>
+      <td class="nbHitsCovered">&nbsp;25</td>
+      <td class="src"><pre class="src">&nbsp;                + serialDataPath + <span class="string">", "</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;358</td>
+      <td class="nbHitsCovered">&nbsp;16</td>
+      <td class="src"><pre class="src">&nbsp;                + timeStamp + <span class="string">")"</span>);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;359</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;360</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (serialDataPath == <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;361</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;362</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="keyword">null</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;363</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;364</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;365</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;        File serialDataFile = <span class="keyword">new</span> File(serialDataPath);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;366</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;367</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (!serialDataFile.exists())</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;368</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;369</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;            log.info(<span class="string">"No serialized file found, parsing XML"</span>);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;370</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="keyword">null</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;371</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;372</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;373</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">if</span> (serialDataFile.lastMod<span <span class="keyword">class</span>="keyword">if</span>ied() &#60;= timeStamp)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;374</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;375</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            log.info(<span class="string">"serialized file too old, parsing XML"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;376</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">return</span> <span class="keyword">null</span>;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;377</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;378</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;379</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        InputStream in = <span class="keyword">null</span>;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;380</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        Map serialData = <span class="keyword">null</span>;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;381</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;382</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;383</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;384</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            in = <span class="keyword">new</span> FileInputStream(serialDataFile);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;385</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            ObjectInputStream p = <span class="keyword">new</span> ObjectInputStream(in);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;386</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            Object o = p.readObject();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;387</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;388</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">if</span> (o instanceof Map)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;389</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;390</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                serialData = (Map) o;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;391</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;392</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">else</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;393</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;394</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="comment">// Maybe an old file from intake. Ignore it and try to delete</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;395</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                log.info(<span class="string">"serialized object is not an intake map, ignoring"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;396</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                in.close();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;397</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                in = <span class="keyword">null</span>;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;398</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                serialDataFile.delete(); <span class="comment">// Try to delete the file lying around</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;399</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;400</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;401</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">catch</span> (Exception e)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;402</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;403</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            log.error(<span class="string">"Serialized File could not be read."</span>, e);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;404</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;405</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// We got a corrupt file for some reason.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;406</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// Null out serialData to be sure</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;407</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            serialData = <span class="keyword">null</span>;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;408</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;409</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">finally</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;410</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        {</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;411</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// Could be null if we opened a file, didn't find it to be a</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;412</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// Map object and then nuked it away.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;413</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">try</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;414</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;415</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">if</span> (in != <span class="keyword">null</span>)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;416</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;417</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    in.close();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;418</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;419</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;420</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">catch</span> (Exception e)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;421</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;422</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                log.error(<span class="string">"Exception while closing file"</span>, e);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;423</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;424</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        }</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;425</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;426</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        log.info(<span class="string">"Loaded serialized map object, ignoring XML"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;427</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">return</span> serialData;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;428</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;429</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;430</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;431</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Writes a parsed XML map with all the appData groups into a</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;432</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * file. This will speed up loading time when you restart the</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;433</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Intake Service because it will only unserialize this file instead</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;434</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * of reloading all of the XML files</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;435</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;436</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param serialDataPath  The path of the file to write to</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;437</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param appDataElements A Map containing all of the XML parsed appdata elements</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;438</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;439</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">void</span> saveSerialized(String serialDataPath, Map appDataElements)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;440</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;441</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;442</td>
+      <td class="nbHitsCovered">&nbsp;43</td>
+      <td class="src"><pre class="src">&nbsp;        log.debug(<span class="string">"Entered saveSerialized("</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;443</td>
+      <td class="nbHitsCovered">&nbsp;16</td>
+      <td class="src"><pre class="src">&nbsp;                + serialDataPath + <span class="string">", appDataElements)"</span>);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;444</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;445</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (serialDataPath == <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;446</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;447</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;448</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;449</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;450</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;        File serialData = <span class="keyword">new</span> File(serialDataPath);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;451</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;452</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;453</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;454</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;            serialData.createNewFile();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;455</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            serialData.delete();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;456</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;457</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">catch</span> (Exception e)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;458</td>
+      <td class="nbHitsCovered">&nbsp;9</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;459</td>
+      <td class="nbHitsCovered">&nbsp;34</td>
+      <td class="src"><pre class="src">&nbsp;            log.info(<span class="string">"Could not create serialized file "</span> + serialDataPath</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;460</td>
+      <td class="nbHitsCovered">&nbsp;16</td>
+      <td class="src"><pre class="src">&nbsp;                    + <span class="string">", not serializing the XML data"</span>);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;461</td>
+      <td class="nbHitsCovered">&nbsp;18</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;462</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;463</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;464</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        OutputStream out = <span class="keyword">null</span>;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;465</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        InputStream in = <span class="keyword">null</span>;</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;466</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;467</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;468</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;469</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// write the appData file out</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;470</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            out = <span class="keyword">new</span> FileOutputStream(serialDataPath);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;471</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            ObjectOutputStream pout = <span class="keyword">new</span> ObjectOutputStream(out);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;472</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            pout.writeObject(appDataElements);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;473</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            pout.flush();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;474</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;475</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// read the file back in. for some reason on OSX 10.1</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;476</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="comment">// this is necessary.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;477</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            in = <span class="keyword">new</span> FileInputStream(serialDataPath);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;478</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            ObjectInputStream pin = <span class="keyword">new</span> ObjectInputStream(in);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;479</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            Map dummy = (Map) pin.readObject();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;480</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;481</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            log.debug(<span class="string">"Serializing successful"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;482</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;483</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">catch</span> (Exception e)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;484</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;485</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            log.info(<span class="string">"Could not write serialized file to "</span> + serialDataPath</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;486</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    + <span class="string">", not serializing the XML data"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;487</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;488</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">finally</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;489</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        {</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;490</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">try</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;491</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;492</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">if</span> (out != <span class="keyword">null</span>)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;493</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;494</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    out.close();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;495</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;496</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">if</span> (in != <span class="keyword">null</span>)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;497</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;498</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    in.close();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;499</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;500</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;501</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">catch</span> (Exception e)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;502</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;503</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                log.error(<span class="string">"Exception while closing file"</span>, e);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;504</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;505</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        }</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;506</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;    }</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;507</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;508</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;509</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Gets an instance of a named group either from the pool</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;510</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * or by calling the Factory Service if the pool is empty.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;511</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;512</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param groupName the name of the group.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;513</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return a Group instance.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;514</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IntakeException if recycling fails.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;515</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;516</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> Group getGroup(String groupName)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;517</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            throws IntakeException</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;518</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;519</td>
+      <td class="nbHitsCovered">&nbsp;348</td>
+      <td class="src"><pre class="src">&nbsp;        Group group = <span class="keyword">null</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;520</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;521</td>
+      <td class="nbHitsCovered">&nbsp;348</td>
+      <td class="src"><pre class="src">&nbsp;        AppData appData = (AppData) groupNames.get(groupName);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;522</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;523</td>
+      <td class="nbHitsCovered">&nbsp;348</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (groupName == <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;524</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;525</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IntakeException(</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;526</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    <span class="string">"Intake TurbineIntakeService.getGroup(groupName) is null"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;527</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;528</td>
+      <td class="nbHitsCovered">&nbsp;348</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (appData == <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;529</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;530</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IntakeException(</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;531</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    <span class="string">"Intake TurbineIntakeService.getGroup(groupName): No XML definition for Group "</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;532</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    + groupName + <span class="string">" found"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;533</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;534</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;535</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;536</td>
+      <td class="nbHitsCovered">&nbsp;348</td>
+      <td class="src"><pre class="src">&nbsp;            group = (Group) ((KeyedObjectPool) keyedPools.get(appData)).borrowObject(groupName);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;537</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;538</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">catch</span> (Exception e)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;539</td>
+      <td class="nbHitsCovered">&nbsp;27</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;540</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IntakeException(<span class="string">"Could not get group "</span> + groupName, e);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;541</td>
+      <td class="nbHitsCovered">&nbsp;53</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;542</td>
+      <td class="nbHitsCovered">&nbsp;348</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> group;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;543</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;544</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;545</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;546</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Puts a Group back to the pool.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;547</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;548</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param instance the object instance to recycle.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;549</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;550</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IntakeException The passed group name does not exist.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;551</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;552</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">void</span> releaseGroup(Group instance)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;553</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            throws IntakeException</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;554</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;555</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">if</span> (instance != <span class="keyword">null</span>)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;556</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;557</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            String groupName = instance.getIntakeGroupName();</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;558</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            AppData appData = (AppData) groupNames.get(groupName);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;559</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;560</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">if</span> (appData == <span class="keyword">null</span>)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;561</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;562</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">throw</span> <span class="keyword">new</span> IntakeException(</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;563</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        <span class="string">"Intake TurbineIntakeService.releaseGroup(groupName): "</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;564</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        + <span class="string">"No XML definition for Group "</span> + groupName + <span class="string">" found"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;565</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;566</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;567</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">try</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;568</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;569</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                ((KeyedObjectPool) keyedPools.get(appData)).returnObject(groupName, instance);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;570</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;571</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">catch</span> (Exception e)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;572</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;573</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">new</span> IntakeException(<span class="string">"Could not get group "</span> + groupName, e);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;574</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;575</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;576</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;    }</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;577</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;578</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;579</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Gets the current size of the pool for a group.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;580</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;581</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param groupName the name of the group.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;582</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;583</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IntakeException The passed group name does not exist.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;584</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;585</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">int</span> getSize(String groupName)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;586</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            throws IntakeException</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;587</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;588</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        AppData appData = (AppData) groupNames.get(groupName);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;589</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">if</span> (appData == <span class="keyword">null</span>)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;590</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;591</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IntakeException(</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;592</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    <span class="string">"Intake TurbineIntakeService.Size(groupName): No XML definition for Group "</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;593</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    + groupName + <span class="string">" found"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;594</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;595</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;596</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        KeyedObjectPool kop = (KeyedObjectPool) keyedPools.get(groupName);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;597</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;598</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">return</span> kop.getNumActive(groupName)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;599</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                + kop.getNumIdle(groupName);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;600</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;601</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;602</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;603</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Names of all the defined groups.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;604</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;605</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return array of names.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;606</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;607</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> String[] getGroupNames()</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;608</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;609</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">return</span> (String[]) groupNames.keySet().toArray(<span class="keyword">new</span> String[0]);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;610</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;611</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;612</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;613</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Gets the key (usually a short identifier) for a group.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;614</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;615</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param groupName the name of the group.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;616</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return the the key.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;617</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;618</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> String getGroupKey(String groupName)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;619</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;620</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">return</span> (String) groupKeyMap.get(groupName);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;621</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;622</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;623</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;624</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Gets the group name given its key.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;625</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;626</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param groupKey the key.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;627</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return groupName the name of the group.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;628</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;629</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> String getGroupName(String groupKey)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;630</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;631</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">return</span> (String) groupNameMap.get(groupKey);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;632</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;633</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;634</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;635</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Gets the Method that can be used to set a property.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;636</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;637</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param className the name of the object.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;638</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param propName the name of the property.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;639</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return the setter.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;640</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ClassNotFoundException</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;641</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IntrospectionException</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;642</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;643</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> Method getFieldSetter(String className, String propName)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;644</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            throws ClassNotFoundException, IntrospectionException</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;645</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;646</td>
+      <td class="nbHitsCovered">&nbsp;240</td>
+      <td class="src"><pre class="src">&nbsp;        Map settersForClassName = (Map) setterMap.get(className);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;647</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;648</td>
+      <td class="nbHitsCovered">&nbsp;240</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (settersForClassName == <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;649</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;650</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IntrospectionException(<span class="string">"No setter Map for "</span> + className + <span class="string">" available!"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;651</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;652</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;653</td>
+      <td class="nbHitsCovered">&nbsp;240</td>
+      <td class="src"><pre class="src">&nbsp;        Method setter = (Method) settersForClassName.get(propName);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;654</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;655</td>
+      <td class="nbHitsCovered">&nbsp;240</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (setter == <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;656</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;657</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;            PropertyDescriptor pd = <span class="keyword">null</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;658</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;659</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">synchronized</span> (setterMap)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;660</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;661</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="keyword">try</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;662</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;663</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;                    pd = <span class="keyword">new</span> PropertyDescriptor(propName,</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;664</td>
+      <td class="nbHitsCovered">&nbsp;20</td>
+      <td class="src"><pre class="src">&nbsp;                            Class.forName(className));</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;665</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;666</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">catch</span> (IntrospectionException ie)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;667</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;668</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    <span class="keyword">if</span> (log.isWarnEnabled())</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;669</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;670</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        log.warn(<span class="string">"Trying to find only a setter for "</span> + propName);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;671</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;672</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;673</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    pd = <span class="keyword">new</span> PropertyDescriptor(propName,</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;674</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                            Class.forName(className),</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;675</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                            <span class="string">"set"</span> + StringUtils.capitalize(propName),</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;676</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                            <span class="keyword">null</span>); <span class="comment">// Java sucks.</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;677</td>
+      <td class="nbHitsCovered">&nbsp;4</td>
+      <td class="src"><pre class="src">&nbsp;                }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;678</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;679</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                setter = pd.getWriteMethod();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;680</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                settersForClassName.put(propName, setter);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;681</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;682</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="keyword">if</span> (setter == <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;683</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;684</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    log.error(<span class="string">"Intake: setter for '"</span> + propName</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;685</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                            + <span class="string">"' in class '"</span> + className</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;686</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                            + <span class="string">"' could not be found."</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;687</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;688</td>
+      <td class="nbHitsCovered">&nbsp;4</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;689</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;690</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> (pd.getReadMethod() != <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;691</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;692</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="comment">// we have already completed the reflection on the getter, so</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;693</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="comment">// save it so we do not have to repeat</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;694</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="keyword">synchronized</span> (getterMap)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;695</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;696</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                    Map gettersForClassName = (Map) getterMap.get(className);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;697</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;698</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                    <span class="keyword">if</span> (gettersForClassName != <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;699</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;700</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                        <span class="keyword">try</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;701</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;702</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                            Method getter = pd.getReadMethod();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;703</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                            <span class="keyword">if</span> (getter != <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;704</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;705</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                                gettersForClassName.put(propName, getter);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;706</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;707</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;708</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        <span class="keyword">catch</span> (Exception e)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;709</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;710</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                            <span class="comment">// Do nothing</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;711</td>
+      <td class="nbHitsCovered">&nbsp;4</td>
+      <td class="src"><pre class="src">&nbsp;                        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;712</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;713</td>
+      <td class="nbHitsCovered">&nbsp;4</td>
+      <td class="src"><pre class="src">&nbsp;                }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;714</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;715</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;716</td>
+      <td class="nbHitsCovered">&nbsp;240</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> setter;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;717</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;718</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;719</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="comment">/*<span class="comment">*</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;720</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * Gets the Method that can be used to get a property value.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;721</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;722</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param className the name of the object.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;723</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param propName the name of the property.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;724</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return the getter.</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;725</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws ClassNotFoundException</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;726</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws IntrospectionException</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;727</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;728</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> Method getFieldGetter(String className, String propName)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;729</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            throws ClassNotFoundException, IntrospectionException</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;730</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;731</td>
+      <td class="nbHitsCovered">&nbsp;240</td>
+      <td class="src"><pre class="src">&nbsp;        Map gettersForClassName = (Map) getterMap.get(className);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;732</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;733</td>
+      <td class="nbHitsCovered">&nbsp;240</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (gettersForClassName == <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;734</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;735</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> IntrospectionException(<span class="string">"No getter Map for "</span> + className + <span class="string">" available!"</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;736</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;737</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;738</td>
+      <td class="nbHitsCovered">&nbsp;240</td>
+      <td class="src"><pre class="src">&nbsp;        Method getter = (Method) gettersForClassName.get(propName);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;739</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;740</td>
+      <td class="nbHitsCovered">&nbsp;240</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (getter == <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;741</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;742</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;            PropertyDescriptor pd = <span class="keyword">null</span>;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;743</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;744</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">synchronized</span> (getterMap)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;745</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;746</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="keyword">try</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;747</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;748</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;                    pd = <span class="keyword">new</span> PropertyDescriptor(propName,</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;749</td>
+      <td class="nbHitsCovered">&nbsp;20</td>
+      <td class="src"><pre class="src">&nbsp;                            Class.forName(className));</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;750</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;751</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">catch</span> (IntrospectionException ie)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;752</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;753</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    <span class="keyword">if</span> (log.isWarnEnabled())</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;754</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;755</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        log.warn(<span class="string">"Trying to find only a getter for "</span> + propName);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;756</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;757</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;758</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    pd = <span class="keyword">new</span> PropertyDescriptor(propName,</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;759</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                            Class.forName(className),</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;760</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                            <span class="string">"get"</span> + StringUtils.capitalize(propName),</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;761</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                            <span class="keyword">null</span>); <span class="comment">// Java sucks some more.</span></span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;762</td>
+      <td class="nbHitsCovered">&nbsp;4</td>
+      <td class="src"><pre class="src">&nbsp;                }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;763</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;764</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                getter = pd.getReadMethod();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;765</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                gettersForClassName.put(propName, getter);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;766</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;767</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="keyword">if</span> (getter == <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;768</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;769</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    log.error(<span class="string">"Intake: getter for '"</span> + propName</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;770</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                            + <span class="string">"' in class '"</span> + className</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;771</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                            + <span class="string">"' could not be found."</span>);</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;772</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;773</td>
+      <td class="nbHitsCovered">&nbsp;4</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;774</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;775</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;            <span class="keyword">if</span> (pd.getWriteMethod() != <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;776</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;777</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="comment">// we have already completed the reflection on the setter, so</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;778</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="comment">// save it so we do not have to repeat</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;779</td>
+      <td class="nbHitsCovered">&nbsp;44</td>
+      <td class="src"><pre class="src">&nbsp;                <span class="keyword">synchronized</span> (setterMap)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;780</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;781</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                    Map settersForClassName = (Map) getterMap.get(className);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;782</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;783</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                    <span class="keyword">if</span> (settersForClassName != <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;784</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                    {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;785</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                        <span class="keyword">try</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;786</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;787</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                            Method setter = pd.getWriteMethod();</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;788</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                            <span class="keyword">if</span> (setter != <span class="keyword">null</span>)</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;789</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                            {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;790</td>
+      <td class="nbHitsCovered">&nbsp;24</td>
+      <td class="src"><pre class="src">&nbsp;                                settersForClassName.put(propName, setter);</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;791</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;792</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;793</td>
+      <td class="nbHitsUncovered">&nbsp;0</td>
+      <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        <span class="keyword">catch</span> (Exception e)</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;794</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                        {</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;795</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                            <span class="comment">// Do nothing</span></pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;796</td>
+      <td class="nbHitsCovered">&nbsp;4</td>
+      <td class="src"><pre class="src">&nbsp;                        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;797</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;                    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;798</td>
+      <td class="nbHitsCovered">&nbsp;4</td>
+      <td class="src"><pre class="src">&nbsp;                }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;799</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;            }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;800</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;        }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLineCover">&nbsp;801</td>
+      <td class="nbHitsCovered">&nbsp;240</td>
+      <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> getter;</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;802</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;    }</pre></td>
+    </tr>
+    <tr>
+      <td class="numLine">&nbsp;803</td>
+      <td class="nbHits">&nbsp;</td>
+      <td class="src"><pre class="src">&nbsp;}</pre></td>
+    </tr>
+  </table>
+<p><table cellpadding="0" cellspacing="0" class="report">  <tr class="report">    <td class="reportText"><span class="text">    This report is generated by <a href="http://www.jcoverage.com">jcoverage</a>, <a href="http://maven.apache.org">Maven</a> and <a href="http://maven.apache.org/reference/plugins/jcoverage/">Maven JCoverage Plugin</a>.    </span></td>  </tr></table>
+</body>
+</html>

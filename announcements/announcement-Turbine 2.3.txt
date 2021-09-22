@@ -1,0 +1,250 @@
+We are pleased to announce the turbine-2 Turbine 2.3 release! 
+
+http://turbine.apache.org/turbine/turbine-2.3.3/index.html
+
+Turbine is a servlet based framework that allows experienced Java developers 
+to quickly build secure web applications. Parts of Turbine can also be used 
+independently of the web portion of Turbine as well. In other words, we strive 
+to make portions of Turbine easily available for use in other applications. 
+
+===============================================================================
+
+Changes in this version include:
+
+  Changes:
+
+o It is now necessary to use Maven to build Turbine 2.3. The old, ant-based 
+  build system is no longer supported and actively removed from the 
+  distribution. 
+o Turbine requires the Maven Torque plugin to build. If you don't use at 
+  least Maven 1.0b9, you will have to install it manually before you can 
+  recompile the source code. 
+o The IntakeService has been refactored, introducing two Abstract classes; 
+  the DefaultValidator and the NumberValidator. They both contain rules which 
+  are applicable to all Validator's and NumbeValidator's respectively. 
+  Unnecessary use was being made of (Old) NumberValidator which used 
+  BigDecimals, cleaned this up implementing concrete classes for all Number 
+  Types. Simplified definition of (number & required) rules in 
+  Intake.xml. 
+o The LoginUser action no longer checks to see if the user object is already 
+  in the session and returns if it is found. The user will always be there 
+  now. If you have a custom LoginUser action that still performs this check, 
+  you will need to remove it in order for your login action to work. 
+o AccessControlList is now an interface and its implementation is in 
+  TurbineAccessControlList. This is now configurable and can be replaced by a 
+  custom AccessControlList implementation. If older compiled code suddently 
+  throws IncompatibleClassChange errors, just recompile and they go away. 
+o All deprecated java code was removed (incl. support for webmacro, 
+  freemarker and castor). Make sure to not get any deprecation warnings 
+  before you switch to 2.3! 
+o The LoggingService was removed. Deprecated everything in the utils.Log 
+  class. 
+o The TurbineResources Service was removed and replaced with 
+  commons-configuration. 
+o The service initialization code has been changed. This is important if you 
+  write services yourself. You should supply a constructor which takes no 
+  parameters. The usage of a constructor which takes a RunData object is 
+  deprecated and might be removed later. If you're using the supplied 
+  services, you shouldn't notice any change. 
+o BaseValueParser.getInteger(String name) now returns null if the key name is 
+  not found - the old behaviour was to return new Integer(0). For consistency 
+  a similar change was made to getBool() and getBigInteger(). Fixes TTWS38. 
+o The velocity mail classes (o.a.t.util.velocity package) now throw 
+  VelocityEmailException instead of MessagingException if a problem occurs. 
+o The handling of "," as a separator in template names was tightened and 
+  clarified. Many places where you could get away with using "/" as a 
+  separator or use a leading "/" for a template name now no longer work. 
+  There is a long description on how to use and not to use this in the 
+  javadoc for org.apache.turbine.services.template.TurbineTemplateService. If 
+  you want to volunteer for work on Turbine, feel free to whip this into an 
+  xdoc and put it into the documentation tree. 
+o Some classes have been moved into different packages to allow cleanup and 
+  clarification of their usage. The old locations are still available but 
+  deprecated. Examples are the parser classes from org.apache.turbine.util to 
+  org.apache.turbine.util.parser and some of the pull tools from 
+  org.apache.turbine.util.pull to org.apache.turbine.services.pull.tools 
+o getSizeMax() in the UploadService interface and implementations changed 
+  from int to long to reflect a change that was made in the underlying 
+  commons-fileupload component. 
+o Added ability to specify either the class TurbineResources.properties file 
+  or a new TurbineConfiguration.xml file. TurbineConfiguration.xml allows 
+  Turbine to pull it's configuration values from multiple locations. Please 
+  read the howto for more information. 
+o Added a Howto describing using Hibernate with Turbine. The actual code is 
+  currently not part of the Turbine distribution due to licensing issues, but 
+  is very easy to implement due to Turbine support of Avalon Components. 
+o Changed TurbineUser so that when either permanent or temporary values are 
+  stored, if the required hashtable was missing, then it was created. This 
+  happened in conjunction with the PassiveUserManager. Additionally, the 
+  setTempStorage(Hashtable newTempStorage) did not actually assign the new 
+  Hashtable. Cleaned up some of the code so the parallel permanent and temp 
+  data storage methods followed the same patterns. Created a cactus testcase 
+  to test TurbineUser. 
+o Changed scheduler so that if it is NOT enabled, then it doesn't attempt to 
+  connect to the database and retrieve jobs. This prevents a spurious no data 
+  source error from showing up in the turbine logs on startup. Added a cactus 
+  test to test the fix. 
+o A new pull tool is available in the session scope called $sessionData. This 
+  tool can be used to store data that will persist for the duration of the 
+  session. This should be used instead of the getTemp() and setTemp() methods 
+  in TurbineUser. 
+o The use of getPerm() and setPerm() methods in Turbine user have been 
+  deprecated. See the Extending Turbine User how-to for using additional 
+  database columns for storage if you are using the DBSecurityService. You 
+  can also switch to the TorqueSecurityService where it is much easier to use 
+  additional columns. 
+o Perm scope pull tools have been deprecated. If you use these type of tools, 
+  you need to switch to authorized scope pull tools. These tools are 
+  initialized with a user object. Any state information that you were storing 
+  in the tools itself, you will now need to store in the user object. 
+o Turbine used to remove all data from the session before executing the login 
+  action. This no longer happens. Instead, the session is invalidated before 
+  calling to logout action. 
+o There is a new pull tool that makes it easy to format Date objects into 
+  Strings. See org.apache.turbine.services.pull.util.DateFormatter for 
+  details. 
+o Backported the Scheduler service from Fulcrum. Other Scheduler related 
+  changes include: The scheduler can now be enabled/disabled while Turbine is 
+  running. A new pull tool is available to allow access to the Scheduler 
+  service from Velocity templates. See 
+  org.apache.turbine.service.scheduler.SchedulerTool for details. 
+  TurbineException is now thrown instead of Exception. Torque generated 
+  objects are now used to for accessing the database. You can now add 
+  additional fields for the OM objects without modifing the source code. The 
+  OM objects are generated from scheduler-schema.xml updateJob(job) can be 
+  used to add a new job. It will perform the correct action (insert or 
+  update) for you. addJob(job) simply calls updateJob(job). A new facade 
+  class has been created for easier access to the Scheduler Service. It is 
+  org.apache.turbine.services.schedule.TurbineScheduler. 
+o Backported the Crypto Service from Fulcrum. 
+o With this patch LDAP security services can have users, groups, roles and 
+  permissions in the LDAP repository. It also works with users in LDAP and 
+  the rest in the Database. Sample configuration files for Openldap can be 
+  found here. Fixes TTWS24. 
+o Implemented the following functions in LDAPUserManager: store(), 
+  createAccount() and removeAccount(). Fixes TTWS34. 
+o added new Logging code which uses commons-logging everywhere. 
+o added new Configuration code based on commons-configuration. Switched all 
+  configuration requests to commons-configuration. Configuration values can 
+  now be stored in XML, .properties, as well as JNDI Tree. Configuration 
+  values can be overridden. If you specify JNDI and the .xml, if a value is 
+  found in JNDI, then it is used. Useful for overriding environment specific 
+  values like mail servers or whether Velocity templates are reloadable. 
+o added Log4j configuration and startup. 
+o removed all remaining Torque code. 
+o VelocityLayout is now the proposed default layout. VelocityECSLayout might 
+  go away post-2.3. See Moving to VelocityOnlyLayout to see what changes need 
+  to be made to your application(s). 
+o TurbineException, TurbineRuntimeException, and TurbineError all extend the 
+  corresponding "Nestable" exception type from commons-lang. 
+o VelocityHtmlMail can now be used in a scheduled job. It has a new 
+  constructor accepting a velocity context object. 
+o Intake changes: Backported changes from Fulcrum version IntakeException is 
+  now thrown from intake methods instead of TurbineException and Exception. 
+  Multiple XML definition files can be used. Logging has been improved to 
+  give more information when an error occurs. The DTD has been updated and 
+  fully documented! Intake now uses commons-pool for pooling. intake.dtd is 
+  now packaged in the turbine.jar file. If your intake.xml file validates 
+  against jakarta.apache.org/turbine/dtd/intake.dtd, then the DTD included in 
+  the jar file will be used instead of the online version. The DTD resolved 
+  for intake will now look for intake.dtd on the class path when the DTD in 
+  the XMl file is http://jakarta.apache.org/turbine/dtd/intake_2_2_1.dtd. The 
+  application functions in the same way. This was done to allow XML editors 
+  to use the correct version of the DTD. The field object has two new methods 
+  to help in creating the HTML input tags for the field. They are 
+  getDisplaySize() and getMaxSize(). The display size is set in the xml 
+  definition. The max size is pulled from the maxLength rule (if defined). 
+  The setDefaultValue() method on the Field object is now public. This will 
+  allow you to assign a value to a field for display on a form that does come 
+  from a mapped object. Before this change, your only option was to defined 
+  the default value in intake.xml. 
+o All deprecated calls to the old org.apache.turbine.util.Log have been 
+  replaced with calls to org.apache.commons.logging.Log. 
+o A new SessionService has been added. This will allow access to all sessions 
+  in the current context if you use Servlet API 2.3 or better. 
+o The non-secure web server for handling xml-rpc requests will now use the 
+  services.XmlRpcService.address setting for the address on which to listen 
+  for requests. If the setting is not found in TR.props, it will use the 
+  default of 0.0.0.0. This address will cause the server to listen on all 
+  addresses of a multi-homed machine. 
+o Nearly all of the methods of o.a.t.util.StringUtils has been deprecated. 
+  You should change your application code to use StringUtils from 
+  commons-lang. 
+o All classed in the org.apache.turbine.util.mail package have been 
+  deprecated. You should change your application code to use commons-mail 
+  instead. 
+o Turbine now uses commons-fileupload. The org.apache.turbine.util.upload 
+  package has been deprecated. 
+o The Pull Service got a new scope: authorized tools. These are like Session 
+  Tools but only available after the user logged in. 
+o The Pull Service got a new type of tools: RunDataApplicationTools. These 
+  tools get the current RunData object passed at every refresh(). This type 
+  obviously makes sense only for non-request scope tools. 
+o Some services got static facade classes: FactoryService, JspService, 
+  RunDataService, SchedulerService. 
+o Turbine can use the ConfigurationFactory from commons-configuration to load 
+  all kinds of configuration types like XML, JNDI or (still) plain properties 
+  files. 
+o A completely new URI handling scheme was added and is now the proposed 
+  default method to handle URI representations in Turbine. The older URI 
+  handling classes like ContentURI and DynamicURI will go after the 2.3 
+  release. 
+o A new Security Service is available: TorqueSecurityService. It has the same 
+  functionality as the DBSecurityService but allows the usage of arbitrary 
+  Torque generated peer classes and objects as security objects. 
+o The security object get methods from Security Service have been deprecated 
+  and replaced by methods which are able to reference Objects by Name and by 
+  Primary Key. 
+o The TurbineDB Service has been deprecated. Use Torque and the Component 
+  Service to start Torque. 
+o It is possible to debug pressure on the PoolService by setting 
+  services.PoolService.pool.debug to true in the TurbineResources.properties. 
+o Turbine now has some integration for Avalon Components. It can start Avalon 
+  based components with the new AvalonComponentService. 
+o Added a new TurbineMacros file to the turbine jar, which contains some 
+  helper macros for Velocity Templates. Currently there are only some macros 
+  to be used with VelocityOnlyLayout to render the page attributes like in 
+  VelocityECSLayout based pages. 
+o The ComponentService (using the stratum lifecycle interfaces) is 
+  deprecated. It will be removed after the 2.3 release as the stratum package 
+  is unmaintained. We use the new AvalonComponentService to initialize 
+  Torque. 
+o ActionEvent and VelocityActionEvent can "ignore" eventSubmit_<xxx> 
+  events if they contain an empty or a zero value. This behaviour is 
+  controlled by the "action.eventsubmit.needsvalue" property that defaults to 
+  "off", which means no change from the pre-2.3 behaviour. The new behaviour 
+  is useful if you have multiple event fields in a form and only one should 
+  be selected (e.g. by a client side java script application). 
+o VelocityService now uses the EventCartridge Code to catch and log 
+  invocation errors from templates. This is very useful when debugging pull 
+  tools, because you get the actual exception in the log and not only the 
+  velocity internal stack trace. You can switch this behaviour off by setting 
+  "services.VelocityService.catch.errors" to off or false. 
+o Intake can now assign "empty" values to fields which are not returned or 
+  left out by the browser. This is useful if you want your string fields not 
+  to map to null if the user does not enter anything. 
+o Removed deprecated call to TurbineDB. Fixes TTWS25. 
+o TRQD10: Extending Turbine User How-to for T2.2 
+o Intake can not set mapped attributes to null. Fixes TTWS20. 
+o Changed made to scheduled jobs are now recognized by the scheduler service. 
+  Before, it would only recognize changes to the next run time. 
+o Fixed null pointer exception during initialization of IntakeTool when there 
+  are no groups defined in intake.xml 
+o PrimaryKey not set on TurbineUser after insert. Fixes TTWS41. 
+o Cookies now work properly. A NullPointerException was being thrown during 
+  the call to data.getCookies() if no cookies were present. Also, the path 
+  for cookies was being set incorrectly. Both of these issues have been 
+  fixed. 
+o The pull service now really refreshes non-request tool every time a tool is 
+  requested. 
+
+===============================================================================
+
+Issues, bugs, and feature requests for turbine-2
+should be submitted to the following issue tracking system:
+
+http://issues.apache.org/jira/browse/TRB
+
+
+Have fun!
+-The turbine-2 development team

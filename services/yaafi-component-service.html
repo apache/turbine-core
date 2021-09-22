@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Turbine - Turbine Services - Yaafi Component Service</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Scott Eade"></meta><meta name="email" content="seade@backstagetech.com.au"></meta></head><body class="composite"><div id="banner"><a href="http://turbine.apache.org/" id="organizationLogo"><img alt="Apache Software Foundation" src="../images/turbine-project.png"></img></a><a href="http://turbine.apache.org/turbine/turbine-2.3.3/index.html" id="projectLogo"><img alt="turbine-2" src="../images/logo.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 21 November 2008
+                <span class="separator">|</span> Doc for  2.3.3
+                </div><div class="xright">
+        
+        <a href="http://turbine.apache.org/">Turbine Home</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="http://turbine.apache.org/fulcrum/">Fulcrum</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="http://turbine.apache.org/meta/">META</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuGeneral_Information"><h5>General Information</h5><ul><li class="none"><a href="../index.html">Overview</a></li><li class="none"><a href="../features.html">Features</a></li><li class="none"><a href="../fsd.html">Specification</a></li><li class="none"><a href="../getting-started.html">Getting Started</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="none"><a href="../changes-report.html">Changes</a></li><li class="none"><a href="../turbine-schema.html">Core DB Schema</a></li><li class="expanded"><a href="../services/index.html">Services</a><ul><li class="none"><a href="../services/assemblerbroker-service.html">Assembler Broker Service</a></li><li class="none"><a href="../services/avalon-component-service.html">Avalon Component Service</a></li><li class="none"><a href="../services/crypto-service.html">Crypto Service</a></li><li class="none"><a href="../services/cache-service.html">Cache Service</a></li><li class="none"><a href="../services/factory-service.html">Factory Service</a></li><li class="none"><a href="../services/intake-service.html">Intake Service</a></li><li class="none"><a href="../services/jsonrpc-service.html">JSON-RPC Service</a></li><li class="none"><a href="../services/jsp-service.html">JSP Service</a></li><li class="none"><a href="../services/localization-service.html">Localization Service</a></li><li class="none"><a href="../services/logging-service.html">Logging Service</a></li><li class="none"><a href="../services/mimetype-service.html">MimeType Service</a></li><li class="none"><a href="../services/naming-service.html">Naming Service</a></li><li class="none"><a href="../services/pool-service.html">Pool Service</a></li><li class="none"><a href="../services/pull-service.html">Pull Service</a></li><li class="none"><a href="../services/resources-service.html">Resources Service</a></li><li class="none"><a href="../services/rundata-service.html">RunData Service</a></li><li class="none"><a href="../services/scheduler-service.html">Scheduler Service</a></li><li class="expanded"><a href="../services/security-service.html">Security Service</a><ul><li class="none"><a href="../services/ldap-security-service.html">LDAP Security Service</a></li><li class="none"><a href="../services/torque-security-service.html">Torque Security Service</a></li><li class="none"><a href="../services/torque-security-schema.html">Torque Security Service Schema</a></li></ul></li><li class="none"><a href="../services/servlet-service.html">Servlet Service</a></li><li class="none"><a href="../services/session-service.html">Session Service</a></li><li class="none"><a href="../services/template-service.html">Template Service</a></li><li class="none"><a href="../services/ui-service.html">UI Service</a></li><li class="none"><a href="../services/uniqueid-service.html">Unique ID Service</a></li><li class="none"><a href="../services/upload-service.html">Upload Service</a></li><li class="none"><a href="../services/velocity-service.html">Velocity Service</a></li><li class="none"><a href="../services/xmlrpc-service.html">XML-RPC Service</a></li><li class="none"><a href="../services/xslt-service.html">XSLT Service</a></li><li class="none"><strong><a href="../services/yaafi-component-service.html">Yaafi Component Service</a></strong></li></ul></li><li class="collapsed"><a href="../howto/index.html">Howtos</a></li><li class="none"><a href="../apidocs/index.html">JavaDocs</a></li></ul></div><div id="menuDevelopment"><h5>Development</h5><ul><li class="none"><a href="../proposals.html">Proposals</a></li><li class="none"><a href="../how-to-help.html">How To Help</a></li><li class="none"><a href="../todo.html">Todo</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="../development-process.html">Development Process</a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/mavenlogo_builtby_w.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Avalon_Component_Service"></a><h2>Avalon Component Service</h2>
+<p>
+The Yaafi Component service loads external modules which implement the
+<a href="http://excalibur.apache.org/" class="externalLink" title="External Link">Avalon</a> lifecycle interfaces.  This is
+a bridge between the Turbine 2.3 we have today and the
+<a href="http://turbine.apache.org/fulcrum/">Fulcrum</a> components
+that until now have only been available to Turbine 2.4 (yet to be released).
+</p>
+
+<p>
+Most of the Fulcrum components should work using this service, however it is
+only being added in Turbine 2.3.3, so you should ensure that you perform your
+own testing to verify the desired behaviour of your application, though note
+that the author is successfully running <a href="http://db.apache.org/torque/" class="externalLink" title="External Link">
+Torque</a>,
+<a href="http://turbine.apache.org/fulcrum/fulcrum-quartz/">
+Fulcrum Quartz</a> as well as making use for Yaafi's
+<a href="http://turbine.apache.org/fulcrum/fulcrum-yaafi/services/servicemanagerservice.html">
+ServiceManager</a> and
+<a href="http://turbine.apache.org/fulcrum/fulcrum-yaafi/services/systempropertyservice.html">
+SystemProperty</a> services - all under Turbine 2.3.
+</p>
+
+</div><div class="section"><a name="Dependencies"></a><h2>Dependencies</h2>
+
+<p>
+If you are using Yaafi Component Service you will need to add Yaafi as a
+dependency (the following is from a Maven 2 POM):
+</p>
+
+    <div class="source"><pre>
+    &lt;dependency&gt;
+      &lt;groupId&gt;fulcrum&lt;/groupId&gt;
+      &lt;artifactId&gt;fulcrum-yaafi&lt;/artifactId&gt;
+      &lt;version&gt;1.0.4&lt;/version&gt;
+      &lt;type&gt;jar&lt;/type&gt;
+      &lt;scope&gt;compile&lt;/scope&gt;
+    &lt;/dependency&gt;
+</pre></div>
+  
+
+<p>
+If you are no longer using the <a href="avalon-component-service.html">
+Avalon Component Service</a> you can stop your build from including the
+Excalibur dependencies thus (again from a Maven 2 POM):
+</p>
+
+    <div class="source"><pre>
+    &lt;!--
+    There are a few Turbine dependencies, included for the AvalonComponentService,
+    that are not needed when using YaafiComponentService as a replacement.
+    --&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.apache.turbine&lt;/groupId&gt;
+      &lt;artifactId&gt;turbine&lt;/artifactId&gt;
+      &lt;version&gt;2.3.2&lt;/version&gt;
+      &lt;type&gt;jar&lt;/type&gt;
+      &lt;scope&gt;compile&lt;/scope&gt;
+      &lt;exclusions&gt;
+        &lt;exclusion&gt;
+          &lt;groupId&gt;excalibur-component&lt;/groupId&gt;
+          &lt;artifactId&gt;excalibur-component&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+        &lt;exclusion&gt;
+          &lt;groupId&gt;junitperf&lt;/groupId&gt;
+          &lt;artifactId&gt;junitperf&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+        &lt;exclusion&gt;
+          &lt;groupId&gt;excalibur-instrument&lt;/groupId&gt;
+          &lt;artifactId&gt;excalibur-instrument-api&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+        &lt;exclusion&gt;
+          &lt;groupId&gt;excalibur-logger&lt;/groupId&gt;
+          &lt;artifactId&gt;excalibur-logger&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+        &lt;exclusion&gt;
+          &lt;groupId&gt;excalibur-pool&lt;/groupId&gt;
+          &lt;artifactId&gt;excalibur-pool-api&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+      &lt;/exclusions&gt;
+    &lt;/dependency&gt;
+</pre></div>
+  
+
+<p>
+The above is based on the
+<a href="http://repo1.maven.org/maven2/turbine/turbine/2.3.2/turbine-2.3.2.pom" class="externalLink" title="External Link">
+turbine-2.3.2 pom</a> that exists in the default maven 2 repository.  Whether or
+not you need the above will depend on how these dependencies are declared in the
+final version of the Turbine 2.3.3 POM (just including Yaafi should be enough if
+they are all declared as optional).
+</p>
+</div><div class="section"><a name="Configuration"></a><h2>Configuration</h2>
+
+
+    <div class="source"><pre>
+# -------------------------------------------------------------------
+#
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.YaafiComponentService.classname=org.apache.turbine.services.avaloncomponent.ACSYaafiComponentService
+services.YaafiComponentService.earlyInit=true
+...
+
+# -------------------------------------------------------------------
+#
+#  Y A A F I   C O M P O N E N T   S E R V I C E
+#
+# -------------------------------------------------------------------
+# Components implementing the avalon lifecycle interfaces can be
+# loaded, configured and initialized by Turbine
+# -------------------------------------------------------------------
+
+services.YaafiComponentService.containerConfiguration = /WEB-INF/conf/containerConfiguration.xml
+</pre></div>
+  
+<p>
+In /WEB-INF/conf you should provide containerConfiguration.xml:
+</p>
+
+    <div class="source"><pre>
+&lt;fulcrum-yaafi&gt;
+  &lt;componentRoles&gt;
+    &lt;location&gt;/WEB-INF/conf/componentRoles.xml&lt;/location&gt;
+  &lt;/componentRoles&gt;
+  &lt;componentConfiguration&gt;
+    &lt;location&gt;/WEB-INF/conf/componentConfiguration.xml&lt;/location&gt;
+  &lt;/componentConfiguration&gt;
+&lt;/fulcrum-yaafi&gt;
+</pre></div>
+  
+<p>
+componentRoles.xml:
+</p>
+
+    <div class="source"><pre>
+&lt;role-list&gt;
+    &lt;role name="org.apache.fulcrum.yaafi.service.servicemanager.ServiceManagerService"
+          default-class="org.apache.fulcrum.yaafi.service.servicemanager.ServiceManagerServiceImpl"/&gt;
+    &lt;role name="org.apache.fulcrum.yaafi.service.systemproperty.SystemPropertyService"
+          shorthand="SystemPropertyService"
+          default-class="org.apache.fulcrum.yaafi.service.systemproperty.SystemPropertyServiceImpl"
+          early-init="true"/&gt;
+    &lt;role name="org.apache.torque.avalon.Torque"
+          shorthand="torque"
+          default-class="org.apache.torque.avalon.TorqueComponent"/&gt;
+    &lt;!-- Details of other components and services you want to use. --&gt;
+&lt;/role-list&gt;</pre></div>
+  
+<p>
+and componentConfiguration.xml:
+</p>
+
+    <div class="source"><pre>
+&lt;componentConfig&gt;
+    &lt;SystemPropertyService&gt;
+        &lt;property name="my.property"&gt;my property value&lt;/property&gt;
+    &lt;/SystemPropertyService&gt;
+
+    &lt;torque&gt;
+        &lt;configfile&gt;WEB-INF/conf/Torque.properties&lt;/configfile&gt;
+    &lt;/torque&gt;
+
+    &lt;!-- Configuration for other components and services. --&gt;
+&lt;/componentConfig&gt;
+</pre></div>
+  
+<p>
+No changes to torque.properties are required.
+</p>
+<p>
+If all goes well you should see the following in your log file when Turbine
+starts up (actual output will depend on your logging configuration):
+</p>
+
+    <div class="source"><pre>
+...INFO...services.BaseServiceBroker - Added Mapping for Service: ACSYaafiComponentService
+...INFO...services.BaseServiceBroker - Start Initializing service (early): ACSYaafiComponentService
+...INFO...avaloncomponent.ACSYaafiComponentService - Initializing ACSYaafiComponentService ...
+...
+...DEBUG...avalon - Incarnating the service org.apache.fulcrum.yaafi.service.servicemanager.ServiceManagerService
+...
+...DEBUG...avalon - Incarnating the service SystemPropertyService
+...
+...DEBUG...avalon - Incarnating the service torque
+...INFO...avalon - YAAFI Avalon Service Container is up and running
+...INFO...services.BaseServiceBroker - Finish Initializing service (early): ACSYaafiComponentService
+</pre></div>
+  
+
+</div><div class="section"><a name="Usage"></a><h2>Usage</h2>
+
+<p>
+If you plan to use the decoupled Torque in your application, you should leave
+the Yaafi Component Service configured at all times. It is started at early
+startup time.  See the
+<a href="http://turbine.apache.org/fulcrum/fulcrum-yaafi/">
+Yaafi documentation</a> for more information and for details of the various
+<a href="http://turbine.apache.org/fulcrum/fulcrum-yaafi/services/">
+services</a> that it provides and the
+<a href="http://turbine.apache.org/fulcrum/">Fulcrum site</a> for
+details of the other components that are available.
+</p>
+</div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2000-2008, Apache Software Foundation</div><div class="clear"><hr></hr></div></div></body></html>

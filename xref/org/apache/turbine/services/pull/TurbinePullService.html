@@ -1,854 +1,774 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<title>TurbinePullService xref</title>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" /><title>TurbinePullService xref</title>
 <link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
 </head>
 <body>
 <div id="overview"><a href="../../../../../../apidocs/org/apache/turbine/services/pull/TurbinePullService.html">View Javadoc</a></div><pre>
-<a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> org.apache.turbine.services.pull;
-<a class="jxr_linenumber" name="L2" href="#L2">2</a>   
-<a class="jxr_linenumber" name="L3" href="#L3">3</a>   
-<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * Licensed to the Apache Software Foundation (ASF) under one</em>
-<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> * or more contributor license agreements.  See the NOTICE file</em>
-<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * distributed with this work for additional information</em>
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> * regarding copyright ownership.  The ASF licenses this file</em>
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_comment"> * to you under the Apache License, Version 2.0 (the</em>
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_comment"> * "License"); you may not use this file except in compliance</em>
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_comment"> * with the License.  You may obtain a copy of the License at</em>
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing,</em>
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_comment"> * software distributed under the License is distributed on an</em>
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_comment"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</em>
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <em class="jxr_comment"> * KIND, either express or implied.  See the License for the</em>
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <em class="jxr_comment"> * specific language governing permissions and limitations</em>
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <em class="jxr_comment"> * under the License.</em>
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_comment"> */</em>
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>  
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> java.util.Iterator;
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> java.util.List;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.configuration2.Configuration;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> org.apache.fulcrum.pool.PoolService;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> org.apache.fulcrum.security.model.turbine.TurbineUserManager;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> org.apache.logging.log4j.LogManager;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> org.apache.logging.log4j.Logger;
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.Turbine;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.annotation.AnnotationProcessor;
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.om.security.User;
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.pipeline.PipelineData;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.services.InitializationException;
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.services.TurbineBaseService;
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.services.TurbineServices;
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.services.velocity.VelocityService;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> org.apache.turbine.util.RunData;
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> org.apache.velocity.context.Context;
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment"> * This is the concrete implementation of the Turbine</em>
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment"> * Pull Service.</em>
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;</em>
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment"> * These are tools that are placed in the context by the service</em>
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment"> * These tools will be made available to all your</em>
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <em class="jxr_javadoccomment"> * templates. You list the tools in the following way:</em>
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment"> * &lt;/p&gt;</em>
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment"> * &lt;pre&gt;</em>
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment"> * tool.&amp;lt;scope&amp;gt;.&amp;lt;id&amp;gt; = &amp;lt;classname&amp;gt;</em>
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>  <em class="jxr_javadoccomment"> * &amp;lt;scope&amp;gt;      is the tool scope: global, request, session,</em>
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>  <em class="jxr_javadoccomment"> *              authorized or persistent (see below for more details)</em>
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>  <em class="jxr_javadoccomment"> * &amp;lt;id&amp;gt;         is the name of the tool in the context</em>
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>  <em class="jxr_javadoccomment"> * You can configure the tools in this way:</em>
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>  <em class="jxr_javadoccomment"> * tool.&amp;lt;id&amp;gt;.&amp;lt;parameter&amp;gt; = &amp;lt;value&amp;gt;</em>
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>  <em class="jxr_javadoccomment"> * So if you find "global", "request", "session" or "persistent" as second</em>
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment"> * part, it is a configuration to put a tool into the toolbox, else it is a</em>
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>  <em class="jxr_javadoccomment"> * tool specific configuration.</em>
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment"> * For example:</em>
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>  <em class="jxr_javadoccomment"> * tool.global.ui    = org.apache.turbine.util.pull.UIManager</em>
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>  <em class="jxr_javadoccomment"> * tool.global.mm    = org.apache.turbine.util.pull.MessageManager</em>
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>  <em class="jxr_javadoccomment"> * tool.request.link = org.apache.turbine.services.pull.tools.TemplateLink</em>
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>  <em class="jxr_javadoccomment"> * tool.request.page = org.apache.turbine.util.template.TemplatePageAttributes</em>
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>  <em class="jxr_javadoccomment"> * Then:</em>
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>  <em class="jxr_javadoccomment"> * tool.ui.skin = default</em>
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>  <em class="jxr_javadoccomment"> * configures the value of "skin" for the "ui" tool.</em>
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>  <em class="jxr_javadoccomment"> * Tools are accessible in all templates by the &amp;lt;id&amp;gt; given</em>
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>  <em class="jxr_javadoccomment"> * to the tool. So for the above listings the UIManager would</em>
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>  <em class="jxr_javadoccomment"> * be available as $ui, the MessageManager as $mm, the TemplateLink</em>
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>  <em class="jxr_javadoccomment"> * as $link and the TemplatePageAttributes as $page.</em>
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>  <em class="jxr_javadoccomment"> * You should avoid using tool names called "global", "request",</em>
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>  <em class="jxr_javadoccomment"> * "session" or "persistent" because of clashes with the possible Scopes.</em>
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>  <em class="jxr_javadoccomment"> * Scopes:</em>
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>  <em class="jxr_javadoccomment"> *  global:     tool is instantiated once and that instance is available</em>
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>  <em class="jxr_javadoccomment"> *              to all templates for all requests. Tool must be threadsafe.</em>
-<a class="jxr_linenumber" name="L91" href="#L91">91</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L92" href="#L92">92</a>  <em class="jxr_javadoccomment"> *  request:    tool is instantiated once for each request (although the</em>
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>  <em class="jxr_javadoccomment"> *              PoolService is used to recycle instances). Tool need not</em>
-<a class="jxr_linenumber" name="L94" href="#L94">94</a>  <em class="jxr_javadoccomment"> *              be threadsafe.</em>
-<a class="jxr_linenumber" name="L95" href="#L95">95</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L96" href="#L96">96</a>  <em class="jxr_javadoccomment"> *  session:    tool is instantiated once for each user session, and is</em>
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>  <em class="jxr_javadoccomment"> *              stored in the session.  These tools do not need to be</em>
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>  <em class="jxr_javadoccomment"> *              threadsafe.</em>
-<a class="jxr_linenumber" name="L99" href="#L99">99</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L100" href="#L100">100</a> <em class="jxr_javadoccomment"> *  authorized: tool is instantiated once for each user session once the</em>
-<a class="jxr_linenumber" name="L101" href="#L101">101</a> <em class="jxr_javadoccomment"> *              user logs in. After this, it is a normal session tool.</em>
-<a class="jxr_linenumber" name="L102" href="#L102">102</a> <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L103" href="#L103">103</a> <em class="jxr_javadoccomment"> *  persistent: tool is instantitated once for each user session once</em>
-<a class="jxr_linenumber" name="L104" href="#L104">104</a> <em class="jxr_javadoccomment"> *              the user logs in and is is stored in the user's permanent</em>
-<a class="jxr_linenumber" name="L105" href="#L105">105</a> <em class="jxr_javadoccomment"> *              hashtable.</em>
-<a class="jxr_linenumber" name="L106" href="#L106">106</a> <em class="jxr_javadoccomment"> *              This means for a logged in user the tool will be persisted</em>
-<a class="jxr_linenumber" name="L107" href="#L107">107</a> <em class="jxr_javadoccomment"> *              in the user's objectdata. Tool should be Serializable.  These</em>
-<a class="jxr_linenumber" name="L108" href="#L108">108</a> <em class="jxr_javadoccomment"> *              tools do not need to be threadsafe.</em>
-<a class="jxr_linenumber" name="L109" href="#L109">109</a> <em class="jxr_javadoccomment"> *              &lt;b&gt;persistent scope tools are deprecated in 2.3&lt;/b&gt;</em>
-<a class="jxr_linenumber" name="L110" href="#L110">110</a> <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L111" href="#L111">111</a> <em class="jxr_javadoccomment"> * Defaults: none</em>
-<a class="jxr_linenumber" name="L112" href="#L112">112</a> <em class="jxr_javadoccomment"> * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L113" href="#L113">113</a> <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L114" href="#L114">114</a> <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:jvanzyl@periapt.com" target="alexandria_uri">mailto:jvanzyl@periapt.com</a>"&gt;Jason van Zyl&lt;/a&gt;</em>
-<a class="jxr_linenumber" name="L115" href="#L115">115</a> <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:sean@informage.net" target="alexandria_uri">mailto:sean@informage.net</a>"&gt;Sean Legassick&lt;/a&gt;</em>
-<a class="jxr_linenumber" name="L116" href="#L116">116</a> <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:hps@intermeta.de" target="alexandria_uri">mailto:hps@intermeta.de</a>"&gt;Henning P. Schmiedehausen&lt;/a&gt;</em>
-<a class="jxr_linenumber" name="L117" href="#L117">117</a> <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:quintonm@bellsouth.net" target="alexandria_uri">mailto:quintonm@bellsouth.net</a>"&gt;Quinton McCombs&lt;/a&gt;</em>
-<a class="jxr_linenumber" name="L118" href="#L118">118</a> <em class="jxr_javadoccomment"> * @author &lt;a href="<a href="mailto:peter@courcoux.biz" target="alexandria_uri">mailto:peter@courcoux.biz</a>"&gt;Peter Courcoux&lt;/a&gt;</em>
-<a class="jxr_linenumber" name="L119" href="#L119">119</a> <em class="jxr_javadoccomment"> * @version $Id$</em>
-<a class="jxr_linenumber" name="L120" href="#L120">120</a> <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L121" href="#L121">121</a> <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a name="TurbinePullService" href="../../../../../org/apache/turbine/services/pull/TurbinePullService.html#TurbinePullService">TurbinePullService</a>
-<a class="jxr_linenumber" name="L122" href="#L122">122</a>         <strong class="jxr_keyword">extends</strong> <a name="TurbineBaseService" href="../../../../../org/apache/turbine/services/TurbineBaseService.html#TurbineBaseService">TurbineBaseService</a>
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>         <strong class="jxr_keyword">implements</strong> <a name="PullService" href="../../../../../org/apache/turbine/services/pull/PullService.html#PullService">PullService</a>
-<a class="jxr_linenumber" name="L124" href="#L124">124</a> {
-<a class="jxr_linenumber" name="L125" href="#L125">125</a>     <em class="jxr_javadoccomment">/** Logging */</em>
-<a class="jxr_linenumber" name="L126" href="#L126">126</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Logger log = LogManager.getLogger(TurbinePullService.<strong class="jxr_keyword">class</strong>);
-<a class="jxr_linenumber" name="L127" href="#L127">127</a> 
-<a class="jxr_linenumber" name="L128" href="#L128">128</a>     <em class="jxr_javadoccomment">/** Reference to the pool service */</em>
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>     <strong class="jxr_keyword">private</strong> PoolService pool = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L130" href="#L130">130</a> 
-<a class="jxr_linenumber" name="L131" href="#L131">131</a>     <em class="jxr_javadoccomment">/** Reference to the templating (nee Velocity) service */</em>
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>     <strong class="jxr_keyword">private</strong> <a name="VelocityService" href="../../../../../org/apache/turbine/services/velocity/VelocityService.html#VelocityService">VelocityService</a> velocity = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L133" href="#L133">133</a> 
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L135" href="#L135">135</a> <em class="jxr_javadoccomment">     * This is the container for the global web application</em>
-<a class="jxr_linenumber" name="L136" href="#L136">136</a> <em class="jxr_javadoccomment">     * tools that are used in conjunction with the</em>
-<a class="jxr_linenumber" name="L137" href="#L137">137</a> <em class="jxr_javadoccomment">     * Turbine Pull Model. All the global tools will be placed</em>
-<a class="jxr_linenumber" name="L138" href="#L138">138</a> <em class="jxr_javadoccomment">     * in this Context and be made accessible inside</em>
-<a class="jxr_linenumber" name="L139" href="#L139">139</a> <em class="jxr_javadoccomment">     * templates via the tool name specified in the TR.props</em>
-<a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">     * file.</em>
-<a class="jxr_linenumber" name="L141" href="#L141">141</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>     <strong class="jxr_keyword">private</strong> Context globalContext;
-<a class="jxr_linenumber" name="L143" href="#L143">143</a> 
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L145" href="#L145">145</a> <em class="jxr_javadoccomment">     * This inner class is used in the lists below to store the</em>
-<a class="jxr_linenumber" name="L146" href="#L146">146</a> <em class="jxr_javadoccomment">     * tool name and class for each of request, session and persistent</em>
-<a class="jxr_linenumber" name="L147" href="#L147">147</a> <em class="jxr_javadoccomment">     * tools</em>
-<a class="jxr_linenumber" name="L148" href="#L148">148</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> ToolData
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>     {
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>         String toolName;
-<a class="jxr_linenumber" name="L152" href="#L152">152</a>         String toolClassName;
-<a class="jxr_linenumber" name="L153" href="#L153">153</a>         Class&lt;ApplicationTool&gt; toolClass;
-<a class="jxr_linenumber" name="L154" href="#L154">154</a> 
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>         <strong class="jxr_keyword">public</strong> ToolData(String toolName, String toolClassName, Class&lt;ApplicationTool&gt; toolClass)
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>         {
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>             <strong class="jxr_keyword">this</strong>.toolName = toolName;
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>             <strong class="jxr_keyword">this</strong>.toolClassName = toolClassName;
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>             <strong class="jxr_keyword">this</strong>.toolClass = toolClass;
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>         }
-<a class="jxr_linenumber" name="L161" href="#L161">161</a>     }
-<a class="jxr_linenumber" name="L162" href="#L162">162</a> 
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>     <em class="jxr_javadoccomment">/** Internal list of global tools */</em>
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>     <strong class="jxr_keyword">private</strong> List&lt;ToolData&gt; globalTools;
-<a class="jxr_linenumber" name="L165" href="#L165">165</a> 
-<a class="jxr_linenumber" name="L166" href="#L166">166</a>     <em class="jxr_javadoccomment">/** Internal list of request tools */</em>
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>     <strong class="jxr_keyword">private</strong> List&lt;ToolData&gt; requestTools;
-<a class="jxr_linenumber" name="L168" href="#L168">168</a> 
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>     <em class="jxr_javadoccomment">/** Internal list of session tools */</em>
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>     <strong class="jxr_keyword">private</strong> List&lt;ToolData&gt; sessionTools;
-<a class="jxr_linenumber" name="L171" href="#L171">171</a> 
-<a class="jxr_linenumber" name="L172" href="#L172">172</a>     <em class="jxr_javadoccomment">/** Internal list of authorized tools */</em>
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>     <strong class="jxr_keyword">private</strong> List&lt;ToolData&gt; authorizedTools;
-<a class="jxr_linenumber" name="L174" href="#L174">174</a> 
-<a class="jxr_linenumber" name="L175" href="#L175">175</a>     <em class="jxr_javadoccomment">/** Internal list of persistent tools */</em>
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>     <strong class="jxr_keyword">private</strong> List&lt;ToolData&gt; persistentTools;
-<a class="jxr_linenumber" name="L177" href="#L177">177</a> 
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>     <em class="jxr_javadoccomment">/** Directory where application tool resources are stored.*/</em>
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>     <strong class="jxr_keyword">private</strong> String resourcesDirectory;
-<a class="jxr_linenumber" name="L180" href="#L180">180</a> 
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>     <em class="jxr_javadoccomment">/** Should we refresh the application tools on a per request basis? */</em>
-<a class="jxr_linenumber" name="L182" href="#L182">182</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> refreshToolsPerRequest = false;
-<a class="jxr_linenumber" name="L183" href="#L183">183</a> 
-<a class="jxr_linenumber" name="L184" href="#L184">184</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L185" href="#L185">185</a> <em class="jxr_javadoccomment">     * Called the first time the Service is used.</em>
-<a class="jxr_linenumber" name="L186" href="#L186">186</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>     @Override
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> init()
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>         <strong class="jxr_keyword">throws</strong> <a name="InitializationException" href="../../../../../org/apache/turbine/services/InitializationException.html#InitializationException">InitializationException</a>
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>     {
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>         <strong class="jxr_keyword">try</strong>
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>         {
-<a class="jxr_linenumber" name="L193" href="#L193">193</a> 		    pool = (PoolService)TurbineServices.getInstance().getService(PoolService.ROLE);
-<a class="jxr_linenumber" name="L194" href="#L194">194</a> 
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>             <strong class="jxr_keyword">if</strong> (pool == <strong class="jxr_keyword">null</strong>)
-<a class="jxr_linenumber" name="L196" href="#L196">196</a>             {
-<a class="jxr_linenumber" name="L197" href="#L197">197</a>                 <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="InitializationException" href="../../../../../org/apache/turbine/services/InitializationException.html#InitializationException">InitializationException</a>(<span class="jxr_string">"Pull Service requires"</span>
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>                     + <span class="jxr_string">" configured Pool Service!"</span>);
-<a class="jxr_linenumber" name="L199" href="#L199">199</a>             }
-<a class="jxr_linenumber" name="L200" href="#L200">200</a> 
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>             initPullService();
-<a class="jxr_linenumber" name="L202" href="#L202">202</a>             <em class="jxr_comment">// Make sure to setInit(true) because Tools may</em>
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>             <em class="jxr_comment">// make calls back to the TurbinePull static methods</em>
-<a class="jxr_linenumber" name="L204" href="#L204">204</a>             <em class="jxr_comment">// which causes an init loop.</em>
-<a class="jxr_linenumber" name="L205" href="#L205">205</a>             setInit(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L206" href="#L206">206</a> 
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>             <em class="jxr_comment">// Do _NOT_ move this before the setInit(true)</em>
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>             velocity = (<a name="VelocityService" href="../../../../../org/apache/turbine/services/velocity/VelocityService.html#VelocityService">VelocityService</a>)TurbineServices.getInstance().getService(VelocityService.SERVICE_NAME);
-<a class="jxr_linenumber" name="L209" href="#L209">209</a> 
-<a class="jxr_linenumber" name="L210" href="#L210">210</a>             <strong class="jxr_keyword">if</strong> (velocity != <strong class="jxr_keyword">null</strong>)
-<a class="jxr_linenumber" name="L211" href="#L211">211</a>             {
-<a class="jxr_linenumber" name="L212" href="#L212">212</a>                 initPullTools();
-<a class="jxr_linenumber" name="L213" href="#L213">213</a>             }
-<a class="jxr_linenumber" name="L214" href="#L214">214</a>             <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L215" href="#L215">215</a>             {
-<a class="jxr_linenumber" name="L216" href="#L216">216</a>                 log.info(<span class="jxr_string">"Velocity Service not configured, skipping pull tools!"</span>);
-<a class="jxr_linenumber" name="L217" href="#L217">217</a>             }
-<a class="jxr_linenumber" name="L218" href="#L218">218</a>         }
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>         <strong class="jxr_keyword">catch</strong> (Exception e)
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>         {
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a name="InitializationException" href="../../../../../org/apache/turbine/services/InitializationException.html#InitializationException">InitializationException</a>(<span class="jxr_string">"TurbinePullService failed to initialize"</span>, e);
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>         }
-<a class="jxr_linenumber" name="L223" href="#L223">223</a>     }
-<a class="jxr_linenumber" name="L224" href="#L224">224</a> 
-<a class="jxr_linenumber" name="L225" href="#L225">225</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L226" href="#L226">226</a> <em class="jxr_javadoccomment">     * Initialize the pull service</em>
-<a class="jxr_linenumber" name="L227" href="#L227">227</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L228" href="#L228">228</a> <em class="jxr_javadoccomment">     * @throws Exception A problem happened when starting up</em>
-<a class="jxr_linenumber" name="L229" href="#L229">229</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L230" href="#L230">230</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initPullService()
-<a class="jxr_linenumber" name="L231" href="#L231">231</a>         <strong class="jxr_keyword">throws</strong> Exception
-<a class="jxr_linenumber" name="L232" href="#L232">232</a>     {
-<a class="jxr_linenumber" name="L233" href="#L233">233</a>         <em class="jxr_comment">// This is the per-service configuration, prefixed with services.PullService</em>
-<a class="jxr_linenumber" name="L234" href="#L234">234</a>         Configuration conf = getConfiguration();
-<a class="jxr_linenumber" name="L235" href="#L235">235</a> 
-<a class="jxr_linenumber" name="L236" href="#L236">236</a>         <em class="jxr_comment">// Get the resources directory that is specificed</em>
-<a class="jxr_linenumber" name="L237" href="#L237">237</a>         <em class="jxr_comment">// in the TR.props or default to "resources", relative to the webapp.</em>
-<a class="jxr_linenumber" name="L238" href="#L238">238</a>         resourcesDirectory = conf.getString(
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>             TOOL_RESOURCES_DIR_KEY,
-<a class="jxr_linenumber" name="L240" href="#L240">240</a>             TOOL_RESOURCES_DIR_DEFAULT);
-<a class="jxr_linenumber" name="L241" href="#L241">241</a> 
-<a class="jxr_linenumber" name="L242" href="#L242">242</a>         <em class="jxr_comment">// Should we refresh the tool box on a per</em>
-<a class="jxr_linenumber" name="L243" href="#L243">243</a>         <em class="jxr_comment">// request basis.</em>
-<a class="jxr_linenumber" name="L244" href="#L244">244</a>         refreshToolsPerRequest =
-<a class="jxr_linenumber" name="L245" href="#L245">245</a>             conf.getBoolean(
-<a class="jxr_linenumber" name="L246" href="#L246">246</a>                 TOOLS_PER_REQUEST_REFRESH_KEY,
-<a class="jxr_linenumber" name="L247" href="#L247">247</a>                 TOOLS_PER_REQUEST_REFRESH_DEFAULT);
-<a class="jxr_linenumber" name="L248" href="#L248">248</a> 
-<a class="jxr_linenumber" name="L249" href="#L249">249</a>         <em class="jxr_comment">// Log the fact that the application tool box will</em>
-<a class="jxr_linenumber" name="L250" href="#L250">250</a>         <em class="jxr_comment">// be refreshed on a per request basis.</em>
-<a class="jxr_linenumber" name="L251" href="#L251">251</a>         <strong class="jxr_keyword">if</strong> (refreshToolsPerRequest)
-<a class="jxr_linenumber" name="L252" href="#L252">252</a>         {
-<a class="jxr_linenumber" name="L253" href="#L253">253</a>             log.info(<span class="jxr_string">"Pull Model tools will be refreshed on a per request basis."</span>);
-<a class="jxr_linenumber" name="L254" href="#L254">254</a>         }
-<a class="jxr_linenumber" name="L255" href="#L255">255</a>     }
-<a class="jxr_linenumber" name="L256" href="#L256">256</a> 
-<a class="jxr_linenumber" name="L257" href="#L257">257</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L258" href="#L258">258</a> <em class="jxr_javadoccomment">     * Initialize the pull tools. At this point, the</em>
-<a class="jxr_linenumber" name="L259" href="#L259">259</a> <em class="jxr_javadoccomment">     * service must be marked as initialized, because the</em>
-<a class="jxr_linenumber" name="L260" href="#L260">260</a> <em class="jxr_javadoccomment">     * tools may call the methods of this service via the</em>
-<a class="jxr_linenumber" name="L261" href="#L261">261</a> <em class="jxr_javadoccomment">     * static facade class TurbinePull.</em>
-<a class="jxr_linenumber" name="L262" href="#L262">262</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L263" href="#L263">263</a> <em class="jxr_javadoccomment">     * @throws Exception A problem happened when starting up</em>
-<a class="jxr_linenumber" name="L264" href="#L264">264</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initPullTools()
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>         <strong class="jxr_keyword">throws</strong> Exception
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>     {
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>         <em class="jxr_comment">// And for reasons I never really fully understood,</em>
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>         <em class="jxr_comment">// the tools directive is toplevel without the service</em>
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>         <em class="jxr_comment">// prefix. This is brain-damaged but for legacy reasons we</em>
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>         <em class="jxr_comment">// keep this. So this is the global turbine configuration:</em>
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>         Configuration conf = Turbine.getConfiguration();
-<a class="jxr_linenumber" name="L273" href="#L273">273</a> 
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>         <em class="jxr_comment">// Grab each list of tools that are to be used (for global scope,</em>
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>         <em class="jxr_comment">// request scope, authorized scope, session scope and persistent</em>
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>         <em class="jxr_comment">// scope tools). They are specified respectively in the TR.props</em>
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>         <em class="jxr_comment">// like this:</em>
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>         <em class="jxr_comment">//</em>
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>         <em class="jxr_comment">// tool.global.ui = org.apache.turbine.util.pull.UIManager</em>
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>         <em class="jxr_comment">// tool.global.mm = org.apache.turbine.util.pull.MessageManager</em>
-<a class="jxr_linenumber" name="L281" href="#L281">281</a>         <em class="jxr_comment">//</em>
-<a class="jxr_linenumber" name="L282" href="#L282">282</a>         <em class="jxr_comment">// tool.request.link = org.apache.turbine.services.pull.tools.TemplateLink</em>
-<a class="jxr_linenumber" name="L283" href="#L283">283</a>         <em class="jxr_comment">//</em>
-<a class="jxr_linenumber" name="L284" href="#L284">284</a>         <em class="jxr_comment">// tool.session.basket = org.sample.util.ShoppingBasket;</em>
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>         <em class="jxr_comment">//</em>
-<a class="jxr_linenumber" name="L286" href="#L286">286</a>         <em class="jxr_comment">// tool.persistent.ui = org.apache.turbine.services.pull.util.PersistentUIManager</em>
-<a class="jxr_linenumber" name="L287" href="#L287">287</a> 
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>         log.debug(<span class="jxr_string">"Global Tools:"</span>);
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>         globalTools     = getTools(conf.subset(GLOBAL_TOOL));
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>         log.debug(<span class="jxr_string">"Request Tools:"</span>);
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>         requestTools    = getTools(conf.subset(REQUEST_TOOL));
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>         log.debug(<span class="jxr_string">"Session Tools:"</span>);
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>         sessionTools    = getTools(conf.subset(SESSION_TOOL));
-<a class="jxr_linenumber" name="L294" href="#L294">294</a>         log.debug(<span class="jxr_string">"Authorized Tools:"</span>);
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>         authorizedTools = getTools(conf.subset(AUTHORIZED_TOOL));
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>         log.debug(<span class="jxr_string">"Persistent Tools:"</span>);
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>         persistentTools = getTools(conf.subset(PERSISTENT_TOOL));
-<a class="jxr_linenumber" name="L298" href="#L298">298</a> 
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>         <em class="jxr_comment">// Create and populate the global context right now</em>
-<a class="jxr_linenumber" name="L300" href="#L300">300</a> 
-<a class="jxr_linenumber" name="L301" href="#L301">301</a>         <em class="jxr_comment">// This is unholy, because it entwines the VelocityService and</em>
-<a class="jxr_linenumber" name="L302" href="#L302">302</a>         <em class="jxr_comment">// the Pull Service even further. However, there isn't much we can</em>
-<a class="jxr_linenumber" name="L303" href="#L303">303</a>         <em class="jxr_comment">// do for the 2.3 release. Expect this to go post-2.3</em>
-<a class="jxr_linenumber" name="L304" href="#L304">304</a>         globalContext = velocity.getNewContext();
-<a class="jxr_linenumber" name="L305" href="#L305">305</a> 
-<a class="jxr_linenumber" name="L306" href="#L306">306</a>         populateWithGlobalTools(globalContext);
-<a class="jxr_linenumber" name="L307" href="#L307">307</a>     }
-<a class="jxr_linenumber" name="L308" href="#L308">308</a> 
-<a class="jxr_linenumber" name="L309" href="#L309">309</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L310" href="#L310">310</a> <em class="jxr_javadoccomment">     * Retrieve the tool names and classes for the tools defined</em>
-<a class="jxr_linenumber" name="L311" href="#L311">311</a> <em class="jxr_javadoccomment">     * in the configuration file with the prefix given.</em>
-<a class="jxr_linenumber" name="L312" href="#L312">312</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L313" href="#L313">313</a> <em class="jxr_javadoccomment">     * @param toolConfig The part of the configuration describing some tools</em>
-<a class="jxr_linenumber" name="L314" href="#L314">314</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L315" href="#L315">315</a>     @SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
-<a class="jxr_linenumber" name="L316" href="#L316">316</a>     <strong class="jxr_keyword">private</strong> List&lt;ToolData&gt; getTools(Configuration toolConfig)
-<a class="jxr_linenumber" name="L317" href="#L317">317</a>     {
-<a class="jxr_linenumber" name="L318" href="#L318">318</a>         List&lt;ToolData&gt; tools = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
-<a class="jxr_linenumber" name="L319" href="#L319">319</a> 
-<a class="jxr_linenumber" name="L320" href="#L320">320</a>         <em class="jxr_comment">// There might not be any tools for this prefix</em>
-<a class="jxr_linenumber" name="L321" href="#L321">321</a>         <em class="jxr_comment">// so return an empty list.</em>
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>         <strong class="jxr_keyword">if</strong> (toolConfig == <strong class="jxr_keyword">null</strong>)
-<a class="jxr_linenumber" name="L323" href="#L323">323</a>         {
-<a class="jxr_linenumber" name="L324" href="#L324">324</a>             <strong class="jxr_keyword">return</strong> tools;
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>         }
-<a class="jxr_linenumber" name="L326" href="#L326">326</a> 
-<a class="jxr_linenumber" name="L327" href="#L327">327</a>         <strong class="jxr_keyword">for</strong> (Iterator&lt;String&gt; it = toolConfig.getKeys(); it.hasNext();)
-<a class="jxr_linenumber" name="L328" href="#L328">328</a>         {
-<a class="jxr_linenumber" name="L329" href="#L329">329</a>             String toolName = it.next();
-<a class="jxr_linenumber" name="L330" href="#L330">330</a>             String toolClassName = toolConfig.getString(toolName);
-<a class="jxr_linenumber" name="L331" href="#L331">331</a> 
-<a class="jxr_linenumber" name="L332" href="#L332">332</a>             <strong class="jxr_keyword">try</strong>
-<a class="jxr_linenumber" name="L333" href="#L333">333</a>             {
-<a class="jxr_linenumber" name="L334" href="#L334">334</a>                 <em class="jxr_comment">// Create an instance of the tool class.</em>
-<a class="jxr_linenumber" name="L335" href="#L335">335</a>                 Class&lt;ApplicationTool&gt; toolClass = (Class&lt;ApplicationTool&gt;) Class.forName(toolClassName);
-<a class="jxr_linenumber" name="L336" href="#L336">336</a> 
-<a class="jxr_linenumber" name="L337" href="#L337">337</a>                 <em class="jxr_comment">// Add the tool to the list being built.</em>
-<a class="jxr_linenumber" name="L338" href="#L338">338</a>                 tools.add(<strong class="jxr_keyword">new</strong> ToolData(toolName, toolClassName, toolClass));
-<a class="jxr_linenumber" name="L339" href="#L339">339</a> 
-<a class="jxr_linenumber" name="L340" href="#L340">340</a>                 log.info(<span class="jxr_string">"Tool {} to add to the context as '${}'"</span>, toolClassName, toolName);
-<a class="jxr_linenumber" name="L341" href="#L341">341</a>             }
-<a class="jxr_linenumber" name="L342" href="#L342">342</a>             <strong class="jxr_keyword">catch</strong> (NoClassDefFoundError | ClassNotFoundException e)
-<a class="jxr_linenumber" name="L343" href="#L343">343</a>             {
-<a class="jxr_linenumber" name="L344" href="#L344">344</a>                 log.error(<span class="jxr_string">"Cannot instantiate tool class {}"</span>, toolClassName, e);
-<a class="jxr_linenumber" name="L345" href="#L345">345</a>             }
-<a class="jxr_linenumber" name="L346" href="#L346">346</a>         }
-<a class="jxr_linenumber" name="L347" href="#L347">347</a> 
-<a class="jxr_linenumber" name="L348" href="#L348">348</a>         <strong class="jxr_keyword">return</strong> tools;
-<a class="jxr_linenumber" name="L349" href="#L349">349</a>     }
-<a class="jxr_linenumber" name="L350" href="#L350">350</a> 
-<a class="jxr_linenumber" name="L351" href="#L351">351</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L352" href="#L352">352</a> <em class="jxr_javadoccomment">     * Return the Context which contains all global tools that</em>
-<a class="jxr_linenumber" name="L353" href="#L353">353</a> <em class="jxr_javadoccomment">     * are to be used in conjunction with the Turbine</em>
-<a class="jxr_linenumber" name="L354" href="#L354">354</a> <em class="jxr_javadoccomment">     * Pull Model. The tools are refreshed every time the</em>
-<a class="jxr_linenumber" name="L355" href="#L355">355</a> <em class="jxr_javadoccomment">     * global Context is pulled.</em>
-<a class="jxr_linenumber" name="L356" href="#L356">356</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L357" href="#L357">357</a>     @Override
-<a class="jxr_linenumber" name="L358" href="#L358">358</a>     <strong class="jxr_keyword">public</strong> Context getGlobalContext()
-<a class="jxr_linenumber" name="L359" href="#L359">359</a>     {
-<a class="jxr_linenumber" name="L360" href="#L360">360</a>         <strong class="jxr_keyword">if</strong> (refreshToolsPerRequest)
-<a class="jxr_linenumber" name="L361" href="#L361">361</a>         {
-<a class="jxr_linenumber" name="L362" href="#L362">362</a>             refreshGlobalTools();
-<a class="jxr_linenumber" name="L363" href="#L363">363</a>         }
-<a class="jxr_linenumber" name="L364" href="#L364">364</a>         <strong class="jxr_keyword">return</strong> globalContext;
-<a class="jxr_linenumber" name="L365" href="#L365">365</a>     }
-<a class="jxr_linenumber" name="L366" href="#L366">366</a> 
-<a class="jxr_linenumber" name="L367" href="#L367">367</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L368" href="#L368">368</a> <em class="jxr_javadoccomment">     * Populate the given context with all request, session, authorized</em>
-<a class="jxr_linenumber" name="L369" href="#L369">369</a> <em class="jxr_javadoccomment">     * and persistent scope tools (it is assumed that the context</em>
-<a class="jxr_linenumber" name="L370" href="#L370">370</a> <em class="jxr_javadoccomment">     * already wraps the global context, and thus already contains</em>
-<a class="jxr_linenumber" name="L371" href="#L371">371</a> <em class="jxr_javadoccomment">     * the global tools).</em>
-<a class="jxr_linenumber" name="L372" href="#L372">372</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L373" href="#L373">373</a> <em class="jxr_javadoccomment">     * @param context a Velocity Context to populate</em>
-<a class="jxr_linenumber" name="L374" href="#L374">374</a> <em class="jxr_javadoccomment">     * @param data a RunData object for request specific data</em>
-<a class="jxr_linenumber" name="L375" href="#L375">375</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L376" href="#L376">376</a>     @Override
-<a class="jxr_linenumber" name="L377" href="#L377">377</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> populateContext(Context context, <a name="RunData" href="../../../../../org/apache/turbine/util/RunData.html#RunData">RunData</a> data)
-<a class="jxr_linenumber" name="L378" href="#L378">378</a>     {
-<a class="jxr_linenumber" name="L379" href="#L379">379</a>         populateWithRequestTools(context, data);
-<a class="jxr_linenumber" name="L380" href="#L380">380</a> 
-<a class="jxr_linenumber" name="L381" href="#L381">381</a>         <em class="jxr_comment">// session tools (whether session-only or persistent are</em>
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>         <em class="jxr_comment">// very similar, so the same method is used - the</em>
-<a class="jxr_linenumber" name="L383" href="#L383">383</a>         <em class="jxr_comment">// boolean parameter indicates whether get/setPerm is to be used</em>
-<a class="jxr_linenumber" name="L384" href="#L384">384</a>         <em class="jxr_comment">// rather than get/setTemp)</em>
-<a class="jxr_linenumber" name="L385" href="#L385">385</a> 
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>         <em class="jxr_comment">//</em>
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>         <em class="jxr_comment">// Session Tool start right at the session once the user has been set</em>
-<a class="jxr_linenumber" name="L388" href="#L388">388</a>         <em class="jxr_comment">// while persistent and authorized Tools are started when the user has</em>
-<a class="jxr_linenumber" name="L389" href="#L389">389</a>         <em class="jxr_comment">// logged in</em>
-<a class="jxr_linenumber" name="L390" href="#L390">390</a>         <em class="jxr_comment">//</em>
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>         <a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user = data.getUser();
-<a class="jxr_linenumber" name="L392" href="#L392">392</a> 
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>         <em class="jxr_comment">// Note: Session tools are currently lost after the login action</em>
-<a class="jxr_linenumber" name="L394" href="#L394">394</a>         <em class="jxr_comment">// because the anonymous user is replaced the the real user object.</em>
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>         <em class="jxr_comment">// We should either store the session pull tools in the session or</em>
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>         <em class="jxr_comment">// make Turbine.loginAction() copy the session pull tools into the</em>
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>         <em class="jxr_comment">// new user object.</em>
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>         populateWithSessionTools(sessionTools, context, data, user);
-<a class="jxr_linenumber" name="L399" href="#L399">399</a> 
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>         TurbineUserManager userManager =
-<a class="jxr_linenumber" name="L401" href="#L401">401</a>         	(TurbineUserManager)<a name="TurbineServices" href="../../../../../org/apache/turbine/services/TurbineServices.html#TurbineServices">TurbineServices</a>
-<a class="jxr_linenumber" name="L402" href="#L402">402</a>         		.getInstance()
-<a class="jxr_linenumber" name="L403" href="#L403">403</a>         		.getService(TurbineUserManager.ROLE);
-<a class="jxr_linenumber" name="L404" href="#L404">404</a> 
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>         <strong class="jxr_keyword">if</strong> (!userManager.isAnonymousUser(user) &amp;&amp; user.hasLoggedIn())
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>         {
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>             populateWithSessionTools(authorizedTools, context, data, user);
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>             populateWithPermTools(persistentTools, context, data, user);
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>         }
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>     }
-<a class="jxr_linenumber" name="L411" href="#L411">411</a> 
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L413" href="#L413">413</a> <em class="jxr_javadoccomment">     * Populate the given context with all request, session, authorized</em>
-<a class="jxr_linenumber" name="L414" href="#L414">414</a> <em class="jxr_javadoccomment">     * and persistent scope tools (it is assumed that the context</em>
-<a class="jxr_linenumber" name="L415" href="#L415">415</a> <em class="jxr_javadoccomment">     * already wraps the global context, and thus already contains</em>
-<a class="jxr_linenumber" name="L416" href="#L416">416</a> <em class="jxr_javadoccomment">     * the global tools).</em>
-<a class="jxr_linenumber" name="L417" href="#L417">417</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L418" href="#L418">418</a> <em class="jxr_javadoccomment">     * @param context a Velocity Context to populate</em>
-<a class="jxr_linenumber" name="L419" href="#L419">419</a> <em class="jxr_javadoccomment">     * @param pipelineData a PipelineData object for request specific data</em>
-<a class="jxr_linenumber" name="L420" href="#L420">420</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>     @Override
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> populateContext(Context context, <a name="PipelineData" href="../../../../../org/apache/turbine/pipeline/PipelineData.html#PipelineData">PipelineData</a> pipelineData)
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>     {
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>         <a name="RunData" href="../../../../../org/apache/turbine/util/RunData.html#RunData">RunData</a> data = pipelineData.getRunData();
-<a class="jxr_linenumber" name="L425" href="#L425">425</a> 
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>         populateWithRequestTools(context, pipelineData);
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>         <em class="jxr_comment">// session tools (whether session-only or persistent are</em>
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>         <em class="jxr_comment">// very similar, so the same method is used - the</em>
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>         <em class="jxr_comment">// boolean parameter indicates whether get/setPerm is to be used</em>
-<a class="jxr_linenumber" name="L430" href="#L430">430</a>         <em class="jxr_comment">// rather than get/setTemp)</em>
-<a class="jxr_linenumber" name="L431" href="#L431">431</a> 
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>         <em class="jxr_comment">//</em>
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>         <em class="jxr_comment">// Session Tool start right at the session once the user has been set</em>
-<a class="jxr_linenumber" name="L434" href="#L434">434</a>         <em class="jxr_comment">// while persistent and authorized Tools are started when the user has</em>
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>         <em class="jxr_comment">// logged in</em>
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>         <em class="jxr_comment">//</em>
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>         <a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user = data.getUser();
-<a class="jxr_linenumber" name="L438" href="#L438">438</a> 
-<a class="jxr_linenumber" name="L439" href="#L439">439</a>         <em class="jxr_comment">// Note: Session tools are currently lost after the login action</em>
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>         <em class="jxr_comment">// because the anonymous user is replaced the the real user object.</em>
-<a class="jxr_linenumber" name="L441" href="#L441">441</a>         <em class="jxr_comment">// We should either store the session pull tools in the session or</em>
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>         <em class="jxr_comment">// make Turbine.loginAction() copy the session pull tools into the</em>
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>         <em class="jxr_comment">// new user object.</em>
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>         populateWithSessionTools(sessionTools, context, data, user);
-<a class="jxr_linenumber" name="L445" href="#L445">445</a> 
-<a class="jxr_linenumber" name="L446" href="#L446">446</a>         TurbineUserManager userManager =
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>         	(TurbineUserManager)<a name="TurbineServices" href="../../../../../org/apache/turbine/services/TurbineServices.html#TurbineServices">TurbineServices</a>
-<a class="jxr_linenumber" name="L448" href="#L448">448</a>         		.getInstance()
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>         		.getService(TurbineUserManager.ROLE);
-<a class="jxr_linenumber" name="L450" href="#L450">450</a> 
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>         <strong class="jxr_keyword">if</strong> (!userManager.isAnonymousUser(user) &amp;&amp; user.hasLoggedIn())
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>         {
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>             populateWithSessionTools(authorizedTools, context, data, user);
-<a class="jxr_linenumber" name="L454" href="#L454">454</a>             populateWithPermTools(persistentTools, context, pipelineData, user);
-<a class="jxr_linenumber" name="L455" href="#L455">455</a>         }
-<a class="jxr_linenumber" name="L456" href="#L456">456</a>     }
-<a class="jxr_linenumber" name="L457" href="#L457">457</a> 
-<a class="jxr_linenumber" name="L458" href="#L458">458</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L459" href="#L459">459</a> <em class="jxr_javadoccomment">     * Populate the given context with the global tools</em>
-<a class="jxr_linenumber" name="L460" href="#L460">460</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L461" href="#L461">461</a> <em class="jxr_javadoccomment">     * @param context a Velocity Context to populate</em>
-<a class="jxr_linenumber" name="L462" href="#L462">462</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L463" href="#L463">463</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> populateWithGlobalTools(Context context)
-<a class="jxr_linenumber" name="L464" href="#L464">464</a>     {
-<a class="jxr_linenumber" name="L465" href="#L465">465</a>         <strong class="jxr_keyword">for</strong> (ToolData toolData : globalTools)
-<a class="jxr_linenumber" name="L466" href="#L466">466</a>         {
-<a class="jxr_linenumber" name="L467" href="#L467">467</a>             <strong class="jxr_keyword">try</strong>
-<a class="jxr_linenumber" name="L468" href="#L468">468</a>             {
-<a class="jxr_linenumber" name="L469" href="#L469">469</a>                 Object tool = toolData.toolClass.getDeclaredConstructor().newInstance();
-<a class="jxr_linenumber" name="L470" href="#L470">470</a> 
-<a class="jxr_linenumber" name="L471" href="#L471">471</a>                 <em class="jxr_comment">// global tools are init'd with a null data parameter</em>
-<a class="jxr_linenumber" name="L472" href="#L472">472</a>                 initTool(tool, <strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L473" href="#L473">473</a> 
-<a class="jxr_linenumber" name="L474" href="#L474">474</a>                 <em class="jxr_comment">// put the tool in the context</em>
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>                 context.put(toolData.toolName, tool);
-<a class="jxr_linenumber" name="L476" href="#L476">476</a>             }
-<a class="jxr_linenumber" name="L477" href="#L477">477</a>             <strong class="jxr_keyword">catch</strong> (Exception e)
-<a class="jxr_linenumber" name="L478" href="#L478">478</a>             {
-<a class="jxr_linenumber" name="L479" href="#L479">479</a>                 log.error(<span class="jxr_string">"Could not instantiate global tool {} from a {} object"</span>,
-<a class="jxr_linenumber" name="L480" href="#L480">480</a>                     toolData.toolName, toolData.toolClassName, e);
-<a class="jxr_linenumber" name="L481" href="#L481">481</a>             }
-<a class="jxr_linenumber" name="L482" href="#L482">482</a>         }
-<a class="jxr_linenumber" name="L483" href="#L483">483</a>     }
-<a class="jxr_linenumber" name="L484" href="#L484">484</a> 
-<a class="jxr_linenumber" name="L485" href="#L485">485</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L486" href="#L486">486</a> <em class="jxr_javadoccomment">     * Populate the given context with the request-scope tools</em>
-<a class="jxr_linenumber" name="L487" href="#L487">487</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L488" href="#L488">488</a> <em class="jxr_javadoccomment">     * @param context a Velocity Context to populate</em>
-<a class="jxr_linenumber" name="L489" href="#L489">489</a> <em class="jxr_javadoccomment">     * @param data a RunData or PipelineData instance</em>
-<a class="jxr_linenumber" name="L490" href="#L490">490</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L491" href="#L491">491</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> populateWithRequestTools(Context context, Object data)
-<a class="jxr_linenumber" name="L492" href="#L492">492</a>     {
-<a class="jxr_linenumber" name="L493" href="#L493">493</a>         <em class="jxr_comment">// Iterate the tools</em>
-<a class="jxr_linenumber" name="L494" href="#L494">494</a>         <strong class="jxr_keyword">for</strong> (ToolData toolData : requestTools)
-<a class="jxr_linenumber" name="L495" href="#L495">495</a>         {
-<a class="jxr_linenumber" name="L496" href="#L496">496</a>             <strong class="jxr_keyword">try</strong>
-<a class="jxr_linenumber" name="L497" href="#L497">497</a>             {
-<a class="jxr_linenumber" name="L498" href="#L498">498</a>                 <em class="jxr_comment">// Fetch Object through the Pool.</em>
-<a class="jxr_linenumber" name="L499" href="#L499">499</a>                 Object tool = pool.getInstance(toolData.toolClass);
-<a class="jxr_linenumber" name="L500" href="#L500">500</a> 
-<a class="jxr_linenumber" name="L501" href="#L501">501</a>                 <em class="jxr_comment">// request tools are init'd with a RunData object</em>
-<a class="jxr_linenumber" name="L502" href="#L502">502</a>                 initTool(tool, data);
-<a class="jxr_linenumber" name="L503" href="#L503">503</a> 
-<a class="jxr_linenumber" name="L504" href="#L504">504</a>                 <em class="jxr_comment">// put the tool in the context</em>
-<a class="jxr_linenumber" name="L505" href="#L505">505</a>                 context.put(toolData.toolName, tool);
-<a class="jxr_linenumber" name="L506" href="#L506">506</a>             }
-<a class="jxr_linenumber" name="L507" href="#L507">507</a>             <strong class="jxr_keyword">catch</strong> (Exception e)
-<a class="jxr_linenumber" name="L508" href="#L508">508</a>             {
-<a class="jxr_linenumber" name="L509" href="#L509">509</a>                 log.error(<span class="jxr_string">"Could not instantiate request tool {} from a {} object"</span>,
-<a class="jxr_linenumber" name="L510" href="#L510">510</a>                         toolData.toolName, toolData.toolClassName, e);
-<a class="jxr_linenumber" name="L511" href="#L511">511</a>             }
-<a class="jxr_linenumber" name="L512" href="#L512">512</a>         }
-<a class="jxr_linenumber" name="L513" href="#L513">513</a>     }
-<a class="jxr_linenumber" name="L514" href="#L514">514</a> 
-<a class="jxr_linenumber" name="L515" href="#L515">515</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L516" href="#L516">516</a> <em class="jxr_javadoccomment">     * Populate the given context with the session-scoped tools.</em>
-<a class="jxr_linenumber" name="L517" href="#L517">517</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L518" href="#L518">518</a> <em class="jxr_javadoccomment">     * @param tools The list of tools with which to populate the session.</em>
-<a class="jxr_linenumber" name="L519" href="#L519">519</a> <em class="jxr_javadoccomment">     * @param context The context to populate.</em>
-<a class="jxr_linenumber" name="L520" href="#L520">520</a> <em class="jxr_javadoccomment">     * @param data The current RunData object</em>
-<a class="jxr_linenumber" name="L521" href="#L521">521</a> <em class="jxr_javadoccomment">     * @param user The &lt;code&gt;User&lt;/code&gt; object whose storage to</em>
-<a class="jxr_linenumber" name="L522" href="#L522">522</a> <em class="jxr_javadoccomment">     * retrieve the tool from.</em>
-<a class="jxr_linenumber" name="L523" href="#L523">523</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L524" href="#L524">524</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> populateWithSessionTools(List&lt;ToolData&gt; tools, Context context,
-<a class="jxr_linenumber" name="L525" href="#L525">525</a>             <a name="RunData" href="../../../../../org/apache/turbine/util/RunData.html#RunData">RunData</a> data, <a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user)
-<a class="jxr_linenumber" name="L526" href="#L526">526</a>     {
-<a class="jxr_linenumber" name="L527" href="#L527">527</a>         <em class="jxr_comment">// Iterate the tools</em>
-<a class="jxr_linenumber" name="L528" href="#L528">528</a>         <strong class="jxr_keyword">for</strong> (ToolData toolData : tools)
-<a class="jxr_linenumber" name="L529" href="#L529">529</a>         {
-<a class="jxr_linenumber" name="L530" href="#L530">530</a>             <strong class="jxr_keyword">try</strong>
-<a class="jxr_linenumber" name="L531" href="#L531">531</a>             {
-<a class="jxr_linenumber" name="L532" href="#L532">532</a>                 <em class="jxr_comment">// ensure that tool is created only once for a user</em>
-<a class="jxr_linenumber" name="L533" href="#L533">533</a>                 <em class="jxr_comment">// by synchronizing against the user object</em>
-<a class="jxr_linenumber" name="L534" href="#L534">534</a>                 <strong class="jxr_keyword">synchronized</strong> (data.getSession())
-<a class="jxr_linenumber" name="L535" href="#L535">535</a>                 {
-<a class="jxr_linenumber" name="L536" href="#L536">536</a>                     <em class="jxr_comment">// first try and fetch the tool from the user's</em>
-<a class="jxr_linenumber" name="L537" href="#L537">537</a>                     <em class="jxr_comment">// hashmap</em>
-<a class="jxr_linenumber" name="L538" href="#L538">538</a>                     Object tool = data.getSession().getAttribute(
-<a class="jxr_linenumber" name="L539" href="#L539">539</a>                             SESSION_TOOLS_ATTRIBUTE_PREFIX
-<a class="jxr_linenumber" name="L540" href="#L540">540</a>                             + toolData.toolClassName);
-<a class="jxr_linenumber" name="L541" href="#L541">541</a> 
-<a class="jxr_linenumber" name="L542" href="#L542">542</a>                     <strong class="jxr_keyword">if</strong> (tool == <strong class="jxr_keyword">null</strong>)
-<a class="jxr_linenumber" name="L543" href="#L543">543</a>                     {
-<a class="jxr_linenumber" name="L544" href="#L544">544</a>                         <em class="jxr_comment">// if not there, an instance must be fetched from</em>
-<a class="jxr_linenumber" name="L545" href="#L545">545</a>                         <em class="jxr_comment">// the pool</em>
-<a class="jxr_linenumber" name="L546" href="#L546">546</a>                         tool = pool.getInstance(toolData.toolClass);
-<a class="jxr_linenumber" name="L547" href="#L547">547</a> 
-<a class="jxr_linenumber" name="L548" href="#L548">548</a>                         <em class="jxr_comment">// session tools are init'd with the User object</em>
-<a class="jxr_linenumber" name="L549" href="#L549">549</a>                         initTool(tool, user);
-<a class="jxr_linenumber" name="L550" href="#L550">550</a>                     }
-<a class="jxr_linenumber" name="L551" href="#L551">551</a> 
-<a class="jxr_linenumber" name="L552" href="#L552">552</a>                     <em class="jxr_comment">// *NOT* else</em>
-<a class="jxr_linenumber" name="L553" href="#L553">553</a>                     <strong class="jxr_keyword">if</strong>(tool != <strong class="jxr_keyword">null</strong>)
-<a class="jxr_linenumber" name="L554" href="#L554">554</a>                     {
-<a class="jxr_linenumber" name="L555" href="#L555">555</a>                         <em class="jxr_comment">// store the newly created tool in the session</em>
-<a class="jxr_linenumber" name="L556" href="#L556">556</a>                         data.getSession().setAttribute(
-<a class="jxr_linenumber" name="L557" href="#L557">557</a>                                 SESSION_TOOLS_ATTRIBUTE_PREFIX
-<a class="jxr_linenumber" name="L558" href="#L558">558</a>                                 + tool.getClass().getName(), tool);
-<a class="jxr_linenumber" name="L559" href="#L559">559</a> 
-<a class="jxr_linenumber" name="L560" href="#L560">560</a>                         <em class="jxr_comment">// This is a semantics change. In the old</em>
-<a class="jxr_linenumber" name="L561" href="#L561">561</a>                         <em class="jxr_comment">// Turbine, Session tools were initialized and</em>
-<a class="jxr_linenumber" name="L562" href="#L562">562</a>                         <em class="jxr_comment">// then refreshed every time they were pulled</em>
-<a class="jxr_linenumber" name="L563" href="#L563">563</a>                         <em class="jxr_comment">// into the context if "refreshToolsPerRequest"</em>
-<a class="jxr_linenumber" name="L564" href="#L564">564</a>                         <em class="jxr_comment">// was wanted.</em>
-<a class="jxr_linenumber" name="L565" href="#L565">565</a>                         <em class="jxr_comment">//</em>
-<a class="jxr_linenumber" name="L566" href="#L566">566</a>                         <em class="jxr_comment">// RunDataApplicationTools now have a parameter</em>
-<a class="jxr_linenumber" name="L567" href="#L567">567</a>                         <em class="jxr_comment">// for refresh. If it is not refreshed immediately</em>
-<a class="jxr_linenumber" name="L568" href="#L568">568</a>                         <em class="jxr_comment">// after init(), the parameter value will be undefined</em>
-<a class="jxr_linenumber" name="L569" href="#L569">569</a>                         <em class="jxr_comment">// until the 2nd run. So we refresh all the session</em>
-<a class="jxr_linenumber" name="L570" href="#L570">570</a>                         <em class="jxr_comment">// tools on every run, even if we just init'ed it.</em>
-<a class="jxr_linenumber" name="L571" href="#L571">571</a>                         <em class="jxr_comment">//</em>
-<a class="jxr_linenumber" name="L572" href="#L572">572</a> 
-<a class="jxr_linenumber" name="L573" href="#L573">573</a>                         <strong class="jxr_keyword">if</strong> (refreshToolsPerRequest)
-<a class="jxr_linenumber" name="L574" href="#L574">574</a>                         {
-<a class="jxr_linenumber" name="L575" href="#L575">575</a>                             refreshTool(tool, data);
-<a class="jxr_linenumber" name="L576" href="#L576">576</a>                         }
-<a class="jxr_linenumber" name="L577" href="#L577">577</a> 
-<a class="jxr_linenumber" name="L578" href="#L578">578</a>                         <em class="jxr_comment">// put the tool in the context</em>
-<a class="jxr_linenumber" name="L579" href="#L579">579</a>                         log.debug(<span class="jxr_string">"Adding {} to ctx as {}"</span>, tool, toolData.toolName);
-<a class="jxr_linenumber" name="L580" href="#L580">580</a>                         context.put(toolData.toolName, tool);
-<a class="jxr_linenumber" name="L581" href="#L581">581</a>                     }
-<a class="jxr_linenumber" name="L582" href="#L582">582</a>                     <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L583" href="#L583">583</a>                     {
-<a class="jxr_linenumber" name="L584" href="#L584">584</a>                         log.info(<span class="jxr_string">"Tool {} was null, skipping it."</span>, toolData.toolName);
-<a class="jxr_linenumber" name="L585" href="#L585">585</a>                     }
-<a class="jxr_linenumber" name="L586" href="#L586">586</a>                 }
-<a class="jxr_linenumber" name="L587" href="#L587">587</a>             }
-<a class="jxr_linenumber" name="L588" href="#L588">588</a>             <strong class="jxr_keyword">catch</strong> (Exception e)
-<a class="jxr_linenumber" name="L589" href="#L589">589</a>             {
-<a class="jxr_linenumber" name="L590" href="#L590">590</a>                 log.error(<span class="jxr_string">"Could not instantiate session tool {} from a {} object"</span>,
-<a class="jxr_linenumber" name="L591" href="#L591">591</a>                         toolData.toolName, toolData.toolClassName, e);
-<a class="jxr_linenumber" name="L592" href="#L592">592</a>             }
-<a class="jxr_linenumber" name="L593" href="#L593">593</a>         }
-<a class="jxr_linenumber" name="L594" href="#L594">594</a>     }
-<a class="jxr_linenumber" name="L595" href="#L595">595</a> 
-<a class="jxr_linenumber" name="L596" href="#L596">596</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L597" href="#L597">597</a> <em class="jxr_javadoccomment">     * Populate the given context with the perm-scoped tools.</em>
-<a class="jxr_linenumber" name="L598" href="#L598">598</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L599" href="#L599">599</a> <em class="jxr_javadoccomment">     * @param tools The list of tools with which to populate the</em>
-<a class="jxr_linenumber" name="L600" href="#L600">600</a> <em class="jxr_javadoccomment">     * session.</em>
-<a class="jxr_linenumber" name="L601" href="#L601">601</a> <em class="jxr_javadoccomment">     * @param context The context to populate.</em>
-<a class="jxr_linenumber" name="L602" href="#L602">602</a> <em class="jxr_javadoccomment">     * @param data The current RunData or PipelineData object</em>
-<a class="jxr_linenumber" name="L603" href="#L603">603</a> <em class="jxr_javadoccomment">     * @param user The &lt;code&gt;User&lt;/code&gt; object whose storage to</em>
-<a class="jxr_linenumber" name="L604" href="#L604">604</a> <em class="jxr_javadoccomment">     * retrieve the tool from.</em>
-<a class="jxr_linenumber" name="L605" href="#L605">605</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L606" href="#L606">606</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> populateWithPermTools(List&lt;ToolData&gt; tools, Context context,
-<a class="jxr_linenumber" name="L607" href="#L607">607</a>             Object data, <a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user)
-<a class="jxr_linenumber" name="L608" href="#L608">608</a>     {
-<a class="jxr_linenumber" name="L609" href="#L609">609</a>         <em class="jxr_comment">// Iterate the tools</em>
-<a class="jxr_linenumber" name="L610" href="#L610">610</a>         <strong class="jxr_keyword">for</strong> (ToolData toolData : tools)
-<a class="jxr_linenumber" name="L611" href="#L611">611</a>         {
-<a class="jxr_linenumber" name="L612" href="#L612">612</a>             <strong class="jxr_keyword">try</strong>
-<a class="jxr_linenumber" name="L613" href="#L613">613</a>             {
-<a class="jxr_linenumber" name="L614" href="#L614">614</a>                 <em class="jxr_comment">// ensure that tool is created only once for a user</em>
-<a class="jxr_linenumber" name="L615" href="#L615">615</a>                 <em class="jxr_comment">// by synchronizing against the user object</em>
-<a class="jxr_linenumber" name="L616" href="#L616">616</a>                 <strong class="jxr_keyword">synchronized</strong> (user)
-<a class="jxr_linenumber" name="L617" href="#L617">617</a>                 {
-<a class="jxr_linenumber" name="L618" href="#L618">618</a>                     <em class="jxr_comment">// first try and fetch the tool from the user's</em>
-<a class="jxr_linenumber" name="L619" href="#L619">619</a>                     <em class="jxr_comment">// hashtable</em>
-<a class="jxr_linenumber" name="L620" href="#L620">620</a>                     Object tool = user.getPerm(toolData.toolClassName);
-<a class="jxr_linenumber" name="L621" href="#L621">621</a> 
-<a class="jxr_linenumber" name="L622" href="#L622">622</a>                     <strong class="jxr_keyword">if</strong> (tool == <strong class="jxr_keyword">null</strong>)
-<a class="jxr_linenumber" name="L623" href="#L623">623</a>                     {
-<a class="jxr_linenumber" name="L624" href="#L624">624</a>                         <em class="jxr_comment">// if not there, an instance must be fetched from</em>
-<a class="jxr_linenumber" name="L625" href="#L625">625</a>                         <em class="jxr_comment">// the pool</em>
-<a class="jxr_linenumber" name="L626" href="#L626">626</a>                         tool = pool.getInstance(toolData.toolClass);
-<a class="jxr_linenumber" name="L627" href="#L627">627</a> 
-<a class="jxr_linenumber" name="L628" href="#L628">628</a>                         <em class="jxr_comment">// session tools are init'd with the User object</em>
-<a class="jxr_linenumber" name="L629" href="#L629">629</a>                         initTool(tool, user);
-<a class="jxr_linenumber" name="L630" href="#L630">630</a> 
-<a class="jxr_linenumber" name="L631" href="#L631">631</a>                         <em class="jxr_comment">// store the newly created tool in the user's hashtable</em>
-<a class="jxr_linenumber" name="L632" href="#L632">632</a>                         user.setPerm(toolData.toolClassName, tool);
-<a class="jxr_linenumber" name="L633" href="#L633">633</a>                     }
-<a class="jxr_linenumber" name="L634" href="#L634">634</a> 
-<a class="jxr_linenumber" name="L635" href="#L635">635</a>                     <em class="jxr_comment">// *NOT* else</em>
-<a class="jxr_linenumber" name="L636" href="#L636">636</a>                     <strong class="jxr_keyword">if</strong> (tool != <strong class="jxr_keyword">null</strong>)
-<a class="jxr_linenumber" name="L637" href="#L637">637</a>                     {
-<a class="jxr_linenumber" name="L638" href="#L638">638</a>                         <em class="jxr_comment">// This is a semantics change. In the old</em>
-<a class="jxr_linenumber" name="L639" href="#L639">639</a>                         <em class="jxr_comment">// Turbine, Session tools were initialized and</em>
-<a class="jxr_linenumber" name="L640" href="#L640">640</a>                         <em class="jxr_comment">// then refreshed every time they were pulled</em>
-<a class="jxr_linenumber" name="L641" href="#L641">641</a>                         <em class="jxr_comment">// into the context if "refreshToolsPerRequest"</em>
-<a class="jxr_linenumber" name="L642" href="#L642">642</a>                         <em class="jxr_comment">// was wanted.</em>
-<a class="jxr_linenumber" name="L643" href="#L643">643</a>                         <em class="jxr_comment">//</em>
-<a class="jxr_linenumber" name="L644" href="#L644">644</a>                         <em class="jxr_comment">// RunDataApplicationTools now have a parameter</em>
-<a class="jxr_linenumber" name="L645" href="#L645">645</a>                         <em class="jxr_comment">// for refresh. If it is not refreshed immediately</em>
-<a class="jxr_linenumber" name="L646" href="#L646">646</a>                         <em class="jxr_comment">// after init(), the parameter value will be undefined</em>
-<a class="jxr_linenumber" name="L647" href="#L647">647</a>                         <em class="jxr_comment">// until the 2nd run. So we refresh all the session</em>
-<a class="jxr_linenumber" name="L648" href="#L648">648</a>                         <em class="jxr_comment">// tools on every run, even if we just init'ed it.</em>
-<a class="jxr_linenumber" name="L649" href="#L649">649</a>                         <em class="jxr_comment">//</em>
-<a class="jxr_linenumber" name="L650" href="#L650">650</a> 
-<a class="jxr_linenumber" name="L651" href="#L651">651</a>                         <strong class="jxr_keyword">if</strong> (refreshToolsPerRequest)
-<a class="jxr_linenumber" name="L652" href="#L652">652</a>                         {
-<a class="jxr_linenumber" name="L653" href="#L653">653</a>                             refreshTool(tool, data);
-<a class="jxr_linenumber" name="L654" href="#L654">654</a>                         }
-<a class="jxr_linenumber" name="L655" href="#L655">655</a> 
-<a class="jxr_linenumber" name="L656" href="#L656">656</a>                         <em class="jxr_comment">// put the tool in the context</em>
-<a class="jxr_linenumber" name="L657" href="#L657">657</a>                         log.debug(<span class="jxr_string">"Adding {} to ctx as {}"</span>, tool, toolData.toolName);
-<a class="jxr_linenumber" name="L658" href="#L658">658</a>                         log.warn(<span class="jxr_string">"Persistent scope tools are deprecated."</span>);
-<a class="jxr_linenumber" name="L659" href="#L659">659</a>                         context.put(toolData.toolName, tool);
-<a class="jxr_linenumber" name="L660" href="#L660">660</a>                     }
-<a class="jxr_linenumber" name="L661" href="#L661">661</a>                     <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L662" href="#L662">662</a>                     {
-<a class="jxr_linenumber" name="L663" href="#L663">663</a>                         log.info(<span class="jxr_string">"Tool {} was null, skipping it."</span>, toolData.toolName);
-<a class="jxr_linenumber" name="L664" href="#L664">664</a>                     }
-<a class="jxr_linenumber" name="L665" href="#L665">665</a>                 }
-<a class="jxr_linenumber" name="L666" href="#L666">666</a>             }
-<a class="jxr_linenumber" name="L667" href="#L667">667</a>             <strong class="jxr_keyword">catch</strong> (Exception e)
-<a class="jxr_linenumber" name="L668" href="#L668">668</a>             {
-<a class="jxr_linenumber" name="L669" href="#L669">669</a>                 log.error(<span class="jxr_string">"Could not instantiate perm tool {} from a {} object"</span>,
-<a class="jxr_linenumber" name="L670" href="#L670">670</a>                         toolData.toolName, toolData.toolClassName, e);
-<a class="jxr_linenumber" name="L671" href="#L671">671</a>             }
-<a class="jxr_linenumber" name="L672" href="#L672">672</a>         }
-<a class="jxr_linenumber" name="L673" href="#L673">673</a>     }
-<a class="jxr_linenumber" name="L674" href="#L674">674</a> 
-<a class="jxr_linenumber" name="L675" href="#L675">675</a> 
-<a class="jxr_linenumber" name="L676" href="#L676">676</a> 
-<a class="jxr_linenumber" name="L677" href="#L677">677</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L678" href="#L678">678</a> <em class="jxr_javadoccomment">     * Return the absolute path to the resources directory</em>
-<a class="jxr_linenumber" name="L679" href="#L679">679</a> <em class="jxr_javadoccomment">     * used by the application tools.</em>
-<a class="jxr_linenumber" name="L680" href="#L680">680</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L681" href="#L681">681</a> <em class="jxr_javadoccomment">     * @return the absolute path of the resources directory</em>
-<a class="jxr_linenumber" name="L682" href="#L682">682</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L683" href="#L683">683</a>     @Override
-<a class="jxr_linenumber" name="L684" href="#L684">684</a>     <strong class="jxr_keyword">public</strong> String getAbsolutePathToResourcesDirectory()
-<a class="jxr_linenumber" name="L685" href="#L685">685</a>     {
-<a class="jxr_linenumber" name="L686" href="#L686">686</a>         <strong class="jxr_keyword">return</strong> Turbine.getRealPath(resourcesDirectory);
-<a class="jxr_linenumber" name="L687" href="#L687">687</a>     }
-<a class="jxr_linenumber" name="L688" href="#L688">688</a> 
-<a class="jxr_linenumber" name="L689" href="#L689">689</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L690" href="#L690">690</a> <em class="jxr_javadoccomment">     * Return the resources directory. This is</em>
-<a class="jxr_linenumber" name="L691" href="#L691">691</a> <em class="jxr_javadoccomment">     * relative to the web context.</em>
-<a class="jxr_linenumber" name="L692" href="#L692">692</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L693" href="#L693">693</a> <em class="jxr_javadoccomment">     * @return the relative path of the resources directory</em>
-<a class="jxr_linenumber" name="L694" href="#L694">694</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L695" href="#L695">695</a>     @Override
-<a class="jxr_linenumber" name="L696" href="#L696">696</a>     <strong class="jxr_keyword">public</strong> String getResourcesDirectory()
-<a class="jxr_linenumber" name="L697" href="#L697">697</a>     {
-<a class="jxr_linenumber" name="L698" href="#L698">698</a>         <strong class="jxr_keyword">return</strong> resourcesDirectory;
-<a class="jxr_linenumber" name="L699" href="#L699">699</a>     }
-<a class="jxr_linenumber" name="L700" href="#L700">700</a> 
-<a class="jxr_linenumber" name="L701" href="#L701">701</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L702" href="#L702">702</a> <em class="jxr_javadoccomment">     * Refresh the global tools. We can</em>
-<a class="jxr_linenumber" name="L703" href="#L703">703</a> <em class="jxr_javadoccomment">     * only refresh those tools that adhere to</em>
-<a class="jxr_linenumber" name="L704" href="#L704">704</a> <em class="jxr_javadoccomment">     * ApplicationTool interface because we</em>
-<a class="jxr_linenumber" name="L705" href="#L705">705</a> <em class="jxr_javadoccomment">     * know those types of tools have a refresh</em>
-<a class="jxr_linenumber" name="L706" href="#L706">706</a> <em class="jxr_javadoccomment">     * method.</em>
-<a class="jxr_linenumber" name="L707" href="#L707">707</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L708" href="#L708">708</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> refreshGlobalTools()
-<a class="jxr_linenumber" name="L709" href="#L709">709</a>     {
-<a class="jxr_linenumber" name="L710" href="#L710">710</a>         <strong class="jxr_keyword">if</strong> (globalTools != <strong class="jxr_keyword">null</strong>)
-<a class="jxr_linenumber" name="L711" href="#L711">711</a>         {
-<a class="jxr_linenumber" name="L712" href="#L712">712</a>             <strong class="jxr_keyword">for</strong> (ToolData toolData : globalTools)
-<a class="jxr_linenumber" name="L713" href="#L713">713</a>             {
-<a class="jxr_linenumber" name="L714" href="#L714">714</a>                 Object tool = globalContext.get(toolData.toolName);
-<a class="jxr_linenumber" name="L715" href="#L715">715</a>                 refreshTool(tool, <strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L716" href="#L716">716</a>             }
-<a class="jxr_linenumber" name="L717" href="#L717">717</a>         }
-<a class="jxr_linenumber" name="L718" href="#L718">718</a>     }
-<a class="jxr_linenumber" name="L719" href="#L719">719</a> 
-<a class="jxr_linenumber" name="L720" href="#L720">720</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L721" href="#L721">721</a> <em class="jxr_javadoccomment">     * Release the request-scope tool instances in the</em>
-<a class="jxr_linenumber" name="L722" href="#L722">722</a> <em class="jxr_javadoccomment">     * given Context back to the pool</em>
-<a class="jxr_linenumber" name="L723" href="#L723">723</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L724" href="#L724">724</a> <em class="jxr_javadoccomment">     * @param context the Velocity Context to release tools from</em>
-<a class="jxr_linenumber" name="L725" href="#L725">725</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L726" href="#L726">726</a>     @Override
-<a class="jxr_linenumber" name="L727" href="#L727">727</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> releaseTools(Context context)
-<a class="jxr_linenumber" name="L728" href="#L728">728</a>     {
-<a class="jxr_linenumber" name="L729" href="#L729">729</a>         <em class="jxr_comment">// only the request tools can be released - other scoped</em>
-<a class="jxr_linenumber" name="L730" href="#L730">730</a>         <em class="jxr_comment">// tools will have continuing references to them</em>
-<a class="jxr_linenumber" name="L731" href="#L731">731</a>         releaseTools(context, requestTools);
-<a class="jxr_linenumber" name="L732" href="#L732">732</a>     }
-<a class="jxr_linenumber" name="L733" href="#L733">733</a> 
-<a class="jxr_linenumber" name="L734" href="#L734">734</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L735" href="#L735">735</a> <em class="jxr_javadoccomment">     * Release the given list of tools from the context back</em>
-<a class="jxr_linenumber" name="L736" href="#L736">736</a> <em class="jxr_javadoccomment">     * to the pool</em>
-<a class="jxr_linenumber" name="L737" href="#L737">737</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L738" href="#L738">738</a> <em class="jxr_javadoccomment">     * @param context the Context containing the tools</em>
-<a class="jxr_linenumber" name="L739" href="#L739">739</a> <em class="jxr_javadoccomment">     * @param tools a List of ToolData objects</em>
-<a class="jxr_linenumber" name="L740" href="#L740">740</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L741" href="#L741">741</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> releaseTools(Context context, List&lt;ToolData&gt; tools)
-<a class="jxr_linenumber" name="L742" href="#L742">742</a>     {
-<a class="jxr_linenumber" name="L743" href="#L743">743</a>         <strong class="jxr_keyword">if</strong> (tools != <strong class="jxr_keyword">null</strong>)
-<a class="jxr_linenumber" name="L744" href="#L744">744</a>         {
-<a class="jxr_linenumber" name="L745" href="#L745">745</a>             <strong class="jxr_keyword">for</strong> (ToolData toolData : tools)
-<a class="jxr_linenumber" name="L746" href="#L746">746</a>             {
-<a class="jxr_linenumber" name="L747" href="#L747">747</a>                 Object tool = context.remove(toolData.toolName);
-<a class="jxr_linenumber" name="L748" href="#L748">748</a> 
-<a class="jxr_linenumber" name="L749" href="#L749">749</a>                 <strong class="jxr_keyword">if</strong> (tool != <strong class="jxr_keyword">null</strong>)
-<a class="jxr_linenumber" name="L750" href="#L750">750</a>                 {
-<a class="jxr_linenumber" name="L751" href="#L751">751</a>                     pool.putInstance(tool);
-<a class="jxr_linenumber" name="L752" href="#L752">752</a>                 }
-<a class="jxr_linenumber" name="L753" href="#L753">753</a>             }
-<a class="jxr_linenumber" name="L754" href="#L754">754</a>         }
-<a class="jxr_linenumber" name="L755" href="#L755">755</a>     }
-<a class="jxr_linenumber" name="L756" href="#L756">756</a> 
-<a class="jxr_linenumber" name="L757" href="#L757">757</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L758" href="#L758">758</a> <em class="jxr_javadoccomment">     * Initialized a given Tool with the passed init Object</em>
-<a class="jxr_linenumber" name="L759" href="#L759">759</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L760" href="#L760">760</a> <em class="jxr_javadoccomment">     * @param tool A Tool Object</em>
-<a class="jxr_linenumber" name="L761" href="#L761">761</a> <em class="jxr_javadoccomment">     * @param param The Init Parameter</em>
-<a class="jxr_linenumber" name="L762" href="#L762">762</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L763" href="#L763">763</a> <em class="jxr_javadoccomment">     * @throws Exception If anything went wrong.</em>
-<a class="jxr_linenumber" name="L764" href="#L764">764</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L765" href="#L765">765</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> initTool(Object tool, Object param)
-<a class="jxr_linenumber" name="L766" href="#L766">766</a>         <strong class="jxr_keyword">throws</strong> Exception
-<a class="jxr_linenumber" name="L767" href="#L767">767</a>     {
-<a class="jxr_linenumber" name="L768" href="#L768">768</a>         AnnotationProcessor.process(tool);
-<a class="jxr_linenumber" name="L769" href="#L769">769</a> 
-<a class="jxr_linenumber" name="L770" href="#L770">770</a>         <strong class="jxr_keyword">if</strong> (param instanceof <a name="PipelineData" href="../../../../../org/apache/turbine/pipeline/PipelineData.html#PipelineData">PipelineData</a>)
-<a class="jxr_linenumber" name="L771" href="#L771">771</a>         {
-<a class="jxr_linenumber" name="L772" href="#L772">772</a>             <strong class="jxr_keyword">if</strong> (tool instanceof <a name="PipelineDataApplicationTool" href="../../../../../org/apache/turbine/services/pull/PipelineDataApplicationTool.html#PipelineDataApplicationTool">PipelineDataApplicationTool</a>)
-<a class="jxr_linenumber" name="L773" href="#L773">773</a>             {
-<a class="jxr_linenumber" name="L774" href="#L774">774</a>                 ((<a name="PipelineDataApplicationTool" href="../../../../../org/apache/turbine/services/pull/PipelineDataApplicationTool.html#PipelineDataApplicationTool">PipelineDataApplicationTool</a>) tool).init(param);
-<a class="jxr_linenumber" name="L775" href="#L775">775</a>             }
-<a class="jxr_linenumber" name="L776" href="#L776">776</a>             <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (tool instanceof <a name="RunDataApplicationTool" href="../../../../../org/apache/turbine/services/pull/RunDataApplicationTool.html#RunDataApplicationTool">RunDataApplicationTool</a>)
-<a class="jxr_linenumber" name="L777" href="#L777">777</a>             {
-<a class="jxr_linenumber" name="L778" href="#L778">778</a>                 <a name="RunData" href="../../../../../org/apache/turbine/util/RunData.html#RunData">RunData</a> data = getRunData((<a name="PipelineData" href="../../../../../org/apache/turbine/pipeline/PipelineData.html#PipelineData">PipelineData</a>)param);
-<a class="jxr_linenumber" name="L779" href="#L779">779</a>                 ((<a name="RunDataApplicationTool" href="../../../../../org/apache/turbine/services/pull/RunDataApplicationTool.html#RunDataApplicationTool">RunDataApplicationTool</a>) tool).init(data);
-<a class="jxr_linenumber" name="L780" href="#L780">780</a>             }
-<a class="jxr_linenumber" name="L781" href="#L781">781</a>             <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (tool instanceof <a name="ApplicationTool" href="../../../../../org/apache/turbine/services/pull/ApplicationTool.html#ApplicationTool">ApplicationTool</a>)
-<a class="jxr_linenumber" name="L782" href="#L782">782</a>             {
-<a class="jxr_linenumber" name="L783" href="#L783">783</a>                 <a name="RunData" href="../../../../../org/apache/turbine/util/RunData.html#RunData">RunData</a> data = getRunData((<a name="PipelineData" href="../../../../../org/apache/turbine/pipeline/PipelineData.html#PipelineData">PipelineData</a>)param);
-<a class="jxr_linenumber" name="L784" href="#L784">784</a>                 ((<a name="ApplicationTool" href="../../../../../org/apache/turbine/services/pull/ApplicationTool.html#ApplicationTool">ApplicationTool</a>) tool).init(data);
-<a class="jxr_linenumber" name="L785" href="#L785">785</a>             }
-<a class="jxr_linenumber" name="L786" href="#L786">786</a>         }
-<a class="jxr_linenumber" name="L787" href="#L787">787</a>         <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L788" href="#L788">788</a>         {
-<a class="jxr_linenumber" name="L789" href="#L789">789</a>             <strong class="jxr_keyword">if</strong> (tool instanceof <a name="PipelineDataApplicationTool" href="../../../../../org/apache/turbine/services/pull/PipelineDataApplicationTool.html#PipelineDataApplicationTool">PipelineDataApplicationTool</a>)
-<a class="jxr_linenumber" name="L790" href="#L790">790</a>             {
-<a class="jxr_linenumber" name="L791" href="#L791">791</a>                 ((<a name="PipelineDataApplicationTool" href="../../../../../org/apache/turbine/services/pull/PipelineDataApplicationTool.html#PipelineDataApplicationTool">PipelineDataApplicationTool</a>) tool).init(param);
-<a class="jxr_linenumber" name="L792" href="#L792">792</a>             }
-<a class="jxr_linenumber" name="L793" href="#L793">793</a>             <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (tool instanceof <a name="RunDataApplicationTool" href="../../../../../org/apache/turbine/services/pull/RunDataApplicationTool.html#RunDataApplicationTool">RunDataApplicationTool</a>)
-<a class="jxr_linenumber" name="L794" href="#L794">794</a>             {
-<a class="jxr_linenumber" name="L795" href="#L795">795</a>                 ((<a name="RunDataApplicationTool" href="../../../../../org/apache/turbine/services/pull/RunDataApplicationTool.html#RunDataApplicationTool">RunDataApplicationTool</a>) tool).init(param);
-<a class="jxr_linenumber" name="L796" href="#L796">796</a>             }
-<a class="jxr_linenumber" name="L797" href="#L797">797</a>             <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (tool instanceof <a name="ApplicationTool" href="../../../../../org/apache/turbine/services/pull/ApplicationTool.html#ApplicationTool">ApplicationTool</a>)
-<a class="jxr_linenumber" name="L798" href="#L798">798</a>             {
-<a class="jxr_linenumber" name="L799" href="#L799">799</a>                 ((<a name="ApplicationTool" href="../../../../../org/apache/turbine/services/pull/ApplicationTool.html#ApplicationTool">ApplicationTool</a>) tool).init(param);
-<a class="jxr_linenumber" name="L800" href="#L800">800</a>             }
-<a class="jxr_linenumber" name="L801" href="#L801">801</a>         }
-<a class="jxr_linenumber" name="L802" href="#L802">802</a>     }
-<a class="jxr_linenumber" name="L803" href="#L803">803</a> 
-<a class="jxr_linenumber" name="L804" href="#L804">804</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L805" href="#L805">805</a> <em class="jxr_javadoccomment">     * Refresh a given Tool.</em>
-<a class="jxr_linenumber" name="L806" href="#L806">806</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L807" href="#L807">807</a> <em class="jxr_javadoccomment">     * @param tool A Tool Object</em>
-<a class="jxr_linenumber" name="L808" href="#L808">808</a> <em class="jxr_javadoccomment">     * @param pipelineData The current RunData Object</em>
-<a class="jxr_linenumber" name="L809" href="#L809">809</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L810" href="#L810">810</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> refreshTool(Object tool, Object dataObject)
-<a class="jxr_linenumber" name="L811" href="#L811">811</a>     {
-<a class="jxr_linenumber" name="L812" href="#L812">812</a>         <a name="RunData" href="../../../../../org/apache/turbine/util/RunData.html#RunData">RunData</a> data = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L813" href="#L813">813</a>         <a name="PipelineData" href="../../../../../org/apache/turbine/pipeline/PipelineData.html#PipelineData">PipelineData</a> pipelineData = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L814" href="#L814">814</a>         <strong class="jxr_keyword">if</strong> (dataObject instanceof <a name="PipelineData" href="../../../../../org/apache/turbine/pipeline/PipelineData.html#PipelineData">PipelineData</a>)
-<a class="jxr_linenumber" name="L815" href="#L815">815</a>         {
-<a class="jxr_linenumber" name="L816" href="#L816">816</a>             pipelineData = (<a name="PipelineData" href="../../../../../org/apache/turbine/pipeline/PipelineData.html#PipelineData">PipelineData</a>)dataObject;
-<a class="jxr_linenumber" name="L817" href="#L817">817</a>             data = pipelineData.getRunData();
-<a class="jxr_linenumber" name="L818" href="#L818">818</a>             <strong class="jxr_keyword">if</strong> (tool instanceof <a name="PipelineDataApplicationTool" href="../../../../../org/apache/turbine/services/pull/PipelineDataApplicationTool.html#PipelineDataApplicationTool">PipelineDataApplicationTool</a>)
-<a class="jxr_linenumber" name="L819" href="#L819">819</a>             {
-<a class="jxr_linenumber" name="L820" href="#L820">820</a>                 ((<a name="PipelineDataApplicationTool" href="../../../../../org/apache/turbine/services/pull/PipelineDataApplicationTool.html#PipelineDataApplicationTool">PipelineDataApplicationTool</a>) tool).refresh(pipelineData);
-<a class="jxr_linenumber" name="L821" href="#L821">821</a>             }
-<a class="jxr_linenumber" name="L822" href="#L822">822</a>         }
-<a class="jxr_linenumber" name="L823" href="#L823">823</a>         <strong class="jxr_keyword">if</strong> (tool instanceof <a name="ApplicationTool" href="../../../../../org/apache/turbine/services/pull/ApplicationTool.html#ApplicationTool">ApplicationTool</a>)
-<a class="jxr_linenumber" name="L824" href="#L824">824</a>         {
-<a class="jxr_linenumber" name="L825" href="#L825">825</a>             ((<a name="ApplicationTool" href="../../../../../org/apache/turbine/services/pull/ApplicationTool.html#ApplicationTool">ApplicationTool</a>) tool).refresh();
-<a class="jxr_linenumber" name="L826" href="#L826">826</a>         }
-<a class="jxr_linenumber" name="L827" href="#L827">827</a>         <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (tool instanceof <a name="RunDataApplicationTool" href="../../../../../org/apache/turbine/services/pull/RunDataApplicationTool.html#RunDataApplicationTool">RunDataApplicationTool</a>)
-<a class="jxr_linenumber" name="L828" href="#L828">828</a>         {
-<a class="jxr_linenumber" name="L829" href="#L829">829</a>             ((<a name="RunDataApplicationTool" href="../../../../../org/apache/turbine/services/pull/RunDataApplicationTool.html#RunDataApplicationTool">RunDataApplicationTool</a>) tool).refresh(data);
-<a class="jxr_linenumber" name="L830" href="#L830">830</a>         }
-<a class="jxr_linenumber" name="L831" href="#L831">831</a>     }
-<a class="jxr_linenumber" name="L832" href="#L832">832</a> 
-<a class="jxr_linenumber" name="L833" href="#L833">833</a>     <strong class="jxr_keyword">private</strong> <a name="RunData" href="../../../../../org/apache/turbine/util/RunData.html#RunData">RunData</a> getRunData(<a name="PipelineData" href="../../../../../org/apache/turbine/pipeline/PipelineData.html#PipelineData">PipelineData</a> pipelineData)
-<a class="jxr_linenumber" name="L834" href="#L834">834</a>     {
-<a class="jxr_linenumber" name="L835" href="#L835">835</a>         <strong class="jxr_keyword">if</strong> (!(pipelineData instanceof <a name="RunData" href="../../../../../org/apache/turbine/util/RunData.html#RunData">RunData</a>))
-<a class="jxr_linenumber" name="L836" href="#L836">836</a>         {
-<a class="jxr_linenumber" name="L837" href="#L837">837</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> RuntimeException(<span class="jxr_string">"Can't cast to rundata from pipeline data."</span>);
-<a class="jxr_linenumber" name="L838" href="#L838">838</a>         }
-<a class="jxr_linenumber" name="L839" href="#L839">839</a>         <strong class="jxr_keyword">return</strong> (<a name="RunData" href="../../../../../org/apache/turbine/util/RunData.html#RunData">RunData</a>)pipelineData;
-<a class="jxr_linenumber" name="L840" href="#L840">840</a>     }
-<a class="jxr_linenumber" name="L841" href="#L841">841</a> }
+
+<a name="1" href="#1">1</a>   <strong>package</strong> <a href="../../../../../org/apache/turbine/services/pull/package-summary.html">org.apache.turbine.services.pull</a>;
+<a name="2" href="#2">2</a>   
+<a name="3" href="#3">3</a>   <em class="comment">/*</em>
+<a name="4" href="#4">4</a>   <em class="comment"> * Licensed to the Apache Software Foundation (ASF) under one</em>
+<a name="5" href="#5">5</a>   <em class="comment"> * or more contributor license agreements.  See the NOTICE file</em>
+<a name="6" href="#6">6</a>   <em class="comment"> * distributed with this work for additional information</em>
+<a name="7" href="#7">7</a>   <em class="comment"> * regarding copyright ownership.  The ASF licenses this file</em>
+<a name="8" href="#8">8</a>   <em class="comment"> * to you under the Apache License, Version 2.0 (the</em>
+<a name="9" href="#9">9</a>   <em class="comment"> * "License"); you may not use this file except in compliance</em>
+<a name="10" href="#10">10</a>  <em class="comment"> * with the License.  You may obtain a copy of the License at</em>
+<a name="11" href="#11">11</a>  <em class="comment"> *</em>
+<a name="12" href="#12">12</a>  <em class="comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
+<a name="13" href="#13">13</a>  <em class="comment"> *</em>
+<a name="14" href="#14">14</a>  <em class="comment"> * Unless required by applicable law or agreed to in writing,</em>
+<a name="15" href="#15">15</a>  <em class="comment"> * software distributed under the License is distributed on an</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * KIND, either express or implied.  See the License for the</em>
+<a name="18" href="#18">18</a>  <em class="comment"> * specific language governing permissions and limitations</em>
+<a name="19" href="#19">19</a>  <em class="comment"> * under the License.</em>
+<a name="20" href="#20">20</a>  <em class="comment"> */</em>
+<a name="21" href="#21">21</a>  
+<a name="22" href="#22">22</a>  <strong>import</strong> java.util.ArrayList;
+<a name="23" href="#23">23</a>  <strong>import</strong> java.util.Iterator;
+<a name="24" href="#24">24</a>  <strong>import</strong> java.util.List;
+<a name="25" href="#25">25</a>  
+<a name="26" href="#26">26</a>  <strong>import</strong> org.apache.commons.configuration.Configuration;
+<a name="27" href="#27">27</a>  
+<a name="28" href="#28">28</a>  <strong>import</strong> org.apache.commons.logging.Log;
+<a name="29" href="#29">29</a>  <strong>import</strong> org.apache.commons.logging.LogFactory;
+<a name="30" href="#30">30</a>  
+<a name="31" href="#31">31</a>  <strong>import</strong> org.apache.turbine.Turbine;
+<a name="32" href="#32">32</a>  <strong>import</strong> org.apache.turbine.om.security.User;
+<a name="33" href="#33">33</a>  <strong>import</strong> org.apache.turbine.services.InitializationException;
+<a name="34" href="#34">34</a>  <strong>import</strong> org.apache.turbine.services.TurbineBaseService;
+<a name="35" href="#35">35</a>  <strong>import</strong> org.apache.turbine.services.pool.PoolService;
+<a name="36" href="#36">36</a>  <strong>import</strong> org.apache.turbine.services.pool.TurbinePool;
+<a name="37" href="#37">37</a>  <strong>import</strong> org.apache.turbine.services.security.TurbineSecurity;
+<a name="38" href="#38">38</a>  <strong>import</strong> org.apache.turbine.services.velocity.VelocityService;
+<a name="39" href="#39">39</a>  <strong>import</strong> org.apache.turbine.services.velocity.TurbineVelocity;
+<a name="40" href="#40">40</a>  <strong>import</strong> org.apache.turbine.util.RunData;
+<a name="41" href="#41">41</a>  
+<a name="42" href="#42">42</a>  <strong>import</strong> org.apache.velocity.context.Context;
+<a name="43" href="#43">43</a>  
+<a name="44" href="#44">44</a>  <em>/**<em>*</em></em>
+<a name="45" href="#45">45</a>  <em> * This is the concrete implementation of the Turbine</em>
+<a name="46" href="#46">46</a>  <em> * Pull Service.</em>
+<a name="47" href="#47">47</a>  <em> * &lt;p></em>
+<a name="48" href="#48">48</a>  <em> * These are tools that are placed in the context by the service</em>
+<a name="49" href="#49">49</a>  <em> * These tools will be made available to all your</em>
+<a name="50" href="#50">50</a>  <em> * templates. You list the tools in the following way:</em>
+<a name="51" href="#51">51</a>  <em> * &lt;p></em>
+<a name="52" href="#52">52</a>  <em> * &lt;pre></em>
+<a name="53" href="#53">53</a>  <em> * tool.&amp;lt;scope&amp;gt;.&amp;lt;id&amp;gt; = &amp;lt;classname&amp;gt;</em>
+<a name="54" href="#54">54</a>  <em> *</em>
+<a name="55" href="#55">55</a>  <em> * &amp;lt;scope&amp;gt;      is the tool scope: global, request, session,</em>
+<a name="56" href="#56">56</a>  <em> *              authorized or persistent (see below for more details)</em>
+<a name="57" href="#57">57</a>  <em> * &amp;lt;id&amp;gt;         is the name of the tool in the context</em>
+<a name="58" href="#58">58</a>  <em> *</em>
+<a name="59" href="#59">59</a>  <em> * You can configure the tools in this way:</em>
+<a name="60" href="#60">60</a>  <em> * tool.&amp;lt;id&amp;gt;.&amp;lt;parameter&amp;gt; = &amp;lt;value&amp;gt;</em>
+<a name="61" href="#61">61</a>  <em> *</em>
+<a name="62" href="#62">62</a>  <em> * So if you find "global", "request", "session" or "persistent" as second</em>
+<a name="63" href="#63">63</a>  <em> * part, it is a configuration to put a tool into the toolbox, else it is a</em>
+<a name="64" href="#64">64</a>  <em> * tool specific configuration.</em>
+<a name="65" href="#65">65</a>  <em> *</em>
+<a name="66" href="#66">66</a>  <em> * For example:</em>
+<a name="67" href="#67">67</a>  <em> *</em>
+<a name="68" href="#68">68</a>  <em> * tool.global.ui    = org.apache.turbine.util.pull.UIManager</em>
+<a name="69" href="#69">69</a>  <em> * tool.global.mm    = org.apache.turbine.util.pull.MessageManager</em>
+<a name="70" href="#70">70</a>  <em> * tool.request.link = org.apache.turbine.services.pull.tools.TemplateLink</em>
+<a name="71" href="#71">71</a>  <em> * tool.request.page = org.apache.turbine.util.template.HtmlPageAttributes</em>
+<a name="72" href="#72">72</a>  <em> *</em>
+<a name="73" href="#73">73</a>  <em> * Then:</em>
+<a name="74" href="#74">74</a>  <em> *</em>
+<a name="75" href="#75">75</a>  <em> * tool.ui.skin = default</em>
+<a name="76" href="#76">76</a>  <em> *</em>
+<a name="77" href="#77">77</a>  <em> * configures the value of "skin" for the "ui" tool.</em>
+<a name="78" href="#78">78</a>  <em> *</em>
+<a name="79" href="#79">79</a>  <em> * Tools are accessible in all templates by the &lt;id> given</em>
+<a name="80" href="#80">80</a>  <em> * to the tool. So for the above listings the UIManager would</em>
+<a name="81" href="#81">81</a>  <em> * be available as $ui, the MessageManager as $mm, the TemplateLink</em>
+<a name="82" href="#82">82</a>  <em> * as $link and the HtmlPageAttributes as $page.</em>
+<a name="83" href="#83">83</a>  <em> *</em>
+<a name="84" href="#84">84</a>  <em> * You should avoid using tool names called "global", "request",</em>
+<a name="85" href="#85">85</a>  <em> * "session" or "persistent" because of clashes with the possible Scopes.</em>
+<a name="86" href="#86">86</a>  <em> *</em>
+<a name="87" href="#87">87</a>  <em> * Scopes:</em>
+<a name="88" href="#88">88</a>  <em> *</em>
+<a name="89" href="#89">89</a>  <em> *  global:     tool is instantiated once and that instance is available</em>
+<a name="90" href="#90">90</a>  <em> *              to all templates for all requests. Tool must be threadsafe.</em>
+<a name="91" href="#91">91</a>  <em> *</em>
+<a name="92" href="#92">92</a>  <em> *  request:    tool is instantiated once for each request (although the</em>
+<a name="93" href="#93">93</a>  <em> *              PoolService is used to recycle instances). Tool need not</em>
+<a name="94" href="#94">94</a>  <em> *              be threadsafe.</em>
+<a name="95" href="#95">95</a>  <em> *</em>
+<a name="96" href="#96">96</a>  <em> *  session:    tool is instantiated once for each user session, and is</em>
+<a name="97" href="#97">97</a>  <em> *              stored in the session.  These tools do not need to be</em>
+<a name="98" href="#98">98</a>  <em> *              threadsafe.</em>
+<a name="99" href="#99">99</a>  <em> *</em>
+<a name="100" href="#100">100</a> <em> *  authorized: tool is instantiated once for each user session once the</em>
+<a name="101" href="#101">101</a> <em> *              user logs in. After this, it is a normal session tool.</em>
+<a name="102" href="#102">102</a> <em> *</em>
+<a name="103" href="#103">103</a> <em> *  persistent: tool is instantiated once for each user session once</em>
+<a name="104" href="#104">104</a> <em> *              the user logs in and is is stored in the user's permanent</em>
+<a name="105" href="#105">105</a> <em> *              hashtable.</em>
+<a name="106" href="#106">106</a> <em> *              This means for a logged in user the tool will be persisted</em>
+<a name="107" href="#107">107</a> <em> *              in the user's objectdata. Tool should be Serializable.  These</em>
+<a name="108" href="#108">108</a> <em> *              tools do not need to be threadsafe.</em>
+<a name="109" href="#109">109</a> <em> *              &lt;b>persistent scope tools are deprecated in 2.3&lt;/b></em>
+<a name="110" href="#110">110</a> <em> *</em>
+<a name="111" href="#111">111</a> <em> * Defaults: none</em>
+<a name="112" href="#112">112</a> <em> * &lt;/pre></em>
+<a name="113" href="#113">113</a> <em> *</em>
+<a name="114" href="#114">114</a> <em> * @author &lt;a href="<a href="mailto:jvanzyl@periapt.com" target="alexandria_uri">mailto:jvanzyl@periapt.com</a>">Jason van Zyl&lt;/a></em>
+<a name="115" href="#115">115</a> <em> * @author &lt;a href="<a href="mailto:sean@informage.net" target="alexandria_uri">mailto:sean@informage.net</a>">Sean Legassick&lt;/a></em>
+<a name="116" href="#116">116</a> <em> * @author &lt;a href="<a href="mailto:hps@intermeta.de" target="alexandria_uri">mailto:hps@intermeta.de</a>">Henning P. Schmiedehausen&lt;/a></em>
+<a name="117" href="#117">117</a> <em> * @author &lt;a href="<a href="mailto:quintonm@bellsouth.net" target="alexandria_uri">mailto:quintonm@bellsouth.net</a>">Quinton McCombs&lt;/a></em>
+<a name="118" href="#118">118</a> <em> * @version $Id: TurbinePullService.java 535743 2007-05-07 05:13:47Z seade $</em>
+<a name="119" href="#119">119</a> <em> */</em>
+<a name="120" href="#120">120</a> <strong>public</strong> <strong>class</strong> <a href="../../../../../org/apache/turbine/services/pull/TurbinePullService.html">TurbinePullService</a>
+<a name="121" href="#121">121</a>         <strong>extends</strong> <a href="../../../../../org/apache/turbine/services/TurbineBaseService.html">TurbineBaseService</a>
+<a name="122" href="#122">122</a>         implements <a href="../../../../../org/apache/turbine/services/pull/PullService.html">PullService</a>
+<a name="123" href="#123">123</a> {
+<a name="124" href="#124">124</a>     <em>/**<em>* Logging */</em></em>
+<a name="125" href="#125">125</a>     <strong>private</strong> <strong>static</strong> Log log = LogFactory.getLog(TurbinePullService.<strong>class</strong>);
+<a name="126" href="#126">126</a> 
+<a name="127" href="#127">127</a>     <em>/**<em>* Reference to the pool service */</em></em>
+<a name="128" href="#128">128</a>     <strong>private</strong> <a href="../../../../../org/apache/turbine/services/pool/PoolService.html">PoolService</a> pool = <strong>null</strong>;
+<a name="129" href="#129">129</a> 
+<a name="130" href="#130">130</a>     <em>/**<em>* Reference to the templating (nee Velocity) service */</em></em>
+<a name="131" href="#131">131</a>     <strong>private</strong> <a href="../../../../../org/apache/turbine/services/velocity/VelocityService.html">VelocityService</a> velocity = <strong>null</strong>;
+<a name="132" href="#132">132</a> 
+<a name="133" href="#133">133</a>     <em>/**<em>*</em></em>
+<a name="134" href="#134">134</a> <em>     * This is the container for the global web application</em>
+<a name="135" href="#135">135</a> <em>     * tools that are used in conjunction with the</em>
+<a name="136" href="#136">136</a> <em>     * Turbine Pull Model. All the global tools will be placed</em>
+<a name="137" href="#137">137</a> <em>     * in this Context and be made accessible inside</em>
+<a name="138" href="#138">138</a> <em>     * templates via the tool name specified in the TR.props</em>
+<a name="139" href="#139">139</a> <em>     * file.</em>
+<a name="140" href="#140">140</a> <em>     */</em>
+<a name="141" href="#141">141</a>     <strong>private</strong> Context globalContext;
+<a name="142" href="#142">142</a> 
+<a name="143" href="#143">143</a>     <em>/**<em>*</em></em>
+<a name="144" href="#144">144</a> <em>     * This inner class is used in the lists below to store the</em>
+<a name="145" href="#145">145</a> <em>     * tool name and class for each of request, session and persistent</em>
+<a name="146" href="#146">146</a> <em>     * tools</em>
+<a name="147" href="#147">147</a> <em>     */</em>
+<a name="148" href="#148">148</a>     <strong>private</strong> <strong>static</strong> <strong>class</strong> ToolData
+<a name="149" href="#149">149</a>     {
+<a name="150" href="#150">150</a>         String toolName;
+<a name="151" href="#151">151</a>         String toolClassName;
+<a name="152" href="#152">152</a>         Class toolClass;
+<a name="153" href="#153">153</a> 
+<a name="154" href="#154">154</a>         <strong>public</strong> ToolData(String toolName, String toolClassName, Class toolClass)
+<a name="155" href="#155">155</a>         {
+<a name="156" href="#156">156</a>             <strong>this</strong>.toolName = toolName;
+<a name="157" href="#157">157</a>             <strong>this</strong>.toolClassName = toolClassName;
+<a name="158" href="#158">158</a>             <strong>this</strong>.toolClass = toolClass;
+<a name="159" href="#159">159</a>         }
+<a name="160" href="#160">160</a>     }
+<a name="161" href="#161">161</a> 
+<a name="162" href="#162">162</a>     <em>/**<em>* Internal list of global tools */</em></em>
+<a name="163" href="#163">163</a>     <strong>private</strong> List globalTools;
+<a name="164" href="#164">164</a> 
+<a name="165" href="#165">165</a>     <em>/**<em>* Internal list of request tools */</em></em>
+<a name="166" href="#166">166</a>     <strong>private</strong> List requestTools;
+<a name="167" href="#167">167</a> 
+<a name="168" href="#168">168</a>     <em>/**<em>* Internal list of session tools */</em></em>
+<a name="169" href="#169">169</a>     <strong>private</strong> List sessionTools;
+<a name="170" href="#170">170</a> 
+<a name="171" href="#171">171</a>     <em>/**<em>* Internal list of authorized tools */</em></em>
+<a name="172" href="#172">172</a>     <strong>private</strong> List authorizedTools;
+<a name="173" href="#173">173</a> 
+<a name="174" href="#174">174</a>     <em>/**<em>* Internal list of persistent tools */</em></em>
+<a name="175" href="#175">175</a>     <strong>private</strong> List persistentTools;
+<a name="176" href="#176">176</a> 
+<a name="177" href="#177">177</a>     <em>/**<em>* Directory where application tool resources are stored.*/</em></em>
+<a name="178" href="#178">178</a>     <strong>private</strong> String resourcesDirectory;
+<a name="179" href="#179">179</a> 
+<a name="180" href="#180">180</a>     <em>/**<em>* Should we refresh the application tools on a per request basis? */</em></em>
+<a name="181" href="#181">181</a>     <strong>private</strong> <strong>boolean</strong> refreshToolsPerRequest = false;
+<a name="182" href="#182">182</a> 
+<a name="183" href="#183">183</a>     <em>/**<em>*</em></em>
+<a name="184" href="#184">184</a> <em>     * Called the first time the Service is used.</em>
+<a name="185" href="#185">185</a> <em>     */</em>
+<a name="186" href="#186">186</a>     <strong>public</strong> <strong>void</strong> init()
+<a name="187" href="#187">187</a>         throws <a href="../../../../../org/apache/turbine/services/InitializationException.html">InitializationException</a>
+<a name="188" href="#188">188</a>     {
+<a name="189" href="#189">189</a>         <strong>try</strong>
+<a name="190" href="#190">190</a>         {
+<a name="191" href="#191">191</a>             pool = TurbinePool.getService();
+<a name="192" href="#192">192</a> 
+<a name="193" href="#193">193</a>             <strong>if</strong> (pool == <strong>null</strong>)
+<a name="194" href="#194">194</a>             {
+<a name="195" href="#195">195</a>                 <strong>throw</strong> <strong>new</strong> <a href="../../../../../org/apache/turbine/services/InitializationException.html">InitializationException</a>(<span class="string">"Pull Service requires"</span>
+<a name="196" href="#196">196</a>                     + <span class="string">" configured Pool Service!"</span>);
+<a name="197" href="#197">197</a>             }
+<a name="198" href="#198">198</a> 
+<a name="199" href="#199">199</a>             initPullService();
+<a name="200" href="#200">200</a>             <em class="comment">// Make sure to setInit(true) because Tools may</em>
+<a name="201" href="#201">201</a>             <em class="comment">// make calls back to the TurbinePull static methods</em>
+<a name="202" href="#202">202</a>             <em class="comment">// which causes an init loop.</em>
+<a name="203" href="#203">203</a>             setInit(<strong>true</strong>);
+<a name="204" href="#204">204</a> 
+<a name="205" href="#205">205</a>             <em class="comment">// Do _NOT_ move this before the setInit(true)</em>
+<a name="206" href="#206">206</a>             velocity = TurbineVelocity.getService();
+<a name="207" href="#207">207</a> 
+<a name="208" href="#208">208</a>             <strong>if</strong> (velocity != <strong>null</strong>)
+<a name="209" href="#209">209</a>             {
+<a name="210" href="#210">210</a>                 initPullTools();
+<a name="211" href="#211">211</a>             }
+<a name="212" href="#212">212</a>             <strong>else</strong>
+<a name="213" href="#213">213</a>             {
+<a name="214" href="#214">214</a>                 log.info(<span class="string">"Velocity Service not configured, skipping pull tools!"</span>);
+<a name="215" href="#215">215</a>             }
+<a name="216" href="#216">216</a>         }
+<a name="217" href="#217">217</a>         <strong>catch</strong> (Exception e)
+<a name="218" href="#218">218</a>         {
+<a name="219" href="#219">219</a>             <strong>throw</strong> <strong>new</strong> <a href="../../../../../org/apache/turbine/services/InitializationException.html">InitializationException</a>(
+<a name="220" href="#220">220</a>                 <span class="string">"TurbinePullService failed to initialize"</span>, e);
+<a name="221" href="#221">221</a>         }
+<a name="222" href="#222">222</a>     }
+<a name="223" href="#223">223</a> 
+<a name="224" href="#224">224</a>     <em>/**<em>*</em></em>
+<a name="225" href="#225">225</a> <em>     * Initialize the pull service</em>
+<a name="226" href="#226">226</a> <em>     *</em>
+<a name="227" href="#227">227</a> <em>     * @exception Exception A problem happened when starting up</em>
+<a name="228" href="#228">228</a> <em>     */</em>
+<a name="229" href="#229">229</a>     <strong>private</strong> <strong>void</strong> initPullService()
+<a name="230" href="#230">230</a>         throws Exception
+<a name="231" href="#231">231</a>     {
+<a name="232" href="#232">232</a>         <em class="comment">// This is the per-service configuration, prefixed with services.PullService</em>
+<a name="233" href="#233">233</a>         Configuration conf = getConfiguration();
+<a name="234" href="#234">234</a> 
+<a name="235" href="#235">235</a>         <em class="comment">// Get the resources directory that is specificed</em>
+<a name="236" href="#236">236</a>         <em class="comment">// in the TR.props or default to "resources", relative to the webapp.</em>
+<a name="237" href="#237">237</a>         resourcesDirectory = conf.getString(
+<a name="238" href="#238">238</a>             TOOL_RESOURCES_DIR_KEY,
+<a name="239" href="#239">239</a>             TOOL_RESOURCES_DIR_DEFAULT);
+<a name="240" href="#240">240</a> 
+<a name="241" href="#241">241</a>         <em class="comment">// Should we refresh the tool box on a per</em>
+<a name="242" href="#242">242</a>         <em class="comment">// request basis.</em>
+<a name="243" href="#243">243</a>         refreshToolsPerRequest =
+<a name="244" href="#244">244</a>             conf.getBoolean(
+<a name="245" href="#245">245</a>                 TOOLS_PER_REQUEST_REFRESH_KEY,
+<a name="246" href="#246">246</a>                 TOOLS_PER_REQUEST_REFRESH_DEFAULT);
+<a name="247" href="#247">247</a> 
+<a name="248" href="#248">248</a>         <em class="comment">// Log the fact that the application tool box will</em>
+<a name="249" href="#249">249</a>         <em class="comment">// be refreshed on a per request basis.</em>
+<a name="250" href="#250">250</a>         <strong>if</strong> (refreshToolsPerRequest)
+<a name="251" href="#251">251</a>         {
+<a name="252" href="#252">252</a>             log.info(<span class="string">"Pull Model tools will "</span>
+<a name="253" href="#253">253</a>                 + <span class="string">"be refreshed on a per request basis."</span>);
+<a name="254" href="#254">254</a>         }
+<a name="255" href="#255">255</a>     }
+<a name="256" href="#256">256</a> 
+<a name="257" href="#257">257</a>     <em>/**<em>*</em></em>
+<a name="258" href="#258">258</a> <em>     * Initialize the pull tools. At this point, the</em>
+<a name="259" href="#259">259</a> <em>     * service must be marked as initialized, because the</em>
+<a name="260" href="#260">260</a> <em>     * tools may call the methods of this service via the</em>
+<a name="261" href="#261">261</a> <em>     * static facade class TurbinePull.</em>
+<a name="262" href="#262">262</a> <em>     *</em>
+<a name="263" href="#263">263</a> <em>     * @exception Exception A problem happened when starting up</em>
+<a name="264" href="#264">264</a> <em>     */</em>
+<a name="265" href="#265">265</a>     <strong>private</strong> <strong>void</strong> initPullTools()
+<a name="266" href="#266">266</a>         throws Exception
+<a name="267" href="#267">267</a>     {
+<a name="268" href="#268">268</a>         <em class="comment">// And for reasons I never really fully understood,</em>
+<a name="269" href="#269">269</a>         <em class="comment">// the tools directive is toplevel without the service</em>
+<a name="270" href="#270">270</a>         <em class="comment">// prefix. This is brain-damaged but for legacy reasons we</em>
+<a name="271" href="#271">271</a>         <em class="comment">// keep this. So this is the global turbine configuration:</em>
+<a name="272" href="#272">272</a>         Configuration conf = Turbine.getConfiguration();
+<a name="273" href="#273">273</a> 
+<a name="274" href="#274">274</a>         <em class="comment">// Grab each list of tools that are to be used (for global scope,</em>
+<a name="275" href="#275">275</a>         <em class="comment">// request scope, authorized scope, session scope and persistent</em>
+<a name="276" href="#276">276</a>         <em class="comment">// scope tools). They are specified respectively in the TR.props</em>
+<a name="277" href="#277">277</a>         <em class="comment">// like this:</em>
+<a name="278" href="#278">278</a>         <em class="comment">//</em>
+<a name="279" href="#279">279</a>         <em class="comment">// tool.global.ui = org.apache.turbine.util.pull.UIManager</em>
+<a name="280" href="#280">280</a>         <em class="comment">// tool.global.mm = org.apache.turbine.util.pull.MessageManager</em>
+<a name="281" href="#281">281</a>         <em class="comment">//</em>
+<a name="282" href="#282">282</a>         <em class="comment">// tool.request.link = org.apache.turbine.services.pull.tools.TemplateLink</em>
+<a name="283" href="#283">283</a>         <em class="comment">//</em>
+<a name="284" href="#284">284</a>         <em class="comment">// tool.session.basket = org.sample.util.ShoppingBasket;</em>
+<a name="285" href="#285">285</a>         <em class="comment">//</em>
+<a name="286" href="#286">286</a>         <em class="comment">// tool.persistent.ui = org.apache.turbine.services.pull.util.PersistentUIManager</em>
+<a name="287" href="#287">287</a> 
+<a name="288" href="#288">288</a>         log.debug(<span class="string">"Global Tools:"</span>);
+<a name="289" href="#289">289</a>         globalTools     = getTools(conf.subset(GLOBAL_TOOL));
+<a name="290" href="#290">290</a>         log.debug(<span class="string">"Request Tools:"</span>);
+<a name="291" href="#291">291</a>         requestTools    = getTools(conf.subset(REQUEST_TOOL));
+<a name="292" href="#292">292</a>         log.debug(<span class="string">"Session Tools:"</span>);
+<a name="293" href="#293">293</a>         sessionTools    = getTools(conf.subset(SESSION_TOOL));
+<a name="294" href="#294">294</a>         log.debug(<span class="string">"Authorized Tools:"</span>);
+<a name="295" href="#295">295</a>         authorizedTools = getTools(conf.subset(AUTHORIZED_TOOL));
+<a name="296" href="#296">296</a>         log.debug(<span class="string">"Persistent Tools:"</span>);
+<a name="297" href="#297">297</a>         persistentTools = getTools(conf.subset(PERSISTENT_TOOL));
+<a name="298" href="#298">298</a> 
+<a name="299" href="#299">299</a>         <em class="comment">// Create and populate the global context right now</em>
+<a name="300" href="#300">300</a> 
+<a name="301" href="#301">301</a>         <em class="comment">// This is unholy, because it entwines the VelocityService and</em>
+<a name="302" href="#302">302</a>         <em class="comment">// the Pull Service even further. However, there isn't much we can</em>
+<a name="303" href="#303">303</a>         <em class="comment">// do for the 2.3 release. Expect this to go post-2.3</em>
+<a name="304" href="#304">304</a>         globalContext = velocity.getNewContext();
+<a name="305" href="#305">305</a> 
+<a name="306" href="#306">306</a>         populateWithGlobalTools(globalContext);
+<a name="307" href="#307">307</a>     }
+<a name="308" href="#308">308</a> 
+<a name="309" href="#309">309</a>     <em>/**<em>*</em></em>
+<a name="310" href="#310">310</a> <em>     * Retrieve the tool names and classes for the tools definied</em>
+<a name="311" href="#311">311</a> <em>     * in the configuration file with the prefix given.</em>
+<a name="312" href="#312">312</a> <em>     *</em>
+<a name="313" href="#313">313</a> <em>     * @param toolConfig The part of the configuration describing some tools</em>
+<a name="314" href="#314">314</a> <em>     */</em>
+<a name="315" href="#315">315</a>     <strong>private</strong> List getTools(Configuration toolConfig)
+<a name="316" href="#316">316</a>     {
+<a name="317" href="#317">317</a>         List tools = <strong>new</strong> ArrayList();
+<a name="318" href="#318">318</a> 
+<a name="319" href="#319">319</a>         <em class="comment">// There might not be any tools for this prefix</em>
+<a name="320" href="#320">320</a>         <em class="comment">// so return an empty list.</em>
+<a name="321" href="#321">321</a>         <strong>if</strong> (toolConfig == <strong>null</strong>)
+<a name="322" href="#322">322</a>         {
+<a name="323" href="#323">323</a>             <strong>return</strong> tools;
+<a name="324" href="#324">324</a>         }
+<a name="325" href="#325">325</a> 
+<a name="326" href="#326">326</a>         <strong>for</strong> (Iterator it = toolConfig.getKeys(); it.hasNext();)
+<a name="327" href="#327">327</a>         {
+<a name="328" href="#328">328</a>             String toolName = (String) it.next();
+<a name="329" href="#329">329</a>             String toolClassName = toolConfig.getString(toolName);
+<a name="330" href="#330">330</a> 
+<a name="331" href="#331">331</a>             <strong>try</strong>
+<a name="332" href="#332">332</a>             {
+<a name="333" href="#333">333</a>                 <em class="comment">// Create an instance of the tool class.</em>
+<a name="334" href="#334">334</a>                 Class toolClass = Class.forName(toolClassName);
+<a name="335" href="#335">335</a> 
+<a name="336" href="#336">336</a>                 <em class="comment">// Add the tool to the list being built.</em>
+<a name="337" href="#337">337</a>                 tools.add(<strong>new</strong> ToolData(toolName, toolClassName, toolClass));
+<a name="338" href="#338">338</a> 
+<a name="339" href="#339">339</a>                 log.info(<span class="string">"Tool "</span> + toolClassName
+<a name="340" href="#340">340</a>                     + <span class="string">" to add to the context as '$"</span> + toolName + <span class="string">"'"</span>);
+<a name="341" href="#341">341</a>             }
+<a name="342" href="#342">342</a>             <strong>catch</strong> (Exception e)
+<a name="343" href="#343">343</a>             {
+<a name="344" href="#344">344</a>                 log.error(<span class="string">"Cannot instantiate tool class "</span>
+<a name="345" href="#345">345</a>                     + toolClassName + <span class="string">": "</span>, e);
+<a name="346" href="#346">346</a>             }
+<a name="347" href="#347">347</a>         }
+<a name="348" href="#348">348</a> 
+<a name="349" href="#349">349</a>         <strong>return</strong> tools;
+<a name="350" href="#350">350</a>     }
+<a name="351" href="#351">351</a> 
+<a name="352" href="#352">352</a>     <em>/**<em>*</em></em>
+<a name="353" href="#353">353</a> <em>     * Return the Context which contains all global tools that</em>
+<a name="354" href="#354">354</a> <em>     * are to be used in conjunction with the Turbine</em>
+<a name="355" href="#355">355</a> <em>     * Pull Model. The tools are refreshed every time the</em>
+<a name="356" href="#356">356</a> <em>     * global Context is pulled.</em>
+<a name="357" href="#357">357</a> <em>     */</em>
+<a name="358" href="#358">358</a>     <strong>public</strong> Context getGlobalContext()
+<a name="359" href="#359">359</a>     {
+<a name="360" href="#360">360</a>         <strong>if</strong> (refreshToolsPerRequest)
+<a name="361" href="#361">361</a>         {
+<a name="362" href="#362">362</a>             refreshGlobalTools();
+<a name="363" href="#363">363</a>         }
+<a name="364" href="#364">364</a>         <strong>return</strong> globalContext;
+<a name="365" href="#365">365</a>     }
+<a name="366" href="#366">366</a> 
+<a name="367" href="#367">367</a>     <em>/**<em>*</em></em>
+<a name="368" href="#368">368</a> <em>     * Populate the given context with all request, session, authorized</em>
+<a name="369" href="#369">369</a> <em>     * and persistent scope tools (it is assumed that the context</em>
+<a name="370" href="#370">370</a> <em>     * already wraps the global context, and thus already contains</em>
+<a name="371" href="#371">371</a> <em>     * the global tools).</em>
+<a name="372" href="#372">372</a> <em>     *</em>
+<a name="373" href="#373">373</a> <em>     * @param context a Velocity Context to populate</em>
+<a name="374" href="#374">374</a> <em>     * @param data a RunData object for request specific data</em>
+<a name="375" href="#375">375</a> <em>     */</em>
+<a name="376" href="#376">376</a>     <strong>public</strong> <strong>void</strong> populateContext(Context context, <a href="../../../../../org/apache/turbine/util/RunData.html">RunData</a> data)
+<a name="377" href="#377">377</a>     {
+<a name="378" href="#378">378</a>         populateWithRequestTools(context, data);
+<a name="379" href="#379">379</a> 
+<a name="380" href="#380">380</a>         <em class="comment">// session tools (whether session-only or persistent are</em>
+<a name="381" href="#381">381</a>         <em class="comment">// very similar, so the same method is used - the</em>
+<a name="382" href="#382">382</a>         <em class="comment">// boolean parameter indicates whether get/setPerm is to be used</em>
+<a name="383" href="#383">383</a>         <em class="comment">// rather than get/setTemp)</em>
+<a name="384" href="#384">384</a> 
+<a name="385" href="#385">385</a>         <em class="comment">//</em>
+<a name="386" href="#386">386</a>         <em class="comment">// Session Tool start right at the session once the user has been set</em>
+<a name="387" href="#387">387</a>         <em class="comment">// while persistent and authorized Tools are started when the user has</em>
+<a name="388" href="#388">388</a>         <em class="comment">// logged in</em>
+<a name="389" href="#389">389</a>         <em class="comment">//</em>
+<a name="390" href="#390">390</a>         <a href="../../../../../org/apache/turbine/om/security/User.html">User</a> user = data.getUser();
+<a name="391" href="#391">391</a> 
+<a name="392" href="#392">392</a>         <em class="comment">// Note: Session tools are currently lost after the login action</em>
+<a name="393" href="#393">393</a>         <em class="comment">// because the anonymous user is replaced the the real user object.</em>
+<a name="394" href="#394">394</a>         <em class="comment">// We should either store the session pull tools in the session or</em>
+<a name="395" href="#395">395</a>         <em class="comment">// make Turbine.loginAction() copy the session pull tools into the</em>
+<a name="396" href="#396">396</a>         <em class="comment">// new user object.</em>
+<a name="397" href="#397">397</a>         populateWithSessionTools(sessionTools, context, data, user);
+<a name="398" href="#398">398</a> 
+<a name="399" href="#399">399</a>         <strong>if</strong> (!TurbineSecurity.isAnonymousUser(user))
+<a name="400" href="#400">400</a>         {
+<a name="401" href="#401">401</a>             <strong>if</strong> (user.hasLoggedIn())
+<a name="402" href="#402">402</a>             {
+<a name="403" href="#403">403</a>                 populateWithSessionTools(authorizedTools, context, data, user);
+<a name="404" href="#404">404</a>                 populateWithPermTools(persistentTools, context, data, user);
+<a name="405" href="#405">405</a>             }
+<a name="406" href="#406">406</a>         }
+<a name="407" href="#407">407</a>     }
+<a name="408" href="#408">408</a> 
+<a name="409" href="#409">409</a>     <em>/**<em>*</em></em>
+<a name="410" href="#410">410</a> <em>     * Populate the given context with the global tools</em>
+<a name="411" href="#411">411</a> <em>     *</em>
+<a name="412" href="#412">412</a> <em>     * @param context a Velocity Context to populate</em>
+<a name="413" href="#413">413</a> <em>     */</em>
+<a name="414" href="#414">414</a>     <strong>private</strong> <strong>void</strong> populateWithGlobalTools(Context context)
+<a name="415" href="#415">415</a>     {
+<a name="416" href="#416">416</a>         <strong>for</strong> (Iterator it = globalTools.iterator(); it.hasNext();)
+<a name="417" href="#417">417</a>         {
+<a name="418" href="#418">418</a>             ToolData toolData = (ToolData) it.next();
+<a name="419" href="#419">419</a>             <strong>try</strong>
+<a name="420" href="#420">420</a>             {
+<a name="421" href="#421">421</a>                 Object tool = toolData.toolClass.newInstance();
+<a name="422" href="#422">422</a> 
+<a name="423" href="#423">423</a>                 <em class="comment">// global tools are init'd with a null data parameter</em>
+<a name="424" href="#424">424</a>                 initTool(tool, <strong>null</strong>);
+<a name="425" href="#425">425</a> 
+<a name="426" href="#426">426</a>                 <em class="comment">// put the tool in the context</em>
+<a name="427" href="#427">427</a>                 context.put(toolData.toolName, tool);
+<a name="428" href="#428">428</a>             }
+<a name="429" href="#429">429</a>             <strong>catch</strong> (Exception e)
+<a name="430" href="#430">430</a>             {
+<a name="431" href="#431">431</a>                 log.error(<span class="string">"Could not instantiate global tool "</span>
+<a name="432" href="#432">432</a>                     + toolData.toolName + <span class="string">" from a "</span>
+<a name="433" href="#433">433</a>                     + toolData.toolClassName + <span class="string">" object"</span>, e);
+<a name="434" href="#434">434</a>             }
+<a name="435" href="#435">435</a>         }
+<a name="436" href="#436">436</a>     }
+<a name="437" href="#437">437</a> 
+<a name="438" href="#438">438</a>     <em>/**<em>*</em></em>
+<a name="439" href="#439">439</a> <em>     * Populate the given context with the request-scope tools</em>
+<a name="440" href="#440">440</a> <em>     *</em>
+<a name="441" href="#441">441</a> <em>     * @param context a Velocity Context to populate</em>
+<a name="442" href="#442">442</a> <em>     * @param data a RunData instance</em>
+<a name="443" href="#443">443</a> <em>     */</em>
+<a name="444" href="#444">444</a>     <strong>private</strong> <strong>void</strong> populateWithRequestTools(Context context, <a href="../../../../../org/apache/turbine/util/RunData.html">RunData</a> data)
+<a name="445" href="#445">445</a>     {
+<a name="446" href="#446">446</a>         <em class="comment">// Iterate the tools</em>
+<a name="447" href="#447">447</a>         <strong>for</strong> (Iterator it = requestTools.iterator(); it.hasNext();)
+<a name="448" href="#448">448</a>         {
+<a name="449" href="#449">449</a>             ToolData toolData = (ToolData) it.next();
+<a name="450" href="#450">450</a>             <strong>try</strong>
+<a name="451" href="#451">451</a>             {
+<a name="452" href="#452">452</a>                 <em class="comment">// Fetch Object through the Pool.</em>
+<a name="453" href="#453">453</a>                 Object tool = pool.getInstance(toolData.toolClass);
+<a name="454" href="#454">454</a> 
+<a name="455" href="#455">455</a>                 <em class="comment">// request tools are init'd with a RunData object</em>
+<a name="456" href="#456">456</a>                 initTool(tool, data);
+<a name="457" href="#457">457</a> 
+<a name="458" href="#458">458</a>                 <em class="comment">// put the tool in the context</em>
+<a name="459" href="#459">459</a>                 context.put(toolData.toolName, tool);
+<a name="460" href="#460">460</a>             }
+<a name="461" href="#461">461</a>             <strong>catch</strong> (Exception e)
+<a name="462" href="#462">462</a>             {
+<a name="463" href="#463">463</a>                 log.error(<span class="string">"Could not instantiate request tool "</span>
+<a name="464" href="#464">464</a>                     + toolData.toolName + <span class="string">" from a "</span>
+<a name="465" href="#465">465</a>                     + toolData.toolClassName + <span class="string">" object"</span>, e);
+<a name="466" href="#466">466</a>             }
+<a name="467" href="#467">467</a>         }
+<a name="468" href="#468">468</a>     }
+<a name="469" href="#469">469</a> 
+<a name="470" href="#470">470</a>     <em>/**<em>*</em></em>
+<a name="471" href="#471">471</a> <em>     * Populate the given context with the session-scoped tools.</em>
+<a name="472" href="#472">472</a> <em>     *</em>
+<a name="473" href="#473">473</a> <em>     * @param tools The list of tools with which to populate the</em>
+<a name="474" href="#474">474</a> <em>     * session.</em>
+<a name="475" href="#475">475</a> <em>     * @param context The context to populate.</em>
+<a name="476" href="#476">476</a> <em>     * @param data The current RunData object</em>
+<a name="477" href="#477">477</a> <em>     * @param user The &lt;code>User&lt;/code> object whose storage to</em>
+<a name="478" href="#478">478</a> <em>     * retrieve the tool from.</em>
+<a name="479" href="#479">479</a> <em>     */</em>
+<a name="480" href="#480">480</a>     <strong>private</strong> <strong>void</strong> populateWithSessionTools(List tools, Context context,
+<a name="481" href="#481">481</a>             <a href="../../../../../org/apache/turbine/util/RunData.html">RunData</a> data, <a href="../../../../../org/apache/turbine/om/security/User.html">User</a> user)
+<a name="482" href="#482">482</a>     {
+<a name="483" href="#483">483</a>         <em class="comment">// Iterate the tools</em>
+<a name="484" href="#484">484</a>         <strong>for</strong> (Iterator it = tools.iterator(); it.hasNext();)
+<a name="485" href="#485">485</a>         {
+<a name="486" href="#486">486</a>             ToolData toolData = (ToolData) it.next();
+<a name="487" href="#487">487</a>             <strong>try</strong>
+<a name="488" href="#488">488</a>             {
+<a name="489" href="#489">489</a>                 <em class="comment">// ensure that tool is created only once for a user</em>
+<a name="490" href="#490">490</a>                 <em class="comment">// by synchronizing against the user object</em>
+<a name="491" href="#491">491</a>                 <strong>synchronized</strong> (data.getSession())
+<a name="492" href="#492">492</a>                 {
+<a name="493" href="#493">493</a>                     <em class="comment">// first try and fetch the tool from the user's</em>
+<a name="494" href="#494">494</a>                     <em class="comment">// hashtable</em>
+<a name="495" href="#495">495</a>                     Object tool = data.getSession().getAttribute(
+<a name="496" href="#496">496</a>                             SESSION_TOOLS_ATTRIBUTE_PREFIX
+<a name="497" href="#497">497</a>                             + toolData.toolClassName);
+<a name="498" href="#498">498</a> 
+<a name="499" href="#499">499</a>                     <strong>if</strong> (tool == <strong>null</strong>)
+<a name="500" href="#500">500</a>                     {
+<a name="501" href="#501">501</a>                         <em class="comment">// if not there, an instance must be fetched from</em>
+<a name="502" href="#502">502</a>                         <em class="comment">// the pool</em>
+<a name="503" href="#503">503</a>                         tool = pool.getInstance(toolData.toolClass);
+<a name="504" href="#504">504</a> 
+<a name="505" href="#505">505</a>                         <em class="comment">// session tools are init'd with the User object</em>
+<a name="506" href="#506">506</a>                         initTool(tool, user);
+<a name="507" href="#507">507</a> 
+<a name="508" href="#508">508</a>                         <em class="comment">// store the newly created tool in the session</em>
+<a name="509" href="#509">509</a>                         data.getSession().setAttribute(
+<a name="510" href="#510">510</a>                                 SESSION_TOOLS_ATTRIBUTE_PREFIX
+<a name="511" href="#511">511</a>                                 + tool.getClass().getName(), tool);
+<a name="512" href="#512">512</a>                     }
+<a name="513" href="#513">513</a> 
+<a name="514" href="#514">514</a>                     <em class="comment">// *NOT* else</em>
+<a name="515" href="#515">515</a>                     <strong>if</strong>(tool != <strong>null</strong>)
+<a name="516" href="#516">516</a>                     {
+<a name="517" href="#517">517</a>                         <em class="comment">// This is a semantics change. In the old</em>
+<a name="518" href="#518">518</a>                         <em class="comment">// Turbine, Session tools were initialized and</em>
+<a name="519" href="#519">519</a>                         <em class="comment">// then refreshed every time they were pulled</em>
+<a name="520" href="#520">520</a>                         <em class="comment">// into the context if "refreshToolsPerRequest"</em>
+<a name="521" href="#521">521</a>                         <em class="comment">// was wanted.</em>
+<a name="522" href="#522">522</a>                         <em class="comment">//</em>
+<a name="523" href="#523">523</a>                         <em class="comment">// RunDataApplicationTools now have a parameter</em>
+<a name="524" href="#524">524</a>                         <em class="comment">// for refresh. If it is not refreshed immediately</em>
+<a name="525" href="#525">525</a>                         <em class="comment">// after init(), the parameter value will be undefined</em>
+<a name="526" href="#526">526</a>                         <em class="comment">// until the 2nd run. So we refresh all the session</em>
+<a name="527" href="#527">527</a>                         <em class="comment">// tools on every run, even if we just init'ed it.</em>
+<a name="528" href="#528">528</a>                         <em class="comment">//</em>
+<a name="529" href="#529">529</a> 
+<a name="530" href="#530">530</a>                         <strong>if</strong> (refreshToolsPerRequest)
+<a name="531" href="#531">531</a>                         {
+<a name="532" href="#532">532</a>                             refreshTool(tool, data);
+<a name="533" href="#533">533</a>                         }
+<a name="534" href="#534">534</a> 
+<a name="535" href="#535">535</a>                         <em class="comment">// put the tool in the context</em>
+<a name="536" href="#536">536</a>                         log.debug(<span class="string">"Adding "</span> + tool + <span class="string">" to ctx as "</span>
+<a name="537" href="#537">537</a>                                 + toolData.toolName);
+<a name="538" href="#538">538</a>                         context.put(toolData.toolName, tool);
+<a name="539" href="#539">539</a>                     }
+<a name="540" href="#540">540</a>                     <strong>else</strong>
+<a name="541" href="#541">541</a>                     {
+<a name="542" href="#542">542</a>                         log.info(<span class="string">"Tool "</span> + toolData.toolName
+<a name="543" href="#543">543</a>                                 + <span class="string">" was null, skipping it."</span>);
+<a name="544" href="#544">544</a>                     }
+<a name="545" href="#545">545</a>                 }
+<a name="546" href="#546">546</a>             }
+<a name="547" href="#547">547</a>             <strong>catch</strong> (Exception e)
+<a name="548" href="#548">548</a>             {
+<a name="549" href="#549">549</a>                 log.error(<span class="string">"Could not instantiate session tool "</span>
+<a name="550" href="#550">550</a>                     + toolData.toolName + <span class="string">" from a "</span>
+<a name="551" href="#551">551</a>                     + toolData.toolClassName + <span class="string">" object"</span>, e);
+<a name="552" href="#552">552</a>             }
+<a name="553" href="#553">553</a>         }
+<a name="554" href="#554">554</a>     }
+<a name="555" href="#555">555</a> 
+<a name="556" href="#556">556</a>     <em>/**<em>*</em></em>
+<a name="557" href="#557">557</a> <em>     * Populate the given context with the perm-scoped tools.</em>
+<a name="558" href="#558">558</a> <em>     *</em>
+<a name="559" href="#559">559</a> <em>     * @param tools The list of tools with which to populate the</em>
+<a name="560" href="#560">560</a> <em>     * session.</em>
+<a name="561" href="#561">561</a> <em>     * @param context The context to populate.</em>
+<a name="562" href="#562">562</a> <em>     * @param data The current RunData object</em>
+<a name="563" href="#563">563</a> <em>     * @param user The &lt;code>User&lt;/code> object whose storage to</em>
+<a name="564" href="#564">564</a> <em>     * retrieve the tool from.</em>
+<a name="565" href="#565">565</a> <em>     */</em>
+<a name="566" href="#566">566</a>     <strong>private</strong> <strong>void</strong> populateWithPermTools(List tools, Context context,
+<a name="567" href="#567">567</a>             <a href="../../../../../org/apache/turbine/util/RunData.html">RunData</a> data, <a href="../../../../../org/apache/turbine/om/security/User.html">User</a> user)
+<a name="568" href="#568">568</a>     {
+<a name="569" href="#569">569</a>         <em class="comment">// Iterate the tools</em>
+<a name="570" href="#570">570</a>         <strong>for</strong> (Iterator it = tools.iterator(); it.hasNext();)
+<a name="571" href="#571">571</a>         {
+<a name="572" href="#572">572</a>             ToolData toolData = (ToolData) it.next();
+<a name="573" href="#573">573</a>             <strong>try</strong>
+<a name="574" href="#574">574</a>             {
+<a name="575" href="#575">575</a>                 <em class="comment">// ensure that tool is created only once for a user</em>
+<a name="576" href="#576">576</a>                 <em class="comment">// by synchronizing against the user object</em>
+<a name="577" href="#577">577</a>                 <strong>synchronized</strong> (user)
+<a name="578" href="#578">578</a>                 {
+<a name="579" href="#579">579</a>                     <em class="comment">// first try and fetch the tool from the user's</em>
+<a name="580" href="#580">580</a>                     <em class="comment">// hashtable</em>
+<a name="581" href="#581">581</a>                     Object tool = user.getPerm(toolData.toolClassName);
+<a name="582" href="#582">582</a> 
+<a name="583" href="#583">583</a>                     <strong>if</strong> (tool == <strong>null</strong>)
+<a name="584" href="#584">584</a>                     {
+<a name="585" href="#585">585</a>                         <em class="comment">// if not there, an instance must be fetched from</em>
+<a name="586" href="#586">586</a>                         <em class="comment">// the pool</em>
+<a name="587" href="#587">587</a>                         tool = pool.getInstance(toolData.toolClass);
+<a name="588" href="#588">588</a> 
+<a name="589" href="#589">589</a>                         <em class="comment">// session tools are init'd with the User object</em>
+<a name="590" href="#590">590</a>                         initTool(tool, user);
+<a name="591" href="#591">591</a> 
+<a name="592" href="#592">592</a>                         <em class="comment">// store the newly created tool in the user's hashtable</em>
+<a name="593" href="#593">593</a>                         user.setPerm(toolData.toolClassName, tool);
+<a name="594" href="#594">594</a>                     }
+<a name="595" href="#595">595</a> 
+<a name="596" href="#596">596</a>                     <em class="comment">// *NOT* else</em>
+<a name="597" href="#597">597</a>                     <strong>if</strong>(tool != <strong>null</strong>)
+<a name="598" href="#598">598</a>                     {
+<a name="599" href="#599">599</a>                         <em class="comment">// This is a semantics change. In the old</em>
+<a name="600" href="#600">600</a>                         <em class="comment">// Turbine, Session tools were initialized and</em>
+<a name="601" href="#601">601</a>                         <em class="comment">// then refreshed every time they were pulled</em>
+<a name="602" href="#602">602</a>                         <em class="comment">// into the context if "refreshToolsPerRequest"</em>
+<a name="603" href="#603">603</a>                         <em class="comment">// was wanted.</em>
+<a name="604" href="#604">604</a>                         <em class="comment">//</em>
+<a name="605" href="#605">605</a>                         <em class="comment">// RunDataApplicationTools now have a parameter</em>
+<a name="606" href="#606">606</a>                         <em class="comment">// for refresh. If it is not refreshed immediately</em>
+<a name="607" href="#607">607</a>                         <em class="comment">// after init(), the parameter value will be undefined</em>
+<a name="608" href="#608">608</a>                         <em class="comment">// until the 2nd run. So we refresh all the session</em>
+<a name="609" href="#609">609</a>                         <em class="comment">// tools on every run, even if we just init'ed it.</em>
+<a name="610" href="#610">610</a>                         <em class="comment">//</em>
+<a name="611" href="#611">611</a> 
+<a name="612" href="#612">612</a>                         <strong>if</strong> (refreshToolsPerRequest)
+<a name="613" href="#613">613</a>                         {
+<a name="614" href="#614">614</a>                             refreshTool(tool, data);
+<a name="615" href="#615">615</a>                         }
+<a name="616" href="#616">616</a> 
+<a name="617" href="#617">617</a>                         <em class="comment">// put the tool in the context</em>
+<a name="618" href="#618">618</a>                         log.debug(<span class="string">"Adding "</span> + tool + <span class="string">" to ctx as "</span>
+<a name="619" href="#619">619</a>                                 + toolData.toolName);
+<a name="620" href="#620">620</a>                         log.warn(<span class="string">"Persistent scope tools are deprecated."</span>);
+<a name="621" href="#621">621</a>                         context.put(toolData.toolName, tool);
+<a name="622" href="#622">622</a>                     }
+<a name="623" href="#623">623</a>                     <strong>else</strong>
+<a name="624" href="#624">624</a>                     {
+<a name="625" href="#625">625</a>                         log.info(<span class="string">"Tool "</span> + toolData.toolName
+<a name="626" href="#626">626</a>                                 + <span class="string">" was null, skipping it."</span>);
+<a name="627" href="#627">627</a>                     }
+<a name="628" href="#628">628</a>                 }
+<a name="629" href="#629">629</a>             }
+<a name="630" href="#630">630</a>             <strong>catch</strong> (Exception e)
+<a name="631" href="#631">631</a>             {
+<a name="632" href="#632">632</a>                 log.error(<span class="string">"Could not instantiate perm tool "</span>
+<a name="633" href="#633">633</a>                     + toolData.toolName + <span class="string">" from a "</span>
+<a name="634" href="#634">634</a>                     + toolData.toolClassName + <span class="string">" object"</span>, e);
+<a name="635" href="#635">635</a>             }
+<a name="636" href="#636">636</a>         }
+<a name="637" href="#637">637</a>     }
+<a name="638" href="#638">638</a> 
+<a name="639" href="#639">639</a>     <em>/**<em>*</em></em>
+<a name="640" href="#640">640</a> <em>     * Return the absolute path to the resources directory</em>
+<a name="641" href="#641">641</a> <em>     * used by the application tools.</em>
+<a name="642" href="#642">642</a> <em>     *</em>
+<a name="643" href="#643">643</a> <em>     * @return the absolute path of the resources directory</em>
+<a name="644" href="#644">644</a> <em>     */</em>
+<a name="645" href="#645">645</a>     <strong>public</strong> String getAbsolutePathToResourcesDirectory()
+<a name="646" href="#646">646</a>     {
+<a name="647" href="#647">647</a>         <strong>return</strong> Turbine.getRealPath(resourcesDirectory);
+<a name="648" href="#648">648</a>     }
+<a name="649" href="#649">649</a> 
+<a name="650" href="#650">650</a>     <em>/**<em>*</em></em>
+<a name="651" href="#651">651</a> <em>     * Return the resources directory. This is</em>
+<a name="652" href="#652">652</a> <em>     * relative to the web context.</em>
+<a name="653" href="#653">653</a> <em>     *</em>
+<a name="654" href="#654">654</a> <em>     * @return the relative path of the resources directory</em>
+<a name="655" href="#655">655</a> <em>     */</em>
+<a name="656" href="#656">656</a>     <strong>public</strong> String getResourcesDirectory()
+<a name="657" href="#657">657</a>     {
+<a name="658" href="#658">658</a>         <strong>return</strong> resourcesDirectory;
+<a name="659" href="#659">659</a>     }
+<a name="660" href="#660">660</a> 
+<a name="661" href="#661">661</a>     <em>/**<em>*</em></em>
+<a name="662" href="#662">662</a> <em>     * Refresh the global tools. We can</em>
+<a name="663" href="#663">663</a> <em>     * only refresh those tools that adhere to</em>
+<a name="664" href="#664">664</a> <em>     * ApplicationTool interface because we</em>
+<a name="665" href="#665">665</a> <em>     * know those types of tools have a refresh</em>
+<a name="666" href="#666">666</a> <em>     * method.</em>
+<a name="667" href="#667">667</a> <em>     * @deprecated Will be made private after 2.3</em>
+<a name="668" href="#668">668</a> <em>     */</em>
+<a name="669" href="#669">669</a>     <strong>public</strong> <strong>void</strong> refreshGlobalTools()
+<a name="670" href="#670">670</a>     {
+<a name="671" href="#671">671</a>         <strong>for</strong> (Iterator it = globalTools.iterator(); it.hasNext();)
+<a name="672" href="#672">672</a>         {
+<a name="673" href="#673">673</a>             ToolData toolData = (ToolData) it.next();
+<a name="674" href="#674">674</a>             Object tool = globalContext.get(toolData.toolName);
+<a name="675" href="#675">675</a>             refreshTool(tool, <strong>null</strong>);
+<a name="676" href="#676">676</a>         }
+<a name="677" href="#677">677</a>     }
+<a name="678" href="#678">678</a> 
+<a name="679" href="#679">679</a>     <em>/**<em>*</em></em>
+<a name="680" href="#680">680</a> <em>     * Should we refresh the ToolBox on</em>
+<a name="681" href="#681">681</a> <em>     * a per request basis.</em>
+<a name="682" href="#682">682</a> <em>     * @deprecated No longer needed as Pull and Velocity Service are now more separate.</em>
+<a name="683" href="#683">683</a> <em>     */</em>
+<a name="684" href="#684">684</a>     <strong>public</strong> <strong>boolean</strong> refreshToolsPerRequest()
+<a name="685" href="#685">685</a>     {
+<a name="686" href="#686">686</a>         <strong>return</strong> refreshToolsPerRequest;
+<a name="687" href="#687">687</a>     }
+<a name="688" href="#688">688</a> 
+<a name="689" href="#689">689</a>     <em>/**<em>*</em></em>
+<a name="690" href="#690">690</a> <em>     * Release the request-scope tool instances in the</em>
+<a name="691" href="#691">691</a> <em>     * given Context back to the pool</em>
+<a name="692" href="#692">692</a> <em>     *</em>
+<a name="693" href="#693">693</a> <em>     * @param context the Velocity Context to release tools from</em>
+<a name="694" href="#694">694</a> <em>     */</em>
+<a name="695" href="#695">695</a>     <strong>public</strong> <strong>void</strong> releaseTools(Context context)
+<a name="696" href="#696">696</a>     {
+<a name="697" href="#697">697</a>         <em class="comment">// only the request tools can be released - other scoped</em>
+<a name="698" href="#698">698</a>         <em class="comment">// tools will have continuing references to them</em>
+<a name="699" href="#699">699</a>         releaseTools(context, requestTools);
+<a name="700" href="#700">700</a>     }
+<a name="701" href="#701">701</a> 
+<a name="702" href="#702">702</a>     <em>/**<em>*</em></em>
+<a name="703" href="#703">703</a> <em>     * Release the given list of tools from the context back</em>
+<a name="704" href="#704">704</a> <em>     * to the pool</em>
+<a name="705" href="#705">705</a> <em>     *</em>
+<a name="706" href="#706">706</a> <em>     * @param context the Context containing the tools</em>
+<a name="707" href="#707">707</a> <em>     * @param tools a List of ToolData objects</em>
+<a name="708" href="#708">708</a> <em>     */</em>
+<a name="709" href="#709">709</a>     <strong>private</strong> <strong>void</strong> releaseTools(Context context, List tools)
+<a name="710" href="#710">710</a>     {
+<a name="711" href="#711">711</a>         <strong>for</strong> (Iterator it = tools.iterator(); it.hasNext();)
+<a name="712" href="#712">712</a>         {
+<a name="713" href="#713">713</a>             ToolData toolData = (ToolData) it.next();
+<a name="714" href="#714">714</a>             Object tool = context.remove(toolData.toolName);
+<a name="715" href="#715">715</a> 
+<a name="716" href="#716">716</a>             <strong>if</strong> (tool != <strong>null</strong>)
+<a name="717" href="#717">717</a>             {
+<a name="718" href="#718">718</a>                 pool.putInstance(tool);
+<a name="719" href="#719">719</a>             }
+<a name="720" href="#720">720</a>         }
+<a name="721" href="#721">721</a>     }
+<a name="722" href="#722">722</a> 
+<a name="723" href="#723">723</a>     <em>/**<em>*</em></em>
+<a name="724" href="#724">724</a> <em>     * Initialized a given Tool with the passed init Object</em>
+<a name="725" href="#725">725</a> <em>     *</em>
+<a name="726" href="#726">726</a> <em>     * @param tool A Tool Object</em>
+<a name="727" href="#727">727</a> <em>     * @param param The Init Parameter</em>
+<a name="728" href="#728">728</a> <em>     *</em>
+<a name="729" href="#729">729</a> <em>     * @throws Exception If anything went wrong.</em>
+<a name="730" href="#730">730</a> <em>     */</em>
+<a name="731" href="#731">731</a>     <strong>private</strong> <strong>void</strong> initTool(Object tool, Object param)
+<a name="732" href="#732">732</a>         throws Exception
+<a name="733" href="#733">733</a>     {
+<a name="734" href="#734">734</a>         <strong>if</strong> (tool instanceof ApplicationTool)
+<a name="735" href="#735">735</a>         {
+<a name="736" href="#736">736</a>             ((<a href="../../../../../org/apache/turbine/services/pull/ApplicationTool.html">ApplicationTool</a>) tool).init(param);
+<a name="737" href="#737">737</a>         }
+<a name="738" href="#738">738</a>         <strong>else</strong> <strong>if</strong> (tool instanceof RunDataApplicationTool)
+<a name="739" href="#739">739</a>         {
+<a name="740" href="#740">740</a>             ((<a href="../../../../../org/apache/turbine/services/pull/RunDataApplicationTool.html">RunDataApplicationTool</a>) tool).init(param);
+<a name="741" href="#741">741</a>         }
+<a name="742" href="#742">742</a>     }
+<a name="743" href="#743">743</a> 
+<a name="744" href="#744">744</a>     <em>/**<em>*</em></em>
+<a name="745" href="#745">745</a> <em>     * Refresh a given Tool.</em>
+<a name="746" href="#746">746</a> <em>     *</em>
+<a name="747" href="#747">747</a> <em>     * @param tool A Tool Object</em>
+<a name="748" href="#748">748</a> <em>     * @param data The current RunData Object</em>
+<a name="749" href="#749">749</a> <em>     */</em>
+<a name="750" href="#750">750</a>     <strong>private</strong> <strong>void</strong> refreshTool(Object tool, <a href="../../../../../org/apache/turbine/util/RunData.html">RunData</a> data)
+<a name="751" href="#751">751</a>     {
+<a name="752" href="#752">752</a>         <strong>if</strong> (tool instanceof ApplicationTool)
+<a name="753" href="#753">753</a>         {
+<a name="754" href="#754">754</a>             ((<a href="../../../../../org/apache/turbine/services/pull/ApplicationTool.html">ApplicationTool</a>) tool).refresh();
+<a name="755" href="#755">755</a>         }
+<a name="756" href="#756">756</a>         <strong>else</strong> <strong>if</strong> (tool instanceof RunDataApplicationTool)
+<a name="757" href="#757">757</a>         {
+<a name="758" href="#758">758</a>             ((<a href="../../../../../org/apache/turbine/services/pull/RunDataApplicationTool.html">RunDataApplicationTool</a>) tool).refresh(data);
+<a name="759" href="#759">759</a>         }
+<a name="760" href="#760">760</a>     }
+<a name="761" href="#761">761</a> }
 </pre>
-<hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
-</body>
+<hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
+

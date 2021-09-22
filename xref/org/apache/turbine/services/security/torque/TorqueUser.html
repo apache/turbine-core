@@ -1,0 +1,800 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" /><title>TorqueUser xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../../../apidocs/org/apache/turbine/services/security/torque/TorqueUser.html">View Javadoc</a></div><pre>
+
+<a name="1" href="#1">1</a>   <strong>package</strong> <a href="../../../../../../org/apache/turbine/services/security/torque/package-summary.html">org.apache.turbine.services.security.torque</a>;
+<a name="2" href="#2">2</a>   
+<a name="3" href="#3">3</a>   <em class="comment">/*</em>
+<a name="4" href="#4">4</a>   <em class="comment"> * Licensed to the Apache Software Foundation (ASF) under one</em>
+<a name="5" href="#5">5</a>   <em class="comment"> * or more contributor license agreements.  See the NOTICE file</em>
+<a name="6" href="#6">6</a>   <em class="comment"> * distributed with this work for additional information</em>
+<a name="7" href="#7">7</a>   <em class="comment"> * regarding copyright ownership.  The ASF licenses this file</em>
+<a name="8" href="#8">8</a>   <em class="comment"> * to you under the Apache License, Version 2.0 (the</em>
+<a name="9" href="#9">9</a>   <em class="comment"> * "License"); you may not use this file except in compliance</em>
+<a name="10" href="#10">10</a>  <em class="comment"> * with the License.  You may obtain a copy of the License at</em>
+<a name="11" href="#11">11</a>  <em class="comment"> *</em>
+<a name="12" href="#12">12</a>  <em class="comment"> *   <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
+<a name="13" href="#13">13</a>  <em class="comment"> *</em>
+<a name="14" href="#14">14</a>  <em class="comment"> * Unless required by applicable law or agreed to in writing,</em>
+<a name="15" href="#15">15</a>  <em class="comment"> * software distributed under the License is distributed on an</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * KIND, either express or implied.  See the License for the</em>
+<a name="18" href="#18">18</a>  <em class="comment"> * specific language governing permissions and limitations</em>
+<a name="19" href="#19">19</a>  <em class="comment"> * under the License.</em>
+<a name="20" href="#20">20</a>  <em class="comment"> */</em>
+<a name="21" href="#21">21</a>  
+<a name="22" href="#22">22</a>  <strong>import</strong> java.io.ByteArrayOutputStream;
+<a name="23" href="#23">23</a>  <strong>import</strong> java.io.PrintWriter;
+<a name="24" href="#24">24</a>  <strong>import</strong> java.sql.Connection;
+<a name="25" href="#25">25</a>  <strong>import</strong> java.util.Date;
+<a name="26" href="#26">26</a>  <strong>import</strong> java.util.Hashtable;
+<a name="27" href="#27">27</a>  
+<a name="28" href="#28">28</a>  <strong>import</strong> javax.servlet.http.HttpSessionBindingEvent;
+<a name="29" href="#29">29</a>  
+<a name="30" href="#30">30</a>  <strong>import</strong> org.apache.torque.om.Persistent;
+<a name="31" href="#31">31</a>  <strong>import</strong> org.apache.turbine.om.security.User;
+<a name="32" href="#32">32</a>  <strong>import</strong> org.apache.turbine.services.security.TurbineSecurity;
+<a name="33" href="#33">33</a>  <strong>import</strong> org.apache.turbine.util.ObjectUtils;
+<a name="34" href="#34">34</a>  <strong>import</strong> org.apache.turbine.util.security.TurbineSecurityException;
+<a name="35" href="#35">35</a>  
+<a name="36" href="#36">36</a>  <em>/**<em>*</em></em>
+<a name="37" href="#37">37</a>  <em> * This is the User class used by the TorqueSecurity Service. It decouples</em>
+<a name="38" href="#38">38</a>  <em> * all the database peer access from the actual Peer object</em>
+<a name="39" href="#39">39</a>  <em> *</em>
+<a name="40" href="#40">40</a>  <em> * @author &lt;a href="<a href="mailto:josh@stonecottage.com" target="alexandria_uri">mailto:josh@stonecottage.com</a>">Josh Lucas&lt;/a></em>
+<a name="41" href="#41">41</a>  <em> * @author &lt;a href="<a href="mailto:jon@collab.net" target="alexandria_uri">mailto:jon@collab.net</a>">Jon S. Stevens&lt;/a></em>
+<a name="42" href="#42">42</a>  <em> * @author &lt;a href="<a href="mailto:jmcnally@collab.net" target="alexandria_uri">mailto:jmcnally@collab.net</a>">John D. McNally&lt;/a></em>
+<a name="43" href="#43">43</a>  <em> * @author &lt;a href="<a href="mailto:frank.kim@clearink.com" target="alexandria_uri">mailto:frank.kim@clearink.com</a>">Frank Y. Kim&lt;/a></em>
+<a name="44" href="#44">44</a>  <em> * @author &lt;a href="<a href="mailto:cberry@gluecode.com" target="alexandria_uri">mailto:cberry@gluecode.com</a>">Craig D. Berry&lt;/a></em>
+<a name="45" href="#45">45</a>  <em> * @author &lt;a href="<a href="mailto:mpoeschl@marmot.at" target="alexandria_uri">mailto:mpoeschl@marmot.at</a>">Martin Poeschl&lt;/a></em>
+<a name="46" href="#46">46</a>  <em> * @author &lt;a href="<a href="mailto:dlr@collab.net" target="alexandria_uri">mailto:dlr@collab.net</a>">Daniel Rall&lt;/a></em>
+<a name="47" href="#47">47</a>  <em> * @author &lt;a href="<a href="mailto:hps@intermeta.de" target="alexandria_uri">mailto:hps@intermeta.de</a>">Henning P. Schmiedehausen&lt;/a></em>
+<a name="48" href="#48">48</a>  <em> * @version $Id: TorqueUser.java 534527 2007-05-02 16:10:59Z tv $</em>
+<a name="49" href="#49">49</a>  <em> */</em>
+<a name="50" href="#50">50</a>  
+<a name="51" href="#51">51</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../../org/apache/turbine/services/security/torque/TorqueUser.html">TorqueUser</a>
+<a name="52" href="#52">52</a>      <strong>extends</strong> <a href="../../../../../../org/apache/turbine/services/security/torque/TorqueObject.html">TorqueObject</a>
+<a name="53" href="#53">53</a>      implements <a href="../../../../../../org/apache/turbine/om/security/User.html">User</a>
+<a name="54" href="#54">54</a>  {
+<a name="55" href="#55">55</a>      <em>/**<em>* Serial Version UID */</em></em>
+<a name="56" href="#56">56</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> <strong>long</strong> serialVersionUID = 6623129207135917717L;
+<a name="57" href="#57">57</a>  
+<a name="58" href="#58">58</a>      <em>/**<em>* The date on which the user last accessed the application. */</em></em>
+<a name="59" href="#59">59</a>      <strong>private</strong> Date lastAccessDate = <strong>null</strong>;
+<a name="60" href="#60">60</a>  
+<a name="61" href="#61">61</a>      <em>/**<em>* This is data that will survive a servlet engine restart. */</em></em>
+<a name="62" href="#62">62</a>      <strong>private</strong> Hashtable permStorage = <strong>null</strong>;
+<a name="63" href="#63">63</a>  
+<a name="64" href="#64">64</a>      <em>/**<em>* This is data that will not survive a servlet engine restart. */</em></em>
+<a name="65" href="#65">65</a>      <strong>private</strong> Hashtable tempStorage = <strong>null</strong>;
+<a name="66" href="#66">66</a>  
+<a name="67" href="#67">67</a>      <em>/**<em>*</em></em>
+<a name="68" href="#68">68</a>  <em>     * Constructor.</em>
+<a name="69" href="#69">69</a>  <em>     * Create a new User and set the createDate.</em>
+<a name="70" href="#70">70</a>  <em>     */</em>
+<a name="71" href="#71">71</a>      <strong>public</strong> <a href="../../../../../../org/apache/turbine/services/security/torque/TorqueUser.html">TorqueUser</a>()
+<a name="72" href="#72">72</a>      {
+<a name="73" href="#73">73</a>          <strong>super</strong>();
+<a name="74" href="#74">74</a>          setCreateDate(<strong>new</strong> Date());
+<a name="75" href="#75">75</a>          tempStorage = <strong>new</strong> Hashtable(10);
+<a name="76" href="#76">76</a>          setHasLoggedIn(Boolean.FALSE);
+<a name="77" href="#77">77</a>      }
+<a name="78" href="#78">78</a>  
+<a name="79" href="#79">79</a>      <em>/**<em>*</em></em>
+<a name="80" href="#80">80</a>  <em>     * This Constructor is used when the UserPeerManager</em>
+<a name="81" href="#81">81</a>  <em>     * has retrieved a list of Database Objects from the peer and</em>
+<a name="82" href="#82">82</a>  <em>     * must 'wrap' them into TorqueRole Objects. You should not use it directly!</em>
+<a name="83" href="#83">83</a>  <em>     *</em>
+<a name="84" href="#84">84</a>  <em>     * @param obj An Object from the peer</em>
+<a name="85" href="#85">85</a>  <em>     */</em>
+<a name="86" href="#86">86</a>      <strong>public</strong> <a href="../../../../../../org/apache/turbine/services/security/torque/TorqueUser.html">TorqueUser</a>(Persistent obj)
+<a name="87" href="#87">87</a>      {
+<a name="88" href="#88">88</a>          <strong>super</strong>(obj);
+<a name="89" href="#89">89</a>  
+<a name="90" href="#90">90</a>          <em class="comment">// Do not set creation date. This is only called on retrieval from</em>
+<a name="91" href="#91">91</a>          <em class="comment">// storage!</em>
+<a name="92" href="#92">92</a>  
+<a name="93" href="#93">93</a>          tempStorage = <strong>new</strong> Hashtable(10);
+<a name="94" href="#94">94</a>          setHasLoggedIn(Boolean.FALSE);
+<a name="95" href="#95">95</a>      }
+<a name="96" href="#96">96</a>  
+<a name="97" href="#97">97</a>      <em>/**<em>*</em></em>
+<a name="98" href="#98">98</a>  <em>     * Returns the underlying Object for the Peer</em>
+<a name="99" href="#99">99</a>  <em>     *</em>
+<a name="100" href="#100">100</a> <em>     * Used in the UserPeerManager when building a new Criteria.</em>
+<a name="101" href="#101">101</a> <em>     *</em>
+<a name="102" href="#102">102</a> <em>     * @return The underlying persistent object</em>
+<a name="103" href="#103">103</a> <em>     *</em>
+<a name="104" href="#104">104</a> <em>     */</em>
+<a name="105" href="#105">105</a> 
+<a name="106" href="#106">106</a>     <strong>public</strong> Persistent getPersistentObj()
+<a name="107" href="#107">107</a>     {
+<a name="108" href="#108">108</a>         <strong>if</strong> (obj == <strong>null</strong>)
+<a name="109" href="#109">109</a>         {
+<a name="110" href="#110">110</a>             obj = UserPeerManager.newPersistentInstance();
+<a name="111" href="#111">111</a>         }
+<a name="112" href="#112">112</a>         <strong>return</strong> obj;
+<a name="113" href="#113">113</a>     }
+<a name="114" href="#114">114</a> 
+<a name="115" href="#115">115</a>     <em>/**<em>*</em></em>
+<a name="116" href="#116">116</a> <em>     * Stores the object in the database.  If the object is new,</em>
+<a name="117" href="#117">117</a> <em>     * it inserts it; otherwise an update is performed.</em>
+<a name="118" href="#118">118</a> <em>     *</em>
+<a name="119" href="#119">119</a> <em>     * @param torqueName The name under which the object should be stored.</em>
+<a name="120" href="#120">120</a> <em>     *</em>
+<a name="121" href="#121">121</a> <em>     * @exception Exception This method might throw an exceptions</em>
+<a name="122" href="#122">122</a> <em>     */</em>
+<a name="123" href="#123">123</a>     <strong>public</strong> <strong>void</strong> save(String torqueName)
+<a name="124" href="#124">124</a>             throws Exception
+<a name="125" href="#125">125</a>     {
+<a name="126" href="#126">126</a>         setObjectdata(ObjectUtils.serializeHashtable(getPermStorage()));
+<a name="127" href="#127">127</a>         <strong>super</strong>.save(torqueName);
+<a name="128" href="#128">128</a>     }
+<a name="129" href="#129">129</a> 
+<a name="130" href="#130">130</a>     <em>/**<em>*</em></em>
+<a name="131" href="#131">131</a> <em>     * Stores the object in the database.  If the object is new,</em>
+<a name="132" href="#132">132</a> <em>     * it inserts it; otherwise an update is performed.  This method</em>
+<a name="133" href="#133">133</a> <em>     * is meant to be used as part of a transaction, otherwise use</em>
+<a name="134" href="#134">134</a> <em>     * the save() method and the connection details will be handled</em>
+<a name="135" href="#135">135</a> <em>     * internally</em>
+<a name="136" href="#136">136</a> <em>     *</em>
+<a name="137" href="#137">137</a> <em>     * @param con A Connection object to save the object</em>
+<a name="138" href="#138">138</a> <em>     *</em>
+<a name="139" href="#139">139</a> <em>     * @exception Exception This method might throw an exceptions</em>
+<a name="140" href="#140">140</a> <em>     */</em>
+<a name="141" href="#141">141</a>     <strong>public</strong> <strong>void</strong> save(Connection con)
+<a name="142" href="#142">142</a>         throws Exception
+<a name="143" href="#143">143</a>     {
+<a name="144" href="#144">144</a>         setObjectdata(ObjectUtils.serializeHashtable(getPermStorage()));
+<a name="145" href="#145">145</a>         <strong>super</strong>.save(con);
+<a name="146" href="#146">146</a>     }
+<a name="147" href="#147">147</a> 
+<a name="148" href="#148">148</a>     <em>/**<em>*</em></em>
+<a name="149" href="#149">149</a> <em>     * Makes changes made to the User attributes permanent.</em>
+<a name="150" href="#150">150</a> <em>     *</em>
+<a name="151" href="#151">151</a> <em>     * @throws TurbineSecurityException if there is a problem while</em>
+<a name="152" href="#152">152</a> <em>     *  saving data.</em>
+<a name="153" href="#153">153</a> <em>     */</em>
+<a name="154" href="#154">154</a>     <strong>public</strong> <strong>void</strong> save()
+<a name="155" href="#155">155</a>         throws <a href="../../../../../../org/apache/turbine/util/security/TurbineSecurityException.html">TurbineSecurityException</a>
+<a name="156" href="#156">156</a>     {
+<a name="157" href="#157">157</a>         <em class="comment">//</em>
+<a name="158" href="#158">158</a>         <em class="comment">// This is inconsistent with all the other security classes</em>
+<a name="159" href="#159">159</a>         <em class="comment">// because it calls save() on the underlying object directly.</em>
+<a name="160" href="#160">160</a>         <em class="comment">// But the UserManager calls ((Persistent)user).save()</em>
+<a name="161" href="#161">161</a>         <em class="comment">// so if we do TurbineSecurity.saveUser(this) here, we get</em>
+<a name="162" href="#162">162</a>         <em class="comment">// a nice endless loop. :-(</em>
+<a name="163" href="#163">163</a>         <em class="comment">//</em>
+<a name="164" href="#164">164</a>         <em class="comment">// Users seem to be a special kind of security objects...</em>
+<a name="165" href="#165">165</a>         <em class="comment">//</em>
+<a name="166" href="#166">166</a> 
+<a name="167" href="#167">167</a>         <strong>try</strong>
+<a name="168" href="#168">168</a>         {
+<a name="169" href="#169">169</a>             setObjectdata(ObjectUtils.serializeHashtable(getPermStorage()));
+<a name="170" href="#170">170</a>             getPersistentObj().save();
+<a name="171" href="#171">171</a>         }
+<a name="172" href="#172">172</a>         <strong>catch</strong> (Exception e)
+<a name="173" href="#173">173</a>         {
+<a name="174" href="#174">174</a>             <strong>throw</strong> <strong>new</strong> <a href="../../../../../../org/apache/turbine/util/security/TurbineSecurityException.html">TurbineSecurityException</a>(<span class="string">"User object said "</span>
+<a name="175" href="#175">175</a>                     + e.getMessage(), e);
+<a name="176" href="#176">176</a>         }
+<a name="177" href="#177">177</a>     }
+<a name="178" href="#178">178</a> 
+<a name="179" href="#179">179</a>     <em>/**<em>*</em></em>
+<a name="180" href="#180">180</a> <em>     * Returns the name of this object.</em>
+<a name="181" href="#181">181</a> <em>     *</em>
+<a name="182" href="#182">182</a> <em>     * @return The name of the object.</em>
+<a name="183" href="#183">183</a> <em>     */</em>
+<a name="184" href="#184">184</a>     <strong>public</strong> String getName()
+<a name="185" href="#185">185</a>     {
+<a name="186" href="#186">186</a>         <strong>return</strong> UserPeerManager.getName(getPersistentObj());
+<a name="187" href="#187">187</a>     }
+<a name="188" href="#188">188</a> 
+<a name="189" href="#189">189</a>     <em>/**<em>*</em></em>
+<a name="190" href="#190">190</a> <em>     * Sets the name of this object</em>
+<a name="191" href="#191">191</a> <em>     *</em>
+<a name="192" href="#192">192</a> <em>     * @param name The name of the object</em>
+<a name="193" href="#193">193</a> <em>     */</em>
+<a name="194" href="#194">194</a>     <strong>public</strong> <strong>void</strong> setName(String name)
+<a name="195" href="#195">195</a>     {
+<a name="196" href="#196">196</a>         setUserName(name);
+<a name="197" href="#197">197</a>     }
+<a name="198" href="#198">198</a> 
+<a name="199" href="#199">199</a>     <em>/**<em>*</em></em>
+<a name="200" href="#200">200</a> <em>     * Gets the Id of this object</em>
+<a name="201" href="#201">201</a> <em>     *</em>
+<a name="202" href="#202">202</a> <em>     * @return The Id of the object</em>
+<a name="203" href="#203">203</a> <em>     */</em>
+<a name="204" href="#204">204</a>     <strong>public</strong> <strong>int</strong> getId()
+<a name="205" href="#205">205</a>     {
+<a name="206" href="#206">206</a>         <strong>return</strong> UserPeerManager.getIdAsObj(getPersistentObj()).intValue();
+<a name="207" href="#207">207</a>     }
+<a name="208" href="#208">208</a> 
+<a name="209" href="#209">209</a>     <em>/**<em>*</em></em>
+<a name="210" href="#210">210</a> <em>     * Gets the Id of this object</em>
+<a name="211" href="#211">211</a> <em>     *</em>
+<a name="212" href="#212">212</a> <em>     * @return The Id of the object</em>
+<a name="213" href="#213">213</a> <em>     */</em>
+<a name="214" href="#214">214</a>     <strong>public</strong> Integer getIdAsObj()
+<a name="215" href="#215">215</a>     {
+<a name="216" href="#216">216</a>         <strong>return</strong> UserPeerManager.getIdAsObj(getPersistentObj());
+<a name="217" href="#217">217</a>     }
+<a name="218" href="#218">218</a> 
+<a name="219" href="#219">219</a>     <em>/**<em>*</em></em>
+<a name="220" href="#220">220</a> <em>     * Sets the Id of this object</em>
+<a name="221" href="#221">221</a> <em>     *</em>
+<a name="222" href="#222">222</a> <em>     * @param id The new Id</em>
+<a name="223" href="#223">223</a> <em>     */</em>
+<a name="224" href="#224">224</a>     <strong>public</strong> <strong>void</strong> setId(<strong>int</strong> id)
+<a name="225" href="#225">225</a>     {
+<a name="226" href="#226">226</a>         UserPeerManager.setId(getPersistentObj(), id);
+<a name="227" href="#227">227</a>     }
+<a name="228" href="#228">228</a> 
+<a name="229" href="#229">229</a>     <em>/**<em>*</em></em>
+<a name="230" href="#230">230</a> <em>     * Returns the name of this user.</em>
+<a name="231" href="#231">231</a> <em>     *</em>
+<a name="232" href="#232">232</a> <em>     * @return The name of the user.</em>
+<a name="233" href="#233">233</a> <em>     * @deprecated Use getName() instead.</em>
+<a name="234" href="#234">234</a> <em>     */</em>
+<a name="235" href="#235">235</a>     <strong>public</strong> String getUserName()
+<a name="236" href="#236">236</a>     {
+<a name="237" href="#237">237</a>         <strong>return</strong> getName();
+<a name="238" href="#238">238</a>     }
+<a name="239" href="#239">239</a> 
+<a name="240" href="#240">240</a>     <em>/**<em>*</em></em>
+<a name="241" href="#241">241</a> <em>     * Sets the name of this user.</em>
+<a name="242" href="#242">242</a> <em>     *</em>
+<a name="243" href="#243">243</a> <em>     * @param name The name of the user.</em>
+<a name="244" href="#244">244</a> <em>     */</em>
+<a name="245" href="#245">245</a>     <strong>public</strong> <strong>void</strong> setUserName(String name)
+<a name="246" href="#246">246</a>     {
+<a name="247" href="#247">247</a>         UserPeerManager.setUserName(getPersistentObj(), name);
+<a name="248" href="#248">248</a>     }
+<a name="249" href="#249">249</a> 
+<a name="250" href="#250">250</a>     <em>/**<em>*</em></em>
+<a name="251" href="#251">251</a> <em>     * Returns the password of the User</em>
+<a name="252" href="#252">252</a> <em>     *</em>
+<a name="253" href="#253">253</a> <em>     * @return The password of the User</em>
+<a name="254" href="#254">254</a> <em>     */</em>
+<a name="255" href="#255">255</a>     <strong>public</strong> String getPassword()
+<a name="256" href="#256">256</a>     {
+<a name="257" href="#257">257</a>         <strong>return</strong> UserPeerManager.getUserPassword(getPersistentObj());
+<a name="258" href="#258">258</a>     }
+<a name="259" href="#259">259</a> 
+<a name="260" href="#260">260</a>     <em>/**<em>*</em></em>
+<a name="261" href="#261">261</a> <em>     * Sets the password of the User</em>
+<a name="262" href="#262">262</a> <em>     *</em>
+<a name="263" href="#263">263</a> <em>     * @param password The new password of the User</em>
+<a name="264" href="#264">264</a> <em>     */</em>
+<a name="265" href="#265">265</a>     <strong>public</strong> <strong>void</strong> setPassword(String password)
+<a name="266" href="#266">266</a>     {
+<a name="267" href="#267">267</a>         UserPeerManager.setUserPassword(getPersistentObj(), password);
+<a name="268" href="#268">268</a>     }
+<a name="269" href="#269">269</a> 
+<a name="270" href="#270">270</a>     <em>/**<em>*</em></em>
+<a name="271" href="#271">271</a> <em>     * Returns the first name of the User</em>
+<a name="272" href="#272">272</a> <em>     *</em>
+<a name="273" href="#273">273</a> <em>     * @return The first name of the User</em>
+<a name="274" href="#274">274</a> <em>     */</em>
+<a name="275" href="#275">275</a>     <strong>public</strong> String getFirstName()
+<a name="276" href="#276">276</a>     {
+<a name="277" href="#277">277</a>         <strong>return</strong> UserPeerManager.getUserFirstName(getPersistentObj());
+<a name="278" href="#278">278</a>     }
+<a name="279" href="#279">279</a> 
+<a name="280" href="#280">280</a>     <em>/**<em>*</em></em>
+<a name="281" href="#281">281</a> <em>     * Sets the first name of the User</em>
+<a name="282" href="#282">282</a> <em>     *</em>
+<a name="283" href="#283">283</a> <em>     * @param firstName The new first name of the User</em>
+<a name="284" href="#284">284</a> <em>     */</em>
+<a name="285" href="#285">285</a>     <strong>public</strong> <strong>void</strong> setFirstName(String firstName)
+<a name="286" href="#286">286</a>     {
+<a name="287" href="#287">287</a>         UserPeerManager.setUserFirstName(getPersistentObj(), firstName);
+<a name="288" href="#288">288</a>     }
+<a name="289" href="#289">289</a> 
+<a name="290" href="#290">290</a>     <em>/**<em>*</em></em>
+<a name="291" href="#291">291</a> <em>     * Returns the last name of the User</em>
+<a name="292" href="#292">292</a> <em>     *</em>
+<a name="293" href="#293">293</a> <em>     * @return The last name of the User</em>
+<a name="294" href="#294">294</a> <em>     */</em>
+<a name="295" href="#295">295</a>     <strong>public</strong> String getLastName()
+<a name="296" href="#296">296</a>     {
+<a name="297" href="#297">297</a>         <strong>return</strong> UserPeerManager.getUserLastName(getPersistentObj());
+<a name="298" href="#298">298</a>     }
+<a name="299" href="#299">299</a> 
+<a name="300" href="#300">300</a>     <em>/**<em>*</em></em>
+<a name="301" href="#301">301</a> <em>     * Sets the last name of User</em>
+<a name="302" href="#302">302</a> <em>     *</em>
+<a name="303" href="#303">303</a> <em>     * @param lastName The new last name of the User</em>
+<a name="304" href="#304">304</a> <em>     */</em>
+<a name="305" href="#305">305</a>     <strong>public</strong> <strong>void</strong> setLastName(String lastName)
+<a name="306" href="#306">306</a>     {
+<a name="307" href="#307">307</a>         UserPeerManager.setUserLastName(getPersistentObj(), lastName);
+<a name="308" href="#308">308</a>     }
+<a name="309" href="#309">309</a> 
+<a name="310" href="#310">310</a>     <em>/**<em>*</em></em>
+<a name="311" href="#311">311</a> <em>     * Returns the email address of the user</em>
+<a name="312" href="#312">312</a> <em>     *</em>
+<a name="313" href="#313">313</a> <em>     * @return The email address of the user</em>
+<a name="314" href="#314">314</a> <em>     */</em>
+<a name="315" href="#315">315</a>     <strong>public</strong> String getEmail()
+<a name="316" href="#316">316</a>     {
+<a name="317" href="#317">317</a>         <strong>return</strong> UserPeerManager.getUserEmail(getPersistentObj());
+<a name="318" href="#318">318</a>     }
+<a name="319" href="#319">319</a> 
+<a name="320" href="#320">320</a>     <em>/**<em>*</em></em>
+<a name="321" href="#321">321</a> <em>     * Sets the new email address of the user</em>
+<a name="322" href="#322">322</a> <em>     *</em>
+<a name="323" href="#323">323</a> <em>     * @param email The new email address of the user</em>
+<a name="324" href="#324">324</a> <em>     */</em>
+<a name="325" href="#325">325</a>     <strong>public</strong> <strong>void</strong> setEmail(String email)
+<a name="326" href="#326">326</a>     {
+<a name="327" href="#327">327</a>         UserPeerManager.setUserEmail(getPersistentObj(), email);
+<a name="328" href="#328">328</a>     }
+<a name="329" href="#329">329</a> 
+<a name="330" href="#330">330</a>     <em>/**<em>*</em></em>
+<a name="331" href="#331">331</a> <em>     * Returns the confirm value of the user</em>
+<a name="332" href="#332">332</a> <em>     *</em>
+<a name="333" href="#333">333</a> <em>     * @return The confirm value of the user</em>
+<a name="334" href="#334">334</a> <em>     */</em>
+<a name="335" href="#335">335</a>     <strong>public</strong> String getConfirmed()
+<a name="336" href="#336">336</a>     {
+<a name="337" href="#337">337</a>         <strong>return</strong> UserPeerManager.getUserConfirmed(getPersistentObj());
+<a name="338" href="#338">338</a>     }
+<a name="339" href="#339">339</a> 
+<a name="340" href="#340">340</a>     <em>/**<em>*</em></em>
+<a name="341" href="#341">341</a> <em>     * Sets the new confirm value of the user</em>
+<a name="342" href="#342">342</a> <em>     *</em>
+<a name="343" href="#343">343</a> <em>     * @param confirm The new confirm value of the user</em>
+<a name="344" href="#344">344</a> <em>     */</em>
+<a name="345" href="#345">345</a>     <strong>public</strong> <strong>void</strong> setConfirmed(String confirm)
+<a name="346" href="#346">346</a>     {
+<a name="347" href="#347">347</a>         UserPeerManager.setUserConfirmed(getPersistentObj(), confirm);
+<a name="348" href="#348">348</a>     }
+<a name="349" href="#349">349</a> 
+<a name="350" href="#350">350</a>     <em>/**<em>*</em></em>
+<a name="351" href="#351">351</a> <em>     * Returns the creation date of the user</em>
+<a name="352" href="#352">352</a> <em>     *</em>
+<a name="353" href="#353">353</a> <em>     * @return The creation date of the user</em>
+<a name="354" href="#354">354</a> <em>     */</em>
+<a name="355" href="#355">355</a>     <strong>public</strong> java.util.Date getCreateDate()
+<a name="356" href="#356">356</a>     {
+<a name="357" href="#357">357</a>         <strong>return</strong> UserPeerManager.getUserCreateDate(getPersistentObj());
+<a name="358" href="#358">358</a>     }
+<a name="359" href="#359">359</a> 
+<a name="360" href="#360">360</a>     <em>/**<em>*</em></em>
+<a name="361" href="#361">361</a> <em>     * Sets the new creation date of the user</em>
+<a name="362" href="#362">362</a> <em>     *</em>
+<a name="363" href="#363">363</a> <em>     * @param createDate The new creation date of the user</em>
+<a name="364" href="#364">364</a> <em>     */</em>
+<a name="365" href="#365">365</a>     <strong>public</strong> <strong>void</strong> setCreateDate(java.util.Date createDate)
+<a name="366" href="#366">366</a>     {
+<a name="367" href="#367">367</a>         UserPeerManager.setUserCreateDate(getPersistentObj(), createDate);
+<a name="368" href="#368">368</a>     }
+<a name="369" href="#369">369</a> 
+<a name="370" href="#370">370</a>     <em>/**<em>*</em></em>
+<a name="371" href="#371">371</a> <em>     * Returns the date of the last login of the user</em>
+<a name="372" href="#372">372</a> <em>     *</em>
+<a name="373" href="#373">373</a> <em>     * @return The date of the last login of the user</em>
+<a name="374" href="#374">374</a> <em>     */</em>
+<a name="375" href="#375">375</a>     <strong>public</strong> java.util.Date getLastLogin()
+<a name="376" href="#376">376</a>     {
+<a name="377" href="#377">377</a>         <strong>return</strong> UserPeerManager.getUserLastLogin(getPersistentObj());
+<a name="378" href="#378">378</a>     }
+<a name="379" href="#379">379</a> 
+<a name="380" href="#380">380</a>     <em>/**<em>*</em></em>
+<a name="381" href="#381">381</a> <em>     * Sets the new date of the last login of the user</em>
+<a name="382" href="#382">382</a> <em>     *</em>
+<a name="383" href="#383">383</a> <em>     * @param lastLogin The new the date of the last login of the user</em>
+<a name="384" href="#384">384</a> <em>     */</em>
+<a name="385" href="#385">385</a>     <strong>public</strong> <strong>void</strong> setLastLogin(java.util.Date lastLogin)
+<a name="386" href="#386">386</a>     {
+<a name="387" href="#387">387</a>         UserPeerManager.setUserLastLogin(getPersistentObj(), lastLogin);
+<a name="388" href="#388">388</a>     }
+<a name="389" href="#389">389</a> 
+<a name="390" href="#390">390</a>     <em>/**<em>*</em></em>
+<a name="391" href="#391">391</a> <em>     * Returns the value of the objectdata for this user.</em>
+<a name="392" href="#392">392</a> <em>     * Objectdata is a VARBINARY column in the table used</em>
+<a name="393" href="#393">393</a> <em>     * to store the permanent storage table from the User</em>
+<a name="394" href="#394">394</a> <em>     * object.</em>
+<a name="395" href="#395">395</a> <em>     *</em>
+<a name="396" href="#396">396</a> <em>     * @return The bytes in the objectdata for this user</em>
+<a name="397" href="#397">397</a> <em>     */</em>
+<a name="398" href="#398">398</a>     <strong>public</strong> byte [] getObjectdata()
+<a name="399" href="#399">399</a>     {
+<a name="400" href="#400">400</a>         <strong>return</strong> UserPeerManager.getUserObjectdata(getPersistentObj());
+<a name="401" href="#401">401</a>     }
+<a name="402" href="#402">402</a> 
+<a name="403" href="#403">403</a>     <em>/**<em>*</em></em>
+<a name="404" href="#404">404</a> <em>     * Sets the value of the objectdata for the user</em>
+<a name="405" href="#405">405</a> <em>     *</em>
+<a name="406" href="#406">406</a> <em>     * @param objectdata The new the date of the last login of the user</em>
+<a name="407" href="#407">407</a> <em>     */</em>
+<a name="408" href="#408">408</a>     <strong>public</strong> <strong>void</strong> setObjectdata(byte [] objectdata)
+<a name="409" href="#409">409</a>     {
+<a name="410" href="#410">410</a>         UserPeerManager.setUserObjectdata(getPersistentObj(), objectdata);
+<a name="411" href="#411">411</a>     }
+<a name="412" href="#412">412</a> 
+<a name="413" href="#413">413</a> 
+<a name="414" href="#414">414</a>     <em>/**<em>*</em></em>
+<a name="415" href="#415">415</a> <em>     * Gets the access counter for a user from perm storage.</em>
+<a name="416" href="#416">416</a> <em>     *</em>
+<a name="417" href="#417">417</a> <em>     * @return The access counter for the user.</em>
+<a name="418" href="#418">418</a> <em>     */</em>
+<a name="419" href="#419">419</a>     <strong>public</strong> <strong>int</strong> getAccessCounter()
+<a name="420" href="#420">420</a>     {
+<a name="421" href="#421">421</a>         <strong>try</strong>
+<a name="422" href="#422">422</a>         {
+<a name="423" href="#423">423</a>             <strong>return</strong> ((Integer) getPerm(User.ACCESS_COUNTER)).intValue();
+<a name="424" href="#424">424</a>         }
+<a name="425" href="#425">425</a>         <strong>catch</strong> (Exception e)
+<a name="426" href="#426">426</a>         {
+<a name="427" href="#427">427</a>             <strong>return</strong> 0;
+<a name="428" href="#428">428</a>         }
+<a name="429" href="#429">429</a>     }
+<a name="430" href="#430">430</a> 
+<a name="431" href="#431">431</a>     <em>/**<em>*</em></em>
+<a name="432" href="#432">432</a> <em>     * Gets the access counter for a user during a session.</em>
+<a name="433" href="#433">433</a> <em>     *</em>
+<a name="434" href="#434">434</a> <em>     * @return The access counter for the user for the session.</em>
+<a name="435" href="#435">435</a> <em>     */</em>
+<a name="436" href="#436">436</a>     <strong>public</strong> <strong>int</strong> getAccessCounterForSession()
+<a name="437" href="#437">437</a>     {
+<a name="438" href="#438">438</a>         <strong>try</strong>
+<a name="439" href="#439">439</a>         {
+<a name="440" href="#440">440</a>             <strong>return</strong> ((Integer) getTemp(User.SESSION_ACCESS_COUNTER)).intValue();
+<a name="441" href="#441">441</a>         }
+<a name="442" href="#442">442</a>         <strong>catch</strong> (Exception e)
+<a name="443" href="#443">443</a>         {
+<a name="444" href="#444">444</a>             <strong>return</strong> 0;
+<a name="445" href="#445">445</a>         }
+<a name="446" href="#446">446</a>     }
+<a name="447" href="#447">447</a> 
+<a name="448" href="#448">448</a>     <em>/**<em>*</em></em>
+<a name="449" href="#449">449</a> <em>     * Increments the permanent hit counter for the user.</em>
+<a name="450" href="#450">450</a> <em>     */</em>
+<a name="451" href="#451">451</a>     <strong>public</strong> <strong>void</strong> incrementAccessCounter()
+<a name="452" href="#452">452</a>     {
+<a name="453" href="#453">453</a>         <em class="comment">// Ugh. Race city, here I come...</em>
+<a name="454" href="#454">454</a>         setAccessCounter(getAccessCounter() + 1);
+<a name="455" href="#455">455</a>     }
+<a name="456" href="#456">456</a> 
+<a name="457" href="#457">457</a>     <em>/**<em>*</em></em>
+<a name="458" href="#458">458</a> <em>     * Increments the session hit counter for the user.</em>
+<a name="459" href="#459">459</a> <em>     */</em>
+<a name="460" href="#460">460</a>     <strong>public</strong> <strong>void</strong> incrementAccessCounterForSession()
+<a name="461" href="#461">461</a>     {
+<a name="462" href="#462">462</a>         setAccessCounterForSession(getAccessCounterForSession() + 1);
+<a name="463" href="#463">463</a>     }
+<a name="464" href="#464">464</a> 
+<a name="465" href="#465">465</a>     <em>/**<em>*</em></em>
+<a name="466" href="#466">466</a> <em>     * Sets the access counter for a user, saved in perm storage.</em>
+<a name="467" href="#467">467</a> <em>     *</em>
+<a name="468" href="#468">468</a> <em>     * @param cnt The new count.</em>
+<a name="469" href="#469">469</a> <em>     */</em>
+<a name="470" href="#470">470</a>     <strong>public</strong> <strong>void</strong> setAccessCounter(<strong>int</strong> cnt)
+<a name="471" href="#471">471</a>     {
+<a name="472" href="#472">472</a>         setPerm(User.ACCESS_COUNTER, <strong>new</strong> Integer(cnt));
+<a name="473" href="#473">473</a>     }
+<a name="474" href="#474">474</a> 
+<a name="475" href="#475">475</a>     <em>/**<em>*</em></em>
+<a name="476" href="#476">476</a> <em>     * Sets the session access counter for a user, saved in temp</em>
+<a name="477" href="#477">477</a> <em>     * storage.</em>
+<a name="478" href="#478">478</a> <em>     *</em>
+<a name="479" href="#479">479</a> <em>     * @param cnt The new count.</em>
+<a name="480" href="#480">480</a> <em>     */</em>
+<a name="481" href="#481">481</a>     <strong>public</strong> <strong>void</strong> setAccessCounterForSession(<strong>int</strong> cnt)
+<a name="482" href="#482">482</a>     {
+<a name="483" href="#483">483</a>         setTemp(User.SESSION_ACCESS_COUNTER, <strong>new</strong> Integer(cnt));
+<a name="484" href="#484">484</a>     }
+<a name="485" href="#485">485</a> 
+<a name="486" href="#486">486</a>     <em>/**<em>*</em></em>
+<a name="487" href="#487">487</a> <em>     * This method reports whether or not the user has been confirmed</em>
+<a name="488" href="#488">488</a> <em>     * in the system by checking the User.CONFIRM_VALUE</em>
+<a name="489" href="#489">489</a> <em>     * column in the users record to see if it is equal to</em>
+<a name="490" href="#490">490</a> <em>     * User.CONFIRM_DATA.</em>
+<a name="491" href="#491">491</a> <em>     *</em>
+<a name="492" href="#492">492</a> <em>     * @return True if the user has been confirmed.</em>
+<a name="493" href="#493">493</a> <em>     */</em>
+<a name="494" href="#494">494</a>     <strong>public</strong> <strong>boolean</strong> isConfirmed()
+<a name="495" href="#495">495</a>     {
+<a name="496" href="#496">496</a>         String value = getConfirmed();
+<a name="497" href="#497">497</a>         <strong>return</strong> (value != <strong>null</strong> &amp;&amp; value.equals(User.CONFIRM_DATA));
+<a name="498" href="#498">498</a>     }
+<a name="499" href="#499">499</a> 
+<a name="500" href="#500">500</a>     <em>/**<em>*</em></em>
+<a name="501" href="#501">501</a> <em>     * The user is considered logged in if they have not timed out.</em>
+<a name="502" href="#502">502</a> <em>     *</em>
+<a name="503" href="#503">503</a> <em>     * @return Whether the user has logged in.</em>
+<a name="504" href="#504">504</a> <em>     */</em>
+<a name="505" href="#505">505</a>     <strong>public</strong> <strong>boolean</strong> hasLoggedIn()
+<a name="506" href="#506">506</a>     {
+<a name="507" href="#507">507</a>         Boolean loggedIn = getHasLoggedIn();
+<a name="508" href="#508">508</a>         <strong>return</strong> (loggedIn != <strong>null</strong> &amp;&amp; loggedIn.booleanValue());
+<a name="509" href="#509">509</a>     }
+<a name="510" href="#510">510</a> 
+<a name="511" href="#511">511</a>     <em>/**<em>*</em></em>
+<a name="512" href="#512">512</a> <em>     * This sets whether or not someone has logged in.  hasLoggedIn()</em>
+<a name="513" href="#513">513</a> <em>     * returns this value.</em>
+<a name="514" href="#514">514</a> <em>     *</em>
+<a name="515" href="#515">515</a> <em>     * @param value Whether someone has logged in or not.</em>
+<a name="516" href="#516">516</a> <em>     */</em>
+<a name="517" href="#517">517</a>     <strong>public</strong> <strong>void</strong> setHasLoggedIn(Boolean value)
+<a name="518" href="#518">518</a>     {
+<a name="519" href="#519">519</a>         setTemp(User.HAS_LOGGED_IN, value);
+<a name="520" href="#520">520</a>     }
+<a name="521" href="#521">521</a> 
+<a name="522" href="#522">522</a>     <em>/**<em>*</em></em>
+<a name="523" href="#523">523</a> <em>     * Gets the last access date for this User.  This is the last time</em>
+<a name="524" href="#524">524</a> <em>     * that the user object was referenced.</em>
+<a name="525" href="#525">525</a> <em>     *</em>
+<a name="526" href="#526">526</a> <em>     * @return A Java Date with the last access date for the user.</em>
+<a name="527" href="#527">527</a> <em>     */</em>
+<a name="528" href="#528">528</a>     <strong>public</strong> java.util.Date getLastAccessDate()
+<a name="529" href="#529">529</a>     {
+<a name="530" href="#530">530</a>         <strong>if</strong> (lastAccessDate == <strong>null</strong>)
+<a name="531" href="#531">531</a>         {
+<a name="532" href="#532">532</a>             setLastAccessDate();
+<a name="533" href="#533">533</a>         }
+<a name="534" href="#534">534</a>         <strong>return</strong> lastAccessDate;
+<a name="535" href="#535">535</a>     }
+<a name="536" href="#536">536</a> 
+<a name="537" href="#537">537</a>     <em>/**<em>*</em></em>
+<a name="538" href="#538">538</a> <em>     * Sets the last access date for this User. This is the last time</em>
+<a name="539" href="#539">539</a> <em>     * that the user object was referenced.</em>
+<a name="540" href="#540">540</a> <em>     */</em>
+<a name="541" href="#541">541</a>     <strong>public</strong> <strong>void</strong> setLastAccessDate()
+<a name="542" href="#542">542</a>     {
+<a name="543" href="#543">543</a>         lastAccessDate = <strong>new</strong> java.util.Date();
+<a name="544" href="#544">544</a>     }
+<a name="545" href="#545">545</a> 
+<a name="546" href="#546">546</a>     <em>/**<em>*</em></em>
+<a name="547" href="#547">547</a> <em>     * Returns the permanent storage. This is implemented</em>
+<a name="548" href="#548">548</a> <em>     * as a Hashtable and backed by an VARBINARY column in</em>
+<a name="549" href="#549">549</a> <em>     * the database.</em>
+<a name="550" href="#550">550</a> <em>     *</em>
+<a name="551" href="#551">551</a> <em>     * @return A Hashtable.</em>
+<a name="552" href="#552">552</a> <em>     */</em>
+<a name="553" href="#553">553</a>     <strong>public</strong> Hashtable getPermStorage()
+<a name="554" href="#554">554</a>     {
+<a name="555" href="#555">555</a>         <strong>if</strong> (permStorage == <strong>null</strong>)
+<a name="556" href="#556">556</a>         {
+<a name="557" href="#557">557</a>             byte [] objectdata = getObjectdata();
+<a name="558" href="#558">558</a> 
+<a name="559" href="#559">559</a>             <strong>if</strong> (objectdata != <strong>null</strong>)
+<a name="560" href="#560">560</a>             {
+<a name="561" href="#561">561</a>                 permStorage = (Hashtable) ObjectUtils.deserialize(objectdata);
+<a name="562" href="#562">562</a>             }
+<a name="563" href="#563">563</a> 
+<a name="564" href="#564">564</a>             <strong>if</strong> (permStorage == <strong>null</strong>)
+<a name="565" href="#565">565</a>             {
+<a name="566" href="#566">566</a>                 permStorage = <strong>new</strong> Hashtable();
+<a name="567" href="#567">567</a>             }
+<a name="568" href="#568">568</a>         }
+<a name="569" href="#569">569</a> 
+<a name="570" href="#570">570</a>         <strong>return</strong> permStorage;
+<a name="571" href="#571">571</a>     }
+<a name="572" href="#572">572</a> 
+<a name="573" href="#573">573</a>     <em>/**<em>*</em></em>
+<a name="574" href="#574">574</a> <em>     * This should only be used in the case where we want to save the</em>
+<a name="575" href="#575">575</a> <em>     * data to the database.</em>
+<a name="576" href="#576">576</a> <em>     *</em>
+<a name="577" href="#577">577</a> <em>     * @param storage A Hashtable.</em>
+<a name="578" href="#578">578</a> <em>     */</em>
+<a name="579" href="#579">579</a>     <strong>public</strong> <strong>void</strong> setPermStorage(Hashtable permStorage)
+<a name="580" href="#580">580</a>     {
+<a name="581" href="#581">581</a>         <strong>if</strong> (permStorage != <strong>null</strong>)
+<a name="582" href="#582">582</a>         {
+<a name="583" href="#583">583</a>             <strong>this</strong>.permStorage = permStorage;
+<a name="584" href="#584">584</a>         }
+<a name="585" href="#585">585</a>     }
+<a name="586" href="#586">586</a> 
+<a name="587" href="#587">587</a>     <em>/**<em>*</em></em>
+<a name="588" href="#588">588</a> <em>     * Returns the temporary storage. This is implemented</em>
+<a name="589" href="#589">589</a> <em>     * as a Hashtable</em>
+<a name="590" href="#590">590</a> <em>     *</em>
+<a name="591" href="#591">591</a> <em>     * @return A Hashtable.</em>
+<a name="592" href="#592">592</a> <em>     */</em>
+<a name="593" href="#593">593</a>     <strong>public</strong> Hashtable getTempStorage()
+<a name="594" href="#594">594</a>     {
+<a name="595" href="#595">595</a>         <strong>if</strong> (tempStorage == <strong>null</strong>)
+<a name="596" href="#596">596</a>         {
+<a name="597" href="#597">597</a>             tempStorage = <strong>new</strong> Hashtable();
+<a name="598" href="#598">598</a>         }
+<a name="599" href="#599">599</a>         <strong>return</strong> tempStorage;
+<a name="600" href="#600">600</a>     }
+<a name="601" href="#601">601</a> 
+<a name="602" href="#602">602</a>     <em>/**<em>*</em></em>
+<a name="603" href="#603">603</a> <em>     * This should only be used in the case where we want to save the</em>
+<a name="604" href="#604">604</a> <em>     * data to the database.</em>
+<a name="605" href="#605">605</a> <em>     *</em>
+<a name="606" href="#606">606</a> <em>     * @param storage A Hashtable.</em>
+<a name="607" href="#607">607</a> <em>     */</em>
+<a name="608" href="#608">608</a>     <strong>public</strong> <strong>void</strong> setTempStorage(Hashtable tempStorage)
+<a name="609" href="#609">609</a>     {
+<a name="610" href="#610">610</a>         <strong>if</strong> (tempStorage != <strong>null</strong>)
+<a name="611" href="#611">611</a>         {
+<a name="612" href="#612">612</a>             <strong>this</strong>.tempStorage = tempStorage;
+<a name="613" href="#613">613</a>         }
+<a name="614" href="#614">614</a>     }
+<a name="615" href="#615">615</a> 
+<a name="616" href="#616">616</a>     <em>/**<em>*</em></em>
+<a name="617" href="#617">617</a> <em>     * Get an object from permanent storage.</em>
+<a name="618" href="#618">618</a> <em>     *</em>
+<a name="619" href="#619">619</a> <em>     * @param name The object's name.</em>
+<a name="620" href="#620">620</a> <em>     * @return An Object with the given name.</em>
+<a name="621" href="#621">621</a> <em>     */</em>
+<a name="622" href="#622">622</a>     <strong>public</strong> Object getPerm(String name)
+<a name="623" href="#623">623</a>     {
+<a name="624" href="#624">624</a>         <strong>return</strong> getPermStorage().get(name);
+<a name="625" href="#625">625</a>     }
+<a name="626" href="#626">626</a> 
+<a name="627" href="#627">627</a>     <em>/**<em>*</em></em>
+<a name="628" href="#628">628</a> <em>     * Get an object from permanent storage; return default if value</em>
+<a name="629" href="#629">629</a> <em>     * is null.</em>
+<a name="630" href="#630">630</a> <em>     *</em>
+<a name="631" href="#631">631</a> <em>     * @param name The object's name.</em>
+<a name="632" href="#632">632</a> <em>     * @param def A default value to return.</em>
+<a name="633" href="#633">633</a> <em>     * @return An Object with the given name.</em>
+<a name="634" href="#634">634</a> <em>     */</em>
+<a name="635" href="#635">635</a>     <strong>public</strong> Object getPerm(String name, Object def)
+<a name="636" href="#636">636</a>     {
+<a name="637" href="#637">637</a>         <strong>try</strong>
+<a name="638" href="#638">638</a>         {
+<a name="639" href="#639">639</a>             Object val = getPermStorage().get(name);
+<a name="640" href="#640">640</a>             <strong>return</strong> (val == <strong>null</strong> ? def : val);
+<a name="641" href="#641">641</a>         }
+<a name="642" href="#642">642</a>         <strong>catch</strong> (Exception e)
+<a name="643" href="#643">643</a>         {
+<a name="644" href="#644">644</a>             <strong>return</strong> def;
+<a name="645" href="#645">645</a>         }
+<a name="646" href="#646">646</a>     }
+<a name="647" href="#647">647</a> 
+<a name="648" href="#648">648</a>     <em>/**<em>*</em></em>
+<a name="649" href="#649">649</a> <em>     * Put an object into permanent storage. If the value is null,</em>
+<a name="650" href="#650">650</a> <em>     * it will convert that to a "" because the underlying storage</em>
+<a name="651" href="#651">651</a> <em>     * mechanism within TorqueUser is currently a Hashtable and</em>
+<a name="652" href="#652">652</a> <em>     * null is not a valid value.</em>
+<a name="653" href="#653">653</a> <em>     *</em>
+<a name="654" href="#654">654</a> <em>     * @param name The object's name.</em>
+<a name="655" href="#655">655</a> <em>     * @param value The object.</em>
+<a name="656" href="#656">656</a> <em>     */</em>
+<a name="657" href="#657">657</a>     <strong>public</strong> <strong>void</strong> setPerm(String name, Object value)
+<a name="658" href="#658">658</a>     {
+<a name="659" href="#659">659</a>         getPermStorage().put(name, (value == <strong>null</strong>) ? <span class="string">""</span> : value);
+<a name="660" href="#660">660</a>     }
+<a name="661" href="#661">661</a> 
+<a name="662" href="#662">662</a>     <em>/**<em>*</em></em>
+<a name="663" href="#663">663</a> <em>     * Get an object from temporary storage.</em>
+<a name="664" href="#664">664</a> <em>     *</em>
+<a name="665" href="#665">665</a> <em>     * @param name The object's name.</em>
+<a name="666" href="#666">666</a> <em>     * @return An Object with the given name.</em>
+<a name="667" href="#667">667</a> <em>     */</em>
+<a name="668" href="#668">668</a>     <strong>public</strong> Object getTemp(String name)
+<a name="669" href="#669">669</a>     {
+<a name="670" href="#670">670</a>         <strong>return</strong> getTempStorage().get(name);
+<a name="671" href="#671">671</a>     }
+<a name="672" href="#672">672</a> 
+<a name="673" href="#673">673</a>     <em>/**<em>*</em></em>
+<a name="674" href="#674">674</a> <em>     * Get an object from temporary storage; return default if value</em>
+<a name="675" href="#675">675</a> <em>     * is null.</em>
+<a name="676" href="#676">676</a> <em>     *</em>
+<a name="677" href="#677">677</a> <em>     * @param name The object's name.</em>
+<a name="678" href="#678">678</a> <em>     * @param def A default value to return.</em>
+<a name="679" href="#679">679</a> <em>     * @return An Object with the given name.</em>
+<a name="680" href="#680">680</a> <em>     */</em>
+<a name="681" href="#681">681</a>     <strong>public</strong> Object getTemp(String name, Object def)
+<a name="682" href="#682">682</a>     {
+<a name="683" href="#683">683</a>         Object val;
+<a name="684" href="#684">684</a>         <strong>try</strong>
+<a name="685" href="#685">685</a>         {
+<a name="686" href="#686">686</a>             val = getTempStorage().get(name);
+<a name="687" href="#687">687</a>             <strong>if</strong> (val == <strong>null</strong>)
+<a name="688" href="#688">688</a>             {
+<a name="689" href="#689">689</a>                 val = def;
+<a name="690" href="#690">690</a>             }
+<a name="691" href="#691">691</a>         }
+<a name="692" href="#692">692</a>         <strong>catch</strong> (Exception e)
+<a name="693" href="#693">693</a>         {
+<a name="694" href="#694">694</a>             val = def;
+<a name="695" href="#695">695</a>         }
+<a name="696" href="#696">696</a>         <strong>return</strong> val;
+<a name="697" href="#697">697</a>     }
+<a name="698" href="#698">698</a> 
+<a name="699" href="#699">699</a>     <em>/**<em>*</em></em>
+<a name="700" href="#700">700</a> <em>     * Put an object into temporary storage. If the value is null,</em>
+<a name="701" href="#701">701</a> <em>     * it will convert that to a "" because the underlying storage</em>
+<a name="702" href="#702">702</a> <em>     * mechanism within TorqueUser is currently a Hashtable and</em>
+<a name="703" href="#703">703</a> <em>     * null is not a valid value.</em>
+<a name="704" href="#704">704</a> <em>     *</em>
+<a name="705" href="#705">705</a> <em>     * @param name The object's name.</em>
+<a name="706" href="#706">706</a> <em>     * @param value The object.</em>
+<a name="707" href="#707">707</a> <em>     */</em>
+<a name="708" href="#708">708</a>     <strong>public</strong> <strong>void</strong> setTemp(String name, Object value)
+<a name="709" href="#709">709</a>     {
+<a name="710" href="#710">710</a>         getTempStorage().put(name, (value == <strong>null</strong>) ? <span class="string">""</span> : value);
+<a name="711" href="#711">711</a>     }
+<a name="712" href="#712">712</a> 
+<a name="713" href="#713">713</a>     <em>/**<em>*</em></em>
+<a name="714" href="#714">714</a> <em>     * Remove an object from temporary storage and return the object.</em>
+<a name="715" href="#715">715</a> <em>     *</em>
+<a name="716" href="#716">716</a> <em>     * @param name The name of the object to remove.</em>
+<a name="717" href="#717">717</a> <em>     * @return An Object.</em>
+<a name="718" href="#718">718</a> <em>     */</em>
+<a name="719" href="#719">719</a>     <strong>public</strong> Object removeTemp(String name)
+<a name="720" href="#720">720</a>     {
+<a name="721" href="#721">721</a>         <strong>return</strong> getTempStorage().remove(name);
+<a name="722" href="#722">722</a>     }
+<a name="723" href="#723">723</a> 
+<a name="724" href="#724">724</a>     <em>/**<em>*</em></em>
+<a name="725" href="#725">725</a> <em>     * Updates the last login date in the database.</em>
+<a name="726" href="#726">726</a> <em>     *</em>
+<a name="727" href="#727">727</a> <em>     * @exception Exception A generic exception.</em>
+<a name="728" href="#728">728</a> <em>     */</em>
+<a name="729" href="#729">729</a>     <strong>public</strong> <strong>void</strong> updateLastLogin()
+<a name="730" href="#730">730</a>         throws Exception
+<a name="731" href="#731">731</a>     {
+<a name="732" href="#732">732</a>         setLastLogin(<strong>new</strong> java.util.Date());
+<a name="733" href="#733">733</a>     }
+<a name="734" href="#734">734</a> 
+<a name="735" href="#735">735</a>     <em>/**<em>*</em></em>
+<a name="736" href="#736">736</a> <em>     * Implement this method if you wish to be notified when the User</em>
+<a name="737" href="#737">737</a> <em>     * has been Bound to the session.</em>
+<a name="738" href="#738">738</a> <em>     *</em>
+<a name="739" href="#739">739</a> <em>     * @param event Indication of value/session binding.</em>
+<a name="740" href="#740">740</a> <em>     */</em>
+<a name="741" href="#741">741</a>     <strong>public</strong> <strong>void</strong> valueBound(HttpSessionBindingEvent hsbe)
+<a name="742" href="#742">742</a>     {
+<a name="743" href="#743">743</a>         <em class="comment">// Currently we have no need for this method.</em>
+<a name="744" href="#744">744</a>     }
+<a name="745" href="#745">745</a> 
+<a name="746" href="#746">746</a>     <em>/**<em>*</em></em>
+<a name="747" href="#747">747</a> <em>     * Implement this method if you wish to be notified when the User</em>
+<a name="748" href="#748">748</a> <em>     * has been Unbound from the session.</em>
+<a name="749" href="#749">749</a> <em>     *</em>
+<a name="750" href="#750">750</a> <em>     * @param event Indication of value/session unbinding.</em>
+<a name="751" href="#751">751</a> <em>     */</em>
+<a name="752" href="#752">752</a>     <strong>public</strong> <strong>void</strong> valueUnbound(HttpSessionBindingEvent hsbe)
+<a name="753" href="#753">753</a>     {
+<a name="754" href="#754">754</a>         <strong>try</strong>
+<a name="755" href="#755">755</a>         {
+<a name="756" href="#756">756</a>             <strong>if</strong> (hasLoggedIn())
+<a name="757" href="#757">757</a>             {
+<a name="758" href="#758">758</a>                 TurbineSecurity.saveOnSessionUnbind(<strong>this</strong>);
+<a name="759" href="#759">759</a>             }
+<a name="760" href="#760">760</a>         }
+<a name="761" href="#761">761</a>         <strong>catch</strong> (Exception e)
+<a name="762" href="#762">762</a>         {
+<a name="763" href="#763">763</a>             <em class="comment">//Log.error("TorqueUser.valueUnbound(): " + e.getMessage(), e);</em>
+<a name="764" href="#764">764</a> 
+<a name="765" href="#765">765</a>             <em class="comment">// To prevent messages being lost in case the logging system</em>
+<a name="766" href="#766">766</a>             <em class="comment">// goes away before sessions get unbound on servlet container</em>
+<a name="767" href="#767">767</a>             <em class="comment">// shutdown, print the stcktrace to the container's console.</em>
+<a name="768" href="#768">768</a>             ByteArrayOutputStream ostr = <strong>new</strong> ByteArrayOutputStream();
+<a name="769" href="#769">769</a>             e.printStackTrace(<strong>new</strong> PrintWriter(ostr, <strong>true</strong>));
+<a name="770" href="#770">770</a>             String stackTrace = ostr.toString();
+<a name="771" href="#771">771</a>             System.out.println(stackTrace);
+<a name="772" href="#772">772</a>         }
+<a name="773" href="#773">773</a>     }
+<a name="774" href="#774">774</a> 
+<a name="775" href="#775">775</a>     <em>/**<em>*</em></em>
+<a name="776" href="#776">776</a> <em>     * This gets whether or not someone has logged in.  hasLoggedIn()</em>
+<a name="777" href="#777">777</a> <em>     * returns this value as a boolean.  This is private because you</em>
+<a name="778" href="#778">778</a> <em>     * should use hasLoggedIn() instead.</em>
+<a name="779" href="#779">779</a> <em>     *</em>
+<a name="780" href="#780">780</a> <em>     * @return True if someone has logged in.</em>
+<a name="781" href="#781">781</a> <em>     */</em>
+<a name="782" href="#782">782</a>     <strong>private</strong> Boolean getHasLoggedIn()
+<a name="783" href="#783">783</a>     {
+<a name="784" href="#784">784</a>         <strong>return</strong> (Boolean) getTemp(User.HAS_LOGGED_IN);
+<a name="785" href="#785">785</a>     }
+<a name="786" href="#786">786</a> 
+<a name="787" href="#787">787</a> }
+</pre>
+<hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
+</html>
+

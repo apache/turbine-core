@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Turbine - Turbine Services - Upload Service</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Jason van Zyl"></meta><meta name="email" content="jvanzyl@apache.org"></meta></head><body class="composite"><div id="banner"><a href="http://turbine.apache.org/" id="organizationLogo"><img alt="Apache Software Foundation" src="../images/turbine-project.png"></img></a><a href="http://turbine.apache.org/turbine/turbine-2.3.3/index.html" id="projectLogo"><img alt="turbine-2" src="../images/logo.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 21 November 2008
+                <span class="separator">|</span> Doc for  2.3.3
+                </div><div class="xright">
+        
+        <a href="http://turbine.apache.org/">Turbine Home</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="http://turbine.apache.org/fulcrum/">Fulcrum</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="http://turbine.apache.org/meta/">META</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuGeneral_Information"><h5>General Information</h5><ul><li class="none"><a href="../index.html">Overview</a></li><li class="none"><a href="../features.html">Features</a></li><li class="none"><a href="../fsd.html">Specification</a></li><li class="none"><a href="../getting-started.html">Getting Started</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="none"><a href="../changes-report.html">Changes</a></li><li class="none"><a href="../turbine-schema.html">Core DB Schema</a></li><li class="expanded"><a href="../services/index.html">Services</a><ul><li class="none"><a href="../services/assemblerbroker-service.html">Assembler Broker Service</a></li><li class="none"><a href="../services/avalon-component-service.html">Avalon Component Service</a></li><li class="none"><a href="../services/crypto-service.html">Crypto Service</a></li><li class="none"><a href="../services/cache-service.html">Cache Service</a></li><li class="none"><a href="../services/factory-service.html">Factory Service</a></li><li class="none"><a href="../services/intake-service.html">Intake Service</a></li><li class="none"><a href="../services/jsonrpc-service.html">JSON-RPC Service</a></li><li class="none"><a href="../services/jsp-service.html">JSP Service</a></li><li class="none"><a href="../services/localization-service.html">Localization Service</a></li><li class="none"><a href="../services/logging-service.html">Logging Service</a></li><li class="none"><a href="../services/mimetype-service.html">MimeType Service</a></li><li class="none"><a href="../services/naming-service.html">Naming Service</a></li><li class="none"><a href="../services/pool-service.html">Pool Service</a></li><li class="none"><a href="../services/pull-service.html">Pull Service</a></li><li class="none"><a href="../services/resources-service.html">Resources Service</a></li><li class="none"><a href="../services/rundata-service.html">RunData Service</a></li><li class="none"><a href="../services/scheduler-service.html">Scheduler Service</a></li><li class="expanded"><a href="../services/security-service.html">Security Service</a><ul><li class="none"><a href="../services/ldap-security-service.html">LDAP Security Service</a></li><li class="none"><a href="../services/torque-security-service.html">Torque Security Service</a></li><li class="none"><a href="../services/torque-security-schema.html">Torque Security Service Schema</a></li></ul></li><li class="none"><a href="../services/servlet-service.html">Servlet Service</a></li><li class="none"><a href="../services/session-service.html">Session Service</a></li><li class="none"><a href="../services/template-service.html">Template Service</a></li><li class="none"><a href="../services/ui-service.html">UI Service</a></li><li class="none"><a href="../services/uniqueid-service.html">Unique ID Service</a></li><li class="none"><strong><a href="../services/upload-service.html">Upload Service</a></strong></li><li class="none"><a href="../services/velocity-service.html">Velocity Service</a></li><li class="none"><a href="../services/xmlrpc-service.html">XML-RPC Service</a></li><li class="none"><a href="../services/xslt-service.html">XSLT Service</a></li><li class="none"><a href="../services/yaafi-component-service.html">Yaafi Component Service</a></li></ul></li><li class="collapsed"><a href="../howto/index.html">Howtos</a></li><li class="none"><a href="../apidocs/index.html">JavaDocs</a></li></ul></div><div id="menuDevelopment"><h5>Development</h5><ul><li class="none"><a href="../proposals.html">Proposals</a></li><li class="none"><a href="../how-to-help.html">How To Help</a></li><li class="none"><a href="../todo.html">Todo</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="../development-process.html">Development Process</a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/mavenlogo_builtby_w.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Upload_Service"></a><h2>Upload Service</h2>
+
+<p>
+The Upload Service handles the parsing of multi-part/form-data from POST
+Requests, making the multi-part files available from either memory or from a
+specified location on the file system.
+</p>
+
+</div><div class="section"><a name="Configuration"></a><h2>Configuration</h2>
+
+
+    <div class="source"><pre>
+# -------------------------------------------------------------------
+#
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.UploadService.classname=org.apache.turbine.services.upload.TurbineUploadService
+.
+.
+.
+# -------------------------------------------------------------------
+#
+#  U P L O A D  S E R V I C E
+#
+# -------------------------------------------------------------------
+
+# Whether the files should be automatically picked up by
+# ParameterParser.
+
+services.UploadService.automatic=false
+
+#
+# The directory where files will be temporarily stored.
+#
+services.UploadService.repository=.
+
+#
+# The maximum size of a request that will be processed.
+#
+services.UploadService.size.max=1048576
+
+#
+# The maximum size of a request that will have it's elements cached in
+# memory by TurbineUploadService class.
+#
+services.UploadService.size.threshold=10240
+</pre></div>
+  
+
+</div><div class="section"><a name="Usage"></a><h2>Usage</h2>
+
+<p>
+Change the automatic directive to true. With this set to true any
+multi-part/form-data requests which Turbine fields, will be parsed and the
+appropriate files made available to ParameterParser as FileItem objects. If
+this is set as false, the FileItems will have to be parsed out of RunData
+manually with the method getRequest() available from TurbineUpload.
+</p>
+
+<p>
+Set the remaining values to ones appropriate for your installation. On Win32
+file systems for the repository directive, an entry of the form:
+<ul>
+  <code>f:\path\to\upload\repository</code>
+</ul>
+is most likely necessary.
+</p>
+
+
+<p>
+Create an HTML form of the type:
+</p>
+
+
+    <div class="source"><pre>
+
+&lt;form enctype="multipart/form-data" method="POST"&gt;
+&lt;input type="hidden" name="action" value="UploadExample" /&gt;
+&lt;input type="file" name="filename"&gt;
+&lt;input type="submit" value="upload" /&gt;
+&lt;/form&gt;
+
+</pre></div>
+  
+
+<p>
+The Upload Service manages if the FileItem is stored in Memory or in the
+Repository specified in TurbineReources.properties. It is also possible to
+override the TurbineResources setting for the repository by using
+TurbineUpload.getRequest()  to parse the request with a custom repository
+directory. The TurbineUpload object serves as a Facade to the Upload Service
+by making available static methods to manage the upload internally in your
+application. The FileItems can be accessed in an UploadExample Action class by:
+</p>
+
+
+    <div class="source"><pre>
+    public void doPerform(RunData data, Context context) throws Exception
+    {
+        //get the ParameterParser from RunData
+        ParameterParser params = data.getParameters();
+
+        //grab the FileItems available in ParameterParser
+        FileItem fi = params.getFileItem("filename");
+
+        //do work on the FileItem
+        //get the file as a File
+        //or outputstream etc.
+
+    }
+
+</pre></div>
+  
+
+<p>
+Once a new instance of the FileItem is created many public methods are
+available to work on the object, whether it is in temporary storage as memory or as
+a temporary file on part of the file system. All the temporary storage management and
+clean up occurs behind the scenes and is transparent to the application being
+based on Turbine. There is no need to manually clean up the FileItems as the
+FileItem object doesn't span Requests ( or RunData instances ) and the temporary
+files that use the file system are cleaned up in a finalize() method inherited
+from Object().
+</p>
+
+<p>
+The TurbineUpload object and the FileItem object give all the functionality
+needed to manage this sort of operation or action at the application level.
+For more detailed information on the methods available to deal with uploaded
+files, view the relevant Javadocs for TurbineUpload, ParameterParser and
+FileItem.
+</p>
+
+</div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2000-2008, Apache Software Foundation</div><div class="clear"><hr></hr></div></div></body></html>

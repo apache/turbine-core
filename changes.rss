@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<rss version="0.91">
+  <channel>
+    <title>Changes report</title>
+    <link>http://turbine.apache.org/turbine/turbine-2.3.3/index.html</link>
+    <description>Changes report</description>
+    <language>en-us</language>
+    <copyright>Copyright 2004 The Apache Software Foundation</copyright>
+    <item>
+      <title>2 change(s) for version 2.3.3</title>
+      <link>http://turbine.apache.org/turbine/turbine-2.3.3/index.html/changes-report.html</link>
+      <description>
+        <table border="1">
+          <tr>
+            <th style="width:50px">Type</th>
+            <th>Changes</th>
+            <th style="width:70px">By</th>
+          </tr>
+          <tr>
+            <td>fix</td>
+            <td>Minor correction to intake.dtd - added missing fieldClass attribute to field element.</td>
+            <td>
+              <a href="http://turbine.apache.org/turbine/turbine-2.3.3/index.html/team-list.html#seade">seade</a>
+            </td>
+          </tr>
+          <tr>
+            <td>fix</td>
+            <td>Fix a memory leak due to an invalid map key type. Fixes
+              <a href="http://issues.apache.org/jira/browse/TRB-70">TRB-70</a>. Thanks to Susi Berrington .</td>
+            <td>
+              <a href="http://turbine.apache.org/turbine/turbine-2.3.3/index.html/team-list.html#tv">tv</a>
+            </td>
+          </tr>
+        </table>
+      </description>
+    </item>
+  </channel>
+</rss>

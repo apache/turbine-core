@@ -1,0 +1,28 @@
+We are pleased to announce the turbine-2 Turbine 2.2-rc1 release! 
+
+http://turbine.apache.org/turbine/turbine-2.3.3/index.html
+
+Turbine is a servlet based framework that allows experienced Java developers 
+to quickly build secure web applications. Parts of Turbine can also be used 
+independently of the web portion of Turbine as well. In other words, we strive 
+to make portions of Turbine easily available for use in other applications. 
+
+===============================================================================
+
+Changes in this version include:
+
+  Changes:
+
+o Enhancements to support Apache XML-RPC versions 1.2 alpha 1 and 2. 
+o TRQD2: Update to intake-howto to mention remove() 
+
+===============================================================================
+
+Issues, bugs, and feature requests for turbine-2
+should be submitted to the following issue tracking system:
+
+http://issues.apache.org/jira/browse/TRB
+
+
+Have fun!
+-The turbine-2 development team

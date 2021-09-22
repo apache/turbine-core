@@ -1,0 +1,418 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Turbine - Turbine Services - Torque Security Service Schema</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Henning P. Schmiedehausen"></meta><meta name="email" content="hps@intermeta.de"></meta></head><body class="composite"><div id="banner"><a href="http://turbine.apache.org/" id="organizationLogo"><img alt="Apache Software Foundation" src="../images/turbine-project.png"></img></a><a href="http://turbine.apache.org/turbine/turbine-2.3.3/index.html" id="projectLogo"><img alt="turbine-2" src="../images/logo.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 21 November 2008
+                <span class="separator">|</span> Doc for  2.3.3
+                </div><div class="xright">
+        
+        <a href="http://turbine.apache.org/">Turbine Home</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="http://turbine.apache.org/fulcrum/">Fulcrum</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="http://turbine.apache.org/meta/">META</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuGeneral_Information"><h5>General Information</h5><ul><li class="none"><a href="../index.html">Overview</a></li><li class="none"><a href="../features.html">Features</a></li><li class="none"><a href="../fsd.html">Specification</a></li><li class="none"><a href="../getting-started.html">Getting Started</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="none"><a href="../changes-report.html">Changes</a></li><li class="none"><a href="../turbine-schema.html">Core DB Schema</a></li><li class="expanded"><a href="../services/index.html">Services</a><ul><li class="none"><a href="../services/assemblerbroker-service.html">Assembler Broker Service</a></li><li class="none"><a href="../services/avalon-component-service.html">Avalon Component Service</a></li><li class="none"><a href="../services/crypto-service.html">Crypto Service</a></li><li class="none"><a href="../services/cache-service.html">Cache Service</a></li><li class="none"><a href="../services/factory-service.html">Factory Service</a></li><li class="none"><a href="../services/intake-service.html">Intake Service</a></li><li class="none"><a href="../services/jsonrpc-service.html">JSON-RPC Service</a></li><li class="none"><a href="../services/jsp-service.html">JSP Service</a></li><li class="none"><a href="../services/localization-service.html">Localization Service</a></li><li class="none"><a href="../services/logging-service.html">Logging Service</a></li><li class="none"><a href="../services/mimetype-service.html">MimeType Service</a></li><li class="none"><a href="../services/naming-service.html">Naming Service</a></li><li class="none"><a href="../services/pool-service.html">Pool Service</a></li><li class="none"><a href="../services/pull-service.html">Pull Service</a></li><li class="none"><a href="../services/resources-service.html">Resources Service</a></li><li class="none"><a href="../services/rundata-service.html">RunData Service</a></li><li class="none"><a href="../services/scheduler-service.html">Scheduler Service</a></li><li class="expanded"><a href="../services/security-service.html">Security Service</a><ul><li class="none"><a href="../services/ldap-security-service.html">LDAP Security Service</a></li><li class="none"><a href="../services/torque-security-service.html">Torque Security Service</a></li><li class="none"><strong><a href="../services/torque-security-schema.html">Torque Security Service Schema</a></strong></li></ul></li><li class="none"><a href="../services/servlet-service.html">Servlet Service</a></li><li class="none"><a href="../services/session-service.html">Session Service</a></li><li class="none"><a href="../services/template-service.html">Template Service</a></li><li class="none"><a href="../services/ui-service.html">UI Service</a></li><li class="none"><a href="../services/uniqueid-service.html">Unique ID Service</a></li><li class="none"><a href="../services/upload-service.html">Upload Service</a></li><li class="none"><a href="../services/velocity-service.html">Velocity Service</a></li><li class="none"><a href="../services/xmlrpc-service.html">XML-RPC Service</a></li><li class="none"><a href="../services/xslt-service.html">XSLT Service</a></li><li class="none"><a href="../services/yaafi-component-service.html">Yaafi Component Service</a></li></ul></li><li class="collapsed"><a href="../howto/index.html">Howtos</a></li><li class="none"><a href="../apidocs/index.html">JavaDocs</a></li></ul></div><div id="menuDevelopment"><h5>Development</h5><ul><li class="none"><a href="../proposals.html">Proposals</a></li><li class="none"><a href="../how-to-help.html">How To Help</a></li><li class="none"><a href="../todo.html">Todo</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="../development-process.html">Development Process</a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/mavenlogo_builtby_w.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Overview"></a><h2>Overview</h2>
+<p>
+This is the Turbine included schema for generating Torque Peers for
+the <a href="torque-security-service.html">Torque Security Service</a>:
+</p>
+<table class="bodyTable">
+<tr class="a">
+  <th>Table Name</th>
+  <th>OM Class</th>
+  <th>Description</th>
+</tr>
+<tr class="b">
+  <td><a href="#TURBINE_USER">TURBINE_USER</a></td>
+  <td>TurbineUser</td>
+  <td></td>
+</tr>
+<tr class="a">
+  <td><a href="#TURBINE_GROUP">TURBINE_GROUP</a></td>
+  <td>TurbineGroup</td>
+  <td></td>
+</tr>
+<tr class="b">
+  <td><a href="#TURBINE_ROLE">TURBINE_ROLE</a></td>
+  <td>TurbineRole</td>
+  <td></td>
+</tr>
+<tr class="a">
+  <td><a href="#TURBINE_PERMISSION">TURBINE_PERMISSION</a></td>
+  <td>TurbinePermission</td>
+  <td></td>
+</tr>
+<tr class="b">
+  <td><a href="#TURBINE_ROLE_PERMISSION">TURBINE_ROLE_PERMISSION</a></td>
+  <td>TurbineRolePermission</td>
+  <td></td>
+</tr>
+<tr class="a">
+  <td><a href="#TURBINE_USER_GROUP_ROLE">TURBINE_USER_GROUP_ROLE</a></td>
+  <td>TurbineUserGroupRole</td>
+  <td></td>
+</tr>
+</table>
+</div><div class="section"><a name="User_Peer"></a><h2>User Peer</h2>
+<a name="TURBINE_USER"></a>
+<p>
+The User Peer contains all information regarding a Turbine User.
+</p>
+<table class="bodyTable">
+<tr class="b">
+  <th>Name</th>
+  <th>Type</th>
+  <th>Size</th>
+  <th>Default</th>
+  <th>JavaName</th>
+  <th>Primary Key</th>
+  <th>Foreign Key</th>
+  <th>not null</th>
+  <th>Description</th>
+</tr>
+<tr class="a">
+  <td>USER_ID</td>
+  <td>INTEGER</td>
+  <td> </td>
+  <td></td>
+  <td>UserId</td>
+  <td>X</td>
+  <td></td>
+  <td>X</td>
+  <td></td>
+</tr>
+<tr class="b">
+  <td>LOGIN_NAME</td>
+  <td>VARCHAR</td>
+  <td> (64)</td>
+  <td></td>
+  <td>UserName</td>
+  <td></td>
+  <td></td>
+  <td>X</td>
+  <td></td>
+</tr>
+<tr class="a">
+  <td>PASSWORD_VALUE</td>
+  <td>VARCHAR</td>
+  <td> (16)</td>
+  <td></td>
+  <td>Password</td>
+  <td></td>
+  <td></td>
+  <td>X</td>
+  <td></td>
+</tr>
+<tr class="b">
+  <td>FIRST_NAME</td>
+  <td>VARCHAR</td>
+  <td> (64)</td>
+  <td></td>
+  <td>FirstName</td>
+  <td></td>
+  <td></td>
+  <td>X</td>
+  <td></td>
+</tr>
+<tr class="a">
+  <td>LAST_NAME</td>
+  <td>VARCHAR</td>
+  <td> (64)</td>
+  <td></td>
+  <td>LastName</td>
+  <td></td>
+  <td></td>
+  <td>X</td>
+  <td></td>
+</tr>
+<tr class="b">
+  <td>EMAIL</td>
+  <td>VARCHAR</td>
+  <td> (64)</td>
+  <td></td>
+  <td>Email</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr class="a">
+  <td>CONFIRM_VALUE</td>
+  <td>VARCHAR</td>
+  <td> (16)</td>
+  <td></td>
+  <td>Confirmed</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr class="b">
+  <td>MODIFIED</td>
+  <td>TIMESTAMP</td>
+  <td> </td>
+  <td></td>
+  <td>Modified</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr class="a">
+  <td>CREATED</td>
+  <td>TIMESTAMP</td>
+  <td> </td>
+  <td></td>
+  <td>CreateDate</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr class="b">
+  <td>LAST_LOGIN</td>
+  <td>TIMESTAMP</td>
+  <td> </td>
+  <td></td>
+  <td>LastLogin</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+<tr class="a">
+  <td>OBJECTDATA</td>
+  <td>VARBINARY</td>
+  <td> </td>
+  <td></td>
+  <td>Objectdata</td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+</tr>
+</table>
+</div><div class="section"><a name="Group_Peer"></a><h2>Group Peer</h2>
+<a name="TURBINE_GROUP"></a>
+<p>
+The Group Peer contains all information regarding the Turbine Groups.
+</p>
+<table class="bodyTable">
+  <tr class="b">
+    <th>Name</th>
+    <th>Type</th>
+    <th>Size</th>
+    <th>Default</th>
+    <th>JavaName</th>
+    <th>Primary Key</th>
+    <th>Foreign Key</th>
+    <th>not null</th>
+    <th>Description</th>
+  </tr>
+  <tr class="a">
+    <td>GROUP_ID</td>
+    <td>INTEGER</td>
+    <td> </td>
+    <td></td>
+    <td>GroupId</td>
+    <td>X</td>
+    <td></td>
+    <td>X</td>
+    <td></td>
+  </tr>
+  <tr class="b">
+    <td>GROUP_NAME</td>
+    <td>VARCHAR</td>
+    <td> (64)</td>
+    <td></td>
+    <td>Name</td>
+    <td></td>
+    <td></td>
+    <td>X</td>
+    <td></td>
+  </tr>
+</table>
+</div><div class="section"><a name="Role_Peer"></a><h2>Role Peer</h2>
+<a name="TURBINE_ROLE"></a>
+<p>
+The Role Peer contains all information regarding a Turbine Role.
+</p>
+<table class="bodyTable">
+  <tr class="a">
+    <th>Name</th>
+    <th>Type</th>
+    <th>Size</th>
+    <th>Default</th>
+    <th>JavaName</th>
+    <th>Primary Key</th>
+    <th>Foreign Key</th>
+    <th>not null</th>
+    <th>Description</th>
+  </tr>
+  <tr class="b">
+    <td>ROLE_ID</td>
+    <td>INTEGER</td>
+    <td> </td>
+    <td></td>
+    <td>RoleId</td>
+    <td>X</td>
+    <td></td>
+    <td>X</td>
+    <td></td>
+  </tr>
+  <tr class="a">
+    <td>ROLE_NAME</td>
+    <td>VARCHAR</td>
+    <td> (64)</td>
+    <td></td>
+    <td>Name</td>
+    <td></td>
+    <td></td>
+    <td>X</td>
+    <td></td>
+  </tr>
+</table>
+</div><div class="section"><a name="User_Peer"></a><h2>User Peer</h2>
+<a name="TURBINE_PERMISSION"></a>
+<p>
+The Permission Peer contains all information regarding the Turbine
+Permissions.
+</p>
+<table class="bodyTable">
+  <tr class="b">
+    <th>Name</th>
+    <th>Type</th>
+    <th>Size</th>
+    <th>Default</th>
+    <th>JavaName</th>
+    <th>Primary Key</th>
+    <th>Foreign Key</th>
+    <th>not null</th>
+    <th>Description</th>
+  </tr>
+  <tr class="a">
+    <td>PERMISSION_ID</td>
+    <td>INTEGER</td>
+    <td> </td>
+    <td></td>
+    <td>PermissionId</td>
+    <td>X</td>
+    <td></td>
+    <td>X</td>
+    <td></td>
+  </tr>
+  <tr class="b">
+    <td>PERMISSION_NAME</td>
+    <td>VARCHAR</td>
+    <td> (64)</td>
+    <td></td>
+    <td>Name</td>
+    <td></td>
+    <td></td>
+    <td>X</td>
+    <td></td>
+  </tr>
+</table>
+</div><div class="section"><a name="Role___Permission_Peer"></a><h2>Role / Permission Peer</h2>
+<a name="TURBINE_ROLE_PERMISSION"></a>
+<p>
+The Role / Permission Peer contains the relation between Roles and
+Permissions. It controls which Role has which Permissions assigned.
+</p>
+<table class="bodyTable">
+  <tr class="a">
+    <th>Name</th>
+    <th>Type</th>
+    <th>Size</th>
+    <th>Default</th>
+    <th>JavaName</th>
+    <th>Primary Key</th>
+    <th>Foreign Key</th>
+    <th>not null</th>
+    <th>Description</th>
+  </tr>
+  <tr class="b">
+    <td>ROLE_ID</td>
+    <td>INTEGER</td>
+    <td> </td>
+    <td></td>
+    <td>RoleId</td>
+    <td>X</td>
+    <td>X</td>
+    <td>X</td>
+    <td></td>
+  </tr>
+  <tr class="a">
+    <td>PERMISSION_ID</td>
+    <td>INTEGER</td>
+    <td> </td>
+    <td></td>
+    <td>PermissionId</td>
+    <td>X</td>
+    <td>X</td>
+    <td>X</td>
+    <td></td>
+  </tr>
+</table>
+</div><div class="section"><a name="User___Group___Role_Peer"></a><h2>User / Group / Role Peer</h2>
+<a name="TURBINE_USER_GROUP_ROLE"></a>
+<p>
+The User / Group / Role Peer contains the User / Group / Role relation
+which assigns Roles to an User according to its membership in a Group.
+</p>
+<table class="bodyTable">
+  <tr class="b">
+    <th>Name</th>
+    <th>Type</th>
+    <th>Size</th>
+    <th>Default</th>
+    <th>JavaName</th>
+    <th>Primary Key</th>
+    <th>Foreign Key</th>
+    <th>not null</th>
+    <th>Description</th>
+  </tr>
+  <tr class="a">
+    <td>USER_ID</td>
+    <td>INTEGER</td>
+    <td> </td>
+    <td></td>
+    <td>UserId</td>
+    <td>X</td>
+    <td>X</td>
+    <td>X</td>
+    <td></td>
+  </tr>
+  <tr class="b">
+    <td>GROUP_ID</td>
+    <td>INTEGER</td>
+    <td> </td>
+    <td></td>
+    <td>GroupId</td>
+    <td>X</td>
+    <td>X</td>
+    <td>X</td>
+    <td></td>
+  </tr>
+  <tr class="a">
+    <td>ROLE_ID</td>
+    <td>INTEGER</td>
+    <td> </td>
+    <td></td>
+    <td>RoleId</td>
+    <td>X</td>
+    <td>X</td>
+    <td>X</td>
+    <td></td>
+  </tr>
+</table>
+</div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2000-2008, Apache Software Foundation</div><div class="clear"><hr></hr></div></div></body></html>

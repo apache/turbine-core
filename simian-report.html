@@ -1,0 +1,1094 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Turbine - Simian Report</title><style type="text/css" media="all">
+          @import url("./style/maven-base.css");
+          
+          @import url("./style/maven-theme.css");</style><link rel="stylesheet" href="./style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta></head><body class="composite"><div id="banner"><a href="http://turbine.apache.org/" id="organizationLogo"><img alt="Apache Software Foundation" src="./images/turbine-project.png"></img></a><a href="http://turbine.apache.org/turbine/turbine-2.3.3/index.html" id="projectLogo"><img alt="turbine-2" src="./images/logo.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 21 November 2008
+                <span class="separator">|</span> Doc for  2.3.3
+                </div><div class="xright">
+        
+        <a href="http://turbine.apache.org/">Turbine Home</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="http://turbine.apache.org/fulcrum/">Fulcrum</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="http://turbine.apache.org/meta/">META</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuGeneral_Information"><h5>General Information</h5><ul><li class="none"><a href="index.html">Overview</a></li><li class="none"><a href="features.html">Features</a></li><li class="none"><a href="fsd.html">Specification</a></li><li class="none"><a href="getting-started.html">Getting Started</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="none"><a href="changes-report.html">Changes</a></li><li class="none"><a href="turbine-schema.html">Core DB Schema</a></li><li class="collapsed"><a href="services/index.html">Services</a></li><li class="collapsed"><a href="howto/index.html">Howtos</a></li><li class="none"><a href="apidocs/index.html">JavaDocs</a></li></ul></div><div id="menuDevelopment"><h5>Development</h5><ul><li class="none"><a href="proposals.html">Proposals</a></li><li class="none"><a href="how-to-help.html">How To Help</a></li><li class="none"><a href="todo.html">Todo</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="index.html">About</a></li><li class="collapsed"><a href="project-info.html">Project Info</a></li><li class="expanded"><a href="maven-reports.html">Project Reports</a><ul><li class="none"><a href="jdepend-report.html">Metrics</a></li><li class="none"><a href="checkstyle-report.html">Checkstyle</a></li><li class="none"><a href="changes-report.html">Changes</a></li><li class="none"><a href="changelog-report.html">Change Log</a></li><li class="none"><a href="developer-activity-report.html">Developer Activity</a></li><li class="none"><a href="file-activity-report.html">File Activity</a></li><li class="none"><a href="apidocs/index.html" class="newWindow" title="New Window" target="_blank">JavaDocs</a></li><li class="none"><a href="javadoc.html">JavaDoc Report</a></li><li class="none"><a href="javadoc-warnings-report.html">JavaDoc Warnings Report</a></li><li class="none"><a href="xref/index.html" class="newWindow" title="New Window" target="_blank">Source Xref</a></li><li class="none"><a href="xref-test/index.html" class="newWindow" title="New Window" target="_blank">Test Xref</a></li><li class="none"><a href="junit-report.html">Unit Tests</a></li><li class="none"><a href="license.html">Project License</a></li><li class="none"><a href="task-list.html">Task List</a></li><li class="none"><a href="pmd-report.html">PMD Report</a></li><li class="none"><strong><a href="simian-report.html">Simian Report</a></strong></li><li class="none"><a href="findbugs-report.html">FindBugs Report</a></li></ul></li><li class="none"><a href="development-process.html">Development Process</a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="./images/logos/mavenlogo_builtby_w.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Summary"></a><h2>Summary</h2>
+      <p>Similarity Analyser 1.9.1 - http://www.redhillconsulting.com.au/products/simian/index.html</p>
+      <p>Copyright (c) 2003 RedHill Consulting, Pty. Ltd. All rights reserved.</p>
+      <table class="bodyTable">
+        <tbody>
+          <tr class="a">
+            <th>Similarity threshold (lines)</th>
+            <td>10</td>
+          </tr>
+          <tr class="b">
+            <th>Total number of duplicate lines</th>
+            <td>2827</td>
+          </tr>
+          <tr class="a">
+            <th>Total number of duplicate blocks</th>
+            <td>207</td>
+          </tr>
+          <tr class="b">
+            <th>Total number of files with duplicates</th>
+            <td>67</td>
+          </tr>
+          <tr class="a">
+            <th>Total number of processed lines</th>
+            <td>29701</td>
+          </tr>
+          <tr class="b">
+            <th>Total number of processed files</th>
+            <td>465</td>
+          </tr>
+          <tr class="a">
+            <th>Scan time</th>
+            <td>6955ms</td>
+          </tr>
+        </tbody>
+      </table>
+    </div><div class="section"><a name="Duplications"></a><h2>Duplications</h2>
+      <div class="subsection"><a name="Duplication:_32_lines"></a><h3>Duplication: 32 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/schedule/BaseJobEntryPeer.html#127">org.apache.turbine.services.schedule.BaseJobEntryPeer ( 127 - 211 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineGroupPeer.html#106">org.apache.turbine.services.security.torque.om.BaseTurbineGroupPeer ( 106 - 190 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbinePermissionPeer.html#106">org.apache.turbine.services.security.torque.om.BaseTurbinePermissionPeer ( 106 - 190 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePeer.html#106">org.apache.turbine.services.security.torque.om.BaseTurbineRolePeer ( 106 - 190 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePermissionPeer.html#106">org.apache.turbine.services.security.torque.om.BaseTurbineRolePermissionPeer ( 106 - 190 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#109">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 109 - 193 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserPeer.html#133">org.apache.turbine.services.security.torque.om.BaseTurbineUserPeer ( 133 - 217 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_30_lines"></a><h3>Duplication: 30 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/intake/validator/DateRangeValidator.html#135">org.apache.turbine.services.intake.validator.DateRangeValidator ( 135 - 215 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/intake/validator/IntegerRangeValidator.html#133">org.apache.turbine.services.intake.validator.IntegerRangeValidator ( 133 - 213 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_26_lines"></a><h3>Duplication: 26 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1428">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1428 - 1472 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1304">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1304 - 1348 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_23_lines"></a><h3>Duplication: 23 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1215">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1215 - 1254 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1338">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1338 - 1378 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_23_lines"></a><h3>Duplication: 23 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/template/mapper/LayoutTemplateMapper.html#104">org.apache.turbine.services.template.mapper.LayoutTemplateMapper ( 104 - 145 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/template/mapper/ScreenDefaultTemplateMapper.html#99">org.apache.turbine.services.template.mapper.ScreenDefaultTemplateMapper ( 99 - 140 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_22_lines"></a><h3>Duplication: 22 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePermissionPeer.html#728">org.apache.turbine.services.security.torque.om.BaseTurbineRolePermissionPeer ( 728 - 769 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#738">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 738 - 779 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_19_lines"></a><h3>Duplication: 19 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/ldap/LDAPSecurityService.html#167">org.apache.turbine.services.security.ldap.LDAPSecurityService ( 167 - 199 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/ldap/LDAPSecurityService.html#247">org.apache.turbine.services.security.ldap.LDAPSecurityService ( 247 - 279 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_19_lines"></a><h3>Duplication: 19 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/modules/actions/sessionvalidator/TemplateSecureSessionValidator.html#146">org.apache.turbine.modules.actions.sessionvalidator.TemplateSecureSessionValidator ( 146 - 177 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/modules/actions/sessionvalidator/TemplateSessionValidator.html#105">org.apache.turbine.modules.actions.sessionvalidator.TemplateSessionValidator ( 105 - 136 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_19_lines"></a><h3>Duplication: 19 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePermission.html#124">org.apache.turbine.services.security.torque.om.BaseTurbineRolePermission ( 124 - 193 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRole.html#310">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRole ( 310 - 379 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_17_lines"></a><h3>Duplication: 17 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/schedule/BaseJobEntryPeer.html#814">org.apache.turbine.services.schedule.BaseJobEntryPeer ( 814 - 849 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineGroupPeer.html#759">org.apache.turbine.services.security.torque.om.BaseTurbineGroupPeer ( 759 - 794 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbinePermissionPeer.html#759">org.apache.turbine.services.security.torque.om.BaseTurbinePermissionPeer ( 759 - 794 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePeer.html#759">org.apache.turbine.services.security.torque.om.BaseTurbineRolePeer ( 759 - 794 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePermissionPeer.html#728">org.apache.turbine.services.security.torque.om.BaseTurbineRolePermissionPeer ( 728 - 763 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#738">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 738 - 773 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserPeer.html#830">org.apache.turbine.services.security.torque.om.BaseTurbineUserPeer ( 830 - 865 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_17_lines"></a><h3>Duplication: 17 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/TorqueSecurityService.html#179">org.apache.turbine.services.security.torque.TorqueSecurityService ( 179 - 198 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/TorqueSecurityService.html#240">org.apache.turbine.services.security.torque.TorqueSecurityService ( 240 - 259 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_17_lines"></a><h3>Duplication: 17 lines</h3>
+        <ul>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#680">g.apache.turbine.util.parser.CSVParserTest ( 680 - 710 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#888">g.apache.turbine.util.parser.CSVParserTest ( 888 - 918 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_16_lines"></a><h3>Duplication: 16 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/schedule/BaseJobEntryPeer.html#386">org.apache.turbine.services.schedule.BaseJobEntryPeer ( 386 - 436 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineGroupPeer.html#351">org.apache.turbine.services.security.torque.om.BaseTurbineGroupPeer ( 351 - 401 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbinePermissionPeer.html#351">org.apache.turbine.services.security.torque.om.BaseTurbinePermissionPeer ( 351 - 401 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePeer.html#351">org.apache.turbine.services.security.torque.om.BaseTurbineRolePeer ( 351 - 401 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePermissionPeer.html#351">org.apache.turbine.services.security.torque.om.BaseTurbineRolePermissionPeer ( 351 - 401 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#356">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 356 - 406 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserPeer.html#396">org.apache.turbine.services.security.torque.om.BaseTurbineUserPeer ( 396 - 446 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_16_lines"></a><h3>Duplication: 16 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/factory/FactoryService.html#49">org.apache.turbine.services.factory.FactoryService ( 49 - 112 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/pool/PoolService.html#65">org.apache.turbine.services.pool.PoolService ( 65 - 129 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_16_lines"></a><h3>Duplication: 16 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/ldap/LDAPSecurityService.html#312">org.apache.turbine.services.security.ldap.LDAPSecurityService ( 312 - 343 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/ldap/LDAPSecurityService.html#368">org.apache.turbine.services.security.ldap.LDAPSecurityService ( 368 - 399 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_15_lines"></a><h3>Duplication: 15 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/schedule/BaseJobEntry.html#721">org.apache.turbine.services.schedule.BaseJobEntry ( 721 - 761 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineGroup.html#635">org.apache.turbine.services.security.torque.om.BaseTurbineGroup ( 635 - 675 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbinePermission.html#585">org.apache.turbine.services.security.torque.om.BaseTurbinePermission ( 585 - 625 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRole.html#928">org.apache.turbine.services.security.torque.om.BaseTurbineRole ( 928 - 968 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePermission.html#451">org.apache.turbine.services.security.torque.om.BaseTurbineRolePermission ( 451 - 491 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUser.html#1193">org.apache.turbine.services.security.torque.om.BaseTurbineUser ( 1193 - 1233 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRole.html#592">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRole ( 592 - 632 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_14_lines"></a><h3>Duplication: 14 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/intake/validator/BigDecimalValidator.html#101">org.apache.turbine.services.intake.validator.BigDecimalValidator ( 101 - 147 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/intake/validator/FloatValidator.html#103">org.apache.turbine.services.intake.validator.FloatValidator ( 103 - 149 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_14_lines"></a><h3>Duplication: 14 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/BaseInitableBroker.html#232">org.apache.turbine.services.BaseInitableBroker ( 232 - 258 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/BaseServiceBroker.html#523">org.apache.turbine.services.BaseServiceBroker ( 523 - 548 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_14_lines"></a><h3>Duplication: 14 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1180">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1180 - 1207 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#993">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 993 - 1015 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_14_lines"></a><h3>Duplication: 14 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbinePermission.html#225">org.apache.turbine.services.security.torque.om.BaseTurbinePermission ( 225 - 274 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRole.html#235">org.apache.turbine.services.security.torque.om.BaseTurbineRole ( 235 - 284 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_14_lines"></a><h3>Duplication: 14 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineGroup.html#225">org.apache.turbine.services.security.torque.om.BaseTurbineGroup ( 225 - 274 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRole.html#518">org.apache.turbine.services.security.torque.om.BaseTurbineRole ( 518 - 567 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUser.html#504">org.apache.turbine.services.security.torque.om.BaseTurbineUser ( 504 - 553 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_14_lines"></a><h3>Duplication: 14 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1177">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1177 - 1200 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1301">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1301 - 1324 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_14_lines"></a><h3>Duplication: 14 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#903">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 903 - 925 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1428">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1428 - 1454 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1304">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1304 - 1330 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_14_lines"></a><h3>Duplication: 14 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/GroupPeerManager.html#170">org.apache.turbine.services.security.torque.GroupPeerManager ( 170 - 224 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/PermissionPeerManager.html#190">org.apache.turbine.services.security.torque.PermissionPeerManager ( 190 - 245 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/RolePeerManager.html#190">org.apache.turbine.services.security.torque.RolePeerManager ( 190 - 244 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_13_lines"></a><h3>Duplication: 13 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/GroupPeerManager.html#565">org.apache.turbine.services.security.torque.GroupPeerManager ( 565 - 596 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/PermissionPeerManager.html#621">org.apache.turbine.services.security.torque.PermissionPeerManager ( 621 - 652 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/RolePeerManager.html#601">org.apache.turbine.services.security.torque.RolePeerManager ( 601 - 632 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/UserPeerManager.html#1400">org.apache.turbine.services.security.torque.UserPeerManager ( 1400 - 1431 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_13_lines"></a><h3>Duplication: 13 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUser.html#1376">org.apache.turbine.services.security.torque.om.BaseTurbineUser ( 1376 - 1390 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUser.html#1423">org.apache.turbine.services.security.torque.om.BaseTurbineUser ( 1423 - 1437 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_13_lines"></a><h3>Duplication: 13 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/intake/validator/BigDecimalValidator.html#101">org.apache.turbine.services.intake.validator.BigDecimalValidator ( 101 - 145 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/intake/validator/DoubleValidator.html#103">org.apache.turbine.services.intake.validator.DoubleValidator ( 103 - 147 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/intake/validator/FloatValidator.html#103">org.apache.turbine.services.intake.validator.FloatValidator ( 103 - 147 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_13_lines"></a><h3>Duplication: 13 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/util/DynamicURI.html#718">org.apache.turbine.util.DynamicURI ( 718 - 736 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/util/DynamicURI.html#756">org.apache.turbine.util.DynamicURI ( 756 - 774 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_13_lines"></a><h3>Duplication: 13 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/factory/TurbineFactoryService.html#202">org.apache.turbine.services.factory.TurbineFactoryService ( 202 - 223 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/factory/TurbineFactoryService.html#300">org.apache.turbine.services.factory.TurbineFactoryService ( 300 - 321 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_13_lines"></a><h3>Duplication: 13 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/map/TurbineGroupMapBuilder.html#92">org.apache.turbine.services.security.torque.om.map.TurbineGroupMapBuilder ( 92 - 104 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/map/TurbinePermissionMapBuilder.html#92">org.apache.turbine.services.security.torque.om.map.TurbinePermissionMapBuilder ( 92 - 104 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/map/TurbineRoleMapBuilder.html#92">org.apache.turbine.services.security.torque.om.map.TurbineRoleMapBuilder ( 92 - 104 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_13_lines"></a><h3>Duplication: 13 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/TorqueSecurityService.html#348">org.apache.turbine.services.security.torque.TorqueSecurityService ( 348 - 363 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/TorqueSecurityService.html#398">org.apache.turbine.services.security.torque.TorqueSecurityService ( 398 - 413 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_13_lines"></a><h3>Duplication: 13 lines</h3>
+        <ul>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/DefaultParameterParserTest.html#60">g.apache.turbine.util.parser.DefaultParameterParserTest ( 60 - 80 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/DefaultParameterParserTest.html#115">g.apache.turbine.util.parser.DefaultParameterParserTest ( 115 - 135 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_13_lines"></a><h3>Duplication: 13 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/template/mapper/LayoutTemplateMapper.html#73">org.apache.turbine.services.template.mapper.LayoutTemplateMapper ( 73 - 95 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/template/mapper/ScreenDefaultTemplateMapper.html#69">org.apache.turbine.services.template.mapper.ScreenDefaultTemplateMapper ( 69 - 91 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#196">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 196 - 236 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserPeer.html#220">org.apache.turbine.services.security.torque.om.BaseTurbineUserPeer ( 220 - 260 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#101">g.apache.turbine.util.parser.CSVParserTest ( 101 - 122 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#274">g.apache.turbine.util.parser.CSVParserTest ( 274 - 295 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/factory/TurbineFactoryService.html#160">org.apache.turbine.services.factory.TurbineFactoryService ( 160 - 179 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/factory/TurbineFactoryService.html#252">org.apache.turbine.services.factory.TurbineFactoryService ( 252 - 271 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/modules/ActionEvent.html#160">org.apache.turbine.modules.ActionEvent ( 160 - 184 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/util/velocity/VelocityActionEvent.html#97">org.apache.turbine.util.velocity.VelocityActionEvent ( 97 - 122 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/schedule/BaseJobEntry.html#896">org.apache.turbine.services.schedule.BaseJobEntry ( 896 - 911 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/schedule/BaseJobEntry.html#926">org.apache.turbine.services.schedule.BaseJobEntry ( 926 - 941 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/modules/layouts/VelocityECSLayout.html#82">org.apache.turbine.modules.layouts.VelocityECSLayout ( 82 - 109 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/modules/layouts/VelocityOnlyLayout.html#83">org.apache.turbine.modules.layouts.VelocityOnlyLayout ( 83 - 110 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/xmlrpc/TurbineXmlRpc.html#229">org.apache.turbine.services.xmlrpc.TurbineXmlRpc ( 229 - 256 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/xmlrpc/TurbineXmlRpcService.html#546">org.apache.turbine.services.xmlrpc.TurbineXmlRpcService ( 546 - 573 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePermissionPeer.html#884">org.apache.turbine.services.security.torque.om.BaseTurbineRolePermissionPeer ( 884 - 904 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePermissionPeer.html#974">org.apache.turbine.services.security.torque.om.BaseTurbineRolePermissionPeer ( 974 - 994 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePeer.html#193">org.apache.turbine.services.security.torque.om.BaseTurbineRolePeer ( 193 - 233 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePermissionPeer.html#193">org.apache.turbine.services.security.torque.om.BaseTurbineRolePermissionPeer ( 193 - 233 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/xmlrpc/TurbineXmlRpc.html#172">org.apache.turbine.services.xmlrpc.TurbineXmlRpc ( 172 - 199 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/xmlrpc/TurbineXmlRpcService.html#489">org.apache.turbine.services.xmlrpc.TurbineXmlRpcService ( 489 - 516 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbinePermission.html#97">org.apache.turbine.services.security.torque.om.BaseTurbinePermission ( 97 - 151 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRole.html#107">org.apache.turbine.services.security.torque.om.BaseTurbineRole ( 107 - 161 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/GroupPeerManager.html#534">org.apache.turbine.services.security.torque.GroupPeerManager ( 534 - 562 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/PermissionPeerManager.html#590">org.apache.turbine.services.security.torque.PermissionPeerManager ( 590 - 618 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/RolePeerManager.html#570">org.apache.turbine.services.security.torque.RolePeerManager ( 570 - 598 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1083">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1083 - 1103 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#903">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 903 - 923 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#993">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 993 - 1013 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1428">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1428 - 1448 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1180">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1180 - 1200 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1304">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1304 - 1324 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/modules/navigations/DefaultBottomNavigation.html#149">org.apache.turbine.modules.navigations.DefaultBottomNavigation ( 149 - 163 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/modules/screens/Error.html#70">org.apache.turbine.modules.screens.Error ( 70 - 83 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/BaseValueParserTest.html#1104">g.apache.turbine.util.parser.BaseValueParserTest ( 1104 - 1123 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/BaseValueParserTest.html#1136">g.apache.turbine.util.parser.BaseValueParserTest ( 1136 - 1155 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/xmlrpc/TurbineXmlRpc.html#202">org.apache.turbine.services.xmlrpc.TurbineXmlRpc ( 202 - 226 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/xmlrpc/TurbineXmlRpcService.html#519">org.apache.turbine.services.xmlrpc.TurbineXmlRpcService ( 519 - 543 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserPeer.html#700">org.apache.turbine.services.security.torque.om.BaseTurbineUserPeer ( 700 - 711 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserPeer.html#719">org.apache.turbine.services.security.torque.om.BaseTurbineUserPeer ( 719 - 732 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_12_lines"></a><h3>Duplication: 12 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/pull/util/UIManager.html#305">org.apache.turbine.services.pull.util.UIManager ( 305 - 319 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/pull/util/UIManager.html#335">org.apache.turbine.services.pull.util.UIManager ( 335 - 348 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/schedule/map/JobEntryMapBuilder.html#173">org.apache.turbine.services.schedule.map.JobEntryMapBuilder ( 173 - 184 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/map/TurbineUserMapBuilder.html#145">org.apache.turbine.services.security.torque.om.map.TurbineUserMapBuilder ( 145 - 156 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/map/TurbineRoleMapBuilder.html#74">org.apache.turbine.services.security.torque.om.map.TurbineRoleMapBuilder ( 74 - 87 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/map/TurbineRolePermissionMapBuilder.html#73">org.apache.turbine.services.security.torque.om.map.TurbineRolePermissionMapBuilder ( 73 - 86 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/PermissionPeerManager.html#458">org.apache.turbine.services.security.torque.PermissionPeerManager ( 458 - 485 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/RolePeerManager.html#438">org.apache.turbine.services.security.torque.RolePeerManager ( 438 - 465 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/UserPeerManager.html#704">org.apache.turbine.services.security.torque.UserPeerManager ( 704 - 731 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/TorqueSecurityService.html#207">org.apache.turbine.services.security.torque.TorqueSecurityService ( 207 - 224 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/TorqueSecurityService.html#268">org.apache.turbine.services.security.torque.TorqueSecurityService ( 268 - 285 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1018">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1018 - 1033 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1210">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1210 - 1225 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineGroup.html#171">org.apache.turbine.services.security.torque.om.BaseTurbineGroup ( 171 - 210 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRole.html#464">org.apache.turbine.services.security.torque.om.BaseTurbineRole ( 464 - 503 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUser.html#450">org.apache.turbine.services.security.torque.om.BaseTurbineUser ( 450 - 489 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbinePermission.html#171">org.apache.turbine.services.security.torque.om.BaseTurbinePermission ( 171 - 210 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRole.html#181">org.apache.turbine.services.security.torque.om.BaseTurbineRole ( 181 - 220 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/map/TurbineRolePermissionMapBuilder.html#77">org.apache.turbine.services.security.torque.om.map.TurbineRolePermissionMapBuilder ( 77 - 87 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/map/TurbineUserGroupRoleMapBuilder.html#105">org.apache.turbine.services.security.torque.om.map.TurbineUserGroupRoleMapBuilder ( 105 - 115 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#214">g.apache.turbine.util.parser.CSVParserTest ( 214 - 232 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#373">g.apache.turbine.util.parser.CSVParserTest ( 373 - 391 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#399">g.apache.turbine.util.parser.CSVParserTest ( 399 - 417 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#425">g.apache.turbine.util.parser.CSVParserTest ( 425 - 443 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/xmlrpc/util/FileTransfer.html#54">org.apache.turbine.services.xmlrpc.util.FileTransfer ( 54 - 79 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/xmlrpc/util/FileTransfer.html#108">org.apache.turbine.services.xmlrpc.util.FileTransfer ( 108 - 133 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/map/TurbineUserGroupRoleMapBuilder.html#73">org.apache.turbine.services.security.torque.om.map.TurbineUserGroupRoleMapBuilder ( 73 - 86 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/map/TurbineUserMapBuilder.html#74">org.apache.turbine.services.security.torque.om.map.TurbineUserMapBuilder ( 74 - 87 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/schedule/BaseJobEntryPeer.html#214">org.apache.turbine.services.schedule.BaseJobEntryPeer ( 214 - 252 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineGroupPeer.html#193">org.apache.turbine.services.security.torque.om.BaseTurbineGroupPeer ( 193 - 231 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbinePermissionPeer.html#193">org.apache.turbine.services.security.torque.om.BaseTurbinePermissionPeer ( 193 - 231 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePeer.html#193">org.apache.turbine.services.security.torque.om.BaseTurbineRolePeer ( 193 - 231 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePermissionPeer.html#193">org.apache.turbine.services.security.torque.om.BaseTurbineRolePermissionPeer ( 193 - 231 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#196">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 196 - 234 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserPeer.html#220">org.apache.turbine.services.security.torque.om.BaseTurbineUserPeer ( 220 - 258 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#720">g.apache.turbine.util.parser.CSVParserTest ( 720 - 739 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#748">g.apache.turbine.util.parser.CSVParserTest ( 748 - 767 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#776">g.apache.turbine.util.parser.CSVParserTest ( 776 - 795 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#804">g.apache.turbine.util.parser.CSVParserTest ( 804 - 823 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#831">g.apache.turbine.util.parser.CSVParserTest ( 831 - 850 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#928">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 928 - 943 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1457">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1457 - 1472 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1333">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1333 - 1348 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_11_lines"></a><h3>Duplication: 11 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/pull/tools/UITool.html#150">org.apache.turbine.services.pull.tools.UITool ( 150 - 198 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/pull/util/UIManager.html#487">org.apache.turbine.services.pull.util.UIManager ( 487 - 538 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/pull/util/UIManager.html#225">org.apache.turbine.services.pull.util.UIManager ( 225 - 245 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/ui/TurbineUIService.html#441">org.apache.turbine.services.ui.TurbineUIService ( 441 - 461 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/modules/actions/InitContextsAction.html#77">org.apache.turbine.modules.actions.InitContextsAction ( 77 - 90 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/naming/TurbineNamingService.html#103">org.apache.turbine.services.naming.TurbineNamingService ( 103 - 119 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineGroup.html#392">org.apache.turbine.services.security.torque.om.BaseTurbineGroup ( 392 - 430 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRole.html#685">org.apache.turbine.services.security.torque.om.BaseTurbineRole ( 685 - 723 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUser.html#671">org.apache.turbine.services.security.torque.om.BaseTurbineUser ( 671 - 709 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/map/TurbinePermissionMapBuilder.html#78">org.apache.turbine.services.security.torque.om.map.TurbinePermissionMapBuilder ( 78 - 87 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/map/TurbineRolePermissionMapBuilder.html#91">org.apache.turbine.services.security.torque.om.map.TurbineRolePermissionMapBuilder ( 91 - 100 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/modules/layouts/VelocityECSLayout.html#88">org.apache.turbine.modules.layouts.VelocityECSLayout ( 88 - 111 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/modules/layouts/VelocityXslLayout.html#81">org.apache.turbine.modules.layouts.VelocityXslLayout ( 81 - 104 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/pull/util/UIManager.html#396">org.apache.turbine.services.pull.util.UIManager ( 396 - 407 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/pull/util/UIManager.html#422">org.apache.turbine.services.pull.util.UIManager ( 422 - 433 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePermissionPeer.html#882">org.apache.turbine.services.security.torque.om.BaseTurbineRolePermissionPeer ( 882 - 900 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUserGroupRolePeer.html#1081">org.apache.turbine.services.security.torque.om.BaseTurbineUserGroupRolePeer ( 1081 - 1099 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/GroupPeerManager.html#348">org.apache.turbine.services.security.torque.GroupPeerManager ( 348 - 373 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/PermissionPeerManager.html#404">org.apache.turbine.services.security.torque.PermissionPeerManager ( 404 - 429 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/RolePeerManager.html#384">org.apache.turbine.services.security.torque.RolePeerManager ( 384 - 409 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/UserPeerManager.html#650">org.apache.turbine.services.security.torque.UserPeerManager ( 650 - 675 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineGroup.html#289">org.apache.turbine.services.security.torque.om.BaseTurbineGroup ( 289 - 330 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRole.html#582">org.apache.turbine.services.security.torque.om.BaseTurbineRole ( 582 - 623 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUser.html#568">org.apache.turbine.services.security.torque.om.BaseTurbineUser ( 568 - 609 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#722">g.apache.turbine.util.parser.CSVParserTest ( 722 - 739 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#750">g.apache.turbine.util.parser.CSVParserTest ( 750 - 767 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#778">g.apache.turbine.util.parser.CSVParserTest ( 778 - 795 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#806">g.apache.turbine.util.parser.CSVParserTest ( 806 - 823 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#833">g.apache.turbine.util.parser.CSVParserTest ( 833 - 850 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/util/parser/CSVParserTest.html#861">g.apache.turbine.util.parser.CSVParserTest ( 861 - 878 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineGroup.html#342">org.apache.turbine.services.security.torque.om.BaseTurbineGroup ( 342 - 380 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRole.html#635">org.apache.turbine.services.security.torque.om.BaseTurbineRole ( 635 - 673 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineUser.html#621">org.apache.turbine.services.security.torque.om.BaseTurbineUser ( 621 - 659 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbinePermission.html#289">org.apache.turbine.services.security.torque.om.BaseTurbinePermission ( 289 - 330 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRole.html#299">org.apache.turbine.services.security.torque.om.BaseTurbineRole ( 299 - 340 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/schedule/BaseJobEntryPeer.html#688">org.apache.turbine.services.schedule.BaseJobEntryPeer ( 688 - 697 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/schedule/BaseJobEntryPeer.html#705">org.apache.turbine.services.schedule.BaseJobEntryPeer ( 705 - 716 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/xmlrpc/TurbineXmlRpc.html#259">org.apache.turbine.services.xmlrpc.TurbineXmlRpc ( 259 - 280 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/xmlrpc/TurbineXmlRpcService.html#576">org.apache.turbine.services.xmlrpc.TurbineXmlRpcService ( 576 - 597 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbinePermission.html#342">org.apache.turbine.services.security.torque.om.BaseTurbinePermission ( 342 - 380 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRole.html#352">org.apache.turbine.services.security.torque.om.BaseTurbineRole ( 352 - 390 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineGroupPeer.html#301">org.apache.turbine.services.security.torque.om.BaseTurbineGroupPeer ( 301 - 348 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbinePermissionPeer.html#301">org.apache.turbine.services.security.torque.om.BaseTurbinePermissionPeer ( 301 - 348 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/BaseTurbineRolePeer.html#301">org.apache.turbine.services.security.torque.om.BaseTurbineRolePeer ( 301 - 348 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref-test/org/apache/turbine/services/security/TestSecurity.html#59">g.apache.turbine.services.security.TestSecurity ( 59 - 76 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/services/security/TestSecurityUser.html#48">g.apache.turbine.services.security.TestSecurityUser ( 48 - 65 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/util/BrowserDetector.html#288">org.apache.turbine.util.BrowserDetector ( 288 - 305 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/util/BrowserDetector.html#321">org.apache.turbine.util.BrowserDetector ( 321 - 338 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/map/TurbineGroupMapBuilder.html#78">org.apache.turbine.services.security.torque.om.map.TurbineGroupMapBuilder ( 78 - 87 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/security/torque/om/map/TurbineUserGroupRoleMapBuilder.html#91">org.apache.turbine.services.security.torque.om.map.TurbineUserGroupRoleMapBuilder ( 91 - 100 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref-test/org/apache/turbine/services/pull/tools/UIToolTest.html#75">g.apache.turbine.services.pull.tools.UIToolTest ( 75 - 91 )</a>
+          </li>
+          <li>
+            <a href="xref-test/org/apache/turbine/services/pull/util/UIManagerTest.html#74">g.apache.turbine.services.pull.util.UIManagerTest ( 74 - 90 )</a>
+          </li>
+        </ul>
+      </div>
+      <div class="subsection"><a name="Duplication:_10_lines"></a><h3>Duplication: 10 lines</h3>
+        <ul>
+          <li>
+            <a href="xref/org/apache/turbine/services/intake/validator/DefaultValidator.html#198">org.apache.turbine.services.intake.validator.DefaultValidator ( 198 - 222 )</a>
+          </li>
+          <li>
+            <a href="xref/org/apache/turbine/services/intake/validator/StringValidator.html#113">org.apache.turbine.services.intake.validator.StringValidator ( 113 - 137 )</a>
+          </li>
+        </ul>
+      </div>
+    </div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2000-2008, Apache Software Foundation</div><div class="clear"><hr></hr></div></div></body></html>

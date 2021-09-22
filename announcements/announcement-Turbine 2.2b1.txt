@@ -1,0 +1,74 @@
+We are pleased to announce the turbine-2 Turbine 2.2b1 release! 
+
+http://turbine.apache.org/turbine/turbine-2.3.3/index.html
+
+Turbine is a servlet based framework that allows experienced Java developers 
+to quickly build secure web applications. Parts of Turbine can also be used 
+independently of the web portion of Turbine as well. In other words, we strive 
+to make portions of Turbine easily available for use in other applications. 
+
+===============================================================================
+
+Changes in this version include:
+
+  Changes:
+
+o Torque and Fulcrum (the service framework) have been decoupled in 
+  preparation for Turbine 3.0. The decoupled versions can be used with 
+  Turbine 2.2. We strongly recommend to use the decoupled versions (some of 
+  the 'old' services must be used, because they are used internally by 
+  Turbine) If you wrote your own services you should also change them to be 
+  Fulcrum services to make them work with Turbine 3.x 
+o The Service interface was extended to allow integration of Service 
+  implementations: Service.getName() since most Service implementations 
+  extend BaseService (which implements a public getName method), this should 
+  not be an issue. 
+o ECS, Freemarker and Webmacro services/modules are marked deprecated. You 
+  should use Velocity instead. 
+o Castor service is marked as deprecated. You should use om/peer classes 
+  instead! 
+o The XSLT Service is updated to use Xalan 2.0 
+o Improved datatype mappings for mysql, oracle, postgresql, sapdb 
+o adding support for DB2 on AS400 (patch by Sweaver@rippe.com). 
+o adding support for secure connections in the xmlrpc service. 
+o Added a configuration parameter to torque, addTimeStamp, that allows the 
+  user to generate files without a timestamp. Default is true, timestamps 
+  will be generated. 
+o Criteria.Criterion implements Serializable 
+o DB implements Serializable 
+o torque: id-methods sequence and autoincrement are deprecated. You should 
+  use native. torque uses the method provided by your database 
+o added static strings for ISNULL and ISNOTNULL to Criteria. 
+o added getDateString() method to format date fields to DB. 
+o added VelocityDirectLayout/Screen to make it possible to embed servlet/JSP 
+  outputs into a Velocity template used within Turbine. (patch by 
+  raphael.luta@networks.groupvu.com) 
+o added an easy to use localization pull tool. 
+o Javadocs improvements. 
+o Documentation improvements. 
+o fixed error in Mssql unique.vm template (removed a blank line) 
+o [2301] Embedding message parts in HtmlEmail throws NullPointerException. 
+o bugfix for BigDecimal attributes with default value 
+o fixed handling of sequences for db2, oracle, postgresql, sapdb 
+o fixed syntax for create index (postgresql) 
+o fixed problem for postgres with blob style column in TurbineUser table. 
+  (patch by Jerome Veryleyen) 
+o BaseUnicastRemoteService.java: Corrected method name (setName -> 
+  getName). 
+o fixed Roleset.add(RoleSet) (patch by lujin@yahoo.com) 
+o fixed database - defaultIdMethod (torque) 
+o fixed date formating problem with Oracle. 
+o fixed problem when ignoreCase was used with ISNULL or ISNOTNULL. 
+o fixed Option object initialisation in SelectorBox (patch by Kurt Grafius 
+  kurtg@jvoom.com) 
+
+===============================================================================
+
+Issues, bugs, and feature requests for turbine-2
+should be submitted to the following issue tracking system:
+
+http://issues.apache.org/jira/browse/TRB
+
+
+Have fun!
+-The turbine-2 development team

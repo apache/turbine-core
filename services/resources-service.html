@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Turbine - Turbine Services - Resources Service</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Jason van Zyl"></meta><meta name="email" content="jvanzyl@apache.org"></meta><meta name="author" content="Henning P. Schmiedehausen"></meta><meta name="email" content="hps@intermeta.de"></meta></head><body class="composite"><div id="banner"><a href="http://turbine.apache.org/" id="organizationLogo"><img alt="Apache Software Foundation" src="../images/turbine-project.png"></img></a><a href="http://turbine.apache.org/turbine/turbine-2.3.3/index.html" id="projectLogo"><img alt="turbine-2" src="../images/logo.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 21 November 2008
+                <span class="separator">|</span> Doc for  2.3.3
+                </div><div class="xright">
+        
+        <a href="http://turbine.apache.org/">Turbine Home</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="http://turbine.apache.org/fulcrum/">Fulcrum</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="http://turbine.apache.org/meta/">META</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuGeneral_Information"><h5>General Information</h5><ul><li class="none"><a href="../index.html">Overview</a></li><li class="none"><a href="../features.html">Features</a></li><li class="none"><a href="../fsd.html">Specification</a></li><li class="none"><a href="../getting-started.html">Getting Started</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="none"><a href="../changes-report.html">Changes</a></li><li class="none"><a href="../turbine-schema.html">Core DB Schema</a></li><li class="expanded"><a href="../services/index.html">Services</a><ul><li class="none"><a href="../services/assemblerbroker-service.html">Assembler Broker Service</a></li><li class="none"><a href="../services/avalon-component-service.html">Avalon Component Service</a></li><li class="none"><a href="../services/crypto-service.html">Crypto Service</a></li><li class="none"><a href="../services/cache-service.html">Cache Service</a></li><li class="none"><a href="../services/factory-service.html">Factory Service</a></li><li class="none"><a href="../services/intake-service.html">Intake Service</a></li><li class="none"><a href="../services/jsonrpc-service.html">JSON-RPC Service</a></li><li class="none"><a href="../services/jsp-service.html">JSP Service</a></li><li class="none"><a href="../services/localization-service.html">Localization Service</a></li><li class="none"><a href="../services/logging-service.html">Logging Service</a></li><li class="none"><a href="../services/mimetype-service.html">MimeType Service</a></li><li class="none"><a href="../services/naming-service.html">Naming Service</a></li><li class="none"><a href="../services/pool-service.html">Pool Service</a></li><li class="none"><a href="../services/pull-service.html">Pull Service</a></li><li class="none"><strong><a href="../services/resources-service.html">Resources Service</a></strong></li><li class="none"><a href="../services/rundata-service.html">RunData Service</a></li><li class="none"><a href="../services/scheduler-service.html">Scheduler Service</a></li><li class="expanded"><a href="../services/security-service.html">Security Service</a><ul><li class="none"><a href="../services/ldap-security-service.html">LDAP Security Service</a></li><li class="none"><a href="../services/torque-security-service.html">Torque Security Service</a></li><li class="none"><a href="../services/torque-security-schema.html">Torque Security Service Schema</a></li></ul></li><li class="none"><a href="../services/servlet-service.html">Servlet Service</a></li><li class="none"><a href="../services/session-service.html">Session Service</a></li><li class="none"><a href="../services/template-service.html">Template Service</a></li><li class="none"><a href="../services/ui-service.html">UI Service</a></li><li class="none"><a href="../services/uniqueid-service.html">Unique ID Service</a></li><li class="none"><a href="../services/upload-service.html">Upload Service</a></li><li class="none"><a href="../services/velocity-service.html">Velocity Service</a></li><li class="none"><a href="../services/xmlrpc-service.html">XML-RPC Service</a></li><li class="none"><a href="../services/xslt-service.html">XSLT Service</a></li><li class="none"><a href="../services/yaafi-component-service.html">Yaafi Component Service</a></li></ul></li><li class="collapsed"><a href="../howto/index.html">Howtos</a></li><li class="none"><a href="../apidocs/index.html">JavaDocs</a></li></ul></div><div id="menuDevelopment"><h5>Development</h5><ul><li class="none"><a href="../proposals.html">Proposals</a></li><li class="none"><a href="../how-to-help.html">How To Help</a></li><li class="none"><a href="../todo.html">Todo</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="../development-process.html">Development Process</a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/mavenlogo_builtby_w.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Resources_Service"></a><h2>Resources Service</h2>
+
+<p>
+Within Turbine was a service for reading and accessing data in Property
+files. The classes that accomplish this have been borrowed from the
+Apache JServ project, moved many time and finally ended up in the <a href="http://commons.apache.org/configuration/" class="externalLink" title="External Link">commons-configuration</a>
+ sub-project. So we removed the Service itself and now use commons-configuration everywhere.
+</p>
+
+</div><div class="section"><a name="Configuring_Turbine"></a><h2>Configuring Turbine</h2>
+
+<p>
+Turbine gets its configuration file from the servlet container at
+startup time. It is necessary to have an init parameter in the
+servlet section of your web.xml file:
+</p>
+
+
+    <div class="source"><pre>
+&lt;init-param&gt;
+    &lt;param-name&gt;properties&lt;/param-name&gt;
+    &lt;!-- This is relative to the docBase --&gt;
+    &lt;param-value&gt;
+        /WEB-INF/conf/TurbineResources.properties
+    &lt;/param-value&gt;
+&lt;/init-param&gt;
+</pre></div>
+  
+
+</div><div class="section"><a name="Accessing_properties"></a><h2>Accessing properties</h2>
+
+<p>
+Turbine post-2.2 uses commons-configuration all over the place, so if
+you want to access properties files, you can use it in two ways.
+</p>
+
+<p>
+Inside arbitrary code:
+</p>
+
+
+    <div class="source"><pre>
+import org.apache.commons.configuration.Configuration;
+import org.apache.turbine.Turbine;
+
+//
+// Access all properties from TurbineResource.properties
+Configuration conf = Turbine.getConfiguration();
+
+String myProperty = conf.getString("this.is.my.property");
+</pre></div>
+  
+
+<p>
+Inside a service, you can easily access the already subclassed
+property object for your service (that is, with the services.&lt;your service name&gt;
+stripped away from the property:
+</p>
+
+
+    <div class="source"><pre>
+public class myService extends TurbineBaseService
+{
+.
+.
+.
+    Configuration conf = getConfiguration();
+    String myProp = conf.getString("my.property"); // services.myService.my.property
+.
+.
+.
+}
+</pre></div>
+  
+
+</div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2000-2008, Apache Software Foundation</div><div class="clear"><hr></hr></div></div></body></html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>Turbine - Turbine Services - Factory Service</title><style type="text/css" media="all">
+          @import url("../style/maven-base.css");
+          
+          @import url("../style/maven-theme.css");</style><link rel="stylesheet" href="../style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta><meta name="author" content="Ilkka Priha"></meta><meta name="email" content="ilkka.priha@simsoft.fi"></meta><meta name="author" content="Jason van Zyl"></meta><meta name="email" content="jvanzyl@apache.org"></meta></head><body class="composite"><div id="banner"><a href="http://turbine.apache.org/" id="organizationLogo"><img alt="Apache Software Foundation" src="../images/turbine-project.png"></img></a><a href="http://turbine.apache.org/turbine/turbine-2.3.3/index.html" id="projectLogo"><img alt="turbine-2" src="../images/logo.gif"></img></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">Last published: 21 November 2008
+                <span class="separator">|</span> Doc for  2.3.3
+                </div><div class="xright">
+        
+        <a href="http://turbine.apache.org/">Turbine Home</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="http://turbine.apache.org/fulcrum/">Fulcrum</a>
+      
+        
+          
+            <span class="separator">|</span>
+          
+        
+        <a href="http://turbine.apache.org/meta/">META</a>
+      </div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuGeneral_Information"><h5>General Information</h5><ul><li class="none"><a href="../index.html">Overview</a></li><li class="none"><a href="../features.html">Features</a></li><li class="none"><a href="../fsd.html">Specification</a></li><li class="none"><a href="../getting-started.html">Getting Started</a></li></ul></div><div id="menuDocumentation"><h5>Documentation</h5><ul><li class="none"><a href="../changes-report.html">Changes</a></li><li class="none"><a href="../turbine-schema.html">Core DB Schema</a></li><li class="expanded"><a href="../services/index.html">Services</a><ul><li class="none"><a href="../services/assemblerbroker-service.html">Assembler Broker Service</a></li><li class="none"><a href="../services/avalon-component-service.html">Avalon Component Service</a></li><li class="none"><a href="../services/crypto-service.html">Crypto Service</a></li><li class="none"><a href="../services/cache-service.html">Cache Service</a></li><li class="none"><strong><a href="../services/factory-service.html">Factory Service</a></strong></li><li class="none"><a href="../services/intake-service.html">Intake Service</a></li><li class="none"><a href="../services/jsonrpc-service.html">JSON-RPC Service</a></li><li class="none"><a href="../services/jsp-service.html">JSP Service</a></li><li class="none"><a href="../services/localization-service.html">Localization Service</a></li><li class="none"><a href="../services/logging-service.html">Logging Service</a></li><li class="none"><a href="../services/mimetype-service.html">MimeType Service</a></li><li class="none"><a href="../services/naming-service.html">Naming Service</a></li><li class="none"><a href="../services/pool-service.html">Pool Service</a></li><li class="none"><a href="../services/pull-service.html">Pull Service</a></li><li class="none"><a href="../services/resources-service.html">Resources Service</a></li><li class="none"><a href="../services/rundata-service.html">RunData Service</a></li><li class="none"><a href="../services/scheduler-service.html">Scheduler Service</a></li><li class="expanded"><a href="../services/security-service.html">Security Service</a><ul><li class="none"><a href="../services/ldap-security-service.html">LDAP Security Service</a></li><li class="none"><a href="../services/torque-security-service.html">Torque Security Service</a></li><li class="none"><a href="../services/torque-security-schema.html">Torque Security Service Schema</a></li></ul></li><li class="none"><a href="../services/servlet-service.html">Servlet Service</a></li><li class="none"><a href="../services/session-service.html">Session Service</a></li><li class="none"><a href="../services/template-service.html">Template Service</a></li><li class="none"><a href="../services/ui-service.html">UI Service</a></li><li class="none"><a href="../services/uniqueid-service.html">Unique ID Service</a></li><li class="none"><a href="../services/upload-service.html">Upload Service</a></li><li class="none"><a href="../services/velocity-service.html">Velocity Service</a></li><li class="none"><a href="../services/xmlrpc-service.html">XML-RPC Service</a></li><li class="none"><a href="../services/xslt-service.html">XSLT Service</a></li><li class="none"><a href="../services/yaafi-component-service.html">Yaafi Component Service</a></li></ul></li><li class="collapsed"><a href="../howto/index.html">Howtos</a></li><li class="none"><a href="../apidocs/index.html">JavaDocs</a></li></ul></div><div id="menuDevelopment"><h5>Development</h5><ul><li class="none"><a href="../proposals.html">Proposals</a></li><li class="none"><a href="../how-to-help.html">How To Help</a></li><li class="none"><a href="../todo.html">Todo</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><a href="../index.html">About</a></li><li class="collapsed"><a href="../project-info.html">Project Info</a></li><li class="collapsed"><a href="../maven-reports.html">Project Reports</a></li><li class="none"><a href="../development-process.html">Development Process</a></li></ul></div><div id="legend"><h5>Legend</h5><ul><li class="externalLink">External Link</li><li class="newWindow">Opens in a new window</li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="../images/logos/mavenlogo_builtby_w.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="Factory_Service"></a><h2>Factory Service</h2>
+
+<p>
+The Factory Service instantiates objects from the given class name
+using either the given class loader or an applicable one found from the class
+loader repository. If neither one is specified, the default class loader
+will be used.
+</p>
+
+<p>
+The service provides the following benefits compared to Class.forName():
+</p>
+<ul>
+<li>support for parameters in constructors,</li>
+<li>internal class loader repository, which can be specified in resources,</li>
+<li>optional class specific factories, which can be used for customized instantiation, and</li>
+<li>integration with the Pool Service supporting recycling of instances created by the service.</li>
+</ul>
+
+</div><div class="section"><a name="Configuration"></a><h2>Configuration</h2>
+
+
+    <div class="source"><pre>
+# -------------------------------------------------------------------
+#
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.FactoryService.classname=org.apache.turbine.services.factory.TurbineFactoryService
+.
+.
+.
+# -------------------------------------------------------------------
+#
+#  F A C T O R Y  S E R V I C E
+#
+# -------------------------------------------------------------------
+
+# A comma separated list of classloaders (very optional)
+#
+# Example: org.foo.bar.MyClassLoader, org.ack.joe.YourClassLoader
+#
+#services.FactoryService.class.loaders=
+
+# Customized factories to be used instead of the default factory.
+# E.g. to instantiate XML parsers, SSL sockets, etc., which require
+# specific instantiation not supported by the default factory.
+# The property name is prefixed with "factory" followed by the
+# name of the production class. The value is the class name of
+# the factory implementing the Factory interface. The factory
+# will be instantiated by using the service itself.
+#
+# Examples:
+#
+#services.FactoryService.factory.javax.xml.parsers.DocumentBuilder=org.foo.xml.DomBuilderFactory
+#services.FactoryService.factory.javax.xml.parsers.SAXParser=org.foo.xml.SaxParserFactory
+#services.FactoryService.factory.java.net.ServerSocket=org.foo.net.SslServerSocketFactory
+
+</pre></div>
+  
+
+</div><div class="section"><a name="Usage"></a><h2>Usage</h2>
+
+<p>
+In Turbine, the Factory Service is currently only used internally by the Pool Service.
+Applications can also use the service instead of Class.forName() and for unifying
+initialization, configuration and access to vendor specific object factories.
+The following is a simplified example of a customized DOM parser factory:
+</p>
+
+
+    <div class="source"><pre>
+package org.foo.xml;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.services.factory.Factory;
+
+/**
+ * A factory for instantiating DOM parsers.
+ */
+public class DomBuilderFactory implements Factory
+{
+    /**
+     * The implementation of the factory.
+     */
+    private DocumentBuilderFactory factory;
+
+    /**
+     * Initializes the factory.
+     */
+    public void init(String className)
+        throws TurbineException
+    {
+        factory = DocumentBuilderFactory.newInstance();
+    }
+
+    /**
+     * Gets a DocumentBuilder instance.
+     */
+    public Object getInstance()
+        throws TurbineException
+    {
+        try
+        {
+            return factory.newDocumentBuilder();
+        }
+        catch (ParserConfigurationException x)
+        {
+            throw new TurbineException(x);
+        }
+    }
+
+    /**
+     * Gets a DocumentBuilder instance.
+     * The given loader is ignored.
+     */
+    public Object getInstance(ClassLoader loader)
+        throws TurbineException
+    {
+        return getInstance();
+    }
+
+    /**
+     * Gets a DocumentBuilder instance.
+     * Constructor parameters are ignored.
+     */
+    public Object getInstance(Object[] params,
+                              String[] signature)
+        throws TurbineException
+    {
+        return getInstance();
+    }
+
+    /**
+     * Gets a DocumentBuilder instance.
+     * The given loader and constructor parameters are ignored.
+     */
+    public Object getInstance(ClassLoader loader,
+                              Object[] params,
+                              String[] signature)
+        throws TurbineException
+    {
+        return getInstance();
+    }
+
+    /**
+     * Returns false as given class loaders are not supported.
+     */
+    public boolean isLoaderSupported()
+    {
+        return false;
+    }
+}
+</pre></div>
+  
+
+<p>
+The customized DOM parser factory must be specified in Turbine Resources before it can be used:
+</p>
+
+
+    <div class="source"><pre>
+services.FactoryService.factory.javax.xml.parsers.DocumentBuilder=org.foo.xml.DomBuilderFactory
+</pre></div>
+  
+
+<p>
+A DOM parser can now be instantiated with the following code fragment:
+</p>
+
+
+    <div class="source"><pre>
+// Access the service singleton.
+FactoryService service = (FactoryService)
+    TurbineServices.getInstance().getService(FactoryService.SERVICE_NAME);
+
+// Create a new DOM parser.
+DocumentBuilder parser =
+    service.getInstance("javax.xml.parsers.DocumentBuilder");
+</pre></div>
+  
+
+</div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2000-2008, Apache Software Foundation</div><div class="clear"><hr></hr></div></div></body></html>

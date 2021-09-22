@@ -1,0 +1,79 @@
+We are pleased to announce the turbine-2 Turbine 2.3.1-rc1 release! 
+
+http://turbine.apache.org/turbine/turbine-2.3.3/index.html
+
+Turbine is a servlet based framework that allows experienced Java developers 
+to quickly build secure web applications. Parts of Turbine can also be used 
+independently of the web portion of Turbine as well. In other words, we strive 
+to make portions of Turbine easily available for use in other applications. 
+
+===============================================================================
+
+Changes in this version include:
+
+  Changes:
+
+o Turbine no longer configures the logging factory for commons-logging 
+  explicitly. If you relied on this behaviour, you must add a 
+  commons-logging.properties file to your application as described in the 
+  commons logging documentation 
+o commons-configuration was upgraded to 1.0-rc1. All getVector() method calls 
+  on the Configuration interface must be replaced with getList(). 
+o commons-lang was upgraded to 2.0. 
+o commons-collections was upgraded to 3.0. 
+o stratum was upgraded to 1.0-b5. 
+o commons-logging was upgraded to 1.0.4. 
+o Intake was extended to provide Field values with " escaped as &quot; to 
+  provide valid values for HTML form inputs. 
+o Intake now handles multiValued="true" on type="int" fields correctly. The 
+  get/set methods of the underlying object need to deal with an array of 
+  ints. The intake processing for other primitive types has also been 
+  updated, though not tested to the same extent as int. 
+o The intake validators were fixed so that fields with required=false rules 
+  no longer attempt to execute the remaining rules when no input is provided. 
+  A minLength > 0 rule is no longer synonymous with required=true. 
+o Actions triggered from html input elements with type="button" are now 
+  processed correctly (the trailing ".x" and ".y" are removed from the event 
+  names). 
+o Intake was fixed so that fields with required elements with value=false can 
+  later be enabled with field.setRequired(true) (i.e. you should do this 
+  rather than using the deprecated required-message element). 
+o Intake was fixed so that DateString will use the "formatn" (where n >= 
+  1) rules to parse the input and then the "format" rule to format it (the 
+  "format" rule is also used to parse the date if there are no "formatn" 
+  rules or they are not able to parse it). In order to retrieve the correctly 
+  formatted DateString value you need to use $group.foo.StringValue rather 
+  than $group.foo.Value (you can do this for all values, not just 
+  DateString). 
+o Intake now makes use of the the emptyValue attribute from the field 
+  elements when mapping from the group to the object when no value has been 
+  set. This makes it possible to clear values in an existing object that is 
+  being overwritten with Intake data using group.setProperties(obj) (or you 
+  can provide non-null values in your intake.xml file). Make sure you do not 
+  inadvertently include the primary key for the object in the intake group 
+  without actually setting it to the appropriate value (it shouldn't be in 
+  the group anyway). 
+o Fixed the intake DateString flexible rule so that it applies to the format 
+  rules and not just to the default locale format. 
+o DateFormatter now allows for a different date format to be provided via 
+  tool.dateTool.format in TurbineResources.properties. 
+o DirectResponseLayout is provided to allow direct writing to 
+  ServletOutputStream when VelocityOnlyLayout is the default. To use it you 
+  need to add data.declareDirectResponse(); and then 
+  data.setLayout("DirectResponseLayout"); to your action class. Thanks to 
+  Peter Courcoux for the code. 
+o Upgraded to commons-pool-1.1 
+o HttpUtils.httpDateFormat had the year set as 'yyyyy', should be 'yyyy' 
+  therefore setting expiry dates failed. 
+o TTWS60: HtmlPageAttributes setBackground sets the incorrect key name. 
+
+===============================================================================
+
+Issues, bugs, and feature requests for turbine-2
+should be submitted to the following issue tracking system:
+
+http://issues.apache.org/jira/browse/TRB
+
+
+Have fun!
+-The turbine-2 development team

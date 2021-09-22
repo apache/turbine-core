@@ -1,0 +1,148 @@
+body {
+	font-family: verdana, arial, sans-serif
+	font-size: 12px;
+}
+
+a {
+	font-size: 12px;
+}
+
+table.src {
+	font-size: 12px;
+	border-left: #dcdcdc 1px solid;
+	border-right: #dcdcdc 1px solid;
+	border-bottom: #dcdcdc 1px solid;
+	border-top: #dcdcdc 1px solid;
+}
+
+table.report {
+	font-size: 12px !important;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+tr.report {
+	border: #dcdcdc 1px solid;
+}
+
+table.percentGraph {
+	height: 10px;
+}
+
+th.report {
+    background: #F0F0F0;
+	font-size: inherit !important;
+	font-weight: bold;
+	border: #dcdcdc 1px solid;
+}
+
+td.reportText {
+	font-size: inherit !important;
+	border: #dcdcdc 1px solid;
+}
+
+td.reportValue {
+	font-size: inherit !important;
+	border: #dcdcdc 1px solid;
+	text-align: right;
+}
+
+td.spacer {
+	border-left: #FF0000 0px none;
+	border-right: #FF0000 0px none;
+	height: 30px;
+	padding-top: 15px;
+}
+
+td.percentCovered {
+    background: #00FF00;
+	empty-cells: show;
+}
+
+td.percentUnCovered {
+    background: #FF0000;
+	empty-cells: show;
+}
+
+td.numLine {
+    background: #F0F0F0;
+    border-right: #dcdcdc 1px solid;
+    padding-right: 3px;
+    text-align: right;
+}
+
+td.numLineCover {
+    background: #80ff80;
+    border-right: #dcdcdc 1px solid;
+    padding-right: 3px;
+    text-align: right;
+}
+
+td.nbHits {
+    background: #F0F0F0;
+    border-right: #dcdcdc 1px solid;
+    padding-right: 3px;
+    text-align: right;
+}
+
+td.nbHitsCovered {
+    background: #80ff80;
+    border-right: #dcdcdc 1px solid;
+    padding-right: 3px;
+    text-align: right;
+}
+
+td.nbHitsUncovered {
+    background: #FF8040;
+    border-right: #dcdcdc 1px solid;
+    padding-right: 3px;
+    text-align: right;
+}
+
+td.src {
+    width: 100%;
+}
+
+pre.src {
+    background: #ffffff;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+span.srcUncovered {
+    background: #FF8040;
+    border-right: #dcdcdc 1px solid;
+    padding-right: 3px;
+    text-align: right;
+}
+
+span.keyword {
+    color: #0000ff;
+}
+
+span.comment {
+    color: #008080;
+    font-style: italic;
+}
+
+span.string {
+    color: #000000;
+}
+
+span.title {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+span.title2 {
+    font-weight: bold;
+    font-size: 14px;
+}
+span.text {
+	font-size: 12px;
+}
+
+span.text_italic {
+	font-size: 12px;
+    font-style: italic;
+}
