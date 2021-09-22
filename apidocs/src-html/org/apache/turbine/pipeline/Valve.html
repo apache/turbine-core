@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package org.apache.turbine.pipeline;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span><a name="line.3"></a>
+<span class="sourceLineNo">004</span>/*<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Licensed to the Apache Software Foundation (ASF) under one<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * or more contributor license agreements.  See the NOTICE file<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * distributed with this work for additional information<a name="line.7"></a>
+<span class="sourceLineNo">008</span> * regarding copyright ownership.  The ASF licenses this file<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * to you under the Apache License, Version 2.0 (the<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * "License"); you may not use this file except in compliance<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * with the License.  You may obtain a copy of the License at<a name="line.11"></a>
+<span class="sourceLineNo">012</span> *<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.13"></a>
+<span class="sourceLineNo">014</span> *<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * Unless required by applicable law or agreed to in writing,<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * software distributed under the License is distributed on an<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * KIND, either express or implied.  See the License for the<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * specific language governing permissions and limitations<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * under the License.<a name="line.20"></a>
+<span class="sourceLineNo">021</span> */<a name="line.21"></a>
+<span class="sourceLineNo">022</span><a name="line.22"></a>
+<span class="sourceLineNo">023</span><a name="line.23"></a>
+<span class="sourceLineNo">024</span>import java.io.IOException;<a name="line.24"></a>
+<span class="sourceLineNo">025</span><a name="line.25"></a>
+<span class="sourceLineNo">026</span>import org.apache.turbine.util.TurbineException;<a name="line.26"></a>
+<span class="sourceLineNo">027</span><a name="line.27"></a>
+<span class="sourceLineNo">028</span>/**<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * &lt;p&gt;A &lt;b&gt;Valve&lt;/b&gt; is a request processing component.  A series of<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * Valves are generally associated with each other into a Pipeline.<a name="line.30"></a>
+<span class="sourceLineNo">031</span> * The detailed contract for a Valve is included in the description of<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * the &lt;code&gt;invoke()&lt;/code&gt; method below.&lt;/p&gt;<a name="line.32"></a>
+<span class="sourceLineNo">033</span> *<a name="line.33"></a>
+<span class="sourceLineNo">034</span> * &lt;b&gt;HISTORICAL NOTE&lt;/b&gt;:  The "Valve" name was assigned to this concept<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * because a valve is what you use in a real world pipeline to control and/or<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * modify flows through it.<a name="line.36"></a>
+<span class="sourceLineNo">037</span> *<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * @author Craig R. McClanahan<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * @author Gunnar Rjnning<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * @author Peter Donald<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * @author &lt;a href="mailto:dlr@finemaltcoding.com"&gt;Daniel Rall&lt;/a&gt;<a name="line.41"></a>
+<span class="sourceLineNo">042</span> *<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * @see #invoke(PipelineData, ValveContext)<a name="line.43"></a>
+<span class="sourceLineNo">044</span> */<a name="line.44"></a>
+<span class="sourceLineNo">045</span>@FunctionalInterface<a name="line.45"></a>
+<span class="sourceLineNo">046</span>public interface Valve<a name="line.46"></a>
+<span class="sourceLineNo">047</span>{<a name="line.47"></a>
+<span class="sourceLineNo">048</span>    /**<a name="line.48"></a>
+<span class="sourceLineNo">049</span>     * &lt;p&gt;Perform request processing as required by this Valve.&lt;/p&gt;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>     *<a name="line.50"></a>
+<span class="sourceLineNo">051</span>     * &lt;p&gt;An individual Valve &lt;b&gt;MAY&lt;/b&gt; perform the following actions, in<a name="line.51"></a>
+<span class="sourceLineNo">052</span>     * the specified order:&lt;/p&gt;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>     * &lt;ul&gt;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>     * &lt;li&gt;Examine and/or modify the properties of the specified Request and<a name="line.54"></a>
+<span class="sourceLineNo">055</span>     *     Response.<a name="line.55"></a>
+<span class="sourceLineNo">056</span>     * &lt;li&gt;Examine the properties of the specified Request, completely generate<a name="line.56"></a>
+<span class="sourceLineNo">057</span>     *     the corresponding Response, and return control to the caller.<a name="line.57"></a>
+<span class="sourceLineNo">058</span>     * &lt;li&gt;Examine the properties of the specified Request and Response, wrap<a name="line.58"></a>
+<span class="sourceLineNo">059</span>     *     either or both of these objects to supplement their functionality,<a name="line.59"></a>
+<span class="sourceLineNo">060</span>     *     and pass them on.<a name="line.60"></a>
+<span class="sourceLineNo">061</span>     * &lt;li&gt;If the corresponding Response was not generated (and control was not<a name="line.61"></a>
+<span class="sourceLineNo">062</span>     *     returned, call the next Valve in the pipeline (if there is one) by<a name="line.62"></a>
+<span class="sourceLineNo">063</span>     *     executing &lt;code&gt;context.invokeNext()&lt;/code&gt;.<a name="line.63"></a>
+<span class="sourceLineNo">064</span>     * &lt;li&gt;Examine, but not modify, the properties of the resulting Response<a name="line.64"></a>
+<span class="sourceLineNo">065</span>     *     (which was created by a subsequently invoked Valve via a<a name="line.65"></a>
+<span class="sourceLineNo">066</span>     *     call to &lt;code&gt;context.invokeNext()&lt;/code&gt;).<a name="line.66"></a>
+<span class="sourceLineNo">067</span>     * &lt;/ul&gt;<a name="line.67"></a>
+<span class="sourceLineNo">068</span>     *<a name="line.68"></a>
+<span class="sourceLineNo">069</span>     * &lt;p&gt;A Valve &lt;b&gt;MUST NOT&lt;/b&gt; do any of the following things:&lt;/p&gt;<a name="line.69"></a>
+<span class="sourceLineNo">070</span>     * &lt;ul&gt;<a name="line.70"></a>
+<span class="sourceLineNo">071</span>     * &lt;li&gt;Change request properties that have already been used to direct<a name="line.71"></a>
+<span class="sourceLineNo">072</span>     *     the flow of processing control for this request.<a name="line.72"></a>
+<span class="sourceLineNo">073</span>     * &lt;li&gt;Create a completed Response &lt;strong&gt;AND&lt;/strong&gt; pass this<a name="line.73"></a>
+<span class="sourceLineNo">074</span>     *     Request and Response on to the next Valve in the pipeline.<a name="line.74"></a>
+<span class="sourceLineNo">075</span>     * &lt;li&gt;Consume bytes from the input stream associated with the Request,<a name="line.75"></a>
+<span class="sourceLineNo">076</span>     *     unless it is completely generating the response, or wrapping the<a name="line.76"></a>
+<span class="sourceLineNo">077</span>     *     request before passing it on.<a name="line.77"></a>
+<span class="sourceLineNo">078</span>     * &lt;li&gt;Modify the HTTP headers included with the Response after the<a name="line.78"></a>
+<span class="sourceLineNo">079</span>     *     &lt;code&gt;invokeNext()&lt;/code&gt; method has returned.<a name="line.79"></a>
+<span class="sourceLineNo">080</span>     * &lt;li&gt;Perform any actions on the output stream associated with the<a name="line.80"></a>
+<span class="sourceLineNo">081</span>     *     specified Response after the &lt;code&gt;invokeNext()&lt;/code&gt; method has<a name="line.81"></a>
+<span class="sourceLineNo">082</span>     *     returned.<a name="line.82"></a>
+<span class="sourceLineNo">083</span>     * &lt;/ul&gt;<a name="line.83"></a>
+<span class="sourceLineNo">084</span>     *<a name="line.84"></a>
+<span class="sourceLineNo">085</span>     * @param pipelineData The run-time information, including the servlet<a name="line.85"></a>
+<span class="sourceLineNo">086</span>     * request and response we are processing.<a name="line.86"></a>
+<span class="sourceLineNo">087</span>     * @param context The valve context used to invoke the next valve<a name="line.87"></a>
+<span class="sourceLineNo">088</span>     *  in the current processing pipeline<a name="line.88"></a>
+<span class="sourceLineNo">089</span>     *<a name="line.89"></a>
+<span class="sourceLineNo">090</span>     * @throws IOException Thrown by a subsequent Valve.<a name="line.90"></a>
+<span class="sourceLineNo">091</span>     * @throws TurbineException Thrown by a subsequent Valve.<a name="line.91"></a>
+<span class="sourceLineNo">092</span>     */<a name="line.92"></a>
+<span class="sourceLineNo">093</span>    void invoke(PipelineData pipelineData, ValveContext context)<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        throws IOException, TurbineException;<a name="line.94"></a>
+<span class="sourceLineNo">095</span><a name="line.95"></a>
+<span class="sourceLineNo">096</span>    /**<a name="line.96"></a>
+<span class="sourceLineNo">097</span>     * Initialize the valve before using in a pipeline.<a name="line.97"></a>
+<span class="sourceLineNo">098</span>     * @throws Exception if initialization fails<a name="line.98"></a>
+<span class="sourceLineNo">099</span>     */<a name="line.99"></a>
+<span class="sourceLineNo">100</span>    default void initialize() throws Exception<a name="line.100"></a>
+<span class="sourceLineNo">101</span>    {<a name="line.101"></a>
+<span class="sourceLineNo">102</span>        // empty<a name="line.102"></a>
+<span class="sourceLineNo">103</span>    }<a name="line.103"></a>
+<span class="sourceLineNo">104</span>}<a name="line.104"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

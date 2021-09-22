@@ -1,0 +1,445 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package org.apache.turbine.modules;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/*<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * Licensed to the Apache Software Foundation (ASF) under one<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * or more contributor license agreements.  See the NOTICE file<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * distributed with this work for additional information<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * regarding copyright ownership.  The ASF licenses this file<a name="line.7"></a>
+<span class="sourceLineNo">008</span> * to you under the Apache License, Version 2.0 (the<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * "License"); you may not use this file except in compliance<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * with the License.  You may obtain a copy of the License at<a name="line.10"></a>
+<span class="sourceLineNo">011</span> *<a name="line.11"></a>
+<span class="sourceLineNo">012</span> *   http://www.apache.org/licenses/LICENSE-2.0<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * Unless required by applicable law or agreed to in writing,<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * software distributed under the License is distributed on an<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * KIND, either express or implied.  See the License for the<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * specific language governing permissions and limitations<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * under the License.<a name="line.19"></a>
+<span class="sourceLineNo">020</span> */<a name="line.20"></a>
+<span class="sourceLineNo">021</span><a name="line.21"></a>
+<span class="sourceLineNo">022</span>import java.lang.annotation.Annotation;<a name="line.22"></a>
+<span class="sourceLineNo">023</span>import java.lang.reflect.InvocationTargetException;<a name="line.23"></a>
+<span class="sourceLineNo">024</span>import java.lang.reflect.Method;<a name="line.24"></a>
+<span class="sourceLineNo">025</span>import java.util.Arrays;<a name="line.25"></a>
+<span class="sourceLineNo">026</span>import java.util.concurrent.ConcurrentHashMap;<a name="line.26"></a>
+<span class="sourceLineNo">027</span>import java.util.concurrent.ConcurrentMap;<a name="line.27"></a>
+<span class="sourceLineNo">028</span><a name="line.28"></a>
+<span class="sourceLineNo">029</span>import org.apache.commons.lang3.StringUtils;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>import org.apache.fulcrum.parser.ParameterParser;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>import org.apache.fulcrum.parser.ValueParser.URLCaseFolding;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>import org.apache.logging.log4j.LogManager;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>import org.apache.logging.log4j.Logger;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>import org.apache.turbine.Turbine;<a name="line.34"></a>
+<span class="sourceLineNo">035</span>import org.apache.turbine.TurbineConstants;<a name="line.35"></a>
+<span class="sourceLineNo">036</span>import org.apache.turbine.annotation.AnnotationProcessor;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>import org.apache.turbine.annotation.TurbineActionEvent;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>import org.apache.turbine.annotation.TurbineConfiguration;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>import org.apache.turbine.pipeline.PipelineData;<a name="line.39"></a>
+<span class="sourceLineNo">040</span><a name="line.40"></a>
+<span class="sourceLineNo">041</span>/**<a name="line.41"></a>
+<span class="sourceLineNo">042</span> * &lt;p&gt;<a name="line.42"></a>
+<span class="sourceLineNo">043</span> *<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * This is an alternative to the Action class that allows you to do<a name="line.44"></a>
+<span class="sourceLineNo">045</span> * event based actions. Essentially, you label all your submit buttons<a name="line.45"></a>
+<span class="sourceLineNo">046</span> * with the prefix of "eventSubmit_" and the suffix of "methodName".<a name="line.46"></a>
+<span class="sourceLineNo">047</span> * For example, "eventSubmit_doDelete". Then any class that subclasses<a name="line.47"></a>
+<span class="sourceLineNo">048</span> * this class will get its "doDelete(PipelineData data)" method executed.<a name="line.48"></a>
+<span class="sourceLineNo">049</span> * If for any reason, it was not able to execute the method, it will<a name="line.49"></a>
+<span class="sourceLineNo">050</span> * fall back to executing the doPerform() method which is required to<a name="line.50"></a>
+<span class="sourceLineNo">051</span> * be implemented.<a name="line.51"></a>
+<span class="sourceLineNo">052</span> *<a name="line.52"></a>
+<span class="sourceLineNo">053</span> * &lt;p&gt;<a name="line.53"></a>
+<span class="sourceLineNo">054</span> *<a name="line.54"></a>
+<span class="sourceLineNo">055</span> * Limitations:<a name="line.55"></a>
+<span class="sourceLineNo">056</span> *<a name="line.56"></a>
+<span class="sourceLineNo">057</span> * &lt;p&gt;<a name="line.57"></a>
+<span class="sourceLineNo">058</span> *<a name="line.58"></a>
+<span class="sourceLineNo">059</span> * Because ParameterParser makes all the key values lowercase, we have<a name="line.59"></a>
+<span class="sourceLineNo">060</span> * to do some work to format the string into a method name. For<a name="line.60"></a>
+<span class="sourceLineNo">061</span> * example, a button name eventSubmit_doDelete gets converted into<a name="line.61"></a>
+<span class="sourceLineNo">062</span> * eventsubmit_dodelete. Thus, we need to form some sort of naming<a name="line.62"></a>
+<span class="sourceLineNo">063</span> * convention so that dodelete can be turned into doDelete.<a name="line.63"></a>
+<span class="sourceLineNo">064</span> *<a name="line.64"></a>
+<span class="sourceLineNo">065</span> * &lt;p&gt;<a name="line.65"></a>
+<span class="sourceLineNo">066</span> *<a name="line.66"></a>
+<span class="sourceLineNo">067</span> * Thus, the convention is this:<a name="line.67"></a>
+<span class="sourceLineNo">068</span> *<a name="line.68"></a>
+<span class="sourceLineNo">069</span> * &lt;ul&gt;<a name="line.69"></a>
+<span class="sourceLineNo">070</span> * &lt;li&gt;The variable name MUST have the prefix "eventSubmit_".&lt;/li&gt;<a name="line.70"></a>
+<span class="sourceLineNo">071</span> * &lt;li&gt;The variable name after the prefix MUST begin with the letters<a name="line.71"></a>
+<span class="sourceLineNo">072</span> * "do".&lt;/li&gt;<a name="line.72"></a>
+<span class="sourceLineNo">073</span> * &lt;li&gt;The first letter after the "do" will be capitalized and the<a name="line.73"></a>
+<span class="sourceLineNo">074</span> * rest will be lowercase&lt;/li&gt;<a name="line.74"></a>
+<span class="sourceLineNo">075</span> * &lt;/ul&gt;<a name="line.75"></a>
+<span class="sourceLineNo">076</span> *<a name="line.76"></a>
+<span class="sourceLineNo">077</span> * If you follow these conventions, then you should be ok with your<a name="line.77"></a>
+<span class="sourceLineNo">078</span> * method naming in your Action class.<a name="line.78"></a>
+<span class="sourceLineNo">079</span> *<a name="line.79"></a>
+<span class="sourceLineNo">080</span> * @author &lt;a href="mailto:jon@latchkey.com"&gt;Jon S. Stevens &lt;/a&gt;<a name="line.80"></a>
+<span class="sourceLineNo">081</span> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;<a name="line.81"></a>
+<span class="sourceLineNo">082</span> * @author &lt;a href="quintonm@bellsouth.net"&gt;Quinton McCombs&lt;/a&gt;<a name="line.82"></a>
+<span class="sourceLineNo">083</span> * @author &lt;a href="mailto:peter@courcoux.biz"&gt;Peter Courcoux&lt;/a&gt;<a name="line.83"></a>
+<span class="sourceLineNo">084</span> * @version $Id: ActionEvent.java 1854786 2019-03-04 18:29:18Z tv $<a name="line.84"></a>
+<span class="sourceLineNo">085</span> */<a name="line.85"></a>
+<span class="sourceLineNo">086</span>public abstract class ActionEvent implements Action<a name="line.86"></a>
+<span class="sourceLineNo">087</span>{<a name="line.87"></a>
+<span class="sourceLineNo">088</span>        /** Logging */<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        protected Logger log = LogManager.getLogger(this.getClass());<a name="line.89"></a>
+<span class="sourceLineNo">090</span><a name="line.90"></a>
+<span class="sourceLineNo">091</span>        /** The name of the button to look for. */<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        protected static final String BUTTON = "eventSubmit_";<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        /** The length of the button to look for. */<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        protected static final int BUTTON_LENGTH = BUTTON.length();<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    /** The default method. */<a name="line.95"></a>
+<span class="sourceLineNo">096</span>    protected static final String DEFAULT_METHOD = "doPerform";<a name="line.96"></a>
+<span class="sourceLineNo">097</span>        /** The prefix of the method name. */<a name="line.97"></a>
+<span class="sourceLineNo">098</span>        protected static final String METHOD_NAME_PREFIX = "do";<a name="line.98"></a>
+<span class="sourceLineNo">099</span>        /** The length of the method name. */<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        protected static final int METHOD_NAME_LENGTH = METHOD_NAME_PREFIX.length();<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        /** The length of the button to look for. */<a name="line.101"></a>
+<span class="sourceLineNo">102</span>        protected static final int LENGTH = BUTTON.length();<a name="line.102"></a>
+<span class="sourceLineNo">103</span><a name="line.103"></a>
+<span class="sourceLineNo">104</span>        /**<a name="line.104"></a>
+<span class="sourceLineNo">105</span>         * If true, the eventSubmit_do&amp;lt;xxx&amp;gt; variable must contain<a name="line.105"></a>
+<span class="sourceLineNo">106</span>         * a not null value to be executed.<a name="line.106"></a>
+<span class="sourceLineNo">107</span>         */<a name="line.107"></a>
+<span class="sourceLineNo">108</span>    @TurbineConfiguration( TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_KEY )<a name="line.108"></a>
+<span class="sourceLineNo">109</span>        private boolean submitValueKey = TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_DEFAULT;<a name="line.109"></a>
+<span class="sourceLineNo">110</span><a name="line.110"></a>
+<span class="sourceLineNo">111</span>        /**<a name="line.111"></a>
+<span class="sourceLineNo">112</span>         * If true, then exceptions raised in eventSubmit_do&amp;lt;xxx&amp;gt; methods<a name="line.112"></a>
+<span class="sourceLineNo">113</span>         * as well as in doPerform methods are bubbled up to the Turbine<a name="line.113"></a>
+<span class="sourceLineNo">114</span>         * servlet's handleException method.<a name="line.114"></a>
+<span class="sourceLineNo">115</span>         */<a name="line.115"></a>
+<span class="sourceLineNo">116</span>    @TurbineConfiguration( TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP )<a name="line.116"></a>
+<span class="sourceLineNo">117</span>        protected boolean bubbleUpException = TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP_DEFAULT;<a name="line.117"></a>
+<span class="sourceLineNo">118</span><a name="line.118"></a>
+<span class="sourceLineNo">119</span>        /**<a name="line.119"></a>
+<span class="sourceLineNo">120</span>         * Cache for the methods to invoke<a name="line.120"></a>
+<span class="sourceLineNo">121</span>         */<a name="line.121"></a>
+<span class="sourceLineNo">122</span>        private ConcurrentMap&lt;String, Method&gt; methodCache = new ConcurrentHashMap&lt;String, Method&gt;();<a name="line.122"></a>
+<span class="sourceLineNo">123</span><a name="line.123"></a>
+<span class="sourceLineNo">124</span>        /**<a name="line.124"></a>
+<span class="sourceLineNo">125</span>         * Retrieve a method of the given name and signature. The value is cached.<a name="line.125"></a>
+<span class="sourceLineNo">126</span>         *<a name="line.126"></a>
+<span class="sourceLineNo">127</span>         * @param name the name of the method<a name="line.127"></a>
+<span class="sourceLineNo">128</span>         * @param signature an array of classes forming the signature of the method<a name="line.128"></a>
+<span class="sourceLineNo">129</span>         * @param pp ParameterParser for correct folding<a name="line.129"></a>
+<span class="sourceLineNo">130</span>         *<a name="line.130"></a>
+<span class="sourceLineNo">131</span>         * @return the method object<a name="line.131"></a>
+<span class="sourceLineNo">132</span>         * @throws NoSuchMethodException if the method does not exist<a name="line.132"></a>
+<span class="sourceLineNo">133</span>         */<a name="line.133"></a>
+<span class="sourceLineNo">134</span>        protected Method getMethod(String name, Class&lt;?&gt;[] signature, ParameterParser pp) throws NoSuchMethodException<a name="line.134"></a>
+<span class="sourceLineNo">135</span>        {<a name="line.135"></a>
+<span class="sourceLineNo">136</span>            StringBuilder cacheKey = new StringBuilder(name);<a name="line.136"></a>
+<span class="sourceLineNo">137</span>            for (Class&lt;?&gt; clazz : signature)<a name="line.137"></a>
+<span class="sourceLineNo">138</span>            {<a name="line.138"></a>
+<span class="sourceLineNo">139</span>                cacheKey.append(':').append(clazz.getCanonicalName());<a name="line.139"></a>
+<span class="sourceLineNo">140</span>            }<a name="line.140"></a>
+<span class="sourceLineNo">141</span><a name="line.141"></a>
+<span class="sourceLineNo">142</span>            Method method = this.methodCache.get(cacheKey.toString());<a name="line.142"></a>
+<span class="sourceLineNo">143</span><a name="line.143"></a>
+<span class="sourceLineNo">144</span>            if (method == null)<a name="line.144"></a>
+<span class="sourceLineNo">145</span>            {<a name="line.145"></a>
+<span class="sourceLineNo">146</span>                // Try annotations of public methods<a name="line.146"></a>
+<span class="sourceLineNo">147</span>                Method[] methods = getClass().getMethods();<a name="line.147"></a>
+<span class="sourceLineNo">148</span><a name="line.148"></a>
+<span class="sourceLineNo">149</span>        methodLoop:<a name="line.149"></a>
+<span class="sourceLineNo">150</span>                for (Method m : methods)<a name="line.150"></a>
+<span class="sourceLineNo">151</span>                {<a name="line.151"></a>
+<span class="sourceLineNo">152</span>                    Annotation[] annotations = AnnotationProcessor.getAnnotations(m);<a name="line.152"></a>
+<span class="sourceLineNo">153</span>                    for (Annotation a : annotations)<a name="line.153"></a>
+<span class="sourceLineNo">154</span>                    {<a name="line.154"></a>
+<span class="sourceLineNo">155</span>                    if (a instanceof TurbineActionEvent)<a name="line.155"></a>
+<span class="sourceLineNo">156</span>                    {<a name="line.156"></a>
+<span class="sourceLineNo">157</span>                        TurbineActionEvent tae = (TurbineActionEvent) a;<a name="line.157"></a>
+<span class="sourceLineNo">158</span>                        if (name.equals(pp.convert(tae.value()))<a name="line.158"></a>
+<span class="sourceLineNo">159</span>                            &amp;&amp; Arrays.equals(signature, m.getParameterTypes()))<a name="line.159"></a>
+<span class="sourceLineNo">160</span>                        {<a name="line.160"></a>
+<span class="sourceLineNo">161</span>                            method = m;<a name="line.161"></a>
+<span class="sourceLineNo">162</span>                            break methodLoop;<a name="line.162"></a>
+<span class="sourceLineNo">163</span>                        }<a name="line.163"></a>
+<span class="sourceLineNo">164</span>                    }<a name="line.164"></a>
+<span class="sourceLineNo">165</span>                    }<a name="line.165"></a>
+<span class="sourceLineNo">166</span>                }<a name="line.166"></a>
+<span class="sourceLineNo">167</span><a name="line.167"></a>
+<span class="sourceLineNo">168</span>                // Try legacy mode<a name="line.168"></a>
+<span class="sourceLineNo">169</span>                if (method == null)<a name="line.169"></a>
+<span class="sourceLineNo">170</span>                {<a name="line.170"></a>
+<span class="sourceLineNo">171</span>                String tmp = name.toLowerCase().substring(METHOD_NAME_LENGTH);<a name="line.171"></a>
+<span class="sourceLineNo">172</span>                    method = getClass().getMethod(METHOD_NAME_PREFIX + StringUtils.capitalize(tmp), signature);<a name="line.172"></a>
+<span class="sourceLineNo">173</span>                }<a name="line.173"></a>
+<span class="sourceLineNo">174</span><a name="line.174"></a>
+<span class="sourceLineNo">175</span>                Method oldMethod = this.methodCache.putIfAbsent(cacheKey.toString(), method);<a name="line.175"></a>
+<span class="sourceLineNo">176</span>                if (oldMethod != null)<a name="line.176"></a>
+<span class="sourceLineNo">177</span>                {<a name="line.177"></a>
+<span class="sourceLineNo">178</span>                    method = oldMethod;<a name="line.178"></a>
+<span class="sourceLineNo">179</span>                }<a name="line.179"></a>
+<span class="sourceLineNo">180</span>            }<a name="line.180"></a>
+<span class="sourceLineNo">181</span><a name="line.181"></a>
+<span class="sourceLineNo">182</span>            return method;<a name="line.182"></a>
+<span class="sourceLineNo">183</span>        }<a name="line.183"></a>
+<span class="sourceLineNo">184</span><a name="line.184"></a>
+<span class="sourceLineNo">185</span>        /**<a name="line.185"></a>
+<span class="sourceLineNo">186</span>         * This overrides the default Action.doPerform() to execute the<a name="line.186"></a>
+<span class="sourceLineNo">187</span>         * doEvent() method. If that fails, then it will execute the<a name="line.187"></a>
+<span class="sourceLineNo">188</span>         * doPerform() method instead.<a name="line.188"></a>
+<span class="sourceLineNo">189</span>         *<a name="line.189"></a>
+<span class="sourceLineNo">190</span>         * @param pipelineData Turbine information.<a name="line.190"></a>
+<span class="sourceLineNo">191</span>         * @throws Exception a generic exception.<a name="line.191"></a>
+<span class="sourceLineNo">192</span>         */<a name="line.192"></a>
+<span class="sourceLineNo">193</span>        @Override<a name="line.193"></a>
+<span class="sourceLineNo">194</span>    public void doPerform(PipelineData pipelineData)<a name="line.194"></a>
+<span class="sourceLineNo">195</span>                        throws Exception<a name="line.195"></a>
+<span class="sourceLineNo">196</span>        {<a name="line.196"></a>
+<span class="sourceLineNo">197</span>            ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);<a name="line.197"></a>
+<span class="sourceLineNo">198</span>                executeEvents(pp, new Class&lt;?&gt;[]{ PipelineData.class }, new Object[]{ pipelineData });<a name="line.198"></a>
+<span class="sourceLineNo">199</span>        }<a name="line.199"></a>
+<span class="sourceLineNo">200</span><a name="line.200"></a>
+<span class="sourceLineNo">201</span>        /**<a name="line.201"></a>
+<span class="sourceLineNo">202</span>         * This method should be called to execute the event based system.<a name="line.202"></a>
+<span class="sourceLineNo">203</span>         *<a name="line.203"></a>
+<span class="sourceLineNo">204</span>         * @param pp the parameter parser<a name="line.204"></a>
+<span class="sourceLineNo">205</span>         * @param signature the signature of the method to call<a name="line.205"></a>
+<span class="sourceLineNo">206</span>         * @param parameters the parameters for the method to call<a name="line.206"></a>
+<span class="sourceLineNo">207</span>         *<a name="line.207"></a>
+<span class="sourceLineNo">208</span>         * @throws Exception a generic exception.<a name="line.208"></a>
+<span class="sourceLineNo">209</span>         */<a name="line.209"></a>
+<span class="sourceLineNo">210</span>        protected void executeEvents(ParameterParser pp, Class&lt;?&gt;[] signature, Object[] parameters)<a name="line.210"></a>
+<span class="sourceLineNo">211</span>                        throws Exception<a name="line.211"></a>
+<span class="sourceLineNo">212</span>        {<a name="line.212"></a>
+<span class="sourceLineNo">213</span>                // Name of the button.<a name="line.213"></a>
+<span class="sourceLineNo">214</span>                String theButton = null;<a name="line.214"></a>
+<span class="sourceLineNo">215</span><a name="line.215"></a>
+<span class="sourceLineNo">216</span>                String button = pp.convert(BUTTON);<a name="line.216"></a>
+<span class="sourceLineNo">217</span>                String key = null;<a name="line.217"></a>
+<span class="sourceLineNo">218</span><a name="line.218"></a>
+<span class="sourceLineNo">219</span>                // Loop through and find the button.<a name="line.219"></a>
+<span class="sourceLineNo">220</span>                for (String k : pp)<a name="line.220"></a>
+<span class="sourceLineNo">221</span>                {<a name="line.221"></a>
+<span class="sourceLineNo">222</span>                        key = k;<a name="line.222"></a>
+<span class="sourceLineNo">223</span>                        if (key.startsWith(button))<a name="line.223"></a>
+<span class="sourceLineNo">224</span>                        {<a name="line.224"></a>
+<span class="sourceLineNo">225</span>                                if (considerKey(key, pp))<a name="line.225"></a>
+<span class="sourceLineNo">226</span>                                {<a name="line.226"></a>
+<span class="sourceLineNo">227</span>                                        theButton = key;<a name="line.227"></a>
+<span class="sourceLineNo">228</span>                                        break;<a name="line.228"></a>
+<span class="sourceLineNo">229</span>                                }<a name="line.229"></a>
+<span class="sourceLineNo">230</span>                        }<a name="line.230"></a>
+<span class="sourceLineNo">231</span>                }<a name="line.231"></a>
+<span class="sourceLineNo">232</span><a name="line.232"></a>
+<span class="sourceLineNo">233</span>                if (theButton == null)<a name="line.233"></a>
+<span class="sourceLineNo">234</span>                {<a name="line.234"></a>
+<span class="sourceLineNo">235</span>                    theButton = BUTTON + DEFAULT_METHOD;<a name="line.235"></a>
+<span class="sourceLineNo">236</span>                    key = null;<a name="line.236"></a>
+<span class="sourceLineNo">237</span>                }<a name="line.237"></a>
+<span class="sourceLineNo">238</span><a name="line.238"></a>
+<span class="sourceLineNo">239</span>                theButton = formatString(theButton, pp);<a name="line.239"></a>
+<span class="sourceLineNo">240</span>                Method method = null;<a name="line.240"></a>
+<span class="sourceLineNo">241</span><a name="line.241"></a>
+<span class="sourceLineNo">242</span>        try<a name="line.242"></a>
+<span class="sourceLineNo">243</span>        {<a name="line.243"></a>
+<span class="sourceLineNo">244</span>            method = getMethod(theButton, signature, pp);<a name="line.244"></a>
+<span class="sourceLineNo">245</span>        }<a name="line.245"></a>
+<span class="sourceLineNo">246</span>        catch (NoSuchMethodException e)<a name="line.246"></a>
+<span class="sourceLineNo">247</span>        {<a name="line.247"></a>
+<span class="sourceLineNo">248</span>            method = getMethod(DEFAULT_METHOD, signature, pp);<a name="line.248"></a>
+<span class="sourceLineNo">249</span>        }<a name="line.249"></a>
+<span class="sourceLineNo">250</span>        finally<a name="line.250"></a>
+<span class="sourceLineNo">251</span>        {<a name="line.251"></a>
+<span class="sourceLineNo">252</span>            if (key != null)<a name="line.252"></a>
+<span class="sourceLineNo">253</span>            {<a name="line.253"></a>
+<span class="sourceLineNo">254</span>                pp.remove(key);<a name="line.254"></a>
+<span class="sourceLineNo">255</span>            }<a name="line.255"></a>
+<span class="sourceLineNo">256</span>        }<a name="line.256"></a>
+<span class="sourceLineNo">257</span><a name="line.257"></a>
+<span class="sourceLineNo">258</span>                try<a name="line.258"></a>
+<span class="sourceLineNo">259</span>                {<a name="line.259"></a>
+<span class="sourceLineNo">260</span>                        log.debug("Invoking {}", method);<a name="line.260"></a>
+<span class="sourceLineNo">261</span><a name="line.261"></a>
+<span class="sourceLineNo">262</span>                        method.invoke(this, parameters);<a name="line.262"></a>
+<span class="sourceLineNo">263</span>                }<a name="line.263"></a>
+<span class="sourceLineNo">264</span>                catch (InvocationTargetException ite)<a name="line.264"></a>
+<span class="sourceLineNo">265</span>                {<a name="line.265"></a>
+<span class="sourceLineNo">266</span>                        Throwable t = ite.getTargetException();<a name="line.266"></a>
+<span class="sourceLineNo">267</span>                        if (bubbleUpException)<a name="line.267"></a>
+<span class="sourceLineNo">268</span>                        {<a name="line.268"></a>
+<span class="sourceLineNo">269</span>                if (t instanceof Exception)<a name="line.269"></a>
+<span class="sourceLineNo">270</span>                {<a name="line.270"></a>
+<span class="sourceLineNo">271</span>                    throw (Exception) t;<a name="line.271"></a>
+<span class="sourceLineNo">272</span>                }<a name="line.272"></a>
+<span class="sourceLineNo">273</span>                else<a name="line.273"></a>
+<span class="sourceLineNo">274</span>                {<a name="line.274"></a>
+<span class="sourceLineNo">275</span>                    throw ite;<a name="line.275"></a>
+<span class="sourceLineNo">276</span>                }<a name="line.276"></a>
+<span class="sourceLineNo">277</span>                        }<a name="line.277"></a>
+<span class="sourceLineNo">278</span>                        else<a name="line.278"></a>
+<span class="sourceLineNo">279</span>                        {<a name="line.279"></a>
+<span class="sourceLineNo">280</span>                            log.error("Invokation of {}", method, t);<a name="line.280"></a>
+<span class="sourceLineNo">281</span>                        }<a name="line.281"></a>
+<span class="sourceLineNo">282</span>                }<a name="line.282"></a>
+<span class="sourceLineNo">283</span>        }<a name="line.283"></a>
+<span class="sourceLineNo">284</span><a name="line.284"></a>
+<span class="sourceLineNo">285</span>        /**<a name="line.285"></a>
+<span class="sourceLineNo">286</span>         * This method does the conversion of the lowercase method name<a name="line.286"></a>
+<span class="sourceLineNo">287</span>         * into the proper case.<a name="line.287"></a>
+<span class="sourceLineNo">288</span>         *<a name="line.288"></a>
+<span class="sourceLineNo">289</span>         * @param input The unconverted method name.<a name="line.289"></a>
+<span class="sourceLineNo">290</span>         * @param pp The parameter parser (for correct folding)<a name="line.290"></a>
+<span class="sourceLineNo">291</span>         * @return A string with the method name in the proper case.<a name="line.291"></a>
+<span class="sourceLineNo">292</span>         */<a name="line.292"></a>
+<span class="sourceLineNo">293</span>        protected String formatString(String input, ParameterParser pp)<a name="line.293"></a>
+<span class="sourceLineNo">294</span>        {<a name="line.294"></a>
+<span class="sourceLineNo">295</span>                String tmp = input;<a name="line.295"></a>
+<span class="sourceLineNo">296</span><a name="line.296"></a>
+<span class="sourceLineNo">297</span>                if (StringUtils.isNotEmpty(input))<a name="line.297"></a>
+<span class="sourceLineNo">298</span>                {<a name="line.298"></a>
+<span class="sourceLineNo">299</span>                        tmp = input.toLowerCase();<a name="line.299"></a>
+<span class="sourceLineNo">300</span><a name="line.300"></a>
+<span class="sourceLineNo">301</span>                        // Chop off suffixes (for image type)<a name="line.301"></a>
+<span class="sourceLineNo">302</span>                        String methodName = (tmp.endsWith(".x") || tmp.endsWith(".y"))<a name="line.302"></a>
+<span class="sourceLineNo">303</span>                                        ? input.substring(0, input.length() - 2)<a name="line.303"></a>
+<span class="sourceLineNo">304</span>                                        : input;<a name="line.304"></a>
+<span class="sourceLineNo">305</span><a name="line.305"></a>
+<span class="sourceLineNo">306</span>                        if (pp.getUrlFolding() == URLCaseFolding.NONE)<a name="line.306"></a>
+<span class="sourceLineNo">307</span>                        {<a name="line.307"></a>
+<span class="sourceLineNo">308</span>                tmp = methodName.substring(BUTTON_LENGTH);<a name="line.308"></a>
+<span class="sourceLineNo">309</span>                        }<a name="line.309"></a>
+<span class="sourceLineNo">310</span>                        else<a name="line.310"></a>
+<span class="sourceLineNo">311</span>                        {<a name="line.311"></a>
+<span class="sourceLineNo">312</span>                tmp = methodName.toLowerCase().substring(BUTTON_LENGTH);<a name="line.312"></a>
+<span class="sourceLineNo">313</span>                        }<a name="line.313"></a>
+<span class="sourceLineNo">314</span>                }<a name="line.314"></a>
+<span class="sourceLineNo">315</span><a name="line.315"></a>
+<span class="sourceLineNo">316</span>                return tmp;<a name="line.316"></a>
+<span class="sourceLineNo">317</span>        }<a name="line.317"></a>
+<span class="sourceLineNo">318</span><a name="line.318"></a>
+<span class="sourceLineNo">319</span>        /**<a name="line.319"></a>
+<span class="sourceLineNo">320</span>         * Checks whether the selected key really is a valid event.<a name="line.320"></a>
+<span class="sourceLineNo">321</span>         *<a name="line.321"></a>
+<span class="sourceLineNo">322</span>         * @param key The selected key<a name="line.322"></a>
+<span class="sourceLineNo">323</span>         * @param pp The parameter parser to look for the key value<a name="line.323"></a>
+<span class="sourceLineNo">324</span>         *<a name="line.324"></a>
+<span class="sourceLineNo">325</span>         * @return true if this key is really an ActionEvent Key<a name="line.325"></a>
+<span class="sourceLineNo">326</span>         */<a name="line.326"></a>
+<span class="sourceLineNo">327</span>        protected boolean considerKey(String key, ParameterParser pp)<a name="line.327"></a>
+<span class="sourceLineNo">328</span>        {<a name="line.328"></a>
+<span class="sourceLineNo">329</span>                if (!submitValueKey)<a name="line.329"></a>
+<span class="sourceLineNo">330</span>                {<a name="line.330"></a>
+<span class="sourceLineNo">331</span>                        log.debug("No Value required, accepting {}", key);<a name="line.331"></a>
+<span class="sourceLineNo">332</span>                        return true;<a name="line.332"></a>
+<span class="sourceLineNo">333</span>                }<a name="line.333"></a>
+<span class="sourceLineNo">334</span>                else<a name="line.334"></a>
+<span class="sourceLineNo">335</span>                {<a name="line.335"></a>
+<span class="sourceLineNo">336</span>                        // If the action.eventsubmit.needsvalue key is true,<a name="line.336"></a>
+<span class="sourceLineNo">337</span>                        // events with a "0" or empty value are ignored.<a name="line.337"></a>
+<span class="sourceLineNo">338</span>                        // This can be used if you have multiple eventSubmit_do&amp;lt;xxx&amp;gt;<a name="line.338"></a>
+<span class="sourceLineNo">339</span>                        // fields in your form which are selected by client side code,<a name="line.339"></a>
+<span class="sourceLineNo">340</span>                        // e.g. JavaScript.<a name="line.340"></a>
+<span class="sourceLineNo">341</span>                        //<a name="line.341"></a>
+<span class="sourceLineNo">342</span>                        // If this key is unset or missing, nothing changes for the<a name="line.342"></a>
+<span class="sourceLineNo">343</span>                        // current behavior.<a name="line.343"></a>
+<span class="sourceLineNo">344</span>                        //<a name="line.344"></a>
+<span class="sourceLineNo">345</span>                        String keyValue = pp.getString(key);<a name="line.345"></a>
+<span class="sourceLineNo">346</span>                        log.debug("Key Value is {}", keyValue);<a name="line.346"></a>
+<span class="sourceLineNo">347</span>                        if (StringUtils.isEmpty(keyValue))<a name="line.347"></a>
+<span class="sourceLineNo">348</span>                        {<a name="line.348"></a>
+<span class="sourceLineNo">349</span>                                log.debug("Key is empty, rejecting {}", key);<a name="line.349"></a>
+<span class="sourceLineNo">350</span>                                return false;<a name="line.350"></a>
+<span class="sourceLineNo">351</span>                        }<a name="line.351"></a>
+<span class="sourceLineNo">352</span><a name="line.352"></a>
+<span class="sourceLineNo">353</span>                        try<a name="line.353"></a>
+<span class="sourceLineNo">354</span>                        {<a name="line.354"></a>
+<span class="sourceLineNo">355</span>                                if (Integer.parseInt(keyValue) != 0)<a name="line.355"></a>
+<span class="sourceLineNo">356</span>                                {<a name="line.356"></a>
+<span class="sourceLineNo">357</span>                                        log.debug("Integer != 0, accepting {}", key);<a name="line.357"></a>
+<span class="sourceLineNo">358</span>                                        return true;<a name="line.358"></a>
+<span class="sourceLineNo">359</span>                                }<a name="line.359"></a>
+<span class="sourceLineNo">360</span>                        }<a name="line.360"></a>
+<span class="sourceLineNo">361</span>                        catch (NumberFormatException nfe)<a name="line.361"></a>
+<span class="sourceLineNo">362</span>                        {<a name="line.362"></a>
+<span class="sourceLineNo">363</span>                                // Not a number. So it might be a<a name="line.363"></a>
+<span class="sourceLineNo">364</span>                                // normal Key like "continue" or "exit". Accept<a name="line.364"></a>
+<span class="sourceLineNo">365</span>                                // it.<a name="line.365"></a>
+<span class="sourceLineNo">366</span>                                log.debug("Not a number, accepting " + key);<a name="line.366"></a>
+<span class="sourceLineNo">367</span>                                return true;<a name="line.367"></a>
+<span class="sourceLineNo">368</span>                        }<a name="line.368"></a>
+<span class="sourceLineNo">369</span>                }<a name="line.369"></a>
+<span class="sourceLineNo">370</span>                log.debug("Rejecting {}", key);<a name="line.370"></a>
+<span class="sourceLineNo">371</span>                return false;<a name="line.371"></a>
+<span class="sourceLineNo">372</span>        }<a name="line.372"></a>
+<span class="sourceLineNo">373</span>}<a name="line.373"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
