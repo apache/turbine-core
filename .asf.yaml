@@ -17,4 +17,4 @@
 
 publish:
   whoami: asf-site
-  subdir: turbine/turbine-2.3.3
+  subdir: turbine/turbine-2-3-3
