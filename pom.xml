@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
-    <version>9-SNAPSHOT</version>
+    <version>9</version>
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
@@ -1297,12 +1297,13 @@
     <turbine.site.path>turbine-core</turbine.site.path>
     <fulcrum.intake>2.0.0</fulcrum.intake>
     <fulcrum.parser>2.0.1</fulcrum.parser>
-    <fulcrum.security>2.0.1-SNAPSHOT</fulcrum.security>
+    <!--fulcrum.securityafter release change to 2.1.0 -->
+     <fulcrum.security>2.0.1-SNAPSHOT</fulcrum.security>
     <fulcrum.yaafi>1.0.8</fulcrum.yaafi>
     <torque.version>5.0</torque.version>
-    <jackson2.version>2.12.3</jackson2.version>
+    <jackson2.version>2.12.5</jackson2.version>
     <doclint>none</doclint>
-    <docker.testcontainers.version>1.15.3</docker.testcontainers.version>
+    <docker.testcontainers.version>1.16.0</docker.testcontainers.version>
     <jacoco.skip>true</jacoco.skip>
     <argLine></argLine>
   </properties>
