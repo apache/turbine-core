@@ -24,7 +24,7 @@
   </properties>
 
   <body>
-     <release version="5.1" date="in Subversion">
+     <release version="5.1" date="in Git">
         <action type="update" dev="painter">
         Updated dependencies: yauaa to 5.23, commons-lang3 to 3.12, jython-standalone to 2.7.2
         Update turbine-parent 8 (released)
