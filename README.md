@@ -27,6 +27,24 @@ information about Maven online at http://maven.apache.org/ .
 Once Maven has been installed, just type 'mvn package'. The default behavior 
 is to compile, run the unit tests, and build the jar. 
 
+
+### Docker Testcontainer (optional)
+
+To allow a simulation of an integrated environment you could start dockerized tests (with tag docker) 
+with the *docker-testcontainer* profile.
+
+    mvn clean test -Pdocker-testcontainer.
+    
+This will initiate a start of an mysql database and an cleanup after tests are completed.
+The currently used mapped ort is saved into the file 
+    conf/test/docker-managertorque.usersettings.properties
+
+Find more about Docker-Testcontainer [here](https://www.testcontainers.org/). 
+If you want to get one step further check out the Turbine-Archetype [here](https://github.com/apache/turbine-archetypes). 
+This allows you use an Turbine Maven archetype in a hosted or dockerized environment.
+
+### Site Building
+
 Some other useful goals:
 
     mvn site   - generate the site documention
@@ -37,7 +55,13 @@ Some other useful goals:
     
 Activating Maven profile apache-release is not required, und may require a signing process (you need a gpg key).
 
+
 * deploy site
+    
+    Either check out the branch asf-ste and copy /replace files from target/site to the *root*, add and commit. 
+    This will trigger (thanks to the .asf.yaml configuration) an update to the distribution site.
+    
+    Or run:
 
     mvn clean site scm-publish:publish-scm -Papache-release    
     

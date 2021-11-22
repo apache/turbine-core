@@ -9,3 +9,5 @@ logs
 .idea
 .settings
 *.ser
+
+*torque.usersettings.properties
