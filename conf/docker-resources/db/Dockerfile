@@ -1,14 +1,14 @@
 # no multi-stage 
 # mariadb use docker-entrypoint 
 
-FROM mysql:8.0.20
+FROM mysql:8.0.27
 
 # copy from path where dockerfile is
 COPY ./mysql/initdb.d /docker-entrypoint-initdb.d
 
-
 # required, to create
 #ENV DB_CONTEXT ${DB_CONTEXT}
+
 ENV MYSQL_DATABASE ${MYSQL_DATABASE} 
 ENV MYSQL_USER=${MYSQL_USER} 
 ENV MYSQL_PASSWORD=${MYSQL_PASSWORD} 

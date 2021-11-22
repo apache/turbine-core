@@ -75,7 +75,7 @@
             Changes to this form of documentation should be in the form of patches.  To submit
             them, create a new issue in the
             <a href="https://issues.apache.org/jira/browse/TRB">issue tracking system</a>
-            and attach your patch(es).
+            and attach your patch(es) or open in github an Pull Request (PR).
         </li>
     </ul>
     The documentation is probably the easiest area for anyone to contribute in.  If you are

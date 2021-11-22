@@ -5,6 +5,9 @@ import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 import java.io.File;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -70,8 +73,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Tag("docker")
 class BuildContainerWithDockerfileTest {
 
-
-   public static final String DOCKERFILE = "conf/docker-resources/db/Dockerfile";
+   public static final Path RESOURCE_PATH =
+           FileSystems.getDefault().getPath(".").resolve("conf/docker-resources/db/");
 
    private static Logger log = LogManager.getLogger();
 
@@ -82,17 +85,9 @@ class BuildContainerWithDockerfileTest {
    Connection connection;
 
    @Container
-   //@ClassRule
    public static GenericContainer MY_SQL_CONTAINER =   new GenericContainer<>(
            new ImageFromDockerfile()
-//           .withFileFromPath(
-//               ".",
-//               new File("./conf/docker-resources/db/mysql/initdb.d").toPath())
-//           .withDockerfileFromBuilder(
-//                builder -> builder.from( "mysql:5.7.26" )
-//                .add( "data.sql","/docker-entrypoint-initdb.d" )
-//            )
-            .withDockerfile(new File(DOCKERFILE).toPath())
+            .withFileFromPath(".", RESOURCE_PATH)
         ).withExposedPorts( SERVICE_PORT ) //.withStartupAttempts( 2 )
          .withEnv(  "MYSQL_DATABASE", DATABASE_NAME )
          .withEnv( "MYSQL_USER", "userdb"  )

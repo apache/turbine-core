@@ -426,7 +426,7 @@ public class DefaultUserImpl implements User
         {
             setLastAccessDate();
         }
-        return lastAccessDate;
+        return Date.from( lastAccessDate.toInstant()); //immutable
     }
 
     /**
