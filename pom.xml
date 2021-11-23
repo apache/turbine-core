@@ -26,7 +26,7 @@
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
-  <version>5.1-SNAPSHOT</version>
+  <version>5.1</version>
   <description>Turbine is a servlet based framework that allows experienced Java
     developers to quickly build secure web applications. Parts of Turbine
     can also be used independently of the web portion of Turbine as
@@ -484,7 +484,7 @@
     <connection>scm:git:https://gitbox.apache.org/repos/asf/turbine-core.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/turbine-core.git</developerConnection>    
     <url>https://github.com/apache/${turbine.site.path}/tree/${project.scm.tag}</url>
-    <tag>HEAD</tag>
+    <tag>turbine-5.1-candidate</tag>
   </scm>
 
   
@@ -1303,7 +1303,7 @@
     <doclint>none</doclint>
     <docker.testcontainers.version>1.16.2</docker.testcontainers.version>
     <jacoco.skip>true</jacoco.skip>
-    <argLine></argLine>
+    <argLine />
   </properties>
 
 </project>
