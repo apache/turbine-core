@@ -1103,7 +1103,7 @@
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-testcontainer</artifactId>
-      <version>1.0.9</version>
+      <version>1.0.10-SNAPSHOT</version>
       <scope>test</scope>
     </dependency> 
     <dependency>
@@ -1297,7 +1297,7 @@
     <fulcrum.parser>2.0.1</fulcrum.parser>
     <!--fulcrum.securityafter release change to 2.1.0 -->
      <fulcrum.security>2.1.0</fulcrum.security>
-    <fulcrum.yaafi>1.0.8</fulcrum.yaafi>
+    <fulcrum.yaafi>1.0.9-SNAPSHOT</fulcrum.yaafi>
     <torque.version>5.0</torque.version>
     <jackson2.version>2.13.0</jackson2.version>
     <doclint>none</doclint>
