@@ -465,7 +465,7 @@ public class Turbine extends HttpServlet
                                         .setFileName(confFile)
                                         .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
                                         .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath.getCanonicalPath(), false)));
-                // meta configuration : this may contain any commons configuration: system<>, jndi, env
+                // meta configuration: this may contain any commons configuration: system<>, jndi, env
                 configuration = propertiesBuilder.getConfiguration();
                 break;
             case JSON:

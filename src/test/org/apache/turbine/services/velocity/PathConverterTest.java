@@ -84,18 +84,18 @@ public class PathConverterTest
 
         String test1 = (String) ve.getProperty("test1.resource.loader.path");
         assertNotNull("No Test1 Property found", test1);
-        assertEquals("Test1 Path translation failed", rootPath
-                +File.separator+"relative"+File.separator+"path" , test1);
+        assertEquals("Test1 Path translation failed",
+                String.join(File.separator, rootPath, "relative", "path"), test1);
 
         String test2 = (String) ve.getProperty("test2.resource.loader.path");
         assertNotNull("No Test2 Property found", test2);
-        assertEquals("Test2 Path translation failed", rootPath
-                +File.separator+"absolute"+File.separator+"path" , test2);
+        assertEquals("Test2 Path translation failed",
+                String.join(File.separator, rootPath, "absolute", "path"), test2);
 
         String test3 = (String) ve.getProperty("test3.resource.loader.path");
         assertNotNull("No Test3 Property found", test3);
-        assertEquals("Test3 Path translation failed", rootPath
-                +File.separator+"jar-file.jar!/", test3);
+        assertEquals("Test3 Path translation failed",
+                rootPath +File.separator+"jar-file.jar!/", test3);
 
         String test4 = (String) ve.getProperty("test4.resource.loader.path");
         assertNotNull("No Test4 Property found", test4);
@@ -113,9 +113,8 @@ public class PathConverterTest
 
         String test7 = (String) ve.getProperty("test7.resource.loader.path");
         assertNotNull("No Test7 Property found", test7);
-        assertEquals("Test7 Path translation failed", rootPath
-                +File.separator+"file"+File.separator
-                +"system"+File.separator+"reference" , test7);
+        assertEquals("Test7 Path translation failed",
+                String.join(File.separator, rootPath, "file", "system", "reference"), test7);
 
         String test8 = (String) ve.getProperty("test8.resource.loader.path");
         assertNotNull("No Test8 Property found", test8);

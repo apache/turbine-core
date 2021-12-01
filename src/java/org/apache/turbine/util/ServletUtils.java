@@ -24,6 +24,7 @@ import java.io.File;
 
 
 import java.util.StringTokenizer;
+import java.util.stream.Stream;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -66,8 +67,7 @@ public class ServletUtils
         final String expandedText;
 
         // attempt to make it relative
-        if (!text.startsWith("/") && !text.startsWith("./")
-                && !text.startsWith("\\") && !text.startsWith(".\\"))
+        if (Stream.of("/", "./", "\\", ".\\").noneMatch(text::startsWith))
         {
             StringBuilder sb = new StringBuilder();
             sb.append("./");

@@ -187,6 +187,6 @@ public class JobQueue<J extends JobEntry>
             return time1.compareTo(time2);
         };
 
-        Collections.sort(queue, aComparator);
+        queue.sort(aComparator);
     }
 }

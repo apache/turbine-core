@@ -337,13 +337,8 @@ public abstract class BaseServiceBroker implements ServiceBroker
     public Iterator<String> getServiceNames(String prefix)
     {
         Set<String> keys = new LinkedHashSet<>(mapping.keySet());
-        for(Iterator<String> key = keys.iterator(); key.hasNext();)
-        {
-            if (!key.next().startsWith(prefix))
-            {
-                key.remove();
-            }
-        }
+
+        keys.removeIf(key -> !key.startsWith(prefix));
 
         return keys.iterator();
     }
@@ -508,9 +503,9 @@ public abstract class BaseServiceBroker implements ServiceBroker
             reverseServicesList.add(0, serviceName);
         }
 
-        for (Iterator<String> serviceNames = reverseServicesList.iterator(); serviceNames.hasNext();)
+        for (String s : reverseServicesList)
         {
-            serviceName = serviceNames.next();
+            serviceName = s;
             log.info("Shutting down service: {}", serviceName);
             shutdownService(serviceName);
         }

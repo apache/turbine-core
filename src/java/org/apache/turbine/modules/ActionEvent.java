@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.fulcrum.parser.ParameterParser;
@@ -133,13 +134,12 @@ public abstract class ActionEvent implements Action
 	 */
 	protected Method getMethod(String name, Class<?>[] signature, ParameterParser pp) throws NoSuchMethodException
 	{
-	    StringBuilder cacheKey = new StringBuilder(name);
-	    for (Class<?> clazz : signature)
-	    {
-	        cacheKey.append(':').append(clazz.getCanonicalName());
-	    }
+	    String cacheKey =
+				Arrays.stream(signature)
+						.map(clazz -> ':' + clazz.getCanonicalName())
+						.collect(Collectors.joining("", name, ""));
 
-	    Method method = this.methodCache.get(cacheKey.toString());
+		Method method = this.methodCache.get(cacheKey);
 
 	    if (method == null)
 	    {
@@ -172,7 +172,7 @@ public abstract class ActionEvent implements Action
 	            method = getClass().getMethod(METHOD_NAME_PREFIX + StringUtils.capitalize(tmp), signature);
 	        }
 
-	        Method oldMethod = this.methodCache.putIfAbsent(cacheKey.toString(), method);
+	        Method oldMethod = this.methodCache.putIfAbsent(cacheKey, method);
 	        if (oldMethod != null)
 	        {
 	            method = oldMethod;

@@ -25,6 +25,8 @@ import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 
+import java.util.stream.Stream;
+
 /**
  * This class allows you to keep all the information needed for a single
  * link at one place. It keeps your query data, path info, the server
@@ -268,9 +270,7 @@ public class TemplateURI
         {
             String key = (String) name;
 
-            if (!key.equalsIgnoreCase(CGI_ACTION_PARAM) &&
-                    !key.equalsIgnoreCase(CGI_SCREEN_PARAM) &&
-                    !key.equalsIgnoreCase(CGI_TEMPLATE_PARAM))
+            if (Stream.of(CGI_ACTION_PARAM, CGI_SCREEN_PARAM, CGI_TEMPLATE_PARAM).noneMatch(key::equalsIgnoreCase))
             {
                 String[] values = pp.getStrings(key);
                 if(values != null)

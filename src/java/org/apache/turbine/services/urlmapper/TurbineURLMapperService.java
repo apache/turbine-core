@@ -231,16 +231,16 @@ public class TurbineURLMapperService
                                 pp.setString(group.getKey(), matcher.group(group.getValue().intValue())));
 
                 // add implicit parameters
-                urlMap.getImplicitParameters().entrySet().forEach(e ->
-                        pp.add(e.getKey(), e.getValue()));
+                urlMap.getImplicitParameters()
+                        .forEach((key1, value1) -> pp.add(key1, value1));
 
                 // add override parameters
-                urlMap.getOverrideParameters().entrySet().forEach(e ->
-                        pp.setString(e.getKey(), e.getValue()));
+                urlMap.getOverrideParameters()
+                        .forEach((key, value) -> pp.setString(key, value));
 
                 // remove ignore parameters
-                urlMap.getIgnoreParameters().keySet().forEach(k ->
-                        pp.remove(k));
+                urlMap.getIgnoreParameters().keySet()
+                        .forEach(pp::remove);
                 
                 log.debug("mapped {} params from url {} ", pp.getKeys().length, url);
 

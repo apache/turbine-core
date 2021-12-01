@@ -23,6 +23,7 @@ package org.apache.turbine.services.security;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.fulcrum.factory.FactoryService;
@@ -256,13 +257,12 @@ public class DefaultUserManager implements UserManager
             throws DataBackendException
     {
         UserSet<org.apache.fulcrum.security.entity.User> uset = umDelegate.getAllUsers();
-        List<User> userList = new ArrayList<>();
 
-        for (org.apache.fulcrum.security.entity.User u : uset)
-        {
-            TurbineUser tu = (TurbineUser)u;
-            userList.add(wrap(tu));
-        }
+        List<User> userList = uset.stream()
+                .map(u -> (TurbineUser) u)
+                .map(this::wrap)
+                .map(u -> (User)u)
+                .collect(Collectors.toList());
 
         return userList;
     }

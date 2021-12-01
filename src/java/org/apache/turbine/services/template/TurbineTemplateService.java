@@ -22,6 +22,7 @@ package org.apache.turbine.services.template;
 
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -650,14 +651,9 @@ public class TurbineTemplateService
     @Deprecated
     public boolean templateExists(String template, String[] templatePaths)
     {
-        for (String templatePath : templatePaths)
-        {
-            if (new File(templatePath, template).exists())
-            {
-                return true;
-            }
-        }
-        return false;
+        return Arrays.stream(templatePaths)
+                .anyMatch(templatePath -> new File(templatePath, template)
+                        .exists());
     }
 
     /**
