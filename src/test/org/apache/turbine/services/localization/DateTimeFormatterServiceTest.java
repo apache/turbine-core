@@ -1,10 +1,15 @@
 package org.apache.turbine.services.localization;
 
 
+import org.apache.fulcrum.parser.DefaultParameterParser;
 import org.apache.turbine.annotation.AnnotationProcessor;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.services.pull.PullService;
 import org.apache.turbine.services.pull.util.DateTimeFormatterTool;
+import org.apache.turbine.services.rundata.RunDataService;
+import org.apache.turbine.services.velocity.VelocityService;
+import org.apache.turbine.test.BaseTestCase;
+import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
 import org.apache.velocity.context.Context;
@@ -12,10 +17,16 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DynamicNode;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -30,13 +41,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.DynamicContainer.dynamicContainer;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
+import static org.mockito.Mockito.mock;
 
 /**
  * Test class for DateTimeFormatter.
  *
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class DateTimeFormatterServiceTest  {
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class DateTimeFormatterServiceTest extends BaseTestCase {
 
     @TurbineService
     private DateTimeFormatterService df;
@@ -47,9 +60,15 @@ public class DateTimeFormatterServiceTest  {
     private PullService pullService;
 
     DateTimeFormatterTool dateTimeFormatterTool;
+
+    @TurbineService
+    private VelocityService vs = null;
+
+    @TurbineService
+    RunDataService runDataService = null;
     
     @BeforeAll
-    public void setup() throws TurbineException
+    public void setup() throws Exception
     {
         // required to initialize defaults
         tc = new TurbineConfig(
@@ -60,33 +79,45 @@ public class DateTimeFormatterServiceTest  {
         AnnotationProcessor.process(this);
 
         assertNotNull(pullService);
-        Context globalContext = pullService.getGlobalContext();
-        assertNotNull(globalContext);
+        assertNotNull(vs);
+    }
 
-        dateTimeFormatterTool = (DateTimeFormatterTool) globalContext.get("dateTimeFormatter");
-        assertNotNull(dateTimeFormatterTool);
+    private RunData getRunData() throws Exception
+    {
+        ServletConfig config = mock(ServletConfig.class);
+        HttpServletRequest request = getMockRequest();
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        RunData runData = runDataService.getRunData(request, response, config);
+        assertEquals(DefaultParameterParser.class, runData.getParameters()
+                .getClass(), "Verify we are using Fulcrum parameter parser");
+        return runData;
     }
 
     @AfterAll
     public void tearDown()
     {
+        vs.shutdown();
         tc.dispose();
     }
 
     /*
      * Class under test for String format(Date, String)
      */
+    @Order(1)
     @Test
-    void testTool() throws TurbineException
+    void testTool() throws Exception
     {
-        assertNotNull(pullService);
-        Context globalContext = pullService.getGlobalContext();
-        assertNotNull(globalContext);
+        RunData rundata = getRunData();
+        Context requestContext = vs.getContext(rundata);
+        assertNotNull(requestContext);
+        pullService.populateContext(requestContext, rundata);
 
-        DateTimeFormatterTool dateTimeFormatterTool = (DateTimeFormatterTool) globalContext.get("dateTimeFormatter");
+        // taking from request context
+        dateTimeFormatterTool = (DateTimeFormatterTool) requestContext.get("dateTimeFormatter");
         assertNotNull(dateTimeFormatterTool);
     }
 
+    @Order(2)
     @TestFactory
     Stream<DynamicNode> testDateTimeFormatterInstances() {
         // Stream of DateTimeFormatterInterface to check
@@ -106,10 +137,10 @@ public class DateTimeFormatterServiceTest  {
                         dynamicTest("test formatDateStringEmptyString",() -> formatDateStringEmptyString(dtf))
                 ))
         );
-        // Or returns a stream of dynamic tests instead of Dynamic nodes,
-        // but requires Function<DateTimeFormatterInterface, String> displayNameGenerator and
+        // Or return a stream of dynamic tests instead of Dynamic nodes,
+        // but this requires Function<DateTimeFormatterInterface, String> displayNameGenerator and
         // e.g. ThrowingConsumer<DateTimeFormatterInterface> testExecutor = dtf
-        //return DynamicTest.stream(inputStream, displayNameGenerator, testExecutor);
+        // return DynamicTest.stream(inputStream, displayNameGenerator, testExecutor);
     }
 
     void formatDateString(DateTimeFormatterInterface dateTime)
