@@ -1,17 +1,21 @@
 package org.apache.turbine.services.pull.util;
 
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.services.ServiceManager;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.localization.DateTimeFormatterInterface;
+import org.apache.turbine.services.localization.DateTimeFormatterService;
+import org.apache.turbine.services.pull.ApplicationTool;
+
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
 import java.util.Locale;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.turbine.Turbine;
-import org.apache.turbine.services.pull.ApplicationTool;
 
 /**
  * This pull tool is used to format {@link TemporalAccessor} and
@@ -24,25 +28,11 @@ import org.apache.turbine.services.pull.ApplicationTool;
  *
  */
 public class DateTimeFormatterTool
-        implements ApplicationTool
+        implements ApplicationTool, DateTimeFormatterInterface
 {
-    /** Default date format. find supporrted formats in {@link DateTimeFormatterTool} */
-    private static final String DATE_TIME_FORMAT_DEFAULT = "MM/dd/yyyy";
 
-    /**
-     * Property tag for the date format that is to be used for the web
-     * application.
-     */
-    private static final String DATE_TIME_FORMAT_KEY = "tool.datetimeTool.format";
-
-    private String dateFormat = null;
-    
-    private java.time.format.DateTimeFormatter defaultFormat = null;
-
-    public java.time.format.DateTimeFormatter getDefaultFormat()
-    {
-        return defaultFormat;
-    }
+    @TurbineService
+    private DateTimeFormatterService dtfs;
 
     private static final Logger log = LogManager.getLogger(DateTimeFormatterTool.class);
 
@@ -55,7 +45,7 @@ public class DateTimeFormatterTool
      * <li>For session and persistent tools data will be of type User</li>
      * </ul>
      *
-     * the {@link #defaultFormat} from {@link #dateFormat} with default Locale {@link Locale#getDefault()} and
+     * the {@link #defaultFormat} from {@link #dateTimeFormatPattern} with default Locale {@link Locale#getDefault()} and
      * Default zone: {@link ZoneId#systemDefault()}
      *
      * @param data initialization data
@@ -63,13 +53,18 @@ public class DateTimeFormatterTool
     @Override
     public void init(Object data)
     {
-        dateFormat = Turbine.getConfiguration()
-                .getString(DATE_TIME_FORMAT_KEY, DATE_TIME_FORMAT_DEFAULT);
-        defaultFormat = DateTimeFormatter.ofPattern(dateFormat)
-                .withLocale(Locale.getDefault()).withZone(ZoneId.systemDefault());
+        log.info("Initialized DateTimeFormatterTool with service {}",
+                dtfs);
+        if (dtfs == null)
+        {
+            ServiceManager serviceManager = TurbineServices.getInstance();
+            dtfs = (DateTimeFormatterService)serviceManager.getService(DateTimeFormatterService.SERVICE_NAME);
+        }
+        // dtfs should be already initialized
+    }
 
-        log.info("Initialized DateTimeFormatterTool with pattern {}, locale {} and zone {}",
-                dateFormat, defaultFormat.getLocale(), defaultFormat.getZone());
+    public DateTimeFormatterService getDtfs() {
+        return dtfs;
     }
 
     /**
@@ -84,6 +79,15 @@ public class DateTimeFormatterTool
     {
         // empty
     }
+
+    public DateTimeFormatter getDefaultFormat()
+    {
+        return getDtfs().getDefaultFormat();
+    }
+
+    public String getDateTimeFormatPattern() {
+        return getDtfs().getDateTimeFormatPattern();
+    }
     
     /**
      * Formats the given datetime as a String with the #{@link DateTimeFormatterTool#defaultFormat}.
@@ -94,107 +98,42 @@ public class DateTimeFormatterTool
      */
     public <T extends TemporalAccessor> String format(T temporalAccessor)
     {
-        return defaultFormat.format(temporalAccessor);
+        return getDtfs().getDefaultFormat().format(temporalAccessor);
     }
 
     public <T extends TemporalAccessor> String format(T temporalAccessor, String dateFormatString)
     {
-        return format(temporalAccessor, dateFormatString, null);
+        return getDtfs().format(temporalAccessor, dateFormatString, null);
     }
-    /**
-     * Formats the given date as a String.
-     *
-     * @param the TimeDate date to format
-     * @param dateFormatString format string to use.  See java.text.SimpleDateFormat
-     * for details.
-     * @return String value of the date
-     */
+
     public <T extends TemporalAccessor> String format(T temporalAccessor, String dateFormatString, Locale locale)
     {
-        String result = null;
-
-        if (StringUtils.isEmpty(dateFormatString) || temporalAccessor == null)
-        {
-            result = "";
-        }
-        else
-        {
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(dateFormatString);
-            if (locale != null)
-            {
-                dtf.withLocale(locale);
-            }
-            result = dtf.format(temporalAccessor);
-        }
-        return result;
+        return getDtfs().format(temporalAccessor, dateFormatString, locale);
     }
     
-    /**
-     * Maps from an incoming format to an outgoing format {@link java.time.format.DateTimeFormatter}.
-     * @param src the formatted datetime
-     * @param outgoingFormat {@link java.time.format.DateTimeFormatter}
-     * @param locale  Locale, if needed for outgoing formatting, no default.
-     * @param incomingFormat {@link java.time.format.DateTimeFormatter}, optional, default is {@link #defaultFormat}.
-     * @return the newly mapped
-     */
+    public String map( String src, String outgoingFormatPattern, Locale locale, String incomingFormatPattern)
+    {
+        return getDtfs().map(src, outgoingFormatPattern, locale, incomingFormatPattern);
+    }
+
     public String map( String src, java.time.format.DateTimeFormatter outgoingFormat, Locale locale, 
             java.time.format.DateTimeFormatter incomingFormat)
     {
-        if (StringUtils.isEmpty(src) || outgoingFormat == null)
-        {
-            return "";
-        }
-        if (incomingFormat == null)
-        {
-            incomingFormat = defaultFormat;
-        }
-        if (incomingFormat.equals( outgoingFormat )) {
-            return "";
-        }
-        if (locale != null)
-        {
-            outgoingFormat = outgoingFormat.withLocale( locale );
-            //incomingFormat = incomingFormat.withLocale( locale );
-        }
-        return  outgoingFormat.format(
-                incomingFormat.parse( src ));
+        return getDtfs().map(src, outgoingFormat, locale, incomingFormat);
     }
-
-    /**
-     * Uses as incoming format {@link #defaultFormat} and no locale.
-     * @param src
-     * @param outgoingFormat
-     * @return the formatted string
-     *
-     * @throws java.time.temporal.UnsupportedTemporalTypeException
-     */
+    
     public String mapTo( String src, DateTimeFormatter outgoingFormat )
     {
-        return map( src, outgoingFormat, null, defaultFormat );
+        return  getDtfs().map( src, outgoingFormat, null, getDtfs().getDefaultFormat() );
     }
 
-    /**
-     * Uses as outgoing {@link DateTimeFormatter} {@link #defaultFormat} and no locale.
-     * @param src the datetime formatted string
-     * @param incomingFormat the format of this string
-     * @return the date time formatted using the {@link #defaultFormat}.
-     */
     public String mapFrom( String src, DateTimeFormatter incomingFormat )
     {
-        return map( src, defaultFormat, null, incomingFormat );
+        return  getDtfs().map( src, getDtfs().getDefaultFormat(), null, incomingFormat );
     }
 
-    /**
-     * Uses as incoming {@link DateTimeFormatter}  {@link #defaultFormat}.
-     * @param src the datetime formatted string
-     * @param outgoingFormat the format to which this string should be formatted.
-     * @param locale
-     * @return the newly formatted date time string
-     *
-     * @throws java.time.temporal.UnsupportedTemporalTypeException
-     */
     public String map( String src,  DateTimeFormatter outgoingFormat, Locale locale )
     {
-        return map( src, outgoingFormat, locale, defaultFormat );
+        return  getDtfs().map( src, outgoingFormat, locale, getDtfs().getDefaultFormat() );
     }
 }

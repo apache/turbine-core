@@ -222,8 +222,4 @@ public class AnnotationProcessorTest
         System.out.println(System.currentTimeMillis() - startTime);
     }
 
-    @TurbineService
-    private DateTimeFormatterService df;
-
-
 }
