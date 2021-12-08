@@ -119,18 +119,6 @@
       
   </body>
   
-  <custom>   
-   <fluidoSkin>
-        <topBarEnabled>false</topBarEnabled>
-        <!-- topBarIcon>
-        <name>Apache Turbine</name>
-        <alt>Apache Turbine</alt>
-        <src>/images/turbine-project-apache-separate.png</src>
-        <href>https://turbine.apache.org/</href>
-      </topBarIcon>
-      <topBarContainerStyle>width: 95%;</topBarContainerStyle-->
-        <sideBarEnabled>true</sideBarEnabled>
-      </fluidoSkin>
-  </custom>
+  <!-- custom now configured in parent site -->
   
 </project>
