@@ -23,6 +23,7 @@
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
     <version>10-SNAPSHOT</version>
+    <relativePath/>
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
