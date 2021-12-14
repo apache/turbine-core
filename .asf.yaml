@@ -17,5 +17,6 @@
 
 publish:
   whoami: asf-site
-#    subdir: turbine
-  subdir: turbine/turbine-5-1
+#  subdir: turbine
+#  subdir: turbine/turbine-5-1
+    subdir: turbine/development/turbine-5-2
