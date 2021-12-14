@@ -435,7 +435,7 @@
 <span class="sourceLineNo">426</span><a id="line.426">        {</a>
 <span class="sourceLineNo">427</span><a id="line.427">            setLastAccessDate();</a>
 <span class="sourceLineNo">428</span><a id="line.428">        }</a>
-<span class="sourceLineNo">429</span><a id="line.429">        return lastAccessDate;</a>
+<span class="sourceLineNo">429</span><a id="line.429">        return Date.from( lastAccessDate.toInstant()); //immutable</a>
 <span class="sourceLineNo">430</span><a id="line.430">    }</a>
 <span class="sourceLineNo">431</span><a id="line.431"></a>
 <span class="sourceLineNo">432</span><a id="line.432">    /**</a>
