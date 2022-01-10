@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
-    <version>10-SNAPSHOT</version>
+    <version>11</version>
     <relativePath/>
   </parent>
   <artifactId>turbine</artifactId>
@@ -566,10 +566,10 @@
       <plugin>
         <groupId>org.apache.torque</groupId>
         <artifactId>torque-maven-plugin</artifactId>
-        <version>${torque.version}</version>
         <configuration>
-          <targetDatabase>mysql</targetDatabase>
-          <schemaDir>src/torque/schema</schemaDir>
+          <runOnlyOnSourceChange>true</runOnlyOnSourceChange>
+          <!--targetDatabase>mysql</targetDatabase>
+          <schemaDir>src/torque/schema</schemaDir-->
         </configuration>
         <executions>
           <execution>
@@ -834,8 +834,17 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jxr-plugin</artifactId>
         <configuration>
-          <aggregate>false</aggregate>
+          <linkJavadoc>true</linkJavadoc>
         </configuration>
+        <!-- no usable for aggregate, but we are aggregate = false implicitely  -->
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>jxr-no-fork</report>
+              <report>test-jxr-no-fork</report>
+            </reports>
+          </reportSet>
+        </reportSets>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -903,6 +912,7 @@
     <dependency>
       <groupId>nl.basjes.parse.useragent</groupId>
       <artifactId>yauaa</artifactId>
+      <!-- java 11 required for v6.1+ -->
       <version>5.23</version>
     </dependency>
     <dependency>
@@ -1170,7 +1180,7 @@
                     <descriptor>./src/assembly/binaries.xml</descriptor>
                     <descriptor>./src/assembly/source.xml</descriptor>
                   </descriptors>
-                  <tarLongFileFormat>gnu</tarLongFileFormat>
+                  <tarLongFileMode>gnu</tarLongFileMode>
                 </configuration>
               </execution>
             </executions>
@@ -1300,7 +1310,7 @@
      <fulcrum.security>2.1.0</fulcrum.security>
     <fulcrum.yaafi>1.0.9-SNAPSHOT</fulcrum.yaafi>
     <torque.version>5.0</torque.version>
-    <jackson2.version>2.13.0</jackson2.version>
+    <jackson2.version>2.13.1</jackson2.version>
     <doclint>none</doclint>
     <docker.testcontainers.version>1.16.2</docker.testcontainers.version>
     <jacoco.skip>true</jacoco.skip>
