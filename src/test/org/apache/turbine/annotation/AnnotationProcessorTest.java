@@ -1,11 +1,5 @@
 package org.apache.turbine.annotation;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -25,6 +19,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * under the License.
  */
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+/*
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -39,8 +54,6 @@ import org.apache.turbine.annotation.AnnotationProcessor.ConditionType;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-import org.apache.turbine.services.localization.DateTimeFormatterService;
-import org.apache.turbine.services.localization.DateTimeFormatterServiceTest;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
@@ -153,8 +166,8 @@ public class AnnotationProcessorTest
         Method[] methods = getClass().getMethods();
         for (Method m : methods) {
             if (m.getName().equals( "guardedMethoded" )) {
-                assertTrue( AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList)data.getACL(), ConditionType.ANY ));
-                assertFalse( AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList)data.getACL(), ConditionType.COMPOUND ));
+                assertTrue( AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList<?>)data.getACL(), ConditionType.ANY ));
+                assertFalse( AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList<?>)data.getACL(), ConditionType.COMPOUND ));
             }
         }
     }
@@ -178,7 +191,7 @@ public class AnnotationProcessorTest
         Method[] methods = getClass().getMethods();
         for (Method m : methods) {
             if (m.getName().equals( "guardedMethodedAdmin" )) {
-                assertFalse( AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList)data.getACL(), ConditionType.ANY ));
+                assertFalse( AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList<?>)data.getACL(), ConditionType.ANY ));
             }
         }
     }
@@ -202,7 +215,7 @@ public class AnnotationProcessorTest
         for (Method m : methods) {
             if (m.getName().equals( "unguardedMethoded" )) {
                 // default is true, if not annotated
-                assertTrue( AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList)data.getACL(), ConditionType.ANY ));
+                assertTrue( AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList<?>)data.getACL(), ConditionType.ANY ));
             }
         }
     }
