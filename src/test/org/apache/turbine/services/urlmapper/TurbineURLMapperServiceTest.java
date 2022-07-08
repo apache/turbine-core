@@ -85,7 +85,7 @@ public class TurbineURLMapperServiceTest extends BaseTestCase
      * <p>
      * and
      *
-     * <code>scheme://bob/wow/damn2/bookId/123/template/Book.vm?detail=1&detail=2&view=collapsed</code>
+     * <code>scheme://bob/wow/damn2/bookId/123/template/Book.vm?detail=1&amp;detail=2&amp;view=collapsed</code>
      * <code>scheme://bob/wow/book/123/1?view=collapsed</code>
      *
      * @throws Exception

@@ -29,12 +29,7 @@
   <bannerRight>
     <src>/images/logo.gif</src>
   </bannerRight>
-  <skin>
-    <groupId>org.apache.maven.skins</groupId>
-    <artifactId>maven-fluido-skin</artifactId>
-    <version>1.9</version>
-  </skin>
-
+  
   <body>
   
      <head>
@@ -78,6 +73,7 @@
         <item name="Template Service"    href="/services/template-service.html"/>
         <item name="UI Service"          href="/services/ui-service.html"/>
         <item name="Unique ID Service"   href="/services/uniqueid-service.html"/>
+        <item name="URL Mapper Service"          href="/services/urlmapper-service.html"/>
         <item name="Upload Service"      href="http://turbine.apache.org/fulcrum/fulcrum-upload/"/>
         <item name="Velocity Service"    href="/services/velocity-service.html"/>
         <item name="XML-RPC Service"     href="http://turbine.apache.org/fulcrum/fulcrum-xmlrpc/"/>
@@ -99,7 +95,7 @@
         <item name="Python Howto"        href="/howto/python-howto.html"/>
         <item name="Security Howto"      href="/howto/security-howto.html"/>
         <item name="Services Howto"      href="/howto/services-howto.html"/>
-        <item name="URL Simplifier Howto" href="/howto/url-mapper-howto.html"/>
+        <item name="URL Mapper Howto" href="/howto/url-mapper-howto.html"/>
         <item name="URL Rewriting Howto" href="/howto/url-rewriting-howto.html"/>
         <item name="Velocity Context Howto" href="/howto/context-howto.html"/>
         <item name="Velocity Site Howto" href="/howto/velocity-site-howto.html"/>
@@ -118,18 +114,6 @@
       
   </body>
   
-  <custom>   
-   <fluidoSkin>
-        <topBarEnabled>false</topBarEnabled>
-        <!-- topBarIcon>
-        <name>Apache Turbine</name>
-        <alt>Apache Turbine</alt>
-        <src>/images/turbine-project-apache-separate.png</src>
-        <href>https://turbine.apache.org/</href>
-      </topBarIcon>
-      <topBarContainerStyle>width: 95%;</topBarContainerStyle-->
-        <sideBarEnabled>true</sideBarEnabled>
-      </fluidoSkin>
-  </custom>
+  <!-- custom now configured in parent site -->
   
 </project>

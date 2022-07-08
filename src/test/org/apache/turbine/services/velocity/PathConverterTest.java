@@ -21,59 +21,66 @@ package org.apache.turbine.services.velocity;
  */
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.File;
-
 import org.apache.commons.configuration2.Configuration;
 import org.apache.turbine.Turbine;
-import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.annotation.AnnotationProcessor;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.velocity.app.VelocityEngine;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+
+import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Tests startup of the Velocity Service and translation of various
  * path patterns.
  *
  * @author <a href="hps@intermeta.de">Henning P. Schmiedehausen</a>
- * @version $Id$
+ *
  */
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PathConverterTest
     extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    private static VelocityService vs = null;
 
-    @BeforeClass
-    public static void setUp() throws Exception {
+    @TurbineService
+    private VelocityService vs = null;
+
+    @BeforeAll
+    public void setUp() throws Exception {
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
         tc.initialize();
 
-        vs = (VelocityService) TurbineServices.getInstance().getService(VelocityService.SERVICE_NAME);
+        AnnotationProcessor.process(this);
+        //vs = (VelocityService) TurbineServices.getInstance().getService(VelocityService.SERVICE_NAME);
+        assertNotNull(vs);
     }
 
-    @AfterClass
-    public static void destroy() throws Exception {
+    @AfterAll
+    public void destroy() throws Exception {
         vs.shutdown();
         tc.dispose();
     }
 
-    @Test public void testService()
+    @Test
+    void testService()
         throws Exception
     {
-
         // Can we start the service?
-        assertNotNull("Could not load Service!", vs);
+        assertNotNull(vs, "Could not load Service!");
     }
 
     @Test
-    public void testPathTranslation()
+     void testPathTranslation()
         throws Exception
     {
         Configuration conf = vs.getConfiguration();
@@ -83,42 +90,45 @@ public class PathConverterTest
         String rootPath = Turbine.getRealPath("");
 
         String test1 = (String) ve.getProperty("test1.resource.loader.path");
-        assertNotNull("No Test1 Property found", test1);
-        assertEquals("Test1 Path translation failed", rootPath
-                +File.separator+"relative"+File.separator+"path" , test1);
+        assertNotNull( test1, "No Test1 Property found");
+        assertEquals( String.join(File.separator, rootPath, "relative", "path"), test1,
+                "Test1 Path translation failed");
 
         String test2 = (String) ve.getProperty("test2.resource.loader.path");
-        assertNotNull("No Test2 Property found", test2);
-        assertEquals("Test2 Path translation failed", rootPath
-                +File.separator+"absolute"+File.separator+"path" , test2);
+        assertNotNull( test2, "No Test2 Property found");
+        assertEquals(String.join(File.separator, rootPath, "absolute", "path"), test2,
+                "Test2 Path translation failed");
 
         String test3 = (String) ve.getProperty("test3.resource.loader.path");
-        assertNotNull("No Test3 Property found", test3);
-        assertEquals("Test3 Path translation failed", rootPath
-                +File.separator+"jar-file.jar!/", test3);
+        assertNotNull( test3, "No Test3 Property found");
+        assertEquals(
+                rootPath +File.separator+"jar-file.jar!/", test3,
+                "Test3 Path translation failed");
 
         String test4 = (String) ve.getProperty("test4.resource.loader.path");
-        assertNotNull("No Test4 Property found", test4);
-        assertEquals("Test4 Path translation failed", rootPath
-                +File.separator+"jar-file.jar!/with/some/extensions" , test4);
+        assertNotNull( test4, "No Test4 Property found");
+        assertEquals(rootPath +File.separator+"jar-file.jar!/with/some/extensions" , test4,
+                "Test4 Path translation failed");
 
         String test5 = (String) ve.getProperty("test5.resource.loader.path");
-        assertNotNull("No Test5 Property found", test5);
-        assertEquals("Test5 Path translation failed", rootPath
-                +File.separator+"jar-file.jar" , test5);
+        assertNotNull( test5,"No Test5 Property found");
+        assertEquals(rootPath
+                +File.separator+"jar-file.jar" , test5,
+                "Test5 Path translation failed");
 
         String test6 = (String) ve.getProperty("test6.resource.loader.path");
-        assertNotNull("No Test6 Property found", test6);
-        assertEquals("Test6 Path translation failed", "jar:http://jar.on.website/" , test6);
+        assertNotNull(test6, "No Test6 Property found");
+        assertEquals("jar:http://jar.on.website/" , test6,
+                "Test6 Path translation failed");
 
         String test7 = (String) ve.getProperty("test7.resource.loader.path");
-        assertNotNull("No Test7 Property found", test7);
-        assertEquals("Test7 Path translation failed", rootPath
-                +File.separator+"file"+File.separator
-                +"system"+File.separator+"reference" , test7);
+        assertNotNull(test7, "No Test7 Property found");
+        assertEquals(String.join(File.separator, rootPath, "file", "system", "reference"), test7,
+                "Test7 Path translation failed");
 
         String test8 = (String) ve.getProperty("test8.resource.loader.path");
-        assertNotNull("No Test8 Property found", test8);
-        assertEquals("Test8 Path translation failed", "http://reference.on.website/" , test8);
+        assertNotNull(test8, "No Test8 Property found");
+        assertEquals("http://reference.on.website/", test8,
+                "Test8 Path translation failed");
     }
 }

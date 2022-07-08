@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
  * Annotation to mark fields in modules that require a service to be injected
  */
 @Retention( RetentionPolicy.RUNTIME )
-@Target( ElementType.FIELD )
+@Target( {ElementType.FIELD, ElementType.METHOD} )
 public @interface TurbineService
 {
     /**

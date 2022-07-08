@@ -1,10 +1,32 @@
 package org.apache.turbine.testcontainer;
 
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 import java.io.File;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -70,8 +92,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Tag("docker")
 class BuildContainerWithDockerfileTest {
 
-
-   public static final String DOCKERFILE = "conf/docker-resources/db/Dockerfile";
+   public static final Path RESOURCE_PATH =
+           FileSystems.getDefault().getPath(".").resolve("conf/docker-resources/db/");
 
    private static Logger log = LogManager.getLogger();
 
@@ -82,17 +104,9 @@ class BuildContainerWithDockerfileTest {
    Connection connection;
 
    @Container
-   //@ClassRule
    public static GenericContainer MY_SQL_CONTAINER =   new GenericContainer<>(
            new ImageFromDockerfile()
-//           .withFileFromPath(
-//               ".",
-//               new File("./conf/docker-resources/db/mysql/initdb.d").toPath())
-//           .withDockerfileFromBuilder(
-//                builder -> builder.from( "mysql:5.7.26" )
-//                .add( "data.sql","/docker-entrypoint-initdb.d" )
-//            )
-            .withDockerfile(new File(DOCKERFILE).toPath())
+            .withFileFromPath(".", RESOURCE_PATH)
         ).withExposedPorts( SERVICE_PORT ) //.withStartupAttempts( 2 )
          .withEnv(  "MYSQL_DATABASE", DATABASE_NAME )
          .withEnv( "MYSQL_USER", "userdb"  )

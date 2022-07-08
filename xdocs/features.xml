@@ -108,7 +108,7 @@ contributed</a> to Turbine over the last 10+ years.</strong>
     <li>
         Turbine Servlet works cleanly with Servlet API 2.4 and higher</li>
     <li>
-        Works with JDK 1.6 and higher - 100% Pure Java</li>
+        Works with JDK 1.8 and higher - 100% Pure Java</li>
 </ul>
 
 </section>

@@ -21,7 +21,7 @@
 <document>
 
  <properties>
-  <title>URL Simplifier Howto</title>
+  <title>URL Mapper Howto</title>
  </properties>
 
 <body>
@@ -31,7 +31,7 @@
 <p>
 Unaltered Turbine URLs may look like this:
 <code>http://www.foo.com:8080/CONTEXT/servlet/MAPPING/template/Foo.vm</code>.<br/>
-But you want shorter URLs Maybe this url would suit you better:
+But you want shorter URLs? Maybe this URL would suit you better:
 <code>http://www.foo.com:8080/CONTEXT/servlet/beautiful/world</code>
 </p>
 
@@ -40,7 +40,7 @@ defined in xml, json or yaml format to become more simplified or beautiful!
 
 </section>
 
-<section name="Turbine Configuration">
+<section name="Turbine URLMapper Configuration">
 
 <p>
 You need to
@@ -90,19 +90,28 @@ the URLMapperService's configfile.</p>
 
 </section>
 
-<section name="URL Mapping Mechanism">
+<section name="Define your patterns">
 
-<p>The pattern format scheme is as follows, e.g. in JSON:</p>
+<p>The URL Mapping Mechanism uses a well defined pattern format. 
+The pattern format scheme is defined as follows, e.g. in JSON:</p>
 
 <source><![CDATA[
  "pattern":  "/(?<webAppRoot>[.\\-\\w]+)/(?<contextPath>\\w+)/(?<resolvableParam>\\w+)/beautifulname"
 ]]></source>
 
-<p>That is any specific parameter name or key, which should be resolved, has to be set like this</p> 
+<p>That is <strong>resolvableParam</strong> is just a specific parameter name or key, which should be resolved after the context slash and before the next URL part, which starts with "/beatifulname". 
+
+It  has to be set like this</p> 
 
 <source><![CDATA[
  /(?<resolvableParam>\\w+)
 ]]></source>
+
+Technically this isa non matching named group, with the group name <strong>resolvableParam</strong> and 
+
+in this case a sequence of alphabetical characters with minimal length of 1. 
+
+The same is true for the predefined <strong>webAppRoot</strong>  and <strong>contextPath</strong>. 
 
 <p>Another condition to be met, is that the parameter name must follow the "Java Named Group pattern characters restriction":</p>
 
@@ -146,7 +155,7 @@ This will be converted, if matched, to an URL like <strong>/book/4</strong>.
 The pattern uses type restrictions for the value, e.g. number for the bookId and a extended character set for the webAppRoot, which will be applied in (back resolving) <strong>mapFromURL</strong>.
 </p>
 
-<p>Another example in <strong>JSON</strong> format with just more short URL by replacing two parameters:</p>
+<p>Another example in <strong>JSON</strong> format, which is much more readable, if not viewing in a browser is here (showing a shortened URL by replacing two parameters):</p>
 
 <source><![CDATA[
 {
@@ -164,7 +173,7 @@ The pattern uses type restrictions for the value, e.g. number for the bookId and
 
 </section>
 
-<section name="Turbine Service Description and Usage">
+<section name="Service Description">
 
 <p>The main methods of the service <strong>TurbineURLMapperService</strong> are</p> 
 
@@ -176,7 +185,7 @@ The pattern uses type restrictions for the value, e.g. number for the bookId and
   <subsection name="Matrix">
       <table>
         <tr>
-         <th colspan="6">Turbine URL Simplifier Mapping Model</th>
+         <th colspan="6">Turbine URL Mapper Model</th>
         </tr>
         <tr>
           <th>Mechanism</th><th>Method</th><th>Pattern</th><th>Implicit Param</th><th>Override Param</th><th>Ignore Param</th>
@@ -197,30 +206,39 @@ The pattern uses type restrictions for the value, e.g. number for the bookId and
       </table>
     </subsection>
     
-   <p>N.B. Symbolic group names wenapproot and context could not be ignored or overridden!</p>
+   <p>N.B. Symbolic group names <i>webAppRoot</i> and <i>context</i> could not be ignored or overridden!</p>
+   
+   
+</section>
+<section name="Usage">
 
 <p>
-The convenience class MappedTemplateLink class (of type TemplateLink) calls with its methods getRelative or getAbsoluteLink mapToUrl implicitely. 
-Use it in a velocity template like this:
+Use the methods getRelative or getAbsoluteLink of the provided convenience class MappedTemplateLink class (of type TemplateLink) 
+in a velocity template like this:
 </p>
 
 <source><![CDATA[
+  
   $mlink.addPathInfo("world","nice").getRelativeLink()
-  ## may result into /beautiful/world
+  ## should result into a URL: /beautiful/world
+  
 ]]></source>
 
 <p>
-<p>Alternatively you can use the service explicitely in Java, e.g. in a Java Action or other class:</p>
+<p>Alternatively you can use the service explicitely in Java, e.g. in a Java Action or other class if you inject the URLMapperService (or provide this in a shared  controller class).</p>
 
 <source><![CDATA[
-   // inside any assembler you may alternatively use annotation @TurbineService( "URLMapperService" ) urlMapper;
+
+   // inside any assembler you may alternatively use annotation 
+   // @TurbineService( "URLMapperService" ) urlMapper;
    
-  URLMapperService urlMapper = (URLMapperService) TurbineServices.getInstance().getService(URLMapperService.SERVICE_NAME);
+   URLMapperService urlMapper = (URLMapperService) TurbineServices.getInstance().getService(URLMapperService.SERVICE_NAME);
 
   // Any turbineURI ..e.g. from PoolService or 
   TurbineURI uri  ... 
           
   urlMapper.mapToURL( uri );
+
   
   // use it, e.g by putting it into a velocity context (org.apache.velocity.context.Context(
   context.put("myLink", link);

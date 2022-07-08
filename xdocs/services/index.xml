@@ -164,6 +164,12 @@ Allows for the creation of Context unique and pseudo random identifiers.
 </li>
 
 <li>
+<a href="urlmapper-service.html">URL Mapper Service</a>
+<br/>
+Allows for the control of a URL's  pathinfo or query part.
+</li>
+
+<li>
 <a href="velocity-service.html">Velocity Service</a>
 <br/>
 The Velocity Service supports the rendering of

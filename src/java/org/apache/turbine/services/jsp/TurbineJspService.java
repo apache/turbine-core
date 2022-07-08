@@ -23,6 +23,7 @@ package org.apache.turbine.services.jsp;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -242,14 +243,7 @@ public class TurbineJspService
     @Override
     public boolean templateExists(String template)
     {
-        for (String templatePath : templatePaths)
-        {
-            if (templateExists(templatePath, template))
-            {
-                return true;
-            }
-        }
-        return false;
+        return Arrays.stream(templatePaths).anyMatch(templatePath -> templateExists(templatePath, template));
     }
 
     /**

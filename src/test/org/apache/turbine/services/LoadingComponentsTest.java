@@ -31,9 +31,12 @@ import org.apache.fulcrum.factory.FactoryService;
 import org.apache.fulcrum.intake.IntakeService;
 import org.apache.fulcrum.localization.LocalizationService;
 import org.apache.fulcrum.mimetype.MimeTypeService;
+import org.apache.turbine.annotation.AnnotationProcessor;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.apache.turbine.util.TurbineException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -50,6 +53,9 @@ import org.junit.Test;
 public class LoadingComponentsTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
+    
+    @TurbineService
+    GlobalCacheService cacheService;
 
     @BeforeClass
     public static void setUp() throws Exception
@@ -118,6 +124,12 @@ public class LoadingComponentsTest extends BaseTestCase
         assertNotNull(fs);
         MimeTypeService mimetype = (MimeTypeService)serviceManager.getService(MimeTypeService.ROLE);
         assertNotNull(mimetype);
+    }
+    
+    @Test public void testLoadingByAnnotation() throws TurbineException
+    {
+        AnnotationProcessor.process(this);
+        assertNotNull(cacheService);
     }
 
     /**

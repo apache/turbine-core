@@ -43,8 +43,9 @@ No current items.
   <ul>
     <li>Make sure that pull tools get refreshed correctly under all circumstances (done?)</li>
     <li>Check lifetimes of authorized and session tools if the application is not the standard login-logout application (done?)</li>
-    <li>Move AvalonComponentService to the Fortress container (suggested by the avalon-dev list) - or looking for an alternative</li>
-    <li>Move doclint and jacoco settings to Turbine parent</li>
+    <li>Check against different Java versions in a systematic way (e.g. using  Docker image)</li>
+     <li>Allow Java 17 features (Sealed classes, pattern matching in switch, etc.)</li>
+     <li>Support / Test integrations Servlet 4.0 with Http/2, Java 11 (e.g. Tomcat 9 and Eclipse Jetty 10)</li>
   </ul>
 </p>
 </subsection>
@@ -52,8 +53,8 @@ No current items.
 <subsection name="Blue Skying for future Turbine releases">
 <p>
   <ul>
-    <li>Servlet 3.x asynchronous cycle handling / prototype / proof of concept (Servlet API is 2.5 in Turbine 4.x, but 3.x for Turbine 5.x in 2019)</li>
-    <li>OSGI or Java 9 modularization (proposal exists and Java required version is still 6 for Turbine in 2017</li>
+    <li>Servlet 4.x and 3.x asynchronous cycle handling / prototype / proof of concept (Servlet API is 2.5 in Turbine 4.x, 3.x for Turbine 5.x)</li>
+    <li>OSGI or Java 9 modularization proposal exists (obsolete?)</li>
   </ul>
 </p>
 </subsection>

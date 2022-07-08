@@ -22,6 +22,8 @@ package org.apache.turbine.annotation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -227,6 +229,18 @@ public class AnnotationProcessor
      */
     public static void process(Object object) throws TurbineException
     {
+        process(object, false);
+    }
+
+    /**
+     * Search for annotated fields and optionally of method fields of the object and inject the appropriate
+     * objects
+     *
+     * @param object the object
+     * @throws TurbineException if the objects could not be injected
+     */
+    public static void process(Object object, Boolean hasTurbineServicesInMethodFields) throws TurbineException
+    {
         ServiceManager manager = null;
         Configuration config = null;
         AssemblerBrokerService assembler = null;
@@ -270,8 +284,34 @@ public class AnnotationProcessor
                 }
             }
 
+            if (hasTurbineServicesInMethodFields) {
+                manager = processMethods(object, manager, clazz);
+            }
+
             clazz = clazz.getSuperclass();
         }
+    }
+
+    private static ServiceManager processMethods(Object object, ServiceManager manager, Class<?> clazz) throws TurbineException {
+        Method[] methods = clazz.getMethods();
+
+        for (Method method : methods)
+        {
+            Annotation[] annotations = getAnnotations(method);
+            for (Annotation a : annotations)
+            {
+                if (a instanceof TurbineService)
+                {
+
+                    if (manager == null)
+                    {
+                        manager = TurbineServices.getInstance();
+                    }
+                    injectTurbineService(object, manager, method, (TurbineService) a);
+                }
+            }
+        }
+        return manager;
     }
 
     /**
@@ -451,33 +491,7 @@ public class AnnotationProcessor
         else
         {
             Field[] typeFields = field.getType().getFields();
-            for (Field f : typeFields)
-            {
-                if (TurbineService.SERVICE_NAME.equals(f.getName()))
-                {
-                    try
-                    {
-                        serviceName = (String)f.get(null);
-                    }
-                    catch (IllegalArgumentException | IllegalAccessException e)
-                    {
-                        continue;
-                    }
-                    break;
-                }
-                else if (TurbineService.ROLE.equals(f.getName()))
-                {
-                    try
-                    {
-                        serviceName = (String)f.get(null);
-                    }
-                    catch (IllegalArgumentException | IllegalAccessException e)
-                    {
-                        continue;
-                    }
-                    break;
-                }
-            }
+            serviceName = checkServiceOrRoleInField(serviceName, typeFields);
         }
 
         if (StringUtils.isEmpty(serviceName))
@@ -502,5 +516,78 @@ public class AnnotationProcessor
             throw new TurbineException("Could not inject service "
                     + serviceName + " into object " + object, e);
         }
+    }
+
+    private static void injectTurbineService(Object object, ServiceManager manager, Method method, TurbineService annotation) throws TurbineException
+    {
+        String serviceName = null;
+        // Check for annotation value
+        if (StringUtils.isNotEmpty(annotation.value()))
+        {
+            serviceName = annotation.value();
+        }
+        else
+        {
+            Class<?>[] classes = method.getParameterTypes();
+            for (Class c : classes)
+            {
+                Field[] fields = c.getFields();
+                // Check for fields SERVICE_NAME and ROLE
+                serviceName = checkServiceOrRoleInField(serviceName, fields);
+            }
+        }
+
+        log.debug("Looking up service for injection: {} for object {}", serviceName, object);
+        if (StringUtils.isEmpty(serviceName))
+        {
+            // Try interface class name
+            serviceName = method.getName();
+        }
+
+        Object service = manager.getService(serviceName); // throws Exception on unknown service
+        method.setAccessible(true);
+
+        try
+        {
+            log.debug("Injection of {} into object {}", serviceName, object);
+
+            Object[] paramValues = new Object[1];
+            paramValues[0] = service;
+            method.invoke(object, paramValues);
+        }
+        catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e)
+        {
+            throw new TurbineException("Could not inject service "
+                    + serviceName + " into object " + object, e);
+        }
+    }
+
+    private static String checkServiceOrRoleInField(String serviceName, Field[] fields) {
+        for (Field f : fields)
+            if (TurbineService.SERVICE_NAME.equals(f.getName()))
+            {
+                try
+                {
+                    serviceName = (String)f.get(null);
+                }
+                catch (IllegalArgumentException | IllegalAccessException e)
+                {
+                    continue;
+                }
+                break;
+            }
+            else if (TurbineService.ROLE.equals(f.getName()))
+            {
+                try
+                {
+                    serviceName = (String)f.get(null);
+                }
+                catch (IllegalArgumentException | IllegalAccessException e)
+                {
+                    continue;
+                }
+                break;
+            }
+        return serviceName;
     }
 }

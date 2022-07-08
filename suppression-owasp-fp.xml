@@ -21,54 +21,59 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
   <suppress>
    <notes><![CDATA[
+   file name: jython-standalone-2.7.2.jar (shaded: org.apache.commons:commons-compress:1.19)
+   ]]></notes>
+   <packageUrl regex="true">^pkg:maven/org\.apache\.commons/commons\-compress@.*$</packageUrl>
+   <cpe>cpe:/a:apache:commons_compress</cpe>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: jython-standalone-2.7.2.jar (shaded: com.google.guava:guava:28.0-android)
+   ]]></notes>
+   <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
+   <cpe>cpe:/a:google:guava</cpe>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: jython-standalone-2.7.2.jar (shaded: org.apache.commons:commons-compress:1.19)
+   ]]></notes>
+   <packageUrl regex="true">^pkg:maven/org\.apache\.commons/commons\-compress@.*$</packageUrl>
+   <cve>CVE-2021-35515</cve>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: jython-standalone-2.7.2.jar (shaded: org.apache.commons:commons-compress:1.19)
+   ]]></notes>
+   <packageUrl regex="true">^pkg:maven/org\.apache\.commons/commons\-compress@.*$</packageUrl>
+   <cve>CVE-2021-35516</cve>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: jython-standalone-2.7.2.jar (shaded: org.apache.commons:commons-compress:1.19)
+   ]]></notes>
+   <packageUrl regex="true">^pkg:maven/org\.apache\.commons/commons\-compress@.*$</packageUrl>
+   <cve>CVE-2021-35517</cve>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: jython-standalone-2.7.2.jar (shaded: org.apache.commons:commons-compress:1.19)
+   ]]></notes>
+   <packageUrl regex="true">^pkg:maven/org\.apache\.commons/commons\-compress@.*$</packageUrl>
+   <cve>CVE-2021-36090</cve>
+</suppress>
+<suppress>
+   <notes><![CDATA[
    file name: commons-io-2.6.jar
    ]]></notes>
    <packageUrl regex="true">^pkg:maven/commons\-io/commons\-io@.*$</packageUrl>
    <cve>CVE-2021-29425</cve>
 </suppress>
-  <suppress>
+<suppress>
    <notes><![CDATA[
    file name: jython-standalone-2.7.2.jar (shaded: com.google.guava:guava:28.0-android)
    ]]></notes>
    <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
    <cve>CVE-2020-8908</cve>
 </suppress>
-  <!-- suppress c3p0 warning until quartz v1.1.2 is released (in fulcrum quartz), which fixes https://github.com/quartz-scheduler/quartz/issues/316 -->
-  <suppress>
-     <notes><![CDATA[
-     file name: c3p0-0.9.5.2.jar
-     ]]></notes>
-     <gav regex="true">^com\.mchange:c3p0:.*$</gav>
-     <cve>CVE-2018-20433</cve>
-  </suppress>  
-  <!-- suppress guava < 24.1.1 as jython is only optional (in turbine) -->
-  <suppress>
-   <notes><![CDATA[
-   file name: jython-standalone-2.7.1.jar (shaded: com.google.guava:guava:22.0-android)
-   ]]></notes>
-   <gav regex="true">^com\.google\.guava:guava:.*$</gav>
-   <cve>CVE-2018-10237</cve>
-</suppress>
-  
-  <!-- https://issues.apache.org/jira/browse/LOG4J2-1863 i.e. log4j 2.8.2 fixes, but affected versions match only log4j2 2.x, not log4j 1.x -->
-  <suppress>
-     <notes><![CDATA[
-     file name: log4j-1.2.17.jar
-     ]]></notes>
-     <sha1>5af35056b4d257e4b64b9e8069c0746e8b08629f</sha1>
-     <cve>CVE-2017-5645</cve>
-  </suppress>
-  <!--  jython-standalone is only optional, but check this
-  jython-standalone-2.7.1.jar\META-INF/maven/org.apache.commons/commons-compress/pom.xml (pkg:maven/org.apache.commons/commons-compress@1.14, cpe:2.3:a:apache:commons-compress:1.14:*:*:*:*:*:*:*) : CVE-2018-11771, CVE-2018-1324.
-  jython-standalone-2.7.1.jar bundles dependencies of the project inside the JAR itself, unshaded.
-    -->
-  <suppress>
-   <notes><![CDATA[
-   file name: jython-standalone-2.7.1.jar (shaded: org.apache.commons:commons-compress:1.14)
-   ]]></notes>
-   <gav regex="true">^org\.apache\.commons:commons-compress:.*$</gav>
-   <cpe>cpe:/a:apache:commons-compress</cpe>
-   </suppress>
-
 
 </suppressions>
