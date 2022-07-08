@@ -1,6 +1,8 @@
 package org.apache.turbine.services.assemblerbroker.util.java;
 
 
+import java.lang.reflect.InvocationTargetException;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -91,7 +93,7 @@ public abstract class JavaBaseFactory<T extends Assembler>
                             servClass = _servClass;
                         }
                     }
-                    assembler = servClass.newInstance();
+                    assembler = servClass.getDeclaredConstructor().newInstance();
                     break; // for()
                 }
                 catch (ClassNotFoundException cnfe)
@@ -105,7 +107,7 @@ public abstract class JavaBaseFactory<T extends Assembler>
                     log.debug("{}: No Class Definition found", className);
                 }
                 // With ClassCastException, InstantiationException we hit big problems
-                catch (ClassCastException | InstantiationException | IllegalAccessException e)
+                catch (ClassCastException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
                 {
                     // This means trouble!
                     // Alternatively we can throw this exception so

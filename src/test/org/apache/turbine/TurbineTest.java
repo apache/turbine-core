@@ -80,6 +80,7 @@ public class TurbineTest extends BaseTestCase
     }
 
     @Test
+    @Deprecated
     public void testDefaultInputEncoding() throws Exception
     {
         Turbine t = tc.getTurbine();
@@ -89,11 +90,13 @@ public class TurbineTest extends BaseTestCase
     }
 
     @Test
+    @Deprecated
     public void testNonDefaultEncoding()
     {
         Turbine t = tc.getTurbine();
         Turbine.getConfiguration().setProperty(TurbineConstants.PARAMETER_ENCODING_KEY, "UTF-8");
         assertNotNull(Turbine.getDefaultInputEncoding());
         assertEquals("UTF-8", Turbine.getDefaultInputEncoding());
+        t.destroy();
     }
 }

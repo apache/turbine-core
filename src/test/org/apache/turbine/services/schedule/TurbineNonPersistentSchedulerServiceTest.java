@@ -23,15 +23,14 @@ package org.apache.turbine.services.schedule;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import org.apache.turbine.modules.scheduledjobs.SimpleJob;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
-import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -127,7 +126,7 @@ public class TurbineNonPersistentSchedulerServiceTest
         try
         {
 			JobEntry je = scheduler.getJob(1);
-			assertThat(je, CoreMatchers.instanceOf(JobEntryNonPersistent.class));
+			assertInstanceOf(JobEntryNonPersistent.class, je);
 			JobEntryNonPersistent jenp = (JobEntryNonPersistent)je;
             assertEquals(1, jenp.getJobId());
             assertEquals(1, jenp.getSecond());

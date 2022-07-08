@@ -43,7 +43,7 @@ public class FulcrumCacheComponentTest extends BaseTestCase
     {
         ServiceManager serviceManager = TurbineServices.getInstance();
 		GlobalCacheService cache = (GlobalCacheService)serviceManager.getService(GlobalCacheService.ROLE);
-		CachedObject inputObject = new CachedObject(new Double(10.2));
+		CachedObject<Double> inputObject = new CachedObject<>(Double.valueOf(10.2));
 		cache.addObject("testObj",inputObject);
     }
 

@@ -19,20 +19,17 @@ package org.apache.turbine.services.schedule;
  * under the License.
  */
 
-
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import org.apache.turbine.modules.scheduledjobs.SimpleJob;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
-import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -128,7 +125,7 @@ public class QuartzSchedulerServiceTest extends BaseTestCase
         {
             JobKey jk = new JobKey("SimpleJob", JobEntryQuartz.DEFAULT_JOB_GROUP_NAME);
 			JobEntry je = scheduler.getJob(jk.hashCode());
-			assertThat(je, CoreMatchers.instanceOf(JobEntryQuartz.class));
+			assertInstanceOf(JobEntryQuartz.class, je);
 			JobEntryQuartz jeq = (JobEntryQuartz)je;
             assertEquals(jeq.getJobTrigger().getJobKey(), jk);
             assertEquals(jeq.getTask(), "SimpleJob");

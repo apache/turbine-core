@@ -35,7 +35,9 @@ import org.junit.Test;
  * This class tests the {@link OMTool} functionality.
  *
  * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
+ * @deprecated OMTool is deprecated
  */
+@Deprecated
 public class OMToolTest
 {
     private static TurbineConfig tc = null;

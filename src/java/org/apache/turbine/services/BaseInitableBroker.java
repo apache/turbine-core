@@ -233,19 +233,13 @@ public abstract class BaseInitableBroker
         {
             try
             {
-                initable = (Initable) Class.forName(className).newInstance();
+                initable = (Initable) Class.forName(className).getDeclaredConstructor().newInstance();
             }
-
-                    // those two errors must be passed to the VM
-            catch (ThreadDeath t)
+            // those two errors must be passed to the VM
+            catch (ThreadDeath | OutOfMemoryError t)
             {
                 throw t;
             }
-            catch (OutOfMemoryError t)
-            {
-                throw t;
-            }
-
             catch (Throwable t)
             {
                 // Used to indicate error condition.

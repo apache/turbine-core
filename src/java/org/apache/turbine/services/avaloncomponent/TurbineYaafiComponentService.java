@@ -30,6 +30,7 @@ import org.apache.commons.configuration2.Configuration;
 import org.apache.fulcrum.yaafi.framework.container.ServiceContainer;
 import org.apache.fulcrum.yaafi.framework.factory.ServiceContainerConfiguration;
 import org.apache.fulcrum.yaafi.framework.factory.ServiceContainerFactory;
+import org.apache.fulcrum.yaafi.framework.logger.Log4j2Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.InstantiationException;

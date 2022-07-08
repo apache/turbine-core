@@ -619,7 +619,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
 
                         try
                         {
-                            service = (Service) clazz.newInstance();
+                            service = (Service) clazz.getDeclaredConstructor().newInstance();
 
                             // check if the newly created service is also a
                             // service provider - if so then remember it
@@ -638,11 +638,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
                             throw new InstantiationException("Class " + clazz +
                                     " doesn't implement the Service interface", e);
                         }
-                        catch (ThreadDeath t)
-                        {
-                            throw t;
-                        }
-                        catch (OutOfMemoryError t)
+                        catch (ThreadDeath | OutOfMemoryError t)
                         {
                             throw t;
                         }

@@ -35,7 +35,7 @@ public class XmlValveAdapter extends XmlAdapter<XmlValve, Valve>
     public Valve unmarshal(XmlValve xmlValve) throws Exception
     {
         Class<?> valveClass = Class.forName(xmlValve.getClazz());
-        return (Valve) valveClass.newInstance();
+        return (Valve) valveClass.getDeclaredConstructor().newInstance();
     }
 
     /**

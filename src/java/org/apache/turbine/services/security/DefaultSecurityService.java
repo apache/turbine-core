@@ -130,7 +130,7 @@ public class DefaultSecurityService
         try
         {
             this.userManager =
-                    (UserManager) Class.forName(userManagerClassName).newInstance();
+                    (UserManager) Class.forName(userManagerClassName).getDeclaredConstructor().newInstance();
 
             userManager.init(conf);
         }

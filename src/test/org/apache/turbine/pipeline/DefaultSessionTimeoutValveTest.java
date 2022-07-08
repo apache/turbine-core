@@ -47,7 +47,9 @@ import org.junit.jupiter.api.Test;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id: DefaultSessionTimeoutValveTest.java 1606111 2014-06-27
  *          14:46:47Z gk $
+ * @deprecated DefaultSessionTimeoutValve is deprecated
  */
+@Deprecated
 public class DefaultSessionTimeoutValveTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;

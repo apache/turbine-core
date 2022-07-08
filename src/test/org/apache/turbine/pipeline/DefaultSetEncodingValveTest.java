@@ -91,7 +91,7 @@ public class DefaultSetEncodingValveTest extends BaseTestCase
         pipeline.invoke(pipelineData);
 
         RunData runData = (RunData) pipelineData;
-        assertEquals(TurbineConstants.PARAMETER_ENCODING_DEFAULT, runData.getCharSet());
+        assertEquals(TurbineConstants.PARAMETER_ENCODING_DEFAULT, runData.getCharset().name());
     }
 
     /**
@@ -112,7 +112,7 @@ public class DefaultSetEncodingValveTest extends BaseTestCase
         pipeline.invoke(pipelineData);
         RunData runData = (RunData) pipelineData;
 
-        assertEquals("UTF-8", runData.getCharSet());
+        assertEquals("UTF-8", runData.getCharset().name());
     }
 
     @AfterAll

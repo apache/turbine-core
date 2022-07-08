@@ -44,7 +44,7 @@ public class DefaultTurbineRunDataTest extends BaseTestCase
 		Turbine.getConfiguration().setProperty(
 			  TurbineConstants.LOCALE_DEFAULT_COUNTRY_KEY,
 			  "UK");
-        assertEquals("ISO-8859-1", LocaleUtils.getDefaultCharSet());
+        assertEquals("ISO-8859-1", LocaleUtils.getDefaultCharset().name());
     }
 
     @BeforeClass

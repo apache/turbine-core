@@ -111,7 +111,7 @@ public class TurbineAssemblerBrokerService
             {
                 @SuppressWarnings("unchecked")
                 AssemblerFactory<? extends Assembler> af =
-                    (AssemblerFactory<? extends Assembler>) Class.forName(factory).newInstance();
+                    (AssemblerFactory<? extends Assembler>) Class.forName(factory).getDeclaredConstructor().newInstance();
                 registerFactory(af);
             }
             // these must be passed to the VM

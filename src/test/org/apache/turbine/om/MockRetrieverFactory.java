@@ -23,7 +23,9 @@ package org.apache.turbine.om;
  * This mocks a {@link RetrieverFactory}.
  *
  * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
+ * @deprecated Retriever and RetrieverFactory are deprecated
  */
+@Deprecated
 public class MockRetrieverFactory implements RetrieverFactory
 {
 
