@@ -22,9 +22,9 @@ package org.apache.turbine.util.parser;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
@@ -120,13 +120,13 @@ public class BaseValueParserTest extends BaseTestCase
         assertNull(result);
 
         // default
-        result = parser.getByteObject("default", new Byte((byte)3));
-        assertEquals(result, new Byte((byte)3));
+        result = parser.getByteObject("default", Byte.valueOf((byte)3));
+        assertEquals(result, Byte.valueOf((byte)3));
 
         // param exists
         parser.add("exists", "1");
         result = parser.getByteObject("exists");
-        assertEquals(result, new Byte((byte)1));
+        assertEquals(result, Byte.valueOf((byte)1));
 
         // unparsable value
         parser.add("unparsable", "a");
@@ -186,13 +186,13 @@ public class BaseValueParserTest extends BaseTestCase
         assertNull(result);
 
         // default
-        result = parser.getIntObject("default", new Integer(3));
-        assertEquals(result, new Integer(3));
+        result = parser.getIntObject("default", Integer.valueOf(3));
+        assertEquals(result, Integer.valueOf(3));
 
         // param exists
         parser.add("exists", "1");
         result = parser.getIntObject("exists");
-        assertEquals(result, new Integer(1));
+        assertEquals(result, Integer.valueOf(1));
 
         // unparsable value
         parser.add("unparsable", "a");
@@ -204,7 +204,7 @@ public class BaseValueParserTest extends BaseTestCase
         parser.add("array", "2");
         parser.add("array", "3");
         Integer arrayResult[] = parser.getIntObjects("array");
-        Integer compare[] = {new Integer(1), new Integer(2), new Integer(3)};
+        Integer compare[] = {Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3)};
         assertEquals(arrayResult.length, compare.length);
         for( int i=0; i<compare.length; i++)
         {
@@ -216,7 +216,7 @@ public class BaseValueParserTest extends BaseTestCase
         parser.add("array2", "a");
         parser.add("array2", "3");
         Integer arrayResult2[] = parser.getIntObjects("array2");
-        Integer compare2[] = {new Integer(1), null, new Integer(3)};
+        Integer compare2[] = {Integer.valueOf(1), null, Integer.valueOf(3)};
         assertEquals(arrayResult2.length, compare2.length);
         for( int i=0; i<compare2.length; i++)
         {
@@ -276,13 +276,13 @@ public class BaseValueParserTest extends BaseTestCase
         assertNull(result);
 
         // default
-        result = parser.getFloatObject("default", new Float(3));
-        assertEquals(result, new Float(3));
+        result = parser.getFloatObject("default", Float.valueOf(3));
+        assertEquals(result, Float.valueOf(3));
 
         // param exists
         parser.add("exists", "1");
         result = parser.getFloatObject("exists");
-        assertEquals(result, new Float(1));
+        assertEquals(result, Float.valueOf(1));
 
         // unparsable value
         parser.add("unparsable", "a");
@@ -294,7 +294,7 @@ public class BaseValueParserTest extends BaseTestCase
         parser.add("array", "2");
         parser.add("array", "3");
         Float arrayResult[] = parser.getFloatObjects("array");
-        Float compare[] = {new Float(1), new Float(2), new Float(3)};
+        Float compare[] = {Float.valueOf(1), Float.valueOf(2), Float.valueOf(3)};
         assertEquals(arrayResult.length, compare.length);
         for( int i=0; i<compare.length; i++)
         {
@@ -306,7 +306,7 @@ public class BaseValueParserTest extends BaseTestCase
         parser.add("array2", "a");
         parser.add("array2", "3");
         Float arrayResult2[] = parser.getFloatObjects("array2");
-        Float compare2[] = {new Float(1), null, new Float(3)};
+        Float compare2[] = {Float.valueOf(1), null, Float.valueOf(3)};
         assertEquals(arrayResult2.length, compare2.length);
         for( int i=0; i<compare2.length; i++)
         {
@@ -366,13 +366,13 @@ public class BaseValueParserTest extends BaseTestCase
         assertNull(result);
 
         // default
-        result = parser.getDoubleObject("default", new Double(3));
-        assertEquals(result, new Double(3));
+        result = parser.getDoubleObject("default", Double.valueOf(3));
+        assertEquals(result, Double.valueOf(3));
 
         // param exists
         parser.add("exists", "1");
         result = parser.getDoubleObject("exists");
-        assertEquals(result, new Double(1));
+        assertEquals(result, Double.valueOf(1));
 
         // unparsable value
         parser.add("unparsable", "a");
@@ -384,7 +384,7 @@ public class BaseValueParserTest extends BaseTestCase
         parser.add("array", "2");
         parser.add("array", "3");
         Double arrayResult[] = parser.getDoubleObjects("array");
-        Double compare[] = {new Double(1), new Double(2), new Double(3)};
+        Double compare[] = {Double.valueOf(1), Double.valueOf(2), Double.valueOf(3)};
         assertEquals(arrayResult.length, compare.length);
         for( int i=0; i<compare.length; i++)
         {
@@ -396,7 +396,7 @@ public class BaseValueParserTest extends BaseTestCase
         parser.add("array2", "a");
         parser.add("array2", "3");
         Double arrayResult2[] = parser.getDoubleObjects("array2");
-        Double compare2[] = {new Double(1), null, new Double(3)};
+        Double compare2[] = {Double.valueOf(1), null, Double.valueOf(3)};
         assertEquals(arrayResult2.length, compare2.length);
         for( int i=0; i<compare2.length; i++)
         {
@@ -456,13 +456,13 @@ public class BaseValueParserTest extends BaseTestCase
         assertNull(result);
 
         // default
-        result = parser.getLongObject("default", new Long(3));
-        assertEquals(result, new Long(3));
+        result = parser.getLongObject("default", Long.valueOf(3));
+        assertEquals(result, Long.valueOf(3));
 
         // param exists
         parser.add("exists", "1");
         result = parser.getLongObject("exists");
-        assertEquals(result, new Long(1));
+        assertEquals(result, Long.valueOf(1));
 
         // unparsable value
         parser.add("unparsable", "a");
@@ -474,7 +474,7 @@ public class BaseValueParserTest extends BaseTestCase
         parser.add("array", "2");
         parser.add("array", "3");
         Long arrayResult[] = parser.getLongObjects("array");
-        Long compare[] = {new Long(1), new Long(2), new Long(3)};
+        Long compare[] = {Long.valueOf(1), Long.valueOf(2), Long.valueOf(3)};
         assertEquals(arrayResult.length, compare.length);
         for( int i=0; i<compare.length; i++)
         {
@@ -486,7 +486,7 @@ public class BaseValueParserTest extends BaseTestCase
         parser.add("array2", "a");
         parser.add("array2", "3");
         Long arrayResult2[] = parser.getLongObjects("array2");
-        Long compare2[] = {new Long(1), null, new Long(3)};
+        Long compare2[] = {Long.valueOf(1), null, Long.valueOf(3)};
         assertEquals(arrayResult2.length, compare2.length);
         for( int i=0; i<compare2.length; i++)
         {
