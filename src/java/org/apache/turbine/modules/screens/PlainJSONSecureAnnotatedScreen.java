@@ -59,10 +59,15 @@ public class PlainJSONSecureAnnotatedScreen extends PlainJSONScreen
     protected boolean isAuthorized(PipelineData pipelineData) throws Exception {
         RunData data = pipelineData.getRunData();
         Method[] methods = getClass().getMethods();
-        for (Method m : methods) {
-            if (m.getName().equals( "doOutput" )) {
-                if ((TurbineAccessControlList)data.getACL() == null) return false;
-                return AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList)data.getACL(), ConditionType.ANY );
+        for (Method m : methods)
+        {
+            if (m.getName().equals( "doOutput" ))
+            {
+                if (data.getACL() == null)
+                {
+                    return false;
+                }
+                return AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList<?>)data.getACL(), ConditionType.ANY );
             }
         }
         return false;

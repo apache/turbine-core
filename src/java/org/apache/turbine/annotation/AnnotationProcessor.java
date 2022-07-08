@@ -529,7 +529,7 @@ public class AnnotationProcessor
         else
         {
             Class<?>[] classes = method.getParameterTypes();
-            for (Class c : classes)
+            for (Class<?> c : classes)
             {
                 Field[] fields = c.getFields();
                 // Check for fields SERVICE_NAME and ROLE
