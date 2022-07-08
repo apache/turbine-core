@@ -19,10 +19,9 @@ package org.apache.turbine.services.schedule;
  * under the License.
  */
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.apache.turbine.util.TurbineException;
 
@@ -39,32 +38,25 @@ public class JobQueue<J extends JobEntry>
     /**
      * The queue of <code>JobEntry</code> objects.
      */
-    private Vector<J> queue = null;
+    private ConcurrentSkipListSet<J> queue = null;
 
     /**
      * Creates a new instance.
      */
     public JobQueue()
     {
-        queue = new Vector<>(10);
+        queue = new ConcurrentSkipListSet<J>((o1, o2) -> Long.compare(o1.getNextRuntime(), o2.getNextRuntime()));
     }
 
     /**
-     * Return the next job off the top of the queue, or <code>null</code> if
+     * Return the next job off the top of the queue and remove it from the queue, or <code>null</code> if
      * there are no jobs in the queue.
      *
      * @return The next job in the queue.
      */
     public J getNext()
     {
-        if (queue.size() > 0)
-        {
-            return queue.elementAt(0);
-        }
-        else
-        {
-            return null;
-        }
+        return queue.pollFirst();
     }
 
     /**
@@ -75,21 +67,16 @@ public class JobQueue<J extends JobEntry>
      */
     public J getJob(J je)
     {
-        int index = -1;
-
         if (je != null)
         {
-            index = queue.indexOf(je);
+            J job = queue.floor(je);
+            if (je.equals(job))
+            {
+                return job;
+            }
         }
 
-        if (index < 0)
-        {
-            return null;
-        }
-        else
-        {
-            return queue.elementAt(index);
-        }
+        return null;
     }
 
     /**
@@ -97,12 +84,11 @@ public class JobQueue<J extends JobEntry>
      *
      * @return A Vector of <code>JobEntry</code> objects.
      */
-    @SuppressWarnings("unchecked")
     public Vector<J> list()
     {
-        if (queue != null && queue.size() > 0)
+        if (!queue.isEmpty())
         {
-            return (Vector<J>) queue.clone();
+            return new Vector<>(queue);
         }
         else
         {
@@ -115,10 +101,9 @@ public class JobQueue<J extends JobEntry>
      *
      * @param je A JobEntry job.
      */
-    public synchronized void add(J je)
+    public void add(J je)
     {
-        queue.addElement(je);
-        sortQueue();
+        queue.add(je);
     }
 
     /**
@@ -127,14 +112,12 @@ public class JobQueue<J extends JobEntry>
      *
      * @param jobEntries A list of the <code>JobEntry</code> objects to load.
      */
-    public synchronized void batchLoad(List<J> jobEntries)
+    public void batchLoad(List<J> jobEntries)
     {
         if (jobEntries != null)
         {
             queue.addAll(jobEntries);
-            sortQueue();
         }
-
     }
 
     /**
@@ -142,10 +125,9 @@ public class JobQueue<J extends JobEntry>
      *
      * @param je A JobEntry with the job to remove.
      */
-    public synchronized void remove(J je)
+    public void remove(J je)
     {
-        queue.removeElement(je);
-        sortQueue();
+        queue.remove(je);
     }
 
     /**
@@ -154,12 +136,11 @@ public class JobQueue<J extends JobEntry>
      * @param je A JobEntry with the job to modify
      * @throws TurbineException if the runtime calculation fails
      */
-    public synchronized void modify(J je) throws TurbineException
+    public void modify(J je) throws TurbineException
     {
         remove(je);
         je.calcRunTime();
-        this.add(je);
-        sortQueue();
+        add(je);
     }
 
     /**
@@ -168,25 +149,9 @@ public class JobQueue<J extends JobEntry>
      * @param je A JobEntry to be updated.
      * @throws TurbineException a generic exception.
      */
-    public synchronized void updateQueue(J je)
+    public void updateQueue(J je)
             throws TurbineException
     {
-        je.calcRunTime();
-        sortQueue();
-    }
-
-    /**
-     * Re-sort the existing queue.  Consumers of this method should be
-     * <code>synchronized</code>.
-     */
-    private void sortQueue()
-    {
-        Comparator<J> aComparator = (o1, o2) -> {
-            Long time1 = Long.valueOf(o1.getNextRuntime());
-            Long time2 = Long.valueOf(o2.getNextRuntime());
-            return time1.compareTo(time2);
-        };
-
-        queue.sort(aComparator);
+        modify(je);
     }
 }
