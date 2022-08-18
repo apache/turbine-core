@@ -58,24 +58,41 @@ public class JobQueue<J extends JobEntry>
     {
         return queue.pollFirst();
     }
+    
+    /**
+     * Return the next job of the top of the queue or <code>null</code> if
+     * there are no jobs in the queue.
+     *
+     * @return The next job in the queue.
+     */
+    public J getFirst()
+    {
+        return !queue.isEmpty()? queue.first(): null;
+    }
 
     /**
      * Return a specific job.
      *
-     * @param je The JobEntry we are looking for.
+     * @param je The JobEntry we are looking for. Falls back to check job id, if job was not found.
      * @return A JobEntry.
      */
     public J getJob(J je)
     {
         if (je != null)
         {
-            J job = queue.floor(je);
-            if (je.equals(job))
+          J job = queue.floor(je);
+          if (je.equals(job))
+          {
+              return job;
+          }
+          for (J jobEntry : list())
             {
-                return job;
-            }
+                if (jobEntry.getJobId() == je.getJobId())
+                {
+                    return jobEntry;
+                }
+            } 
         }
-
         return null;
     }
 

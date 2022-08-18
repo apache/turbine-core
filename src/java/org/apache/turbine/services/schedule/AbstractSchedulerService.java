@@ -288,7 +288,8 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
             while (!Thread.interrupted())
             {
                 // Grab the next job off the queue.
-                JobEntry je = scheduleQueue.getNext();
+                //JobEntry je = scheduleQueue.getNext();
+                JobEntry je = scheduleQueue.getFirst();
 
                 if (je == null)
                 {
