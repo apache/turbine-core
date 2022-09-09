@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
-    <version>11</version>
+    <version>12-SNAPSHOT</version>
     <relativePath/>
   </parent>
   <artifactId>turbine</artifactId>
@@ -913,7 +913,7 @@
       <groupId>nl.basjes.parse.useragent</groupId>
       <artifactId>yauaa</artifactId>
       <!-- java 11 required for v6.1+ -->
-      <version>5.23</version>
+      <version>7.5.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
@@ -1304,7 +1304,7 @@
      <fulcrum.security>2.1.0</fulcrum.security>
     <fulcrum.yaafi>1.0.9-SNAPSHOT</fulcrum.yaafi>
     <torque.version>5.0</torque.version>
-    <jackson2.version>2.13.1</jackson2.version>
+    <jackson2.version>2.13.4</jackson2.version>
     <doclint>none</doclint>
     <docker.testcontainers.version>1.16.2</docker.testcontainers.version>
     <jacoco.skip>true</jacoco.skip>
