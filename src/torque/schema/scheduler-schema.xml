@@ -34,10 +34,10 @@
 
 <database name="default"
     defaultIdMethod="none"
-    xmlns="http://db.apache.org/torque/4.0/templates/database"
+    xmlns="http://db.apache.org/torque/5.0/templates/database"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://db.apache.org/torque/4.0/templates/database
-        http://db.apache.org/torque/4.0/templates/database.xsd">
+    xsi:schemaLocation="http://db.apache.org/torque/5.0/templates/database 
+        http://db.apache.org/torque/torque-5.0/documentation/orm-reference/database-5-0-strict.xsd">
 
 
   <table name="TURBINE_SCHEDULED_JOB" idMethod="idbroker" javaName="JobEntryTorque"

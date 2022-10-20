@@ -24,7 +24,15 @@
   </properties>
 
   <body>
-     <release version="5.1" date="in Git">
+     <release version="5.2-SNAPSHOT" date="in Git">
+       <action type="update" dev="gk">
+        Minor version update to Torque 5.1, Jackson to 2.14.0-rc2, docker-testcontainers to 1.17.5.
+      </action>
+      <action type="update" dev="gk">
+        Fix java.lang.NoSuchFieldError: DEFAULT_TIME_BETWEEN_EVICTION_RUNS. This field changed from being an long to a Duration in commons-pool2 v 2.10.0 and commons-dbcp2 v2.9.0.
+      </action>  
+    </release>
+     <release version="5.1" date="2021-11-23">
         <action type="update" dev="painter">
         Updated dependencies: yauaa to 5.23, commons-lang3 to 3.12, jython-standalone to 2.7.2
         Update turbine-parent 8 (released)
@@ -32,7 +40,7 @@
         <action type="update" dev="gk">
         Update yauaa to 5.21 ( CVE-2020-13956),  junit to 4.13.1 (CVE-2020-15250)
       </action>
-       <action type="add" dev="tv">
+     <action type="add" dev="tv">
         New service URL mapper implementation: render beautified URL and map parameters back when parsed.
       </action>
        <action type="update" dev="tv">

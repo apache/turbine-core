@@ -29,12 +29,13 @@
 <!-- @version $Id: id-table-schema.xml,v 1.2 2005/09/23 12:19:52 tvan Exp $ -->
 <!-- ==================================================================== -->
 
+               
 <database name="default"
     defaultIdMethod="none"
-    xmlns="http://db.apache.org/torque/4.0/templates/database"
+    xmlns="http://db.apache.org/torque/5.0/templates/database"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://db.apache.org/torque/4.0/templates/database
-        http://db.apache.org/torque/4.0/templates/database.xsd">
+    xsi:schemaLocation="http://db.apache.org/torque/5.0/templates/database 
+        http://db.apache.org/torque/torque-5.0/documentation/orm-reference/database-5-0-strict.xsd">
 
   <table name="ID_TABLE" idMethod="idbroker">
     <column name="ID_TABLE_ID" required="true" primaryKey="true" type="INTEGER"/>
