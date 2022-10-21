@@ -1315,6 +1315,19 @@
     <jacoco.skip>true</jacoco.skip>
     <argLine />
   </properties>
+  
+  
+    <!-- to allow snapshot parents:  https://issues.apache.org/jira/browse/INFRA-15815  jenkins settings.xml is unchanged from beginning -->
+    <repositories>
+      <repository>
+        <id>apache.snapshots</id>
+        <name>Apache Snapshot Repository</name>
+        <url>https://repository.apache.org/snapshots</url>
+        <releases>
+          <enabled>false</enabled>
+        </releases>
+      </repository>
+    </repositories>
 
 </project>
 
