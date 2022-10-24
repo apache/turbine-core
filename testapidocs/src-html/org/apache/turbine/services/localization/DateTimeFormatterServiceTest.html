@@ -1,0 +1,382 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<main role="main">
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span><a id="line.1">package org.apache.turbine.services.localization;</a>
+<span class="sourceLineNo">002</span><a id="line.2"></a>
+<span class="sourceLineNo">003</span><a id="line.3">/*</a>
+<span class="sourceLineNo">004</span><a id="line.4"> * Licensed to the Apache Software Foundation (ASF) under one</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * or more contributor license agreements.  See the NOTICE file</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * distributed with this work for additional information</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * regarding copyright ownership.  The ASF licenses this file</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * to you under the Apache License, Version 2.0 (the</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * "License"); you may not use this file except in compliance</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * with the License.  You may obtain a copy of the License at</a>
+<span class="sourceLineNo">011</span><a id="line.11"> *</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *   http://www.apache.org/licenses/LICENSE-2.0</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *</a>
+<span class="sourceLineNo">014</span><a id="line.14"> * Unless required by applicable law or agreed to in writing,</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * software distributed under the License is distributed on an</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * KIND, either express or implied.  See the License for the</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * specific language governing permissions and limitations</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * under the License.</a>
+<span class="sourceLineNo">020</span><a id="line.20"> */</a>
+<span class="sourceLineNo">021</span><a id="line.21"></a>
+<span class="sourceLineNo">022</span><a id="line.22">import static org.junit.jupiter.api.Assertions.assertEquals;</a>
+<span class="sourceLineNo">023</span><a id="line.23">import static org.junit.jupiter.api.Assertions.assertNotNull;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import static org.junit.jupiter.api.DynamicContainer.dynamicContainer;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import static org.junit.jupiter.api.DynamicTest.dynamicTest;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import static org.mockito.Mockito.mock;</a>
+<span class="sourceLineNo">027</span><a id="line.27"></a>
+<span class="sourceLineNo">028</span><a id="line.28">import java.time.Instant;</a>
+<span class="sourceLineNo">029</span><a id="line.29">import java.time.LocalDateTime;</a>
+<span class="sourceLineNo">030</span><a id="line.30">import java.time.ZoneId;</a>
+<span class="sourceLineNo">031</span><a id="line.31">import java.time.ZonedDateTime;</a>
+<span class="sourceLineNo">032</span><a id="line.32">import java.time.format.DateTimeFormatter;</a>
+<span class="sourceLineNo">033</span><a id="line.33">import java.time.temporal.ChronoField;</a>
+<span class="sourceLineNo">034</span><a id="line.34">import java.time.temporal.ChronoUnit;</a>
+<span class="sourceLineNo">035</span><a id="line.35">import java.time.temporal.TemporalAccessor;</a>
+<span class="sourceLineNo">036</span><a id="line.36">import java.util.stream.Stream;</a>
+<span class="sourceLineNo">037</span><a id="line.37"></a>
+<span class="sourceLineNo">038</span><a id="line.38">import javax.servlet.ServletConfig;</a>
+<span class="sourceLineNo">039</span><a id="line.39">import javax.servlet.http.HttpServletRequest;</a>
+<span class="sourceLineNo">040</span><a id="line.40">import javax.servlet.http.HttpServletResponse;</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">import org.apache.fulcrum.parser.DefaultParameterParser;</a>
+<span class="sourceLineNo">043</span><a id="line.43">import org.apache.turbine.annotation.AnnotationProcessor;</a>
+<span class="sourceLineNo">044</span><a id="line.44">import org.apache.turbine.annotation.TurbineService;</a>
+<span class="sourceLineNo">045</span><a id="line.45">import org.apache.turbine.services.pull.PullService;</a>
+<span class="sourceLineNo">046</span><a id="line.46">import org.apache.turbine.services.pull.util.DateTimeFormatterTool;</a>
+<span class="sourceLineNo">047</span><a id="line.47">import org.apache.turbine.services.rundata.RunDataService;</a>
+<span class="sourceLineNo">048</span><a id="line.48">import org.apache.turbine.services.velocity.VelocityService;</a>
+<span class="sourceLineNo">049</span><a id="line.49">import org.apache.turbine.test.BaseTestCase;</a>
+<span class="sourceLineNo">050</span><a id="line.50">import org.apache.turbine.util.RunData;</a>
+<span class="sourceLineNo">051</span><a id="line.51">import org.apache.turbine.util.TurbineConfig;</a>
+<span class="sourceLineNo">052</span><a id="line.52">import org.apache.velocity.context.Context;</a>
+<span class="sourceLineNo">053</span><a id="line.53">import org.junit.jupiter.api.AfterAll;</a>
+<span class="sourceLineNo">054</span><a id="line.54">import org.junit.jupiter.api.Assertions;</a>
+<span class="sourceLineNo">055</span><a id="line.55">import org.junit.jupiter.api.BeforeAll;</a>
+<span class="sourceLineNo">056</span><a id="line.56">import org.junit.jupiter.api.DynamicNode;</a>
+<span class="sourceLineNo">057</span><a id="line.57">import org.junit.jupiter.api.MethodOrderer;</a>
+<span class="sourceLineNo">058</span><a id="line.58">import org.junit.jupiter.api.Order;</a>
+<span class="sourceLineNo">059</span><a id="line.59">import org.junit.jupiter.api.Test;</a>
+<span class="sourceLineNo">060</span><a id="line.60">import org.junit.jupiter.api.TestFactory;</a>
+<span class="sourceLineNo">061</span><a id="line.61">import org.junit.jupiter.api.TestInstance;</a>
+<span class="sourceLineNo">062</span><a id="line.62">import org.junit.jupiter.api.TestMethodOrder;</a>
+<span class="sourceLineNo">063</span><a id="line.63"></a>
+<span class="sourceLineNo">064</span><a id="line.64">/**</a>
+<span class="sourceLineNo">065</span><a id="line.65"> * Test class for DateTimeFormatter.</a>
+<span class="sourceLineNo">066</span><a id="line.66"> *</a>
+<span class="sourceLineNo">067</span><a id="line.67"> */</a>
+<span class="sourceLineNo">068</span><a id="line.68">@TestInstance(TestInstance.Lifecycle.PER_CLASS)</a>
+<span class="sourceLineNo">069</span><a id="line.69">@TestMethodOrder(MethodOrderer.OrderAnnotation.class)</a>
+<span class="sourceLineNo">070</span><a id="line.70">public class DateTimeFormatterServiceTest extends BaseTestCase {</a>
+<span class="sourceLineNo">071</span><a id="line.71"></a>
+<span class="sourceLineNo">072</span><a id="line.72">    @TurbineService</a>
+<span class="sourceLineNo">073</span><a id="line.73">    private DateTimeFormatterService df;</a>
+<span class="sourceLineNo">074</span><a id="line.74"></a>
+<span class="sourceLineNo">075</span><a id="line.75">    private TurbineConfig tc = null;</a>
+<span class="sourceLineNo">076</span><a id="line.76"></a>
+<span class="sourceLineNo">077</span><a id="line.77">    @TurbineService</a>
+<span class="sourceLineNo">078</span><a id="line.78">    private PullService pullService;</a>
+<span class="sourceLineNo">079</span><a id="line.79"></a>
+<span class="sourceLineNo">080</span><a id="line.80">    DateTimeFormatterTool dateTimeFormatterTool;</a>
+<span class="sourceLineNo">081</span><a id="line.81"></a>
+<span class="sourceLineNo">082</span><a id="line.82">    @TurbineService</a>
+<span class="sourceLineNo">083</span><a id="line.83">    private VelocityService vs = null;</a>
+<span class="sourceLineNo">084</span><a id="line.84"></a>
+<span class="sourceLineNo">085</span><a id="line.85">    @TurbineService</a>
+<span class="sourceLineNo">086</span><a id="line.86">    RunDataService runDataService = null;</a>
+<span class="sourceLineNo">087</span><a id="line.87"></a>
+<span class="sourceLineNo">088</span><a id="line.88">    @BeforeAll</a>
+<span class="sourceLineNo">089</span><a id="line.89">    public void setup() throws Exception</a>
+<span class="sourceLineNo">090</span><a id="line.90">    {</a>
+<span class="sourceLineNo">091</span><a id="line.91">        // required to initialize defaults</a>
+<span class="sourceLineNo">092</span><a id="line.92">        tc = new TurbineConfig(</a>
+<span class="sourceLineNo">093</span><a id="line.93">                        ".",</a>
+<span class="sourceLineNo">094</span><a id="line.94">                        "/conf/test/CompleteTurbineResources.properties");</a>
+<span class="sourceLineNo">095</span><a id="line.95">        tc.initialize();</a>
+<span class="sourceLineNo">096</span><a id="line.96"></a>
+<span class="sourceLineNo">097</span><a id="line.97">        AnnotationProcessor.process(this);</a>
+<span class="sourceLineNo">098</span><a id="line.98"></a>
+<span class="sourceLineNo">099</span><a id="line.99">        assertNotNull(pullService);</a>
+<span class="sourceLineNo">100</span><a id="line.100">        assertNotNull(vs);</a>
+<span class="sourceLineNo">101</span><a id="line.101">    }</a>
+<span class="sourceLineNo">102</span><a id="line.102"></a>
+<span class="sourceLineNo">103</span><a id="line.103">    private RunData getRunData() throws Exception</a>
+<span class="sourceLineNo">104</span><a id="line.104">    {</a>
+<span class="sourceLineNo">105</span><a id="line.105">        ServletConfig config = mock(ServletConfig.class);</a>
+<span class="sourceLineNo">106</span><a id="line.106">        HttpServletRequest request = getMockRequest();</a>
+<span class="sourceLineNo">107</span><a id="line.107">        HttpServletResponse response = mock(HttpServletResponse.class);</a>
+<span class="sourceLineNo">108</span><a id="line.108">        RunData runData = runDataService.getRunData(request, response, config);</a>
+<span class="sourceLineNo">109</span><a id="line.109">        assertEquals(DefaultParameterParser.class, runData.getParameters()</a>
+<span class="sourceLineNo">110</span><a id="line.110">                .getClass(), "Verify we are using Fulcrum parameter parser");</a>
+<span class="sourceLineNo">111</span><a id="line.111">        return runData;</a>
+<span class="sourceLineNo">112</span><a id="line.112">    }</a>
+<span class="sourceLineNo">113</span><a id="line.113"></a>
+<span class="sourceLineNo">114</span><a id="line.114">    @AfterAll</a>
+<span class="sourceLineNo">115</span><a id="line.115">    public void tearDown()</a>
+<span class="sourceLineNo">116</span><a id="line.116">    {</a>
+<span class="sourceLineNo">117</span><a id="line.117">        vs.shutdown();</a>
+<span class="sourceLineNo">118</span><a id="line.118">        tc.dispose();</a>
+<span class="sourceLineNo">119</span><a id="line.119">    }</a>
+<span class="sourceLineNo">120</span><a id="line.120"></a>
+<span class="sourceLineNo">121</span><a id="line.121">    /*</a>
+<span class="sourceLineNo">122</span><a id="line.122">     * Class under test for String format(Date, String)</a>
+<span class="sourceLineNo">123</span><a id="line.123">     */</a>
+<span class="sourceLineNo">124</span><a id="line.124">    @Order(1)</a>
+<span class="sourceLineNo">125</span><a id="line.125">    @Test</a>
+<span class="sourceLineNo">126</span><a id="line.126">    void testTool() throws Exception</a>
+<span class="sourceLineNo">127</span><a id="line.127">    {</a>
+<span class="sourceLineNo">128</span><a id="line.128">        RunData rundata = getRunData();</a>
+<span class="sourceLineNo">129</span><a id="line.129">        Context requestContext = vs.getContext(rundata);</a>
+<span class="sourceLineNo">130</span><a id="line.130">        assertNotNull(requestContext);</a>
+<span class="sourceLineNo">131</span><a id="line.131">        pullService.populateContext(requestContext, rundata);</a>
+<span class="sourceLineNo">132</span><a id="line.132"></a>
+<span class="sourceLineNo">133</span><a id="line.133">        // taking from request context</a>
+<span class="sourceLineNo">134</span><a id="line.134">        dateTimeFormatterTool = (DateTimeFormatterTool) requestContext.get("dateTimeFormatter");</a>
+<span class="sourceLineNo">135</span><a id="line.135">        assertNotNull(dateTimeFormatterTool);</a>
+<span class="sourceLineNo">136</span><a id="line.136">    }</a>
+<span class="sourceLineNo">137</span><a id="line.137"></a>
+<span class="sourceLineNo">138</span><a id="line.138">    @Order(2)</a>
+<span class="sourceLineNo">139</span><a id="line.139">    @TestFactory</a>
+<span class="sourceLineNo">140</span><a id="line.140">    Stream&lt;DynamicNode&gt; testDateTimeFormatterInstances() {</a>
+<span class="sourceLineNo">141</span><a id="line.141">        // Stream of DateTimeFormatterInterface to check</a>
+<span class="sourceLineNo">142</span><a id="line.142">        Stream&lt;DateTimeFormatterInterface&gt; inputStream = Stream.of(df,dateTimeFormatterTool);</a>
+<span class="sourceLineNo">143</span><a id="line.143">        // Executes tests based on the current input value.</a>
+<span class="sourceLineNo">144</span><a id="line.144">        return inputStream.map(dtf -&gt; dynamicContainer(</a>
+<span class="sourceLineNo">145</span><a id="line.145">                "Test " + dtf + " in factory container:",</a>
+<span class="sourceLineNo">146</span><a id="line.146">                Stream.of(</a>
+<span class="sourceLineNo">147</span><a id="line.147">                        dynamicTest("test formatDateString",() -&gt; formatDateString(dtf) ),</a>
+<span class="sourceLineNo">148</span><a id="line.148">                        dynamicTest("test formatZonedDateString",() -&gt; formatZonedDateString(dtf) ),</a>
+<span class="sourceLineNo">149</span><a id="line.149">                        dynamicTest("test defaultMapFromInstant",() -&gt; defaultMapFromInstant(dtf) ),</a>
+<span class="sourceLineNo">150</span><a id="line.150">                        dynamicTest("test defaultMapInstant",() -&gt; defaultMapInstant(dtf) ),</a>
+<span class="sourceLineNo">151</span><a id="line.151">                        dynamicTest("test mapDateStringNullString", () -&gt; mapDateStringNullString(dtf)),</a>
+<span class="sourceLineNo">152</span><a id="line.152">                        dynamicTest("test mapDateStringEmptyString",() -&gt; mapDateStringEmptyString(dtf)),</a>
+<span class="sourceLineNo">153</span><a id="line.153">                        dynamicTest("test formatDateStringNullFormat",() -&gt; formatDateStringNullFormat(dtf)),</a>
+<span class="sourceLineNo">154</span><a id="line.154">                        dynamicTest("test formatDateStringNullString",() -&gt; formatDateStringNullString(dtf)),</a>
+<span class="sourceLineNo">155</span><a id="line.155">                        dynamicTest("test formatDateStringEmptyString",() -&gt; formatDateStringEmptyString(dtf))</a>
+<span class="sourceLineNo">156</span><a id="line.156">                ))</a>
+<span class="sourceLineNo">157</span><a id="line.157">        );</a>
+<span class="sourceLineNo">158</span><a id="line.158">        // Or return a stream of dynamic tests instead of Dynamic nodes,</a>
+<span class="sourceLineNo">159</span><a id="line.159">        // but this requires Function&lt;DateTimeFormatterInterface, String&gt; displayNameGenerator and</a>
+<span class="sourceLineNo">160</span><a id="line.160">        // e.g. ThrowingConsumer&lt;DateTimeFormatterInterface&gt; testExecutor = dtf</a>
+<span class="sourceLineNo">161</span><a id="line.161">        // return DynamicTest.stream(inputStream, displayNameGenerator, testExecutor);</a>
+<span class="sourceLineNo">162</span><a id="line.162">    }</a>
+<span class="sourceLineNo">163</span><a id="line.163"></a>
+<span class="sourceLineNo">164</span><a id="line.164">    void formatDateString(DateTimeFormatterInterface dateTime)</a>
+<span class="sourceLineNo">165</span><a id="line.165">    {</a>
+<span class="sourceLineNo">166</span><a id="line.166">        LocalDateTime ldt = LocalDateTime.now();</a>
+<span class="sourceLineNo">167</span><a id="line.167">        int day = ldt.get(ChronoField.DAY_OF_MONTH);</a>
+<span class="sourceLineNo">168</span><a id="line.168">        int month = ldt.get(ChronoField.MONTH_OF_YEAR); // one based</a>
+<span class="sourceLineNo">169</span><a id="line.169">        int year = ldt.get(ChronoField.YEAR);</a>
+<span class="sourceLineNo">170</span><a id="line.170"></a>
+<span class="sourceLineNo">171</span><a id="line.171">        String dayString = (day &lt; 10 ? "0" : "") + day;</a>
+<span class="sourceLineNo">172</span><a id="line.172">        String monthString = (month &lt; 10 ? "0" : "") + month;</a>
+<span class="sourceLineNo">173</span><a id="line.173">        String ddmmyyyy = dayString + "/" + monthString + "/" + year;</a>
+<span class="sourceLineNo">174</span><a id="line.174"></a>
+<span class="sourceLineNo">175</span><a id="line.175">        String mmddyyyy = "" + monthString + "/" + dayString + "/" + year;</a>
+<span class="sourceLineNo">176</span><a id="line.176"></a>
+<span class="sourceLineNo">177</span><a id="line.177">        assertEquals(ddmmyyyy,  dateTime.format(ldt, "dd/MM/yyyy"));</a>
+<span class="sourceLineNo">178</span><a id="line.178">        assertEquals(mmddyyyy, dateTime.format(ldt, "MM/dd/yyyy"));</a>
+<span class="sourceLineNo">179</span><a id="line.179">    }</a>
+<span class="sourceLineNo">180</span><a id="line.180"></a>
+<span class="sourceLineNo">181</span><a id="line.181">    void formatZonedDateString(DateTimeFormatterInterface dateTime)</a>
+<span class="sourceLineNo">182</span><a id="line.182">    {</a>
+<span class="sourceLineNo">183</span><a id="line.183">        ZonedDateTime zdt = ZonedDateTime.now();</a>
+<span class="sourceLineNo">184</span><a id="line.184">        int day = zdt.get(ChronoField.DAY_OF_MONTH);</a>
+<span class="sourceLineNo">185</span><a id="line.185">        int month = zdt.get(ChronoField.MONTH_OF_YEAR); // one based</a>
+<span class="sourceLineNo">186</span><a id="line.186">        int year = zdt.get(ChronoField.YEAR);</a>
+<span class="sourceLineNo">187</span><a id="line.187">        zdt = zdt.truncatedTo(ChronoUnit.MINUTES);</a>
+<span class="sourceLineNo">188</span><a id="line.188"></a>
+<span class="sourceLineNo">189</span><a id="line.189">        String dayString = (day &lt; 10 ? "0" : "") + day;</a>
+<span class="sourceLineNo">190</span><a id="line.190">        String monthString = (month &lt; 10 ? "0" : "") + month;</a>
+<span class="sourceLineNo">191</span><a id="line.191">        String ddmmyyyy = dayString + "/" + monthString + "/" + year;</a>
+<span class="sourceLineNo">192</span><a id="line.192">        Assertions.assertEquals(ddmmyyyy, df.format(zdt, "dd/MM/yyyy"));</a>
+<span class="sourceLineNo">193</span><a id="line.193"></a>
+<span class="sourceLineNo">194</span><a id="line.194">        int hours = zdt.get(ChronoField.HOUR_OF_DAY);</a>
+<span class="sourceLineNo">195</span><a id="line.195">        int mins = zdt.get(ChronoField.MINUTE_OF_HOUR);</a>
+<span class="sourceLineNo">196</span><a id="line.196">        int secs = zdt.get(ChronoField.SECOND_OF_MINUTE);</a>
+<span class="sourceLineNo">197</span><a id="line.197">        String hourString = (hours &lt; 10 ? "0" : "") + hours;</a>
+<span class="sourceLineNo">198</span><a id="line.198">        String minsString = (mins &lt; 10 ? "0" : "") + mins;</a>
+<span class="sourceLineNo">199</span><a id="line.199">        String secsString = (secs &lt; 10 ? "0" : "") + secs;</a>
+<span class="sourceLineNo">200</span><a id="line.200"></a>
+<span class="sourceLineNo">201</span><a id="line.201">        String zone = zdt.getZone().getId();</a>
+<span class="sourceLineNo">202</span><a id="line.202">        /* String offset = */ zdt.getOffset().getId();</a>
+<span class="sourceLineNo">203</span><a id="line.203">        // offset formatting not easy matchable, removed</a>
+<span class="sourceLineNo">204</span><a id="line.204">        String mmddyyyy =</a>
+<span class="sourceLineNo">205</span><a id="line.205">                "" + monthString + "/" + dayString + "/" + year + " " + hourString + ":" + minsString + ":" + secsString + " " + zone;</a>
+<span class="sourceLineNo">206</span><a id="line.206">        // zone + offset format, removed offset ZZZ</a>
+<span class="sourceLineNo">207</span><a id="line.207">        assertEquals(mmddyyyy, dateTime.format(zdt, "MM/dd/yyyy HH:mm:ss VV"));</a>
+<span class="sourceLineNo">208</span><a id="line.208">    }</a>
+<span class="sourceLineNo">209</span><a id="line.209"></a>
+<span class="sourceLineNo">210</span><a id="line.210">    void defaultMapFromInstant(DateTimeFormatterInterface dateTime)</a>
+<span class="sourceLineNo">211</span><a id="line.211">    {</a>
+<span class="sourceLineNo">212</span><a id="line.212">        DateTimeFormatter incomingFormat = DateTimeFormatter.ISO_DATE_TIME.withZone(ZoneId.systemDefault());</a>
+<span class="sourceLineNo">213</span><a id="line.213">        // may throws an DateTimeParseException</a>
+<span class="sourceLineNo">214</span><a id="line.214">        Instant now = Instant.now().truncatedTo(ChronoUnit.MINUTES);</a>
+<span class="sourceLineNo">215</span><a id="line.215">        String source = incomingFormat.format(now);</a>
+<span class="sourceLineNo">216</span><a id="line.216"></a>
+<span class="sourceLineNo">217</span><a id="line.217">        TemporalAccessor dateTimeFromInstant = incomingFormat.parse(source);</a>
+<span class="sourceLineNo">218</span><a id="line.218">        int day = dateTimeFromInstant.get(ChronoField.DAY_OF_MONTH);</a>
+<span class="sourceLineNo">219</span><a id="line.219">        int month = dateTimeFromInstant.get(ChronoField.MONTH_OF_YEAR); // one based</a>
+<span class="sourceLineNo">220</span><a id="line.220">        int year = dateTimeFromInstant.get(ChronoField.YEAR);</a>
+<span class="sourceLineNo">221</span><a id="line.221"></a>
+<span class="sourceLineNo">222</span><a id="line.222">        String dayString = (day &lt; 10 ? "0" : "") + day;</a>
+<span class="sourceLineNo">223</span><a id="line.223">        String monthString = (month &lt; 10 ? "0" : "") + month;</a>
+<span class="sourceLineNo">224</span><a id="line.224">        String mmddyyyy = "" + monthString + "/" + dayString + "/" + year;</a>
+<span class="sourceLineNo">225</span><a id="line.225">        assertEquals(mmddyyyy,  dateTime.mapFrom(source, incomingFormat));</a>
+<span class="sourceLineNo">226</span><a id="line.226">    }</a>
+<span class="sourceLineNo">227</span><a id="line.227"></a>
+<span class="sourceLineNo">228</span><a id="line.228">    void defaultMapInstant(DateTimeFormatterInterface dateTime)</a>
+<span class="sourceLineNo">229</span><a id="line.229">    {</a>
+<span class="sourceLineNo">230</span><a id="line.230">        String source = dateTime.format(Instant.now());</a>
+<span class="sourceLineNo">231</span><a id="line.231"></a>
+<span class="sourceLineNo">232</span><a id="line.232">        TemporalAccessor dateTimeFromInstant = dateTime.getDefaultFormat().parse(source);</a>
+<span class="sourceLineNo">233</span><a id="line.233"></a>
+<span class="sourceLineNo">234</span><a id="line.234">        int day = dateTimeFromInstant.get(ChronoField.DAY_OF_MONTH);</a>
+<span class="sourceLineNo">235</span><a id="line.235">        int month = dateTimeFromInstant.get(ChronoField.MONTH_OF_YEAR); // one based</a>
+<span class="sourceLineNo">236</span><a id="line.236">        int year = dateTimeFromInstant.get(ChronoField.YEAR);</a>
+<span class="sourceLineNo">237</span><a id="line.237"></a>
+<span class="sourceLineNo">238</span><a id="line.238">        String dayString = (day &lt; 10 ? "0" : "") + day;</a>
+<span class="sourceLineNo">239</span><a id="line.239">        String monthString = (month &lt; 10 ? "0" : "") + month;</a>
+<span class="sourceLineNo">240</span><a id="line.240">        String yyyymmdd = year + "-" + monthString + "-" + dayString;</a>
+<span class="sourceLineNo">241</span><a id="line.241"></a>
+<span class="sourceLineNo">242</span><a id="line.242">        // caution we are mapping from the DateTimeFormatterTool defaultFormat-pattern without time!</a>
+<span class="sourceLineNo">243</span><a id="line.243">        // ISO_DATE_TIME will throw an error:</a>
+<span class="sourceLineNo">244</span><a id="line.244">        // java.time.temporal.UnsupportedTemporalTypeException: Unsupported field: HourOfDay</a>
+<span class="sourceLineNo">245</span><a id="line.245">        DateTimeFormatter outgoingFormat = DateTimeFormatter.ISO_DATE.withZone(ZoneId.systemDefault());</a>
+<span class="sourceLineNo">246</span><a id="line.246">        Assertions.assertEquals(yyyymmdd, dateTime.mapTo(source, outgoingFormat));</a>
+<span class="sourceLineNo">247</span><a id="line.247"></a>
+<span class="sourceLineNo">248</span><a id="line.248">        outgoingFormat = DateTimeFormatter.ISO_LOCAL_DATE.withZone(ZoneId.systemDefault());</a>
+<span class="sourceLineNo">249</span><a id="line.249">        Assertions.assertEquals(yyyymmdd, dateTime.mapTo(source, outgoingFormat));</a>
+<span class="sourceLineNo">250</span><a id="line.250"></a>
+<span class="sourceLineNo">251</span><a id="line.251">        // ISO_OFFSET_DATE :  Unsupported field: OffsetSeconds</a>
+<span class="sourceLineNo">252</span><a id="line.252">        // ISO_INSTANT; Unsupported field: InstantSeconds</a>
+<span class="sourceLineNo">253</span><a id="line.253">        yyyymmdd = year + monthString + dayString;</a>
+<span class="sourceLineNo">254</span><a id="line.254">        outgoingFormat = DateTimeFormatter.BASIC_ISO_DATE.withZone(ZoneId.systemDefault());</a>
+<span class="sourceLineNo">255</span><a id="line.255">        assertEquals(yyyymmdd, dateTime.mapTo(source, outgoingFormat));</a>
+<span class="sourceLineNo">256</span><a id="line.256">    }</a>
+<span class="sourceLineNo">257</span><a id="line.257">    /*</a>
+<span class="sourceLineNo">258</span><a id="line.258">     * Class under test for String format(null, String)</a>
+<span class="sourceLineNo">259</span><a id="line.259">     */</a>
+<span class="sourceLineNo">260</span><a id="line.260">    void mapDateStringNullString(DateTimeFormatterInterface dateTime)</a>
+<span class="sourceLineNo">261</span><a id="line.261">    {</a>
+<span class="sourceLineNo">262</span><a id="line.262">        DateTimeFormatter outgoingFormat = DateTimeFormatter.ISO_INSTANT;</a>
+<span class="sourceLineNo">263</span><a id="line.263">        Assertions.assertEquals("",</a>
+<span class="sourceLineNo">264</span><a id="line.264">               dateTime.mapFrom(null, outgoingFormat), "null argument should produce an empty String");</a>
+<span class="sourceLineNo">265</span><a id="line.265">    }</a>
+<span class="sourceLineNo">266</span><a id="line.266"></a>
+<span class="sourceLineNo">267</span><a id="line.267">    /*</a>
+<span class="sourceLineNo">268</span><a id="line.268">     * Class under test for String format(Date, "")</a>
+<span class="sourceLineNo">269</span><a id="line.269">     */</a>
+<span class="sourceLineNo">270</span><a id="line.270">    void mapDateStringEmptyString(DateTimeFormatterInterface dateTime )</a>
+<span class="sourceLineNo">271</span><a id="line.271">    {</a>
+<span class="sourceLineNo">272</span><a id="line.272">        Instant today = Instant.now();</a>
+<span class="sourceLineNo">273</span><a id="line.273">        String todayFormatted = df.format(today);</a>
+<span class="sourceLineNo">274</span><a id="line.274">        Assertions.assertEquals("",</a>
+<span class="sourceLineNo">275</span><a id="line.275">                dateTime.mapFrom(todayFormatted, null), "Empty pattern should map to empty String");</a>
+<span class="sourceLineNo">276</span><a id="line.276">    }</a>
+<span class="sourceLineNo">277</span><a id="line.277"></a>
+<span class="sourceLineNo">278</span><a id="line.278">    /*</a>
+<span class="sourceLineNo">279</span><a id="line.279">     * Class under test for String format(null, String)</a>
+<span class="sourceLineNo">280</span><a id="line.280">     */</a>
+<span class="sourceLineNo">281</span><a id="line.281">    void formatDateStringNullString(DateTimeFormatterInterface dateTime )</a>
+<span class="sourceLineNo">282</span><a id="line.282">    {</a>
+<span class="sourceLineNo">283</span><a id="line.283">        Assertions.assertEquals("",</a>
+<span class="sourceLineNo">284</span><a id="line.284">               dateTime.format(null, "MM/dd/xyyyy"), "null argument should produce an empty String");</a>
+<span class="sourceLineNo">285</span><a id="line.285">    }</a>
+<span class="sourceLineNo">286</span><a id="line.286"></a>
+<span class="sourceLineNo">287</span><a id="line.287">    /*</a>
+<span class="sourceLineNo">288</span><a id="line.288">     * Class under test for String format(Date, "")</a>
+<span class="sourceLineNo">289</span><a id="line.289">     */</a>
+<span class="sourceLineNo">290</span><a id="line.290">    void formatDateStringEmptyString(DateTimeFormatterInterface dateTime)</a>
+<span class="sourceLineNo">291</span><a id="line.291">    {</a>
+<span class="sourceLineNo">292</span><a id="line.292">        Instant today = Instant.now();</a>
+<span class="sourceLineNo">293</span><a id="line.293">        Assertions.assertEquals("",</a>
+<span class="sourceLineNo">294</span><a id="line.294">               dateTime.format(today, ""), "Empty pattern should produce empty String");</a>
+<span class="sourceLineNo">295</span><a id="line.295">    }</a>
+<span class="sourceLineNo">296</span><a id="line.296"></a>
+<span class="sourceLineNo">297</span><a id="line.297">    /*</a>
+<span class="sourceLineNo">298</span><a id="line.298">     * Class under test for String format(Date, "")</a>
+<span class="sourceLineNo">299</span><a id="line.299">     */</a>
+<span class="sourceLineNo">300</span><a id="line.300"></a>
+<span class="sourceLineNo">301</span><a id="line.301">    void formatDateStringNullFormat(DateTimeFormatterInterface dateTime)</a>
+<span class="sourceLineNo">302</span><a id="line.302">    {</a>
+<span class="sourceLineNo">303</span><a id="line.303">        Instant today = Instant.now();</a>
+<span class="sourceLineNo">304</span><a id="line.304">        Assertions.assertEquals("",</a>
+<span class="sourceLineNo">305</span><a id="line.305">               dateTime.format(today, null), "null pattern should produce empty String");</a>
+<span class="sourceLineNo">306</span><a id="line.306">    }</a>
+<span class="sourceLineNo">307</span><a id="line.307"></a>
+<span class="sourceLineNo">308</span><a id="line.308">}</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</main>
+</body>
+</html>

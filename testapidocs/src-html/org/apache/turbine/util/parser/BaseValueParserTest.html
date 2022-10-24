@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="de">
+<html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
@@ -31,9 +31,9 @@
 <span class="sourceLineNo">022</span><a id="line.22"></a>
 <span class="sourceLineNo">023</span><a id="line.23"></a>
 <span class="sourceLineNo">024</span><a id="line.24">import static org.junit.Assert.assertEquals;</a>
-<span class="sourceLineNo">025</span><a id="line.25">import static org.junit.Assert.assertNull;</a>
-<span class="sourceLineNo">026</span><a id="line.26">import static org.junit.Assert.assertTrue;</a>
-<span class="sourceLineNo">027</span><a id="line.27">import static org.junit.Assert.assertFalse;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import static org.junit.Assert.assertFalse;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import static org.junit.Assert.assertNull;</a>
+<span class="sourceLineNo">027</span><a id="line.27">import static org.junit.Assert.assertTrue;</a>
 <span class="sourceLineNo">028</span><a id="line.28">import static org.junit.Assert.fail;</a>
 <span class="sourceLineNo">029</span><a id="line.29"></a>
 <span class="sourceLineNo">030</span><a id="line.30">import java.math.BigDecimal;</a>
@@ -129,13 +129,13 @@
 <span class="sourceLineNo">120</span><a id="line.120">        assertNull(result);</a>
 <span class="sourceLineNo">121</span><a id="line.121"></a>
 <span class="sourceLineNo">122</span><a id="line.122">        // default</a>
-<span class="sourceLineNo">123</span><a id="line.123">        result = parser.getByteObject("default", new Byte((byte)3));</a>
-<span class="sourceLineNo">124</span><a id="line.124">        assertEquals(result, new Byte((byte)3));</a>
+<span class="sourceLineNo">123</span><a id="line.123">        result = parser.getByteObject("default", Byte.valueOf((byte)3));</a>
+<span class="sourceLineNo">124</span><a id="line.124">        assertEquals(result, Byte.valueOf((byte)3));</a>
 <span class="sourceLineNo">125</span><a id="line.125"></a>
 <span class="sourceLineNo">126</span><a id="line.126">        // param exists</a>
 <span class="sourceLineNo">127</span><a id="line.127">        parser.add("exists", "1");</a>
 <span class="sourceLineNo">128</span><a id="line.128">        result = parser.getByteObject("exists");</a>
-<span class="sourceLineNo">129</span><a id="line.129">        assertEquals(result, new Byte((byte)1));</a>
+<span class="sourceLineNo">129</span><a id="line.129">        assertEquals(result, Byte.valueOf((byte)1));</a>
 <span class="sourceLineNo">130</span><a id="line.130"></a>
 <span class="sourceLineNo">131</span><a id="line.131">        // unparsable value</a>
 <span class="sourceLineNo">132</span><a id="line.132">        parser.add("unparsable", "a");</a>
@@ -195,13 +195,13 @@
 <span class="sourceLineNo">186</span><a id="line.186">        assertNull(result);</a>
 <span class="sourceLineNo">187</span><a id="line.187"></a>
 <span class="sourceLineNo">188</span><a id="line.188">        // default</a>
-<span class="sourceLineNo">189</span><a id="line.189">        result = parser.getIntObject("default", new Integer(3));</a>
-<span class="sourceLineNo">190</span><a id="line.190">        assertEquals(result, new Integer(3));</a>
+<span class="sourceLineNo">189</span><a id="line.189">        result = parser.getIntObject("default", Integer.valueOf(3));</a>
+<span class="sourceLineNo">190</span><a id="line.190">        assertEquals(result, Integer.valueOf(3));</a>
 <span class="sourceLineNo">191</span><a id="line.191"></a>
 <span class="sourceLineNo">192</span><a id="line.192">        // param exists</a>
 <span class="sourceLineNo">193</span><a id="line.193">        parser.add("exists", "1");</a>
 <span class="sourceLineNo">194</span><a id="line.194">        result = parser.getIntObject("exists");</a>
-<span class="sourceLineNo">195</span><a id="line.195">        assertEquals(result, new Integer(1));</a>
+<span class="sourceLineNo">195</span><a id="line.195">        assertEquals(result, Integer.valueOf(1));</a>
 <span class="sourceLineNo">196</span><a id="line.196"></a>
 <span class="sourceLineNo">197</span><a id="line.197">        // unparsable value</a>
 <span class="sourceLineNo">198</span><a id="line.198">        parser.add("unparsable", "a");</a>
@@ -213,7 +213,7 @@
 <span class="sourceLineNo">204</span><a id="line.204">        parser.add("array", "2");</a>
 <span class="sourceLineNo">205</span><a id="line.205">        parser.add("array", "3");</a>
 <span class="sourceLineNo">206</span><a id="line.206">        Integer arrayResult[] = parser.getIntObjects("array");</a>
-<span class="sourceLineNo">207</span><a id="line.207">        Integer compare[] = {new Integer(1), new Integer(2), new Integer(3)};</a>
+<span class="sourceLineNo">207</span><a id="line.207">        Integer compare[] = {Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3)};</a>
 <span class="sourceLineNo">208</span><a id="line.208">        assertEquals(arrayResult.length, compare.length);</a>
 <span class="sourceLineNo">209</span><a id="line.209">        for( int i=0; i&lt;compare.length; i++)</a>
 <span class="sourceLineNo">210</span><a id="line.210">        {</a>
@@ -225,7 +225,7 @@
 <span class="sourceLineNo">216</span><a id="line.216">        parser.add("array2", "a");</a>
 <span class="sourceLineNo">217</span><a id="line.217">        parser.add("array2", "3");</a>
 <span class="sourceLineNo">218</span><a id="line.218">        Integer arrayResult2[] = parser.getIntObjects("array2");</a>
-<span class="sourceLineNo">219</span><a id="line.219">        Integer compare2[] = {new Integer(1), null, new Integer(3)};</a>
+<span class="sourceLineNo">219</span><a id="line.219">        Integer compare2[] = {Integer.valueOf(1), null, Integer.valueOf(3)};</a>
 <span class="sourceLineNo">220</span><a id="line.220">        assertEquals(arrayResult2.length, compare2.length);</a>
 <span class="sourceLineNo">221</span><a id="line.221">        for( int i=0; i&lt;compare2.length; i++)</a>
 <span class="sourceLineNo">222</span><a id="line.222">        {</a>
@@ -285,13 +285,13 @@
 <span class="sourceLineNo">276</span><a id="line.276">        assertNull(result);</a>
 <span class="sourceLineNo">277</span><a id="line.277"></a>
 <span class="sourceLineNo">278</span><a id="line.278">        // default</a>
-<span class="sourceLineNo">279</span><a id="line.279">        result = parser.getFloatObject("default", new Float(3));</a>
-<span class="sourceLineNo">280</span><a id="line.280">        assertEquals(result, new Float(3));</a>
+<span class="sourceLineNo">279</span><a id="line.279">        result = parser.getFloatObject("default", Float.valueOf(3));</a>
+<span class="sourceLineNo">280</span><a id="line.280">        assertEquals(result, Float.valueOf(3));</a>
 <span class="sourceLineNo">281</span><a id="line.281"></a>
 <span class="sourceLineNo">282</span><a id="line.282">        // param exists</a>
 <span class="sourceLineNo">283</span><a id="line.283">        parser.add("exists", "1");</a>
 <span class="sourceLineNo">284</span><a id="line.284">        result = parser.getFloatObject("exists");</a>
-<span class="sourceLineNo">285</span><a id="line.285">        assertEquals(result, new Float(1));</a>
+<span class="sourceLineNo">285</span><a id="line.285">        assertEquals(result, Float.valueOf(1));</a>
 <span class="sourceLineNo">286</span><a id="line.286"></a>
 <span class="sourceLineNo">287</span><a id="line.287">        // unparsable value</a>
 <span class="sourceLineNo">288</span><a id="line.288">        parser.add("unparsable", "a");</a>
@@ -303,7 +303,7 @@
 <span class="sourceLineNo">294</span><a id="line.294">        parser.add("array", "2");</a>
 <span class="sourceLineNo">295</span><a id="line.295">        parser.add("array", "3");</a>
 <span class="sourceLineNo">296</span><a id="line.296">        Float arrayResult[] = parser.getFloatObjects("array");</a>
-<span class="sourceLineNo">297</span><a id="line.297">        Float compare[] = {new Float(1), new Float(2), new Float(3)};</a>
+<span class="sourceLineNo">297</span><a id="line.297">        Float compare[] = {Float.valueOf(1), Float.valueOf(2), Float.valueOf(3)};</a>
 <span class="sourceLineNo">298</span><a id="line.298">        assertEquals(arrayResult.length, compare.length);</a>
 <span class="sourceLineNo">299</span><a id="line.299">        for( int i=0; i&lt;compare.length; i++)</a>
 <span class="sourceLineNo">300</span><a id="line.300">        {</a>
@@ -315,7 +315,7 @@
 <span class="sourceLineNo">306</span><a id="line.306">        parser.add("array2", "a");</a>
 <span class="sourceLineNo">307</span><a id="line.307">        parser.add("array2", "3");</a>
 <span class="sourceLineNo">308</span><a id="line.308">        Float arrayResult2[] = parser.getFloatObjects("array2");</a>
-<span class="sourceLineNo">309</span><a id="line.309">        Float compare2[] = {new Float(1), null, new Float(3)};</a>
+<span class="sourceLineNo">309</span><a id="line.309">        Float compare2[] = {Float.valueOf(1), null, Float.valueOf(3)};</a>
 <span class="sourceLineNo">310</span><a id="line.310">        assertEquals(arrayResult2.length, compare2.length);</a>
 <span class="sourceLineNo">311</span><a id="line.311">        for( int i=0; i&lt;compare2.length; i++)</a>
 <span class="sourceLineNo">312</span><a id="line.312">        {</a>
@@ -375,13 +375,13 @@
 <span class="sourceLineNo">366</span><a id="line.366">        assertNull(result);</a>
 <span class="sourceLineNo">367</span><a id="line.367"></a>
 <span class="sourceLineNo">368</span><a id="line.368">        // default</a>
-<span class="sourceLineNo">369</span><a id="line.369">        result = parser.getDoubleObject("default", new Double(3));</a>
-<span class="sourceLineNo">370</span><a id="line.370">        assertEquals(result, new Double(3));</a>
+<span class="sourceLineNo">369</span><a id="line.369">        result = parser.getDoubleObject("default", Double.valueOf(3));</a>
+<span class="sourceLineNo">370</span><a id="line.370">        assertEquals(result, Double.valueOf(3));</a>
 <span class="sourceLineNo">371</span><a id="line.371"></a>
 <span class="sourceLineNo">372</span><a id="line.372">        // param exists</a>
 <span class="sourceLineNo">373</span><a id="line.373">        parser.add("exists", "1");</a>
 <span class="sourceLineNo">374</span><a id="line.374">        result = parser.getDoubleObject("exists");</a>
-<span class="sourceLineNo">375</span><a id="line.375">        assertEquals(result, new Double(1));</a>
+<span class="sourceLineNo">375</span><a id="line.375">        assertEquals(result, Double.valueOf(1));</a>
 <span class="sourceLineNo">376</span><a id="line.376"></a>
 <span class="sourceLineNo">377</span><a id="line.377">        // unparsable value</a>
 <span class="sourceLineNo">378</span><a id="line.378">        parser.add("unparsable", "a");</a>
@@ -393,7 +393,7 @@
 <span class="sourceLineNo">384</span><a id="line.384">        parser.add("array", "2");</a>
 <span class="sourceLineNo">385</span><a id="line.385">        parser.add("array", "3");</a>
 <span class="sourceLineNo">386</span><a id="line.386">        Double arrayResult[] = parser.getDoubleObjects("array");</a>
-<span class="sourceLineNo">387</span><a id="line.387">        Double compare[] = {new Double(1), new Double(2), new Double(3)};</a>
+<span class="sourceLineNo">387</span><a id="line.387">        Double compare[] = {Double.valueOf(1), Double.valueOf(2), Double.valueOf(3)};</a>
 <span class="sourceLineNo">388</span><a id="line.388">        assertEquals(arrayResult.length, compare.length);</a>
 <span class="sourceLineNo">389</span><a id="line.389">        for( int i=0; i&lt;compare.length; i++)</a>
 <span class="sourceLineNo">390</span><a id="line.390">        {</a>
@@ -405,7 +405,7 @@
 <span class="sourceLineNo">396</span><a id="line.396">        parser.add("array2", "a");</a>
 <span class="sourceLineNo">397</span><a id="line.397">        parser.add("array2", "3");</a>
 <span class="sourceLineNo">398</span><a id="line.398">        Double arrayResult2[] = parser.getDoubleObjects("array2");</a>
-<span class="sourceLineNo">399</span><a id="line.399">        Double compare2[] = {new Double(1), null, new Double(3)};</a>
+<span class="sourceLineNo">399</span><a id="line.399">        Double compare2[] = {Double.valueOf(1), null, Double.valueOf(3)};</a>
 <span class="sourceLineNo">400</span><a id="line.400">        assertEquals(arrayResult2.length, compare2.length);</a>
 <span class="sourceLineNo">401</span><a id="line.401">        for( int i=0; i&lt;compare2.length; i++)</a>
 <span class="sourceLineNo">402</span><a id="line.402">        {</a>
@@ -465,13 +465,13 @@
 <span class="sourceLineNo">456</span><a id="line.456">        assertNull(result);</a>
 <span class="sourceLineNo">457</span><a id="line.457"></a>
 <span class="sourceLineNo">458</span><a id="line.458">        // default</a>
-<span class="sourceLineNo">459</span><a id="line.459">        result = parser.getLongObject("default", new Long(3));</a>
-<span class="sourceLineNo">460</span><a id="line.460">        assertEquals(result, new Long(3));</a>
+<span class="sourceLineNo">459</span><a id="line.459">        result = parser.getLongObject("default", Long.valueOf(3));</a>
+<span class="sourceLineNo">460</span><a id="line.460">        assertEquals(result, Long.valueOf(3));</a>
 <span class="sourceLineNo">461</span><a id="line.461"></a>
 <span class="sourceLineNo">462</span><a id="line.462">        // param exists</a>
 <span class="sourceLineNo">463</span><a id="line.463">        parser.add("exists", "1");</a>
 <span class="sourceLineNo">464</span><a id="line.464">        result = parser.getLongObject("exists");</a>
-<span class="sourceLineNo">465</span><a id="line.465">        assertEquals(result, new Long(1));</a>
+<span class="sourceLineNo">465</span><a id="line.465">        assertEquals(result, Long.valueOf(1));</a>
 <span class="sourceLineNo">466</span><a id="line.466"></a>
 <span class="sourceLineNo">467</span><a id="line.467">        // unparsable value</a>
 <span class="sourceLineNo">468</span><a id="line.468">        parser.add("unparsable", "a");</a>
@@ -483,7 +483,7 @@
 <span class="sourceLineNo">474</span><a id="line.474">        parser.add("array", "2");</a>
 <span class="sourceLineNo">475</span><a id="line.475">        parser.add("array", "3");</a>
 <span class="sourceLineNo">476</span><a id="line.476">        Long arrayResult[] = parser.getLongObjects("array");</a>
-<span class="sourceLineNo">477</span><a id="line.477">        Long compare[] = {new Long(1), new Long(2), new Long(3)};</a>
+<span class="sourceLineNo">477</span><a id="line.477">        Long compare[] = {Long.valueOf(1), Long.valueOf(2), Long.valueOf(3)};</a>
 <span class="sourceLineNo">478</span><a id="line.478">        assertEquals(arrayResult.length, compare.length);</a>
 <span class="sourceLineNo">479</span><a id="line.479">        for( int i=0; i&lt;compare.length; i++)</a>
 <span class="sourceLineNo">480</span><a id="line.480">        {</a>
@@ -495,7 +495,7 @@
 <span class="sourceLineNo">486</span><a id="line.486">        parser.add("array2", "a");</a>
 <span class="sourceLineNo">487</span><a id="line.487">        parser.add("array2", "3");</a>
 <span class="sourceLineNo">488</span><a id="line.488">        Long arrayResult2[] = parser.getLongObjects("array2");</a>
-<span class="sourceLineNo">489</span><a id="line.489">        Long compare2[] = {new Long(1), null, new Long(3)};</a>
+<span class="sourceLineNo">489</span><a id="line.489">        Long compare2[] = {Long.valueOf(1), null, Long.valueOf(3)};</a>
 <span class="sourceLineNo">490</span><a id="line.490">        assertEquals(arrayResult2.length, compare2.length);</a>
 <span class="sourceLineNo">491</span><a id="line.491">        for( int i=0; i&lt;compare2.length; i++)</a>
 <span class="sourceLineNo">492</span><a id="line.492">        {</a>

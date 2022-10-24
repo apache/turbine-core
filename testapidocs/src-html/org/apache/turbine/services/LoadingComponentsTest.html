@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="de">
+<html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
@@ -40,139 +40,151 @@
 <span class="sourceLineNo">031</span><a id="line.31">import org.apache.fulcrum.intake.IntakeService;</a>
 <span class="sourceLineNo">032</span><a id="line.32">import org.apache.fulcrum.localization.LocalizationService;</a>
 <span class="sourceLineNo">033</span><a id="line.33">import org.apache.fulcrum.mimetype.MimeTypeService;</a>
-<span class="sourceLineNo">034</span><a id="line.34">import org.apache.turbine.services.avaloncomponent.AvalonComponentService;</a>
-<span class="sourceLineNo">035</span><a id="line.35">import org.apache.turbine.test.BaseTestCase;</a>
-<span class="sourceLineNo">036</span><a id="line.36">import org.apache.turbine.util.TurbineConfig;</a>
-<span class="sourceLineNo">037</span><a id="line.37">import org.junit.AfterClass;</a>
-<span class="sourceLineNo">038</span><a id="line.38">import org.junit.BeforeClass;</a>
-<span class="sourceLineNo">039</span><a id="line.39">import org.junit.Test;</a>
-<span class="sourceLineNo">040</span><a id="line.40"></a>
-<span class="sourceLineNo">041</span><a id="line.41">/**</a>
-<span class="sourceLineNo">042</span><a id="line.42"> * Unit test for verifing that we can load all the appropriate components from the</a>
-<span class="sourceLineNo">043</span><a id="line.43"> * appropriate Container.  For now that is just ECM (AvalonComponentService)</a>
-<span class="sourceLineNo">044</span><a id="line.44"> * but in the future with mixed containers there could be multiple.</a>
-<span class="sourceLineNo">045</span><a id="line.45"> *</a>
-<span class="sourceLineNo">046</span><a id="line.46"> * @author &lt;a href="mailto:epugh@upstate.com"&gt;Eric Pugh&lt;/a&gt;</a>
-<span class="sourceLineNo">047</span><a id="line.47"> * @author &lt;a href="mailto:sgoeschl@apache.org"&gt;Siegfried Goeschl&lt;/a&gt;</a>
-<span class="sourceLineNo">048</span><a id="line.48"> * @version $Id$</a>
-<span class="sourceLineNo">049</span><a id="line.49"> */</a>
-<span class="sourceLineNo">050</span><a id="line.50">public class LoadingComponentsTest extends BaseTestCase</a>
-<span class="sourceLineNo">051</span><a id="line.51">{</a>
-<span class="sourceLineNo">052</span><a id="line.52">    private static TurbineConfig tc = null;</a>
-<span class="sourceLineNo">053</span><a id="line.53"></a>
-<span class="sourceLineNo">054</span><a id="line.54">    @BeforeClass</a>
-<span class="sourceLineNo">055</span><a id="line.55">    public static void setUp() throws Exception</a>
-<span class="sourceLineNo">056</span><a id="line.56">    {</a>
-<span class="sourceLineNo">057</span><a id="line.57">        tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");</a>
-<span class="sourceLineNo">058</span><a id="line.58">        tc.initialize();</a>
-<span class="sourceLineNo">059</span><a id="line.59">    }</a>
-<span class="sourceLineNo">060</span><a id="line.60">    @AfterClass</a>
-<span class="sourceLineNo">061</span><a id="line.61">    public static void tearDown() throws Exception</a>
+<span class="sourceLineNo">034</span><a id="line.34">import org.apache.turbine.annotation.AnnotationProcessor;</a>
+<span class="sourceLineNo">035</span><a id="line.35">import org.apache.turbine.annotation.TurbineService;</a>
+<span class="sourceLineNo">036</span><a id="line.36">import org.apache.turbine.services.avaloncomponent.AvalonComponentService;</a>
+<span class="sourceLineNo">037</span><a id="line.37">import org.apache.turbine.test.BaseTestCase;</a>
+<span class="sourceLineNo">038</span><a id="line.38">import org.apache.turbine.util.TurbineConfig;</a>
+<span class="sourceLineNo">039</span><a id="line.39">import org.apache.turbine.util.TurbineException;</a>
+<span class="sourceLineNo">040</span><a id="line.40">import org.junit.AfterClass;</a>
+<span class="sourceLineNo">041</span><a id="line.41">import org.junit.BeforeClass;</a>
+<span class="sourceLineNo">042</span><a id="line.42">import org.junit.Test;</a>
+<span class="sourceLineNo">043</span><a id="line.43"></a>
+<span class="sourceLineNo">044</span><a id="line.44">/**</a>
+<span class="sourceLineNo">045</span><a id="line.45"> * Unit test for verifing that we can load all the appropriate components from the</a>
+<span class="sourceLineNo">046</span><a id="line.46"> * appropriate Container.  For now that is just ECM (AvalonComponentService)</a>
+<span class="sourceLineNo">047</span><a id="line.47"> * but in the future with mixed containers there could be multiple.</a>
+<span class="sourceLineNo">048</span><a id="line.48"> *</a>
+<span class="sourceLineNo">049</span><a id="line.49"> * @author &lt;a href="mailto:epugh@upstate.com"&gt;Eric Pugh&lt;/a&gt;</a>
+<span class="sourceLineNo">050</span><a id="line.50"> * @author &lt;a href="mailto:sgoeschl@apache.org"&gt;Siegfried Goeschl&lt;/a&gt;</a>
+<span class="sourceLineNo">051</span><a id="line.51"> * @version $Id$</a>
+<span class="sourceLineNo">052</span><a id="line.52"> */</a>
+<span class="sourceLineNo">053</span><a id="line.53">public class LoadingComponentsTest extends BaseTestCase</a>
+<span class="sourceLineNo">054</span><a id="line.54">{</a>
+<span class="sourceLineNo">055</span><a id="line.55">    private static TurbineConfig tc = null;</a>
+<span class="sourceLineNo">056</span><a id="line.56">    </a>
+<span class="sourceLineNo">057</span><a id="line.57">    @TurbineService</a>
+<span class="sourceLineNo">058</span><a id="line.58">    GlobalCacheService cacheService;</a>
+<span class="sourceLineNo">059</span><a id="line.59"></a>
+<span class="sourceLineNo">060</span><a id="line.60">    @BeforeClass</a>
+<span class="sourceLineNo">061</span><a id="line.61">    public static void setUp() throws Exception</a>
 <span class="sourceLineNo">062</span><a id="line.62">    {</a>
-<span class="sourceLineNo">063</span><a id="line.63">        if (tc != null)</a>
-<span class="sourceLineNo">064</span><a id="line.64">        {</a>
-<span class="sourceLineNo">065</span><a id="line.65">            tc.dispose();</a>
-<span class="sourceLineNo">066</span><a id="line.66">        }</a>
-<span class="sourceLineNo">067</span><a id="line.67">    }</a>
-<span class="sourceLineNo">068</span><a id="line.68"></a>
-<span class="sourceLineNo">069</span><a id="line.69">    /**</a>
-<span class="sourceLineNo">070</span><a id="line.70">     * Test to load a couple of Avalon services directly by the</a>
-<span class="sourceLineNo">071</span><a id="line.71">     * AvalonComponentService.</a>
-<span class="sourceLineNo">072</span><a id="line.72">     *</a>
-<span class="sourceLineNo">073</span><a id="line.73">     * @throws Exception loading failed</a>
-<span class="sourceLineNo">074</span><a id="line.74">     */</a>
-<span class="sourceLineNo">075</span><a id="line.75">    @Test public void testLoadingByAvalonComponentService() throws Exception</a>
-<span class="sourceLineNo">076</span><a id="line.76">    {</a>
-<span class="sourceLineNo">077</span><a id="line.77">        AvalonComponentService avalonComponentService =</a>
-<span class="sourceLineNo">078</span><a id="line.78">            (AvalonComponentService) TurbineServices.getInstance().getService(</a>
-<span class="sourceLineNo">079</span><a id="line.79">                    AvalonComponentService.SERVICE_NAME);</a>
-<span class="sourceLineNo">080</span><a id="line.80"></a>
-<span class="sourceLineNo">081</span><a id="line.81">        assertNotNull(avalonComponentService);</a>
-<span class="sourceLineNo">082</span><a id="line.82"></a>
-<span class="sourceLineNo">083</span><a id="line.83">        GlobalCacheService dgcs = (GlobalCacheService)avalonComponentService.lookup(GlobalCacheService.ROLE);</a>
-<span class="sourceLineNo">084</span><a id="line.84">        assertNotNull(dgcs);</a>
-<span class="sourceLineNo">085</span><a id="line.85">        CryptoService cs = (CryptoService)avalonComponentService.lookup(CryptoService.ROLE);</a>
-<span class="sourceLineNo">086</span><a id="line.86">        assertNotNull(cs);</a>
-<span class="sourceLineNo">087</span><a id="line.87">        LocalizationService ls = (LocalizationService)avalonComponentService.lookup(LocalizationService.ROLE);</a>
-<span class="sourceLineNo">088</span><a id="line.88">        assertNotNull(ls);</a>
-<span class="sourceLineNo">089</span><a id="line.89">        IntakeService intake = (IntakeService)avalonComponentService.lookup(IntakeService.ROLE);</a>
-<span class="sourceLineNo">090</span><a id="line.90">        assertNotNull(intake);</a>
-<span class="sourceLineNo">091</span><a id="line.91">        FactoryService fs = (FactoryService)avalonComponentService.lookup(FactoryService.ROLE);</a>
-<span class="sourceLineNo">092</span><a id="line.92">        assertNotNull(fs);</a>
-<span class="sourceLineNo">093</span><a id="line.93">        MimeTypeService mimetype = (MimeTypeService)avalonComponentService.lookup(MimeTypeService.ROLE);</a>
-<span class="sourceLineNo">094</span><a id="line.94">        assertNotNull(mimetype);</a>
-<span class="sourceLineNo">095</span><a id="line.95">        //avalonComponentService.shutdown();</a>
-<span class="sourceLineNo">096</span><a id="line.96">    }</a>
-<span class="sourceLineNo">097</span><a id="line.97"></a>
-<span class="sourceLineNo">098</span><a id="line.98">    /**</a>
-<span class="sourceLineNo">099</span><a id="line.99">     * Test to load a couple of Avalon services by using the</a>
-<span class="sourceLineNo">100</span><a id="line.100">     * TurbineServices which delegate the service retrieval to</a>
-<span class="sourceLineNo">101</span><a id="line.101">     * the AvalonComponentService</a>
-<span class="sourceLineNo">102</span><a id="line.102">     *</a>
-<span class="sourceLineNo">103</span><a id="line.103">     * @throws Exception loading failed</a>
-<span class="sourceLineNo">104</span><a id="line.104">     */</a>
-<span class="sourceLineNo">105</span><a id="line.105">    @Test public void testLoadingByTurbineServices() throws Exception</a>
-<span class="sourceLineNo">106</span><a id="line.106">    {</a>
-<span class="sourceLineNo">107</span><a id="line.107">        ServiceManager serviceManager = TurbineServices.getInstance();</a>
-<span class="sourceLineNo">108</span><a id="line.108"></a>
-<span class="sourceLineNo">109</span><a id="line.109">        GlobalCacheService gcs = (GlobalCacheService)serviceManager.getService(GlobalCacheService.ROLE);</a>
-<span class="sourceLineNo">110</span><a id="line.110">        assertNotNull(gcs);</a>
-<span class="sourceLineNo">111</span><a id="line.111">        CryptoService cs = (CryptoService)serviceManager.getService(CryptoService.ROLE);</a>
-<span class="sourceLineNo">112</span><a id="line.112">        assertNotNull(cs);</a>
-<span class="sourceLineNo">113</span><a id="line.113">        LocalizationService ls = (LocalizationService)serviceManager.getService(LocalizationService.ROLE);</a>
-<span class="sourceLineNo">114</span><a id="line.114">        assertNotNull(ls);</a>
-<span class="sourceLineNo">115</span><a id="line.115">        IntakeService intake = (IntakeService)serviceManager.getService(IntakeService.ROLE);</a>
-<span class="sourceLineNo">116</span><a id="line.116">        assertNotNull(intake);</a>
-<span class="sourceLineNo">117</span><a id="line.117">        FactoryService fs = (FactoryService)serviceManager.getService(FactoryService.ROLE);</a>
-<span class="sourceLineNo">118</span><a id="line.118">        assertNotNull(fs);</a>
-<span class="sourceLineNo">119</span><a id="line.119">        MimeTypeService mimetype = (MimeTypeService)serviceManager.getService(MimeTypeService.ROLE);</a>
-<span class="sourceLineNo">120</span><a id="line.120">        assertNotNull(mimetype);</a>
-<span class="sourceLineNo">121</span><a id="line.121">    }</a>
-<span class="sourceLineNo">122</span><a id="line.122"></a>
-<span class="sourceLineNo">123</span><a id="line.123">    /**</a>
-<span class="sourceLineNo">124</span><a id="line.124">     * Lookup up an unknown servie</a>
-<span class="sourceLineNo">125</span><a id="line.125">     * @throws Exception</a>
-<span class="sourceLineNo">126</span><a id="line.126">     */</a>
-<span class="sourceLineNo">127</span><a id="line.127">    @Test public void testLookupUnknownService() throws Exception</a>
-<span class="sourceLineNo">128</span><a id="line.128">    {</a>
-<span class="sourceLineNo">129</span><a id="line.129">        ServiceManager serviceManager = TurbineServices.getInstance();</a>
-<span class="sourceLineNo">130</span><a id="line.130"></a>
-<span class="sourceLineNo">131</span><a id="line.131">        try</a>
-<span class="sourceLineNo">132</span><a id="line.132">        {</a>
-<span class="sourceLineNo">133</span><a id="line.133">            serviceManager.getService("foo");</a>
-<span class="sourceLineNo">134</span><a id="line.134">            fail("We expect an InstantiationException");</a>
-<span class="sourceLineNo">135</span><a id="line.135">        }</a>
-<span class="sourceLineNo">136</span><a id="line.136">        catch (InstantiationException e)</a>
-<span class="sourceLineNo">137</span><a id="line.137">        {</a>
-<span class="sourceLineNo">138</span><a id="line.138">            // that'w what we expect</a>
-<span class="sourceLineNo">139</span><a id="line.139">            return;</a>
-<span class="sourceLineNo">140</span><a id="line.140">        }</a>
-<span class="sourceLineNo">141</span><a id="line.141">        catch (Throwable t)</a>
-<span class="sourceLineNo">142</span><a id="line.142">        {</a>
-<span class="sourceLineNo">143</span><a id="line.143">            fail("We expect an InstantiationException");</a>
-<span class="sourceLineNo">144</span><a id="line.144">        }</a>
-<span class="sourceLineNo">145</span><a id="line.145">    }</a>
-<span class="sourceLineNo">146</span><a id="line.146"></a>
-<span class="sourceLineNo">147</span><a id="line.147">    /**</a>
-<span class="sourceLineNo">148</span><a id="line.148">     * Shutdown the AvalonComponentService where the MimeTypeService</a>
-<span class="sourceLineNo">149</span><a id="line.149">     * resides and lookup the MimeTypeService. This should trigger</a>
-<span class="sourceLineNo">150</span><a id="line.150">     * a late initialization of AvalonComponentService and returns</a>
-<span class="sourceLineNo">151</span><a id="line.151">     * a fully functional MimeTypeService.</a>
-<span class="sourceLineNo">152</span><a id="line.152">     */</a>
-<span class="sourceLineNo">153</span><a id="line.153">    @Test public void testAvalonComponentServiceShutdown() throws Exception</a>
-<span class="sourceLineNo">154</span><a id="line.154">    {</a>
-<span class="sourceLineNo">155</span><a id="line.155">        ServiceManager serviceManager = TurbineServices.getInstance();</a>
-<span class="sourceLineNo">156</span><a id="line.156">        serviceManager.shutdownService(AvalonComponentService.SERVICE_NAME);</a>
-<span class="sourceLineNo">157</span><a id="line.157"></a>
-<span class="sourceLineNo">158</span><a id="line.158">        MimeTypeService mimeTypeService = (MimeTypeService) serviceManager.getService(MimeTypeService.class.getName());</a>
-<span class="sourceLineNo">159</span><a id="line.159">        assertNotNull(mimeTypeService);</a>
-<span class="sourceLineNo">160</span><a id="line.160"></a>
-<span class="sourceLineNo">161</span><a id="line.161">        Locale locale = new Locale("en", "US");</a>
-<span class="sourceLineNo">162</span><a id="line.162">        String s = mimeTypeService.getCharSet(locale);</a>
-<span class="sourceLineNo">163</span><a id="line.163">        assertEquals("ISO-8859-1", s);</a>
-<span class="sourceLineNo">164</span><a id="line.164">    }</a>
-<span class="sourceLineNo">165</span><a id="line.165"></a>
-<span class="sourceLineNo">166</span><a id="line.166">}</a>
+<span class="sourceLineNo">063</span><a id="line.63">        tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");</a>
+<span class="sourceLineNo">064</span><a id="line.64">        tc.initialize();</a>
+<span class="sourceLineNo">065</span><a id="line.65">    }</a>
+<span class="sourceLineNo">066</span><a id="line.66">    @AfterClass</a>
+<span class="sourceLineNo">067</span><a id="line.67">    public static void tearDown() throws Exception</a>
+<span class="sourceLineNo">068</span><a id="line.68">    {</a>
+<span class="sourceLineNo">069</span><a id="line.69">        if (tc != null)</a>
+<span class="sourceLineNo">070</span><a id="line.70">        {</a>
+<span class="sourceLineNo">071</span><a id="line.71">            tc.dispose();</a>
+<span class="sourceLineNo">072</span><a id="line.72">        }</a>
+<span class="sourceLineNo">073</span><a id="line.73">    }</a>
+<span class="sourceLineNo">074</span><a id="line.74"></a>
+<span class="sourceLineNo">075</span><a id="line.75">    /**</a>
+<span class="sourceLineNo">076</span><a id="line.76">     * Test to load a couple of Avalon services directly by the</a>
+<span class="sourceLineNo">077</span><a id="line.77">     * AvalonComponentService.</a>
+<span class="sourceLineNo">078</span><a id="line.78">     *</a>
+<span class="sourceLineNo">079</span><a id="line.79">     * @throws Exception loading failed</a>
+<span class="sourceLineNo">080</span><a id="line.80">     */</a>
+<span class="sourceLineNo">081</span><a id="line.81">    @Test public void testLoadingByAvalonComponentService() throws Exception</a>
+<span class="sourceLineNo">082</span><a id="line.82">    {</a>
+<span class="sourceLineNo">083</span><a id="line.83">        AvalonComponentService avalonComponentService =</a>
+<span class="sourceLineNo">084</span><a id="line.84">            (AvalonComponentService) TurbineServices.getInstance().getService(</a>
+<span class="sourceLineNo">085</span><a id="line.85">                    AvalonComponentService.SERVICE_NAME);</a>
+<span class="sourceLineNo">086</span><a id="line.86"></a>
+<span class="sourceLineNo">087</span><a id="line.87">        assertNotNull(avalonComponentService);</a>
+<span class="sourceLineNo">088</span><a id="line.88"></a>
+<span class="sourceLineNo">089</span><a id="line.89">        GlobalCacheService dgcs = (GlobalCacheService)avalonComponentService.lookup(GlobalCacheService.ROLE);</a>
+<span class="sourceLineNo">090</span><a id="line.90">        assertNotNull(dgcs);</a>
+<span class="sourceLineNo">091</span><a id="line.91">        CryptoService cs = (CryptoService)avalonComponentService.lookup(CryptoService.ROLE);</a>
+<span class="sourceLineNo">092</span><a id="line.92">        assertNotNull(cs);</a>
+<span class="sourceLineNo">093</span><a id="line.93">        LocalizationService ls = (LocalizationService)avalonComponentService.lookup(LocalizationService.ROLE);</a>
+<span class="sourceLineNo">094</span><a id="line.94">        assertNotNull(ls);</a>
+<span class="sourceLineNo">095</span><a id="line.95">        IntakeService intake = (IntakeService)avalonComponentService.lookup(IntakeService.ROLE);</a>
+<span class="sourceLineNo">096</span><a id="line.96">        assertNotNull(intake);</a>
+<span class="sourceLineNo">097</span><a id="line.97">        FactoryService fs = (FactoryService)avalonComponentService.lookup(FactoryService.ROLE);</a>
+<span class="sourceLineNo">098</span><a id="line.98">        assertNotNull(fs);</a>
+<span class="sourceLineNo">099</span><a id="line.99">        MimeTypeService mimetype = (MimeTypeService)avalonComponentService.lookup(MimeTypeService.ROLE);</a>
+<span class="sourceLineNo">100</span><a id="line.100">        assertNotNull(mimetype);</a>
+<span class="sourceLineNo">101</span><a id="line.101">        //avalonComponentService.shutdown();</a>
+<span class="sourceLineNo">102</span><a id="line.102">    }</a>
+<span class="sourceLineNo">103</span><a id="line.103"></a>
+<span class="sourceLineNo">104</span><a id="line.104">    /**</a>
+<span class="sourceLineNo">105</span><a id="line.105">     * Test to load a couple of Avalon services by using the</a>
+<span class="sourceLineNo">106</span><a id="line.106">     * TurbineServices which delegate the service retrieval to</a>
+<span class="sourceLineNo">107</span><a id="line.107">     * the AvalonComponentService</a>
+<span class="sourceLineNo">108</span><a id="line.108">     *</a>
+<span class="sourceLineNo">109</span><a id="line.109">     * @throws Exception loading failed</a>
+<span class="sourceLineNo">110</span><a id="line.110">     */</a>
+<span class="sourceLineNo">111</span><a id="line.111">    @Test public void testLoadingByTurbineServices() throws Exception</a>
+<span class="sourceLineNo">112</span><a id="line.112">    {</a>
+<span class="sourceLineNo">113</span><a id="line.113">        ServiceManager serviceManager = TurbineServices.getInstance();</a>
+<span class="sourceLineNo">114</span><a id="line.114"></a>
+<span class="sourceLineNo">115</span><a id="line.115">        GlobalCacheService gcs = (GlobalCacheService)serviceManager.getService(GlobalCacheService.ROLE);</a>
+<span class="sourceLineNo">116</span><a id="line.116">        assertNotNull(gcs);</a>
+<span class="sourceLineNo">117</span><a id="line.117">        CryptoService cs = (CryptoService)serviceManager.getService(CryptoService.ROLE);</a>
+<span class="sourceLineNo">118</span><a id="line.118">        assertNotNull(cs);</a>
+<span class="sourceLineNo">119</span><a id="line.119">        LocalizationService ls = (LocalizationService)serviceManager.getService(LocalizationService.ROLE);</a>
+<span class="sourceLineNo">120</span><a id="line.120">        assertNotNull(ls);</a>
+<span class="sourceLineNo">121</span><a id="line.121">        IntakeService intake = (IntakeService)serviceManager.getService(IntakeService.ROLE);</a>
+<span class="sourceLineNo">122</span><a id="line.122">        assertNotNull(intake);</a>
+<span class="sourceLineNo">123</span><a id="line.123">        FactoryService fs = (FactoryService)serviceManager.getService(FactoryService.ROLE);</a>
+<span class="sourceLineNo">124</span><a id="line.124">        assertNotNull(fs);</a>
+<span class="sourceLineNo">125</span><a id="line.125">        MimeTypeService mimetype = (MimeTypeService)serviceManager.getService(MimeTypeService.ROLE);</a>
+<span class="sourceLineNo">126</span><a id="line.126">        assertNotNull(mimetype);</a>
+<span class="sourceLineNo">127</span><a id="line.127">    }</a>
+<span class="sourceLineNo">128</span><a id="line.128">    </a>
+<span class="sourceLineNo">129</span><a id="line.129">    @Test public void testLoadingByAnnotation() throws TurbineException</a>
+<span class="sourceLineNo">130</span><a id="line.130">    {</a>
+<span class="sourceLineNo">131</span><a id="line.131">        AnnotationProcessor.process(this);</a>
+<span class="sourceLineNo">132</span><a id="line.132">        assertNotNull(cacheService);</a>
+<span class="sourceLineNo">133</span><a id="line.133">    }</a>
+<span class="sourceLineNo">134</span><a id="line.134"></a>
+<span class="sourceLineNo">135</span><a id="line.135">    /**</a>
+<span class="sourceLineNo">136</span><a id="line.136">     * Lookup up an unknown servie</a>
+<span class="sourceLineNo">137</span><a id="line.137">     * @throws Exception</a>
+<span class="sourceLineNo">138</span><a id="line.138">     */</a>
+<span class="sourceLineNo">139</span><a id="line.139">    @Test public void testLookupUnknownService() throws Exception</a>
+<span class="sourceLineNo">140</span><a id="line.140">    {</a>
+<span class="sourceLineNo">141</span><a id="line.141">        ServiceManager serviceManager = TurbineServices.getInstance();</a>
+<span class="sourceLineNo">142</span><a id="line.142"></a>
+<span class="sourceLineNo">143</span><a id="line.143">        try</a>
+<span class="sourceLineNo">144</span><a id="line.144">        {</a>
+<span class="sourceLineNo">145</span><a id="line.145">            serviceManager.getService("foo");</a>
+<span class="sourceLineNo">146</span><a id="line.146">            fail("We expect an InstantiationException");</a>
+<span class="sourceLineNo">147</span><a id="line.147">        }</a>
+<span class="sourceLineNo">148</span><a id="line.148">        catch (InstantiationException e)</a>
+<span class="sourceLineNo">149</span><a id="line.149">        {</a>
+<span class="sourceLineNo">150</span><a id="line.150">            // that'w what we expect</a>
+<span class="sourceLineNo">151</span><a id="line.151">            return;</a>
+<span class="sourceLineNo">152</span><a id="line.152">        }</a>
+<span class="sourceLineNo">153</span><a id="line.153">        catch (Throwable t)</a>
+<span class="sourceLineNo">154</span><a id="line.154">        {</a>
+<span class="sourceLineNo">155</span><a id="line.155">            fail("We expect an InstantiationException");</a>
+<span class="sourceLineNo">156</span><a id="line.156">        }</a>
+<span class="sourceLineNo">157</span><a id="line.157">    }</a>
+<span class="sourceLineNo">158</span><a id="line.158"></a>
+<span class="sourceLineNo">159</span><a id="line.159">    /**</a>
+<span class="sourceLineNo">160</span><a id="line.160">     * Shutdown the AvalonComponentService where the MimeTypeService</a>
+<span class="sourceLineNo">161</span><a id="line.161">     * resides and lookup the MimeTypeService. This should trigger</a>
+<span class="sourceLineNo">162</span><a id="line.162">     * a late initialization of AvalonComponentService and returns</a>
+<span class="sourceLineNo">163</span><a id="line.163">     * a fully functional MimeTypeService.</a>
+<span class="sourceLineNo">164</span><a id="line.164">     */</a>
+<span class="sourceLineNo">165</span><a id="line.165">    @Test public void testAvalonComponentServiceShutdown() throws Exception</a>
+<span class="sourceLineNo">166</span><a id="line.166">    {</a>
+<span class="sourceLineNo">167</span><a id="line.167">        ServiceManager serviceManager = TurbineServices.getInstance();</a>
+<span class="sourceLineNo">168</span><a id="line.168">        serviceManager.shutdownService(AvalonComponentService.SERVICE_NAME);</a>
+<span class="sourceLineNo">169</span><a id="line.169"></a>
+<span class="sourceLineNo">170</span><a id="line.170">        MimeTypeService mimeTypeService = (MimeTypeService) serviceManager.getService(MimeTypeService.class.getName());</a>
+<span class="sourceLineNo">171</span><a id="line.171">        assertNotNull(mimeTypeService);</a>
+<span class="sourceLineNo">172</span><a id="line.172"></a>
+<span class="sourceLineNo">173</span><a id="line.173">        Locale locale = new Locale("en", "US");</a>
+<span class="sourceLineNo">174</span><a id="line.174">        String s = mimeTypeService.getCharSet(locale);</a>
+<span class="sourceLineNo">175</span><a id="line.175">        assertEquals("ISO-8859-1", s);</a>
+<span class="sourceLineNo">176</span><a id="line.176">    }</a>
+<span class="sourceLineNo">177</span><a id="line.177"></a>
+<span class="sourceLineNo">178</span><a id="line.178">}</a>
 
 
 

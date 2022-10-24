@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="de">
+<html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
@@ -240,16 +240,16 @@
 <span class="sourceLineNo">231</span><a id="line.231">                                pp.setString(group.getKey(), matcher.group(group.getValue().intValue())));</a>
 <span class="sourceLineNo">232</span><a id="line.232"></a>
 <span class="sourceLineNo">233</span><a id="line.233">                // add implicit parameters</a>
-<span class="sourceLineNo">234</span><a id="line.234">                urlMap.getImplicitParameters().entrySet().forEach(e -&gt;</a>
-<span class="sourceLineNo">235</span><a id="line.235">                        pp.add(e.getKey(), e.getValue()));</a>
+<span class="sourceLineNo">234</span><a id="line.234">                urlMap.getImplicitParameters()</a>
+<span class="sourceLineNo">235</span><a id="line.235">                        .forEach((key1, value1) -&gt; pp.add(key1, value1));</a>
 <span class="sourceLineNo">236</span><a id="line.236"></a>
 <span class="sourceLineNo">237</span><a id="line.237">                // add override parameters</a>
-<span class="sourceLineNo">238</span><a id="line.238">                urlMap.getOverrideParameters().entrySet().forEach(e -&gt;</a>
-<span class="sourceLineNo">239</span><a id="line.239">                        pp.setString(e.getKey(), e.getValue()));</a>
+<span class="sourceLineNo">238</span><a id="line.238">                urlMap.getOverrideParameters()</a>
+<span class="sourceLineNo">239</span><a id="line.239">                        .forEach((key, value) -&gt; pp.setString(key, value));</a>
 <span class="sourceLineNo">240</span><a id="line.240"></a>
 <span class="sourceLineNo">241</span><a id="line.241">                // remove ignore parameters</a>
-<span class="sourceLineNo">242</span><a id="line.242">                urlMap.getIgnoreParameters().keySet().forEach(k -&gt;</a>
-<span class="sourceLineNo">243</span><a id="line.243">                        pp.remove(k));</a>
+<span class="sourceLineNo">242</span><a id="line.242">                urlMap.getIgnoreParameters().keySet()</a>
+<span class="sourceLineNo">243</span><a id="line.243">                        .forEach(pp::remove);</a>
 <span class="sourceLineNo">244</span><a id="line.244">                </a>
 <span class="sourceLineNo">245</span><a id="line.245">                log.debug("mapped {} params from url {} ", pp.getKeys().length, url);</a>
 <span class="sourceLineNo">246</span><a id="line.246"></a>

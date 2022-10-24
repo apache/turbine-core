@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="de">
+<html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
@@ -38,7 +38,7 @@
 <span class="sourceLineNo">029</span><a id="line.29"> * Annotation to mark fields in modules that require a service to be injected</a>
 <span class="sourceLineNo">030</span><a id="line.30"> */</a>
 <span class="sourceLineNo">031</span><a id="line.31">@Retention( RetentionPolicy.RUNTIME )</a>
-<span class="sourceLineNo">032</span><a id="line.32">@Target( ElementType.FIELD )</a>
+<span class="sourceLineNo">032</span><a id="line.32">@Target( {ElementType.FIELD, ElementType.METHOD} )</a>
 <span class="sourceLineNo">033</span><a id="line.33">public @interface TurbineService</a>
 <span class="sourceLineNo">034</span><a id="line.34">{</a>
 <span class="sourceLineNo">035</span><a id="line.35">    /**</a>

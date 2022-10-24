@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="de">
+<html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
@@ -242,55 +242,49 @@
 <span class="sourceLineNo">233</span><a id="line.233">        {</a>
 <span class="sourceLineNo">234</span><a id="line.234">            try</a>
 <span class="sourceLineNo">235</span><a id="line.235">            {</a>
-<span class="sourceLineNo">236</span><a id="line.236">                initable = (Initable) Class.forName(className).newInstance();</a>
+<span class="sourceLineNo">236</span><a id="line.236">                initable = (Initable) Class.forName(className).getDeclaredConstructor().newInstance();</a>
 <span class="sourceLineNo">237</span><a id="line.237">            }</a>
-<span class="sourceLineNo">238</span><a id="line.238"></a>
-<span class="sourceLineNo">239</span><a id="line.239">                    // those two errors must be passed to the VM</a>
-<span class="sourceLineNo">240</span><a id="line.240">            catch (ThreadDeath t)</a>
-<span class="sourceLineNo">241</span><a id="line.241">            {</a>
-<span class="sourceLineNo">242</span><a id="line.242">                throw t;</a>
-<span class="sourceLineNo">243</span><a id="line.243">            }</a>
-<span class="sourceLineNo">244</span><a id="line.244">            catch (OutOfMemoryError t)</a>
-<span class="sourceLineNo">245</span><a id="line.245">            {</a>
-<span class="sourceLineNo">246</span><a id="line.246">                throw t;</a>
-<span class="sourceLineNo">247</span><a id="line.247">            }</a>
-<span class="sourceLineNo">248</span><a id="line.248"></a>
-<span class="sourceLineNo">249</span><a id="line.249">            catch (Throwable t)</a>
-<span class="sourceLineNo">250</span><a id="line.250">            {</a>
-<span class="sourceLineNo">251</span><a id="line.251">                // Used to indicate error condition.</a>
-<span class="sourceLineNo">252</span><a id="line.252">                String msg = null;</a>
-<span class="sourceLineNo">253</span><a id="line.253"></a>
-<span class="sourceLineNo">254</span><a id="line.254">                if (t instanceof NoClassDefFoundError)</a>
-<span class="sourceLineNo">255</span><a id="line.255">                {</a>
-<span class="sourceLineNo">256</span><a id="line.256">                    msg = "A class referenced by " + className +</a>
-<span class="sourceLineNo">257</span><a id="line.257">                            " is unavailable. Check your jars and classes.";</a>
-<span class="sourceLineNo">258</span><a id="line.258">                }</a>
-<span class="sourceLineNo">259</span><a id="line.259">                else if (t instanceof ClassNotFoundException)</a>
-<span class="sourceLineNo">260</span><a id="line.260">                {</a>
-<span class="sourceLineNo">261</span><a id="line.261">                    msg = "Class " + className +</a>
-<span class="sourceLineNo">262</span><a id="line.262">                            " is unavailable. Check your jars and classes.";</a>
-<span class="sourceLineNo">263</span><a id="line.263">                }</a>
-<span class="sourceLineNo">264</span><a id="line.264">                else if (t instanceof ClassCastException)</a>
-<span class="sourceLineNo">265</span><a id="line.265">                {</a>
-<span class="sourceLineNo">266</span><a id="line.266">                    msg = "Class " + className +</a>
-<span class="sourceLineNo">267</span><a id="line.267">                            " doesn't implement Initable.";</a>
-<span class="sourceLineNo">268</span><a id="line.268">                }</a>
-<span class="sourceLineNo">269</span><a id="line.269">                else</a>
-<span class="sourceLineNo">270</span><a id="line.270">                {</a>
-<span class="sourceLineNo">271</span><a id="line.271">                    msg = "Failed to instantiate " + className;</a>
-<span class="sourceLineNo">272</span><a id="line.272">                }</a>
-<span class="sourceLineNo">273</span><a id="line.273"></a>
-<span class="sourceLineNo">274</span><a id="line.274">                throw new InstantiationException(msg, t);</a>
-<span class="sourceLineNo">275</span><a id="line.275">            }</a>
-<span class="sourceLineNo">276</span><a id="line.276"></a>
-<span class="sourceLineNo">277</span><a id="line.277">            initable.setInitableBroker(this);</a>
-<span class="sourceLineNo">278</span><a id="line.278">            initables.put(className, initable);</a>
-<span class="sourceLineNo">279</span><a id="line.279">        }</a>
-<span class="sourceLineNo">280</span><a id="line.280"></a>
-<span class="sourceLineNo">281</span><a id="line.281">        return initable;</a>
-<span class="sourceLineNo">282</span><a id="line.282">    }</a>
-<span class="sourceLineNo">283</span><a id="line.283"></a>
-<span class="sourceLineNo">284</span><a id="line.284">}</a>
+<span class="sourceLineNo">238</span><a id="line.238">            // those two errors must be passed to the VM</a>
+<span class="sourceLineNo">239</span><a id="line.239">            catch (ThreadDeath | OutOfMemoryError t)</a>
+<span class="sourceLineNo">240</span><a id="line.240">            {</a>
+<span class="sourceLineNo">241</span><a id="line.241">                throw t;</a>
+<span class="sourceLineNo">242</span><a id="line.242">            }</a>
+<span class="sourceLineNo">243</span><a id="line.243">            catch (Throwable t)</a>
+<span class="sourceLineNo">244</span><a id="line.244">            {</a>
+<span class="sourceLineNo">245</span><a id="line.245">                // Used to indicate error condition.</a>
+<span class="sourceLineNo">246</span><a id="line.246">                String msg = null;</a>
+<span class="sourceLineNo">247</span><a id="line.247"></a>
+<span class="sourceLineNo">248</span><a id="line.248">                if (t instanceof NoClassDefFoundError)</a>
+<span class="sourceLineNo">249</span><a id="line.249">                {</a>
+<span class="sourceLineNo">250</span><a id="line.250">                    msg = "A class referenced by " + className +</a>
+<span class="sourceLineNo">251</span><a id="line.251">                            " is unavailable. Check your jars and classes.";</a>
+<span class="sourceLineNo">252</span><a id="line.252">                }</a>
+<span class="sourceLineNo">253</span><a id="line.253">                else if (t instanceof ClassNotFoundException)</a>
+<span class="sourceLineNo">254</span><a id="line.254">                {</a>
+<span class="sourceLineNo">255</span><a id="line.255">                    msg = "Class " + className +</a>
+<span class="sourceLineNo">256</span><a id="line.256">                            " is unavailable. Check your jars and classes.";</a>
+<span class="sourceLineNo">257</span><a id="line.257">                }</a>
+<span class="sourceLineNo">258</span><a id="line.258">                else if (t instanceof ClassCastException)</a>
+<span class="sourceLineNo">259</span><a id="line.259">                {</a>
+<span class="sourceLineNo">260</span><a id="line.260">                    msg = "Class " + className +</a>
+<span class="sourceLineNo">261</span><a id="line.261">                            " doesn't implement Initable.";</a>
+<span class="sourceLineNo">262</span><a id="line.262">                }</a>
+<span class="sourceLineNo">263</span><a id="line.263">                else</a>
+<span class="sourceLineNo">264</span><a id="line.264">                {</a>
+<span class="sourceLineNo">265</span><a id="line.265">                    msg = "Failed to instantiate " + className;</a>
+<span class="sourceLineNo">266</span><a id="line.266">                }</a>
+<span class="sourceLineNo">267</span><a id="line.267"></a>
+<span class="sourceLineNo">268</span><a id="line.268">                throw new InstantiationException(msg, t);</a>
+<span class="sourceLineNo">269</span><a id="line.269">            }</a>
+<span class="sourceLineNo">270</span><a id="line.270"></a>
+<span class="sourceLineNo">271</span><a id="line.271">            initable.setInitableBroker(this);</a>
+<span class="sourceLineNo">272</span><a id="line.272">            initables.put(className, initable);</a>
+<span class="sourceLineNo">273</span><a id="line.273">        }</a>
+<span class="sourceLineNo">274</span><a id="line.274"></a>
+<span class="sourceLineNo">275</span><a id="line.275">        return initable;</a>
+<span class="sourceLineNo">276</span><a id="line.276">    }</a>
+<span class="sourceLineNo">277</span><a id="line.277"></a>
+<span class="sourceLineNo">278</span><a id="line.278">}</a>
 
 
 

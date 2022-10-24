@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="de">
+<html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
@@ -346,447 +346,438 @@
 <span class="sourceLineNo">337</span><a id="line.337">    public Iterator&lt;String&gt; getServiceNames(String prefix)</a>
 <span class="sourceLineNo">338</span><a id="line.338">    {</a>
 <span class="sourceLineNo">339</span><a id="line.339">        Set&lt;String&gt; keys = new LinkedHashSet&lt;&gt;(mapping.keySet());</a>
-<span class="sourceLineNo">340</span><a id="line.340">        for(Iterator&lt;String&gt; key = keys.iterator(); key.hasNext();)</a>
-<span class="sourceLineNo">341</span><a id="line.341">        {</a>
-<span class="sourceLineNo">342</span><a id="line.342">            if (!key.next().startsWith(prefix))</a>
-<span class="sourceLineNo">343</span><a id="line.343">            {</a>
-<span class="sourceLineNo">344</span><a id="line.344">                key.remove();</a>
-<span class="sourceLineNo">345</span><a id="line.345">            }</a>
-<span class="sourceLineNo">346</span><a id="line.346">        }</a>
-<span class="sourceLineNo">347</span><a id="line.347"></a>
-<span class="sourceLineNo">348</span><a id="line.348">        return keys.iterator();</a>
-<span class="sourceLineNo">349</span><a id="line.349">    }</a>
-<span class="sourceLineNo">350</span><a id="line.350"></a>
-<span class="sourceLineNo">351</span><a id="line.351">    /**</a>
-<span class="sourceLineNo">352</span><a id="line.352">     * Performs early initialization of specified service.</a>
-<span class="sourceLineNo">353</span><a id="line.353">     *</a>
-<span class="sourceLineNo">354</span><a id="line.354">     * @param name The name of the service (generally the</a>
-<span class="sourceLineNo">355</span><a id="line.355">     * &lt;code&gt;SERVICE_NAME&lt;/code&gt; constant of the service's interface</a>
-<span class="sourceLineNo">356</span><a id="line.356">     * definition).</a>
-<span class="sourceLineNo">357</span><a id="line.357">     * @throws InitializationException Initialization of this</a>
-<span class="sourceLineNo">358</span><a id="line.358">     * service was not successful.</a>
-<span class="sourceLineNo">359</span><a id="line.359">     */</a>
-<span class="sourceLineNo">360</span><a id="line.360">    @Override</a>
-<span class="sourceLineNo">361</span><a id="line.361">    public synchronized void initService(String name)</a>
-<span class="sourceLineNo">362</span><a id="line.362">            throws InitializationException</a>
-<span class="sourceLineNo">363</span><a id="line.363">    {</a>
-<span class="sourceLineNo">364</span><a id="line.364">        // Calling getServiceInstance(name) assures that the Service</a>
-<span class="sourceLineNo">365</span><a id="line.365">        // implementation has its name and broker reference set before</a>
-<span class="sourceLineNo">366</span><a id="line.366">        // initialization.</a>
-<span class="sourceLineNo">367</span><a id="line.367">        Service instance = getServiceInstance(name);</a>
-<span class="sourceLineNo">368</span><a id="line.368"></a>
-<span class="sourceLineNo">369</span><a id="line.369">        if (!instance.getInit())</a>
-<span class="sourceLineNo">370</span><a id="line.370">        {</a>
-<span class="sourceLineNo">371</span><a id="line.371">            // this call might result in an indirect recursion</a>
-<span class="sourceLineNo">372</span><a id="line.372">            instance.init();</a>
-<span class="sourceLineNo">373</span><a id="line.373">        }</a>
-<span class="sourceLineNo">374</span><a id="line.374">    }</a>
-<span class="sourceLineNo">375</span><a id="line.375"></a>
-<span class="sourceLineNo">376</span><a id="line.376">    /**</a>
-<span class="sourceLineNo">377</span><a id="line.377">     * Performs early initialization of all services.  Failed early</a>
-<span class="sourceLineNo">378</span><a id="line.378">     * initialization of a Service may be non-fatal to the system,</a>
-<span class="sourceLineNo">379</span><a id="line.379">     * thus any exceptions are logged and the initialization process</a>
-<span class="sourceLineNo">380</span><a id="line.380">     * continues.</a>
-<span class="sourceLineNo">381</span><a id="line.381">     */</a>
-<span class="sourceLineNo">382</span><a id="line.382">    public void initServices()</a>
-<span class="sourceLineNo">383</span><a id="line.383">    {</a>
-<span class="sourceLineNo">384</span><a id="line.384">        try</a>
-<span class="sourceLineNo">385</span><a id="line.385">        {</a>
-<span class="sourceLineNo">386</span><a id="line.386">            initServices(false);</a>
-<span class="sourceLineNo">387</span><a id="line.387">        }</a>
-<span class="sourceLineNo">388</span><a id="line.388">        catch (InstantiationException | InitializationException notThrown)</a>
-<span class="sourceLineNo">389</span><a id="line.389">        {</a>
-<span class="sourceLineNo">390</span><a id="line.390">            log.debug("Caught non fatal exception", notThrown);</a>
-<span class="sourceLineNo">391</span><a id="line.391">        }</a>
-<span class="sourceLineNo">392</span><a id="line.392">    }</a>
-<span class="sourceLineNo">393</span><a id="line.393"></a>
-<span class="sourceLineNo">394</span><a id="line.394">    /**</a>
-<span class="sourceLineNo">395</span><a id="line.395">     * Performs early initialization of all services. You can decide</a>
-<span class="sourceLineNo">396</span><a id="line.396">     * to handle failed initializations if you wish, but then</a>
-<span class="sourceLineNo">397</span><a id="line.397">     * after one service fails, the other will not have the chance</a>
-<span class="sourceLineNo">398</span><a id="line.398">     * to initialize.</a>
-<span class="sourceLineNo">399</span><a id="line.399">     *</a>
-<span class="sourceLineNo">400</span><a id="line.400">     * @param report &lt;code&gt;true&lt;/code&gt; if you want exceptions thrown.</a>
-<span class="sourceLineNo">401</span><a id="line.401">     * @throws InstantiationException if the service could not be instantiated</a>
-<span class="sourceLineNo">402</span><a id="line.402">     * @throws InitializationException if the service could not be initialized</a>
-<span class="sourceLineNo">403</span><a id="line.403">     */</a>
-<span class="sourceLineNo">404</span><a id="line.404">    public void initServices(boolean report)</a>
-<span class="sourceLineNo">405</span><a id="line.405">            throws InstantiationException, InitializationException</a>
-<span class="sourceLineNo">406</span><a id="line.406">    {</a>
-<span class="sourceLineNo">407</span><a id="line.407">        if (report)</a>
-<span class="sourceLineNo">408</span><a id="line.408">        {</a>
-<span class="sourceLineNo">409</span><a id="line.409">            // Throw exceptions</a>
-<span class="sourceLineNo">410</span><a id="line.410">            for (Iterator&lt;String&gt; names = getServiceNames(); names.hasNext();)</a>
-<span class="sourceLineNo">411</span><a id="line.411">            {</a>
-<span class="sourceLineNo">412</span><a id="line.412">                doInitService(names.next());</a>
-<span class="sourceLineNo">413</span><a id="line.413">            }</a>
-<span class="sourceLineNo">414</span><a id="line.414">        }</a>
-<span class="sourceLineNo">415</span><a id="line.415">        else</a>
-<span class="sourceLineNo">416</span><a id="line.416">        {</a>
-<span class="sourceLineNo">417</span><a id="line.417">            // Eat exceptions</a>
-<span class="sourceLineNo">418</span><a id="line.418">            for (Iterator&lt;String&gt; names = getServiceNames(); names.hasNext();)</a>
-<span class="sourceLineNo">419</span><a id="line.419">            {</a>
-<span class="sourceLineNo">420</span><a id="line.420">                try</a>
-<span class="sourceLineNo">421</span><a id="line.421">                {</a>
-<span class="sourceLineNo">422</span><a id="line.422">                    doInitService(names.next());</a>
-<span class="sourceLineNo">423</span><a id="line.423">                }</a>
-<span class="sourceLineNo">424</span><a id="line.424">                        // In case of an exception, file an error message; the</a>
-<span class="sourceLineNo">425</span><a id="line.425">                        // system may be still functional, though.</a>
-<span class="sourceLineNo">426</span><a id="line.426">                catch (InstantiationException | InitializationException e)</a>
-<span class="sourceLineNo">427</span><a id="line.427">                {</a>
-<span class="sourceLineNo">428</span><a id="line.428">                    log.error(e);</a>
-<span class="sourceLineNo">429</span><a id="line.429">                }</a>
-<span class="sourceLineNo">430</span><a id="line.430">            }</a>
-<span class="sourceLineNo">431</span><a id="line.431">        }</a>
-<span class="sourceLineNo">432</span><a id="line.432">        log.info("Finished initializing all services!");</a>
-<span class="sourceLineNo">433</span><a id="line.433">    }</a>
-<span class="sourceLineNo">434</span><a id="line.434"></a>
-<span class="sourceLineNo">435</span><a id="line.435">    /**</a>
-<span class="sourceLineNo">436</span><a id="line.436">     * Internal utility method for use in {@link #initServices(boolean)}</a>
-<span class="sourceLineNo">437</span><a id="line.437">     * to prevent duplication of code.</a>
-<span class="sourceLineNo">438</span><a id="line.438">     */</a>
-<span class="sourceLineNo">439</span><a id="line.439">    private void doInitService(String name)</a>
-<span class="sourceLineNo">440</span><a id="line.440">            throws InstantiationException, InitializationException</a>
-<span class="sourceLineNo">441</span><a id="line.441">    {</a>
-<span class="sourceLineNo">442</span><a id="line.442">        // Only start up services that have their earlyInit flag set.</a>
-<span class="sourceLineNo">443</span><a id="line.443">        if (getConfiguration(name).getBoolean("earlyInit", false))</a>
-<span class="sourceLineNo">444</span><a id="line.444">        {</a>
-<span class="sourceLineNo">445</span><a id="line.445">            log.info("Start Initializing service (early): {}", name);</a>
-<span class="sourceLineNo">446</span><a id="line.446">            initService(name);</a>
-<span class="sourceLineNo">447</span><a id="line.447">            log.info("Finish Initializing service (early): {}", name);</a>
-<span class="sourceLineNo">448</span><a id="line.448">        }</a>
-<span class="sourceLineNo">449</span><a id="line.449">    }</a>
-<span class="sourceLineNo">450</span><a id="line.450"></a>
-<span class="sourceLineNo">451</span><a id="line.451">    /**</a>
-<span class="sourceLineNo">452</span><a id="line.452">     * Shuts down a &lt;code&gt;Service&lt;/code&gt;, releasing resources</a>
-<span class="sourceLineNo">453</span><a id="line.453">     * allocated by an &lt;code&gt;Service&lt;/code&gt;, and returns it to its</a>
-<span class="sourceLineNo">454</span><a id="line.454">     * initial (uninitialized) state.</a>
-<span class="sourceLineNo">455</span><a id="line.455">     *</a>
-<span class="sourceLineNo">456</span><a id="line.456">     * @param name The name of the &lt;code&gt;Service&lt;/code&gt; to be</a>
-<span class="sourceLineNo">457</span><a id="line.457">     * uninitialized.</a>
-<span class="sourceLineNo">458</span><a id="line.458">     */</a>
-<span class="sourceLineNo">459</span><a id="line.459">    @Override</a>
-<span class="sourceLineNo">460</span><a id="line.460">    public synchronized void shutdownService(String name)</a>
-<span class="sourceLineNo">461</span><a id="line.461">    {</a>
-<span class="sourceLineNo">462</span><a id="line.462">        try</a>
-<span class="sourceLineNo">463</span><a id="line.463">        {</a>
-<span class="sourceLineNo">464</span><a id="line.464">            Service service = getServiceInstance(name);</a>
-<span class="sourceLineNo">465</span><a id="line.465">            if (service != null &amp;&amp; service.getInit())</a>
-<span class="sourceLineNo">466</span><a id="line.466">            {</a>
-<span class="sourceLineNo">467</span><a id="line.467">                service.shutdown();</a>
-<span class="sourceLineNo">468</span><a id="line.468"></a>
-<span class="sourceLineNo">469</span><a id="line.469">                if (service.getInit() &amp;&amp; service instanceof BaseService)</a>
-<span class="sourceLineNo">470</span><a id="line.470">                {</a>
-<span class="sourceLineNo">471</span><a id="line.471">                    // BaseService::shutdown() does this by default,</a>
-<span class="sourceLineNo">472</span><a id="line.472">                    // but could've been overriden poorly.</a>
-<span class="sourceLineNo">473</span><a id="line.473">                    ((BaseService) service).setInit(false);</a>
-<span class="sourceLineNo">474</span><a id="line.474">                }</a>
-<span class="sourceLineNo">475</span><a id="line.475">            }</a>
-<span class="sourceLineNo">476</span><a id="line.476">        }</a>
-<span class="sourceLineNo">477</span><a id="line.477">        catch (InstantiationException e)</a>
-<span class="sourceLineNo">478</span><a id="line.478">        {</a>
-<span class="sourceLineNo">479</span><a id="line.479">            // Assuming harmless -- log the error and continue.</a>
-<span class="sourceLineNo">480</span><a id="line.480">            log.error("Shutdown of a nonexistent Service '"</a>
-<span class="sourceLineNo">481</span><a id="line.481">                    + name + "' was requested", e);</a>
-<span class="sourceLineNo">482</span><a id="line.482">        }</a>
-<span class="sourceLineNo">483</span><a id="line.483">    }</a>
-<span class="sourceLineNo">484</span><a id="line.484"></a>
-<span class="sourceLineNo">485</span><a id="line.485">    /**</a>
-<span class="sourceLineNo">486</span><a id="line.486">     * Shuts down all Turbine services, releasing allocated resources and</a>
-<span class="sourceLineNo">487</span><a id="line.487">     * returning them to their initial (uninitialized) state.</a>
-<span class="sourceLineNo">488</span><a id="line.488">     */</a>
-<span class="sourceLineNo">489</span><a id="line.489">    @Override</a>
-<span class="sourceLineNo">490</span><a id="line.490">    public void shutdownServices()</a>
-<span class="sourceLineNo">491</span><a id="line.491">    {</a>
-<span class="sourceLineNo">492</span><a id="line.492">        log.info("Shutting down all services!");</a>
-<span class="sourceLineNo">493</span><a id="line.493"></a>
-<span class="sourceLineNo">494</span><a id="line.494">        String serviceName = null;</a>
-<span class="sourceLineNo">495</span><a id="line.495"></a>
-<span class="sourceLineNo">496</span><a id="line.496">        /*</a>
-<span class="sourceLineNo">497</span><a id="line.497">         * Now we want to reverse the order of</a>
-<span class="sourceLineNo">498</span><a id="line.498">         * this list. This functionality should be added to</a>
-<span class="sourceLineNo">499</span><a id="line.499">         * the ExtendedProperties in the commons but</a>
-<span class="sourceLineNo">500</span><a id="line.500">         * this will fix the problem for now.</a>
-<span class="sourceLineNo">501</span><a id="line.501">         */</a>
-<span class="sourceLineNo">502</span><a id="line.502"></a>
-<span class="sourceLineNo">503</span><a id="line.503">        ArrayList&lt;String&gt; reverseServicesList = new ArrayList&lt;&gt;();</a>
-<span class="sourceLineNo">504</span><a id="line.504"></a>
-<span class="sourceLineNo">505</span><a id="line.505">        for (Iterator&lt;String&gt; serviceNames = getServiceNames(); serviceNames.hasNext();)</a>
-<span class="sourceLineNo">506</span><a id="line.506">        {</a>
-<span class="sourceLineNo">507</span><a id="line.507">            serviceName = serviceNames.next();</a>
-<span class="sourceLineNo">508</span><a id="line.508">            reverseServicesList.add(0, serviceName);</a>
-<span class="sourceLineNo">509</span><a id="line.509">        }</a>
-<span class="sourceLineNo">510</span><a id="line.510"></a>
-<span class="sourceLineNo">511</span><a id="line.511">        for (Iterator&lt;String&gt; serviceNames = reverseServicesList.iterator(); serviceNames.hasNext();)</a>
-<span class="sourceLineNo">512</span><a id="line.512">        {</a>
-<span class="sourceLineNo">513</span><a id="line.513">            serviceName = serviceNames.next();</a>
-<span class="sourceLineNo">514</span><a id="line.514">            log.info("Shutting down service: {}", serviceName);</a>
-<span class="sourceLineNo">515</span><a id="line.515">            shutdownService(serviceName);</a>
-<span class="sourceLineNo">516</span><a id="line.516">        }</a>
-<span class="sourceLineNo">517</span><a id="line.517">    }</a>
-<span class="sourceLineNo">518</span><a id="line.518"></a>
-<span class="sourceLineNo">519</span><a id="line.519">    /**</a>
-<span class="sourceLineNo">520</span><a id="line.520">     * Returns an instance of requested Service.</a>
-<span class="sourceLineNo">521</span><a id="line.521">     *</a>
-<span class="sourceLineNo">522</span><a id="line.522">     * @param name The name of the Service requested.</a>
-<span class="sourceLineNo">523</span><a id="line.523">     * @return An instance of requested Service.</a>
-<span class="sourceLineNo">524</span><a id="line.524">     * @throws InstantiationException if the service is unknown or</a>
-<span class="sourceLineNo">525</span><a id="line.525">     * can't be initialized.</a>
-<span class="sourceLineNo">526</span><a id="line.526">     */</a>
-<span class="sourceLineNo">527</span><a id="line.527">    @Override</a>
-<span class="sourceLineNo">528</span><a id="line.528">    public Object getService(String name) throws InstantiationException</a>
-<span class="sourceLineNo">529</span><a id="line.529">    {</a>
-<span class="sourceLineNo">530</span><a id="line.530">        Service service;</a>
-<span class="sourceLineNo">531</span><a id="line.531"></a>
-<span class="sourceLineNo">532</span><a id="line.532">        if (this.isLocalService(name))</a>
-<span class="sourceLineNo">533</span><a id="line.533">        {</a>
-<span class="sourceLineNo">534</span><a id="line.534">                try</a>
-<span class="sourceLineNo">535</span><a id="line.535">                {</a>
-<span class="sourceLineNo">536</span><a id="line.536">                    service = getServiceInstance(name);</a>
-<span class="sourceLineNo">537</span><a id="line.537">                    if (!service.getInit())</a>
-<span class="sourceLineNo">538</span><a id="line.538">                    {</a>
-<span class="sourceLineNo">539</span><a id="line.539">                        synchronized (service.getClass())</a>
-<span class="sourceLineNo">540</span><a id="line.540">                        {</a>
-<span class="sourceLineNo">541</span><a id="line.541">                            if (!service.getInit())</a>
-<span class="sourceLineNo">542</span><a id="line.542">                            {</a>
-<span class="sourceLineNo">543</span><a id="line.543">                                log.info("Start Initializing service (late): {}", name);</a>
-<span class="sourceLineNo">544</span><a id="line.544">                                service.init();</a>
-<span class="sourceLineNo">545</span><a id="line.545">                                log.info("Finish Initializing service (late): {}", name);</a>
-<span class="sourceLineNo">546</span><a id="line.546">                            }</a>
-<span class="sourceLineNo">547</span><a id="line.547">                        }</a>
-<span class="sourceLineNo">548</span><a id="line.548">                    }</a>
-<span class="sourceLineNo">549</span><a id="line.549">                    if (!service.getInit())</a>
-<span class="sourceLineNo">550</span><a id="line.550">                    {</a>
-<span class="sourceLineNo">551</span><a id="line.551">                        // this exception will be caught &amp; rethrown by this very method.</a>
-<span class="sourceLineNo">552</span><a id="line.552">                        // getInit() returning false indicates some initialization issue,</a>
-<span class="sourceLineNo">553</span><a id="line.553">                        // which in turn prevents the InitableBroker from passing a</a>
-<span class="sourceLineNo">554</span><a id="line.554">                        // reference to a working instance of the initable to the client.</a>
-<span class="sourceLineNo">555</span><a id="line.555">                        throw new InitializationException(</a>
-<span class="sourceLineNo">556</span><a id="line.556">                                "init() failed to initialize service " + name);</a>
-<span class="sourceLineNo">557</span><a id="line.557">                    }</a>
-<span class="sourceLineNo">558</span><a id="line.558">                    return service;</a>
+<span class="sourceLineNo">340</span><a id="line.340"></a>
+<span class="sourceLineNo">341</span><a id="line.341">        keys.removeIf(key -&gt; !key.startsWith(prefix));</a>
+<span class="sourceLineNo">342</span><a id="line.342"></a>
+<span class="sourceLineNo">343</span><a id="line.343">        return keys.iterator();</a>
+<span class="sourceLineNo">344</span><a id="line.344">    }</a>
+<span class="sourceLineNo">345</span><a id="line.345"></a>
+<span class="sourceLineNo">346</span><a id="line.346">    /**</a>
+<span class="sourceLineNo">347</span><a id="line.347">     * Performs early initialization of specified service.</a>
+<span class="sourceLineNo">348</span><a id="line.348">     *</a>
+<span class="sourceLineNo">349</span><a id="line.349">     * @param name The name of the service (generally the</a>
+<span class="sourceLineNo">350</span><a id="line.350">     * &lt;code&gt;SERVICE_NAME&lt;/code&gt; constant of the service's interface</a>
+<span class="sourceLineNo">351</span><a id="line.351">     * definition).</a>
+<span class="sourceLineNo">352</span><a id="line.352">     * @throws InitializationException Initialization of this</a>
+<span class="sourceLineNo">353</span><a id="line.353">     * service was not successful.</a>
+<span class="sourceLineNo">354</span><a id="line.354">     */</a>
+<span class="sourceLineNo">355</span><a id="line.355">    @Override</a>
+<span class="sourceLineNo">356</span><a id="line.356">    public synchronized void initService(String name)</a>
+<span class="sourceLineNo">357</span><a id="line.357">            throws InitializationException</a>
+<span class="sourceLineNo">358</span><a id="line.358">    {</a>
+<span class="sourceLineNo">359</span><a id="line.359">        // Calling getServiceInstance(name) assures that the Service</a>
+<span class="sourceLineNo">360</span><a id="line.360">        // implementation has its name and broker reference set before</a>
+<span class="sourceLineNo">361</span><a id="line.361">        // initialization.</a>
+<span class="sourceLineNo">362</span><a id="line.362">        Service instance = getServiceInstance(name);</a>
+<span class="sourceLineNo">363</span><a id="line.363"></a>
+<span class="sourceLineNo">364</span><a id="line.364">        if (!instance.getInit())</a>
+<span class="sourceLineNo">365</span><a id="line.365">        {</a>
+<span class="sourceLineNo">366</span><a id="line.366">            // this call might result in an indirect recursion</a>
+<span class="sourceLineNo">367</span><a id="line.367">            instance.init();</a>
+<span class="sourceLineNo">368</span><a id="line.368">        }</a>
+<span class="sourceLineNo">369</span><a id="line.369">    }</a>
+<span class="sourceLineNo">370</span><a id="line.370"></a>
+<span class="sourceLineNo">371</span><a id="line.371">    /**</a>
+<span class="sourceLineNo">372</span><a id="line.372">     * Performs early initialization of all services.  Failed early</a>
+<span class="sourceLineNo">373</span><a id="line.373">     * initialization of a Service may be non-fatal to the system,</a>
+<span class="sourceLineNo">374</span><a id="line.374">     * thus any exceptions are logged and the initialization process</a>
+<span class="sourceLineNo">375</span><a id="line.375">     * continues.</a>
+<span class="sourceLineNo">376</span><a id="line.376">     */</a>
+<span class="sourceLineNo">377</span><a id="line.377">    public void initServices()</a>
+<span class="sourceLineNo">378</span><a id="line.378">    {</a>
+<span class="sourceLineNo">379</span><a id="line.379">        try</a>
+<span class="sourceLineNo">380</span><a id="line.380">        {</a>
+<span class="sourceLineNo">381</span><a id="line.381">            initServices(false);</a>
+<span class="sourceLineNo">382</span><a id="line.382">        }</a>
+<span class="sourceLineNo">383</span><a id="line.383">        catch (InstantiationException | InitializationException notThrown)</a>
+<span class="sourceLineNo">384</span><a id="line.384">        {</a>
+<span class="sourceLineNo">385</span><a id="line.385">            log.debug("Caught non fatal exception", notThrown);</a>
+<span class="sourceLineNo">386</span><a id="line.386">        }</a>
+<span class="sourceLineNo">387</span><a id="line.387">    }</a>
+<span class="sourceLineNo">388</span><a id="line.388"></a>
+<span class="sourceLineNo">389</span><a id="line.389">    /**</a>
+<span class="sourceLineNo">390</span><a id="line.390">     * Performs early initialization of all services. You can decide</a>
+<span class="sourceLineNo">391</span><a id="line.391">     * to handle failed initializations if you wish, but then</a>
+<span class="sourceLineNo">392</span><a id="line.392">     * after one service fails, the other will not have the chance</a>
+<span class="sourceLineNo">393</span><a id="line.393">     * to initialize.</a>
+<span class="sourceLineNo">394</span><a id="line.394">     *</a>
+<span class="sourceLineNo">395</span><a id="line.395">     * @param report &lt;code&gt;true&lt;/code&gt; if you want exceptions thrown.</a>
+<span class="sourceLineNo">396</span><a id="line.396">     * @throws InstantiationException if the service could not be instantiated</a>
+<span class="sourceLineNo">397</span><a id="line.397">     * @throws InitializationException if the service could not be initialized</a>
+<span class="sourceLineNo">398</span><a id="line.398">     */</a>
+<span class="sourceLineNo">399</span><a id="line.399">    public void initServices(boolean report)</a>
+<span class="sourceLineNo">400</span><a id="line.400">            throws InstantiationException, InitializationException</a>
+<span class="sourceLineNo">401</span><a id="line.401">    {</a>
+<span class="sourceLineNo">402</span><a id="line.402">        if (report)</a>
+<span class="sourceLineNo">403</span><a id="line.403">        {</a>
+<span class="sourceLineNo">404</span><a id="line.404">            // Throw exceptions</a>
+<span class="sourceLineNo">405</span><a id="line.405">            for (Iterator&lt;String&gt; names = getServiceNames(); names.hasNext();)</a>
+<span class="sourceLineNo">406</span><a id="line.406">            {</a>
+<span class="sourceLineNo">407</span><a id="line.407">                doInitService(names.next());</a>
+<span class="sourceLineNo">408</span><a id="line.408">            }</a>
+<span class="sourceLineNo">409</span><a id="line.409">        }</a>
+<span class="sourceLineNo">410</span><a id="line.410">        else</a>
+<span class="sourceLineNo">411</span><a id="line.411">        {</a>
+<span class="sourceLineNo">412</span><a id="line.412">            // Eat exceptions</a>
+<span class="sourceLineNo">413</span><a id="line.413">            for (Iterator&lt;String&gt; names = getServiceNames(); names.hasNext();)</a>
+<span class="sourceLineNo">414</span><a id="line.414">            {</a>
+<span class="sourceLineNo">415</span><a id="line.415">                try</a>
+<span class="sourceLineNo">416</span><a id="line.416">                {</a>
+<span class="sourceLineNo">417</span><a id="line.417">                    doInitService(names.next());</a>
+<span class="sourceLineNo">418</span><a id="line.418">                }</a>
+<span class="sourceLineNo">419</span><a id="line.419">                        // In case of an exception, file an error message; the</a>
+<span class="sourceLineNo">420</span><a id="line.420">                        // system may be still functional, though.</a>
+<span class="sourceLineNo">421</span><a id="line.421">                catch (InstantiationException | InitializationException e)</a>
+<span class="sourceLineNo">422</span><a id="line.422">                {</a>
+<span class="sourceLineNo">423</span><a id="line.423">                    log.error(e);</a>
+<span class="sourceLineNo">424</span><a id="line.424">                }</a>
+<span class="sourceLineNo">425</span><a id="line.425">            }</a>
+<span class="sourceLineNo">426</span><a id="line.426">        }</a>
+<span class="sourceLineNo">427</span><a id="line.427">        log.info("Finished initializing all services!");</a>
+<span class="sourceLineNo">428</span><a id="line.428">    }</a>
+<span class="sourceLineNo">429</span><a id="line.429"></a>
+<span class="sourceLineNo">430</span><a id="line.430">    /**</a>
+<span class="sourceLineNo">431</span><a id="line.431">     * Internal utility method for use in {@link #initServices(boolean)}</a>
+<span class="sourceLineNo">432</span><a id="line.432">     * to prevent duplication of code.</a>
+<span class="sourceLineNo">433</span><a id="line.433">     */</a>
+<span class="sourceLineNo">434</span><a id="line.434">    private void doInitService(String name)</a>
+<span class="sourceLineNo">435</span><a id="line.435">            throws InstantiationException, InitializationException</a>
+<span class="sourceLineNo">436</span><a id="line.436">    {</a>
+<span class="sourceLineNo">437</span><a id="line.437">        // Only start up services that have their earlyInit flag set.</a>
+<span class="sourceLineNo">438</span><a id="line.438">        if (getConfiguration(name).getBoolean("earlyInit", false))</a>
+<span class="sourceLineNo">439</span><a id="line.439">        {</a>
+<span class="sourceLineNo">440</span><a id="line.440">            log.info("Start Initializing service (early): {}", name);</a>
+<span class="sourceLineNo">441</span><a id="line.441">            initService(name);</a>
+<span class="sourceLineNo">442</span><a id="line.442">            log.info("Finish Initializing service (early): {}", name);</a>
+<span class="sourceLineNo">443</span><a id="line.443">        }</a>
+<span class="sourceLineNo">444</span><a id="line.444">    }</a>
+<span class="sourceLineNo">445</span><a id="line.445"></a>
+<span class="sourceLineNo">446</span><a id="line.446">    /**</a>
+<span class="sourceLineNo">447</span><a id="line.447">     * Shuts down a &lt;code&gt;Service&lt;/code&gt;, releasing resources</a>
+<span class="sourceLineNo">448</span><a id="line.448">     * allocated by an &lt;code&gt;Service&lt;/code&gt;, and returns it to its</a>
+<span class="sourceLineNo">449</span><a id="line.449">     * initial (uninitialized) state.</a>
+<span class="sourceLineNo">450</span><a id="line.450">     *</a>
+<span class="sourceLineNo">451</span><a id="line.451">     * @param name The name of the &lt;code&gt;Service&lt;/code&gt; to be</a>
+<span class="sourceLineNo">452</span><a id="line.452">     * uninitialized.</a>
+<span class="sourceLineNo">453</span><a id="line.453">     */</a>
+<span class="sourceLineNo">454</span><a id="line.454">    @Override</a>
+<span class="sourceLineNo">455</span><a id="line.455">    public synchronized void shutdownService(String name)</a>
+<span class="sourceLineNo">456</span><a id="line.456">    {</a>
+<span class="sourceLineNo">457</span><a id="line.457">        try</a>
+<span class="sourceLineNo">458</span><a id="line.458">        {</a>
+<span class="sourceLineNo">459</span><a id="line.459">            Service service = getServiceInstance(name);</a>
+<span class="sourceLineNo">460</span><a id="line.460">            if (service != null &amp;&amp; service.getInit())</a>
+<span class="sourceLineNo">461</span><a id="line.461">            {</a>
+<span class="sourceLineNo">462</span><a id="line.462">                service.shutdown();</a>
+<span class="sourceLineNo">463</span><a id="line.463"></a>
+<span class="sourceLineNo">464</span><a id="line.464">                if (service.getInit() &amp;&amp; service instanceof BaseService)</a>
+<span class="sourceLineNo">465</span><a id="line.465">                {</a>
+<span class="sourceLineNo">466</span><a id="line.466">                    // BaseService::shutdown() does this by default,</a>
+<span class="sourceLineNo">467</span><a id="line.467">                    // but could've been overriden poorly.</a>
+<span class="sourceLineNo">468</span><a id="line.468">                    ((BaseService) service).setInit(false);</a>
+<span class="sourceLineNo">469</span><a id="line.469">                }</a>
+<span class="sourceLineNo">470</span><a id="line.470">            }</a>
+<span class="sourceLineNo">471</span><a id="line.471">        }</a>
+<span class="sourceLineNo">472</span><a id="line.472">        catch (InstantiationException e)</a>
+<span class="sourceLineNo">473</span><a id="line.473">        {</a>
+<span class="sourceLineNo">474</span><a id="line.474">            // Assuming harmless -- log the error and continue.</a>
+<span class="sourceLineNo">475</span><a id="line.475">            log.error("Shutdown of a nonexistent Service '"</a>
+<span class="sourceLineNo">476</span><a id="line.476">                    + name + "' was requested", e);</a>
+<span class="sourceLineNo">477</span><a id="line.477">        }</a>
+<span class="sourceLineNo">478</span><a id="line.478">    }</a>
+<span class="sourceLineNo">479</span><a id="line.479"></a>
+<span class="sourceLineNo">480</span><a id="line.480">    /**</a>
+<span class="sourceLineNo">481</span><a id="line.481">     * Shuts down all Turbine services, releasing allocated resources and</a>
+<span class="sourceLineNo">482</span><a id="line.482">     * returning them to their initial (uninitialized) state.</a>
+<span class="sourceLineNo">483</span><a id="line.483">     */</a>
+<span class="sourceLineNo">484</span><a id="line.484">    @Override</a>
+<span class="sourceLineNo">485</span><a id="line.485">    public void shutdownServices()</a>
+<span class="sourceLineNo">486</span><a id="line.486">    {</a>
+<span class="sourceLineNo">487</span><a id="line.487">        log.info("Shutting down all services!");</a>
+<span class="sourceLineNo">488</span><a id="line.488"></a>
+<span class="sourceLineNo">489</span><a id="line.489">        String serviceName = null;</a>
+<span class="sourceLineNo">490</span><a id="line.490"></a>
+<span class="sourceLineNo">491</span><a id="line.491">        /*</a>
+<span class="sourceLineNo">492</span><a id="line.492">         * Now we want to reverse the order of</a>
+<span class="sourceLineNo">493</span><a id="line.493">         * this list. This functionality should be added to</a>
+<span class="sourceLineNo">494</span><a id="line.494">         * the ExtendedProperties in the commons but</a>
+<span class="sourceLineNo">495</span><a id="line.495">         * this will fix the problem for now.</a>
+<span class="sourceLineNo">496</span><a id="line.496">         */</a>
+<span class="sourceLineNo">497</span><a id="line.497"></a>
+<span class="sourceLineNo">498</span><a id="line.498">        ArrayList&lt;String&gt; reverseServicesList = new ArrayList&lt;&gt;();</a>
+<span class="sourceLineNo">499</span><a id="line.499"></a>
+<span class="sourceLineNo">500</span><a id="line.500">        for (Iterator&lt;String&gt; serviceNames = getServiceNames(); serviceNames.hasNext();)</a>
+<span class="sourceLineNo">501</span><a id="line.501">        {</a>
+<span class="sourceLineNo">502</span><a id="line.502">            serviceName = serviceNames.next();</a>
+<span class="sourceLineNo">503</span><a id="line.503">            reverseServicesList.add(0, serviceName);</a>
+<span class="sourceLineNo">504</span><a id="line.504">        }</a>
+<span class="sourceLineNo">505</span><a id="line.505"></a>
+<span class="sourceLineNo">506</span><a id="line.506">        for (String s : reverseServicesList)</a>
+<span class="sourceLineNo">507</span><a id="line.507">        {</a>
+<span class="sourceLineNo">508</span><a id="line.508">            serviceName = s;</a>
+<span class="sourceLineNo">509</span><a id="line.509">            log.info("Shutting down service: {}", serviceName);</a>
+<span class="sourceLineNo">510</span><a id="line.510">            shutdownService(serviceName);</a>
+<span class="sourceLineNo">511</span><a id="line.511">        }</a>
+<span class="sourceLineNo">512</span><a id="line.512">    }</a>
+<span class="sourceLineNo">513</span><a id="line.513"></a>
+<span class="sourceLineNo">514</span><a id="line.514">    /**</a>
+<span class="sourceLineNo">515</span><a id="line.515">     * Returns an instance of requested Service.</a>
+<span class="sourceLineNo">516</span><a id="line.516">     *</a>
+<span class="sourceLineNo">517</span><a id="line.517">     * @param name The name of the Service requested.</a>
+<span class="sourceLineNo">518</span><a id="line.518">     * @return An instance of requested Service.</a>
+<span class="sourceLineNo">519</span><a id="line.519">     * @throws InstantiationException if the service is unknown or</a>
+<span class="sourceLineNo">520</span><a id="line.520">     * can't be initialized.</a>
+<span class="sourceLineNo">521</span><a id="line.521">     */</a>
+<span class="sourceLineNo">522</span><a id="line.522">    @Override</a>
+<span class="sourceLineNo">523</span><a id="line.523">    public Object getService(String name) throws InstantiationException</a>
+<span class="sourceLineNo">524</span><a id="line.524">    {</a>
+<span class="sourceLineNo">525</span><a id="line.525">        Service service;</a>
+<span class="sourceLineNo">526</span><a id="line.526"></a>
+<span class="sourceLineNo">527</span><a id="line.527">        if (this.isLocalService(name))</a>
+<span class="sourceLineNo">528</span><a id="line.528">        {</a>
+<span class="sourceLineNo">529</span><a id="line.529">                try</a>
+<span class="sourceLineNo">530</span><a id="line.530">                {</a>
+<span class="sourceLineNo">531</span><a id="line.531">                    service = getServiceInstance(name);</a>
+<span class="sourceLineNo">532</span><a id="line.532">                    if (!service.getInit())</a>
+<span class="sourceLineNo">533</span><a id="line.533">                    {</a>
+<span class="sourceLineNo">534</span><a id="line.534">                        synchronized (service.getClass())</a>
+<span class="sourceLineNo">535</span><a id="line.535">                        {</a>
+<span class="sourceLineNo">536</span><a id="line.536">                            if (!service.getInit())</a>
+<span class="sourceLineNo">537</span><a id="line.537">                            {</a>
+<span class="sourceLineNo">538</span><a id="line.538">                                log.info("Start Initializing service (late): {}", name);</a>
+<span class="sourceLineNo">539</span><a id="line.539">                                service.init();</a>
+<span class="sourceLineNo">540</span><a id="line.540">                                log.info("Finish Initializing service (late): {}", name);</a>
+<span class="sourceLineNo">541</span><a id="line.541">                            }</a>
+<span class="sourceLineNo">542</span><a id="line.542">                        }</a>
+<span class="sourceLineNo">543</span><a id="line.543">                    }</a>
+<span class="sourceLineNo">544</span><a id="line.544">                    if (!service.getInit())</a>
+<span class="sourceLineNo">545</span><a id="line.545">                    {</a>
+<span class="sourceLineNo">546</span><a id="line.546">                        // this exception will be caught &amp; rethrown by this very method.</a>
+<span class="sourceLineNo">547</span><a id="line.547">                        // getInit() returning false indicates some initialization issue,</a>
+<span class="sourceLineNo">548</span><a id="line.548">                        // which in turn prevents the InitableBroker from passing a</a>
+<span class="sourceLineNo">549</span><a id="line.549">                        // reference to a working instance of the initable to the client.</a>
+<span class="sourceLineNo">550</span><a id="line.550">                        throw new InitializationException(</a>
+<span class="sourceLineNo">551</span><a id="line.551">                                "init() failed to initialize service " + name);</a>
+<span class="sourceLineNo">552</span><a id="line.552">                    }</a>
+<span class="sourceLineNo">553</span><a id="line.553">                    return service;</a>
+<span class="sourceLineNo">554</span><a id="line.554">                }</a>
+<span class="sourceLineNo">555</span><a id="line.555">                catch (InitializationException e)</a>
+<span class="sourceLineNo">556</span><a id="line.556">                {</a>
+<span class="sourceLineNo">557</span><a id="line.557">                    throw new InstantiationException("Service " + name +</a>
+<span class="sourceLineNo">558</span><a id="line.558">                            " failed to initialize", e);</a>
 <span class="sourceLineNo">559</span><a id="line.559">                }</a>
-<span class="sourceLineNo">560</span><a id="line.560">                catch (InitializationException e)</a>
-<span class="sourceLineNo">561</span><a id="line.561">                {</a>
-<span class="sourceLineNo">562</span><a id="line.562">                    throw new InstantiationException("Service " + name +</a>
-<span class="sourceLineNo">563</span><a id="line.563">                            " failed to initialize", e);</a>
-<span class="sourceLineNo">564</span><a id="line.564">                }</a>
-<span class="sourceLineNo">565</span><a id="line.565">        }</a>
-<span class="sourceLineNo">566</span><a id="line.566">        else if (this.isNonLocalService(name))</a>
-<span class="sourceLineNo">567</span><a id="line.567">        {</a>
-<span class="sourceLineNo">568</span><a id="line.568">            return this.getNonLocalService(name);</a>
-<span class="sourceLineNo">569</span><a id="line.569">        }</a>
-<span class="sourceLineNo">570</span><a id="line.570">        else</a>
-<span class="sourceLineNo">571</span><a id="line.571">        {</a>
-<span class="sourceLineNo">572</span><a id="line.572">            throw new InstantiationException(</a>
-<span class="sourceLineNo">573</span><a id="line.573">                "ServiceBroker: unknown service " + name</a>
-<span class="sourceLineNo">574</span><a id="line.574">                + " requested");</a>
-<span class="sourceLineNo">575</span><a id="line.575">        }</a>
-<span class="sourceLineNo">576</span><a id="line.576">    }</a>
-<span class="sourceLineNo">577</span><a id="line.577"></a>
-<span class="sourceLineNo">578</span><a id="line.578">    /**</a>
-<span class="sourceLineNo">579</span><a id="line.579">     * Retrieves an instance of a Service without triggering late</a>
-<span class="sourceLineNo">580</span><a id="line.580">     * initialization.</a>
-<span class="sourceLineNo">581</span><a id="line.581">     *</a>
-<span class="sourceLineNo">582</span><a id="line.582">     * Early initialization of a Service can require access to Service</a>
-<span class="sourceLineNo">583</span><a id="line.583">     * properties.  The Service must have its name and serviceBroker</a>
-<span class="sourceLineNo">584</span><a id="line.584">     * set by then.  Therefore, before calling</a>
-<span class="sourceLineNo">585</span><a id="line.585">     * Initable.initClass(Object), the class must be instantiated with</a>
-<span class="sourceLineNo">586</span><a id="line.586">     * InitableBroker.getInitableInstance(), and</a>
-<span class="sourceLineNo">587</span><a id="line.587">     * Service.setServiceBroker() and Service.setName() must be</a>
-<span class="sourceLineNo">588</span><a id="line.588">     * called.  This calls for two - level accessing the Services</a>
-<span class="sourceLineNo">589</span><a id="line.589">     * instances.</a>
-<span class="sourceLineNo">590</span><a id="line.590">     *</a>
-<span class="sourceLineNo">591</span><a id="line.591">     * @param name The name of the service requested.</a>
-<span class="sourceLineNo">592</span><a id="line.592">     *</a>
-<span class="sourceLineNo">593</span><a id="line.593">     * @return the Service instance</a>
-<span class="sourceLineNo">594</span><a id="line.594">     *</a>
-<span class="sourceLineNo">595</span><a id="line.595">     * @throws InstantiationException The service is unknown or</a>
-<span class="sourceLineNo">596</span><a id="line.596">     * can't be initialized.</a>
-<span class="sourceLineNo">597</span><a id="line.597">     */</a>
-<span class="sourceLineNo">598</span><a id="line.598">    protected Service getServiceInstance(String name)</a>
-<span class="sourceLineNo">599</span><a id="line.599">            throws InstantiationException</a>
-<span class="sourceLineNo">600</span><a id="line.600">    {</a>
-<span class="sourceLineNo">601</span><a id="line.601">        Service service = services.get(name);</a>
-<span class="sourceLineNo">602</span><a id="line.602"></a>
-<span class="sourceLineNo">603</span><a id="line.603">        if (service == null)</a>
-<span class="sourceLineNo">604</span><a id="line.604">        {</a>
-<span class="sourceLineNo">605</span><a id="line.605">            serviceLock.lock();</a>
+<span class="sourceLineNo">560</span><a id="line.560">        }</a>
+<span class="sourceLineNo">561</span><a id="line.561">        else if (this.isNonLocalService(name))</a>
+<span class="sourceLineNo">562</span><a id="line.562">        {</a>
+<span class="sourceLineNo">563</span><a id="line.563">            return this.getNonLocalService(name);</a>
+<span class="sourceLineNo">564</span><a id="line.564">        }</a>
+<span class="sourceLineNo">565</span><a id="line.565">        else</a>
+<span class="sourceLineNo">566</span><a id="line.566">        {</a>
+<span class="sourceLineNo">567</span><a id="line.567">            throw new InstantiationException(</a>
+<span class="sourceLineNo">568</span><a id="line.568">                "ServiceBroker: unknown service " + name</a>
+<span class="sourceLineNo">569</span><a id="line.569">                + " requested");</a>
+<span class="sourceLineNo">570</span><a id="line.570">        }</a>
+<span class="sourceLineNo">571</span><a id="line.571">    }</a>
+<span class="sourceLineNo">572</span><a id="line.572"></a>
+<span class="sourceLineNo">573</span><a id="line.573">    /**</a>
+<span class="sourceLineNo">574</span><a id="line.574">     * Retrieves an instance of a Service without triggering late</a>
+<span class="sourceLineNo">575</span><a id="line.575">     * initialization.</a>
+<span class="sourceLineNo">576</span><a id="line.576">     *</a>
+<span class="sourceLineNo">577</span><a id="line.577">     * Early initialization of a Service can require access to Service</a>
+<span class="sourceLineNo">578</span><a id="line.578">     * properties.  The Service must have its name and serviceBroker</a>
+<span class="sourceLineNo">579</span><a id="line.579">     * set by then.  Therefore, before calling</a>
+<span class="sourceLineNo">580</span><a id="line.580">     * Initable.initClass(Object), the class must be instantiated with</a>
+<span class="sourceLineNo">581</span><a id="line.581">     * InitableBroker.getInitableInstance(), and</a>
+<span class="sourceLineNo">582</span><a id="line.582">     * Service.setServiceBroker() and Service.setName() must be</a>
+<span class="sourceLineNo">583</span><a id="line.583">     * called.  This calls for two - level accessing the Services</a>
+<span class="sourceLineNo">584</span><a id="line.584">     * instances.</a>
+<span class="sourceLineNo">585</span><a id="line.585">     *</a>
+<span class="sourceLineNo">586</span><a id="line.586">     * @param name The name of the service requested.</a>
+<span class="sourceLineNo">587</span><a id="line.587">     *</a>
+<span class="sourceLineNo">588</span><a id="line.588">     * @return the Service instance</a>
+<span class="sourceLineNo">589</span><a id="line.589">     *</a>
+<span class="sourceLineNo">590</span><a id="line.590">     * @throws InstantiationException The service is unknown or</a>
+<span class="sourceLineNo">591</span><a id="line.591">     * can't be initialized.</a>
+<span class="sourceLineNo">592</span><a id="line.592">     */</a>
+<span class="sourceLineNo">593</span><a id="line.593">    protected Service getServiceInstance(String name)</a>
+<span class="sourceLineNo">594</span><a id="line.594">            throws InstantiationException</a>
+<span class="sourceLineNo">595</span><a id="line.595">    {</a>
+<span class="sourceLineNo">596</span><a id="line.596">        Service service = services.get(name);</a>
+<span class="sourceLineNo">597</span><a id="line.597"></a>
+<span class="sourceLineNo">598</span><a id="line.598">        if (service == null)</a>
+<span class="sourceLineNo">599</span><a id="line.599">        {</a>
+<span class="sourceLineNo">600</span><a id="line.600">            serviceLock.lock();</a>
+<span class="sourceLineNo">601</span><a id="line.601"></a>
+<span class="sourceLineNo">602</span><a id="line.602">            try</a>
+<span class="sourceLineNo">603</span><a id="line.603">            {</a>
+<span class="sourceLineNo">604</span><a id="line.604">                // Double check</a>
+<span class="sourceLineNo">605</span><a id="line.605">                service = services.get(name);</a>
 <span class="sourceLineNo">606</span><a id="line.606"></a>
-<span class="sourceLineNo">607</span><a id="line.607">            try</a>
-<span class="sourceLineNo">608</span><a id="line.608">            {</a>
-<span class="sourceLineNo">609</span><a id="line.609">                // Double check</a>
-<span class="sourceLineNo">610</span><a id="line.610">                service = services.get(name);</a>
-<span class="sourceLineNo">611</span><a id="line.611"></a>
-<span class="sourceLineNo">612</span><a id="line.612">                if (service == null)</a>
-<span class="sourceLineNo">613</span><a id="line.613">                {</a>
-<span class="sourceLineNo">614</span><a id="line.614">                    if (!this.isLocalService(name))</a>
-<span class="sourceLineNo">615</span><a id="line.615">                    {</a>
-<span class="sourceLineNo">616</span><a id="line.616">                        throw new InstantiationException(</a>
-<span class="sourceLineNo">617</span><a id="line.617">                                "ServiceBroker: unknown service " + name</a>
-<span class="sourceLineNo">618</span><a id="line.618">                                + " requested");</a>
-<span class="sourceLineNo">619</span><a id="line.619">                    }</a>
-<span class="sourceLineNo">620</span><a id="line.620"></a>
-<span class="sourceLineNo">621</span><a id="line.621">                    try</a>
-<span class="sourceLineNo">622</span><a id="line.622">                    {</a>
-<span class="sourceLineNo">623</span><a id="line.623">                        Class&lt;?&gt; clazz = mapping.get(name);</a>
-<span class="sourceLineNo">624</span><a id="line.624"></a>
-<span class="sourceLineNo">625</span><a id="line.625">                        try</a>
-<span class="sourceLineNo">626</span><a id="line.626">                        {</a>
-<span class="sourceLineNo">627</span><a id="line.627">                            service = (Service) clazz.newInstance();</a>
-<span class="sourceLineNo">628</span><a id="line.628"></a>
-<span class="sourceLineNo">629</span><a id="line.629">                            // check if the newly created service is also a</a>
-<span class="sourceLineNo">630</span><a id="line.630">                            // service provider - if so then remember it</a>
-<span class="sourceLineNo">631</span><a id="line.631">                            if (service instanceof TurbineServiceProvider)</a>
-<span class="sourceLineNo">632</span><a id="line.632">                            {</a>
-<span class="sourceLineNo">633</span><a id="line.633">                                Service _service = this.serviceProviderInstanceMap.putIfAbsent(name,service);</a>
-<span class="sourceLineNo">634</span><a id="line.634">                                if (_service != null)</a>
-<span class="sourceLineNo">635</span><a id="line.635">                                {</a>
-<span class="sourceLineNo">636</span><a id="line.636">                                    service = _service;</a>
-<span class="sourceLineNo">637</span><a id="line.637">                                }</a>
-<span class="sourceLineNo">638</span><a id="line.638">                            }</a>
-<span class="sourceLineNo">639</span><a id="line.639">                        }</a>
-<span class="sourceLineNo">640</span><a id="line.640">                        // those two errors must be passed to the VM</a>
-<span class="sourceLineNo">641</span><a id="line.641">                        catch (ClassCastException e)</a>
+<span class="sourceLineNo">607</span><a id="line.607">                if (service == null)</a>
+<span class="sourceLineNo">608</span><a id="line.608">                {</a>
+<span class="sourceLineNo">609</span><a id="line.609">                    if (!this.isLocalService(name))</a>
+<span class="sourceLineNo">610</span><a id="line.610">                    {</a>
+<span class="sourceLineNo">611</span><a id="line.611">                        throw new InstantiationException(</a>
+<span class="sourceLineNo">612</span><a id="line.612">                                "ServiceBroker: unknown service " + name</a>
+<span class="sourceLineNo">613</span><a id="line.613">                                + " requested");</a>
+<span class="sourceLineNo">614</span><a id="line.614">                    }</a>
+<span class="sourceLineNo">615</span><a id="line.615"></a>
+<span class="sourceLineNo">616</span><a id="line.616">                    try</a>
+<span class="sourceLineNo">617</span><a id="line.617">                    {</a>
+<span class="sourceLineNo">618</span><a id="line.618">                        Class&lt;?&gt; clazz = mapping.get(name);</a>
+<span class="sourceLineNo">619</span><a id="line.619"></a>
+<span class="sourceLineNo">620</span><a id="line.620">                        try</a>
+<span class="sourceLineNo">621</span><a id="line.621">                        {</a>
+<span class="sourceLineNo">622</span><a id="line.622">                            service = (Service) clazz.getDeclaredConstructor().newInstance();</a>
+<span class="sourceLineNo">623</span><a id="line.623"></a>
+<span class="sourceLineNo">624</span><a id="line.624">                            // check if the newly created service is also a</a>
+<span class="sourceLineNo">625</span><a id="line.625">                            // service provider - if so then remember it</a>
+<span class="sourceLineNo">626</span><a id="line.626">                            if (service instanceof TurbineServiceProvider)</a>
+<span class="sourceLineNo">627</span><a id="line.627">                            {</a>
+<span class="sourceLineNo">628</span><a id="line.628">                                Service _service = this.serviceProviderInstanceMap.putIfAbsent(name,service);</a>
+<span class="sourceLineNo">629</span><a id="line.629">                                if (_service != null)</a>
+<span class="sourceLineNo">630</span><a id="line.630">                                {</a>
+<span class="sourceLineNo">631</span><a id="line.631">                                    service = _service;</a>
+<span class="sourceLineNo">632</span><a id="line.632">                                }</a>
+<span class="sourceLineNo">633</span><a id="line.633">                            }</a>
+<span class="sourceLineNo">634</span><a id="line.634">                        }</a>
+<span class="sourceLineNo">635</span><a id="line.635">                        // those two errors must be passed to the VM</a>
+<span class="sourceLineNo">636</span><a id="line.636">                        catch (ClassCastException e)</a>
+<span class="sourceLineNo">637</span><a id="line.637">                        {</a>
+<span class="sourceLineNo">638</span><a id="line.638">                            throw new InstantiationException("Class " + clazz +</a>
+<span class="sourceLineNo">639</span><a id="line.639">                                    " doesn't implement the Service interface", e);</a>
+<span class="sourceLineNo">640</span><a id="line.640">                        }</a>
+<span class="sourceLineNo">641</span><a id="line.641">                        catch (ThreadDeath | OutOfMemoryError t)</a>
 <span class="sourceLineNo">642</span><a id="line.642">                        {</a>
-<span class="sourceLineNo">643</span><a id="line.643">                            throw new InstantiationException("Class " + clazz +</a>
-<span class="sourceLineNo">644</span><a id="line.644">                                    " doesn't implement the Service interface", e);</a>
-<span class="sourceLineNo">645</span><a id="line.645">                        }</a>
-<span class="sourceLineNo">646</span><a id="line.646">                        catch (ThreadDeath t)</a>
-<span class="sourceLineNo">647</span><a id="line.647">                        {</a>
-<span class="sourceLineNo">648</span><a id="line.648">                            throw t;</a>
-<span class="sourceLineNo">649</span><a id="line.649">                        }</a>
-<span class="sourceLineNo">650</span><a id="line.650">                        catch (OutOfMemoryError t)</a>
-<span class="sourceLineNo">651</span><a id="line.651">                        {</a>
-<span class="sourceLineNo">652</span><a id="line.652">                            throw t;</a>
-<span class="sourceLineNo">653</span><a id="line.653">                        }</a>
-<span class="sourceLineNo">654</span><a id="line.654">                        catch (Throwable t)</a>
-<span class="sourceLineNo">655</span><a id="line.655">                        {</a>
-<span class="sourceLineNo">656</span><a id="line.656">                            throw new InstantiationException("Failed to instantiate " + clazz, t);</a>
-<span class="sourceLineNo">657</span><a id="line.657">                        }</a>
-<span class="sourceLineNo">658</span><a id="line.658">                    }</a>
-<span class="sourceLineNo">659</span><a id="line.659">                    catch (InstantiationException e)</a>
-<span class="sourceLineNo">660</span><a id="line.660">                    {</a>
-<span class="sourceLineNo">661</span><a id="line.661">                        throw new InstantiationException(</a>
-<span class="sourceLineNo">662</span><a id="line.662">                                "Failed to instantiate service " + name, e);</a>
-<span class="sourceLineNo">663</span><a id="line.663">                    }</a>
-<span class="sourceLineNo">664</span><a id="line.664">                    service.setServiceBroker(this);</a>
-<span class="sourceLineNo">665</span><a id="line.665">                    service.setName(name);</a>
-<span class="sourceLineNo">666</span><a id="line.666">                    Service _service = services.putIfAbsent(name, service);</a>
-<span class="sourceLineNo">667</span><a id="line.667">                    if (_service != null) // Unlikely</a>
-<span class="sourceLineNo">668</span><a id="line.668">                    {</a>
-<span class="sourceLineNo">669</span><a id="line.669">                        service = _service;</a>
-<span class="sourceLineNo">670</span><a id="line.670">                    }</a>
-<span class="sourceLineNo">671</span><a id="line.671">                }</a>
-<span class="sourceLineNo">672</span><a id="line.672">            }</a>
-<span class="sourceLineNo">673</span><a id="line.673">            finally</a>
-<span class="sourceLineNo">674</span><a id="line.674">            {</a>
-<span class="sourceLineNo">675</span><a id="line.675">                serviceLock.unlock();</a>
-<span class="sourceLineNo">676</span><a id="line.676">            }</a>
-<span class="sourceLineNo">677</span><a id="line.677">        }</a>
-<span class="sourceLineNo">678</span><a id="line.678"></a>
-<span class="sourceLineNo">679</span><a id="line.679">        return service;</a>
-<span class="sourceLineNo">680</span><a id="line.680">    }</a>
-<span class="sourceLineNo">681</span><a id="line.681"></a>
-<span class="sourceLineNo">682</span><a id="line.682">    /**</a>
-<span class="sourceLineNo">683</span><a id="line.683">     * Returns the configuration for the specified service.</a>
-<span class="sourceLineNo">684</span><a id="line.684">     *</a>
-<span class="sourceLineNo">685</span><a id="line.685">     * @param name The name of the service.</a>
-<span class="sourceLineNo">686</span><a id="line.686">     * @return Configuration of requested Service.</a>
-<span class="sourceLineNo">687</span><a id="line.687">     */</a>
-<span class="sourceLineNo">688</span><a id="line.688">    @Override</a>
-<span class="sourceLineNo">689</span><a id="line.689">    public Configuration getConfiguration(String name)</a>
-<span class="sourceLineNo">690</span><a id="line.690">    {</a>
-<span class="sourceLineNo">691</span><a id="line.691">        return configuration.subset(SERVICE_PREFIX + name);</a>
-<span class="sourceLineNo">692</span><a id="line.692">    }</a>
-<span class="sourceLineNo">693</span><a id="line.693"></a>
-<span class="sourceLineNo">694</span><a id="line.694">    /**</a>
-<span class="sourceLineNo">695</span><a id="line.695">     * Set the application root.</a>
-<span class="sourceLineNo">696</span><a id="line.696">     *</a>
-<span class="sourceLineNo">697</span><a id="line.697">     * @param applicationRoot application root</a>
-<span class="sourceLineNo">698</span><a id="line.698">     */</a>
-<span class="sourceLineNo">699</span><a id="line.699">    public void setApplicationRoot(String applicationRoot)</a>
-<span class="sourceLineNo">700</span><a id="line.700">    {</a>
-<span class="sourceLineNo">701</span><a id="line.701">        this.applicationRoot = applicationRoot;</a>
-<span class="sourceLineNo">702</span><a id="line.702">    }</a>
-<span class="sourceLineNo">703</span><a id="line.703"></a>
-<span class="sourceLineNo">704</span><a id="line.704">    /**</a>
-<span class="sourceLineNo">705</span><a id="line.705">     * Get the application root as set by</a>
-<span class="sourceLineNo">706</span><a id="line.706">     * the parent application.</a>
-<span class="sourceLineNo">707</span><a id="line.707">     *</a>
-<span class="sourceLineNo">708</span><a id="line.708">     * @return String application root</a>
-<span class="sourceLineNo">709</span><a id="line.709">     */</a>
-<span class="sourceLineNo">710</span><a id="line.710">    @Override</a>
-<span class="sourceLineNo">711</span><a id="line.711">    public String getApplicationRoot()</a>
-<span class="sourceLineNo">712</span><a id="line.712">    {</a>
-<span class="sourceLineNo">713</span><a id="line.713">        return applicationRoot;</a>
-<span class="sourceLineNo">714</span><a id="line.714">    }</a>
-<span class="sourceLineNo">715</span><a id="line.715"></a>
-<span class="sourceLineNo">716</span><a id="line.716">    /**</a>
-<span class="sourceLineNo">717</span><a id="line.717">     * Determines if the requested service is managed by this</a>
-<span class="sourceLineNo">718</span><a id="line.718">     * ServiceBroker.</a>
-<span class="sourceLineNo">719</span><a id="line.719">     *</a>
-<span class="sourceLineNo">720</span><a id="line.720">     * @param name The name of the Service requested.</a>
-<span class="sourceLineNo">721</span><a id="line.721">     * @return true if the service is managed by the this ServiceBroker</a>
-<span class="sourceLineNo">722</span><a id="line.722">     */</a>
-<span class="sourceLineNo">723</span><a id="line.723">    protected boolean isLocalService(String name)</a>
-<span class="sourceLineNo">724</span><a id="line.724">    {</a>
-<span class="sourceLineNo">725</span><a id="line.725">        return this.mapping.containsKey(name);</a>
-<span class="sourceLineNo">726</span><a id="line.726">    }</a>
-<span class="sourceLineNo">727</span><a id="line.727"></a>
-<span class="sourceLineNo">728</span><a id="line.728">    /**</a>
-<span class="sourceLineNo">729</span><a id="line.729">     * Determines if the requested service is managed by an initialized</a>
-<span class="sourceLineNo">730</span><a id="line.730">     * TurbineServiceProvider. We use the service names to lookup</a>
-<span class="sourceLineNo">731</span><a id="line.731">     * the TurbineServiceProvider to ensure that we get a fully</a>
-<span class="sourceLineNo">732</span><a id="line.732">     * initialized service.</a>
-<span class="sourceLineNo">733</span><a id="line.733">     *</a>
-<span class="sourceLineNo">734</span><a id="line.734">     * @param name The name of the Service requested.</a>
-<span class="sourceLineNo">735</span><a id="line.735">     * @return true if the service is managed by a TurbineServiceProvider</a>
-<span class="sourceLineNo">736</span><a id="line.736">     */</a>
-<span class="sourceLineNo">737</span><a id="line.737">    protected boolean isNonLocalService(String name)</a>
-<span class="sourceLineNo">738</span><a id="line.738">    {</a>
-<span class="sourceLineNo">739</span><a id="line.739">        TurbineServiceProvider turbineServiceProvider = null;</a>
-<span class="sourceLineNo">740</span><a id="line.740"></a>
-<span class="sourceLineNo">741</span><a id="line.741">        for (Map.Entry&lt;String, Service&gt; entry : this.serviceProviderInstanceMap.entrySet())</a>
-<span class="sourceLineNo">742</span><a id="line.742">        {</a>
-<span class="sourceLineNo">743</span><a id="line.743">            turbineServiceProvider = (TurbineServiceProvider) this.getService(entry.getKey());</a>
+<span class="sourceLineNo">643</span><a id="line.643">                            throw t;</a>
+<span class="sourceLineNo">644</span><a id="line.644">                        }</a>
+<span class="sourceLineNo">645</span><a id="line.645">                        catch (Throwable t)</a>
+<span class="sourceLineNo">646</span><a id="line.646">                        {</a>
+<span class="sourceLineNo">647</span><a id="line.647">                            throw new InstantiationException("Failed to instantiate " + clazz, t);</a>
+<span class="sourceLineNo">648</span><a id="line.648">                        }</a>
+<span class="sourceLineNo">649</span><a id="line.649">                    }</a>
+<span class="sourceLineNo">650</span><a id="line.650">                    catch (InstantiationException e)</a>
+<span class="sourceLineNo">651</span><a id="line.651">                    {</a>
+<span class="sourceLineNo">652</span><a id="line.652">                        throw new InstantiationException(</a>
+<span class="sourceLineNo">653</span><a id="line.653">                                "Failed to instantiate service " + name, e);</a>
+<span class="sourceLineNo">654</span><a id="line.654">                    }</a>
+<span class="sourceLineNo">655</span><a id="line.655">                    service.setServiceBroker(this);</a>
+<span class="sourceLineNo">656</span><a id="line.656">                    service.setName(name);</a>
+<span class="sourceLineNo">657</span><a id="line.657">                    Service _service = services.putIfAbsent(name, service);</a>
+<span class="sourceLineNo">658</span><a id="line.658">                    if (_service != null) // Unlikely</a>
+<span class="sourceLineNo">659</span><a id="line.659">                    {</a>
+<span class="sourceLineNo">660</span><a id="line.660">                        service = _service;</a>
+<span class="sourceLineNo">661</span><a id="line.661">                    }</a>
+<span class="sourceLineNo">662</span><a id="line.662">                }</a>
+<span class="sourceLineNo">663</span><a id="line.663">            }</a>
+<span class="sourceLineNo">664</span><a id="line.664">            finally</a>
+<span class="sourceLineNo">665</span><a id="line.665">            {</a>
+<span class="sourceLineNo">666</span><a id="line.666">                serviceLock.unlock();</a>
+<span class="sourceLineNo">667</span><a id="line.667">            }</a>
+<span class="sourceLineNo">668</span><a id="line.668">        }</a>
+<span class="sourceLineNo">669</span><a id="line.669"></a>
+<span class="sourceLineNo">670</span><a id="line.670">        return service;</a>
+<span class="sourceLineNo">671</span><a id="line.671">    }</a>
+<span class="sourceLineNo">672</span><a id="line.672"></a>
+<span class="sourceLineNo">673</span><a id="line.673">    /**</a>
+<span class="sourceLineNo">674</span><a id="line.674">     * Returns the configuration for the specified service.</a>
+<span class="sourceLineNo">675</span><a id="line.675">     *</a>
+<span class="sourceLineNo">676</span><a id="line.676">     * @param name The name of the service.</a>
+<span class="sourceLineNo">677</span><a id="line.677">     * @return Configuration of requested Service.</a>
+<span class="sourceLineNo">678</span><a id="line.678">     */</a>
+<span class="sourceLineNo">679</span><a id="line.679">    @Override</a>
+<span class="sourceLineNo">680</span><a id="line.680">    public Configuration getConfiguration(String name)</a>
+<span class="sourceLineNo">681</span><a id="line.681">    {</a>
+<span class="sourceLineNo">682</span><a id="line.682">        return configuration.subset(SERVICE_PREFIX + name);</a>
+<span class="sourceLineNo">683</span><a id="line.683">    }</a>
+<span class="sourceLineNo">684</span><a id="line.684"></a>
+<span class="sourceLineNo">685</span><a id="line.685">    /**</a>
+<span class="sourceLineNo">686</span><a id="line.686">     * Set the application root.</a>
+<span class="sourceLineNo">687</span><a id="line.687">     *</a>
+<span class="sourceLineNo">688</span><a id="line.688">     * @param applicationRoot application root</a>
+<span class="sourceLineNo">689</span><a id="line.689">     */</a>
+<span class="sourceLineNo">690</span><a id="line.690">    public void setApplicationRoot(String applicationRoot)</a>
+<span class="sourceLineNo">691</span><a id="line.691">    {</a>
+<span class="sourceLineNo">692</span><a id="line.692">        this.applicationRoot = applicationRoot;</a>
+<span class="sourceLineNo">693</span><a id="line.693">    }</a>
+<span class="sourceLineNo">694</span><a id="line.694"></a>
+<span class="sourceLineNo">695</span><a id="line.695">    /**</a>
+<span class="sourceLineNo">696</span><a id="line.696">     * Get the application root as set by</a>
+<span class="sourceLineNo">697</span><a id="line.697">     * the parent application.</a>
+<span class="sourceLineNo">698</span><a id="line.698">     *</a>
+<span class="sourceLineNo">699</span><a id="line.699">     * @return String application root</a>
+<span class="sourceLineNo">700</span><a id="line.700">     */</a>
+<span class="sourceLineNo">701</span><a id="line.701">    @Override</a>
+<span class="sourceLineNo">702</span><a id="line.702">    public String getApplicationRoot()</a>
+<span class="sourceLineNo">703</span><a id="line.703">    {</a>
+<span class="sourceLineNo">704</span><a id="line.704">        return applicationRoot;</a>
+<span class="sourceLineNo">705</span><a id="line.705">    }</a>
+<span class="sourceLineNo">706</span><a id="line.706"></a>
+<span class="sourceLineNo">707</span><a id="line.707">    /**</a>
+<span class="sourceLineNo">708</span><a id="line.708">     * Determines if the requested service is managed by this</a>
+<span class="sourceLineNo">709</span><a id="line.709">     * ServiceBroker.</a>
+<span class="sourceLineNo">710</span><a id="line.710">     *</a>
+<span class="sourceLineNo">711</span><a id="line.711">     * @param name The name of the Service requested.</a>
+<span class="sourceLineNo">712</span><a id="line.712">     * @return true if the service is managed by the this ServiceBroker</a>
+<span class="sourceLineNo">713</span><a id="line.713">     */</a>
+<span class="sourceLineNo">714</span><a id="line.714">    protected boolean isLocalService(String name)</a>
+<span class="sourceLineNo">715</span><a id="line.715">    {</a>
+<span class="sourceLineNo">716</span><a id="line.716">        return this.mapping.containsKey(name);</a>
+<span class="sourceLineNo">717</span><a id="line.717">    }</a>
+<span class="sourceLineNo">718</span><a id="line.718"></a>
+<span class="sourceLineNo">719</span><a id="line.719">    /**</a>
+<span class="sourceLineNo">720</span><a id="line.720">     * Determines if the requested service is managed by an initialized</a>
+<span class="sourceLineNo">721</span><a id="line.721">     * TurbineServiceProvider. We use the service names to lookup</a>
+<span class="sourceLineNo">722</span><a id="line.722">     * the TurbineServiceProvider to ensure that we get a fully</a>
+<span class="sourceLineNo">723</span><a id="line.723">     * initialized service.</a>
+<span class="sourceLineNo">724</span><a id="line.724">     *</a>
+<span class="sourceLineNo">725</span><a id="line.725">     * @param name The name of the Service requested.</a>
+<span class="sourceLineNo">726</span><a id="line.726">     * @return true if the service is managed by a TurbineServiceProvider</a>
+<span class="sourceLineNo">727</span><a id="line.727">     */</a>
+<span class="sourceLineNo">728</span><a id="line.728">    protected boolean isNonLocalService(String name)</a>
+<span class="sourceLineNo">729</span><a id="line.729">    {</a>
+<span class="sourceLineNo">730</span><a id="line.730">        TurbineServiceProvider turbineServiceProvider = null;</a>
+<span class="sourceLineNo">731</span><a id="line.731"></a>
+<span class="sourceLineNo">732</span><a id="line.732">        for (Map.Entry&lt;String, Service&gt; entry : this.serviceProviderInstanceMap.entrySet())</a>
+<span class="sourceLineNo">733</span><a id="line.733">        {</a>
+<span class="sourceLineNo">734</span><a id="line.734">            turbineServiceProvider = (TurbineServiceProvider) this.getService(entry.getKey());</a>
+<span class="sourceLineNo">735</span><a id="line.735"></a>
+<span class="sourceLineNo">736</span><a id="line.736">            if (turbineServiceProvider.exists(name))</a>
+<span class="sourceLineNo">737</span><a id="line.737">            {</a>
+<span class="sourceLineNo">738</span><a id="line.738">                return true;</a>
+<span class="sourceLineNo">739</span><a id="line.739">            }</a>
+<span class="sourceLineNo">740</span><a id="line.740">        }</a>
+<span class="sourceLineNo">741</span><a id="line.741"></a>
+<span class="sourceLineNo">742</span><a id="line.742">        return false;</a>
+<span class="sourceLineNo">743</span><a id="line.743">    }</a>
 <span class="sourceLineNo">744</span><a id="line.744"></a>
-<span class="sourceLineNo">745</span><a id="line.745">            if (turbineServiceProvider.exists(name))</a>
-<span class="sourceLineNo">746</span><a id="line.746">            {</a>
-<span class="sourceLineNo">747</span><a id="line.747">                return true;</a>
-<span class="sourceLineNo">748</span><a id="line.748">            }</a>
-<span class="sourceLineNo">749</span><a id="line.749">        }</a>
-<span class="sourceLineNo">750</span><a id="line.750"></a>
-<span class="sourceLineNo">751</span><a id="line.751">        return false;</a>
-<span class="sourceLineNo">752</span><a id="line.752">    }</a>
-<span class="sourceLineNo">753</span><a id="line.753"></a>
-<span class="sourceLineNo">754</span><a id="line.754">    /**</a>
-<span class="sourceLineNo">755</span><a id="line.755">     * Get a non-local service managed by a TurbineServiceProvider.</a>
-<span class="sourceLineNo">756</span><a id="line.756">     *</a>
-<span class="sourceLineNo">757</span><a id="line.757">     * @param name The name of the Service requested.</a>
-<span class="sourceLineNo">758</span><a id="line.758">     * @return the requested service</a>
-<span class="sourceLineNo">759</span><a id="line.759">     * @throws InstantiationException the service couldn't be instantiated</a>
-<span class="sourceLineNo">760</span><a id="line.760">     */</a>
-<span class="sourceLineNo">761</span><a id="line.761">    protected Object getNonLocalService(String name)</a>
-<span class="sourceLineNo">762</span><a id="line.762">        throws InstantiationException</a>
-<span class="sourceLineNo">763</span><a id="line.763">    {</a>
-<span class="sourceLineNo">764</span><a id="line.764">        TurbineServiceProvider turbineServiceProvider = null;</a>
-<span class="sourceLineNo">765</span><a id="line.765"></a>
-<span class="sourceLineNo">766</span><a id="line.766">        for (Map.Entry&lt;String, Service&gt; entry : this.serviceProviderInstanceMap.entrySet())</a>
-<span class="sourceLineNo">767</span><a id="line.767">        {</a>
-<span class="sourceLineNo">768</span><a id="line.768">            turbineServiceProvider = (TurbineServiceProvider) this.getService(entry.getKey());</a>
-<span class="sourceLineNo">769</span><a id="line.769"></a>
-<span class="sourceLineNo">770</span><a id="line.770">            if (turbineServiceProvider.exists(name))</a>
-<span class="sourceLineNo">771</span><a id="line.771">            {</a>
-<span class="sourceLineNo">772</span><a id="line.772">                return turbineServiceProvider.get(name);</a>
-<span class="sourceLineNo">773</span><a id="line.773">            }</a>
-<span class="sourceLineNo">774</span><a id="line.774">        }</a>
-<span class="sourceLineNo">775</span><a id="line.775"></a>
-<span class="sourceLineNo">776</span><a id="line.776">        throw new InstantiationException(</a>
-<span class="sourceLineNo">777</span><a id="line.777">            "ServiceBroker: unknown non-local service " + name</a>
-<span class="sourceLineNo">778</span><a id="line.778">            + " requested");</a>
-<span class="sourceLineNo">779</span><a id="line.779">    }</a>
-<span class="sourceLineNo">780</span><a id="line.780">}</a>
+<span class="sourceLineNo">745</span><a id="line.745">    /**</a>
+<span class="sourceLineNo">746</span><a id="line.746">     * Get a non-local service managed by a TurbineServiceProvider.</a>
+<span class="sourceLineNo">747</span><a id="line.747">     *</a>
+<span class="sourceLineNo">748</span><a id="line.748">     * @param name The name of the Service requested.</a>
+<span class="sourceLineNo">749</span><a id="line.749">     * @return the requested service</a>
+<span class="sourceLineNo">750</span><a id="line.750">     * @throws InstantiationException the service couldn't be instantiated</a>
+<span class="sourceLineNo">751</span><a id="line.751">     */</a>
+<span class="sourceLineNo">752</span><a id="line.752">    protected Object getNonLocalService(String name)</a>
+<span class="sourceLineNo">753</span><a id="line.753">        throws InstantiationException</a>
+<span class="sourceLineNo">754</span><a id="line.754">    {</a>
+<span class="sourceLineNo">755</span><a id="line.755">        TurbineServiceProvider turbineServiceProvider = null;</a>
+<span class="sourceLineNo">756</span><a id="line.756"></a>
+<span class="sourceLineNo">757</span><a id="line.757">        for (Map.Entry&lt;String, Service&gt; entry : this.serviceProviderInstanceMap.entrySet())</a>
+<span class="sourceLineNo">758</span><a id="line.758">        {</a>
+<span class="sourceLineNo">759</span><a id="line.759">            turbineServiceProvider = (TurbineServiceProvider) this.getService(entry.getKey());</a>
+<span class="sourceLineNo">760</span><a id="line.760"></a>
+<span class="sourceLineNo">761</span><a id="line.761">            if (turbineServiceProvider.exists(name))</a>
+<span class="sourceLineNo">762</span><a id="line.762">            {</a>
+<span class="sourceLineNo">763</span><a id="line.763">                return turbineServiceProvider.get(name);</a>
+<span class="sourceLineNo">764</span><a id="line.764">            }</a>
+<span class="sourceLineNo">765</span><a id="line.765">        }</a>
+<span class="sourceLineNo">766</span><a id="line.766"></a>
+<span class="sourceLineNo">767</span><a id="line.767">        throw new InstantiationException(</a>
+<span class="sourceLineNo">768</span><a id="line.768">            "ServiceBroker: unknown non-local service " + name</a>
+<span class="sourceLineNo">769</span><a id="line.769">            + " requested");</a>
+<span class="sourceLineNo">770</span><a id="line.770">    }</a>
+<span class="sourceLineNo">771</span><a id="line.771">}</a>
 
 
 

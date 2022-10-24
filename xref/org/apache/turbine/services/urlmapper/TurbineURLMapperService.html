@@ -239,16 +239,16 @@
 <a class="jxr_linenumber" name="L231" href="#L231">231</a>                                 pp.setString(group.getKey(), matcher.group(group.getValue().intValue())));
 <a class="jxr_linenumber" name="L232" href="#L232">232</a> 
 <a class="jxr_linenumber" name="L233" href="#L233">233</a>                 <em class="jxr_comment">// add implicit parameters</em>
-<a class="jxr_linenumber" name="L234" href="#L234">234</a>                 urlMap.getImplicitParameters().entrySet().forEach(e -&gt;
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>                         pp.add(e.getKey(), e.getValue()));
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>                 urlMap.getImplicitParameters()
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>                         .forEach((key1, value1) -&gt; pp.add(key1, value1));
 <a class="jxr_linenumber" name="L236" href="#L236">236</a> 
 <a class="jxr_linenumber" name="L237" href="#L237">237</a>                 <em class="jxr_comment">// add override parameters</em>
-<a class="jxr_linenumber" name="L238" href="#L238">238</a>                 urlMap.getOverrideParameters().entrySet().forEach(e -&gt;
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>                         pp.setString(e.getKey(), e.getValue()));
+<a class="jxr_linenumber" name="L238" href="#L238">238</a>                 urlMap.getOverrideParameters()
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>                         .forEach((key, value) -&gt; pp.setString(key, value));
 <a class="jxr_linenumber" name="L240" href="#L240">240</a> 
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>                 <em class="jxr_comment">// remove ignore parameters</em>
-<a class="jxr_linenumber" name="L242" href="#L242">242</a>                 urlMap.getIgnoreParameters().keySet().forEach(k -&gt;
-<a class="jxr_linenumber" name="L243" href="#L243">243</a>                         pp.remove(k));
+<a class="jxr_linenumber" name="L242" href="#L242">242</a>                 urlMap.getIgnoreParameters().keySet()
+<a class="jxr_linenumber" name="L243" href="#L243">243</a>                         .forEach(pp::remove);
 <a class="jxr_linenumber" name="L244" href="#L244">244</a>                 
 <a class="jxr_linenumber" name="L245" href="#L245">245</a>                 log.debug(<span class="jxr_string">"mapped {} params from url {} "</span>, pp.getKeys().length, url);
 <a class="jxr_linenumber" name="L246" href="#L246">246</a> 
@@ -276,7 +276,7 @@
 <a class="jxr_linenumber" name="L268" href="#L268">268</a>             configFile = <span class="jxr_string">"/"</span> + configFile;
 <a class="jxr_linenumber" name="L269" href="#L269">269</a>         }
 <a class="jxr_linenumber" name="L270" href="#L270">270</a> 
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>         <a name="ServletService" href="..<a name="ServletService" href="../../../../../org/apache/turbine/services/servlet/ServletService.html#ServletService">ServletService</a>rg/apache/turbine/services/servlet/ServletService.html#ServletService">ServletService</a> servletService = (<a name="ServletService" href="../../../../../org/apache/turbine/services/servlet/ServletService.html#ServletService">ServletService</a>) TurbineServices.getInstance().getService(ServletService.SERVICE_NAME);
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>         <a name="ServletService" href="../../../../../org/apache/turbine/services/servlet/ServletService.html#ServletService">ServletService</a> servletService = (<a name="ServletService" href="../../../../../org/apache/turbine/services/servlet/ServletService.html#ServletService">ServletService</a>) TurbineServices.getInstance().getService(ServletService.SERVICE_NAME);
 <a class="jxr_linenumber" name="L272" href="#L272">272</a> 
 <a class="jxr_linenumber" name="L273" href="#L273">273</a>         <strong class="jxr_keyword">try</strong> (InputStream reader = servletService.getResourceAsStream(configFile))
 <a class="jxr_linenumber" name="L274" href="#L274">274</a>         {
@@ -333,6 +333,6 @@
 <a class="jxr_linenumber" name="L325" href="#L325">325</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2022 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
 </body>
 </html>

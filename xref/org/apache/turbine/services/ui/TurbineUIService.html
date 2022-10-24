@@ -493,7 +493,7 @@
 <a class="jxr_linenumber" name="L485" href="#L485">485</a>         }
 <a class="jxr_linenumber" name="L486" href="#L486">486</a>         sb.append(<span class="jxr_string">"/"</span>).append(stripSlashes(resourceName));
 <a class="jxr_linenumber" name="L487" href="#L487">487</a> 
-<a class="jxr_linenumber" name="L488" href="#L488">488</a>         <a name="DataURI" href="../../../../../org/apache/turb<a name="DataURI" href="../../../../../org/apache/turbine/util/uri/DataURI.html#DataURI">DataURI</a>l/uri/DataURI.html#DataURI">DataURI</a> du = <strong class="jxr_keyword">new</strong> <a name="DataURI" href="../../../../../org/apache/turbine/util/uri/DataURI.html#DataURI">DataURI</a>(serverData);
+<a class="jxr_linenumber" name="L488" href="#L488">488</a>         <a name="DataURI" href="../../../../../org/apache/turbine/util/uri/DataURI.html#DataURI">DataURI</a> du = <strong class="jxr_keyword">new</strong> <a name="DataURI" href="../../../../../org/apache/turbine/util/uri/DataURI.html#DataURI">DataURI</a>(serverData);
 <a class="jxr_linenumber" name="L489" href="#L489">489</a>         du.setScriptName(sb.toString());
 <a class="jxr_linenumber" name="L490" href="#L490">490</a>         <strong class="jxr_keyword">return</strong> wantRelative ? du.getRelativeLink() : du.getAbsoluteLink();
 <a class="jxr_linenumber" name="L491" href="#L491">491</a>     }
@@ -509,7 +509,7 @@
 <a class="jxr_linenumber" name="L501" href="#L501">501</a>         Configuration cfg = Turbine.getConfiguration();
 <a class="jxr_linenumber" name="L502" href="#L502">502</a> 
 <a class="jxr_linenumber" name="L503" href="#L503">503</a>         servletService = (<a name="ServletService" href="../../../../../org/apache/turbine/services/servlet/ServletService.html#ServletService">ServletService</a>)TurbineServices.getInstance().getService(ServletService.SERVICE_NAME);
-<a class="jxr_linenumber" name="L504" href="#L504">504</a>         <a name="PullService" href=<a name="PullService" href="../../../../../org/apache/turbine/services/pull/PullService.html#PullService">PullService</a>./../org/apache/turbine/services/pull/PullService.html#PullService">PullService</a> pullService = (<a name="PullService" href="../../../../../org/apache/turbine/services/pull/PullService.html#PullService">PullService</a>)TurbineServices.getInstance().getService(PullService.SERVICE_NAME);
+<a class="jxr_linenumber" name="L504" href="#L504">504</a>         <a name="PullService" href="../../../../../org/apache/turbine/services/pull/PullService.html#PullService">PullService</a> pullService = (<a name="PullService" href="../../../../../org/apache/turbine/services/pull/PullService.html#PullService">PullService</a>)TurbineServices.getInstance().getService(PullService.SERVICE_NAME);
 <a class="jxr_linenumber" name="L505" href="#L505">505</a>         <em class="jxr_comment">// Get the resources directory that is specified in the TR.props or</em>
 <a class="jxr_linenumber" name="L506" href="#L506">506</a>         <em class="jxr_comment">// default to "resources", relative to the webapp.</em>
 <a class="jxr_linenumber" name="L507" href="#L507">507</a>         StringBuilder sb = <strong class="jxr_keyword">new</strong> StringBuilder();
@@ -539,6 +539,6 @@
 <a class="jxr_linenumber" name="L531" href="#L531">531</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2022 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
 </body>
 </html>

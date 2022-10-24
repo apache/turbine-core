@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="de">
+<html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
@@ -10,274 +10,293 @@
 <pre><span class="sourceLineNo">001</span><a id="line.1">package org.apache.turbine.util.uri;</a>
 <span class="sourceLineNo">002</span><a id="line.2"></a>
 <span class="sourceLineNo">003</span><a id="line.3"></a>
-<span class="sourceLineNo">004</span><a id="line.4">import org.apache.commons.lang3.StringUtils;</a>
-<span class="sourceLineNo">005</span><a id="line.5">import org.apache.fulcrum.parser.ParameterParser;</a>
-<span class="sourceLineNo">006</span><a id="line.6">import org.apache.turbine.util.RunData;</a>
-<span class="sourceLineNo">007</span><a id="line.7">import org.apache.turbine.util.ServerData;</a>
-<span class="sourceLineNo">008</span><a id="line.8"></a>
-<span class="sourceLineNo">009</span><a id="line.9">/**</a>
-<span class="sourceLineNo">010</span><a id="line.10"> * This class allows you to keep all the information needed for a single</a>
-<span class="sourceLineNo">011</span><a id="line.11"> * link at one place. It keeps your query data, path info, the server</a>
-<span class="sourceLineNo">012</span><a id="line.12"> * scheme, name, port and the script path. It is tuned for usage with a</a>
-<span class="sourceLineNo">013</span><a id="line.13"> * Template System e.g. Velocity.</a>
+<span class="sourceLineNo">004</span><a id="line.4">/*</a>
+<span class="sourceLineNo">005</span><a id="line.5"> * Licensed to the Apache Software Foundation (ASF) under one</a>
+<span class="sourceLineNo">006</span><a id="line.6"> * or more contributor license agreements.  See the NOTICE file</a>
+<span class="sourceLineNo">007</span><a id="line.7"> * distributed with this work for additional information</a>
+<span class="sourceLineNo">008</span><a id="line.8"> * regarding copyright ownership.  The ASF licenses this file</a>
+<span class="sourceLineNo">009</span><a id="line.9"> * to you under the Apache License, Version 2.0 (the</a>
+<span class="sourceLineNo">010</span><a id="line.10"> * "License"); you may not use this file except in compliance</a>
+<span class="sourceLineNo">011</span><a id="line.11"> * with the License.  You may obtain a copy of the License at</a>
+<span class="sourceLineNo">012</span><a id="line.12"> *</a>
+<span class="sourceLineNo">013</span><a id="line.13"> *   http://www.apache.org/licenses/LICENSE-2.0</a>
 <span class="sourceLineNo">014</span><a id="line.14"> *</a>
-<span class="sourceLineNo">015</span><a id="line.15"> * If you must generate a Turbine Link in a Template System, use this class.</a>
-<span class="sourceLineNo">016</span><a id="line.16"> *</a>
-<span class="sourceLineNo">017</span><a id="line.17"> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;</a>
-<span class="sourceLineNo">018</span><a id="line.18"> * @version $Id$</a>
-<span class="sourceLineNo">019</span><a id="line.19"> */</a>
-<span class="sourceLineNo">020</span><a id="line.20"></a>
-<span class="sourceLineNo">021</span><a id="line.21">public class TemplateURI</a>
-<span class="sourceLineNo">022</span><a id="line.22">        extends TurbineURI</a>
-<span class="sourceLineNo">023</span><a id="line.23">{</a>
-<span class="sourceLineNo">024</span><a id="line.24">    /**</a>
-<span class="sourceLineNo">025</span><a id="line.25">     * Empty C'tor. Uses Turbine.getDefaultServerData().</a>
-<span class="sourceLineNo">026</span><a id="line.26">     *</a>
-<span class="sourceLineNo">027</span><a id="line.27">     */</a>
-<span class="sourceLineNo">028</span><a id="line.28">    public TemplateURI()</a>
-<span class="sourceLineNo">029</span><a id="line.29">    {</a>
-<span class="sourceLineNo">030</span><a id="line.30">        super();</a>
-<span class="sourceLineNo">031</span><a id="line.31">    }</a>
-<span class="sourceLineNo">032</span><a id="line.32"></a>
-<span class="sourceLineNo">033</span><a id="line.33">    /**</a>
-<span class="sourceLineNo">034</span><a id="line.34">     * Constructor with a RunData object</a>
-<span class="sourceLineNo">035</span><a id="line.35">     *</a>
-<span class="sourceLineNo">036</span><a id="line.36">     * @param runData A RunData object</a>
-<span class="sourceLineNo">037</span><a id="line.37">     */</a>
-<span class="sourceLineNo">038</span><a id="line.38">    public TemplateURI(RunData runData)</a>
-<span class="sourceLineNo">039</span><a id="line.39">    {</a>
-<span class="sourceLineNo">040</span><a id="line.40">        super(runData);</a>
-<span class="sourceLineNo">041</span><a id="line.41">    }</a>
-<span class="sourceLineNo">042</span><a id="line.42"></a>
-<span class="sourceLineNo">043</span><a id="line.43">    /**</a>
-<span class="sourceLineNo">044</span><a id="line.44">     * Constructor, set explicit redirection</a>
-<span class="sourceLineNo">045</span><a id="line.45">     *</a>
-<span class="sourceLineNo">046</span><a id="line.46">     * @param runData A RunData object</a>
-<span class="sourceLineNo">047</span><a id="line.47">     * @param redirect True if redirection allowed.</a>
+<span class="sourceLineNo">015</span><a id="line.15"> * Unless required by applicable law or agreed to in writing,</a>
+<span class="sourceLineNo">016</span><a id="line.16"> * software distributed under the License is distributed on an</a>
+<span class="sourceLineNo">017</span><a id="line.17"> * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY</a>
+<span class="sourceLineNo">018</span><a id="line.18"> * KIND, either express or implied.  See the License for the</a>
+<span class="sourceLineNo">019</span><a id="line.19"> * specific language governing permissions and limitations</a>
+<span class="sourceLineNo">020</span><a id="line.20"> * under the License.</a>
+<span class="sourceLineNo">021</span><a id="line.21"> */</a>
+<span class="sourceLineNo">022</span><a id="line.22"></a>
+<span class="sourceLineNo">023</span><a id="line.23">import org.apache.commons.lang3.StringUtils;</a>
+<span class="sourceLineNo">024</span><a id="line.24">import org.apache.fulcrum.parser.ParameterParser;</a>
+<span class="sourceLineNo">025</span><a id="line.25">import org.apache.turbine.util.RunData;</a>
+<span class="sourceLineNo">026</span><a id="line.26">import org.apache.turbine.util.ServerData;</a>
+<span class="sourceLineNo">027</span><a id="line.27"></a>
+<span class="sourceLineNo">028</span><a id="line.28">import java.util.stream.Stream;</a>
+<span class="sourceLineNo">029</span><a id="line.29"></a>
+<span class="sourceLineNo">030</span><a id="line.30">/**</a>
+<span class="sourceLineNo">031</span><a id="line.31"> * This class allows you to keep all the information needed for a single</a>
+<span class="sourceLineNo">032</span><a id="line.32"> * link at one place. It keeps your query data, path info, the server</a>
+<span class="sourceLineNo">033</span><a id="line.33"> * scheme, name, port and the script path. It is tuned for usage with a</a>
+<span class="sourceLineNo">034</span><a id="line.34"> * Template System e.g. Velocity.</a>
+<span class="sourceLineNo">035</span><a id="line.35"> *</a>
+<span class="sourceLineNo">036</span><a id="line.36"> * If you must generate a Turbine Link in a Template System, use this class.</a>
+<span class="sourceLineNo">037</span><a id="line.37"> *</a>
+<span class="sourceLineNo">038</span><a id="line.38"> * @author &lt;a href="mailto:hps@intermeta.de"&gt;Henning P. Schmiedehausen&lt;/a&gt;</a>
+<span class="sourceLineNo">039</span><a id="line.39"> * @version $Id$</a>
+<span class="sourceLineNo">040</span><a id="line.40"> */</a>
+<span class="sourceLineNo">041</span><a id="line.41"></a>
+<span class="sourceLineNo">042</span><a id="line.42">public class TemplateURI</a>
+<span class="sourceLineNo">043</span><a id="line.43">        extends TurbineURI</a>
+<span class="sourceLineNo">044</span><a id="line.44">{</a>
+<span class="sourceLineNo">045</span><a id="line.45">    /**</a>
+<span class="sourceLineNo">046</span><a id="line.46">     * Empty C'tor. Uses Turbine.getDefaultServerData().</a>
+<span class="sourceLineNo">047</span><a id="line.47">     *</a>
 <span class="sourceLineNo">048</span><a id="line.48">     */</a>
-<span class="sourceLineNo">049</span><a id="line.49">    public TemplateURI(RunData runData, boolean redirect)</a>
+<span class="sourceLineNo">049</span><a id="line.49">    public TemplateURI()</a>
 <span class="sourceLineNo">050</span><a id="line.50">    {</a>
-<span class="sourceLineNo">051</span><a id="line.51">        super(runData, redirect);</a>
+<span class="sourceLineNo">051</span><a id="line.51">        super();</a>
 <span class="sourceLineNo">052</span><a id="line.52">    }</a>
 <span class="sourceLineNo">053</span><a id="line.53"></a>
 <span class="sourceLineNo">054</span><a id="line.54">    /**</a>
-<span class="sourceLineNo">055</span><a id="line.55">     * Constructor, set Template</a>
+<span class="sourceLineNo">055</span><a id="line.55">     * Constructor with a RunData object</a>
 <span class="sourceLineNo">056</span><a id="line.56">     *</a>
 <span class="sourceLineNo">057</span><a id="line.57">     * @param runData A RunData object</a>
-<span class="sourceLineNo">058</span><a id="line.58">     * @param template A Template Name</a>
-<span class="sourceLineNo">059</span><a id="line.59">     */</a>
-<span class="sourceLineNo">060</span><a id="line.60">    public TemplateURI(RunData runData, String template)</a>
-<span class="sourceLineNo">061</span><a id="line.61">    {</a>
-<span class="sourceLineNo">062</span><a id="line.62">        super(runData);</a>
-<span class="sourceLineNo">063</span><a id="line.63">        setTemplate(template);</a>
-<span class="sourceLineNo">064</span><a id="line.64">    }</a>
-<span class="sourceLineNo">065</span><a id="line.65"></a>
-<span class="sourceLineNo">066</span><a id="line.66">    /**</a>
-<span class="sourceLineNo">067</span><a id="line.67">     * Constructor, set Template, set explicit redirection</a>
-<span class="sourceLineNo">068</span><a id="line.68">     *</a>
-<span class="sourceLineNo">069</span><a id="line.69">     * @param runData A RunData object</a>
-<span class="sourceLineNo">070</span><a id="line.70">     * @param template A Template Name</a>
-<span class="sourceLineNo">071</span><a id="line.71">     * @param redirect True if redirection allowed.</a>
-<span class="sourceLineNo">072</span><a id="line.72">     */</a>
-<span class="sourceLineNo">073</span><a id="line.73">    public TemplateURI(RunData runData, String template, boolean redirect)</a>
-<span class="sourceLineNo">074</span><a id="line.74">    {</a>
-<span class="sourceLineNo">075</span><a id="line.75">        super(runData, redirect);</a>
-<span class="sourceLineNo">076</span><a id="line.76">        setTemplate(template);</a>
-<span class="sourceLineNo">077</span><a id="line.77">    }</a>
-<span class="sourceLineNo">078</span><a id="line.78"></a>
-<span class="sourceLineNo">079</span><a id="line.79">    /**</a>
-<span class="sourceLineNo">080</span><a id="line.80">     * Constructor, set Template and Action</a>
-<span class="sourceLineNo">081</span><a id="line.81">     *</a>
-<span class="sourceLineNo">082</span><a id="line.82">     * @param runData A RunData object</a>
-<span class="sourceLineNo">083</span><a id="line.83">     * @param template A Template Name</a>
-<span class="sourceLineNo">084</span><a id="line.84">     * @param action An Action Name</a>
-<span class="sourceLineNo">085</span><a id="line.85">     */</a>
-<span class="sourceLineNo">086</span><a id="line.86">    public TemplateURI(RunData runData, String template, String action)</a>
-<span class="sourceLineNo">087</span><a id="line.87">    {</a>
-<span class="sourceLineNo">088</span><a id="line.88">        this(runData, template);</a>
-<span class="sourceLineNo">089</span><a id="line.89">        setAction(action);</a>
-<span class="sourceLineNo">090</span><a id="line.90">    }</a>
-<span class="sourceLineNo">091</span><a id="line.91"></a>
-<span class="sourceLineNo">092</span><a id="line.92">    /**</a>
-<span class="sourceLineNo">093</span><a id="line.93">     * Constructor, set Template and Action, set explicit redirection</a>
-<span class="sourceLineNo">094</span><a id="line.94">     *</a>
-<span class="sourceLineNo">095</span><a id="line.95">     * @param runData A RunData object</a>
-<span class="sourceLineNo">096</span><a id="line.96">     * @param template A Template Name</a>
-<span class="sourceLineNo">097</span><a id="line.97">     * @param action An Action Name</a>
-<span class="sourceLineNo">098</span><a id="line.98">     * @param redirect True if redirection allowed.</a>
-<span class="sourceLineNo">099</span><a id="line.99">     */</a>
-<span class="sourceLineNo">100</span><a id="line.100">    public TemplateURI(RunData runData, String template, String action, boolean redirect)</a>
-<span class="sourceLineNo">101</span><a id="line.101">    {</a>
-<span class="sourceLineNo">102</span><a id="line.102">        this(runData, template, redirect);</a>
-<span class="sourceLineNo">103</span><a id="line.103">        setAction(action);</a>
-<span class="sourceLineNo">104</span><a id="line.104">    }</a>
-<span class="sourceLineNo">105</span><a id="line.105"></a>
-<span class="sourceLineNo">106</span><a id="line.106">    /**</a>
-<span class="sourceLineNo">107</span><a id="line.107">     * Constructor with a ServerData object</a>
-<span class="sourceLineNo">108</span><a id="line.108">     *</a>
-<span class="sourceLineNo">109</span><a id="line.109">     * @param serverData A ServerData object</a>
-<span class="sourceLineNo">110</span><a id="line.110">     */</a>
-<span class="sourceLineNo">111</span><a id="line.111">    public TemplateURI(ServerData serverData)</a>
-<span class="sourceLineNo">112</span><a id="line.112">    {</a>
-<span class="sourceLineNo">113</span><a id="line.113">        super(serverData);</a>
-<span class="sourceLineNo">114</span><a id="line.114">    }</a>
-<span class="sourceLineNo">115</span><a id="line.115"></a>
-<span class="sourceLineNo">116</span><a id="line.116">    /**</a>
-<span class="sourceLineNo">117</span><a id="line.117">     * Constructor, set explicit redirection</a>
-<span class="sourceLineNo">118</span><a id="line.118">     *</a>
-<span class="sourceLineNo">119</span><a id="line.119">     * @param serverData A ServerData object</a>
-<span class="sourceLineNo">120</span><a id="line.120">     * @param redirect True if redirection allowed.</a>
-<span class="sourceLineNo">121</span><a id="line.121">     */</a>
-<span class="sourceLineNo">122</span><a id="line.122">    public TemplateURI(ServerData serverData, boolean redirect)</a>
-<span class="sourceLineNo">123</span><a id="line.123">    {</a>
-<span class="sourceLineNo">124</span><a id="line.124">        super(serverData, redirect);</a>
+<span class="sourceLineNo">058</span><a id="line.58">     */</a>
+<span class="sourceLineNo">059</span><a id="line.59">    public TemplateURI(RunData runData)</a>
+<span class="sourceLineNo">060</span><a id="line.60">    {</a>
+<span class="sourceLineNo">061</span><a id="line.61">        super(runData);</a>
+<span class="sourceLineNo">062</span><a id="line.62">    }</a>
+<span class="sourceLineNo">063</span><a id="line.63"></a>
+<span class="sourceLineNo">064</span><a id="line.64">    /**</a>
+<span class="sourceLineNo">065</span><a id="line.65">     * Constructor, set explicit redirection</a>
+<span class="sourceLineNo">066</span><a id="line.66">     *</a>
+<span class="sourceLineNo">067</span><a id="line.67">     * @param runData A RunData object</a>
+<span class="sourceLineNo">068</span><a id="line.68">     * @param redirect True if redirection allowed.</a>
+<span class="sourceLineNo">069</span><a id="line.69">     */</a>
+<span class="sourceLineNo">070</span><a id="line.70">    public TemplateURI(RunData runData, boolean redirect)</a>
+<span class="sourceLineNo">071</span><a id="line.71">    {</a>
+<span class="sourceLineNo">072</span><a id="line.72">        super(runData, redirect);</a>
+<span class="sourceLineNo">073</span><a id="line.73">    }</a>
+<span class="sourceLineNo">074</span><a id="line.74"></a>
+<span class="sourceLineNo">075</span><a id="line.75">    /**</a>
+<span class="sourceLineNo">076</span><a id="line.76">     * Constructor, set Template</a>
+<span class="sourceLineNo">077</span><a id="line.77">     *</a>
+<span class="sourceLineNo">078</span><a id="line.78">     * @param runData A RunData object</a>
+<span class="sourceLineNo">079</span><a id="line.79">     * @param template A Template Name</a>
+<span class="sourceLineNo">080</span><a id="line.80">     */</a>
+<span class="sourceLineNo">081</span><a id="line.81">    public TemplateURI(RunData runData, String template)</a>
+<span class="sourceLineNo">082</span><a id="line.82">    {</a>
+<span class="sourceLineNo">083</span><a id="line.83">        super(runData);</a>
+<span class="sourceLineNo">084</span><a id="line.84">        setTemplate(template);</a>
+<span class="sourceLineNo">085</span><a id="line.85">    }</a>
+<span class="sourceLineNo">086</span><a id="line.86"></a>
+<span class="sourceLineNo">087</span><a id="line.87">    /**</a>
+<span class="sourceLineNo">088</span><a id="line.88">     * Constructor, set Template, set explicit redirection</a>
+<span class="sourceLineNo">089</span><a id="line.89">     *</a>
+<span class="sourceLineNo">090</span><a id="line.90">     * @param runData A RunData object</a>
+<span class="sourceLineNo">091</span><a id="line.91">     * @param template A Template Name</a>
+<span class="sourceLineNo">092</span><a id="line.92">     * @param redirect True if redirection allowed.</a>
+<span class="sourceLineNo">093</span><a id="line.93">     */</a>
+<span class="sourceLineNo">094</span><a id="line.94">    public TemplateURI(RunData runData, String template, boolean redirect)</a>
+<span class="sourceLineNo">095</span><a id="line.95">    {</a>
+<span class="sourceLineNo">096</span><a id="line.96">        super(runData, redirect);</a>
+<span class="sourceLineNo">097</span><a id="line.97">        setTemplate(template);</a>
+<span class="sourceLineNo">098</span><a id="line.98">    }</a>
+<span class="sourceLineNo">099</span><a id="line.99"></a>
+<span class="sourceLineNo">100</span><a id="line.100">    /**</a>
+<span class="sourceLineNo">101</span><a id="line.101">     * Constructor, set Template and Action</a>
+<span class="sourceLineNo">102</span><a id="line.102">     *</a>
+<span class="sourceLineNo">103</span><a id="line.103">     * @param runData A RunData object</a>
+<span class="sourceLineNo">104</span><a id="line.104">     * @param template A Template Name</a>
+<span class="sourceLineNo">105</span><a id="line.105">     * @param action An Action Name</a>
+<span class="sourceLineNo">106</span><a id="line.106">     */</a>
+<span class="sourceLineNo">107</span><a id="line.107">    public TemplateURI(RunData runData, String template, String action)</a>
+<span class="sourceLineNo">108</span><a id="line.108">    {</a>
+<span class="sourceLineNo">109</span><a id="line.109">        this(runData, template);</a>
+<span class="sourceLineNo">110</span><a id="line.110">        setAction(action);</a>
+<span class="sourceLineNo">111</span><a id="line.111">    }</a>
+<span class="sourceLineNo">112</span><a id="line.112"></a>
+<span class="sourceLineNo">113</span><a id="line.113">    /**</a>
+<span class="sourceLineNo">114</span><a id="line.114">     * Constructor, set Template and Action, set explicit redirection</a>
+<span class="sourceLineNo">115</span><a id="line.115">     *</a>
+<span class="sourceLineNo">116</span><a id="line.116">     * @param runData A RunData object</a>
+<span class="sourceLineNo">117</span><a id="line.117">     * @param template A Template Name</a>
+<span class="sourceLineNo">118</span><a id="line.118">     * @param action An Action Name</a>
+<span class="sourceLineNo">119</span><a id="line.119">     * @param redirect True if redirection allowed.</a>
+<span class="sourceLineNo">120</span><a id="line.120">     */</a>
+<span class="sourceLineNo">121</span><a id="line.121">    public TemplateURI(RunData runData, String template, String action, boolean redirect)</a>
+<span class="sourceLineNo">122</span><a id="line.122">    {</a>
+<span class="sourceLineNo">123</span><a id="line.123">        this(runData, template, redirect);</a>
+<span class="sourceLineNo">124</span><a id="line.124">        setAction(action);</a>
 <span class="sourceLineNo">125</span><a id="line.125">    }</a>
 <span class="sourceLineNo">126</span><a id="line.126"></a>
 <span class="sourceLineNo">127</span><a id="line.127">    /**</a>
-<span class="sourceLineNo">128</span><a id="line.128">     * Constructor, set Template</a>
+<span class="sourceLineNo">128</span><a id="line.128">     * Constructor with a ServerData object</a>
 <span class="sourceLineNo">129</span><a id="line.129">     *</a>
 <span class="sourceLineNo">130</span><a id="line.130">     * @param serverData A ServerData object</a>
-<span class="sourceLineNo">131</span><a id="line.131">     * @param template A Template Name</a>
-<span class="sourceLineNo">132</span><a id="line.132">     */</a>
-<span class="sourceLineNo">133</span><a id="line.133">    public TemplateURI(ServerData serverData, String template)</a>
-<span class="sourceLineNo">134</span><a id="line.134">    {</a>
-<span class="sourceLineNo">135</span><a id="line.135">        super(serverData);</a>
-<span class="sourceLineNo">136</span><a id="line.136">        setTemplate(template);</a>
-<span class="sourceLineNo">137</span><a id="line.137">    }</a>
-<span class="sourceLineNo">138</span><a id="line.138"></a>
-<span class="sourceLineNo">139</span><a id="line.139">    /**</a>
-<span class="sourceLineNo">140</span><a id="line.140">     * Constructor, set Template, set explicit redirection</a>
-<span class="sourceLineNo">141</span><a id="line.141">     *</a>
-<span class="sourceLineNo">142</span><a id="line.142">     * @param serverData A ServerData object</a>
-<span class="sourceLineNo">143</span><a id="line.143">     * @param template A Template Name</a>
-<span class="sourceLineNo">144</span><a id="line.144">     * @param redirect True if redirection allowed.</a>
-<span class="sourceLineNo">145</span><a id="line.145">     */</a>
-<span class="sourceLineNo">146</span><a id="line.146">    public TemplateURI(ServerData serverData, String template, boolean redirect)</a>
-<span class="sourceLineNo">147</span><a id="line.147">    {</a>
-<span class="sourceLineNo">148</span><a id="line.148">        super(serverData, redirect);</a>
-<span class="sourceLineNo">149</span><a id="line.149">        setTemplate(template);</a>
-<span class="sourceLineNo">150</span><a id="line.150">    }</a>
-<span class="sourceLineNo">151</span><a id="line.151"></a>
-<span class="sourceLineNo">152</span><a id="line.152">    /**</a>
-<span class="sourceLineNo">153</span><a id="line.153">     * Constructor, set Template and Action</a>
-<span class="sourceLineNo">154</span><a id="line.154">     *</a>
-<span class="sourceLineNo">155</span><a id="line.155">     * @param serverData A ServerData object</a>
-<span class="sourceLineNo">156</span><a id="line.156">     * @param template A Template Name</a>
-<span class="sourceLineNo">157</span><a id="line.157">     * @param action An Action Name</a>
-<span class="sourceLineNo">158</span><a id="line.158">     */</a>
-<span class="sourceLineNo">159</span><a id="line.159">    public TemplateURI(ServerData serverData, String template, String action)</a>
-<span class="sourceLineNo">160</span><a id="line.160">    {</a>
-<span class="sourceLineNo">161</span><a id="line.161">        this(serverData, template);</a>
-<span class="sourceLineNo">162</span><a id="line.162">        setAction(action);</a>
-<span class="sourceLineNo">163</span><a id="line.163">    }</a>
-<span class="sourceLineNo">164</span><a id="line.164"></a>
-<span class="sourceLineNo">165</span><a id="line.165">    /**</a>
-<span class="sourceLineNo">166</span><a id="line.166">     * Constructor, set Template and Action, set explicit redirection</a>
-<span class="sourceLineNo">167</span><a id="line.167">     *</a>
-<span class="sourceLineNo">168</span><a id="line.168">     * @param serverData A ServerData object</a>
-<span class="sourceLineNo">169</span><a id="line.169">     * @param template A Template Name</a>
-<span class="sourceLineNo">170</span><a id="line.170">     * @param action An Action Name</a>
-<span class="sourceLineNo">171</span><a id="line.171">     * @param redirect True if redirection allowed.</a>
-<span class="sourceLineNo">172</span><a id="line.172">     */</a>
-<span class="sourceLineNo">173</span><a id="line.173">    public TemplateURI(ServerData serverData, String template, String action, boolean redirect)</a>
-<span class="sourceLineNo">174</span><a id="line.174">    {</a>
-<span class="sourceLineNo">175</span><a id="line.175">        this(serverData, template, redirect);</a>
-<span class="sourceLineNo">176</span><a id="line.176">        setAction(action);</a>
-<span class="sourceLineNo">177</span><a id="line.177">    }</a>
-<span class="sourceLineNo">178</span><a id="line.178"></a>
-<span class="sourceLineNo">179</span><a id="line.179">    /**</a>
-<span class="sourceLineNo">180</span><a id="line.180">     * Constructor, user Turbine.getDefaultServerData(), set Template and Action</a>
-<span class="sourceLineNo">181</span><a id="line.181">     *</a>
-<span class="sourceLineNo">182</span><a id="line.182">     * @param template A Template Name</a>
-<span class="sourceLineNo">183</span><a id="line.183">     * @param action An Action Name</a>
-<span class="sourceLineNo">184</span><a id="line.184">     */</a>
-<span class="sourceLineNo">185</span><a id="line.185">    public TemplateURI(String template, String action)</a>
-<span class="sourceLineNo">186</span><a id="line.186">    {</a>
-<span class="sourceLineNo">187</span><a id="line.187">        this();</a>
-<span class="sourceLineNo">188</span><a id="line.188">        setTemplate(template);</a>
-<span class="sourceLineNo">189</span><a id="line.189">        setAction(action);</a>
-<span class="sourceLineNo">190</span><a id="line.190">    }</a>
-<span class="sourceLineNo">191</span><a id="line.191"></a>
-<span class="sourceLineNo">192</span><a id="line.192">    /**</a>
-<span class="sourceLineNo">193</span><a id="line.193">     * Sets the template= value for this URL.</a>
-<span class="sourceLineNo">194</span><a id="line.194">     *</a>
-<span class="sourceLineNo">195</span><a id="line.195">     * By default it adds the information to the path_info instead</a>
-<span class="sourceLineNo">196</span><a id="line.196">     * of the query data. An empty value (null or "") cleans out</a>
-<span class="sourceLineNo">197</span><a id="line.197">     * an existing value.</a>
-<span class="sourceLineNo">198</span><a id="line.198">     *</a>
-<span class="sourceLineNo">199</span><a id="line.199">     * @param template A String with the template value.</a>
-<span class="sourceLineNo">200</span><a id="line.200">     */</a>
-<span class="sourceLineNo">201</span><a id="line.201">    public void setTemplate(String template)</a>
-<span class="sourceLineNo">202</span><a id="line.202">    {</a>
-<span class="sourceLineNo">203</span><a id="line.203">        if(StringUtils.isNotEmpty(template))</a>
-<span class="sourceLineNo">204</span><a id="line.204">        {</a>
-<span class="sourceLineNo">205</span><a id="line.205">            add(PATH_INFO, CGI_TEMPLATE_PARAM, template);</a>
-<span class="sourceLineNo">206</span><a id="line.206">        }</a>
-<span class="sourceLineNo">207</span><a id="line.207">        else</a>
-<span class="sourceLineNo">208</span><a id="line.208">        {</a>
-<span class="sourceLineNo">209</span><a id="line.209">            clearTemplate();</a>
-<span class="sourceLineNo">210</span><a id="line.210">        }</a>
+<span class="sourceLineNo">131</span><a id="line.131">     */</a>
+<span class="sourceLineNo">132</span><a id="line.132">    public TemplateURI(ServerData serverData)</a>
+<span class="sourceLineNo">133</span><a id="line.133">    {</a>
+<span class="sourceLineNo">134</span><a id="line.134">        super(serverData);</a>
+<span class="sourceLineNo">135</span><a id="line.135">    }</a>
+<span class="sourceLineNo">136</span><a id="line.136"></a>
+<span class="sourceLineNo">137</span><a id="line.137">    /**</a>
+<span class="sourceLineNo">138</span><a id="line.138">     * Constructor, set explicit redirection</a>
+<span class="sourceLineNo">139</span><a id="line.139">     *</a>
+<span class="sourceLineNo">140</span><a id="line.140">     * @param serverData A ServerData object</a>
+<span class="sourceLineNo">141</span><a id="line.141">     * @param redirect True if redirection allowed.</a>
+<span class="sourceLineNo">142</span><a id="line.142">     */</a>
+<span class="sourceLineNo">143</span><a id="line.143">    public TemplateURI(ServerData serverData, boolean redirect)</a>
+<span class="sourceLineNo">144</span><a id="line.144">    {</a>
+<span class="sourceLineNo">145</span><a id="line.145">        super(serverData, redirect);</a>
+<span class="sourceLineNo">146</span><a id="line.146">    }</a>
+<span class="sourceLineNo">147</span><a id="line.147"></a>
+<span class="sourceLineNo">148</span><a id="line.148">    /**</a>
+<span class="sourceLineNo">149</span><a id="line.149">     * Constructor, set Template</a>
+<span class="sourceLineNo">150</span><a id="line.150">     *</a>
+<span class="sourceLineNo">151</span><a id="line.151">     * @param serverData A ServerData object</a>
+<span class="sourceLineNo">152</span><a id="line.152">     * @param template A Template Name</a>
+<span class="sourceLineNo">153</span><a id="line.153">     */</a>
+<span class="sourceLineNo">154</span><a id="line.154">    public TemplateURI(ServerData serverData, String template)</a>
+<span class="sourceLineNo">155</span><a id="line.155">    {</a>
+<span class="sourceLineNo">156</span><a id="line.156">        super(serverData);</a>
+<span class="sourceLineNo">157</span><a id="line.157">        setTemplate(template);</a>
+<span class="sourceLineNo">158</span><a id="line.158">    }</a>
+<span class="sourceLineNo">159</span><a id="line.159"></a>
+<span class="sourceLineNo">160</span><a id="line.160">    /**</a>
+<span class="sourceLineNo">161</span><a id="line.161">     * Constructor, set Template, set explicit redirection</a>
+<span class="sourceLineNo">162</span><a id="line.162">     *</a>
+<span class="sourceLineNo">163</span><a id="line.163">     * @param serverData A ServerData object</a>
+<span class="sourceLineNo">164</span><a id="line.164">     * @param template A Template Name</a>
+<span class="sourceLineNo">165</span><a id="line.165">     * @param redirect True if redirection allowed.</a>
+<span class="sourceLineNo">166</span><a id="line.166">     */</a>
+<span class="sourceLineNo">167</span><a id="line.167">    public TemplateURI(ServerData serverData, String template, boolean redirect)</a>
+<span class="sourceLineNo">168</span><a id="line.168">    {</a>
+<span class="sourceLineNo">169</span><a id="line.169">        super(serverData, redirect);</a>
+<span class="sourceLineNo">170</span><a id="line.170">        setTemplate(template);</a>
+<span class="sourceLineNo">171</span><a id="line.171">    }</a>
+<span class="sourceLineNo">172</span><a id="line.172"></a>
+<span class="sourceLineNo">173</span><a id="line.173">    /**</a>
+<span class="sourceLineNo">174</span><a id="line.174">     * Constructor, set Template and Action</a>
+<span class="sourceLineNo">175</span><a id="line.175">     *</a>
+<span class="sourceLineNo">176</span><a id="line.176">     * @param serverData A ServerData object</a>
+<span class="sourceLineNo">177</span><a id="line.177">     * @param template A Template Name</a>
+<span class="sourceLineNo">178</span><a id="line.178">     * @param action An Action Name</a>
+<span class="sourceLineNo">179</span><a id="line.179">     */</a>
+<span class="sourceLineNo">180</span><a id="line.180">    public TemplateURI(ServerData serverData, String template, String action)</a>
+<span class="sourceLineNo">181</span><a id="line.181">    {</a>
+<span class="sourceLineNo">182</span><a id="line.182">        this(serverData, template);</a>
+<span class="sourceLineNo">183</span><a id="line.183">        setAction(action);</a>
+<span class="sourceLineNo">184</span><a id="line.184">    }</a>
+<span class="sourceLineNo">185</span><a id="line.185"></a>
+<span class="sourceLineNo">186</span><a id="line.186">    /**</a>
+<span class="sourceLineNo">187</span><a id="line.187">     * Constructor, set Template and Action, set explicit redirection</a>
+<span class="sourceLineNo">188</span><a id="line.188">     *</a>
+<span class="sourceLineNo">189</span><a id="line.189">     * @param serverData A ServerData object</a>
+<span class="sourceLineNo">190</span><a id="line.190">     * @param template A Template Name</a>
+<span class="sourceLineNo">191</span><a id="line.191">     * @param action An Action Name</a>
+<span class="sourceLineNo">192</span><a id="line.192">     * @param redirect True if redirection allowed.</a>
+<span class="sourceLineNo">193</span><a id="line.193">     */</a>
+<span class="sourceLineNo">194</span><a id="line.194">    public TemplateURI(ServerData serverData, String template, String action, boolean redirect)</a>
+<span class="sourceLineNo">195</span><a id="line.195">    {</a>
+<span class="sourceLineNo">196</span><a id="line.196">        this(serverData, template, redirect);</a>
+<span class="sourceLineNo">197</span><a id="line.197">        setAction(action);</a>
+<span class="sourceLineNo">198</span><a id="line.198">    }</a>
+<span class="sourceLineNo">199</span><a id="line.199"></a>
+<span class="sourceLineNo">200</span><a id="line.200">    /**</a>
+<span class="sourceLineNo">201</span><a id="line.201">     * Constructor, user Turbine.getDefaultServerData(), set Template and Action</a>
+<span class="sourceLineNo">202</span><a id="line.202">     *</a>
+<span class="sourceLineNo">203</span><a id="line.203">     * @param template A Template Name</a>
+<span class="sourceLineNo">204</span><a id="line.204">     * @param action An Action Name</a>
+<span class="sourceLineNo">205</span><a id="line.205">     */</a>
+<span class="sourceLineNo">206</span><a id="line.206">    public TemplateURI(String template, String action)</a>
+<span class="sourceLineNo">207</span><a id="line.207">    {</a>
+<span class="sourceLineNo">208</span><a id="line.208">        this();</a>
+<span class="sourceLineNo">209</span><a id="line.209">        setTemplate(template);</a>
+<span class="sourceLineNo">210</span><a id="line.210">        setAction(action);</a>
 <span class="sourceLineNo">211</span><a id="line.211">    }</a>
 <span class="sourceLineNo">212</span><a id="line.212"></a>
 <span class="sourceLineNo">213</span><a id="line.213">    /**</a>
-<span class="sourceLineNo">214</span><a id="line.214">     * Clears the template= value for this URL.</a>
+<span class="sourceLineNo">214</span><a id="line.214">     * Sets the template= value for this URL.</a>
 <span class="sourceLineNo">215</span><a id="line.215">     *</a>
-<span class="sourceLineNo">216</span><a id="line.216">     */</a>
-<span class="sourceLineNo">217</span><a id="line.217">    public void clearTemplate()</a>
-<span class="sourceLineNo">218</span><a id="line.218">    {</a>
-<span class="sourceLineNo">219</span><a id="line.219">        removePathInfo(CGI_TEMPLATE_PARAM);</a>
-<span class="sourceLineNo">220</span><a id="line.220">    }</a>
-<span class="sourceLineNo">221</span><a id="line.221"></a>
-<span class="sourceLineNo">222</span><a id="line.222">    /*</a>
-<span class="sourceLineNo">223</span><a id="line.223">     * ========================================================================</a>
-<span class="sourceLineNo">224</span><a id="line.224">     *</a>
-<span class="sourceLineNo">225</span><a id="line.225">     * Protected / Private Methods</a>
-<span class="sourceLineNo">226</span><a id="line.226">     *</a>
-<span class="sourceLineNo">227</span><a id="line.227">     * ========================================================================</a>
-<span class="sourceLineNo">228</span><a id="line.228">     *</a>
-<span class="sourceLineNo">229</span><a id="line.229">     */</a>
-<span class="sourceLineNo">230</span><a id="line.230"></a>
-<span class="sourceLineNo">231</span><a id="line.231">    /**</a>
-<span class="sourceLineNo">232</span><a id="line.232">     * Method for a quick way to add all the parameters in a</a>
-<span class="sourceLineNo">233</span><a id="line.233">     * ParameterParser.</a>
-<span class="sourceLineNo">234</span><a id="line.234">     *</a>
-<span class="sourceLineNo">235</span><a id="line.235">     * &lt;p&gt;If the type is P (0), then add name/value to the pathInfo</a>
-<span class="sourceLineNo">236</span><a id="line.236">     * hashtable.</a>
-<span class="sourceLineNo">237</span><a id="line.237">     *</a>
-<span class="sourceLineNo">238</span><a id="line.238">     * &lt;p&gt;If the type is Q (1), then add name/value to the queryData</a>
-<span class="sourceLineNo">239</span><a id="line.239">     * hashtable.</a>
-<span class="sourceLineNo">240</span><a id="line.240">     *</a>
-<span class="sourceLineNo">241</span><a id="line.241">     * @param type Type of insertion (@see #add(char type, String name, String value))</a>
-<span class="sourceLineNo">242</span><a id="line.242">     * @param pp A ParameterParser.</a>
-<span class="sourceLineNo">243</span><a id="line.243">     */</a>
-<span class="sourceLineNo">244</span><a id="line.244">    @Override</a>
-<span class="sourceLineNo">245</span><a id="line.245">    protected void add(int type,</a>
-<span class="sourceLineNo">246</span><a id="line.246">            ParameterParser pp)</a>
-<span class="sourceLineNo">247</span><a id="line.247">    {</a>
-<span class="sourceLineNo">248</span><a id="line.248">        for (Object name : pp.keySet())</a>
-<span class="sourceLineNo">249</span><a id="line.249">        {</a>
-<span class="sourceLineNo">250</span><a id="line.250">            String key = (String) name;</a>
+<span class="sourceLineNo">216</span><a id="line.216">     * By default it adds the information to the path_info instead</a>
+<span class="sourceLineNo">217</span><a id="line.217">     * of the query data. An empty value (null or "") cleans out</a>
+<span class="sourceLineNo">218</span><a id="line.218">     * an existing value.</a>
+<span class="sourceLineNo">219</span><a id="line.219">     *</a>
+<span class="sourceLineNo">220</span><a id="line.220">     * @param template A String with the template value.</a>
+<span class="sourceLineNo">221</span><a id="line.221">     */</a>
+<span class="sourceLineNo">222</span><a id="line.222">    public void setTemplate(String template)</a>
+<span class="sourceLineNo">223</span><a id="line.223">    {</a>
+<span class="sourceLineNo">224</span><a id="line.224">        if(StringUtils.isNotEmpty(template))</a>
+<span class="sourceLineNo">225</span><a id="line.225">        {</a>
+<span class="sourceLineNo">226</span><a id="line.226">            add(PATH_INFO, CGI_TEMPLATE_PARAM, template);</a>
+<span class="sourceLineNo">227</span><a id="line.227">        }</a>
+<span class="sourceLineNo">228</span><a id="line.228">        else</a>
+<span class="sourceLineNo">229</span><a id="line.229">        {</a>
+<span class="sourceLineNo">230</span><a id="line.230">            clearTemplate();</a>
+<span class="sourceLineNo">231</span><a id="line.231">        }</a>
+<span class="sourceLineNo">232</span><a id="line.232">    }</a>
+<span class="sourceLineNo">233</span><a id="line.233"></a>
+<span class="sourceLineNo">234</span><a id="line.234">    /**</a>
+<span class="sourceLineNo">235</span><a id="line.235">     * Clears the template= value for this URL.</a>
+<span class="sourceLineNo">236</span><a id="line.236">     *</a>
+<span class="sourceLineNo">237</span><a id="line.237">     */</a>
+<span class="sourceLineNo">238</span><a id="line.238">    public void clearTemplate()</a>
+<span class="sourceLineNo">239</span><a id="line.239">    {</a>
+<span class="sourceLineNo">240</span><a id="line.240">        removePathInfo(CGI_TEMPLATE_PARAM);</a>
+<span class="sourceLineNo">241</span><a id="line.241">    }</a>
+<span class="sourceLineNo">242</span><a id="line.242"></a>
+<span class="sourceLineNo">243</span><a id="line.243">    /*</a>
+<span class="sourceLineNo">244</span><a id="line.244">     * ========================================================================</a>
+<span class="sourceLineNo">245</span><a id="line.245">     *</a>
+<span class="sourceLineNo">246</span><a id="line.246">     * Protected / Private Methods</a>
+<span class="sourceLineNo">247</span><a id="line.247">     *</a>
+<span class="sourceLineNo">248</span><a id="line.248">     * ========================================================================</a>
+<span class="sourceLineNo">249</span><a id="line.249">     *</a>
+<span class="sourceLineNo">250</span><a id="line.250">     */</a>
 <span class="sourceLineNo">251</span><a id="line.251"></a>
-<span class="sourceLineNo">252</span><a id="line.252">            if (!key.equalsIgnoreCase(CGI_ACTION_PARAM) &amp;&amp;</a>
-<span class="sourceLineNo">253</span><a id="line.253">                    !key.equalsIgnoreCase(CGI_SCREEN_PARAM) &amp;&amp;</a>
-<span class="sourceLineNo">254</span><a id="line.254">                    !key.equalsIgnoreCase(CGI_TEMPLATE_PARAM))</a>
-<span class="sourceLineNo">255</span><a id="line.255">            {</a>
-<span class="sourceLineNo">256</span><a id="line.256">                String[] values = pp.getStrings(key);</a>
-<span class="sourceLineNo">257</span><a id="line.257">                if(values != null)</a>
-<span class="sourceLineNo">258</span><a id="line.258">                {</a>
-<span class="sourceLineNo">259</span><a id="line.259">                    for (String value : values)</a>
-<span class="sourceLineNo">260</span><a id="line.260">                    {</a>
-<span class="sourceLineNo">261</span><a id="line.261">                        add(type, key, value);</a>
-<span class="sourceLineNo">262</span><a id="line.262">                    }</a>
-<span class="sourceLineNo">263</span><a id="line.263">                }</a>
-<span class="sourceLineNo">264</span><a id="line.264">                else</a>
-<span class="sourceLineNo">265</span><a id="line.265">                {</a>
-<span class="sourceLineNo">266</span><a id="line.266">                    add(type, key, "");</a>
-<span class="sourceLineNo">267</span><a id="line.267">                }</a>
-<span class="sourceLineNo">268</span><a id="line.268">            }</a>
-<span class="sourceLineNo">269</span><a id="line.269">        }</a>
-<span class="sourceLineNo">270</span><a id="line.270">    }</a>
-<span class="sourceLineNo">271</span><a id="line.271">}</a>
+<span class="sourceLineNo">252</span><a id="line.252">    /**</a>
+<span class="sourceLineNo">253</span><a id="line.253">     * Method for a quick way to add all the parameters in a</a>
+<span class="sourceLineNo">254</span><a id="line.254">     * ParameterParser.</a>
+<span class="sourceLineNo">255</span><a id="line.255">     *</a>
+<span class="sourceLineNo">256</span><a id="line.256">     * &lt;p&gt;If the type is P (0), then add name/value to the pathInfo</a>
+<span class="sourceLineNo">257</span><a id="line.257">     * hashtable.</a>
+<span class="sourceLineNo">258</span><a id="line.258">     *</a>
+<span class="sourceLineNo">259</span><a id="line.259">     * &lt;p&gt;If the type is Q (1), then add name/value to the queryData</a>
+<span class="sourceLineNo">260</span><a id="line.260">     * hashtable.</a>
+<span class="sourceLineNo">261</span><a id="line.261">     *</a>
+<span class="sourceLineNo">262</span><a id="line.262">     * @param type Type of insertion (@see #add(char type, String name, String value))</a>
+<span class="sourceLineNo">263</span><a id="line.263">     * @param pp A ParameterParser.</a>
+<span class="sourceLineNo">264</span><a id="line.264">     */</a>
+<span class="sourceLineNo">265</span><a id="line.265">    @Override</a>
+<span class="sourceLineNo">266</span><a id="line.266">    protected void add(int type,</a>
+<span class="sourceLineNo">267</span><a id="line.267">            ParameterParser pp)</a>
+<span class="sourceLineNo">268</span><a id="line.268">    {</a>
+<span class="sourceLineNo">269</span><a id="line.269">        for (Object name : pp.keySet())</a>
+<span class="sourceLineNo">270</span><a id="line.270">        {</a>
+<span class="sourceLineNo">271</span><a id="line.271">            String key = (String) name;</a>
+<span class="sourceLineNo">272</span><a id="line.272"></a>
+<span class="sourceLineNo">273</span><a id="line.273">            if (Stream.of(CGI_ACTION_PARAM, CGI_SCREEN_PARAM, CGI_TEMPLATE_PARAM).noneMatch(key::equalsIgnoreCase))</a>
+<span class="sourceLineNo">274</span><a id="line.274">            {</a>
+<span class="sourceLineNo">275</span><a id="line.275">                String[] values = pp.getStrings(key);</a>
+<span class="sourceLineNo">276</span><a id="line.276">                if(values != null)</a>
+<span class="sourceLineNo">277</span><a id="line.277">                {</a>
+<span class="sourceLineNo">278</span><a id="line.278">                    for (String value : values)</a>
+<span class="sourceLineNo">279</span><a id="line.279">                    {</a>
+<span class="sourceLineNo">280</span><a id="line.280">                        add(type, key, value);</a>
+<span class="sourceLineNo">281</span><a id="line.281">                    }</a>
+<span class="sourceLineNo">282</span><a id="line.282">                }</a>
+<span class="sourceLineNo">283</span><a id="line.283">                else</a>
+<span class="sourceLineNo">284</span><a id="line.284">                {</a>
+<span class="sourceLineNo">285</span><a id="line.285">                    add(type, key, "");</a>
+<span class="sourceLineNo">286</span><a id="line.286">                }</a>
+<span class="sourceLineNo">287</span><a id="line.287">            }</a>
+<span class="sourceLineNo">288</span><a id="line.288">        }</a>
+<span class="sourceLineNo">289</span><a id="line.289">    }</a>
+<span class="sourceLineNo">290</span><a id="line.290">}</a>
 
 
 

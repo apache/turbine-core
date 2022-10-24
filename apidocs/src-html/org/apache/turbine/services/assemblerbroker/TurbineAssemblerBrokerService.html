@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="de">
+<html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
@@ -120,7 +120,7 @@
 <span class="sourceLineNo">111</span><a id="line.111">            {</a>
 <span class="sourceLineNo">112</span><a id="line.112">                @SuppressWarnings("unchecked")</a>
 <span class="sourceLineNo">113</span><a id="line.113">                AssemblerFactory&lt;? extends Assembler&gt; af =</a>
-<span class="sourceLineNo">114</span><a id="line.114">                    (AssemblerFactory&lt;? extends Assembler&gt;) Class.forName(factory).newInstance();</a>
+<span class="sourceLineNo">114</span><a id="line.114">                    (AssemblerFactory&lt;? extends Assembler&gt;) Class.forName(factory).getDeclaredConstructor().newInstance();</a>
 <span class="sourceLineNo">115</span><a id="line.115">                registerFactory(af);</a>
 <span class="sourceLineNo">116</span><a id="line.116">            }</a>
 <span class="sourceLineNo">117</span><a id="line.117">            // these must be passed to the VM</a>

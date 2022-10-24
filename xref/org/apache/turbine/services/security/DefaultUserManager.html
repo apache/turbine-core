@@ -29,8 +29,8 @@
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_comment"> */</em>
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  
-<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> java.util.stream.Collectors;
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.configuration2.Configuration;
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> org.apache.fulcrum.factory.FactoryService;
@@ -264,287 +264,286 @@
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>             <strong class="jxr_keyword">throws</strong> DataBackendException
 <a class="jxr_linenumber" name="L257" href="#L257">257</a>     {
 <a class="jxr_linenumber" name="L258" href="#L258">258</a>         UserSet&lt;org.apache.fulcrum.security.entity.User&gt; uset = umDelegate.getAllUsers();
-<a class="jxr_linenumber" name="L259" href="#L259">259</a>         List&lt;User&gt; userList = <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
-<a class="jxr_linenumber" name="L260" href="#L260">260</a> 
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>         <strong class="jxr_keyword">for</strong> (org.apache.fulcrum.security.entity.User u : uset)
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>         {
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>             TurbineUser tu = (TurbineUser)u;
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>             userList.add(wrap(tu));
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>         }
-<a class="jxr_linenumber" name="L266" href="#L266">266</a> 
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>         <strong class="jxr_keyword">return</strong> userList;
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>     }
-<a class="jxr_linenumber" name="L269" href="#L269">269</a> 
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L271" href="#L271">271</a> <em class="jxr_javadoccomment">     * Retrieve a user from persistent storage using username as the</em>
-<a class="jxr_linenumber" name="L272" href="#L272">272</a> <em class="jxr_javadoccomment">     * key, and authenticate the user. The implementation may chose</em>
-<a class="jxr_linenumber" name="L273" href="#L273">273</a> <em class="jxr_javadoccomment">     * to authenticate to the server as the user whose data is being</em>
-<a class="jxr_linenumber" name="L274" href="#L274">274</a> <em class="jxr_javadoccomment">     * retrieved.</em>
-<a class="jxr_linenumber" name="L275" href="#L275">275</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L276" href="#L276">276</a> <em class="jxr_javadoccomment">     * @param username the name of the user.</em>
-<a class="jxr_linenumber" name="L277" href="#L277">277</a> <em class="jxr_javadoccomment">     * @param password the user supplied password.</em>
-<a class="jxr_linenumber" name="L278" href="#L278">278</a> <em class="jxr_javadoccomment">     * @return an User object.</em>
-<a class="jxr_linenumber" name="L279" href="#L279">279</a> <em class="jxr_javadoccomment">     * @throws PasswordMismatchException if the supplied password was</em>
-<a class="jxr_linenumber" name="L280" href="#L280">280</a> <em class="jxr_javadoccomment">     *            incorrect.</em>
-<a class="jxr_linenumber" name="L281" href="#L281">281</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException if the user's record does not</em>
-<a class="jxr_linenumber" name="L282" href="#L282">282</a> <em class="jxr_javadoccomment">     *            exist in the database.</em>
-<a class="jxr_linenumber" name="L283" href="#L283">283</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there is a problem accessing the</em>
-<a class="jxr_linenumber" name="L284" href="#L284">284</a> <em class="jxr_javadoccomment">     *            storage.</em>
-<a class="jxr_linenumber" name="L285" href="#L285">285</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L286" href="#L286">286</a>     @Override
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>     <strong class="jxr_keyword">public</strong> &lt;U <strong class="jxr_keyword">extends</strong> User&gt; U retrieve(String username, String password)
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>             <strong class="jxr_keyword">throws</strong> PasswordMismatchException, UnknownEntityException,
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>             DataBackendException
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>     {
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>         TurbineUser u = umDelegate.getUser(username, password);
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>         <strong class="jxr_keyword">return</strong> wrap(u);
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>     }
-<a class="jxr_linenumber" name="L294" href="#L294">294</a> 
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L296" href="#L296">296</a> <em class="jxr_javadoccomment">     * Save an User object to persistent storage. User's record is</em>
-<a class="jxr_linenumber" name="L297" href="#L297">297</a> <em class="jxr_javadoccomment">     * required to exist in the storage.</em>
-<a class="jxr_linenumber" name="L298" href="#L298">298</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L299" href="#L299">299</a> <em class="jxr_javadoccomment">     * @param user an User object to store.</em>
-<a class="jxr_linenumber" name="L300" href="#L300">300</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException if the user's record does not</em>
-<a class="jxr_linenumber" name="L301" href="#L301">301</a> <em class="jxr_javadoccomment">     *            exist in the database.</em>
-<a class="jxr_linenumber" name="L302" href="#L302">302</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there is a problem accessing the</em>
-<a class="jxr_linenumber" name="L303" href="#L303">303</a> <em class="jxr_javadoccomment">     *            storage.</em>
-<a class="jxr_linenumber" name="L304" href="#L304">304</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L305" href="#L305">305</a>     @Override
-<a class="jxr_linenumber" name="L306" href="#L306">306</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> store(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user)
-<a class="jxr_linenumber" name="L307" href="#L307">307</a>             <strong class="jxr_keyword">throws</strong> UnknownEntityException, DataBackendException
-<a class="jxr_linenumber" name="L308" href="#L308">308</a>     {
-<a class="jxr_linenumber" name="L309" href="#L309">309</a>         <strong class="jxr_keyword">if</strong> (user == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L310" href="#L310">310</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> UnknownEntityException(<span class="jxr_string">"user is null"</span>);
-<a class="jxr_linenumber" name="L311" href="#L311">311</a>         }
-<a class="jxr_linenumber" name="L312" href="#L312">312</a>         <strong class="jxr_keyword">try</strong>
-<a class="jxr_linenumber" name="L313" href="#L313">313</a>         {
-<a class="jxr_linenumber" name="L314" href="#L314">314</a>             user.setObjectdata(ObjectUtils.serializeMap(user.getPermStorage()));
-<a class="jxr_linenumber" name="L315" href="#L315">315</a>         }
-<a class="jxr_linenumber" name="L316" href="#L316">316</a>         <strong class="jxr_keyword">catch</strong> (Exception e)
-<a class="jxr_linenumber" name="L317" href="#L317">317</a>         {
-<a class="jxr_linenumber" name="L318" href="#L318">318</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> DataBackendException(<span class="jxr_string">"Could not serialize permanent storage"</span>, e);
-<a class="jxr_linenumber" name="L319" href="#L319">319</a>         }
-<a class="jxr_linenumber" name="L320" href="#L320">320</a> 
-<a class="jxr_linenumber" name="L321" href="#L321">321</a>         umDelegate.saveUser(((<a name="TurbineUserDelegate" href="../../../../../org/apache/turbine/om/security/TurbineUserDelegate.html#TurbineUserDelegate">TurbineUserDelegate</a>)user).getUserDelegate());
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>     }
-<a class="jxr_linenumber" name="L323" href="#L323">323</a> 
-<a class="jxr_linenumber" name="L324" href="#L324">324</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L325" href="#L325">325</a> <em class="jxr_javadoccomment">     * Saves User data when the session is unbound. The user account is required</em>
-<a class="jxr_linenumber" name="L326" href="#L326">326</a> <em class="jxr_javadoccomment">     * to exist in the storage.</em>
-<a class="jxr_linenumber" name="L327" href="#L327">327</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L328" href="#L328">328</a> <em class="jxr_javadoccomment">     * LastLogin, AccessCounter, persistent pull tools, and any data stored</em>
-<a class="jxr_linenumber" name="L329" href="#L329">329</a> <em class="jxr_javadoccomment">     * in the permData hashtable that is not mapped to a column will be saved.</em>
-<a class="jxr_linenumber" name="L330" href="#L330">330</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L331" href="#L331">331</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException if the user's account does not</em>
-<a class="jxr_linenumber" name="L332" href="#L332">332</a> <em class="jxr_javadoccomment">     *            exist in the database.</em>
-<a class="jxr_linenumber" name="L333" href="#L333">333</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there is a problem accessing the</em>
-<a class="jxr_linenumber" name="L334" href="#L334">334</a> <em class="jxr_javadoccomment">     *            storage.</em>
-<a class="jxr_linenumber" name="L335" href="#L335">335</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L336" href="#L336">336</a>     @Override
-<a class="jxr_linenumber" name="L337" href="#L337">337</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> saveOnSessionUnbind(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user)
-<a class="jxr_linenumber" name="L338" href="#L338">338</a>             <strong class="jxr_keyword">throws</strong> UnknownEntityException, DataBackendException
-<a class="jxr_linenumber" name="L339" href="#L339">339</a>     {
-<a class="jxr_linenumber" name="L340" href="#L340">340</a>         store(user);
-<a class="jxr_linenumber" name="L341" href="#L341">341</a>     }
-<a class="jxr_linenumber" name="L342" href="#L342">342</a> 
-<a class="jxr_linenumber" name="L343" href="#L343">343</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L344" href="#L344">344</a> <em class="jxr_javadoccomment">     * Authenticate an User with the specified password. If authentication</em>
-<a class="jxr_linenumber" name="L345" href="#L345">345</a> <em class="jxr_javadoccomment">     * is successful the method returns nothing. If there are any problems,</em>
-<a class="jxr_linenumber" name="L346" href="#L346">346</a> <em class="jxr_javadoccomment">     * exception was thrown.</em>
-<a class="jxr_linenumber" name="L347" href="#L347">347</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L348" href="#L348">348</a> <em class="jxr_javadoccomment">     * @param user an User object to authenticate.</em>
-<a class="jxr_linenumber" name="L349" href="#L349">349</a> <em class="jxr_javadoccomment">     * @param password the user supplied password.</em>
-<a class="jxr_linenumber" name="L350" href="#L350">350</a> <em class="jxr_javadoccomment">     * @throws PasswordMismatchException if the supplied password was</em>
-<a class="jxr_linenumber" name="L351" href="#L351">351</a> <em class="jxr_javadoccomment">     *            incorrect.</em>
-<a class="jxr_linenumber" name="L352" href="#L352">352</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException if the user's record does not</em>
-<a class="jxr_linenumber" name="L353" href="#L353">353</a> <em class="jxr_javadoccomment">     *            exist in the database.</em>
-<a class="jxr_linenumber" name="L354" href="#L354">354</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there is a problem accessing the</em>
-<a class="jxr_linenumber" name="L355" href="#L355">355</a> <em class="jxr_javadoccomment">     *            storage.</em>
-<a class="jxr_linenumber" name="L356" href="#L356">356</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L357" href="#L357">357</a>     @Override
-<a class="jxr_linenumber" name="L358" href="#L358">358</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> authenticate(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user, String password)
-<a class="jxr_linenumber" name="L359" href="#L359">359</a>             <strong class="jxr_keyword">throws</strong> PasswordMismatchException, UnknownEntityException,
-<a class="jxr_linenumber" name="L360" href="#L360">360</a>             DataBackendException
-<a class="jxr_linenumber" name="L361" href="#L361">361</a>     {
-<a class="jxr_linenumber" name="L362" href="#L362">362</a>         umDelegate.authenticate(user, password);
-<a class="jxr_linenumber" name="L363" href="#L363">363</a>     }
-<a class="jxr_linenumber" name="L364" href="#L364">364</a> 
-<a class="jxr_linenumber" name="L365" href="#L365">365</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L366" href="#L366">366</a> <em class="jxr_javadoccomment">     * Creates new user account with specified attributes.</em>
-<a class="jxr_linenumber" name="L367" href="#L367">367</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L368" href="#L368">368</a> <em class="jxr_javadoccomment">     * @param user the object describing account to be created.</em>
-<a class="jxr_linenumber" name="L369" href="#L369">369</a> <em class="jxr_javadoccomment">     * @param initialPassword The password to use for the object creation</em>
-<a class="jxr_linenumber" name="L370" href="#L370">370</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L371" href="#L371">371</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there was an error accessing the data backend.</em>
-<a class="jxr_linenumber" name="L372" href="#L372">372</a> <em class="jxr_javadoccomment">     * @throws EntityExistsException if the user account already exists.</em>
-<a class="jxr_linenumber" name="L373" href="#L373">373</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L374" href="#L374">374</a>     @Override
-<a class="jxr_linenumber" name="L375" href="#L375">375</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> createAccount(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user, String initialPassword)
-<a class="jxr_linenumber" name="L376" href="#L376">376</a>             <strong class="jxr_keyword">throws</strong> UnknownEntityException, EntityExistsException, DataBackendException
-<a class="jxr_linenumber" name="L377" href="#L377">377</a>     {
-<a class="jxr_linenumber" name="L378" href="#L378">378</a>         <strong class="jxr_keyword">if</strong> (user == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L379" href="#L379">379</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> UnknownEntityException(<span class="jxr_string">"user is null"</span>);
-<a class="jxr_linenumber" name="L380" href="#L380">380</a>         }
-<a class="jxr_linenumber" name="L381" href="#L381">381</a>         umDelegate.addUser(user.getUserDelegate(), initialPassword);
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>     }
-<a class="jxr_linenumber" name="L383" href="#L383">383</a> 
-<a class="jxr_linenumber" name="L384" href="#L384">384</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L385" href="#L385">385</a> <em class="jxr_javadoccomment">     * Removes an user account from the system.</em>
-<a class="jxr_linenumber" name="L386" href="#L386">386</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L387" href="#L387">387</a> <em class="jxr_javadoccomment">     * @param user the object describing the account to be removed.</em>
-<a class="jxr_linenumber" name="L388" href="#L388">388</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there was an error accessing the data backend.</em>
-<a class="jxr_linenumber" name="L389" href="#L389">389</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException if the user account is not present.</em>
-<a class="jxr_linenumber" name="L390" href="#L390">390</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>     @Override
-<a class="jxr_linenumber" name="L392" href="#L392">392</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> removeAccount(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user)
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>             <strong class="jxr_keyword">throws</strong> UnknownEntityException, DataBackendException
-<a class="jxr_linenumber" name="L394" href="#L394">394</a>     {
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>         <strong class="jxr_keyword">if</strong> (user == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> UnknownEntityException(<span class="jxr_string">"user is null"</span>);
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>         }
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>         umDelegate.removeUser(user.getUserDelegate());
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>     }
-<a class="jxr_linenumber" name="L400" href="#L400">400</a> 
-<a class="jxr_linenumber" name="L401" href="#L401">401</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L402" href="#L402">402</a> <em class="jxr_javadoccomment">     * Change the password for an User.</em>
-<a class="jxr_linenumber" name="L403" href="#L403">403</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L404" href="#L404">404</a> <em class="jxr_javadoccomment">     * @param user an User to change password for.</em>
-<a class="jxr_linenumber" name="L405" href="#L405">405</a> <em class="jxr_javadoccomment">     * @param oldPassword the current password supplied by the user.</em>
-<a class="jxr_linenumber" name="L406" href="#L406">406</a> <em class="jxr_javadoccomment">     * @param newPassword the current password requested by the user.</em>
-<a class="jxr_linenumber" name="L407" href="#L407">407</a> <em class="jxr_javadoccomment">     * @throws PasswordMismatchException if the supplied password was</em>
-<a class="jxr_linenumber" name="L408" href="#L408">408</a> <em class="jxr_javadoccomment">     *            incorrect.</em>
-<a class="jxr_linenumber" name="L409" href="#L409">409</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException if the user's record does not</em>
-<a class="jxr_linenumber" name="L410" href="#L410">410</a> <em class="jxr_javadoccomment">     *            exist in the database.</em>
-<a class="jxr_linenumber" name="L411" href="#L411">411</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there is a problem accessing the</em>
-<a class="jxr_linenumber" name="L412" href="#L412">412</a> <em class="jxr_javadoccomment">     *            storage.</em>
-<a class="jxr_linenumber" name="L413" href="#L413">413</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>     @Override
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> changePassword(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user, String oldPassword,
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>                                String newPassword)
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>             <strong class="jxr_keyword">throws</strong> PasswordMismatchException, UnknownEntityException,
-<a class="jxr_linenumber" name="L418" href="#L418">418</a>             DataBackendException
-<a class="jxr_linenumber" name="L419" href="#L419">419</a>     {
-<a class="jxr_linenumber" name="L420" href="#L420">420</a>         <strong class="jxr_keyword">if</strong> (user == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> UnknownEntityException(<span class="jxr_string">"user is null"</span>);
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>         }
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>         umDelegate.changePassword(
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>                 ((<a name="TurbineUserDelegate" href="../../../../../org/apache/turbine/om/security/TurbineUserDelegate.html#TurbineUserDelegate">TurbineUserDelegate</a>)user).getUserDelegate(),
-<a class="jxr_linenumber" name="L425" href="#L425">425</a>                 oldPassword, newPassword);
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>     }
-<a class="jxr_linenumber" name="L427" href="#L427">427</a> 
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L429" href="#L429">429</a> <em class="jxr_javadoccomment">     * Forcibly sets new password for an User.</em>
-<a class="jxr_linenumber" name="L430" href="#L430">430</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L431" href="#L431">431</a> <em class="jxr_javadoccomment">     * This is supposed by the administrator to change the forgotten or</em>
-<a class="jxr_linenumber" name="L432" href="#L432">432</a> <em class="jxr_javadoccomment">     * compromised passwords. Certain implementations of this feature</em>
-<a class="jxr_linenumber" name="L433" href="#L433">433</a> <em class="jxr_javadoccomment">     * would require administrative level access to the authenticating</em>
-<a class="jxr_linenumber" name="L434" href="#L434">434</a> <em class="jxr_javadoccomment">     * server / program.</em>
-<a class="jxr_linenumber" name="L435" href="#L435">435</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L436" href="#L436">436</a> <em class="jxr_javadoccomment">     * @param user an User to change password for.</em>
-<a class="jxr_linenumber" name="L437" href="#L437">437</a> <em class="jxr_javadoccomment">     * @param password the new password.</em>
-<a class="jxr_linenumber" name="L438" href="#L438">438</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException if the user's record does not</em>
-<a class="jxr_linenumber" name="L439" href="#L439">439</a> <em class="jxr_javadoccomment">     *            exist in the database.</em>
-<a class="jxr_linenumber" name="L440" href="#L440">440</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there is a problem accessing the</em>
-<a class="jxr_linenumber" name="L441" href="#L441">441</a> <em class="jxr_javadoccomment">     *            storage.</em>
-<a class="jxr_linenumber" name="L442" href="#L442">442</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>     @Override
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> forcePassword(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user, String password)
-<a class="jxr_linenumber" name="L445" href="#L445">445</a>             <strong class="jxr_keyword">throws</strong> UnknownEntityException, DataBackendException
-<a class="jxr_linenumber" name="L446" href="#L446">446</a>     {
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>         <strong class="jxr_keyword">if</strong> (user == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L448" href="#L448">448</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> UnknownEntityException(<span class="jxr_string">"user is null"</span>);
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>         }
-<a class="jxr_linenumber" name="L450" href="#L450">450</a>         umDelegate.forcePassword(user.getUserDelegate(), password);
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>     }
-<a class="jxr_linenumber" name="L452" href="#L452">452</a> 
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L454" href="#L454">454</a> <em class="jxr_javadoccomment">     * Constructs an User object to represent an anonymous user of the</em>
-<a class="jxr_linenumber" name="L455" href="#L455">455</a> <em class="jxr_javadoccomment">     * application.</em>
-<a class="jxr_linenumber" name="L456" href="#L456">456</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L457" href="#L457">457</a> <em class="jxr_javadoccomment">     * @return An anonymous Turbine User.</em>
-<a class="jxr_linenumber" name="L458" href="#L458">458</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException</em>
-<a class="jxr_linenumber" name="L459" href="#L459">459</a> <em class="jxr_javadoccomment">     *             if the anonymous User object couldn't be constructed.</em>
-<a class="jxr_linenumber" name="L460" href="#L460">460</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L461" href="#L461">461</a>     @Override
-<a class="jxr_linenumber" name="L462" href="#L462">462</a>     <strong class="jxr_keyword">public</strong> &lt;U <strong class="jxr_keyword">extends</strong> User&gt; U getAnonymousUser() <strong class="jxr_keyword">throws</strong> UnknownEntityException
-<a class="jxr_linenumber" name="L463" href="#L463">463</a>     {
-<a class="jxr_linenumber" name="L464" href="#L464">464</a>         TurbineUser u = umDelegate.getAnonymousUser();
-<a class="jxr_linenumber" name="L465" href="#L465">465</a>         <strong class="jxr_keyword">return</strong> wrap(u);
-<a class="jxr_linenumber" name="L466" href="#L466">466</a>     }
-<a class="jxr_linenumber" name="L467" href="#L467">467</a> 
-<a class="jxr_linenumber" name="L468" href="#L468">468</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L469" href="#L469">469</a> <em class="jxr_javadoccomment">     * Checks whether a passed user object matches the anonymous user pattern</em>
-<a class="jxr_linenumber" name="L470" href="#L470">470</a> <em class="jxr_javadoccomment">     * according to the configured user manager</em>
-<a class="jxr_linenumber" name="L471" href="#L471">471</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L472" href="#L472">472</a> <em class="jxr_javadoccomment">     * @param u a user object</em>
-<a class="jxr_linenumber" name="L473" href="#L473">473</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L474" href="#L474">474</a> <em class="jxr_javadoccomment">     * @return True if this is an anonymous user</em>
-<a class="jxr_linenumber" name="L475" href="#L475">475</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L476" href="#L476">476</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L477" href="#L477">477</a>     @Override
-<a class="jxr_linenumber" name="L478" href="#L478">478</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isAnonymousUser(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> u)
-<a class="jxr_linenumber" name="L479" href="#L479">479</a>     {
-<a class="jxr_linenumber" name="L480" href="#L480">480</a>         <strong class="jxr_keyword">return</strong> umDelegate.isAnonymousUser(u);
-<a class="jxr_linenumber" name="L481" href="#L481">481</a>     }
-<a class="jxr_linenumber" name="L482" href="#L482">482</a> 
-<a class="jxr_linenumber" name="L483" href="#L483">483</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L484" href="#L484">484</a> <em class="jxr_javadoccomment">     * Construct a blank User object.</em>
-<a class="jxr_linenumber" name="L485" href="#L485">485</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L486" href="#L486">486</a> <em class="jxr_javadoccomment">     * This method calls getUserClass, and then creates a new object using the</em>
-<a class="jxr_linenumber" name="L487" href="#L487">487</a> <em class="jxr_javadoccomment">     * default constructor.</em>
-<a class="jxr_linenumber" name="L488" href="#L488">488</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L489" href="#L489">489</a> <em class="jxr_javadoccomment">     * @return an object implementing User interface.</em>
-<a class="jxr_linenumber" name="L490" href="#L490">490</a> <em class="jxr_javadoccomment">     * @throws DataBackendException</em>
-<a class="jxr_linenumber" name="L491" href="#L491">491</a> <em class="jxr_javadoccomment">     *             if the object could not be instantiated.</em>
-<a class="jxr_linenumber" name="L492" href="#L492">492</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L493" href="#L493">493</a>     @Override
-<a class="jxr_linenumber" name="L494" href="#L494">494</a>     <strong class="jxr_keyword">public</strong> &lt;U <strong class="jxr_keyword">extends</strong> User&gt; U getUserInstance() <strong class="jxr_keyword">throws</strong> DataBackendException
-<a class="jxr_linenumber" name="L495" href="#L495">495</a>     {
-<a class="jxr_linenumber" name="L496" href="#L496">496</a>         TurbineUser u = umDelegate.getUserInstance();
-<a class="jxr_linenumber" name="L497" href="#L497">497</a>         <strong class="jxr_keyword">return</strong> wrap(u);
-<a class="jxr_linenumber" name="L498" href="#L498">498</a>     }
-<a class="jxr_linenumber" name="L499" href="#L499">499</a> 
-<a class="jxr_linenumber" name="L500" href="#L500">500</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L501" href="#L501">501</a> <em class="jxr_javadoccomment">     * Construct a blank User object.</em>
-<a class="jxr_linenumber" name="L502" href="#L502">502</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L503" href="#L503">503</a> <em class="jxr_javadoccomment">     * This method calls getUserClass, and then creates a new object using the</em>
-<a class="jxr_linenumber" name="L504" href="#L504">504</a> <em class="jxr_javadoccomment">     * default constructor.</em>
-<a class="jxr_linenumber" name="L505" href="#L505">505</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L506" href="#L506">506</a> <em class="jxr_javadoccomment">     * @param userName</em>
-<a class="jxr_linenumber" name="L507" href="#L507">507</a> <em class="jxr_javadoccomment">     *            The name of the user.</em>
-<a class="jxr_linenumber" name="L508" href="#L508">508</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L509" href="#L509">509</a> <em class="jxr_javadoccomment">     * @return an object implementing User interface.</em>
-<a class="jxr_linenumber" name="L510" href="#L510">510</a> <em class="jxr_javadoccomment">     * @throws DataBackendException</em>
-<a class="jxr_linenumber" name="L511" href="#L511">511</a> <em class="jxr_javadoccomment">     *             if the object could not be instantiated.</em>
-<a class="jxr_linenumber" name="L512" href="#L512">512</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L513" href="#L513">513</a>     @Override
-<a class="jxr_linenumber" name="L514" href="#L514">514</a>     <strong class="jxr_keyword">public</strong> &lt;U <strong class="jxr_keyword">extends</strong> User&gt; U getUserInstance(String userName) <strong class="jxr_keyword">throws</strong> DataBackendException
-<a class="jxr_linenumber" name="L515" href="#L515">515</a>     {
-<a class="jxr_linenumber" name="L516" href="#L516">516</a>         TurbineUser u = umDelegate.getUserInstance(userName);
-<a class="jxr_linenumber" name="L517" href="#L517">517</a>         <strong class="jxr_keyword">return</strong> wrap(u);
-<a class="jxr_linenumber" name="L518" href="#L518">518</a>     }
-<a class="jxr_linenumber" name="L519" href="#L519">519</a> 
-<a class="jxr_linenumber" name="L520" href="#L520">520</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L521" href="#L521">521</a> <em class="jxr_javadoccomment">     * Return a Class object representing the system's chosen implementation of</em>
-<a class="jxr_linenumber" name="L522" href="#L522">522</a> <em class="jxr_javadoccomment">     * of ACL interface.</em>
-<a class="jxr_linenumber" name="L523" href="#L523">523</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L524" href="#L524">524</a> <em class="jxr_javadoccomment">     * @return systems's chosen implementation of ACL interface.</em>
-<a class="jxr_linenumber" name="L525" href="#L525">525</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException</em>
-<a class="jxr_linenumber" name="L526" href="#L526">526</a> <em class="jxr_javadoccomment">     *             if the implementation of ACL interface could not be</em>
-<a class="jxr_linenumber" name="L527" href="#L527">527</a> <em class="jxr_javadoccomment">     *             determined, or does not exist.</em>
-<a class="jxr_linenumber" name="L528" href="#L528">528</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L529" href="#L529">529</a>     @Override
-<a class="jxr_linenumber" name="L530" href="#L530">530</a>     <strong class="jxr_keyword">public</strong> &lt;A <strong class="jxr_keyword">extends</strong> AccessControlList&gt; A getACL(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user) <strong class="jxr_keyword">throws</strong> UnknownEntityException
-<a class="jxr_linenumber" name="L531" href="#L531">531</a>     {
-<a class="jxr_linenumber" name="L532" href="#L532">532</a>         <strong class="jxr_keyword">if</strong> (user == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L533" href="#L533">533</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> UnknownEntityException(<span class="jxr_string">"user is null"</span>);
-<a class="jxr_linenumber" name="L534" href="#L534">534</a>         }
-<a class="jxr_linenumber" name="L535" href="#L535">535</a>         <strong class="jxr_keyword">return</strong> umDelegate.getACL(user.getUserDelegate());
-<a class="jxr_linenumber" name="L536" href="#L536">536</a>     }
-<a class="jxr_linenumber" name="L537" href="#L537">537</a> }
+<a class="jxr_linenumber" name="L259" href="#L259">259</a> 
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>         List&lt;User&gt; userList = uset.stream()
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>                 .map(u -&gt; (TurbineUser) u)
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>                 .map(<strong class="jxr_keyword">this</strong>::wrap)
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>                 .map(u -&gt; (<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a>)u)
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>                 .collect(Collectors.toList());
+<a class="jxr_linenumber" name="L265" href="#L265">265</a> 
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>         <strong class="jxr_keyword">return</strong> userList;
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>     }
+<a class="jxr_linenumber" name="L268" href="#L268">268</a> 
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L270" href="#L270">270</a> <em class="jxr_javadoccomment">     * Retrieve a user from persistent storage using username as the</em>
+<a class="jxr_linenumber" name="L271" href="#L271">271</a> <em class="jxr_javadoccomment">     * key, and authenticate the user. The implementation may chose</em>
+<a class="jxr_linenumber" name="L272" href="#L272">272</a> <em class="jxr_javadoccomment">     * to authenticate to the server as the user whose data is being</em>
+<a class="jxr_linenumber" name="L273" href="#L273">273</a> <em class="jxr_javadoccomment">     * retrieved.</em>
+<a class="jxr_linenumber" name="L274" href="#L274">274</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L275" href="#L275">275</a> <em class="jxr_javadoccomment">     * @param username the name of the user.</em>
+<a class="jxr_linenumber" name="L276" href="#L276">276</a> <em class="jxr_javadoccomment">     * @param password the user supplied password.</em>
+<a class="jxr_linenumber" name="L277" href="#L277">277</a> <em class="jxr_javadoccomment">     * @return an User object.</em>
+<a class="jxr_linenumber" name="L278" href="#L278">278</a> <em class="jxr_javadoccomment">     * @throws PasswordMismatchException if the supplied password was</em>
+<a class="jxr_linenumber" name="L279" href="#L279">279</a> <em class="jxr_javadoccomment">     *            incorrect.</em>
+<a class="jxr_linenumber" name="L280" href="#L280">280</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException if the user's record does not</em>
+<a class="jxr_linenumber" name="L281" href="#L281">281</a> <em class="jxr_javadoccomment">     *            exist in the database.</em>
+<a class="jxr_linenumber" name="L282" href="#L282">282</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there is a problem accessing the</em>
+<a class="jxr_linenumber" name="L283" href="#L283">283</a> <em class="jxr_javadoccomment">     *            storage.</em>
+<a class="jxr_linenumber" name="L284" href="#L284">284</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>     @Override
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>     <strong class="jxr_keyword">public</strong> &lt;U <strong class="jxr_keyword">extends</strong> User&gt; U retrieve(String username, String password)
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>             <strong class="jxr_keyword">throws</strong> PasswordMismatchException, UnknownEntityException,
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>             DataBackendException
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>     {
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>         TurbineUser u = umDelegate.getUser(username, password);
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>         <strong class="jxr_keyword">return</strong> wrap(u);
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>     }
+<a class="jxr_linenumber" name="L293" href="#L293">293</a> 
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L295" href="#L295">295</a> <em class="jxr_javadoccomment">     * Save an User object to persistent storage. User's record is</em>
+<a class="jxr_linenumber" name="L296" href="#L296">296</a> <em class="jxr_javadoccomment">     * required to exist in the storage.</em>
+<a class="jxr_linenumber" name="L297" href="#L297">297</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L298" href="#L298">298</a> <em class="jxr_javadoccomment">     * @param user an User object to store.</em>
+<a class="jxr_linenumber" name="L299" href="#L299">299</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException if the user's record does not</em>
+<a class="jxr_linenumber" name="L300" href="#L300">300</a> <em class="jxr_javadoccomment">     *            exist in the database.</em>
+<a class="jxr_linenumber" name="L301" href="#L301">301</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there is a problem accessing the</em>
+<a class="jxr_linenumber" name="L302" href="#L302">302</a> <em class="jxr_javadoccomment">     *            storage.</em>
+<a class="jxr_linenumber" name="L303" href="#L303">303</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L304" href="#L304">304</a>     @Override
+<a class="jxr_linenumber" name="L305" href="#L305">305</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> store(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user)
+<a class="jxr_linenumber" name="L306" href="#L306">306</a>             <strong class="jxr_keyword">throws</strong> UnknownEntityException, DataBackendException
+<a class="jxr_linenumber" name="L307" href="#L307">307</a>     {
+<a class="jxr_linenumber" name="L308" href="#L308">308</a>         <strong class="jxr_keyword">if</strong> (user == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L309" href="#L309">309</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> UnknownEntityException(<span class="jxr_string">"user is null"</span>);
+<a class="jxr_linenumber" name="L310" href="#L310">310</a>         }
+<a class="jxr_linenumber" name="L311" href="#L311">311</a>         <strong class="jxr_keyword">try</strong>
+<a class="jxr_linenumber" name="L312" href="#L312">312</a>         {
+<a class="jxr_linenumber" name="L313" href="#L313">313</a>             user.setObjectdata(ObjectUtils.serializeMap(user.getPermStorage()));
+<a class="jxr_linenumber" name="L314" href="#L314">314</a>         }
+<a class="jxr_linenumber" name="L315" href="#L315">315</a>         <strong class="jxr_keyword">catch</strong> (Exception e)
+<a class="jxr_linenumber" name="L316" href="#L316">316</a>         {
+<a class="jxr_linenumber" name="L317" href="#L317">317</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> DataBackendException(<span class="jxr_string">"Could not serialize permanent storage"</span>, e);
+<a class="jxr_linenumber" name="L318" href="#L318">318</a>         }
+<a class="jxr_linenumber" name="L319" href="#L319">319</a> 
+<a class="jxr_linenumber" name="L320" href="#L320">320</a>         umDelegate.saveUser(((<a name="TurbineUserDelegate" href="../../../../../org/apache/turbine/om/security/TurbineUserDelegate.html#TurbineUserDelegate">TurbineUserDelegate</a>)user).getUserDelegate());
+<a class="jxr_linenumber" name="L321" href="#L321">321</a>     }
+<a class="jxr_linenumber" name="L322" href="#L322">322</a> 
+<a class="jxr_linenumber" name="L323" href="#L323">323</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L324" href="#L324">324</a> <em class="jxr_javadoccomment">     * Saves User data when the session is unbound. The user account is required</em>
+<a class="jxr_linenumber" name="L325" href="#L325">325</a> <em class="jxr_javadoccomment">     * to exist in the storage.</em>
+<a class="jxr_linenumber" name="L326" href="#L326">326</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L327" href="#L327">327</a> <em class="jxr_javadoccomment">     * LastLogin, AccessCounter, persistent pull tools, and any data stored</em>
+<a class="jxr_linenumber" name="L328" href="#L328">328</a> <em class="jxr_javadoccomment">     * in the permData hashtable that is not mapped to a column will be saved.</em>
+<a class="jxr_linenumber" name="L329" href="#L329">329</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L330" href="#L330">330</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException if the user's account does not</em>
+<a class="jxr_linenumber" name="L331" href="#L331">331</a> <em class="jxr_javadoccomment">     *            exist in the database.</em>
+<a class="jxr_linenumber" name="L332" href="#L332">332</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there is a problem accessing the</em>
+<a class="jxr_linenumber" name="L333" href="#L333">333</a> <em class="jxr_javadoccomment">     *            storage.</em>
+<a class="jxr_linenumber" name="L334" href="#L334">334</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L335" href="#L335">335</a>     @Override
+<a class="jxr_linenumber" name="L336" href="#L336">336</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> saveOnSessionUnbind(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user)
+<a class="jxr_linenumber" name="L337" href="#L337">337</a>             <strong class="jxr_keyword">throws</strong> UnknownEntityException, DataBackendException
+<a class="jxr_linenumber" name="L338" href="#L338">338</a>     {
+<a class="jxr_linenumber" name="L339" href="#L339">339</a>         store(user);
+<a class="jxr_linenumber" name="L340" href="#L340">340</a>     }
+<a class="jxr_linenumber" name="L341" href="#L341">341</a> 
+<a class="jxr_linenumber" name="L342" href="#L342">342</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L343" href="#L343">343</a> <em class="jxr_javadoccomment">     * Authenticate an User with the specified password. If authentication</em>
+<a class="jxr_linenumber" name="L344" href="#L344">344</a> <em class="jxr_javadoccomment">     * is successful the method returns nothing. If there are any problems,</em>
+<a class="jxr_linenumber" name="L345" href="#L345">345</a> <em class="jxr_javadoccomment">     * exception was thrown.</em>
+<a class="jxr_linenumber" name="L346" href="#L346">346</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L347" href="#L347">347</a> <em class="jxr_javadoccomment">     * @param user an User object to authenticate.</em>
+<a class="jxr_linenumber" name="L348" href="#L348">348</a> <em class="jxr_javadoccomment">     * @param password the user supplied password.</em>
+<a class="jxr_linenumber" name="L349" href="#L349">349</a> <em class="jxr_javadoccomment">     * @throws PasswordMismatchException if the supplied password was</em>
+<a class="jxr_linenumber" name="L350" href="#L350">350</a> <em class="jxr_javadoccomment">     *            incorrect.</em>
+<a class="jxr_linenumber" name="L351" href="#L351">351</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException if the user's record does not</em>
+<a class="jxr_linenumber" name="L352" href="#L352">352</a> <em class="jxr_javadoccomment">     *            exist in the database.</em>
+<a class="jxr_linenumber" name="L353" href="#L353">353</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there is a problem accessing the</em>
+<a class="jxr_linenumber" name="L354" href="#L354">354</a> <em class="jxr_javadoccomment">     *            storage.</em>
+<a class="jxr_linenumber" name="L355" href="#L355">355</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L356" href="#L356">356</a>     @Override
+<a class="jxr_linenumber" name="L357" href="#L357">357</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> authenticate(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user, String password)
+<a class="jxr_linenumber" name="L358" href="#L358">358</a>             <strong class="jxr_keyword">throws</strong> PasswordMismatchException, UnknownEntityException,
+<a class="jxr_linenumber" name="L359" href="#L359">359</a>             DataBackendException
+<a class="jxr_linenumber" name="L360" href="#L360">360</a>     {
+<a class="jxr_linenumber" name="L361" href="#L361">361</a>         umDelegate.authenticate(user, password);
+<a class="jxr_linenumber" name="L362" href="#L362">362</a>     }
+<a class="jxr_linenumber" name="L363" href="#L363">363</a> 
+<a class="jxr_linenumber" name="L364" href="#L364">364</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L365" href="#L365">365</a> <em class="jxr_javadoccomment">     * Creates new user account with specified attributes.</em>
+<a class="jxr_linenumber" name="L366" href="#L366">366</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L367" href="#L367">367</a> <em class="jxr_javadoccomment">     * @param user the object describing account to be created.</em>
+<a class="jxr_linenumber" name="L368" href="#L368">368</a> <em class="jxr_javadoccomment">     * @param initialPassword The password to use for the object creation</em>
+<a class="jxr_linenumber" name="L369" href="#L369">369</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L370" href="#L370">370</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there was an error accessing the data backend.</em>
+<a class="jxr_linenumber" name="L371" href="#L371">371</a> <em class="jxr_javadoccomment">     * @throws EntityExistsException if the user account already exists.</em>
+<a class="jxr_linenumber" name="L372" href="#L372">372</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L373" href="#L373">373</a>     @Override
+<a class="jxr_linenumber" name="L374" href="#L374">374</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> createAccount(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user, String initialPassword)
+<a class="jxr_linenumber" name="L375" href="#L375">375</a>             <strong class="jxr_keyword">throws</strong> UnknownEntityException, EntityExistsException, DataBackendException
+<a class="jxr_linenumber" name="L376" href="#L376">376</a>     {
+<a class="jxr_linenumber" name="L377" href="#L377">377</a>         <strong class="jxr_keyword">if</strong> (user == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L378" href="#L378">378</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> UnknownEntityException(<span class="jxr_string">"user is null"</span>);
+<a class="jxr_linenumber" name="L379" href="#L379">379</a>         }
+<a class="jxr_linenumber" name="L380" href="#L380">380</a>         umDelegate.addUser(user.getUserDelegate(), initialPassword);
+<a class="jxr_linenumber" name="L381" href="#L381">381</a>     }
+<a class="jxr_linenumber" name="L382" href="#L382">382</a> 
+<a class="jxr_linenumber" name="L383" href="#L383">383</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L384" href="#L384">384</a> <em class="jxr_javadoccomment">     * Removes an user account from the system.</em>
+<a class="jxr_linenumber" name="L385" href="#L385">385</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L386" href="#L386">386</a> <em class="jxr_javadoccomment">     * @param user the object describing the account to be removed.</em>
+<a class="jxr_linenumber" name="L387" href="#L387">387</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there was an error accessing the data backend.</em>
+<a class="jxr_linenumber" name="L388" href="#L388">388</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException if the user account is not present.</em>
+<a class="jxr_linenumber" name="L389" href="#L389">389</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>     @Override
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> removeAccount(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user)
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>             <strong class="jxr_keyword">throws</strong> UnknownEntityException, DataBackendException
+<a class="jxr_linenumber" name="L393" href="#L393">393</a>     {
+<a class="jxr_linenumber" name="L394" href="#L394">394</a>         <strong class="jxr_keyword">if</strong> (user == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> UnknownEntityException(<span class="jxr_string">"user is null"</span>);
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>         }
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>         umDelegate.removeUser(user.getUserDelegate());
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>     }
+<a class="jxr_linenumber" name="L399" href="#L399">399</a> 
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L401" href="#L401">401</a> <em class="jxr_javadoccomment">     * Change the password for an User.</em>
+<a class="jxr_linenumber" name="L402" href="#L402">402</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L403" href="#L403">403</a> <em class="jxr_javadoccomment">     * @param user an User to change password for.</em>
+<a class="jxr_linenumber" name="L404" href="#L404">404</a> <em class="jxr_javadoccomment">     * @param oldPassword the current password supplied by the user.</em>
+<a class="jxr_linenumber" name="L405" href="#L405">405</a> <em class="jxr_javadoccomment">     * @param newPassword the current password requested by the user.</em>
+<a class="jxr_linenumber" name="L406" href="#L406">406</a> <em class="jxr_javadoccomment">     * @throws PasswordMismatchException if the supplied password was</em>
+<a class="jxr_linenumber" name="L407" href="#L407">407</a> <em class="jxr_javadoccomment">     *            incorrect.</em>
+<a class="jxr_linenumber" name="L408" href="#L408">408</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException if the user's record does not</em>
+<a class="jxr_linenumber" name="L409" href="#L409">409</a> <em class="jxr_javadoccomment">     *            exist in the database.</em>
+<a class="jxr_linenumber" name="L410" href="#L410">410</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there is a problem accessing the</em>
+<a class="jxr_linenumber" name="L411" href="#L411">411</a> <em class="jxr_javadoccomment">     *            storage.</em>
+<a class="jxr_linenumber" name="L412" href="#L412">412</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>     @Override
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> changePassword(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user, String oldPassword,
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>                                String newPassword)
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>             <strong class="jxr_keyword">throws</strong> PasswordMismatchException, UnknownEntityException,
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>             DataBackendException
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>     {
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>         <strong class="jxr_keyword">if</strong> (user == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> UnknownEntityException(<span class="jxr_string">"user is null"</span>);
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>         }
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>         umDelegate.changePassword(
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>                 ((<a name="TurbineUserDelegate" href="../../../../../org/apache/turbine/om/security/TurbineUserDelegate.html#TurbineUserDelegate">TurbineUserDelegate</a>)user).getUserDelegate(),
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>                 oldPassword, newPassword);
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>     }
+<a class="jxr_linenumber" name="L426" href="#L426">426</a> 
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L428" href="#L428">428</a> <em class="jxr_javadoccomment">     * Forcibly sets new password for an User.</em>
+<a class="jxr_linenumber" name="L429" href="#L429">429</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L430" href="#L430">430</a> <em class="jxr_javadoccomment">     * This is supposed by the administrator to change the forgotten or</em>
+<a class="jxr_linenumber" name="L431" href="#L431">431</a> <em class="jxr_javadoccomment">     * compromised passwords. Certain implementations of this feature</em>
+<a class="jxr_linenumber" name="L432" href="#L432">432</a> <em class="jxr_javadoccomment">     * would require administrative level access to the authenticating</em>
+<a class="jxr_linenumber" name="L433" href="#L433">433</a> <em class="jxr_javadoccomment">     * server / program.</em>
+<a class="jxr_linenumber" name="L434" href="#L434">434</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L435" href="#L435">435</a> <em class="jxr_javadoccomment">     * @param user an User to change password for.</em>
+<a class="jxr_linenumber" name="L436" href="#L436">436</a> <em class="jxr_javadoccomment">     * @param password the new password.</em>
+<a class="jxr_linenumber" name="L437" href="#L437">437</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException if the user's record does not</em>
+<a class="jxr_linenumber" name="L438" href="#L438">438</a> <em class="jxr_javadoccomment">     *            exist in the database.</em>
+<a class="jxr_linenumber" name="L439" href="#L439">439</a> <em class="jxr_javadoccomment">     * @throws DataBackendException if there is a problem accessing the</em>
+<a class="jxr_linenumber" name="L440" href="#L440">440</a> <em class="jxr_javadoccomment">     *            storage.</em>
+<a class="jxr_linenumber" name="L441" href="#L441">441</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>     @Override
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> forcePassword(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user, String password)
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>             <strong class="jxr_keyword">throws</strong> UnknownEntityException, DataBackendException
+<a class="jxr_linenumber" name="L445" href="#L445">445</a>     {
+<a class="jxr_linenumber" name="L446" href="#L446">446</a>         <strong class="jxr_keyword">if</strong> (user == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> UnknownEntityException(<span class="jxr_string">"user is null"</span>);
+<a class="jxr_linenumber" name="L448" href="#L448">448</a>         }
+<a class="jxr_linenumber" name="L449" href="#L449">449</a>         umDelegate.forcePassword(user.getUserDelegate(), password);
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>     }
+<a class="jxr_linenumber" name="L451" href="#L451">451</a> 
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L453" href="#L453">453</a> <em class="jxr_javadoccomment">     * Constructs an User object to represent an anonymous user of the</em>
+<a class="jxr_linenumber" name="L454" href="#L454">454</a> <em class="jxr_javadoccomment">     * application.</em>
+<a class="jxr_linenumber" name="L455" href="#L455">455</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L456" href="#L456">456</a> <em class="jxr_javadoccomment">     * @return An anonymous Turbine User.</em>
+<a class="jxr_linenumber" name="L457" href="#L457">457</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException</em>
+<a class="jxr_linenumber" name="L458" href="#L458">458</a> <em class="jxr_javadoccomment">     *             if the anonymous User object couldn't be constructed.</em>
+<a class="jxr_linenumber" name="L459" href="#L459">459</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L460" href="#L460">460</a>     @Override
+<a class="jxr_linenumber" name="L461" href="#L461">461</a>     <strong class="jxr_keyword">public</strong> &lt;U <strong class="jxr_keyword">extends</strong> User&gt; U getAnonymousUser() <strong class="jxr_keyword">throws</strong> UnknownEntityException
+<a class="jxr_linenumber" name="L462" href="#L462">462</a>     {
+<a class="jxr_linenumber" name="L463" href="#L463">463</a>         TurbineUser u = umDelegate.getAnonymousUser();
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>         <strong class="jxr_keyword">return</strong> wrap(u);
+<a class="jxr_linenumber" name="L465" href="#L465">465</a>     }
+<a class="jxr_linenumber" name="L466" href="#L466">466</a> 
+<a class="jxr_linenumber" name="L467" href="#L467">467</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L468" href="#L468">468</a> <em class="jxr_javadoccomment">     * Checks whether a passed user object matches the anonymous user pattern</em>
+<a class="jxr_linenumber" name="L469" href="#L469">469</a> <em class="jxr_javadoccomment">     * according to the configured user manager</em>
+<a class="jxr_linenumber" name="L470" href="#L470">470</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L471" href="#L471">471</a> <em class="jxr_javadoccomment">     * @param u a user object</em>
+<a class="jxr_linenumber" name="L472" href="#L472">472</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L473" href="#L473">473</a> <em class="jxr_javadoccomment">     * @return True if this is an anonymous user</em>
+<a class="jxr_linenumber" name="L474" href="#L474">474</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L475" href="#L475">475</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L476" href="#L476">476</a>     @Override
+<a class="jxr_linenumber" name="L477" href="#L477">477</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isAnonymousUser(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> u)
+<a class="jxr_linenumber" name="L478" href="#L478">478</a>     {
+<a class="jxr_linenumber" name="L479" href="#L479">479</a>         <strong class="jxr_keyword">return</strong> umDelegate.isAnonymousUser(u);
+<a class="jxr_linenumber" name="L480" href="#L480">480</a>     }
+<a class="jxr_linenumber" name="L481" href="#L481">481</a> 
+<a class="jxr_linenumber" name="L482" href="#L482">482</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L483" href="#L483">483</a> <em class="jxr_javadoccomment">     * Construct a blank User object.</em>
+<a class="jxr_linenumber" name="L484" href="#L484">484</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L485" href="#L485">485</a> <em class="jxr_javadoccomment">     * This method calls getUserClass, and then creates a new object using the</em>
+<a class="jxr_linenumber" name="L486" href="#L486">486</a> <em class="jxr_javadoccomment">     * default constructor.</em>
+<a class="jxr_linenumber" name="L487" href="#L487">487</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L488" href="#L488">488</a> <em class="jxr_javadoccomment">     * @return an object implementing User interface.</em>
+<a class="jxr_linenumber" name="L489" href="#L489">489</a> <em class="jxr_javadoccomment">     * @throws DataBackendException</em>
+<a class="jxr_linenumber" name="L490" href="#L490">490</a> <em class="jxr_javadoccomment">     *             if the object could not be instantiated.</em>
+<a class="jxr_linenumber" name="L491" href="#L491">491</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L492" href="#L492">492</a>     @Override
+<a class="jxr_linenumber" name="L493" href="#L493">493</a>     <strong class="jxr_keyword">public</strong> &lt;U <strong class="jxr_keyword">extends</strong> User&gt; U getUserInstance() <strong class="jxr_keyword">throws</strong> DataBackendException
+<a class="jxr_linenumber" name="L494" href="#L494">494</a>     {
+<a class="jxr_linenumber" name="L495" href="#L495">495</a>         TurbineUser u = umDelegate.getUserInstance();
+<a class="jxr_linenumber" name="L496" href="#L496">496</a>         <strong class="jxr_keyword">return</strong> wrap(u);
+<a class="jxr_linenumber" name="L497" href="#L497">497</a>     }
+<a class="jxr_linenumber" name="L498" href="#L498">498</a> 
+<a class="jxr_linenumber" name="L499" href="#L499">499</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L500" href="#L500">500</a> <em class="jxr_javadoccomment">     * Construct a blank User object.</em>
+<a class="jxr_linenumber" name="L501" href="#L501">501</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L502" href="#L502">502</a> <em class="jxr_javadoccomment">     * This method calls getUserClass, and then creates a new object using the</em>
+<a class="jxr_linenumber" name="L503" href="#L503">503</a> <em class="jxr_javadoccomment">     * default constructor.</em>
+<a class="jxr_linenumber" name="L504" href="#L504">504</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L505" href="#L505">505</a> <em class="jxr_javadoccomment">     * @param userName</em>
+<a class="jxr_linenumber" name="L506" href="#L506">506</a> <em class="jxr_javadoccomment">     *            The name of the user.</em>
+<a class="jxr_linenumber" name="L507" href="#L507">507</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L508" href="#L508">508</a> <em class="jxr_javadoccomment">     * @return an object implementing User interface.</em>
+<a class="jxr_linenumber" name="L509" href="#L509">509</a> <em class="jxr_javadoccomment">     * @throws DataBackendException</em>
+<a class="jxr_linenumber" name="L510" href="#L510">510</a> <em class="jxr_javadoccomment">     *             if the object could not be instantiated.</em>
+<a class="jxr_linenumber" name="L511" href="#L511">511</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L512" href="#L512">512</a>     @Override
+<a class="jxr_linenumber" name="L513" href="#L513">513</a>     <strong class="jxr_keyword">public</strong> &lt;U <strong class="jxr_keyword">extends</strong> User&gt; U getUserInstance(String userName) <strong class="jxr_keyword">throws</strong> DataBackendException
+<a class="jxr_linenumber" name="L514" href="#L514">514</a>     {
+<a class="jxr_linenumber" name="L515" href="#L515">515</a>         TurbineUser u = umDelegate.getUserInstance(userName);
+<a class="jxr_linenumber" name="L516" href="#L516">516</a>         <strong class="jxr_keyword">return</strong> wrap(u);
+<a class="jxr_linenumber" name="L517" href="#L517">517</a>     }
+<a class="jxr_linenumber" name="L518" href="#L518">518</a> 
+<a class="jxr_linenumber" name="L519" href="#L519">519</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L520" href="#L520">520</a> <em class="jxr_javadoccomment">     * Return a Class object representing the system's chosen implementation of</em>
+<a class="jxr_linenumber" name="L521" href="#L521">521</a> <em class="jxr_javadoccomment">     * of ACL interface.</em>
+<a class="jxr_linenumber" name="L522" href="#L522">522</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L523" href="#L523">523</a> <em class="jxr_javadoccomment">     * @return systems's chosen implementation of ACL interface.</em>
+<a class="jxr_linenumber" name="L524" href="#L524">524</a> <em class="jxr_javadoccomment">     * @throws UnknownEntityException</em>
+<a class="jxr_linenumber" name="L525" href="#L525">525</a> <em class="jxr_javadoccomment">     *             if the implementation of ACL interface could not be</em>
+<a class="jxr_linenumber" name="L526" href="#L526">526</a> <em class="jxr_javadoccomment">     *             determined, or does not exist.</em>
+<a class="jxr_linenumber" name="L527" href="#L527">527</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L528" href="#L528">528</a>     @Override
+<a class="jxr_linenumber" name="L529" href="#L529">529</a>     <strong class="jxr_keyword">public</strong> &lt;A <strong class="jxr_keyword">extends</strong> AccessControlList&gt; A getACL(<a name="User" href="../../../../../org/apache/turbine/om/security/User.html#User">User</a> user) <strong class="jxr_keyword">throws</strong> UnknownEntityException
+<a class="jxr_linenumber" name="L530" href="#L530">530</a>     {
+<a class="jxr_linenumber" name="L531" href="#L531">531</a>         <strong class="jxr_keyword">if</strong> (user == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L532" href="#L532">532</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> UnknownEntityException(<span class="jxr_string">"user is null"</span>);
+<a class="jxr_linenumber" name="L533" href="#L533">533</a>         }
+<a class="jxr_linenumber" name="L534" href="#L534">534</a>         <strong class="jxr_keyword">return</strong> umDelegate.getACL(user.getUserDelegate());
+<a class="jxr_linenumber" name="L535" href="#L535">535</a>     }
+<a class="jxr_linenumber" name="L536" href="#L536">536</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2022 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
 </body>
 </html>

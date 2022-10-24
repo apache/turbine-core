@@ -30,9 +30,9 @@
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertEquals;
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertNull;
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertTrue;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertFalse;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertFalse;
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertNull;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.assertTrue;
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> <strong class="jxr_keyword">static</strong> org.junit.Assert.fail;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> java.math.BigDecimal;
@@ -128,13 +128,13 @@
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>         assertNull(result);
 <a class="jxr_linenumber" name="L121" href="#L121">121</a> 
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>         <em class="jxr_comment">// default</em>
-<a class="jxr_linenumber" name="L123" href="#L123">123</a>         result = parser.getByteObject(<span class="jxr_string">"default"</span>, <strong class="jxr_keyword">new</strong> Byte((byte)3));
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>         assertEquals(result, <strong class="jxr_keyword">new</strong> Byte((byte)3));
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>         result = parser.getByteObject(<span class="jxr_string">"default"</span>, Byte.valueOf((byte)3));
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>         assertEquals(result, Byte.valueOf((byte)3));
 <a class="jxr_linenumber" name="L125" href="#L125">125</a> 
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>         <em class="jxr_comment">// param exists</em>
 <a class="jxr_linenumber" name="L127" href="#L127">127</a>         parser.add(<span class="jxr_string">"exists"</span>, <span class="jxr_string">"1"</span>);
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>         result = parser.getByteObject(<span class="jxr_string">"exists"</span>);
-<a class="jxr_linenumber" name="L129" href="#L129">129</a>         assertEquals(result, <strong class="jxr_keyword">new</strong> Byte((byte)1));
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>         assertEquals(result, Byte.valueOf((byte)1));
 <a class="jxr_linenumber" name="L130" href="#L130">130</a> 
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>         <em class="jxr_comment">// unparsable value</em>
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>         parser.add(<span class="jxr_string">"unparsable"</span>, <span class="jxr_string">"a"</span>);
@@ -194,13 +194,13 @@
 <a class="jxr_linenumber" name="L186" href="#L186">186</a>         assertNull(result);
 <a class="jxr_linenumber" name="L187" href="#L187">187</a> 
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>         <em class="jxr_comment">// default</em>
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>         result = parser.getIntObject(<span class="jxr_string">"default"</span>, <strong class="jxr_keyword">new</strong> Integer(3));
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         assertEquals(result, <strong class="jxr_keyword">new</strong> Integer(3));
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>         result = parser.getIntObject(<span class="jxr_string">"default"</span>, Integer.valueOf(3));
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         assertEquals(result, Integer.valueOf(3));
 <a class="jxr_linenumber" name="L191" href="#L191">191</a> 
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>         <em class="jxr_comment">// param exists</em>
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>         parser.add(<span class="jxr_string">"exists"</span>, <span class="jxr_string">"1"</span>);
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>         result = parser.getIntObject(<span class="jxr_string">"exists"</span>);
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>         assertEquals(result, <strong class="jxr_keyword">new</strong> Integer(1));
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>         assertEquals(result, Integer.valueOf(1));
 <a class="jxr_linenumber" name="L196" href="#L196">196</a> 
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>         <em class="jxr_comment">// unparsable value</em>
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>         parser.add(<span class="jxr_string">"unparsable"</span>, <span class="jxr_string">"a"</span>);
@@ -212,7 +212,7 @@
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>         parser.add(<span class="jxr_string">"array"</span>, <span class="jxr_string">"2"</span>);
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>         parser.add(<span class="jxr_string">"array"</span>, <span class="jxr_string">"3"</span>);
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>         Integer arrayResult[] = parser.getIntObjects(<span class="jxr_string">"array"</span>);
-<a class="jxr_linenumber" name="L207" href="#L207">207</a>         Integer compare[] = {<strong class="jxr_keyword">new</strong> Integer(1), <strong class="jxr_keyword">new</strong> Integer(2), <strong class="jxr_keyword">new</strong> Integer(3)};
+<a class="jxr_linenumber" name="L207" href="#L207">207</a>         Integer compare[] = {Integer.valueOf(1), Integer.valueOf(2), Integer.valueOf(3)};
 <a class="jxr_linenumber" name="L208" href="#L208">208</a>         assertEquals(arrayResult.length, compare.length);
 <a class="jxr_linenumber" name="L209" href="#L209">209</a>         <strong class="jxr_keyword">for</strong>( <strong class="jxr_keyword">int</strong> i=0; i&lt;compare.length; i++)
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>         {
@@ -224,7 +224,7 @@
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>         parser.add(<span class="jxr_string">"array2"</span>, <span class="jxr_string">"a"</span>);
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>         parser.add(<span class="jxr_string">"array2"</span>, <span class="jxr_string">"3"</span>);
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>         Integer arrayResult2[] = parser.getIntObjects(<span class="jxr_string">"array2"</span>);
-<a class="jxr_linenumber" name="L219" href="#L219">219</a>         Integer compare2[] = {<strong class="jxr_keyword">new</strong> Integer(1), <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">new</strong> Integer(3)};
+<a class="jxr_linenumber" name="L219" href="#L219">219</a>         Integer compare2[] = {Integer.valueOf(1), <strong class="jxr_keyword">null</strong>, Integer.valueOf(3)};
 <a class="jxr_linenumber" name="L220" href="#L220">220</a>         assertEquals(arrayResult2.length, compare2.length);
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>         <strong class="jxr_keyword">for</strong>( <strong class="jxr_keyword">int</strong> i=0; i&lt;compare2.length; i++)
 <a class="jxr_linenumber" name="L222" href="#L222">222</a>         {
@@ -284,13 +284,13 @@
 <a class="jxr_linenumber" name="L276" href="#L276">276</a>         assertNull(result);
 <a class="jxr_linenumber" name="L277" href="#L277">277</a> 
 <a class="jxr_linenumber" name="L278" href="#L278">278</a>         <em class="jxr_comment">// default</em>
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>         result = parser.getFloatObject(<span class="jxr_string">"default"</span>, <strong class="jxr_keyword">new</strong> Float(3));
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>         assertEquals(result, <strong class="jxr_keyword">new</strong> Float(3));
+<a class="jxr_linenumber" name="L279" href="#L279">279</a>         result = parser.getFloatObject(<span class="jxr_string">"default"</span>, Float.valueOf(3));
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>         assertEquals(result, Float.valueOf(3));
 <a class="jxr_linenumber" name="L281" href="#L281">281</a> 
 <a class="jxr_linenumber" name="L282" href="#L282">282</a>         <em class="jxr_comment">// param exists</em>
 <a class="jxr_linenumber" name="L283" href="#L283">283</a>         parser.add(<span class="jxr_string">"exists"</span>, <span class="jxr_string">"1"</span>);
 <a class="jxr_linenumber" name="L284" href="#L284">284</a>         result = parser.getFloatObject(<span class="jxr_string">"exists"</span>);
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>         assertEquals(result, <strong class="jxr_keyword">new</strong> Float(1));
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>         assertEquals(result, Float.valueOf(1));
 <a class="jxr_linenumber" name="L286" href="#L286">286</a> 
 <a class="jxr_linenumber" name="L287" href="#L287">287</a>         <em class="jxr_comment">// unparsable value</em>
 <a class="jxr_linenumber" name="L288" href="#L288">288</a>         parser.add(<span class="jxr_string">"unparsable"</span>, <span class="jxr_string">"a"</span>);
@@ -302,7 +302,7 @@
 <a class="jxr_linenumber" name="L294" href="#L294">294</a>         parser.add(<span class="jxr_string">"array"</span>, <span class="jxr_string">"2"</span>);
 <a class="jxr_linenumber" name="L295" href="#L295">295</a>         parser.add(<span class="jxr_string">"array"</span>, <span class="jxr_string">"3"</span>);
 <a class="jxr_linenumber" name="L296" href="#L296">296</a>         Float arrayResult[] = parser.getFloatObjects(<span class="jxr_string">"array"</span>);
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>         Float compare[] = {<strong class="jxr_keyword">new</strong> Float(1), <strong class="jxr_keyword">new</strong> Float(2), <strong class="jxr_keyword">new</strong> Float(3)};
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>         Float compare[] = {Float.valueOf(1), Float.valueOf(2), Float.valueOf(3)};
 <a class="jxr_linenumber" name="L298" href="#L298">298</a>         assertEquals(arrayResult.length, compare.length);
 <a class="jxr_linenumber" name="L299" href="#L299">299</a>         <strong class="jxr_keyword">for</strong>( <strong class="jxr_keyword">int</strong> i=0; i&lt;compare.length; i++)
 <a class="jxr_linenumber" name="L300" href="#L300">300</a>         {
@@ -314,7 +314,7 @@
 <a class="jxr_linenumber" name="L306" href="#L306">306</a>         parser.add(<span class="jxr_string">"array2"</span>, <span class="jxr_string">"a"</span>);
 <a class="jxr_linenumber" name="L307" href="#L307">307</a>         parser.add(<span class="jxr_string">"array2"</span>, <span class="jxr_string">"3"</span>);
 <a class="jxr_linenumber" name="L308" href="#L308">308</a>         Float arrayResult2[] = parser.getFloatObjects(<span class="jxr_string">"array2"</span>);
-<a class="jxr_linenumber" name="L309" href="#L309">309</a>         Float compare2[] = {<strong class="jxr_keyword">new</strong> Float(1), <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">new</strong> Float(3)};
+<a class="jxr_linenumber" name="L309" href="#L309">309</a>         Float compare2[] = {Float.valueOf(1), <strong class="jxr_keyword">null</strong>, Float.valueOf(3)};
 <a class="jxr_linenumber" name="L310" href="#L310">310</a>         assertEquals(arrayResult2.length, compare2.length);
 <a class="jxr_linenumber" name="L311" href="#L311">311</a>         <strong class="jxr_keyword">for</strong>( <strong class="jxr_keyword">int</strong> i=0; i&lt;compare2.length; i++)
 <a class="jxr_linenumber" name="L312" href="#L312">312</a>         {
@@ -374,13 +374,13 @@
 <a class="jxr_linenumber" name="L366" href="#L366">366</a>         assertNull(result);
 <a class="jxr_linenumber" name="L367" href="#L367">367</a> 
 <a class="jxr_linenumber" name="L368" href="#L368">368</a>         <em class="jxr_comment">// default</em>
-<a class="jxr_linenumber" name="L369" href="#L369">369</a>         result = parser.getDoubleObject(<span class="jxr_string">"default"</span>, <strong class="jxr_keyword">new</strong> Double(3));
-<a class="jxr_linenumber" name="L370" href="#L370">370</a>         assertEquals(result, <strong class="jxr_keyword">new</strong> Double(3));
+<a class="jxr_linenumber" name="L369" href="#L369">369</a>         result = parser.getDoubleObject(<span class="jxr_string">"default"</span>, Double.valueOf(3));
+<a class="jxr_linenumber" name="L370" href="#L370">370</a>         assertEquals(result, Double.valueOf(3));
 <a class="jxr_linenumber" name="L371" href="#L371">371</a> 
 <a class="jxr_linenumber" name="L372" href="#L372">372</a>         <em class="jxr_comment">// param exists</em>
 <a class="jxr_linenumber" name="L373" href="#L373">373</a>         parser.add(<span class="jxr_string">"exists"</span>, <span class="jxr_string">"1"</span>);
 <a class="jxr_linenumber" name="L374" href="#L374">374</a>         result = parser.getDoubleObject(<span class="jxr_string">"exists"</span>);
-<a class="jxr_linenumber" name="L375" href="#L375">375</a>         assertEquals(result, <strong class="jxr_keyword">new</strong> Double(1));
+<a class="jxr_linenumber" name="L375" href="#L375">375</a>         assertEquals(result, Double.valueOf(1));
 <a class="jxr_linenumber" name="L376" href="#L376">376</a> 
 <a class="jxr_linenumber" name="L377" href="#L377">377</a>         <em class="jxr_comment">// unparsable value</em>
 <a class="jxr_linenumber" name="L378" href="#L378">378</a>         parser.add(<span class="jxr_string">"unparsable"</span>, <span class="jxr_string">"a"</span>);
@@ -392,7 +392,7 @@
 <a class="jxr_linenumber" name="L384" href="#L384">384</a>         parser.add(<span class="jxr_string">"array"</span>, <span class="jxr_string">"2"</span>);
 <a class="jxr_linenumber" name="L385" href="#L385">385</a>         parser.add(<span class="jxr_string">"array"</span>, <span class="jxr_string">"3"</span>);
 <a class="jxr_linenumber" name="L386" href="#L386">386</a>         Double arrayResult[] = parser.getDoubleObjects(<span class="jxr_string">"array"</span>);
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>         Double compare[] = {<strong class="jxr_keyword">new</strong> Double(1), <strong class="jxr_keyword">new</strong> Double(2), <strong class="jxr_keyword">new</strong> Double(3)};
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>         Double compare[] = {Double.valueOf(1), Double.valueOf(2), Double.valueOf(3)};
 <a class="jxr_linenumber" name="L388" href="#L388">388</a>         assertEquals(arrayResult.length, compare.length);
 <a class="jxr_linenumber" name="L389" href="#L389">389</a>         <strong class="jxr_keyword">for</strong>( <strong class="jxr_keyword">int</strong> i=0; i&lt;compare.length; i++)
 <a class="jxr_linenumber" name="L390" href="#L390">390</a>         {
@@ -404,7 +404,7 @@
 <a class="jxr_linenumber" name="L396" href="#L396">396</a>         parser.add(<span class="jxr_string">"array2"</span>, <span class="jxr_string">"a"</span>);
 <a class="jxr_linenumber" name="L397" href="#L397">397</a>         parser.add(<span class="jxr_string">"array2"</span>, <span class="jxr_string">"3"</span>);
 <a class="jxr_linenumber" name="L398" href="#L398">398</a>         Double arrayResult2[] = parser.getDoubleObjects(<span class="jxr_string">"array2"</span>);
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>         Double compare2[] = {<strong class="jxr_keyword">new</strong> Double(1), <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">new</strong> Double(3)};
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>         Double compare2[] = {Double.valueOf(1), <strong class="jxr_keyword">null</strong>, Double.valueOf(3)};
 <a class="jxr_linenumber" name="L400" href="#L400">400</a>         assertEquals(arrayResult2.length, compare2.length);
 <a class="jxr_linenumber" name="L401" href="#L401">401</a>         <strong class="jxr_keyword">for</strong>( <strong class="jxr_keyword">int</strong> i=0; i&lt;compare2.length; i++)
 <a class="jxr_linenumber" name="L402" href="#L402">402</a>         {
@@ -464,13 +464,13 @@
 <a class="jxr_linenumber" name="L456" href="#L456">456</a>         assertNull(result);
 <a class="jxr_linenumber" name="L457" href="#L457">457</a> 
 <a class="jxr_linenumber" name="L458" href="#L458">458</a>         <em class="jxr_comment">// default</em>
-<a class="jxr_linenumber" name="L459" href="#L459">459</a>         result = parser.getLongObject(<span class="jxr_string">"default"</span>, <strong class="jxr_keyword">new</strong> Long(3));
-<a class="jxr_linenumber" name="L460" href="#L460">460</a>         assertEquals(result, <strong class="jxr_keyword">new</strong> Long(3));
+<a class="jxr_linenumber" name="L459" href="#L459">459</a>         result = parser.getLongObject(<span class="jxr_string">"default"</span>, Long.valueOf(3));
+<a class="jxr_linenumber" name="L460" href="#L460">460</a>         assertEquals(result, Long.valueOf(3));
 <a class="jxr_linenumber" name="L461" href="#L461">461</a> 
 <a class="jxr_linenumber" name="L462" href="#L462">462</a>         <em class="jxr_comment">// param exists</em>
 <a class="jxr_linenumber" name="L463" href="#L463">463</a>         parser.add(<span class="jxr_string">"exists"</span>, <span class="jxr_string">"1"</span>);
 <a class="jxr_linenumber" name="L464" href="#L464">464</a>         result = parser.getLongObject(<span class="jxr_string">"exists"</span>);
-<a class="jxr_linenumber" name="L465" href="#L465">465</a>         assertEquals(result, <strong class="jxr_keyword">new</strong> Long(1));
+<a class="jxr_linenumber" name="L465" href="#L465">465</a>         assertEquals(result, Long.valueOf(1));
 <a class="jxr_linenumber" name="L466" href="#L466">466</a> 
 <a class="jxr_linenumber" name="L467" href="#L467">467</a>         <em class="jxr_comment">// unparsable value</em>
 <a class="jxr_linenumber" name="L468" href="#L468">468</a>         parser.add(<span class="jxr_string">"unparsable"</span>, <span class="jxr_string">"a"</span>);
@@ -482,7 +482,7 @@
 <a class="jxr_linenumber" name="L474" href="#L474">474</a>         parser.add(<span class="jxr_string">"array"</span>, <span class="jxr_string">"2"</span>);
 <a class="jxr_linenumber" name="L475" href="#L475">475</a>         parser.add(<span class="jxr_string">"array"</span>, <span class="jxr_string">"3"</span>);
 <a class="jxr_linenumber" name="L476" href="#L476">476</a>         Long arrayResult[] = parser.getLongObjects(<span class="jxr_string">"array"</span>);
-<a class="jxr_linenumber" name="L477" href="#L477">477</a>         Long compare[] = {<strong class="jxr_keyword">new</strong> Long(1), <strong class="jxr_keyword">new</strong> Long(2), <strong class="jxr_keyword">new</strong> Long(3)};
+<a class="jxr_linenumber" name="L477" href="#L477">477</a>         Long compare[] = {Long.valueOf(1), Long.valueOf(2), Long.valueOf(3)};
 <a class="jxr_linenumber" name="L478" href="#L478">478</a>         assertEquals(arrayResult.length, compare.length);
 <a class="jxr_linenumber" name="L479" href="#L479">479</a>         <strong class="jxr_keyword">for</strong>( <strong class="jxr_keyword">int</strong> i=0; i&lt;compare.length; i++)
 <a class="jxr_linenumber" name="L480" href="#L480">480</a>         {
@@ -494,7 +494,7 @@
 <a class="jxr_linenumber" name="L486" href="#L486">486</a>         parser.add(<span class="jxr_string">"array2"</span>, <span class="jxr_string">"a"</span>);
 <a class="jxr_linenumber" name="L487" href="#L487">487</a>         parser.add(<span class="jxr_string">"array2"</span>, <span class="jxr_string">"3"</span>);
 <a class="jxr_linenumber" name="L488" href="#L488">488</a>         Long arrayResult2[] = parser.getLongObjects(<span class="jxr_string">"array2"</span>);
-<a class="jxr_linenumber" name="L489" href="#L489">489</a>         Long compare2[] = {<strong class="jxr_keyword">new</strong> Long(1), <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">new</strong> Long(3)};
+<a class="jxr_linenumber" name="L489" href="#L489">489</a>         Long compare2[] = {Long.valueOf(1), <strong class="jxr_keyword">null</strong>, Long.valueOf(3)};
 <a class="jxr_linenumber" name="L490" href="#L490">490</a>         assertEquals(arrayResult2.length, compare2.length);
 <a class="jxr_linenumber" name="L491" href="#L491">491</a>         <strong class="jxr_keyword">for</strong>( <strong class="jxr_keyword">int</strong> i=0; i&lt;compare2.length; i++)
 <a class="jxr_linenumber" name="L492" href="#L492">492</a>         {
@@ -672,6 +672,6 @@
 <a class="jxr_linenumber" name="L664" href="#L664">664</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2022 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
 </body>
 </html>

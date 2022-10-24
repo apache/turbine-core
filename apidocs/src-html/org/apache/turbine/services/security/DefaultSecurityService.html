@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="de">
+<html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
@@ -139,7 +139,7 @@
 <span class="sourceLineNo">130</span><a id="line.130">        try</a>
 <span class="sourceLineNo">131</span><a id="line.131">        {</a>
 <span class="sourceLineNo">132</span><a id="line.132">            this.userManager =</a>
-<span class="sourceLineNo">133</span><a id="line.133">                    (UserManager) Class.forName(userManagerClassName).newInstance();</a>
+<span class="sourceLineNo">133</span><a id="line.133">                    (UserManager) Class.forName(userManagerClassName).getDeclaredConstructor().newInstance();</a>
 <span class="sourceLineNo">134</span><a id="line.134"></a>
 <span class="sourceLineNo">135</span><a id="line.135">            userManager.init(conf);</a>
 <span class="sourceLineNo">136</span><a id="line.136">        }</a>

@@ -70,7 +70,7 @@
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>          String [] components = StringUtils.split(template, String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR));
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>          <em class="jxr_comment">// Last element decides, which template Service to use...</em>
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>          <a name="TemplateService" href="../<a name="TemplateService" href="../../../../../../org/apache/turbine/services/template/TemplateService.html#TemplateService">TemplateService</a>org/apache/turbine/services/template/TemplateService.html#TemplateService">TemplateService</a> templateService = (<a name="TemplateService" href="../../../../../../org/apache/turbine/services/template/TemplateService.html#TemplateService">TemplateService</a>)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>          <a name="TemplateService" href="../../../../../../org/apache/turbine/services/template/TemplateService.html#TemplateService">TemplateService</a> templateService = (<a name="TemplateService" href="../../../../../../org/apache/turbine/services/template/TemplateService.html#TemplateService">TemplateService</a>)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          <a name="TemplateEngineService" href="../../../../../../org/apache/turbine/services/template/TemplateEngineService.html#TemplateEngineService">TemplateEngineService</a> tes = templateService.getTemplateEngineService(components[components.length - 1]);
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          String templatePackage = StringUtils.join(components, String.valueOf(separator));
@@ -95,6 +95,6 @@
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2021 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2022 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
 </body>
 </html>

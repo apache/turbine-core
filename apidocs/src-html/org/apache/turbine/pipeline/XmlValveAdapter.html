@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="de">
+<html lang="en">
 <head>
 <title>Source code</title>
 <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
@@ -44,7 +44,7 @@
 <span class="sourceLineNo">035</span><a id="line.35">    public Valve unmarshal(XmlValve xmlValve) throws Exception</a>
 <span class="sourceLineNo">036</span><a id="line.36">    {</a>
 <span class="sourceLineNo">037</span><a id="line.37">        Class&lt;?&gt; valveClass = Class.forName(xmlValve.getClazz());</a>
-<span class="sourceLineNo">038</span><a id="line.38">        return (Valve) valveClass.newInstance();</a>
+<span class="sourceLineNo">038</span><a id="line.38">        return (Valve) valveClass.getDeclaredConstructor().newInstance();</a>
 <span class="sourceLineNo">039</span><a id="line.39">    }</a>
 <span class="sourceLineNo">040</span><a id="line.40"></a>
 <span class="sourceLineNo">041</span><a id="line.41">    /**</a>
