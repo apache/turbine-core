@@ -33,7 +33,7 @@ import org.apache.turbine.pipeline.PipelineData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class ScreenLoader
+public final class ScreenLoader
     extends GenericLoader<Screen>
 {
     /** The single instance of this class. */

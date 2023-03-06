@@ -1,6 +1,8 @@
 package org.apache.turbine.services.security;
 
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -74,7 +76,7 @@ public class DefaultSecurityService
         implements SecurityService
 {
     /** The number of threads concurrently reading security information */
-    private int readerCount = 0;
+    private AtomicInteger readerCount = new AtomicInteger(0);
 
     /** The instance of UserManager the SecurityService uses */
     private UserManager userManager = null;
@@ -563,9 +565,9 @@ public class DefaultSecurityService
      * Methods that read security information need to invoke this
      * method at the beginning of their body.
      */
-    protected synchronized void lockShared()
+    protected void lockShared()
     {
-        readerCount++;
+        readerCount.incrementAndGet();
     }
 
     /**
@@ -574,9 +576,9 @@ public class DefaultSecurityService
      * Methods that read security information need to invoke this
      * method at the end of their body.
      */
-    protected synchronized void unlockShared()
+    protected void unlockShared()
     {
-        readerCount--;
+        readerCount.decrementAndGet();
         this.notify();
     }
 
@@ -589,7 +591,7 @@ public class DefaultSecurityService
      */
     protected void lockExclusive()
     {
-        while (readerCount > 0)
+        while (readerCount.get() > 0)
         {
             try
             {

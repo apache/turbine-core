@@ -21,6 +21,7 @@ package org.apache.turbine.services;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -324,7 +325,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      */
     public Iterator<String> getServiceNames()
     {
-        return mapping.keySet().iterator();
+        return Collections.unmodifiableSet(mapping.keySet()).iterator();
     }
 
     /**
@@ -340,7 +341,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
 
         keys.removeIf(key -> !key.startsWith(prefix));
 
-        return keys.iterator();
+        return Collections.unmodifiableSet(keys).iterator();
     }
 
     /**

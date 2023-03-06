@@ -660,7 +660,7 @@ public class DefaultUserImpl implements User
      * @param createDate The new creation date of the user
      */
     @Override
-    public void setCreateDate(Date createDate)
+    public final void setCreateDate(Date createDate)
     {
         setPerm(CREATE_DATE, createDate);
     }
@@ -751,7 +751,7 @@ public class DefaultUserImpl implements User
 	 * @see org.apache.turbine.om.security.UserDelegate#setUserDelegate(org.apache.fulcrum.security.model.turbine.entity.TurbineUser)
 	 */
     @Override
-	public void setUserDelegate(TurbineUser userDelegate)
+	public final void setUserDelegate(TurbineUser userDelegate)
     {
         this.userDelegate = userDelegate;
     }

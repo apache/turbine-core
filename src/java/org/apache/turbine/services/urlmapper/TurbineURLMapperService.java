@@ -232,11 +232,11 @@ public class TurbineURLMapperService
 
                 // add implicit parameters
                 urlMap.getImplicitParameters()
-                        .forEach((key1, value1) -> pp.add(key1, value1));
+                        .forEach(pp::add);
 
                 // add override parameters
                 urlMap.getOverrideParameters()
-                        .forEach((key, value) -> pp.setString(key, value));
+                        .forEach(pp::setString);
 
                 // remove ignore parameters
                 urlMap.getIgnoreParameters().keySet()

@@ -31,7 +31,7 @@ import org.apache.turbine.pipeline.PipelineData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class LayoutLoader
+public final class LayoutLoader
     extends GenericLoader<Layout>
 {
     /** The single instance of this class. */

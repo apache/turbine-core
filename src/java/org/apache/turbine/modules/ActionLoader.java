@@ -31,7 +31,7 @@ import org.apache.turbine.pipeline.PipelineData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class ActionLoader
+public final class ActionLoader
     extends GenericLoader<Action>
 {
     /** The single instance of this class. */

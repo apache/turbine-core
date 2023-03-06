@@ -20,6 +20,7 @@ package org.apache.turbine.pipeline;
  */
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -157,7 +158,7 @@ public class TurbinePipeline
             throws TurbineException, IOException
     {
         // Initialize the per-thread state for this thread
-        state.set(valves.iterator());
+        state.set(Collections.unmodifiableCollection(valves).iterator());
 
         // Invoke the first Valve in this pipeline for this request
         invokeNext(pipelineData);

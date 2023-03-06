@@ -790,6 +790,7 @@ public class Turbine extends HttpServlet
         catch (Throwable t)
         {
             handleHorribleException(res, t);
+
         }
     }
 

@@ -197,14 +197,10 @@ public class TurbineURLMapperServiceTest extends BaseTestCase
 
         System.out.println("s1 estimateSize: " + spliterator1.estimateSize());
         spliterator1.forEachRemaining((IntConsumer) i ->
-        {
-            runCheck(templateURIs, counterSum, counters, parallel, sr);
-        });
+                runCheck(templateURIs, counterSum, counters, parallel, sr));
         System.out.println("s2 estimateSize: " + spliterator2.estimateSize());
         spliterator2.forEachRemaining((IntConsumer) i ->
-        {
-            runCheck(templateURIs, counterSum, counters, parallel, sr);
-        });
+                runCheck(templateURIs, counterSum, counters, parallel, sr));
 
         for (int i = 0; i < counters.size() - 1; i++)
         {

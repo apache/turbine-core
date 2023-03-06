@@ -259,7 +259,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
                 // Create the the housekeeping thread of the scheduler. It will
                 // wait for the time when the next task needs to be started,
                 // and then launch a worker thread to execute the task.
-                houseKeepingThread = new Thread(() -> houseKeeping(), ScheduleService.SERVICE_NAME);
+                houseKeepingThread = new Thread(this::houseKeeping, ScheduleService.SERVICE_NAME);
                 // Indicate that this is a system thread. JVM will quit only
                 // when there are no more enabled user threads. Settings threads
                 // spawned internally by Turbine as daemons allows commandline

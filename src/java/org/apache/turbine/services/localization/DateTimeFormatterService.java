@@ -26,18 +26,9 @@ import java.util.Locale;
 public class DateTimeFormatterService
         extends TurbineBaseService implements DateTimeFormatterInterface {
 
-    public static String SERVICE_NAME = "DateTimeFormatterService";
+    public static final String SERVICE_NAME = "DateTimeFormatterService";
 
-    public static String ROLE = DateTimeFormatterService.class.getName();
-
-    /** Default date format. find supporrted formats in {@link DateTimeFormatterService} */
-    private static final String DATE_TIME_FORMAT_DEFAULT = "MM/dd/yyyy";
-
-    /**
-     * Property tag for the date format that is to be used for the web
-     * application.
-     */
-    private static final String DATE_TIME_FORMAT_KEY = "tool.datetimeTool.format";
+    public static final String ROLE = DateTimeFormatterService.class.getName();
 
     private String dateTimeFormatPattern = null;
     

@@ -5,6 +5,16 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Locale;
 
 public interface DateTimeFormatterInterface {
+
+    /** Default date format. find supporrted formats in {@link DateTimeFormatterService} */
+    final String DATE_TIME_FORMAT_DEFAULT = "MM/dd/yyyy";
+
+    /**
+     * Property tag for the date format that is to be used for the web
+     * application.
+     */
+    final String DATE_TIME_FORMAT_KEY = "tool.datetimeTool.format";
+
     DateTimeFormatter getDefaultFormat();
 
     String getDateTimeFormatPattern();

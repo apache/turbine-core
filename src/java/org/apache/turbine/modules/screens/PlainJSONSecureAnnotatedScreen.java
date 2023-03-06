@@ -20,6 +20,8 @@ package org.apache.turbine.modules.screens;
  */
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Optional;
 
 import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
 import org.apache.turbine.annotation.AnnotationProcessor;
@@ -59,17 +61,14 @@ public class PlainJSONSecureAnnotatedScreen extends PlainJSONScreen
     protected boolean isAuthorized(PipelineData pipelineData) throws Exception {
         RunData data = pipelineData.getRunData();
         Method[] methods = getClass().getMethods();
-        for (Method m : methods)
-        {
-            if (m.getName().equals( "doOutput" ))
-            {
-                if (data.getACL() == null)
-                {
-                    return false;
-                }
-                return AnnotationProcessor.isAuthorized( m, (TurbineAccessControlList<?>)data.getACL(), ConditionType.ANY );
-            }
-        }
-        return false;
+        // if the method passes the filter, it is authorized
+        return Arrays.stream(methods).filter(m ->
+                        m.getName().equals("doOutput"))
+                .takeWhile(m ->
+                        data.getACL() != null)
+                .findFirst()
+                .filter(m ->
+                        AnnotationProcessor.isAuthorized(m, (TurbineAccessControlList<?>) data.getACL(), ConditionType.ANY))
+                .isPresent();
     }
 }

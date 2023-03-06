@@ -32,7 +32,7 @@ import org.apache.turbine.services.schedule.JobEntry;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class ScheduledJobLoader
+public final class ScheduledJobLoader
     extends GenericLoader<ScheduledJob>
 {
     /** The single instance of this class. */

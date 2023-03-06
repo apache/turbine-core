@@ -31,7 +31,7 @@ import org.apache.turbine.pipeline.PipelineData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public class NavigationLoader
+public final class NavigationLoader
     extends GenericLoader<Navigation>
 {
     /** The single instance of this class. */
