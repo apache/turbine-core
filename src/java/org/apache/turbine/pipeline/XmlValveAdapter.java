@@ -19,7 +19,7 @@ package org.apache.turbine.pipeline;
  * under the License.
  */
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  * Creates Valve objects.
@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 public class XmlValveAdapter extends XmlAdapter<XmlValve, Valve>
 {
     /**
-     * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
+     * @see jakarta.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
      */
     @Override
     public Valve unmarshal(XmlValve xmlValve) throws Exception
@@ -39,7 +39,7 @@ public class XmlValveAdapter extends XmlAdapter<XmlValve, Valve>
     }
 
     /**
-     * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
+     * @see jakarta.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
      */
     @Override
     public XmlValve marshal(Valve valve) throws Exception

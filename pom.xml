@@ -1306,7 +1306,7 @@
     <turbine.site.path>turbine-core</turbine.site.path>
     <fulcrum.intake>2.0.1-SNAPSHOT</fulcrum.intake>
     <fulcrum.parser>2.0.2-SNAPSHOT</fulcrum.parser>
-     <fulcrum.security>2.1.1-SNAPSHOT</fulcrum.security>
+    <fulcrum.security>2.1.1-SNAPSHOT</fulcrum.security>
     <fulcrum.yaafi>1.0.9-SNAPSHOT</fulcrum.yaafi>
     <torque.version>5.1</torque.version>
     <jackson2.version>2.14.2</jackson2.version>

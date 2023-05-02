@@ -660,7 +660,7 @@ public class DefaultUserImpl implements User
      * @param createDate The new creation date of the user
      */
     @Override
-    public final void setCreateDate(Date createDate)
+    public void setCreateDate(Date createDate)
     {
         setPerm(CREATE_DATE, createDate);
     }
