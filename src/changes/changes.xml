@@ -32,7 +32,10 @@
         Fix java.lang.NoSuchFieldError: DEFAULT_TIME_BETWEEN_EVICTION_RUNS. This field changed from being an long to a Duration in commons-pool2 v 2.10.0 and commons-dbcp2 v2.9.0.
       </action>  
     </release>
-     <release version="5.1" date="2021-11-23">
+    <action type="add" dev="gk">
+       Add Annotation @TurbineTool to annotate tools for advanced usage in action methods.
+    </action>
+    <release version="5.1" date="2021-11-23">
         <action type="update" dev="painter">
         Updated dependencies: yauaa to 5.23, commons-lang3 to 3.12, jython-standalone to 2.7.2
         Update turbine-parent 8 (released)

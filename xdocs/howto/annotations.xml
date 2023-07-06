@@ -146,6 +146,22 @@ is required and defines the name of the event. See the
 for usage and examples.
 </subsection>
 
+<subsection name="@TurbineTool">
+The annotation can only be used with a field.
+A declared field in a class annotated with <code>@TurbineTool</code>
+gets injected an instance of the specified <code>ApplicationTool</code> at
+the time the instance of the class is created. The field should have
+the type of the tool.
+<source><![CDATA[
+// Injected loader instance
+@TurbineTool( TemplateLink.class )
+private TemplateLink templateLink;
+]]></source>
+Normally a tool needs an context (request, global, user). You have to set the context by calling the 
+tool.init(Object object) method. E.g. in action methods you have access to request and session context objects.
+The annotation parameter is required and defines the type of the tool.
+</subsection>
+
 <subsection name="Performance Considerations">
 It is important to note that the processing of the annotations at
 the time the module class is instantiated takes some time. It is

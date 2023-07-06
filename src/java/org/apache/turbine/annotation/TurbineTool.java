@@ -28,7 +28,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
 
 
 /**
- * Annotation to mark fields in modules that require a loader to be injected
+ * Annotation to mark fields in modules and actions that require a tool to be injected
  */
 @Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.FIELD )
