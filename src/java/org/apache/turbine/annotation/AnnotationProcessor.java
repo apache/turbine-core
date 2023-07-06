@@ -30,6 +30,8 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.fulcrum.pool.PoolException;
+import org.apache.fulcrum.pool.PoolService;
 import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -237,6 +239,7 @@ public class AnnotationProcessor
      * objects
      *
      * @param object the object
+     * @param hasTurbineServicesInMethodFields set <code>true </code>, if methods should be parsed
      * @throws TurbineException if the objects could not be injected
      */
     public static void process(Object object, Boolean hasTurbineServicesInMethodFields) throws TurbineException
@@ -244,6 +247,7 @@ public class AnnotationProcessor
         ServiceManager manager = null;
         Configuration config = null;
         AssemblerBrokerService assembler = null;
+        PoolService pool= null;
         Class<?> clazz = object.getClass();
 
         while (clazz != null)
@@ -280,6 +284,15 @@ public class AnnotationProcessor
                                 getService(AssemblerBrokerService.SERVICE_NAME);
                         }
                         injectTurbineLoader(object, assembler, field, (TurbineLoader) a);
+                    }
+                    else if (a instanceof TurbineTool)
+                    {
+                        if (pool == null)
+                        {
+                            pool = (PoolService)TurbineServices.getInstance()
+                                    .getService(PoolService.ROLE);
+                        }
+                        injectTurbineTool(object, pool, field, (TurbineTool) a);
                     }
                 }
             }
@@ -340,6 +353,37 @@ public class AnnotationProcessor
             throw new TurbineException("Could not inject loader "
                     + loader + " into object " + object, e);
         }
+    }
+    
+    /**
+     * Inject Turbine configuration into field of object
+     *
+     * @param object the object to process
+     * @param assembler AssemblerBrokerService, provides the loader
+     * @param field the field
+     * @param annotation the value of the annotation
+     *
+     * @throws TurbineException if loader cannot be set
+     */
+    private static void injectTurbineTool(Object object, PoolService pool, Field field, TurbineTool annotation) throws TurbineException
+    {
+        Object tool = null;
+        try
+        {
+            tool = pool.getInstance(annotation.value());
+            // inject annotations in tool
+            process(tool);
+
+            field.setAccessible(true);
+            log.debug("Injection of {} into object {}", tool, object);
+
+            field.set(object, tool);
+        }
+        catch (PoolException | IllegalArgumentException | IllegalAccessException e)
+        {
+            throw new TurbineException("Could not inject tool "
+                    + tool + " into object " + object, e);
+        } 
     }
 
     /**

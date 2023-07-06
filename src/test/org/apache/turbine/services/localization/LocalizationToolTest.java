@@ -28,8 +28,12 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.fulcrum.pool.PoolService;
 import org.apache.turbine.annotation.AnnotationProcessor;
+import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.annotation.TurbineTool;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.pull.PullService;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.RunData;
@@ -50,13 +54,23 @@ import org.junit.Test;
 public class LocalizationToolTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
+    
+    @TurbineTool(LocalizationTool.class)
     private LocalizationTool lt;
+    
+    @BeforeClass
+    public static void setUp() throws Exception
+    {
+        tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
+        tc.initialize();
+    }
 
     @Before
     public void initTool() throws Exception
     {
-        lt = new LocalizationTool();
-        AnnotationProcessor.process(lt);
+//       lt = new LocalizationTool();
+//        AnnotationProcessor.process(lt);
+        AnnotationProcessor.process(this);
         lt.init(getRunData());
     }
 
@@ -97,13 +111,6 @@ public class LocalizationToolTest extends BaseTestCase
         HttpServletResponse response = mock(HttpServletResponse.class);
         RunData runData = rds.getRunData(request, response, config);
         return runData;
-    }
-
-    @BeforeClass
-    public static void setUp() throws Exception
-    {
-        tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
-        tc.initialize();
     }
 
     @AfterClass

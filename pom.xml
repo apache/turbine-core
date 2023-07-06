@@ -535,7 +535,7 @@
     <plugins>
 
      <plugin>
-       <!-- hint: mvn verify  -->
+       <!-- hint: mvn verify or skip with -Ddependency.check.skip=true  -->
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
         <configuration>
@@ -913,7 +913,7 @@
       <groupId>nl.basjes.parse.useragent</groupId>
       <artifactId>yauaa</artifactId>
       <!-- java 11 required for v6.1+ -->
-      <version>7.20.1</version>
+      <version>7.20.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
@@ -1071,6 +1071,12 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.36</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
       <version>${turbine.log4j2.version}</version>
@@ -1105,11 +1111,10 @@
         <version>4.0.0</version>
     </dependency>
     <dependency>
-        <groupId>com.sun.xml.bind</groupId>
-        <artifactId>jaxb-impl</artifactId>
-        <version>4.0.2</version>
-        <scope>runtime</scope>
-    </dependency>
+         <groupId>org.glassfish.jaxb</groupId>
+          <artifactId>jaxb-runtime</artifactId>
+           <version>4.0.3</version>
+     </dependency>
     <!-- testcontainer minimal shared resources -->
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
