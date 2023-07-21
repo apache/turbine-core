@@ -68,9 +68,22 @@ public class TemplateLink
     /** Default Value for TEMPLATE_LINK_RELATIVE_KEY */
     public static final boolean TEMPLATE_LINK_RELATIVE_DEFAULT = false;
 
-
     /** Do we want a relative link? */
     protected boolean wantRelative = false;
+    
+    /**
+     * Should this tool add Container Encoding to the URIs returned?
+     * True might cause trouble e.g. if you run with Apache HTTP Daemon / Tomcat Combo.
+     *
+     * Default is false (like Turbine 2.2)
+     */
+    public static final String TEMPLATE_LINK_ENCODING_KEY = "want.encoding";
+
+    /** Default Value for TEMPLATE_LINK_ENCODING_DEFAULT */
+    public static final boolean TEMPLATE_LINK_ENCODING_DEFAULT = false;
+    
+    /** Do we want the container to encode the response? */
+    boolean wantEncoding = false;
 
     /** cache of the template name for getPage() */
     protected String template = null;
@@ -131,6 +144,13 @@ public class TemplateLink
         {
             wantRelative = conf.getBoolean(TEMPLATE_LINK_RELATIVE_KEY,
                     TEMPLATE_LINK_RELATIVE_DEFAULT);
+            wantEncoding = conf.getBoolean(TEMPLATE_LINK_ENCODING_KEY,
+                    TEMPLATE_LINK_ENCODING_DEFAULT);
+        }
+        
+        if (!wantEncoding)
+        {
+            templateURI.clearResponse();
         }
 
     }
