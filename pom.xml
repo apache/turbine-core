@@ -545,7 +545,7 @@
             </suppressionFiles>
            <!-- no .NET code inside turbine -->
            <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-           <skip>false</skip>
+           <skip>${dependency.check.skip}</skip>
         </configuration>
       </plugin>
       <plugin>
@@ -1071,10 +1071,9 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.36</version>
-      <scope>runtime</scope>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.7</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -1269,7 +1268,7 @@
           <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>8.0.33</version>
+            <version>8.1.0</version>
           </dependency>
       </dependencies>
     </profile>
@@ -1309,10 +1308,10 @@
   <properties>
     <!-- maven.compiler setting in turbine parent -->
     <turbine.site.path>turbine-core</turbine.site.path>
-    <fulcrum.intake>2.0.1-SNAPSHOT</fulcrum.intake>
+    <fulcrum.intake>3.0.0</fulcrum.intake>
     <fulcrum.parser>2.0.2-SNAPSHOT</fulcrum.parser>
     <fulcrum.security>2.1.1-SNAPSHOT</fulcrum.security>
-    <fulcrum.yaafi>1.0.9-SNAPSHOT</fulcrum.yaafi>
+    <fulcrum.yaafi>2.0.0</fulcrum.yaafi>
     <torque.version>5.1</torque.version>
     <jackson2.version>2.15.2</jackson2.version>
     <doclint>none</doclint>
