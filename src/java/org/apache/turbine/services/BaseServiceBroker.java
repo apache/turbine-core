@@ -354,18 +354,24 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * service was not successful.
      */
     @Override
-    public synchronized void initService(String name)
+    public void initService(String name)
             throws InitializationException
     {
         // Calling getServiceInstance(name) assures that the Service
         // implementation has its name and broker reference set before
         // initialization.
         Service instance = getServiceInstance(name);
-
-        if (!instance.getInit())
-        {
-            // this call might result in an indirect recursion
-            instance.init();
+        
+        serviceLock.lock();
+        try {
+            if (!instance.getInit())
+            {
+                // this call might result in an indirect recursion
+                instance.init();
+            }
+            
+        } finally {
+            serviceLock.unlock();
         }
     }
 
@@ -453,20 +459,25 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * uninitialized.
      */
     @Override
-    public synchronized void shutdownService(String name)
+    public void shutdownService(String name)
     {
         try
         {
             Service service = getServiceInstance(name);
             if (service != null && service.getInit())
             {
-                service.shutdown();
-
-                if (service.getInit() && service instanceof BaseService)
-                {
-                    // BaseService::shutdown() does this by default,
-                    // but could've been overriden poorly.
-                    ((BaseService) service).setInit(false);
+                serviceLock.lock();
+                try {
+                    service.shutdown();
+    
+                    if (service.getInit() && service instanceof BaseService)
+                    {
+                        // BaseService::shutdown() does this by default,
+                        // but could've been overriden poorly.
+                        ((BaseService) service).setInit(false);
+                    }
+                } finally {
+                    serviceLock.unlock();
                 }
             }
         }
@@ -532,14 +543,16 @@ public abstract class BaseServiceBroker implements ServiceBroker
 	            service = getServiceInstance(name);
 	            if (!service.getInit())
 	            {
-	                synchronized (service.getClass())
-	                {
+	                serviceLock.lock(); // was synchronized (service.getClass(), but should be equivalent
+	                try {
 	                    if (!service.getInit())
 	                    {
 	                        log.info("Start Initializing service (late): {}", name);
 	                        service.init();
 	                        log.info("Finish Initializing service (late): {}", name);
 	                    }
+	                } finally {
+	                    serviceLock.unlock();
 	                }
 	            }
 	            if (!service.getInit())
