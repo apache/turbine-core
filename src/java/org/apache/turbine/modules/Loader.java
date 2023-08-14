@@ -20,7 +20,7 @@ package org.apache.turbine.modules;
  */
 
 /**
- * A common interface for Screen, Layout and Navigation Loader
+ * A common interface for Assembler classes like Action, Screen, Layout, Navigation Loader
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @param <T> the specialized assembler type

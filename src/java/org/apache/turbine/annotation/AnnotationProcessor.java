@@ -328,7 +328,7 @@ public class AnnotationProcessor
     }
 
     /**
-     * Inject Turbine configuration into field of object
+     * Inject Turbine loader into field of object
      *
      * @param object the object to process
      * @param assembler AssemblerBrokerService, provides the loader
@@ -356,10 +356,11 @@ public class AnnotationProcessor
     }
     
     /**
-     * Inject Turbine configuration into field of object
+     * Inject Turbine tool into field of object and 
+     * injects annotations provided in the tool.
      *
      * @param object the object to process
-     * @param assembler AssemblerBrokerService, provides the loader
+     * @param assembler AssemblerBrokerService, provides the tool
      * @param field the field
      * @param annotation the value of the annotation
      *
@@ -427,7 +428,7 @@ public class AnnotationProcessor
                 if ( String.class.isAssignableFrom( type ) )
                 {
                     String value = conf.getString(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.set(object, value);
@@ -435,7 +436,7 @@ public class AnnotationProcessor
                 else if ( Boolean.TYPE.isAssignableFrom( type ) )
                 {
                     boolean value = conf.getBoolean(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setBoolean(object, value);
@@ -443,7 +444,7 @@ public class AnnotationProcessor
                 else if ( Integer.TYPE.isAssignableFrom( type ) )
                 {
                     int value = conf.getInt(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setInt(object, value);
@@ -451,7 +452,7 @@ public class AnnotationProcessor
                 else if ( Long.TYPE.isAssignableFrom( type ) )
                 {
                     long value = conf.getLong(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setLong(object, value);
@@ -459,7 +460,7 @@ public class AnnotationProcessor
                 else if ( Short.TYPE.isAssignableFrom( type ) )
                 {
                     short value = conf.getShort(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setShort(object, value);
@@ -467,7 +468,7 @@ public class AnnotationProcessor
                 else if ( Long.TYPE.isAssignableFrom( type ) )
                 {
                     long value = conf.getLong(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setLong(object, value);
@@ -475,7 +476,7 @@ public class AnnotationProcessor
                 else if ( Float.TYPE.isAssignableFrom( type ) )
                 {
                     float value = conf.getFloat(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setFloat(object, value);
@@ -483,7 +484,7 @@ public class AnnotationProcessor
                 else if ( Double.TYPE.isAssignableFrom( type ) )
                 {
                     double value = conf.getDouble(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setDouble(object, value);
@@ -491,7 +492,7 @@ public class AnnotationProcessor
                 else if ( Byte.TYPE.isAssignableFrom( type ) )
                 {
                     byte value = conf.getByte(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setByte(object, value);
@@ -499,11 +500,21 @@ public class AnnotationProcessor
                 else if ( List.class.isAssignableFrom( type ) )
                 {
                     List<Object> values = conf.getList(key);
-                    log.debug("Injection of {} into object {}", values, object);
+                    log.debug("Injection of key {} into object {}", values, object);
 
                     field.setAccessible(true);
                     field.set(object, values);
+                } else {
+                    throw new TurbineException("Could not inject type " + 
+                      type + " into object " + object + ". Type "+ type + " not assignable in configuration "
+                      + conf + " (allowed: String, Boolean, List, Number Types, "+ Configuration.class.getName() + ").");
                 }
+            } else {
+                field.setAccessible(true);
+                Object defaultValue = field.get(object);
+                // this should not throw an error as it might be set later from container  e. g. session.timeout 
+                // we might check field.get<Type> to show the default value of the field, but this is only a guess, it might be set even later..
+                log.info("No key {} of type {} injected into object {}. Field {} is set to default {}.", key, type, object, field.getName(), defaultValue);
             }
         }
         catch (IllegalArgumentException | IllegalAccessException e)
@@ -562,6 +573,15 @@ public class AnnotationProcessor
         }
     }
 
+    /**
+     * Injects Turbine service into method fields 
+     * 
+     * @param object the object to process
+     * @param manager the service manager
+     * @param method The method
+     * @param annotation the value of the annotation
+     * @throws TurbineException
+     */
     private static void injectTurbineService(Object object, ServiceManager manager, Method method, TurbineService annotation) throws TurbineException
     {
         String serviceName = null;
