@@ -21,7 +21,6 @@ package org.apache.turbine.modules.screens;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Optional;
 
 import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
 import org.apache.turbine.annotation.AnnotationProcessor;
