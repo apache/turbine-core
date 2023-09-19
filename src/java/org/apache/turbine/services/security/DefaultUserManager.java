@@ -255,7 +255,7 @@ public class DefaultUserManager implements UserManager
     public List<? extends User> retrieveList(Object criteria)
             throws DataBackendException
     {
-        UserSet<org.apache.fulcrum.security.entity.User> uset = umDelegate.getAllUsers();
+        UserSet<org.apache.fulcrum.security.entity.User> uset = umDelegate.retrieveUserList(criteria);
 
         List<User> userList = uset.stream()
                 .map(u -> (TurbineUser) u)
