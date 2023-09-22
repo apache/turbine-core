@@ -137,7 +137,9 @@ public class LocalizationTool implements ApplicationTool
         {
             // Pull necessary information out of RunData while we have
             // a reference to it.
-            locale = localizationService.getLocale(((RunData) data).getRequest());
+            locale = (localizationService instanceof RundataLocalizationService)?
+                    ((RundataLocalizationService)localizationService).getLocale((RunData) data):
+                    localizationService.getLocale(((RunData) data).getRequest());
         }
     }
 
