@@ -1,19 +1,26 @@
 package org.apache.turbine.services.localization;
 
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Locale;
 
 public interface DateTimeFormatterInterface {
 
-    /** Default date format. find supporrted formats in {@link DateTimeFormatterService} */
-    final String DATE_TIME_FORMAT_DEFAULT = "MM/dd/yyyy";
-
     /**
      * Property tag for the date format that is to be used for the web
-     * application.
+     * application. "tool.dateTool.format"
      */
-    final String DATE_TIME_FORMAT_KEY = "tool.datetimeTool.format";
+    final String DATE_TIME_FORMAT_KEY = "datetime.format";
+    
+    final String DATE_TIME_ZONEID_KEY = "datetime.zoneId";
+    
+    final String USE_TURBINE_LOCALE_KEY = "datetime.use.turbine.locale";
+    
+    final String USE_REQUEST_LOCALE_KEY = "tool.use.request.locale";
+    
+    /** Default date format. find supported formats in {@link DateTimeFormatterService} */
+    final String DATE_TIME_FORMAT_DEFAULT = "MM/dd/yyyy";
 
     DateTimeFormatter getDefaultFormat();
 
@@ -48,6 +55,18 @@ public interface DateTimeFormatterInterface {
      * @return String value of the date
      */
     <T extends TemporalAccessor> String format(T temporalAccessor, String dateFormatString, Locale locale);
+    
+    /**
+     * Formats the given date as a String.
+     *
+     * @param the TimeDate date to format
+     * @param dateFormatString format string to use.  See {@link DateTimeFormatter}
+     * for details.
+     * @param locale the {@link Locale}
+     * @param zoneId the {@link ZoneId}
+     * @return String value of the date
+     */
+    <T extends TemporalAccessor> String format(T temporalAccessor, String dateFormatString, Locale locale, ZoneId zoneId);
 
     /**
      * Maps from an incoming format to an outgoing format {@link DateTimeFormatter}.
