@@ -34,6 +34,10 @@
           <AppenderRef ref="logfile" />
           <AppenderRef ref="console" level="info"/>
        </Logger>
+       <Logger name="org.apache.turbine.services" level="debug" additivity="false">
+          <AppenderRef ref="logfile"/>
+          <AppenderRef ref="console" level="info"/>
+       </Logger>
        <Logger name="avalon" level="info" additivity="false">
         <AppenderRef ref="console"/>
         <AppenderRef ref="logfile"/>

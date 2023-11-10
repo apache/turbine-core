@@ -77,7 +77,7 @@ public class DateTimeFormatterTool extends DateFormatter
      * <li>For session and persistent tools data will be of type User</li>
      * </ul>
      *
-     * the {@link #defaultFormat} from {@link #dateTimeFormatPattern} 
+     * the {@link #defaultFormat} from {@link #formatPattern} 
      * with {@link DateTimeFormatterService#getLocale()}
      * and zoneId {@link DateTimeFormatterService#getZoneId()} is used.
      * 
@@ -107,10 +107,8 @@ public class DateTimeFormatterTool extends DateFormatter
         {
             // Pull necessary information out of RunData while we have
             // a reference to it.
-            locale = (localizationService instanceof RundataLocalizationService)?
-                    ((RundataLocalizationService)localizationService).getLocale((RunData) data):
-                    localizationService.getLocale(((RunData) data).getRequest());
-            log.info("Override {} with request locale {}.", dtfs.getLocale(), locale);
+            locale = localizationService.getLocale(((RunData) data).getRequest());
+            log.info("Override {} with request locale {} from {}", dtfs.getLocale(), locale, localizationService);
         }
     }
 
@@ -138,8 +136,8 @@ public class DateTimeFormatterTool extends DateFormatter
     }
 
     @Override
-    public String getDateTimeFormatPattern() {
-        return getDtfs().getDateTimeFormatPattern();
+    public String getFormatPattern() {
+        return getDtfs().getFormatPattern();
     }
 
     /**
@@ -152,13 +150,13 @@ public class DateTimeFormatterTool extends DateFormatter
     @Override
     public <T extends TemporalAccessor> String format(T temporalAccessor)
     {
-        return getDtfs().getDefaultFormat().format(temporalAccessor);
+        return getDtfs().format(temporalAccessor, getDtfs().getFormatPattern(), getLocale());
     }
 
     @Override
     public <T extends TemporalAccessor> String format(T temporalAccessor, String dateFormatString)
     {
-        return getDtfs().format(temporalAccessor, dateFormatString);
+        return getDtfs().format(temporalAccessor, dateFormatString, getLocale());
     }
 
     @Override
@@ -210,6 +208,11 @@ public class DateTimeFormatterTool extends DateFormatter
 
     public void setLocale(Locale locale) {
         this.locale = locale;
+    }
+
+    @Override
+    public ZoneId getZoneId() {
+        return (getDtfs()!= null)? getDtfs().getZoneId():ZoneId.systemDefault();
     }
 
 }

@@ -1,5 +1,7 @@
 package org.apache.turbine.services.localization;
 
+import static org.junit.Assert.assertTrue;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -131,7 +133,27 @@ public class DateTimeFormatterServiceTest extends BaseTestCase {
         dateTimeFormatterTool = (DateTimeFormatterTool) requestContext.get("dateTimeFormatter");
         assertNotNull(dateTimeFormatterTool);
         
+        String resultFormat = dateTimeFormatterTool.format(Instant.now());
+        
+        System.out.println("format Instant now in tool:"+resultFormat );
+        assertTrue(resultFormat.length()>5);
+        
+        System.out.println("locale in tool:"+ dateTimeFormatterTool.getLocale());
+        // tool.use.request.locale is by default false, tool will use service locale
+        assertTrue(dateTimeFormatterTool.getLocale() == null);
+    }
+    
+    // to test configuration 
+    // datetime.zoneId
+    // and locale.default.language l.d.country
+    @Test
+    void testDefault() throws Exception {
         assertNotNull(df);
+        System.out.println("zoneid in service:"+ df.getZoneId().getId());
+//        assertEquals("Europe/Berlin",df.getZoneId().getId());
+        System.out.println("locale in service:"+ df.getLocale());
+//        assertEquals("de_DE",df.getLocale().toString());
+ 
     }
 
     @Order(2)
@@ -179,8 +201,8 @@ public class DateTimeFormatterServiceTest extends BaseTestCase {
         assertEquals(mmddyyyy, dateTime.format(ldt, "MM/dd/yyyy"));
     }
 
-    void formatZonedDateString(DateTimeFormatterInterface dateTime) {
-        ZonedDateTime zdt = ZonedDateTime.now();
+    void formatZonedDateString(DateTimeFormatterInterface dateTime) {        
+        ZonedDateTime zdt = ZonedDateTime.now(dateTime.getZoneId());
         int day = zdt.get(ChronoField.DAY_OF_MONTH);
         int month = zdt.get(ChronoField.MONTH_OF_YEAR); // one based
         int year = zdt.get(ChronoField.YEAR);
@@ -208,7 +230,8 @@ public class DateTimeFormatterServiceTest extends BaseTestCase {
     }
 
     void defaultMapFromInstant(DateTimeFormatterInterface dateTime) {
-        DateTimeFormatter incomingFormat = DateTimeFormatter.ISO_DATE_TIME.withZone(ZoneId.systemDefault());
+        DateTimeFormatter incomingFormat = DateTimeFormatter.ISO_DATE_TIME
+                .withZone(dateTime.getZoneId());
         // may throws an DateTimeParseException
         Instant now = Instant.now().truncatedTo(ChronoUnit.MINUTES);
         String source = incomingFormat.format(now);
@@ -303,7 +326,7 @@ public class DateTimeFormatterServiceTest extends BaseTestCase {
 
     void formatInstantString(DateTimeFormatterInterface dateTime) {
        
-        ZonedDateTime zonedToday = ZonedDateTime.now(ZoneOffset.UTC.normalized());
+        ZonedDateTime zonedToday = ZonedDateTime.now(dateTime.getZoneId());
         int day = zonedToday.get(ChronoField.DAY_OF_MONTH);
         int month = zonedToday.get(ChronoField.MONTH_OF_YEAR); // one based
         int year = zonedToday.get(ChronoField.YEAR);

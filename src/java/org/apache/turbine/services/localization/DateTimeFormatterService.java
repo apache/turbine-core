@@ -31,7 +31,7 @@ public class DateTimeFormatterService
 
     public static final String ROLE = DateTimeFormatterService.class.getName();
 
-    private String dateTimeFormatPattern = null;
+    private String formatPattern = null;
 
     private DateTimeFormatter dateTimeFormat = null;
 
@@ -51,8 +51,8 @@ public class DateTimeFormatterService
     }
 
     @Override
-    public String getDateTimeFormatPattern() {
-        return dateTimeFormatPattern;
+    public String getFormatPattern() {
+        return formatPattern;
     }
 
     private static final Logger log = LogManager.getLogger(DateTimeFormatterService.class);
@@ -60,7 +60,7 @@ public class DateTimeFormatterService
     /**
      * Initialize the service.
      *
-     * the {@link #dateTimeFormat} from {@link #dateTimeFormatPattern} is initialized with
+     * the {@link #dateTimeFormat} from {@link #formatPattern} is initialized with
      * 
      * <ol>
      * <li>{@link Locale}: {@link LocaleUtils#getDefaultLocale()} is used by default.
@@ -74,7 +74,7 @@ public class DateTimeFormatterService
     @Override
     public void init()
     {
-        dateTimeFormatPattern = Turbine.getConfiguration()
+        formatPattern = Turbine.getConfiguration()
                 .getString(DATE_TIME_FORMAT_KEY, DATE_TIME_FORMAT_DEFAULT);
 
         useTurbineLocale =  Turbine.getConfiguration()
@@ -91,17 +91,13 @@ public class DateTimeFormatterService
             ZoneId.systemDefault();
          setZoneId(zoneId);
 
-        dateTimeFormat = DateTimeFormatter.ofPattern(dateTimeFormatPattern)
+        dateTimeFormat = DateTimeFormatter.ofPattern(formatPattern)
                 .withLocale(locale).withZone(zoneId);
 
         log.info("Initialized DateTimeFormatterService with pattern {}, locale {} and zone {}",
-                dateTimeFormatPattern, dateTimeFormat.getLocale(),
+                formatPattern, dateTimeFormat.getLocale(),
                 dateTimeFormat.getZone());
         setInit(true);
-    }
-
-    public ZoneId getZoneId() {
-        return zoneId;
     }
 
     @Override
@@ -171,7 +167,7 @@ public class DateTimeFormatterService
         }
         if (incomingFormatPattern == null)
         {
-            incomingFormatPattern = dateTimeFormatPattern;
+            incomingFormatPattern = formatPattern;
         }
         if (incomingFormatPattern.equals( outgoingFormatPattern )) {
             return "";
@@ -234,6 +230,11 @@ public class DateTimeFormatterService
 
     public void setLocale(Locale locale) {
         this.locale = locale;
+    }
+    
+    @Override
+    public ZoneId getZoneId() {
+        return zoneId;
     }
 
     public void setZoneId(ZoneId zoneId) {

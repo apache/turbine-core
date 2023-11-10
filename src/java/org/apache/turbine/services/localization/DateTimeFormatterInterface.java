@@ -24,7 +24,7 @@ public interface DateTimeFormatterInterface {
 
     DateTimeFormatter getDefaultFormat();
 
-    String getDateTimeFormatPattern();
+    String getFormatPattern();
 
     /**
      * Formats the given datetime as a String with the #{@link DateTimeFormatterService#defaultFormat}.
@@ -109,4 +109,6 @@ public interface DateTimeFormatterInterface {
     String mapFrom(String src, DateTimeFormatter incomingFormat);
 
     String map(String src, DateTimeFormatter outgoingFormat, Locale locale);
+
+    ZoneId getZoneId();
 }

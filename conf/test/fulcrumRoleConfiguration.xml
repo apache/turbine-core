@@ -47,6 +47,13 @@
         name="org.apache.fulcrum.localization.LocalizationService"
         shorthand="localization"
         default-class="org.apache.fulcrum.localization.DefaultLocalizationService"/>
+     
+     <!-- 
+    <role
+        name="org.apache.fulcrum.localization.LocalizationService"
+        shorthand="localization"
+        default-class="org.apache.turbine.services.localization.RundataLocalizationService"/>
+    -->
 
     <role
         name="org.apache.fulcrum.intake.IntakeService"

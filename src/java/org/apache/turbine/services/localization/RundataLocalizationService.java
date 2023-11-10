@@ -28,6 +28,9 @@ public class RundataLocalizationService extends DefaultLocalizationService imple
     @Override
     public Locale getLocale(RunData data) {
         User user = data.getUser();
+        log.debug( "retrieving lang from req header :{}",
+                (user == null || user.getTemp("locale") == null )  );
+
         if (user == null)
         {
             return getLocale(data.getRequest().getHeader(LocalizationService.ACCEPT_LANGUAGE));
