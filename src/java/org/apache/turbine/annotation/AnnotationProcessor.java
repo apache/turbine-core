@@ -596,7 +596,7 @@ public class AnnotationProcessor
 
         if (StringUtils.isEmpty(serviceName))
         {
-            // Try interface class name
+            // Try interface class name (e.g. used by Fulcrum)
             serviceName = field.getType().getName();
         }
 

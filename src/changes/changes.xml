@@ -25,6 +25,15 @@
 
   <body>
      <release version="5.2-SNAPSHOT" date="in Git">
+       <action type="add" dev="gk">
+        Provide mechanism to allow auto loading of Turbine (and Fulcrum) services.
+        If a "known" service is extending FieldAnnotatedTurbineBaseService and MethodAnnotatedTurbineBaseService this service could declare in fields and methods more Turbine services 
+        either by annotating them with @TurbineService or autoload a service, which has class level annotation @TurbineService, if itself is annotated as TurbineService.
+        This allows for delegated calls to Turbine services.
+      </action>
+       <action type="add" dev="gk">
+        New  service DateTimeFormatterService and tool DateTimeFormatterTool, which allow date time formatting with locale and zone configuration.
+      </action>
        <action type="update" dev="gk">
         Minor version update to Torque 5.1, Jackson to 2.14.0-rc2, docker-testcontainers to 1.17.5.
       </action>

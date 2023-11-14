@@ -30,7 +30,7 @@ import org.apache.turbine.services.ServiceWithServiceInjection;
 import org.apache.velocity.context.Context;
 
 /**
- * Annnotating even an assembler as TurbineService on class level we could omit annotations for dependent Turbine services.
+ * Annnotating even an assembler as TurbineService on class level we could omit annotations for fields if class is a Turbine service.
  */
 @TurbineService
 public class VelocityActionWithExtendedServiceInjection extends VelocityAction

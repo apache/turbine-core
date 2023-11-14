@@ -1,5 +1,8 @@
 package org.apache.turbine.services;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -25,7 +28,9 @@ import org.apache.turbine.util.TurbineException;
 /**
  * <p>This class provides a <code>Service</code> implementation that
  * Services used in Turbine are required to extend. 
- * This class provides the ability to process field annotation {@link TurbineServices} in a Turbine service. 
+ * This class provides the ability to process field annotation {@link TurbineServices} in a Turbine service.
+ * You could enable scanning globally by annotating the class (service) with the annotation {@link TurbineServices}.
+ * Field annotation could then be omitted, if the field class is {@link TurbineServices} annotated.
  * </p>
  *
  */
@@ -33,6 +38,7 @@ public abstract class FieldAnnotatedTurbineBaseService
         extends TurbineBaseService
 {
     
+    private static Logger log = LogManager.getLogger(FieldAnnotatedTurbineBaseService.class);
     /**
      * Performs late initialization.
      *
@@ -47,6 +53,7 @@ public abstract class FieldAnnotatedTurbineBaseService
     public void init() throws InitializationException
     {
         try {
+            log.debug("parsing annotations for {}", this.getClass());
             AnnotationProcessor.process(this, false);
         } catch (TurbineException e) {
             throw new InitializationException(e.getMessage(), e);
