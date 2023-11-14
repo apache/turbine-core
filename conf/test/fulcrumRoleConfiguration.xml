@@ -121,6 +121,12 @@
         name="org.apache.fulcrum.security.model.ACLFactory"
         shorthand="aclFactory"
         default-class="org.apache.fulcrum.security.model.turbine.TurbineACLFactory"/>
+        
+    <role
+        name="org.apache.turbine.services.ServiceWithServiceInjection"
+        shorthand="serviceWithServiceInjection"
+        default-class="org.apache.turbine.services.ServiceWithServiceInjection"
+     /> 
 
 </role-list>
 

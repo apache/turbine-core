@@ -37,6 +37,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.Loader;
+import org.apache.turbine.services.Service;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
@@ -249,6 +250,13 @@ public class AnnotationProcessor
         AssemblerBrokerService assembler = null;
         PoolService pool= null;
         Class<?> clazz = object.getClass();
+        
+        boolean isTurbineService = false;
+        if ( clazz.isAnnotationPresent(TurbineService.class)) {
+            TurbineService service = clazz.getAnnotation(TurbineService.class);
+            log.debug("retrieved class annotation: "+ service);
+            isTurbineService = true;
+        } 
 
         while (clazz != null)
         {
@@ -295,17 +303,29 @@ public class AnnotationProcessor
                         injectTurbineTool(object, pool, field, (TurbineTool) a);
                     }
                 }
+                if (isTurbineService)
+                {
+                    if (field.getType().isAnnotationPresent(TurbineService.class)) {
+                        TurbineService service = field.getType().getAnnotation(TurbineService.class);
+                        log.debug("retrieved implicit class annotation: "+ service);
+                        if (manager == null)
+                        {
+                            manager = TurbineServices.getInstance();
+                        }
+                        injectTurbineService(object, manager, field, service);
+                    }    
+                }
             }
 
             if (hasTurbineServicesInMethodFields) {
-                manager = processMethods(object, manager, clazz);
+                manager = processMethods(object, manager, clazz, isTurbineService);
             }
 
             clazz = clazz.getSuperclass();
         }
     }
 
-    private static ServiceManager processMethods(Object object, ServiceManager manager, Class<?> clazz) throws TurbineException {
+    private static ServiceManager processMethods(Object object, ServiceManager manager, Class<?> clazz, boolean isTurbineService) throws TurbineException {
         Method[] methods = clazz.getMethods();
 
         for (Method method : methods)
@@ -321,6 +341,23 @@ public class AnnotationProcessor
                         manager = TurbineServices.getInstance();
                     }
                     injectTurbineService(object, manager, method, (TurbineService) a);
+                }
+            }
+            if (isTurbineService)
+            {
+                if (manager == null)
+                {
+                    manager = TurbineServices.getInstance();
+                }
+                Class<?>[] classes = method.getParameterTypes();
+                for (Class<?> c : classes)
+                {
+                    if ( c.isAnnotationPresent(TurbineService.class)) {
+                        TurbineService service = c.getAnnotation(TurbineService.class);
+                        log.debug("retrieved implicit service in Turbien service: "+ service);
+                        injectTurbineService(object, manager, method, service);
+                    } 
+                    
                 }
             }
         }
@@ -538,15 +575,23 @@ public class AnnotationProcessor
     {
         String serviceName = null;
         // Check for annotation value
-        if (StringUtils.isNotEmpty(annotation.value()))
+        if (annotation != null && StringUtils.isNotEmpty(annotation.value()))
         {
             serviceName = annotation.value();
         }
         // Check for fields SERVICE_NAME and ROLE
         else
-        {
+        { 
+            // check field level annotation
             Field[] typeFields = field.getType().getFields();
             serviceName = checkServiceOrRoleInField(serviceName, typeFields);
+            // if it is the default Service, we check class level annotation
+            if ( (serviceName == null || serviceName.equals(Service.SERVICE_NAME)) &&
+                    field.getType().isAnnotationPresent(TurbineService.class)) {
+                TurbineService service = field.getType().getAnnotation(TurbineService.class);
+                log.debug("retrieved class annotation: "+ service);
+                serviceName = service.value();
+            } 
         }
 
         if (StringUtils.isEmpty(serviceName))
@@ -586,7 +631,7 @@ public class AnnotationProcessor
     {
         String serviceName = null;
         // Check for annotation value
-        if (StringUtils.isNotEmpty(annotation.value()))
+        if (annotation != null && StringUtils.isNotEmpty(annotation.value()))
         {
             serviceName = annotation.value();
         }
@@ -598,6 +643,14 @@ public class AnnotationProcessor
                 Field[] fields = c.getFields();
                 // Check for fields SERVICE_NAME and ROLE
                 serviceName = checkServiceOrRoleInField(serviceName, fields);
+                
+                if ( (serviceName == null || serviceName.equals(Service.SERVICE_NAME)) &&
+                        c.isAnnotationPresent(TurbineService.class)) {
+                    TurbineService service = c.getAnnotation(TurbineService.class);
+                    log.debug("retrieved class annotation: "+ service);
+                    serviceName = service.value();
+                } 
+                
             }
         }
 

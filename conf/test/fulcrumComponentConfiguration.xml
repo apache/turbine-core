@@ -110,5 +110,7 @@
             </properties>
         </configuration>
     </quartz>
+    
+    <serviceWithServiceInjection/>
 
 </componentConfig>

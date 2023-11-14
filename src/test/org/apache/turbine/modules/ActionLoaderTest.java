@@ -332,4 +332,25 @@ public class ActionLoaderTest extends BaseTestCase
             fail("Should not have thrown an exception.");
         }
     }
+    
+    @Test
+    public void testDoPerformWithExtendedServiceInjection() throws Exception
+    {
+        RunData data = getRunData(request, response, config);
+        PipelineData pipelineData = data;
+        data.setAction("VelocityActionWithExtendedServiceInjection");
+
+        try
+        {
+            ActionLoader.getInstance().exec(pipelineData, data.getAction());
+            Context context = (Context)
+                            data.getTemplateInfo().getTemplateContext(VelocityService.CONTEXT);
+            assertTrue( context.get( "mykey" ) != null );
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            fail("Should not have thrown an exception.");
+        }
+    }
 }

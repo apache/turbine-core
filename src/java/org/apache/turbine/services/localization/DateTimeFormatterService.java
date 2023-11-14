@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.LocaleUtils;
 
@@ -24,12 +25,10 @@ import org.apache.turbine.util.LocaleUtils;
  * if the source and the target format do not match appropriately.
  *
  */
+@TurbineService("DateTimeFormatterService")
 public class DateTimeFormatterService
-        extends TurbineBaseService implements DateTimeFormatterInterface {
-
-    public static final String SERVICE_NAME = "DateTimeFormatterService";
-
-    public static final String ROLE = DateTimeFormatterService.class.getName();
+        extends TurbineBaseService implements DateTimeFormatterInterface 
+{
 
     private String formatPattern = null;
 
