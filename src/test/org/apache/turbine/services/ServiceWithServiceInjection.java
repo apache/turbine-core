@@ -36,10 +36,10 @@ import org.apache.turbine.annotation.TurbineService;
 @TurbineService( ServiceWithServiceInjection.SERVICE_NAME )
 public class ServiceWithServiceInjection extends MethodAnnotatedTurbineBaseService implements Initializable /* ServiceWithService */
 {
-
-    String ROLE = ServiceWithServiceInjection.class.getName();
-    
+    // will be checked before ROLE
     static final String SERVICE_NAME = "ServiceWithService";
+    
+    String ROLE = ServiceWithServiceInjection.class.getName();
     
     private static Log log = LogFactory.getLog(ServiceWithServiceInjection.class);
     
@@ -53,7 +53,7 @@ public class ServiceWithServiceInjection extends MethodAnnotatedTurbineBaseServi
  
     // Test for method injected class level SERVICE_NAME
     // Annotation could be omitted as the class is annotated
-    //  @TurbineService
+    @TurbineService
     public void setServiceWithServiceInjection2(ServiceWithServiceInjection2 serviceWithServiceInjection) {
         serviceWithServiceInjection2 = serviceWithServiceInjection;
     }

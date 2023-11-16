@@ -30,16 +30,19 @@ import org.apache.turbine.services.ServiceWithServiceInjection;
 import org.apache.velocity.context.Context;
 
 /**
- * Annnotating even an assembler as TurbineService on class level we could omit annotations for fields if class is a Turbine service.
+ * Annnotating even an assembler as TurbineService on class level we could omit 
+ * annotations for fields if class is a Turbine service.
+ * 
+ * This would be quite experimental.
  */
-@TurbineService
+//@TurbineService
 public class VelocityActionWithExtendedServiceInjection extends VelocityAction
 {
     private static Log log = LogFactory.getLog(VelocityActionWithExtendedServiceInjection.class);
 
     // Test for class level SERVICE_NAME in ServiceWithServiceInjection
-    // Annotation could be omitted as the class is annotated
-    // @TurbineService
+    // Annotation could be omitted as the class is annotated could be omitted 
+    @TurbineService
     private ServiceWithServiceInjection serviceWithServiceInjection;
     
 
