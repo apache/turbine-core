@@ -29,6 +29,9 @@
 <section name="How to build Turbine">
 
 <p>
+  First, check Java version is Java 11 or above.
+</p>
+<p>
   Turbine is built using the <a href="http://maven.apache.org/">Maven</a> build
   tool.  So to get started you should download and install Maven.
 </p>

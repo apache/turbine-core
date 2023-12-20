@@ -75,5 +75,33 @@
    <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
    <cve>CVE-2020-8908</cve>
 </suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: commons-configuration2-2.8.0.jar
+   ]]></notes>
+   <packageUrl regex="true">^pkg:maven/org\.apache\.commons/commons\-configuration2@.*$</packageUrl>
+   <cve>CVE-2021-37533</cve>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: commons-email-1.5.jar
+   ]]></notes>
+   <packageUrl regex="true">^pkg:maven/org\.apache\.commons/commons\-email@.*$</packageUrl>
+   <cve>CVE-2021-37533</cve>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: commons-beanutils-1.9.4.jar
+   ]]></notes>
+   <packageUrl regex="true">^pkg:maven/commons\-beanutils/commons\-beanutils@.*$</packageUrl>
+   <cve>CVE-2021-37533</cve>
+</suppress>
+<suppress>
+   <notes><![CDATA[
+   file name: angus-activation-2.0.1.jar
+   ]]></notes>
+   <packageUrl regex="true">^pkg:maven/org\.eclipse\.angus/angus\-activation@.*$</packageUrl>
+   <cve>CVE-2023-4218</cve>
+</suppress>
 
 </suppressions>

@@ -180,12 +180,15 @@ the current Turbine code.
         repository</a></li>
      <li>
         You can also access the archived (since 2021) <a href="https://svn.apache.org/viewvc/turbine/core/trunk/">Turbine SVN
-        repository</a></li>
+        repository (read only)</a></li>
     
     <li>
         You can access the <a href="https://github.com/apache/turbine-archetypes/">Turbine Archetype Git (rw)
         repository</a></li>
-    
+     <li>
+        You can access the <a href="https://github.com/apache/turbine-build/">Turbine Git build environment repository</a>. 
+        This is a GIT modules structure, which should help to manage all Turbine components in one place.
+     </li>
     <li>
         You can find more about the Turbine Ecosystem on <a href="https://gitbox.apache.org/repos/asf#turbine"> gitbox.apache.org (rw)
        </a> or on <a href="https://github.com/orgs/apache/repositories?language=&amp;q=turbine&amp;sort=&amp;type=" target="_new">Github</a> </li>

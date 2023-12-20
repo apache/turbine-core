@@ -1313,7 +1313,7 @@
     <fulcrum.security>3.0.0</fulcrum.security>
     <fulcrum.yaafi>2.0.0</fulcrum.yaafi>
     <torque.version>5.1</torque.version>
-    <jackson2.version>2.15.2</jackson2.version>
+    <jackson2.version>2.15.3</jackson2.version>
     <doclint>none</doclint>
     <docker.testcontainers.version>1.18.3</docker.testcontainers.version>
     <jacoco.skip>true</jacoco.skip>
