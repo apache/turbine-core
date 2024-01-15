@@ -1,6 +1,10 @@
 target
 maven.log
 velocity.log*
+
+maven-eclipse.xml
+*.iml
+
 *~
 .classpath
 .project
