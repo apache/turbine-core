@@ -77,7 +77,7 @@ public class DateTimeFormatterTool extends DateFormatter
      * <li>For session and persistent tools data will be of type User</li>
      * </ul>
      *
-     * the {@link #defaultFormat} from {@link #formatPattern} 
+     * the {@link #getDefaultFormat()} from {@link #getFormatPattern()}
      * with {@link DateTimeFormatterService#getLocale()}
      * and zoneId {@link DateTimeFormatterService#getZoneId()} is used.
      * 
@@ -141,10 +141,10 @@ public class DateTimeFormatterTool extends DateFormatter
     }
 
     /**
-     * Formats the given datetime as a String with the #{@link DateTimeFormatterTool#defaultFormat}.
+     * Formats the given datetime as a String with the #{@link DateTimeFormatterTool#getDefaultFormat()}.
      * using the default date format.
      *
-     * @param the {@link TemporalAccessor to format
+     * @param temporalAccessor {@link TemporalAccessor to format
      * @return String value of the date
      */
     @Override

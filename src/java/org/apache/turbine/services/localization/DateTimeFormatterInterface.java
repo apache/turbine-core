@@ -27,10 +27,10 @@ public interface DateTimeFormatterInterface {
     String getFormatPattern();
 
     /**
-     * Formats the given datetime as a String with the #{@link DateTimeFormatterService#defaultFormat}.
+     * Formats the given datetime as a String with the #{@link DateTimeFormatterService#getDefaultFormat()}.
      * using the default date format.
      *
-     * @param the {@link TemporalAccessor to format
+     * @param temporalAccessor {@link TemporalAccessor to format
      * @return String value of the date
      */
     <T extends TemporalAccessor> String format(T temporalAccessor);
@@ -38,7 +38,7 @@ public interface DateTimeFormatterInterface {
     /**
      * Formats the given date as a String.
      *
-     * @param the TimeDate date to format
+     * @param temporalAccessor TimeDate date to format
      * @param dateFormatString format string to use.  See {@link DateTimeFormatter}
      * for details.
      * @return String value of the date
@@ -48,10 +48,10 @@ public interface DateTimeFormatterInterface {
     /**
      * Formats the given date as a String.
      *
-     * @param the TimeDate date to format
+     * @param temporalAccessor TimeDate date to format
      * @param dateFormatString format string to use.  See {@link DateTimeFormatter}
      * for details.
-     * @param locale
+     * @param locale used to loclize the format
      * @return String value of the date
      */
     <T extends TemporalAccessor> String format(T temporalAccessor, String dateFormatString, Locale locale);
@@ -59,7 +59,7 @@ public interface DateTimeFormatterInterface {
     /**
      * Formats the given date as a String.
      *
-     * @param the TimeDate date to format
+     * @param temporalAccessor TimeDate date to format
      * @param dateFormatString format string to use.  See {@link DateTimeFormatter}
      * for details.
      * @param locale the {@link Locale}
@@ -71,43 +71,51 @@ public interface DateTimeFormatterInterface {
     /**
      * Maps from an incoming format to an outgoing format {@link DateTimeFormatter}.
      * @param src the formatted datetime
-     * @param outgoingFormat {@link DateTimeFormatter}
+     * @param outgoingFormat the outgoingFormat pattern, {@link DateTimeFormatter}
      * @param locale  Locale, if needed for outgoing formatting, no default.
-     * @param incomingFormat {@link DateTimeFormatter}, optional, default is {@link #defaultFormat}.
+     * @param incomingFormat the incming format pattern {@link DateTimeFormatter}, optional, default is {@link #getDefaultFormat()}.
      * @return the newly mapped
      */
-    String map(String src, String outgoingFormatPattern, Locale locale, String incomingFormatPattern);
+    String map(String src, String outgoingFormat, Locale locale, String incomingFormat);
 
     /**
-     * Uses as incoming format {@link #defaultFormat} and no locale.
-     * @param src
-     * @param outgoingFormat
+     * Uses as incoming format {@link #getDefaultFormat()} and no locale.
+     * @param src the text, which will be parsed using the incomingFormat.
+     * @param outgoingFormat the outgoing formatter, which will format.
+     * @param locale The locale, if not null which will outgoingFormat use, {@link DateTimeFormatter#withLocale(Locale)}.
+     * @param incomingFormat the incoming formatter, which will be parsed.
      * @return the formatted string
      *
-     * @throws java.time.temporal.UnsupportedTemporalTypeException
      */
     String map(String src, DateTimeFormatter outgoingFormat, Locale locale,
                DateTimeFormatter incomingFormat);
 
     /**
-     * Uses as outgoing {@link DateTimeFormatter} {@link #defaultFormat} and no locale.
+     * Uses as outgoing {@link DateTimeFormatter} {@link #getDefaultFormat()} and no locale.
+     *
      * @param src the datetime formatted string
-     * @param incomingFormat the format of this string
-     * @return the date time formatted using the {@link #defaultFormat}.
+     * @param outgoingFormat the format of this string
+     * @return the date time formatted
      */
     String mapTo(String src, DateTimeFormatter outgoingFormat);
 
     /**
-     * Uses as incoming {@link DateTimeFormatter}  {@link #defaultFormat}.
      * @param src the datetime formatted string
-     * @param outgoingFormat the format to which this string should be formatted.
-     * @param locale
-     * @return the newly formatted date time string
+     * @param incomingFormat the format to which this incoming string should be formatted.
      *
-     * @throws java.time.temporal.UnsupportedTemporalTypeException
+     * @return the newly formatted date time string
      */
     String mapFrom(String src, DateTimeFormatter incomingFormat);
 
+    /**
+     * Uses as incoming {@link DateTimeFormatter}  {@link #getDefaultFormat()}.
+     *
+     * @param src the datetime formatted string
+     * @param outgoingFormat the format to which this string should be formatted.
+     * @param locale The locale, if not null,the incomingFormat will use.
+     *
+     * @return the newly formatted date time string
+     */
     String map(String src, DateTimeFormatter outgoingFormat, Locale locale);
 
     ZoneId getZoneId();

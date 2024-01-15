@@ -98,7 +98,7 @@ public class DefaultTurbineRunData
     /** The character encoding of template files. */
     private String templateEncoding;
 
-    /** This is what will build the <title></title> of the document. */
+    /** This is what will build the title of the document. */
     private String title;
 
     /** Determines if there is information in the outputstream or not. */

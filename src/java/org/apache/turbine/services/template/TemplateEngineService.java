@@ -72,7 +72,7 @@ public interface TemplateEngineService
      * Supplies the file extension to key this engine in {@link
      * org.apache.turbine.services.template.TemplateService}'s
      * registry with.
-     * @return the list of extensions this engine supports
+     * @return the array of extensions this engine supports
      */
     String[] getAssociatedFileExtensions();
 

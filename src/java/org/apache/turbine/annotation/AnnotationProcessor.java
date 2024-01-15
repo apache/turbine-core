@@ -397,7 +397,7 @@ public class AnnotationProcessor
      * injects annotations provided in the tool.
      *
      * @param object the object to process
-     * @param assembler AssemblerBrokerService, provides the tool
+     * @param pool PoolService, provides the pool
      * @param field the field
      * @param annotation the value of the annotation
      *
@@ -625,7 +625,7 @@ public class AnnotationProcessor
      * @param manager the service manager
      * @param method The method
      * @param annotation the value of the annotation
-     * @throws TurbineException
+     * @throws TurbineException - If service could not be injected.
      */
     private static void injectTurbineService(Object object, ServiceManager manager, Method method, TurbineService annotation) throws TurbineException
     {

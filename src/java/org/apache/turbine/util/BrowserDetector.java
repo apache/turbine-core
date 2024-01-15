@@ -27,7 +27,7 @@ import nl.basjes.parse.useragent.UserAgentAnalyzer;
 
 /**
  * This class parses the user agent string and provides getters for
- * its parts. It uses YAUAA (https://yauaa.basjes.nl/)
+ * its parts. It uses (<a href="https://yauaa.basjes.nl/">YAUAA</a>).
  *
  * The initialization step for a full UserAgentAnalyzer
  * (i.e. all fields) usually takes something in the range of 2-5 seconds.

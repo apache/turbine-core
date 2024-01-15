@@ -44,7 +44,7 @@ import org.jabsorb.JSONRPCBridge;
  * logged in prior to executing the functions you provide.
  *
  * <p>Here is an example from a superclass:
- * <code>
+ * {@code
  * public void doOutput(PipelineData data) throws Exception
  * {
  *     User user = data.getUser();
@@ -59,7 +59,7 @@ import org.jabsorb.JSONRPCBridge;
  *
  *     super.doOutput(data);
  * }
- * </code>
+ * }
  *
  * <p>The class MyFunctions would be something like:
  * <code>

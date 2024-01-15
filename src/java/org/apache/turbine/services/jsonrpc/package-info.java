@@ -19,6 +19,6 @@
 
 /**
  * The JSON-RPC Service supports JavaScript to Java AJAX communications between
- * browsers and Turbine applications.<br />
+ * browsers and Turbine applications.<br>
 */
 package org.apache.turbine.services.jsonrpc;

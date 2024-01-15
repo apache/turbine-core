@@ -22,10 +22,10 @@
  * <p>
  * Services are singletons that have pluggable implementation
  * and can participate in Turbine startup and shutdown.
- * <p>
- * <table><tr><td width="100%">
- *
- * <h3>What is a service?</h3>
+ * </p>
+ * <table summary="Turbine service explained.">
+ *     <tr><th>What is a service?</th></tr>
+ *     <tr><td style="width: 100%">
  * <ul>
  * <li> Is a singleton -  there is only one instance of it in the system
  *      i.e. memory or connections are allocated once only, and the internal
@@ -43,7 +43,7 @@
  * <li> Can execute some action upon system shutdown e.g. close the
  *      opened connections.
  * </ul>
- * <h3>The life cycle of a Service</h3>
+ * <strong>The life cycle of a Service</strong>
  * <p>
  * A Service (or any other Initable, if we had any) is not supposed
  * to do much in it's constructor. Especially it should not allocate
@@ -52,7 +52,7 @@
  * is sitting in the config file, but the application does not
  * need it, so allocating all resources at system startup might
  * be a loss.
- * <p>
+ * </p><p>
  * Early initialization is similar to the constructor. It is used
  * to pass some information that the Service will need in it's
  * future operation.
@@ -66,20 +66,21 @@
  * being sent to it), and does not to allocate any resources during
  * late initialization, the internal state can be changed so that
  * getInit() returns true.
- * <p>
+ * </p><p>
  * Late initialization happens when the Service is requested by the
  * application for the first time. It should allocate any resources
  * needed and change the state so that getInit() returns true.
  * If getInit() returns false after init() is executed, the Service
  * has malfunctioned.
- * <p>
+ * </p><p>
  * After late initialization, the Service is ready to perform actions
  * on behalf of the application.
- * <p>
+ * </p><p>
  * When the Service is no longer needed (this usually happens when
  * system is shutting down), the shutdown() method is called.
  * shutdown() should deallocate all resources. If any error conditions
  * occur they are ignored.
+ * </p>
  * <h3>Initialization of services outside of the Turbine servlet</h3>
  * <p>
  * In the case where specific Turbine services are desired outside the
@@ -88,7 +89,7 @@
  * <code>TurbineResources.properties</code> file to initialize a specific
  * set of services to use in your application.  The following sample
  * code performs such initialization:
- * <p>
+ * </p>
  * <code>
  * String webAppRoot = "/var/httpd/webapps";
  * String trProps = "/var/httpd/TurbineResources.properties";

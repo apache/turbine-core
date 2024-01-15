@@ -21,7 +21,7 @@ import org.apache.turbine.util.LocaleUtils;
  * objects into strings.
  *
  * The methods may throw {@link java.time.temporal.UnsupportedTemporalTypeException} or
- * {@link DateTimeParseException}.
+ * {@link DateTimeParseException}, e.g.
  * if the source and the target format do not match appropriately.
  *
  */
@@ -37,11 +37,6 @@ public class DateTimeFormatterService
     private Locale locale = null;
 
     private ZoneId zoneId;
-
-    /**
-     * configura
-     */
-    private boolean useTurbineLocale = true;
 
     @Override
     public DateTimeFormatter getDefaultFormat()
@@ -76,22 +71,22 @@ public class DateTimeFormatterService
         formatPattern = Turbine.getConfiguration()
                 .getString(DATE_TIME_FORMAT_KEY, DATE_TIME_FORMAT_DEFAULT);
 
-        useTurbineLocale =  Turbine.getConfiguration()
+        boolean useTurbineLocale =  Turbine.getConfiguration()
         .getBoolean(USE_TURBINE_LOCALE_KEY, true);
 
-        Locale locale = (useTurbineLocale && LocaleUtils.getDefaultLocale() != null)?
+        Locale localeSetter = (useTurbineLocale && LocaleUtils.getDefaultLocale() != null)?
                 LocaleUtils.getDefaultLocale()
                 : Locale.getDefault();
-        setLocale(locale);
+        setLocale(localeSetter);
 
         String zoneIdStr = Turbine.getConfiguration()
         .getString(DATE_TIME_ZONEID_KEY);
-        ZoneId zoneId = (zoneIdStr != null)?  ZoneId.of( zoneIdStr ) :
+        ZoneId zoneIdSet = (zoneIdStr != null)?  ZoneId.of( zoneIdStr ) :
             ZoneId.systemDefault();
-         setZoneId(zoneId);
+         setZoneId(zoneIdSet);
 
         dateTimeFormat = DateTimeFormatter.ofPattern(formatPattern)
-                .withLocale(locale).withZone(zoneId);
+                .withLocale(localeSetter).withZone(zoneIdSet);
 
         log.info("Initialized DateTimeFormatterService with pattern {}, locale {} and zone {}",
                 formatPattern, dateTimeFormat.getLocale(),

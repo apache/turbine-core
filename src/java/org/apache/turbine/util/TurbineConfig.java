@@ -171,7 +171,7 @@ public class TurbineConfig
      */
     public TurbineConfig(String path, Map<String, String> initParams)
     {
-        this(path, new HashMap<String, Object>(0), initParams);
+        this(path, new HashMap<>(0), initParams);
     }
 
     /**
