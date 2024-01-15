@@ -568,8 +568,6 @@
         <artifactId>torque-maven-plugin</artifactId>
         <configuration>
           <runOnlyOnSourceChange>true</runOnlyOnSourceChange>
-          <!--targetDatabase>mysql</targetDatabase>
-          <schemaDir>src/torque/schema</schemaDir-->
         </configuration>
         <executions>
           <execution>
@@ -1303,6 +1301,59 @@
            </dependency>
        </dependencies>
     </profile>
+    <profile>
+      <!-- allow reproducible / verifibable builds: build first and check with 
+          mvn clean install -Prv-builds
+          mvn clean verify artifact:compare -Prv-builds  
+          diffoscope ..
+       -->
+      <id>rv-builds</id>
+      <build>
+        <plugins>
+          <plugin>
+              <groupId>org.apache.torque</groupId>
+              <artifactId>torque-maven-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>generate-om-scheduler-sources</id>
+                  <configuration>
+                    <options>
+                       <!-- to allow for reproducible builds -->
+                      <torque.om.addTimeStamp>false</torque.om.addTimeStamp>
+                    </options>
+                  </configuration>
+                </execution>
+               </executions>
+          </plugin>
+            <!--  1) to be moved to parent to get buildNumber in parent implemenation.build property 
+                    2) requires no local midifications! 
+             -->
+            <!--plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                  <execution>
+                    <phase>validate</phase>
+                    <goals>
+                      <goal>create</goal>
+                    </goals>
+                  </execution>
+                </executions>
+                <configuration>
+                  <doCheck>true</doCheck>
+                  <doUpdate>true</doUpdate>
+                </configuration>
+            </plugin-->
+        </plugins>
+      </build>
+      <properties>
+          <!-- allow for reproducible builds: should not be inherited but defined in POM for  -->
+          <project.build.outputTimestamp>10</project.build.outputTimestamp>
+          <implementation.build>${scmBranch}@r${buildNumber};noTimeStamp</implementation.build>
+          <scmBranch>trunk</scmBranch>
+      </properties>
+    </profile>
   </profiles>
 
   <properties>
@@ -1313,7 +1364,7 @@
     <fulcrum.security>3.0.0</fulcrum.security>
     <fulcrum.yaafi>2.0.0</fulcrum.yaafi>
     <torque.version>5.1</torque.version>
-    <jackson2.version>2.15.3</jackson2.version>
+    <jackson2.version>2.16.1</jackson2.version>
     <doclint>none</doclint>
     <docker.testcontainers.version>1.18.3</docker.testcontainers.version>
     <jacoco.skip>true</jacoco.skip>
@@ -1332,6 +1383,5 @@
         </releases>
       </repository>
     </repositories>
-
 </project>
 
