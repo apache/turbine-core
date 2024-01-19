@@ -27,7 +27,7 @@
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
-  <version>6.0</version>
+  <version>6.1-SNAPSHOT</version>
   <description>Turbine is a servlet based framework that allows experienced Java
     developers to quickly build secure web applications. Parts of Turbine
     can also be used independently of the web portion of Turbine as
