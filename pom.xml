@@ -27,7 +27,7 @@
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
-  <version>6.1-SNAPSHOT</version>
+  <version>6.0-SNAPSHOT</version>
   <description>Turbine is a servlet based framework that allows experienced Java
     developers to quickly build secure web applications. Parts of Turbine
     can also be used independently of the web portion of Turbine as
@@ -529,6 +529,21 @@
         <artifactId>torque-maven-plugin</artifactId>
         <version>${torque.version}</version>
         </plugin>
+        <plugin>
+            <groupId>org.apache.rat</groupId>
+            <artifactId>apache-rat-plugin</artifactId>
+            <version>0.15</version>
+            <configuration>
+                <excludes>
+                  <exclude>xdocs/images/*</exclude>
+                  <exclude>src/site/**</exclude>
+                  <exclude>proposals/**</exclude>
+                  <exclude>extensions/**</exclude>
+                  <exclude>conf/**</exclude>
+                  <exclude>README.md</exclude>
+                </excludes>
+              </configuration>
+          </plugin>
       </plugins>
     </pluginManagement>
 
@@ -856,6 +871,12 @@
           </reportSet>
         </reportSets>
       </plugin>
+      <plugin>
+        <!-- check the Apache Licence in all source files -->
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <version>0.15</version>
+      </plugin>
     </plugins>
   </reporting>
 
@@ -1158,6 +1179,15 @@
                 </goals>
               </execution>
             </executions>
+            <configuration>
+                <reportPlugins>
+                  <reportPlugin>
+                    <groupId>org.apache.rat</groupId>
+                    <artifactId>apache-rat-plugin</artifactId>
+                    <version>0.15</version>
+                  </reportPlugin>
+                </reportPlugins>
+            </configuration>
           </plugin>
           <plugin>
             <!-- build the source and binary distribution packages -->

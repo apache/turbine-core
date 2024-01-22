@@ -24,7 +24,7 @@
   </properties>
 
   <body>
-     <release version="5.2-SNAPSHOT" date="in Git">
+     <release version="6.0-SNAPSHOT" date="in Git">
        <action type="add" dev="gk">
         Provide mechanism to allow auto loading of Turbine (and Fulcrum) services. If a "known" service is extending FieldAnnotatedTurbineBaseService or 
         MethodAnnotatedTurbineBaseService it could declare fields and methods with more Turbine annotations. 
