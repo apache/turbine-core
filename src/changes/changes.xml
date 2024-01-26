@@ -42,7 +42,13 @@
       </action>
       <action type="update" dev="gk">
         Fix java.lang.NoSuchFieldError: DEFAULT_TIME_BETWEEN_EVICTION_RUNS. This field changed from being an long to a Duration in commons-pool2 v 2.10.0 and commons-dbcp2 v2.9.0.
-      </action>  
+      </action>
+      <action type="update" dev="tv">
+        Migrate to package-info.java from package.html.
+      </action>
+      <action type="update" dev="tv">
+        Optimize JobQueue and add JobQueueTest
+      </action>    
     </release>
     <action type="add" dev="gk">
        Add Annotation @TurbineTool to annotate tools for advanced usage in action methods.
