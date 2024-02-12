@@ -267,7 +267,7 @@
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>                 <em class="jxr_comment">// Create the the housekeeping thread of the scheduler. It will</em>
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>                 <em class="jxr_comment">// wait for the time when the next task needs to be started,</em>
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>                 <em class="jxr_comment">// and then launch a worker thread to execute the task.</em>
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>                 houseKeepingThread = <strong class="jxr_keyword">new</strong> Thread(() -&gt; houseKeeping(), ScheduleService.SERVICE_NAME);
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>                 houseKeepingThread = <strong class="jxr_keyword">new</strong> Thread(<strong class="jxr_keyword">this</strong>::houseKeeping, ScheduleService.SERVICE_NAME);
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>                 <em class="jxr_comment">// Indicate that this is a system thread. JVM will quit only</em>
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>                 <em class="jxr_comment">// when there are no more enabled user threads. Settings threads</em>
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>                 <em class="jxr_comment">// spawned internally by Turbine as daemons allows commandline</em>
@@ -372,6 +372,6 @@
 <a class="jxr_linenumber" name="L364" href="#L364">364</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2022 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2024 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
 </body>
 </html>

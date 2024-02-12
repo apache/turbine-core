@@ -145,21 +145,23 @@
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>         {
 <a class="jxr_linenumber" name="L138" href="#L138">138</a>             <em class="jxr_comment">// Pull necessary information out of RunData while we have</em>
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>             <em class="jxr_comment">// a reference to it.</em>
-<a class="jxr_linenumber" name="L140" href="#L140">140</a>             locale = localizationService.getLocale(((<a name="RunData" href="../../../../../org/apache/turbine/util/RunData.html#RunData">RunData</a>) data).getRequest());
-<a class="jxr_linenumber" name="L141" href="#L141">141</a>         }
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>     }
-<a class="jxr_linenumber" name="L143" href="#L143">143</a> 
-<a class="jxr_linenumber" name="L144" href="#L144">144</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L145" href="#L145">145</a> <em class="jxr_javadoccomment">     * No-op.</em>
-<a class="jxr_linenumber" name="L146" href="#L146">146</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>     @Override
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> refresh()
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>     {
-<a class="jxr_linenumber" name="L150" href="#L150">150</a>         locale = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L151" href="#L151">151</a>     }
-<a class="jxr_linenumber" name="L152" href="#L152">152</a> }
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>             locale = (localizationService instanceof <a name="RundataLocalizationService" href="../../../../../org/apache/turbine/services/localization/RundataLocalizationService.html#RundataLocalizationService">RundataLocalizationService</a>)?
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>                     ((<a name="RundataLocalizationService" href="../../../../../org/apache/turbine/services/localization/RundataLocalizationService.html#RundataLocalizationService">RundataLocalizationService</a>)localizationService).getLocale((<a name="RunData" href="../../../../../org/apache/turbine/util/RunData.html#RunData">RunData</a>) data):
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>                     localizationService.getLocale(((<a name="RunData" href="../../../../../org/apache/turbine/util/RunData.html#RunData">RunData</a>) data).getRequest());
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>         }
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>     }
+<a class="jxr_linenumber" name="L145" href="#L145">145</a> 
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L147" href="#L147">147</a> <em class="jxr_javadoccomment">     * No-op.</em>
+<a class="jxr_linenumber" name="L148" href="#L148">148</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>     @Override
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> refresh()
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>     {
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>         locale = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>     }
+<a class="jxr_linenumber" name="L154" href="#L154">154</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2022 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2024 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
 </body>
 </html>

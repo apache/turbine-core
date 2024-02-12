@@ -42,9 +42,9 @@
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> java.util.stream.Collectors;
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> java.util.stream.Stream;
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> javax.xml.bind.JAXBContext;
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> javax.xml.bind.JAXBException;
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> javax.xml.bind.Unmarshaller;
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> jakarta.xml.bind.JAXBContext;
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> jakarta.xml.bind.JAXBException;
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> jakarta.xml.bind.Unmarshaller;
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> org.apache.commons.configuration2.Configuration;
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> org.apache.fulcrum.parser.ParameterParser;
@@ -240,11 +240,11 @@
 <a class="jxr_linenumber" name="L232" href="#L232">232</a> 
 <a class="jxr_linenumber" name="L233" href="#L233">233</a>                 <em class="jxr_comment">// add implicit parameters</em>
 <a class="jxr_linenumber" name="L234" href="#L234">234</a>                 urlMap.getImplicitParameters()
-<a class="jxr_linenumber" name="L235" href="#L235">235</a>                         .forEach((key1, value1) -&gt; pp.add(key1, value1));
+<a class="jxr_linenumber" name="L235" href="#L235">235</a>                         .forEach(pp::add);
 <a class="jxr_linenumber" name="L236" href="#L236">236</a> 
 <a class="jxr_linenumber" name="L237" href="#L237">237</a>                 <em class="jxr_comment">// add override parameters</em>
 <a class="jxr_linenumber" name="L238" href="#L238">238</a>                 urlMap.getOverrideParameters()
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>                         .forEach((key, value) -&gt; pp.setString(key, value));
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>                         .forEach(pp::setString);
 <a class="jxr_linenumber" name="L240" href="#L240">240</a> 
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>                 <em class="jxr_comment">// remove ignore parameters</em>
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>                 urlMap.getIgnoreParameters().keySet()
@@ -333,6 +333,6 @@
 <a class="jxr_linenumber" name="L325" href="#L325">325</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2022 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2024 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
 </body>
 </html>

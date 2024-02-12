@@ -263,7 +263,7 @@
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>     <strong class="jxr_keyword">public</strong> List&lt;? <strong class="jxr_keyword">extends</strong> User&gt; retrieveList(Object criteria)
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>             <strong class="jxr_keyword">throws</strong> DataBackendException
 <a class="jxr_linenumber" name="L257" href="#L257">257</a>     {
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>         UserSet&lt;org.apache.fulcrum.security.entity.User&gt; uset = umDelegate.getAllUsers();
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>         UserSet&lt;org.apache.fulcrum.security.entity.User&gt; uset = umDelegate.retrieveUserList(criteria);
 <a class="jxr_linenumber" name="L259" href="#L259">259</a> 
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>         List&lt;User&gt; userList = uset.stream()
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>                 .map(u -&gt; (TurbineUser) u)
@@ -544,6 +544,6 @@
 <a class="jxr_linenumber" name="L536" href="#L536">536</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2022 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2000&#x2013;2024 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
 </body>
 </html>
