@@ -33,9 +33,9 @@
        <action type="add" dev="gk">
         New  service DateTimeFormatterService and tool DateTimeFormatterTool, which allow date time formatting with locale and zone configuration.
       </action>
-       <action type="update" dev="gk">
+      <action type="update" dev="gk">
         Dependency version update yauaa to 7.24.0, commons-pool2 2.12.0, slf4j-api 2.0.11, jaxb-runtime 4.0.4, fulcrum.security 3.0.0, fulcrum.intake 3.0.0, fulcrum.parser 3.0.0, fulcrum.yaafi 2.0.0,
-        commons  email to 1.6.0, commons lang3 to 3.14.0, commons text to 1.11.0
+        commons  email to 1.6.0, commons lang3 to 3.14.0, commons text to 1.11.0, jakarta xml from 2.3.3 to 4.0.0, jaxb-impl from 2.3.3 to 4.0.0
       </action>
       <action type="update" dev="gk">
         Minor version update to Torque 5.1, Jackson to 2.16.1 (yaml profile), docker-testcontainers to 1.18.3 (docker profile), commons-configuration2 to 2.8.0, commons-text 1.10.0
