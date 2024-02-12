@@ -20,4 +20,4 @@ publish:
 #  subdir: turbine
 #  subdir: turbine/turbine-5-1
 #  subdir: turbine/development/turbine-5-2
-    subdir: turbine/turbine-6-0
+  subdir: turbine/turbine-6-0
