@@ -24,13 +24,20 @@
   </properties>
 
   <body>
-     <release version="6.0-SNAPSHOT" date="in Git">
-       <action type="add" dev="gk">
+    <release version="6.1-SNAPSHOT" date="in Git">
+      <action type="add" dev="tv">
+        New configuration option "session.objectinputfilter" to limit the classes that can be 
+        deserialized into a session from persistent storage. This feature uses the 
+        ObjectInputFilter introduced in Java 9.
+      </action>
+    </release>
+    <release version="6.0" date="2024-02-14">
+      <action type="add" dev="gk">
         Provide mechanism to allow auto loading of Turbine (and Fulcrum) services. If a "known" service is extending FieldAnnotatedTurbineBaseService or 
         MethodAnnotatedTurbineBaseService it could declare fields and methods with more Turbine annotations. 
         Examples are  annotating a service with @TurbineService or autoload a service, which has class level annotation @TurbineService, if the callingclass itself is TurbineService annotated.
       </action>
-       <action type="add" dev="gk">
+      <action type="add" dev="gk">
         New  service DateTimeFormatterService and tool DateTimeFormatterTool, which allow date time formatting with locale and zone configuration.
       </action>
       <action type="update" dev="gk">
