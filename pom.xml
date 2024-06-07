@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
-    <version>12</version>
+    <version>13-SNAPSHOT</version>
     <relativePath />
   </parent>
   <artifactId>turbine</artifactId>
@@ -932,7 +932,7 @@
       <groupId>nl.basjes.parse.useragent</groupId>
       <artifactId>yauaa</artifactId>
       <!-- java 11 required for v6.1+ -->
-      <version>7.24.0</version>
+      <version>7.25.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
@@ -1082,7 +1082,7 @@
       <artifactId>log4j-jcl</artifactId>
       <version>${turbine.log4j2.version}</version>
     </dependency>
-    <!-- yauaa + java testcontainers uses slf4j-api, need for log4j-slf4j-impl mapping-->
+    <!-- java testcontainers uses slf4j-api, need for log4j-slf4j-impl mapping-->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
@@ -1393,8 +1393,8 @@
     <fulcrum.parser>3.0.0</fulcrum.parser>
     <fulcrum.security>3.0.0</fulcrum.security>
     <fulcrum.yaafi>2.0.0</fulcrum.yaafi>
-    <torque.version>5.2-SNAPSHOT</torque.version>
-    <jackson2.version>2.16.1</jackson2.version>
+    <torque.version>6.0</torque.version>
+    <jackson2.version>2.17.1</jackson2.version>
     <doclint>none</doclint>
     <docker.testcontainers.version>1.18.3</docker.testcontainers.version>
     <jacoco.skip>true</jacoco.skip>
