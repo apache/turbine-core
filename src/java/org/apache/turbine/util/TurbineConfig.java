@@ -35,18 +35,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterRegistration;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.Servlet;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-import javax.servlet.ServletRegistration.Dynamic;
-import javax.servlet.SessionCookieConfig;
-import javax.servlet.SessionTrackingMode;
-import javax.servlet.descriptor.JspConfigDescriptor;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterRegistration;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRegistration;
+import jakarta.servlet.ServletRegistration.Dynamic;
+import jakarta.servlet.SessionCookieConfig;
+import jakarta.servlet.SessionTrackingMode;
+import jakarta.servlet.descriptor.JspConfigDescriptor;
 
 import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.activity.Initializable;
@@ -84,6 +84,8 @@ import org.apache.turbine.annotation.TurbineConfiguration;
  * </p>
  *
  * TODO Make this class enforce the lifecycle contracts
+ * 
+ * @see https://jakarta.ee/specifications/servlet/6.1/jakarta-servlet-spec-6.1
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
@@ -387,20 +389,6 @@ public class TurbineConfig
     }
 
     /**
-     * Logs an error message.
-     *
-     * @param e an Exception.
-     * @param m a message.
-     * @deprecated use log(String,Throwable) instead
-     */
-    @Override
-    @Deprecated
-    public void log(Exception e, String m)
-    {
-        log.info(m, e);
-    }
-
-    /**
      * Logs a message.
      *
      * @param m a message.
@@ -552,48 +540,6 @@ public class TurbineConfig
      *
      * A method in ServletContext interface that is not implemented and will
      * throw <code>UnsuportedOperationException</code> upon invocation
-     * @deprecated As of Java Servlet API 2.1, with no direct replacement.
-     */
-    @Override
-    @Deprecated
-    public Servlet getServlet(String s)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Not implemented.
-     *
-     * A method in ServletContext interface that is not implemented and will
-     * throw <code>UnsuportedOperationException</code> upon invocation
-     * @deprecated As of Java Servlet API 2.1, with no replacement.
-     */
-    @Override
-    @Deprecated
-    public Enumeration<String> getServletNames()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Not implemented.
-     *
-     * A method in ServletContext interface that is not implemented and will
-     * throw <code>UnsuportedOperationException</code> upon invocation
-     * @deprecated As of Java Servlet API 2.0, with no replacement.
-     */
-    @Override
-    @Deprecated
-    public Enumeration<Servlet> getServlets()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Not implemented.
-     *
-     * A method in ServletContext interface that is not implemented and will
-     * throw <code>UnsuportedOperationException</code> upon invocation
      */
     @Override
     public void removeAttribute(String s)
@@ -728,7 +674,7 @@ public class TurbineConfig
      * throw <code>UnsuportedOperationException</code> upon invocation
      */
     @Override
-    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, String className)
+    public jakarta.servlet.FilterRegistration.Dynamic addFilter(String filterName, String className)
     {
         throw new UnsupportedOperationException();
     }
@@ -740,7 +686,7 @@ public class TurbineConfig
      * throw <code>UnsuportedOperationException</code> upon invocation
      */
     @Override
-    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, Filter filter)
+    public jakarta.servlet.FilterRegistration.Dynamic addFilter(String filterName, Filter filter)
     {
         throw new UnsupportedOperationException();
     }
@@ -752,7 +698,7 @@ public class TurbineConfig
      * throw <code>UnsuportedOperationException</code> upon invocation
      */
     @Override
-    public javax.servlet.FilterRegistration.Dynamic addFilter(String filterName, Class<? extends Filter> filterClass)
+    public jakarta.servlet.FilterRegistration.Dynamic addFilter(String filterName, Class<? extends Filter> filterClass)
     {
         throw new UnsupportedOperationException();
     }
@@ -935,6 +881,46 @@ public class TurbineConfig
     public String getVirtualServerName()
     {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Dynamic addJspFile(String servletName, String jspFile) {
+        return null;
+    }
+
+    @Override
+    public int getSessionTimeout() {
+        // If the timeout is 0 or less the container ensures the default behavior of sessions is never to time out
+        return 0;
+    }
+
+    /**
+     * in minutes
+     */
+    @Override
+    public void setSessionTimeout(int sessionTimeout) {
+        // todo check session.timeout
+    }
+
+    @Override
+    public String getRequestCharacterEncoding() {
+        // no request character encoding is specified in deployment descriptor or container specific configuration (
+        return null;
+    }
+
+    @Override
+    public void setRequestCharacterEncoding(String encoding) {
+    }
+
+    @Override
+    public String getResponseCharacterEncoding() {
+        // no response character encoding is specified in deployment descriptor or container specific configuration
+        return null;
+    }
+
+    @Override
+    public void setResponseCharacterEncoding(String encoding) {
+        
     }
 
 }

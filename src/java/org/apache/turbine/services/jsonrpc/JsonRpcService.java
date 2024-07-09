@@ -21,8 +21,8 @@ package org.apache.turbine.services.jsonrpc;
 
 import java.io.CharArrayWriter;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.turbine.services.Service;
 import org.jabsorb.JSONRPCBridge;

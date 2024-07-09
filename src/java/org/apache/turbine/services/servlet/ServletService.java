@@ -24,8 +24,8 @@ package org.apache.turbine.services.servlet;
 import java.io.InputStream;
 import java.net.URL;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 
 import org.apache.turbine.services.Service;
 

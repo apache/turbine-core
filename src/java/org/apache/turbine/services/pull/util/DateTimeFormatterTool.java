@@ -85,7 +85,7 @@ public class DateTimeFormatterTool extends DateFormatter
      * Locale could be fetched from request, if #USE_REQUEST_LOCALE_KEY is set to 
      * <code>true</code> (by default it is <code>false</code>.Then it will be retrieved either from 
      * {@link RundataLocalizationService#getLocale(RunData)} (if set in urbien role configuration)
-     * or {@link LocalizationService#getLocale(javax.servlet.http.HttpServletRequest)}.
+     * or {@link LocalizationService#getLocale(jakarta.servlet.http.HttpServletRequest)}.
      * 
      * @param data initialization data
      */

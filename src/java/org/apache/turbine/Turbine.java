@@ -29,15 +29,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebInitParam;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebInitParam;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.Unmarshaller;
 
@@ -948,10 +948,14 @@ public class Turbine extends HttpServlet
             // configured + no other log4j configuration already found
             if (log4jFile != null)
             {
-                LogManager.getContext(null, false, log4jFile.toUri());
+                org.apache.logging.log4j.spi.LoggerContext ctxContext = LogManager.getContext(null, false, log4jFile.toUri());
+                if (ctxContext instanceof LoggerContext) {
+                    log.info("resolved log4j2 location: {}", context.getConfiguration().getConfigurationSource().getLocation());
+                }
+                
             }
         }
-        log.info("resolved log4j2 location: {}", context.getConfiguration().getConfigurationSource().getLocation());
+        log.info("found log4j2 location: {}", context.getConfiguration().getConfigurationSource().getLocation());
     }
 
     /**

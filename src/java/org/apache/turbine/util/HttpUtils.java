@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.turbine.Turbine;
