@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.fulcrum.intake.IntakeException;
 import org.apache.fulcrum.intake.IntakeService;
 import org.apache.fulcrum.intake.Retrievable;
