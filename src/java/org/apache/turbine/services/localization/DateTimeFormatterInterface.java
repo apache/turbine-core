@@ -49,7 +49,7 @@ public interface DateTimeFormatterInterface {
      * Formats the given datetime as a String with the #{@link DateTimeFormatterService#getDefaultFormat()}.
      * using the default date format.
      *
-     * @param temporalAccessor {@link TemporalAccessor to format
+     * @param temporalAccessor {@link TemporalAccessor to format}
      * @return String value of the date
      */
     <T extends TemporalAccessor> String format(T temporalAccessor);

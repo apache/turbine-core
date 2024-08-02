@@ -73,7 +73,7 @@ By default this folder is user.home/turbine-sites/turbine, configured in Turbine
 
 Find more about release related command hints in 
 * https://github.com/apache/turbine-fulcrum-build/
-* IMPORTANT: BEFORE running release, i.e. if the major.minor versino numbers changed, you have to update turbine.site.path in pom.xml to the new production path 
+* IMPORTANT: BEFORE running release, i.e. if the major.minor version numbers changed, you have to update turbine.site.path in pom.xml to the new production path 
 (e.g. turbine/turbine-4.0 for version 4.0) removing the  "development/"-part of the path.
 * if updating the site for the new SNAPSHOT version add the new development path (e.g. turbine/development/turbine-5.1 for version 5.1-SNAPSHOT) AFTER the release.
 * Find more about the site structure here: https://gitbox.apache.org/repos/asf#turbine.
