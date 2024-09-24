@@ -85,7 +85,7 @@ import org.apache.turbine.annotation.TurbineConfiguration;
  *
  * TODO Make this class enforce the lifecycle contracts
  * 
- * @see https://jakarta.ee/specifications/servlet/6.1/jakarta-servlet-spec-6.1
+ * @see <a href="https://jakarta.ee/specifications/servlet/6.1/jakarta-servlet-spec-6.1">Java Servlet Spec v6.1</a>
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>

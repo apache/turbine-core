@@ -19,6 +19,7 @@
 
 /**
  * Contains the Service framework for Turbine.
+ * <h1>Turbine services explained</h1>
  * <p>
  * Services are singletons that have pluggable implementation
  * and can participate in Turbine startup and shutdown.
@@ -43,7 +44,7 @@
  * <li> Can execute some action upon system shutdown e.g. close the
  *      opened connections.
  * </ul>
- * <strong>The life cycle of a Service</strong>
+ * <h2>The life cycle of a Service</h2>
  * <p>
  * A Service (or any other Initable, if we had any) is not supposed
  * to do much in it's constructor. Especially it should not allocate

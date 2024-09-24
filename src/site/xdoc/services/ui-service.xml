@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+ <properties>
+  <title>Turbine Services - UI Service</title>
+  <author email="seade@backstagetech.com.au">Scott Eade</author>
+ </properties>
+
+<body>
+
+<section name="UI Service">
+
+<p>
+The UI (User Interface) Service allows your Turbine application to be skinned
+using simple properties files that are located in the WEBAPP/resources/ui/skins/
+directory hierarchy.
+</p>
+
+<p>
+The service and its associated pull tool provide the following enhancements over
+the old UIManager pull tool (which has been deprecated as od Turbine 2.3.3):
+</p>
+<ul>
+<li>Skin properties are shared between all users with lazy loading.</li>
+<li>Non-default skin files inherit properties from the default skin</li>
+<li>Access to skin properties from screen and action classes is now provided for</li>
+<li>Access is provided to the list of available skins</li>
+</ul>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+#
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+...
+services.UIService.classname = org.apache.turbine.services.ui.TurbineUIService
+...
+
+# -------------------------------------------------------------------
+#
+#  P U L L  S E R V I C E
+#
+# -------------------------------------------------------------------
+...
+## session scope allows us to pul the name of the selected skin from user.Temp
+## If you wanted the same skin to apply for all users you could use global scope.
+tool.session.ui = org.apache.turbine.services.pull.tools.UITool
+tool.ui.skin = default
+...
+]]></source>
+
+<p>
+Skin properties are defined in WEBAPP/resources/ui/skins/, the following might
+exist in a file WEBAPP/resources/ui/skins/default/skin.props:
+</p>
+
+<source><![CDATA[
+checkedImage = check.gif
+checkedImageAltText = Tick
+label_Introduction = Introduction
+l10n_label_introduction = introduction
+]]></source>
+
+<p>
+and the following might
+exist in a file WEBAPP/resources/ui/skins/custom_skin_1/skin.props:
+</p>
+
+<source><![CDATA[
+checkedImage = check-blue.gif
+checkedImageAltText = Blue tick
+label_Introduction = Summary
+l10n_label_introduction = summary
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<p>
+Retrieving a value from a skin is as simple as (where user.getSkin() returns the
+name of the currently selected skin):
+</p>
+
+<source><![CDATA[
+TurbineUI.get(user.getSkin(), "label_Introduction")
+]]></source>
+
+<p>
+or in a template (the current skin is retrieved from user.Temp):
+</p>
+
+<source><![CDATA[
+$ui.label_Introduction
+]]></source>
+
+<p>
+Images, css and javascript files are stored under the skin directory also and
+can be accessed thus:
+</p>
+
+<source><![CDATA[
+#set($imageurl = $ui.image($imageName))
+## Filename is skin.css
+#set($cssurl = $ui.getStylecss())
+#set($jsurl = $ui.getScript($filename))
+]]></source>
+
+<p>
+You can retrieve an array containing the names of the available skins thus:
+</p>
+
+<source><![CDATA[
+  String[] availableSkins = TurbineUI.getSkinNames();
+]]></source>
+
+<p>
+or in a template:
+</p>
+
+<source><![CDATA[
+  #set($availablekins = $ui.SkinNames)
+]]></source>
+
+<p>
+You can combine skinning and <a href="localization-service.html">localization</a>
+thus:
+</p>
+
+<source><![CDATA[
+## Retrieve the localized label_introduction or label_summary depending on the
+## selected skin
+$l10n.get("label_$ui.l10n_label_introduction")
+]]></source>
+
+<p>
+Please refer to the JavaDocs for the org.apache.turbine.services.ui package for
+further details.
+</p>
+
+</section>
+
+<section name="Properties">
+<p>
+You can configure the UI Service using the following properties:
+</p>
+
+<table>
+<tr>
+<th>Property</th>
+<th>Default</th>
+<th>Function</th>
+</tr>
+<tr>
+<td>tool.ui.dir.skin</td>
+<td>/ui/skins</td>
+<td>The name of the skin directory that is to be used for the web application.</td>
+</tr>
+<tr>
+<td>tool.ui.skin</td>
+<td>default</td>
+<td>The name of the default skin that is to be used for the web application.</td>
+</tr>
+<tr>
+<td>tool.ui.dir.image</td>
+<td>/images</td>
+<td>The name of the image directory inside the skin that is to be used for the
+ web application.</td>
+</tr>
+<tr>
+<td>tool.ui.css</td>
+<td>skin.css</td>
+<td>The name of the css file that is to be used for the web application.</td>
+</tr>
+
+<tr>
+<td>tool.ui.want.relative</td>
+<td>false</td>
+<td>You can configure the UI Service to return relative links for the web
+ application by setting this to <code>true</code>.</td>
+</tr>
+</table>
+
+<p>
+Note that the name of the file within the skin directory that actually contains
+the name/value pairs for the skin is fixed at <em>skin.props</em>.
+</p>
+
+</section>
+
+</body>
+</document>

@@ -52,7 +52,7 @@ import org.apache.turbine.services.TurbineServices;
 
 /**
  * This is a common subset of SecurityService implementation.
- *
+ * <p>
  * Provided functionality includes:
  * <ul>
  * <li> methods for retrieving User objects, that delegates functionality

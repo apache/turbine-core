@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
-    <version>13-SNAPSHOT</version>
+    <version>13</version>
     <relativePath />
   </parent>
   <artifactId>turbine</artifactId>
@@ -532,7 +532,7 @@
         <plugin>
             <groupId>org.apache.rat</groupId>
             <artifactId>apache-rat-plugin</artifactId>
-            <version>0.15</version>
+            <version>${turbine.rat.version}</version>
             <configuration>
                 <excludes>
                   <exclude>xdocs/images/*</exclude>
@@ -875,7 +875,7 @@
         <!-- check the Apache Licence in all source files -->
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
-        <version>0.15</version>
+        <version>${turbine.rat.version}</version>
       </plugin>
     </plugins>
   </reporting>
@@ -1146,26 +1146,29 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-site-plugin</artifactId>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-site-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>turbine-release-site</id>
+                  <phase>prepare-package</phase>
+                  <goals>
+                    <goal>site</goal>
+                  </goals>
+                </execution>
+              </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.rat</groupId>
+            <artifactId>apache-rat-plugin</artifactId>
             <executions>
               <execution>
-                <id>turbine-release-site</id>
-                <phase>prepare-package</phase>
+                <phase>verify</phase>
                 <goals>
-                  <goal>site</goal>
+                  <goal>check</goal>
                 </goals>
               </execution>
             </executions>
-            <configuration>
-                <reportPlugins>
-                  <reportPlugin>
-                    <groupId>org.apache.rat</groupId>
-                    <artifactId>apache-rat-plugin</artifactId>
-                    <version>0.15</version>
-                  </reportPlugin>
-                </reportPlugins>
-            </configuration>
           </plugin>
           <plugin>
             <!-- build the source and binary distribution packages -->
@@ -1197,6 +1200,14 @@
           </plugin>
         </plugins>
       </build>
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.rat</groupId>
+            <artifactId>apache-rat-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </reporting>
     </profile>
     <profile>
       <id>docker-testcontainer</id>
@@ -1310,11 +1321,10 @@
        </dependencies>
     </profile>
     <profile>
-      <!-- allow reproducible / verifibable builds: build first and check with 
+    <!-- allow reproducible / verifibable builds: build first and check with
           mvn clean install -Prv-builds
           mvn clean verify artifact:compare -Prv-builds  
-          diffoscope ..
-       -->
+          diffoscope ..   -->
       <id>rv-builds</id>
       <build>
         <plugins>
@@ -1333,32 +1343,10 @@
                 </execution>
                </executions>
           </plugin>
-            <!--  1) to be moved to parent to get buildNumber in parent implemenation.build property 
-                    2) requires no local midifications! 
-             -->
-            <!--plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                  <execution>
-                    <phase>validate</phase>
-                    <goals>
-                      <goal>create</goal>
-                    </goals>
-                  </execution>
-                </executions>
-                <configuration>
-                  <doCheck>true</doCheck>
-                  <doUpdate>true</doUpdate>
-                </configuration>
-            </plugin-->
         </plugins>
       </build>
       <properties>
-          <!-- allow for reproducible builds: should not be inherited but defined in POM for  -->
-          <project.build.outputTimestamp>10</project.build.outputTimestamp>
-          <implementation.build>${scmBranch}@r${buildNumber};noTimeStamp</implementation.build>
+          <!-- outputTimestamp, implementation.build and buildNumber in parent POM  -->
           <scmBranch>trunk</scmBranch>
       </properties>
     </profile>
@@ -1382,8 +1370,7 @@
     <!--jacoco.skip>true</jacoco.skip-->
     <argLine />
   </properties>
-  
-  
+
     <!-- to allow snapshot parents:  https://issues.apache.org/jira/browse/INFRA-15815  jenkins settings.xml is unchanged from beginning -->
     <repositories>
       <repository>

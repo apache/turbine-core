@@ -38,10 +38,11 @@ import org.apache.turbine.util.LocaleUtils;
  * This service is used to format {@link TemporalAccessor} and
  * {@link #map(String, DateTimeFormatter, Locale)} (different flavors)
  * objects into strings.
- *
+ * <p> 
  * The methods may throw {@link java.time.temporal.UnsupportedTemporalTypeException} or
  * {@link DateTimeParseException}, e.g.
  * if the source and the target format do not match appropriately.
+ * </p>
  *
  */
 @TurbineService("DateTimeFormatterService")
@@ -72,7 +73,7 @@ public class DateTimeFormatterService
 
     /**
      * Initialize the service.
-     *
+     * <p> <p> <p> <p>
      * the {@link #dateTimeFormat} from {@link #formatPattern} is initialized with
      * 
      * <ol>

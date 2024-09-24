@@ -45,7 +45,7 @@ import org.apache.turbine.util.ObjectUtils;
 
 /**
  * Default user manager.
- *
+ * <p>
  * The user manager wraps Fulcrum security user objects into
  * Turbine-specific ones.
  *
@@ -185,9 +185,9 @@ public class DefaultUserManager implements UserManager
 
 	/**
      * Check whether a specified user's account exists.
-     *
+     * <p>
      * The login name is used for looking up the account.
-     *
+     * </p>
      * @param user The user to be checked.
      * @return true if the specified account exists
      * @throws DataBackendException if there was an error accessing the data backend.
@@ -196,10 +196,11 @@ public class DefaultUserManager implements UserManager
     public boolean accountExists(User user)
             throws DataBackendException
     {
-        if (user == null) {
-            return false;
+        boolean result = false;
+        if (user != null) {
+            result = umDelegate.checkExists(user.getUserDelegate());
         }
-        return umDelegate.checkExists(user.getUserDelegate());
+        return result;
     }
 
     /**
