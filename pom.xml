@@ -1355,12 +1355,12 @@
   <properties>
     <!-- maven.compiler setting in turbine parent -->
     <turbine.site.path>turbine-core</turbine.site.path>
-    <fulcrum.intake>3.0.1-SNAPSHOT</fulcrum.intake>
-    <fulcrum.parser>3.0.1-SNAPSHOT</fulcrum.parser>
-    <fulcrum.security>3.0.1-SNAPSHOT</fulcrum.security>
-    <fulcrum.localization>2.0.0-SNAPSHOT</fulcrum.localization>
+    <fulcrum.intake>4.0.0</fulcrum.intake>
+    <fulcrum.parser>4.0.0</fulcrum.parser>
+    <fulcrum.security>4.0.0</fulcrum.security>
+    <fulcrum.localization>2.0.0</fulcrum.localization>
     <fulcrum.quartz>2.0.0-SNAPSHOT</fulcrum.quartz>
-    <fulcrum.testcontainer>2.0.1-SNAPSHOT</fulcrum.testcontainer>
+    <fulcrum.testcontainer>2.0.1</fulcrum.testcontainer>
     <!-- inherited in fulcrum components, testcontainer -->
     <fulcrum.yaafi>2.0.1</fulcrum.yaafi>
     <torque.version>6.0</torque.version>
