@@ -1,6 +1,5 @@
 package org.apache.turbine.services.intake;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,7 +19,7 @@ package org.apache.turbine.services.intake;
  * under the License.
  */
 
-
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +46,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
- * @version $Id$
+ * @version $Id: IntakeTool.java 1886259 2021-02-06 16:54:03Z tv $
  */
 public class IntakeTool
         implements ApplicationTool, Recyclable
@@ -129,10 +128,12 @@ public class IntakeTool
 
         for (int i = groupNames.length - 1; i >= 0; i--)
         {
+            Group foundGroup = null;
+
             try
             {
-                List<Group> foundGroups = intakeService.getGroup(groupNames[i])
-                    .getObjects(pp);
+                foundGroup = intakeService.getGroup(groupNames[i]);
+                List<Group> foundGroups = foundGroup.getObjects(pp);
 
                 if (foundGroups != null)
                 {
@@ -143,6 +144,20 @@ public class IntakeTool
             catch (IntakeException e)
             {
                 log.error(e);
+            }
+            finally
+            {
+                if (foundGroup != null)
+                {
+                    try
+                    {
+                        intakeService.releaseGroup(foundGroup);
+                    }
+                    catch (IntakeException intakeException)
+                    {
+                        log.error(intakeException, intakeException);
+                    }
+                }
             }
         }
     }
@@ -227,10 +242,7 @@ public class IntakeTool
     public void newForm()
     {
         declaredGroups.clear();
-        for (Group group : groups.values())
-        {
-            group.resetDeclared();
-        }
+        groups.values().forEach(Group::resetDeclared);
     }
 
     /**
@@ -300,6 +312,24 @@ public class IntakeTool
             Group g = null;
 
             String inputKey = intakeService.getGroupKey(groupName) + key;
+//            g = groups.computeIfAbsent(inputKey, k -> {
+//                if (create)
+//                {
+//                    try
+//                    {
+//                        Group gg = intakeService.getGroup(groupName);
+//                        gg.init(key, pp);
+//                        return gg;
+//                    }
+//                    catch (IntakeException e)
+//                    {
+//                        // TODO Auto-generated catch block
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//                return null;
+//            });
             if (groups.containsKey(inputKey))
             {
                 g = groups.get(inputKey);
@@ -381,6 +411,7 @@ public class IntakeTool
     public boolean isAllValid()
     {
         boolean allValid = true;
+        // TODO: fail fast?
         for (Group group : groups.values())
         {
             allValid &= group.isAllValid();
@@ -445,13 +476,9 @@ public class IntakeTool
 
 			if (groupKeys != null)
 			{
-		        for (String groupKey : groupKeys)
-                {
-		            if (!groupKey.equals(group.getGID()))
-		            {
-		                 pp.add(INTAKE_GRP, groupKey);
-		            }
-                }
+			    Arrays.stream(groupKeys)
+			        .filter(groupKey -> !groupKey.equals(group.getGID()))
+			        .forEach(groupKey -> pp.add(INTAKE_GRP, groupKey));
 		    }
 
             try
@@ -472,12 +499,7 @@ public class IntakeTool
      */
     public void removeAll()
     {
-        Object[] allGroups = groups.values().toArray();
-        for (int i = allGroups.length - 1; i >= 0; i--)
-        {
-            Group group = (Group) allGroups[i];
-            remove(group);
-        }
+        groups.values().forEach(this::remove);
     }
 
     /**

@@ -74,6 +74,18 @@ public class IntakeToolTest extends BaseTestCase
         assertEquals("LoginGroup", group.getIntakeGroupName());
     }
 
+    @Test
+    public void testRemove() throws Exception
+    {
+        File file = new File("./target/appData.ser");
+        assertTrue("Make sure serialized data file exists:" + file, file.exists());
+        Group group = intakeTool.get("LoginGroup", "loginGroupKey");
+        assertNotNull(group);
+        assertEquals(1, intakeTool.groups.size());
+        intakeTool.remove(group);
+        assertTrue(intakeTool.groups.isEmpty());
+    }
+
     /**
      * Make sure refresh DOESN'T do anything
      *
