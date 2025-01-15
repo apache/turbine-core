@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpSessionBindingEvent;
+import jakarta.servlet.http.HttpSessionBindingEvent;
 
 import org.apache.fulcrum.security.model.turbine.entity.TurbineUser;
 import org.apache.fulcrum.security.model.turbine.entity.TurbineUserGroupRole;
@@ -660,7 +660,7 @@ public class DefaultUserImpl implements User
      * @param createDate The new creation date of the user
      */
     @Override
-    public final void setCreateDate(Date createDate)
+    public void setCreateDate(Date createDate)
     {
         setPerm(CREATE_DATE, createDate);
     }

@@ -63,7 +63,7 @@ public class OMTool implements ApplicationTool, Recyclable
     {
         omMap = new ConcurrentHashMap<>();
         String className = Turbine.getConfiguration().getString("tool.om.factory");
-        this.omFactory = (RetrieverFactory)Class.forName(className).newInstance();
+        this.omFactory = (RetrieverFactory)Class.forName(className).getDeclaredConstructor().newInstance();
     }
 
     /**

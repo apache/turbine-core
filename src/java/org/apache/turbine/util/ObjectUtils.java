@@ -21,10 +21,19 @@ package org.apache.turbine.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputFilter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
 
 /**
  * This is where common Object manipulation routines should go.
@@ -35,6 +44,8 @@ import java.util.Map;
  */
 public abstract class ObjectUtils
 {
+    private static final Logger log = LogManager.getLogger(ObjectUtils.class);
+
     /**
      * Converts a map to a byte array for storage/serialization.
      *
@@ -44,23 +55,27 @@ public abstract class ObjectUtils
      *
      * @throws Exception A generic exception.
      */
-	public static byte[] serializeMap(Map<String, Object> map)
-            throws Exception
+    public static byte[] serializeMap(Map<String, Object> map)
+        throws Exception
     {
         byte[] byteArray = null;
-
-        for (Object value : map.values())
+        Map<String, Object> mapCopy = new HashMap<>(map);
+        
+        // Remove all entries that are not serializable
+        for (Iterator<Map.Entry<String, Object>> i = mapCopy.entrySet().iterator(); i.hasNext();)
         {
-            if (! (value instanceof Serializable))
+            Map.Entry<String, Object> entry = i.next();
+            if (! (entry.getValue() instanceof Serializable))
             {
-                throw new Exception("Could not serialize, value is not serializable:" + value);
+        	i.remove();
+                log.warn("Skipping serialization, value is not serializable: " + entry.getValue());
             }
         }
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
              ObjectOutputStream out = new ObjectOutputStream(baos))
         {
-            out.writeObject(map);
+            out.writeObject(mapCopy);
             out.flush();
 
             byteArray = baos.toByteArray();
@@ -84,16 +99,24 @@ public abstract class ObjectUtils
 
         if (objectData != null)
         {
+            final String filterPattern = Turbine.getConfiguration().getString(TurbineConstants.SESSION_OBJECTINPUTFILTER);
+            
             try (ByteArrayInputStream bin = new ByteArrayInputStream(objectData);
                  ObjectInputStream in = new ObjectInputStream(bin))
             {
+                // Set filter to limit what can be deserialized if so configured
+                if (StringUtils.isNotEmpty(filterPattern))
+                {
+                    in.setObjectInputFilter(ObjectInputFilter.Config.createFilter(filterPattern));
+                }
+                
                 // If objectData has not been initialized, an
                 // exception will occur.
                 object = (T)in.readObject();
             }
             catch (Exception e)
             {
-                // ignore
+                log.warn("Problem deserializing object.", e);
             }
         }
 

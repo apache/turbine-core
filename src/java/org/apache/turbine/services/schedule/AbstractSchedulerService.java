@@ -97,7 +97,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
 
     /**
      * Shutdowns the service.
-     *
+     * <p>
      * This methods interrupts the housekeeping thread.
      */
     @Override

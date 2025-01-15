@@ -1,7 +1,7 @@
 package org.apache.turbine.modules.layouts;
 
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 

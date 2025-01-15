@@ -29,9 +29,9 @@ import static org.mockito.Mockito.when;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.actions.VelocityActionDoesNothing;
@@ -318,6 +318,27 @@ public class ActionLoaderTest extends BaseTestCase
         RunData data = getRunData(request, response, config);
         PipelineData pipelineData = data;
         data.setAction("VelocityActionWithServiceInjection");
+
+        try
+        {
+            ActionLoader.getInstance().exec(pipelineData, data.getAction());
+            Context context = (Context)
+                            data.getTemplateInfo().getTemplateContext(VelocityService.CONTEXT);
+            assertTrue( context.get( "mykey" ) != null );
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            fail("Should not have thrown an exception.");
+        }
+    }
+    
+    @Test
+    public void testDoPerformWithExtendedServiceInjection() throws Exception
+    {
+        RunData data = getRunData(request, response, config);
+        PipelineData pipelineData = data;
+        data.setAction("VelocityActionWithExtendedServiceInjection");
 
         try
         {

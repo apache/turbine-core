@@ -67,4 +67,22 @@ public interface ServiceManager extends ServiceBroker
      * @param applicationRoot application root
      */
     void setApplicationRoot(String applicationRoot);
+    
+    /**
+     * Set an application specific service object
+     * that can be used by application specific
+     * services.
+     *
+     * @param name name of service object
+     * @param value value of service object
+     */
+    public void setServiceObject(String name, Object value);
+
+    /**
+     * Get an application specific service object.
+     *
+     * @param name the name of the service object
+     * @return Object application specific service object
+     */
+    public Object getServiceObject(String name);
 }

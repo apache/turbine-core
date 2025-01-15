@@ -236,7 +236,7 @@ public class GroupPeerManager
 
         try
         {
-            obj = (Persistent) groupObject.newInstance();
+            obj = (Persistent) groupObject.getDeclaredConstructor().newInstance();
         }
         catch (Exception e)
         {

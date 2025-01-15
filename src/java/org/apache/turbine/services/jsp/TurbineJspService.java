@@ -25,8 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
@@ -217,7 +217,7 @@ public class TurbineJspService
         Configuration config = getConfiguration();
 
         // Set relative paths from config.
-        // Needed for javax.servlet.RequestDispatcher
+        // Needed for jakarta.servlet.RequestDispatcher
         relativeTemplatePaths = config.getStringArray(TEMPLATE_PATH_KEY);
 
         // Use Turbine Servlet to translate the template paths.
@@ -263,8 +263,8 @@ public class TurbineJspService
     /**
      * Searches for a template in the default.template path[s] and
      * returns the template name with a relative path which is
-     * required by <a href="http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/ServletContext.html#getRequestDispatcher(java.lang.String)">
-     * javax.servlet.RequestDispatcher</a>
+     * required by <a href="http://java.sun.com/products/servlet/2.3/javadoc/jakarta/servlet/ServletContext.html#getRequestDispatcher(java.lang.String)">
+     * jakarta.servlet.RequestDispatcher</a>
      *
      * @param template the name of the template
      * @return String

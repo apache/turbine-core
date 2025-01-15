@@ -805,7 +805,7 @@ public class TurbinePullService
      * Refresh a given Tool.
      *
      * @param tool A Tool Object
-     * @param pipelineData The current RunData Object
+     * @param dataObject The current RunData Object
      */
     private void refreshTool(Object tool, Object dataObject)
     {

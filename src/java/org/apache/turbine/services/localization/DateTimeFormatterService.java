@@ -1,87 +1,140 @@
 package org.apache.turbine.services.localization;
 
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.turbine.Turbine;
-import org.apache.turbine.services.TurbineBaseService;
-
+import java.time.DateTimeException;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAccessor;
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.util.LocaleUtils;
+
 /**
  * This service is used to format {@link TemporalAccessor} and
- * {@link #map(String, DateTimeFormatter, Locale)} (different falvors)
+ * {@link #map(String, DateTimeFormatter, Locale)} (different flavors)
  * objects into strings.
- *
+ * <p> 
  * The methods may throw {@link java.time.temporal.UnsupportedTemporalTypeException} or
- * {@link DateTimeParseException}.
+ * {@link DateTimeParseException}, e.g.
  * if the source and the target format do not match appropriately.
+ * </p>
  *
  */
+@TurbineService("DateTimeFormatterService")
 public class DateTimeFormatterService
-        extends TurbineBaseService implements DateTimeFormatterInterface {
+        extends TurbineBaseService implements DateTimeFormatterInterface 
+{
 
-    public static final String SERVICE_NAME = "DateTimeFormatterService";
+    private String formatPattern = null;
 
-    public static final String ROLE = DateTimeFormatterService.class.getName();
+    private DateTimeFormatter dateTimeFormat = null;
 
-    private String dateTimeFormatPattern = null;
-    
-    private DateTimeFormatter defaultFormat = null;
+    private Locale locale = null;
+
+    private ZoneId zoneId;
 
     @Override
     public DateTimeFormatter getDefaultFormat()
     {
-        return defaultFormat;
+        return dateTimeFormat;
     }
 
     @Override
-    public String getDateTimeFormatPattern() {
-        return dateTimeFormatPattern;
+    public String getFormatPattern() {
+        return formatPattern;
     }
 
     private static final Logger log = LogManager.getLogger(DateTimeFormatterService.class);
 
     /**
      * Initialize the service.
-     *
-     * the {@link #defaultFormat} from {@link #dateTimeFormatPattern} is initialized with
-     * the default Locale {@link Locale#getDefault()} and default zone: {@link ZoneId#systemDefault()}.
-     *
+     * <p> <p> <p> <p>
+     * the {@link #dateTimeFormat} from {@link #formatPattern} is initialized with
+     * 
+     * <ol>
+     * <li>{@link Locale}: {@link LocaleUtils#getDefaultLocale()} is used by default.
+     * It could be overridden setting #USE_TURBINE_LOCALE_KEY to false, the
+     * the default Locale {@link Locale#getDefault()} is used.
+     * </li><li>{@link ZoneId}: If #DATE_TIME_ZONEID_KEY is set this {@link ZoneId} 
+     * is used else {@link ZoneId#systemDefault()}.
+     * </li>
+     * </ol>
      */
     @Override
     public void init()
     {
-        dateTimeFormatPattern = Turbine.getConfiguration()
+        formatPattern = Turbine.getConfiguration()
                 .getString(DATE_TIME_FORMAT_KEY, DATE_TIME_FORMAT_DEFAULT);
-        defaultFormat = DateTimeFormatter.ofPattern(dateTimeFormatPattern)
-                .withLocale(Locale.getDefault()).withZone(ZoneId.systemDefault());
+
+        boolean useTurbineLocale =  Turbine.getConfiguration()
+        .getBoolean(USE_TURBINE_LOCALE_KEY, true);
+
+        Locale localeSetter = (useTurbineLocale && LocaleUtils.getDefaultLocale() != null)?
+                LocaleUtils.getDefaultLocale()
+                : Locale.getDefault();
+        setLocale(localeSetter);
+
+        String zoneIdStr = Turbine.getConfiguration()
+        .getString(DATE_TIME_ZONEID_KEY);
+        ZoneId zoneIdSet = (zoneIdStr != null)?  ZoneId.of( zoneIdStr ) :
+            ZoneId.systemDefault();
+         setZoneId(zoneIdSet);
+
+        dateTimeFormat = DateTimeFormatter.ofPattern(formatPattern)
+                .withLocale(localeSetter).withZone(zoneIdSet);
 
         log.info("Initialized DateTimeFormatterService with pattern {}, locale {} and zone {}",
-                dateTimeFormatPattern, defaultFormat.getLocale(), defaultFormat.getZone());
+                formatPattern, dateTimeFormat.getLocale(),
+                dateTimeFormat.getZone());
         setInit(true);
     }
 
     @Override
     public <T extends TemporalAccessor> String format(T temporalAccessor)
     {
-        return defaultFormat.format(temporalAccessor);
+        return dateTimeFormat.format(temporalAccessor);
     }
 
     @Override
     public <T extends TemporalAccessor> String format(T temporalAccessor, String dateFormatString)
     {
-        return format(temporalAccessor, dateFormatString, null);
+        return format(temporalAccessor, dateFormatString, null, null);
     }
 
     @Override
     public <T extends TemporalAccessor> String format(T temporalAccessor, String dateFormatString, Locale locale)
     {
+        return format(temporalAccessor, dateFormatString, locale, null);
+    }
+
+    @Override
+    public <T extends TemporalAccessor> String format(T temporalAccessor, String dateFormatString, Locale locale,
+            ZoneId zoneId) {
         String result = null;
 
         if (StringUtils.isEmpty(dateFormatString) || temporalAccessor == null)
@@ -90,16 +143,35 @@ public class DateTimeFormatterService
         }
         else
         {
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(dateFormatString);
+            DateTimeFormatter dtf =
+                    DateTimeFormatter.ofPattern(dateFormatString);
             if (locale != null)
             {
-                dtf.withLocale(locale);
+                dtf = dtf.withLocale(locale);
+            } else {
+                log.warn("adding default local {}",  getLocale() );
+                dtf = dtf.withLocale( getLocale());
             }
-            result = dtf.format(temporalAccessor);
+            if (zoneId != null)
+            {
+                dtf = dtf.withZone(zoneId);
+            } else {
+                log.warn("adding default zone {}", getZoneId() );
+                dtf = dtf.withZone(getZoneId());
+            }
+            log.warn("try to format {} with {}.", temporalAccessor, dtf );
+            try {
+                result =
+                        dtf.format(temporalAccessor);
+            } catch(DateTimeException e) {
+                log.error("An exception with date time formatting was thrown: {}", e);
+                // check with dtf.toFormat().format(temporalAccessor)?
+                throw e;
+            }
         }
         return result;
     }
-    
+
     @Override
     public String map(String src, String outgoingFormatPattern, Locale locale, String incomingFormatPattern)
     {
@@ -109,7 +181,7 @@ public class DateTimeFormatterService
         }
         if (incomingFormatPattern == null)
         {
-            incomingFormatPattern = dateTimeFormatPattern;
+            incomingFormatPattern = formatPattern;
         }
         if (incomingFormatPattern.equals( outgoingFormatPattern )) {
             return "";
@@ -134,7 +206,7 @@ public class DateTimeFormatterService
         }
         if (incomingFormat == null)
         {
-            incomingFormat = defaultFormat;
+            incomingFormat = dateTimeFormat;
         }
         if (incomingFormat.equals( outgoingFormat )) {
             return "";
@@ -151,18 +223,36 @@ public class DateTimeFormatterService
     @Override
     public String mapTo(String src, DateTimeFormatter outgoingFormat)
     {
-        return map( src, outgoingFormat, null, defaultFormat );
+        return map( src, outgoingFormat, null, dateTimeFormat );
     }
 
     @Override
     public String mapFrom(String src, DateTimeFormatter incomingFormat)
     {
-        return map( src, defaultFormat, null, incomingFormat );
+        return map( src, dateTimeFormat, null, incomingFormat );
     }
 
     @Override
     public String map(String src, DateTimeFormatter outgoingFormat, Locale locale)
     {
-        return map( src, outgoingFormat, locale, defaultFormat );
+        return map( src, outgoingFormat, locale, dateTimeFormat );
     }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+    
+    @Override
+    public ZoneId getZoneId() {
+        return zoneId;
+    }
+
+    public void setZoneId(ZoneId zoneId) {
+        this.zoneId = zoneId;
+    }
+
 }

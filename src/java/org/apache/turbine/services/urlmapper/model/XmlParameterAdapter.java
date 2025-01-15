@@ -23,7 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.apache.turbine.services.urlmapper.model.XmlParameterList.XmlParameter;
 
@@ -35,7 +35,7 @@ import org.apache.turbine.services.urlmapper.model.XmlParameterList.XmlParameter
 public class XmlParameterAdapter extends XmlAdapter<XmlParameterList, Map<String, String>>
 {
     /**
-     * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
+     * @see jakarta.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
      */
     @Override
     public Map<String, String> unmarshal(XmlParameterList xmlList) throws Exception
@@ -47,7 +47,7 @@ public class XmlParameterAdapter extends XmlAdapter<XmlParameterList, Map<String
     }
 
     /**
-     * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
+     * @see jakarta.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
      */
     @Override
     public XmlParameterList marshal(Map<String, String> map) throws Exception

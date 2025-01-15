@@ -24,15 +24,43 @@
   </properties>
 
   <body>
-     <release version="5.2-SNAPSHOT" date="in Git">
-       <action type="update" dev="gk">
-        Minor version update to Torque 5.1, Jackson to 2.14.0-rc2, docker-testcontainers to 1.17.5.
+    <release version="6.1-SNAPSHOT" date="in Git">
+      <action type="add" dev="tv">
+        New configuration option "session.objectinputfilter" to limit the classes that can be 
+        deserialized into a session from persistent storage. This feature uses the 
+        ObjectInputFilter introduced in Java 9.
+      </action>
+    </release>
+    <release version="6.0" date="2024-02-14">
+      <action type="add" dev="gk">
+        Provide mechanism to allow auto loading of Turbine (and Fulcrum) services. If a "known" service is extending FieldAnnotatedTurbineBaseService or 
+        MethodAnnotatedTurbineBaseService it could declare fields and methods with more Turbine annotations. 
+        Examples are  annotating a service with @TurbineService or autoload a service, which has class level annotation @TurbineService, if the callingclass itself is TurbineService annotated.
+      </action>
+      <action type="add" dev="gk">
+        New  service DateTimeFormatterService and tool DateTimeFormatterTool, which allow date time formatting with locale and zone configuration.
+      </action>
+      <action type="update" dev="gk">
+        Dependency version update yauaa to 7.24.0, commons-pool2 2.12.0, slf4j-api 2.0.11, jaxb-runtime 4.0.4, fulcrum.security 3.0.0, fulcrum.intake 3.0.0, fulcrum.parser 3.0.0, fulcrum.yaafi 2.0.0,
+        commons  email to 1.6.0, commons lang3 to 3.14.0, commons text to 1.11.0, jakarta xml from 2.3.3 to 4.0.0, jaxb-impl from 2.3.3 to 4.0.0
+      </action>
+      <action type="update" dev="gk">
+        Minor version update to Torque 5.1, Jackson to 2.16.1 (yaml profile), docker-testcontainers to 1.18.3 (docker profile), commons-configuration2 to 2.8.0, commons-text 1.10.0
       </action>
       <action type="update" dev="gk">
         Fix java.lang.NoSuchFieldError: DEFAULT_TIME_BETWEEN_EVICTION_RUNS. This field changed from being an long to a Duration in commons-pool2 v 2.10.0 and commons-dbcp2 v2.9.0.
-      </action>  
+      </action>
+      <action type="update" dev="tv">
+        Migrate to package-info.java from package.html.
+      </action>
+      <action type="update" dev="tv">
+        Optimize JobQueue and add JobQueueTest
+      </action>    
     </release>
-     <release version="5.1" date="2021-11-23">
+    <action type="add" dev="gk">
+       Add Annotation @TurbineTool to annotate tools for advanced usage in action methods.
+    </action>
+    <release version="5.1" date="2021-11-23">
         <action type="update" dev="painter">
         Updated dependencies: yauaa to 5.23, commons-lang3 to 3.12, jython-standalone to 2.7.2
         Update turbine-parent 8 (released)

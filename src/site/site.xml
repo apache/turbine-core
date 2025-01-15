@@ -18,18 +18,23 @@
  under the License.
 -->
 
-<project name="Apache Turbine">
+<site xmlns="http://maven.apache.org/SITE/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd"
+  name="Apache Turbine" combine.self="merge">  
 
-  <bannerLeft>
-    <name>Apache Turbine</name>
-    <src>/images/turbine-project-apache-separate.png</src>
-    <alt>Apache Turbine</alt>
-    <href>http://turbine.apache.org/</href>
+  <bannerLeft href="https://turbine.apache.org/">
+    <image src="/images/turbine-project-apache-separate.png" alt="Apache Turbine" />
   </bannerLeft>
-  <bannerRight>
-    <src>/images/logo.gif</src>
-  </bannerRight>
-  
+   <bannerRight href="https://turbine.apache.org/">
+        <image src="/images/logo.gif" />
+    </bannerRight>
+  <publishDate format="dd MMMM yyyy" position="left" />
+  <version position="left" />
+  <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>2.0.0-M10</version>
+  </skin>
   <body>
   
      <head>
@@ -39,6 +44,12 @@
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">       
        ]]>
     </head>
+    
+    <links>
+        <item name="Apache" href="https://www.apache.org/"> </item>
+        <item name="Turbine" href="https://turbine.apache.org/">  </item>
+          <item name="Fulcrum" href="/fulcrum/"> </item>
+    </links>
   
     <menu name="General Information">
       <item name="Overview"              href="/index.html"/>
@@ -110,10 +121,26 @@
       <item name="How To Help"           href="/how-to-help.html"/>
       <item name="Todo"                  href="/todo.html"/>
     </menu>
+
+    <footer/>
  
       
   </body>
   
-  <!-- custom now configured in parent site -->
+  <!-- custom currently not configured in parent site -->
+  <custom>
+        <fluidoSkin>
+            <topBarEnabled>false</topBarEnabled>
+            <sideBarEnabled>true</sideBarEnabled>
+            <googleSearch>
+                <sitesearch>${project.url}</sitesearch>
+            </googleSearch>
+            <gitHub>
+                <projectId>apache/turbine-build</projectId>
+                <ribbonOrientation>right</ribbonOrientation>
+                <ribbonColor>orange</ribbonColor>
+            </gitHub>
+        </fluidoSkin>
+    </custom>
   
-</project>
+</site>

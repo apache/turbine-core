@@ -1,6 +1,10 @@
 target
 maven.log
 velocity.log*
+
+maven-eclipse.xml
+*.iml
+
 *~
 .classpath
 .project
@@ -11,3 +15,5 @@ logs
 *.ser
 
 *torque.usersettings.properties
+/.apt_generated/
+/.apt_generated_tests/

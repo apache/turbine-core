@@ -27,7 +27,7 @@ import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
@@ -44,7 +44,7 @@ import org.jabsorb.JSONRPCBridge;
  * logged in prior to executing the functions you provide.
  *
  * <p>Here is an example from a superclass:
- * <code>
+ * {@code
  * public void doOutput(PipelineData data) throws Exception
  * {
  *     User user = data.getUser();
@@ -59,7 +59,7 @@ import org.jabsorb.JSONRPCBridge;
  *
  *     super.doOutput(data);
  * }
- * </code>
+ * }
  *
  * <p>The class MyFunctions would be something like:
  * <code>

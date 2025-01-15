@@ -23,7 +23,7 @@ import java.util.Date;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpSessionBindingListener;
+import jakarta.servlet.http.HttpSessionBindingListener;
 
 import org.apache.fulcrum.security.model.turbine.entity.TurbineUser;
 

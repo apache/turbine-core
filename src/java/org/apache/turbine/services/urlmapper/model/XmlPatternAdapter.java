@@ -21,7 +21,7 @@ package org.apache.turbine.services.urlmapper.model;
 
 import java.util.regex.Pattern;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
  * Creates Regex Pattern objects.
@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 public class XmlPatternAdapter extends XmlAdapter<String, Pattern>
 {
     /**
-     * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
+     * @see jakarta.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
      */
     @Override
     public Pattern unmarshal(String urlPattern) throws Exception
@@ -40,7 +40,7 @@ public class XmlPatternAdapter extends XmlAdapter<String, Pattern>
     }
 
     /**
-     * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
+     * @see jakarta.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
      */
     @Override
     public String marshal(Pattern pattern) throws Exception

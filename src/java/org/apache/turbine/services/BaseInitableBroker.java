@@ -74,11 +74,12 @@ public abstract class BaseInitableBroker
 
     /**
      * Default constructor of InitableBroker.
-     *
+     * <p>
      * This constructor does nothing. Your brokers should be
      * singletons, therefore their constructors should be
      * private. They should also have public YourBroker getInstance()
      * methods.
+     * </p>
      */
     protected BaseInitableBroker()
     {
@@ -161,12 +162,12 @@ public abstract class BaseInitableBroker
 
     /**
      * Provides an instance of Initable class ready to work.
-     *
+     * <p>
      * If the requested class couldn't be instantiated or initialized,
      * an InstantiationException will be thrown. You needn't handle
      * this exception in your code, since it indicates fatal
      * misconfiguration of the system.
-     *
+     * </p>
      * @param className The name of the Initable requested.
      * @return An instance of the requested Initable.
      * @throws InstantiationException if there was a problem
@@ -212,11 +213,11 @@ public abstract class BaseInitableBroker
 
     /**
      * Retrieves an instance of an Initable from the repository.
-     *
+     * <p>
      * If the requested class is not present in the repository, it is
      * instantiated and passed a reference to the broker, saved and
      * then returned.
-     *
+     * </p>
      * @param className The name of the class to be instantiated.
      *
      * @return an instance of the requested class

@@ -23,9 +23,9 @@ package org.apache.turbine.services.session;
 
 import java.io.Serializable;
 
-import javax.servlet.http.HttpSessionActivationListener;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
+import jakarta.servlet.http.HttpSessionActivationListener;
+import jakarta.servlet.http.HttpSessionEvent;
+import jakarta.servlet.http.HttpSessionListener;
 
 import org.apache.turbine.services.TurbineServices;
 
@@ -56,7 +56,7 @@ import org.apache.turbine.services.TurbineServices;
  * @version $Id$
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:dlr@apache.org">Daniel Rall</a>
- * @see javax.servlet.http.HttpSessionListener
+ * @see jakarta.servlet.http.HttpSessionListener
  */
 public class SessionListener
         implements HttpSessionListener, HttpSessionActivationListener, Serializable

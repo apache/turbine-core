@@ -21,7 +21,7 @@ package org.apache.turbine.modules.pages;
  */
 
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.annotation.TurbineService;

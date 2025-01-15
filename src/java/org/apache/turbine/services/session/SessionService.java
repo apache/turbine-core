@@ -23,7 +23,7 @@ package org.apache.turbine.services.session;
 
 import java.util.Collection;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.Service;

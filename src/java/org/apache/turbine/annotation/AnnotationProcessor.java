@@ -30,11 +30,14 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.fulcrum.pool.PoolException;
+import org.apache.fulcrum.pool.PoolService;
 import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.Loader;
+import org.apache.turbine.services.Service;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
@@ -237,6 +240,7 @@ public class AnnotationProcessor
      * objects
      *
      * @param object the object
+     * @param hasTurbineServicesInMethodFields set <code>true </code>, if methods should be parsed
      * @throws TurbineException if the objects could not be injected
      */
     public static void process(Object object, Boolean hasTurbineServicesInMethodFields) throws TurbineException
@@ -244,7 +248,15 @@ public class AnnotationProcessor
         ServiceManager manager = null;
         Configuration config = null;
         AssemblerBrokerService assembler = null;
+        PoolService pool= null;
         Class<?> clazz = object.getClass();
+        
+        boolean isTurbineService = false;
+        if ( clazz.isAnnotationPresent(TurbineService.class)) {
+            TurbineService service = clazz.getAnnotation(TurbineService.class);
+            log.debug("retrieved class annotation: "+ service);
+            isTurbineService = true;
+        } 
 
         while (clazz != null)
         {
@@ -281,18 +293,39 @@ public class AnnotationProcessor
                         }
                         injectTurbineLoader(object, assembler, field, (TurbineLoader) a);
                     }
+                    else if (a instanceof TurbineTool)
+                    {
+                        if (pool == null)
+                        {
+                            pool = (PoolService)TurbineServices.getInstance()
+                                    .getService(PoolService.ROLE);
+                        }
+                        injectTurbineTool(object, pool, field, (TurbineTool) a);
+                    }
+                }
+                if (isTurbineService)
+                {
+                    if (field.getType().isAnnotationPresent(TurbineService.class)) {
+                        TurbineService service = field.getType().getAnnotation(TurbineService.class);
+                        log.debug("retrieved implicit class annotation: "+ service);
+                        if (manager == null)
+                        {
+                            manager = TurbineServices.getInstance();
+                        }
+                        injectTurbineService(object, manager, field, service);
+                    }    
                 }
             }
 
             if (hasTurbineServicesInMethodFields) {
-                manager = processMethods(object, manager, clazz);
+                manager = processMethods(object, manager, clazz, isTurbineService);
             }
 
             clazz = clazz.getSuperclass();
         }
     }
 
-    private static ServiceManager processMethods(Object object, ServiceManager manager, Class<?> clazz) throws TurbineException {
+    private static ServiceManager processMethods(Object object, ServiceManager manager, Class<?> clazz, boolean isTurbineService) throws TurbineException {
         Method[] methods = clazz.getMethods();
 
         for (Method method : methods)
@@ -310,12 +343,29 @@ public class AnnotationProcessor
                     injectTurbineService(object, manager, method, (TurbineService) a);
                 }
             }
+            if (isTurbineService)
+            {
+                if (manager == null)
+                {
+                    manager = TurbineServices.getInstance();
+                }
+                Class<?>[] classes = method.getParameterTypes();
+                for (Class<?> c : classes)
+                {
+                    if ( c.isAnnotationPresent(TurbineService.class)) {
+                        TurbineService service = c.getAnnotation(TurbineService.class);
+                        log.debug("retrieved implicit service in Turbien service: "+ service);
+                        injectTurbineService(object, manager, method, service);
+                    } 
+                    
+                }
+            }
         }
         return manager;
     }
 
     /**
-     * Inject Turbine configuration into field of object
+     * Inject Turbine loader into field of object
      *
      * @param object the object to process
      * @param assembler AssemblerBrokerService, provides the loader
@@ -340,6 +390,38 @@ public class AnnotationProcessor
             throw new TurbineException("Could not inject loader "
                     + loader + " into object " + object, e);
         }
+    }
+    
+    /**
+     * Inject Turbine tool into field of object and 
+     * injects annotations provided in the tool.
+     *
+     * @param object the object to process
+     * @param pool PoolService, provides the pool
+     * @param field the field
+     * @param annotation the value of the annotation
+     *
+     * @throws TurbineException if loader cannot be set
+     */
+    private static void injectTurbineTool(Object object, PoolService pool, Field field, TurbineTool annotation) throws TurbineException
+    {
+        Object tool = null;
+        try
+        {
+            tool = pool.getInstance(annotation.value());
+            // inject annotations in tool
+            process(tool);
+
+            field.setAccessible(true);
+            log.debug("Injection of {} into object {}", tool, object);
+
+            field.set(object, tool);
+        }
+        catch (PoolException | IllegalArgumentException | IllegalAccessException e)
+        {
+            throw new TurbineException("Could not inject tool "
+                    + tool + " into object " + object, e);
+        } 
     }
 
     /**
@@ -383,7 +465,7 @@ public class AnnotationProcessor
                 if ( String.class.isAssignableFrom( type ) )
                 {
                     String value = conf.getString(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.set(object, value);
@@ -391,7 +473,7 @@ public class AnnotationProcessor
                 else if ( Boolean.TYPE.isAssignableFrom( type ) )
                 {
                     boolean value = conf.getBoolean(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setBoolean(object, value);
@@ -399,7 +481,7 @@ public class AnnotationProcessor
                 else if ( Integer.TYPE.isAssignableFrom( type ) )
                 {
                     int value = conf.getInt(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setInt(object, value);
@@ -407,7 +489,7 @@ public class AnnotationProcessor
                 else if ( Long.TYPE.isAssignableFrom( type ) )
                 {
                     long value = conf.getLong(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setLong(object, value);
@@ -415,7 +497,7 @@ public class AnnotationProcessor
                 else if ( Short.TYPE.isAssignableFrom( type ) )
                 {
                     short value = conf.getShort(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setShort(object, value);
@@ -423,7 +505,7 @@ public class AnnotationProcessor
                 else if ( Long.TYPE.isAssignableFrom( type ) )
                 {
                     long value = conf.getLong(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setLong(object, value);
@@ -431,7 +513,7 @@ public class AnnotationProcessor
                 else if ( Float.TYPE.isAssignableFrom( type ) )
                 {
                     float value = conf.getFloat(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setFloat(object, value);
@@ -439,7 +521,7 @@ public class AnnotationProcessor
                 else if ( Double.TYPE.isAssignableFrom( type ) )
                 {
                     double value = conf.getDouble(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setDouble(object, value);
@@ -447,7 +529,7 @@ public class AnnotationProcessor
                 else if ( Byte.TYPE.isAssignableFrom( type ) )
                 {
                     byte value = conf.getByte(key);
-                    log.debug("Injection of {} into object {}", value, object);
+                    log.debug("Injection of key {} into object {}", value, object);
 
                     field.setAccessible(true);
                     field.setByte(object, value);
@@ -455,11 +537,21 @@ public class AnnotationProcessor
                 else if ( List.class.isAssignableFrom( type ) )
                 {
                     List<Object> values = conf.getList(key);
-                    log.debug("Injection of {} into object {}", values, object);
+                    log.debug("Injection of key {} into object {}", values, object);
 
                     field.setAccessible(true);
                     field.set(object, values);
+                } else {
+                    throw new TurbineException("Could not inject type " + 
+                      type + " into object " + object + ". Type "+ type + " not assignable in configuration "
+                      + conf + " (allowed: String, Boolean, List, Number Types, "+ Configuration.class.getName() + ").");
                 }
+            } else {
+                field.setAccessible(true);
+                Object defaultValue = field.get(object);
+                // this should not throw an error as it might be set later from container  e. g. session.timeout 
+                // we might check field.get<Type> to show the default value of the field, but this is only a guess, it might be set even later..
+                log.info("No key {} of type {} injected into object {}. Field {} is set to default {}.", key, type, object, field.getName(), defaultValue);
             }
         }
         catch (IllegalArgumentException | IllegalAccessException e)
@@ -483,20 +575,28 @@ public class AnnotationProcessor
     {
         String serviceName = null;
         // Check for annotation value
-        if (StringUtils.isNotEmpty(annotation.value()))
+        if (annotation != null && StringUtils.isNotEmpty(annotation.value()))
         {
             serviceName = annotation.value();
         }
         // Check for fields SERVICE_NAME and ROLE
         else
-        {
+        { 
+            // check field level annotation
             Field[] typeFields = field.getType().getFields();
             serviceName = checkServiceOrRoleInField(serviceName, typeFields);
+            // if it is the default Service, we check class level annotation
+            if ( (serviceName == null || serviceName.equals(Service.SERVICE_NAME)) &&
+                    field.getType().isAnnotationPresent(TurbineService.class)) {
+                TurbineService service = field.getType().getAnnotation(TurbineService.class);
+                log.debug("retrieved class annotation: "+ service);
+                serviceName = service.value();
+            } 
         }
 
         if (StringUtils.isEmpty(serviceName))
         {
-            // Try interface class name
+            // Try interface class name (e.g. used by Fulcrum)
             serviceName = field.getType().getName();
         }
 
@@ -518,11 +618,20 @@ public class AnnotationProcessor
         }
     }
 
+    /**
+     * Injects Turbine service into method fields 
+     * 
+     * @param object the object to process
+     * @param manager the service manager
+     * @param method The method
+     * @param annotation the value of the annotation
+     * @throws TurbineException - If service could not be injected.
+     */
     private static void injectTurbineService(Object object, ServiceManager manager, Method method, TurbineService annotation) throws TurbineException
     {
         String serviceName = null;
         // Check for annotation value
-        if (StringUtils.isNotEmpty(annotation.value()))
+        if (annotation != null && StringUtils.isNotEmpty(annotation.value()))
         {
             serviceName = annotation.value();
         }
@@ -534,6 +643,14 @@ public class AnnotationProcessor
                 Field[] fields = c.getFields();
                 // Check for fields SERVICE_NAME and ROLE
                 serviceName = checkServiceOrRoleInField(serviceName, fields);
+                
+                if ( (serviceName == null || serviceName.equals(Service.SERVICE_NAME)) &&
+                        c.isAnnotationPresent(TurbineService.class)) {
+                    TurbineService service = c.getAnnotation(TurbineService.class);
+                    log.debug("retrieved class annotation: "+ service);
+                    serviceName = service.value();
+                } 
+                
             }
         }
 

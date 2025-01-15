@@ -48,12 +48,15 @@ import java.util.List;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.fulcrum.factory.FactoryService;
+import org.apache.fulcrum.security.UserManager;
 import org.apache.fulcrum.security.entity.Role;
 import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
 import org.apache.turbine.annotation.AnnotationProcessor.ConditionType;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+import org.apache.turbine.services.localization.LocalizationTool;
+import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
@@ -98,9 +101,19 @@ public class AnnotationProcessorTest
 
     @TurbineService
     private AssemblerBrokerService asb;
+    
+    /** a Fulcrum userManager */
+    @TurbineService
+    private UserManager userManager;
+    
+    @TurbineService
+    private SecurityService security;
 
     @TurbineService
     private FactoryService factory;
+    
+    @TurbineTool(LocalizationTool.class)
+    private LocalizationTool lt;
 
     @BeforeAll
     public static void init() throws Exception
@@ -144,6 +157,11 @@ public class AnnotationProcessorTest
         assertNotNull(screenLoader);
         assertNotNull(asb);
         assertNotNull(factory);
+        
+        assertNotNull(userManager);
+        assertNotNull(security);
+        assertNotNull(lt);
+        // although you need to initialize with context in lt.init(getRunData());
 
     }
 

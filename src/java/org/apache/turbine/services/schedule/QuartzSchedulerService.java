@@ -370,7 +370,7 @@ public class QuartzSchedulerService
 
     /**
      * @param je a generic job entry
-     * @throws TurbineException
+     * @throws TurbineException - If the cast fails.
      *
      * @return A downcasted JobEntry type
      */

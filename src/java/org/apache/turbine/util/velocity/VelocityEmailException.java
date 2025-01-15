@@ -25,7 +25,7 @@ import org.apache.turbine.util.TurbineException;
 
 /**
  * This exception is thrown if a VelocityEmail/VelocityHtmlEmail can not be
- * sent using JavaMail.  It will most likly wrap a javax.mail.MessagingException
+ * sent using JavaMail.  It will most likly wrap a jakarta.mail.MessagingException
  * exception.
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>

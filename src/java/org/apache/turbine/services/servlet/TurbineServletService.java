@@ -25,8 +25,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -86,7 +86,7 @@ public class TurbineServletService
      * Returns an URL object for a given URI string.
      * This URI is considered relative to the context.
      *
-     * @see javax.servlet.ServletContext#getResource
+     * @see jakarta.servlet.ServletContext#getResource
      * @param uri the URI to resolve as an URL
      * @return an URL object or null is the uri is malformed or
      * can't be resolved
@@ -125,7 +125,7 @@ public class TurbineServletService
     /**
      * Same as getResource except that it returns an InputStream
      *
-     * @see javax.servlet.ServletContext#getResourceAsStream
+     * @see jakarta.servlet.ServletContext#getResourceAsStream
      * @param uri the URI to resolve
      * @return an InputStream on the URI content or null
      */
@@ -146,7 +146,7 @@ public class TurbineServletService
      * Returns the complete filesystem path for a
      * given URI
      *
-     * @see javax.servlet.ServletContext#getRealPath
+     * @see jakarta.servlet.ServletContext#getRealPath
      * @param uri the URI to resolve
      * @return the full system path of this URI
      */

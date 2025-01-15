@@ -27,8 +27,8 @@ import java.net.URL;
 import java.util.Hashtable;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.HtmlEmail;
+import org.apache.commons.mail2.core.EmailException;
+import org.apache.commons.mail2.jakarta.HtmlEmail;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
@@ -224,14 +224,14 @@ public class VelocityHtmlEmail extends HtmlEmail
      *
      * <p>Example of template:
      *
-     * <pre>
-     * &lt;html&gt;
-     * &lt;!-- $mail.embed("http://server/border.gif","border.gif"); --&gt;
-     * &lt;img src=$mail.getCid("border.gif")&gt;
-     * &lt;p&gt;This is your content
-     * &lt;img src=$mail.getCid("border.gif")&gt;
-     * &lt;/html&gt;
-     * </pre>
+     * {@code
+     * <html>
+     * <!-- $mail.embed("http://server/border.gif","border.gif"); -->
+     * <img src=$mail.getCid("border.gif")>
+     * <p>This is your content
+     * <img src=$mail.getCid("border.gif")>
+     * </html>
+     * }
      *
      * @param surl A String.
      * @param name A String.
