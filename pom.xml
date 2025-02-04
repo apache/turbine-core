@@ -1359,14 +1359,14 @@
     <fulcrum.parser>4.0.0</fulcrum.parser>
     <fulcrum.security>4.0.0</fulcrum.security>
     <fulcrum.localization>2.0.0</fulcrum.localization>
-    <fulcrum.quartz>2.0.0-SNAPSHOT</fulcrum.quartz>
+    <fulcrum.quartz>2.0.0</fulcrum.quartz>
     <fulcrum.testcontainer>2.0.1</fulcrum.testcontainer>
     <!-- inherited in fulcrum components, testcontainer -->
     <fulcrum.yaafi>2.0.1</fulcrum.yaafi>
     <torque.version>6.0</torque.version>
-    <jackson2.version>2.17.2</jackson2.version>
+    <jackson2.version>2.18.2</jackson2.version>
     <doclint>none</doclint>
-    <docker.testcontainers.version>1.18.3</docker.testcontainers.version>
+    <docker.testcontainers.version>1.20.4</docker.testcontainers.version>
     <!--jacoco.skip>true</jacoco.skip-->
     <argLine />
   </properties>

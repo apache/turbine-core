@@ -53,10 +53,10 @@ import org.apache.turbine.util.TurbineException;
 public class AnnotationProcessor
 {
     /** Logging */
-    private static Logger log = LogManager.getLogger(AnnotationProcessor.class);
+    private static final Logger log = LogManager.getLogger(AnnotationProcessor.class);
 
     /** Annotation cache */
-    private static ConcurrentMap<String, Annotation[]> annotationCache = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, Annotation[]> annotationCache = new ConcurrentHashMap<>();
 
     /**
      * Get cached annotations for field, class or method

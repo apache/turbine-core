@@ -149,17 +149,17 @@ public class DateTimeFormatterService
             {
                 dtf = dtf.withLocale(locale);
             } else {
-                log.warn("adding default local {}",  getLocale() );
+                log.warn("adding default locale {}",  getLocale() );
                 dtf = dtf.withLocale( getLocale());
             }
             if (zoneId != null)
             {
                 dtf = dtf.withZone(zoneId);
             } else {
-                log.warn("adding default zone {}", getZoneId() );
+                log.info("adding default zone {}", getZoneId() );
                 dtf = dtf.withZone(getZoneId());
             }
-            log.warn("try to format {} with {}.", temporalAccessor, dtf );
+            log.info("try to format {} with {}.", temporalAccessor, dtf );
             try {
                 result =
                         dtf.format(temporalAccessor);
