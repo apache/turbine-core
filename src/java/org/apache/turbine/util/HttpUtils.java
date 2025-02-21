@@ -22,12 +22,14 @@ package org.apache.turbine.util;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import jakarta.servlet.http.HttpServletResponse;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * This class provides utilities for handling some semi-trivial HTTP stuff that
@@ -38,6 +40,10 @@ import org.apache.turbine.pipeline.PipelineData;
  */
 public class HttpUtils
 {
+    /**
+     * Characters not allowed in keys, that is not alphanumeric, underscore, hyphen, slash and dot.
+     */
+    private static final String CHARACTERS_NOT_ALLOWED_IN_KEY = "[^\\w_/\\.-]";
     /**
      * The date format to use for HTTP Dates.
      */
@@ -82,4 +88,27 @@ public class HttpUtils
             response.setDateHeader("Expires", System.currentTimeMillis() + expiry);
         }
     }
+    
+    /**
+     * Check if there is any not allowed {@value #CHARACTERS_NOT_ALLOWED_IN_KEY}
+     * in parameters, eg. Turbine keys like actions, screens, layouts, .
+     * 
+     * @param parameter or key to be checked
+     * @return True, if it contains any non allowed characters
+     */
+    public static boolean keyRequiresClean(String parameter) {
+        Matcher testMatcher = Pattern.compile(CHARACTERS_NOT_ALLOWED_IN_KEY).matcher(parameter);
+        return testMatcher.find();
+    }
+    
+    /**
+     * Cleans parameter/key from disallowed chaacters defined as {@link #CHARACTERS_NOT_ALLOWED_IN_KEY}.
+     * 
+     * @param parameter to be cleaned
+     * @return the cleaned parameter
+     */
+    public static String getCleanedKey(String parameter) {
+        return parameter.replaceAll(CHARACTERS_NOT_ALLOWED_IN_KEY,"");
+    }
+    
 }

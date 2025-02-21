@@ -40,7 +40,9 @@ import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
+import org.apache.turbine.util.HttpUtils;
 import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.uri.URIConstants;
 
 /**
  * TurbineAssemblerBrokerService allows assemblers (like screens,
@@ -213,6 +215,14 @@ public class TurbineAssemblerBrokerService
     {
         String key = type + ":" + name;
         T assembler = null;
+        
+        log.debug("Check key {} in assembler", key);
+        if (HttpUtils.keyRequiresClean( name ))
+        {
+            String message = "Assembler key has invalid characters. Abort assembling for " + key;
+            log.warn(message );
+            throw new TurbineException( message );
+        }
 
         if (isCaching && assemblerCache.containsKey(key))
         {
