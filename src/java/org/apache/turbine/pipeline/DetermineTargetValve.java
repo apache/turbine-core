@@ -65,7 +65,7 @@ public class DetermineTargetValve implements Valve
                 {
                     String testAction = HttpUtils.getCleanedKey( target );
                     String message = URIConstants.CGI_SCREEN_PARAM + " has invalid characters. ";
-                    log.warn(message +  "Debug action key:" + testAction );
+                    log.warn("{}. Debug action key: {}.", message, testAction);
                     throw new TurbineException( message );
                 }
                 runData.setScreen(target);

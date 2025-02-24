@@ -41,9 +41,12 @@ import jakarta.servlet.http.HttpServletResponse;
 public class HttpUtils
 {
     /**
-     * Characters not allowed in keys, that is not alphanumeric, underscore, hyphen, slash and dot.
+     * Characters not allowed in external keys (name), that is not alphanumeric, underscore, hyphen, slash and dot.
+     * Validates only external key (name), as internal key may also contain colon and space.
      */
     private static final String CHARACTERS_NOT_ALLOWED_IN_KEY = "[^\\w_/\\.-]";
+    
+    private static final Pattern CNAIK_PATTERN = Pattern.compile(CHARACTERS_NOT_ALLOWED_IN_KEY);
     /**
      * The date format to use for HTTP Dates.
      */
@@ -90,19 +93,19 @@ public class HttpUtils
     }
     
     /**
-     * Check if there is any not allowed {@value #CHARACTERS_NOT_ALLOWED_IN_KEY}
-     * in parameters, eg. Turbine keys like actions, screens, layouts, .
+     * Check, if there is any not allowed {@value #CHARACTERS_NOT_ALLOWED_IN_KEY}
+     * in parameters, eg. Turbine keys like actions, screens, layouts.
      * 
      * @param parameter or key to be checked
      * @return True, if it contains any non allowed characters
      */
     public static boolean keyRequiresClean(String parameter) {
-        Matcher testMatcher = Pattern.compile(CHARACTERS_NOT_ALLOWED_IN_KEY).matcher(parameter);
+        Matcher testMatcher = CNAIK_PATTERN.matcher(parameter);
         return testMatcher.find();
     }
     
     /**
-     * Cleans parameter/key from disallowed chaacters defined as {@link #CHARACTERS_NOT_ALLOWED_IN_KEY}.
+     * Cleans parameter/key from disallowed characters defined in {@link #CHARACTERS_NOT_ALLOWED_IN_KEY}.
      * 
      * @param parameter to be cleaned
      * @return the cleaned parameter

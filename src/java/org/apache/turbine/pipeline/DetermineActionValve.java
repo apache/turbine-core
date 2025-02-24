@@ -65,7 +65,7 @@ public class DetermineActionValve
                 {
                     String testAction = HttpUtils.getCleanedKey( action );
                     String message = URIConstants.CGI_ACTION_PARAM + " has invalid characters. ";
-                    log.warn(message + "Debug action key:" + testAction);
+                    log.warn("{}. Debug action key: {}.", message, testAction);
                     throw new TurbineException( message );
                 }
                 data.setAction(action);

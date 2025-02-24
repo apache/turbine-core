@@ -216,11 +216,11 @@ public class TurbineAssemblerBrokerService
         String key = type + ":" + name;
         T assembler = null;
         
-        log.debug("Check key {} in assembler", key);
+        log.debug("Check name in key {} in assembler.", key);
         if (HttpUtils.keyRequiresClean( name ))
         {
-            String message = "Assembler key has invalid characters. Abort assembling for " + key;
-            log.warn(message );
+            String message = "Assembler key has invalid characters.";
+            log.warn("{}. Abort assembling for cleaned key {}:{}.", message, type, HttpUtils.getCleanedKey( name ) );
             throw new TurbineException( message );
         }
 
