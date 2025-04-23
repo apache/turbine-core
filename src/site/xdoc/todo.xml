@@ -44,8 +44,8 @@ No current items.
     <li>Make sure that pull tools get refreshed correctly under all circumstances (done?)</li>
     <li>Check lifetimes of authorized and session tools if the application is not the standard login-logout application (done?)</li>
     <li>Check against different Java versions in a systematic way (e.g. using  Docker image)</li>
-     <li>Allow Java 17 features (Sealed classes, pattern matching in switch, etc.)</li>
-     <li>Support / Test integrations Servlet 4.0 with Http/2, Java 11 (e.g. Tomcat 9 and Eclipse Jetty 10)</li>
+    <li>Allow Java 17 features (Sealed classes, pattern matching in switch, etc.) (since Turbine 7.0)</li>
+    <li>Support / Test integrations Servlet 4.0 with Http/2, Java 11 (e.g. Tomcat 9 and Eclipse Jetty 10)</li>
   </ul>
 </p>
 </subsection>

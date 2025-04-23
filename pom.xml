@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
-    <version>14-SNAPSHOT</version>
+    <version>14</version>
     <relativePath />
   </parent>
   <artifactId>turbine</artifactId>
@@ -487,7 +487,6 @@
     <url>https://github.com/apache/${turbine.site.path}/tree/${project.scm.tag}</url>
     <tag>HEAD</tag>
   </scm>
-
   
   <build>
     <sourceDirectory>src/java</sourceDirectory>

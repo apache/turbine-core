@@ -38,7 +38,7 @@ import org.apache.turbine.util.ServletUtils;
  * <p>This class provides a context service when the application
  * is run in a ServletContainer. It is mainly a wrapper around
  * the ServletContext API.</p>
- * <p>This class requires Servlet API 2.1 or better.</p>
+ * <p>This class requires Jakarta Servlet API 6.0 or better.</p>
  *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
  * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>

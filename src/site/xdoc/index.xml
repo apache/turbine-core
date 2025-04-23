@@ -97,7 +97,7 @@
     Turbine can be integrated with existing <a
     href="http://velocity.apache.org/engine/">Velocity</a>, <a
     href="http://java.sun.com/products/jsp/">Java Server Pages (JSP)</a>
-    and <a href="http://cocoon.apache.org/">Cocoon</a> technologies by
+    and <a href="https://docs.spring.io/spring-framework/reference/core/beans.html">Spring DI</a> technologies by
     specially creating Screens that use Services to parse templates.
     Screens can also be created to read files from other websites as
     well as off disk. This makes it easy to have designers simply put

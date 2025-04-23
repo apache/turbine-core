@@ -24,7 +24,18 @@
   </properties>
 
   <body>
-    <release version="6.1-SNAPSHOT" date="in Git">
+    <release version="7.0-SNAPSHOT" date="in Git">
+      <action type="add" dev="tv">
+        Fix for security check to prevent XSS for default Turbine keys from parameters, 
+        which might be set or not and e.g. sed in templates and other places.
+      </action>
+      <action type="update" dev="gk">
+        Dependency version update yauaa to 7.26.1, fulcrum.security 4.0.0, fulcrum.intake 4.0.0, fulcrum.parser 4.0.0, fulcrum.yaafi 2.0.0, fulcrum.cache 2.0.1,
+        jakarta.xml.bind-api 4.0.1. 
+        Replace javax.servlet-api with jakarta.servlet-api 6.1.0;
+        Replace log4j-web with log4j-jakarta-web 2.23.1; 
+        Add commons-email2-jakarta 2.0.0-M1.
+      </action>
       <action type="add" dev="tv">
         New configuration option "session.objectinputfilter" to limit the classes that can be 
         deserialized into a session from persistent storage. This feature uses the 
