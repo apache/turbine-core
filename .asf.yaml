@@ -19,9 +19,9 @@ github:
   features:
     # Enable issue management
     issues: true
-    labels:
-        - web-framework
-        - java
-        - apache
+  labels:
+    - web-framework
+    - java
+    - apache
   notifications:
     jira_options: link label comment
