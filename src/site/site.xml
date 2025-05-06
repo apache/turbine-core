@@ -30,11 +30,9 @@
     </bannerRight>
   <publishDate format="dd MMMM yyyy" position="left" />
   <version position="left" />
-  <skin>
-        <groupId>org.apache.maven.skins</groupId>
-        <artifactId>maven-fluido-skin</artifactId>
-        <version>2.1.0</version>
-  </skin>
+  
+  <!-- skin in parent -->
+
   <body>
   
      <head>
@@ -45,11 +43,7 @@
        ]]>
     </head>
     
-    <links>
-        <item name="Apache" href="https://www.apache.org/"> </item>
-        <item name="Turbine" href="https://turbine.apache.org/">  </item>
-          <item name="Fulcrum" href="/fulcrum/"> </item>
-    </links>
+    <!-- links in parent -->
   
     <menu name="General Information">
       <item name="Overview"              href="/index.html"/>
