@@ -1,22 +1,23 @@
 
 # Apache Turbine
 
-Turbine Top Level README
+Turbine Intro
 --------------------------------------------------------------------------
 
 Welcome to Turbine.  For more information about Turbine, please look
-at the HTML documentation in the docs/ directory.
+at the [HTML documentation](https://turbine.apache.org/).
 
 Here is a description of what each of the top level directories
 contains.  Please consult the documentation in each of the lower level
 directories for information that is specific to their contents.
 
-conf/       This is where the sample configurations live.
-xdocs/      This is where the documentation and database schemas live.
-            All of the files in this directory are mirrored onto
-            the live website.
-src/        This is where all of the source code to Turbine lives.
-target/     This is a temporary directory for building the project.
+| Directory    |  Explanation |
+| ------------- |:--------------------:|
+|conf/     | This is where the sample configurations live. | 
+| src/      | This is where all of the source code to Turbine lives. | 
+|target/  | This is a temporary directory for building the project. | 
+|  |   | 
+|src/site/xdocs/   | This is where the documentation and database schemas live. All of the files in this directory are mirrored onto  the live website.  | 
 
 ## Building
 

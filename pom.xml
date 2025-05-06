@@ -34,7 +34,7 @@
     well. In other words, we strive to make portions of Turbine easily
     available for use in other applications.</description>
 
-  <url>http://turbine.apache.org/${turbine.site.path}</url>
+  <url>http://turbine.apache.org/${turbine.url.path}</url>
 
   <inceptionYear>2000</inceptionYear>
 
@@ -1354,6 +1354,8 @@
   <properties>
     <!-- maven.compiler setting in turbine parent -->
     <turbine.site.path>turbine-core</turbine.site.path>
+    <!-- this is the context path of the turbine release -->
+    <turbine.url.path>turbine/turbine-7-0</turbine.url.path>
     <fulcrum.intake>4.0.0</fulcrum.intake>
     <fulcrum.parser>4.0.0</fulcrum.parser>
     <fulcrum.security>4.0.0</fulcrum.security>
