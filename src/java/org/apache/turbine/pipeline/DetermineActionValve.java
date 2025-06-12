@@ -22,9 +22,12 @@ package org.apache.turbine.pipeline;
 
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.turbine.util.HttpUtils;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.uri.URIConstants;
@@ -58,6 +61,13 @@ public class DetermineActionValve
 
             if (action != null)
             {
+                if (HttpUtils.keyRequiresClean( action ))
+                {
+                    String testAction = HttpUtils.getCleanedKey( action );
+                    String message = URIConstants.CGI_ACTION_PARAM + " has invalid characters. ";
+                    log.warn("{}. Debug action key: {}.", message, testAction);
+                    throw new TurbineException( message );
+                }
                 data.setAction(action);
                 log.debug("Set action from request parameter");
             }

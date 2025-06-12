@@ -86,49 +86,46 @@ public abstract class BaseInitableBroker
         // empty
     }
 
-    /**
-     * Performs early initialization of an Initable class.
-     *
-     * @param className The name of the class to be initialized.
-     * @param data An Object to be used for initialization activities.
-     * @throws InitializationException Initialization was not successful.
-     */
     @Override
-    public void initClass(String className, Object data)
-            throws InitializationException
-    {
-        // make sure that only one thread calls this method recursively
-        synchronized (stack)
-        {
+    public void initClass(String className, Object data) throws InitializationException {
+        synchronized (stack) {
             int pos = stack.search(className);
-            if (pos != -1)
-            {
-                StringBuilder msg = new StringBuilder().append(className)
-                        .append(" couldn't be initialized because of circular dependency chain:\n");
-                for (int i = pos; i > 0; i--)
-                {
-                    msg.append(stack.elementAt(stack.size() - i - 1) + "->");
-                }
-                msg.append(className).append('\n');
-
-                throw new InitializationException(msg.toString());
+            if (pos != -1) {
+                throw new InitializationException(buildCircularDependencyMessage(className, pos));
             }
-            try
-            {
+            try {
                 stack.push(className);
                 Initable instance = getInitableInstance(className);
-                if (!instance.getInit())
-                {
-                    // this call might result in an indirect recursion
+                boolean instanceInitialized = instance.getInit();
+
+                if (!instanceInitialized) {
                     instance.init(data);
                 }
-            }
-            finally
-            {
-                // Succeeded or not, make sure the name gets off the stack.
-                stack.pop();
+            } finally {
+                stack.pop(); // Ensure class is removed from stack even if an exception occurs.
             }
         }
+    }
+
+    /**
+     * Builds a message for a circular dependency exception.
+     * 
+     * @param className
+     * @param dependencyPosition
+     * @return
+     */
+    private String buildCircularDependencyMessage(String className, int dependencyPosition) {
+        StringBuilder msg = new StringBuilder()
+                .append(className)
+                .append(" couldn't be initialized because of circular dependency chain:")
+                .append(System.lineSeparator());
+
+        for (int i = dependencyPosition; i > 0; i--) {
+            msg.append(stack.elementAt(stack.size() - i - 1))
+                    .append("->");
+        }
+        msg.append(className).append(System.lineSeparator());
+        return msg.toString();
     }
 
     /**

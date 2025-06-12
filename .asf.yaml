@@ -15,11 +15,18 @@
 # specific language governing permissions and limitations
 # under the License.
 
+# https://cwiki.apache.org/confluence/display/INFRA/Git+-+.asf.yaml+features
+
 github:
+  description: "Apache Turbine open-source web framework"
+  homepage: https://turbine.apache.org/
   features:
     # Enable issue management
     issues: true
-    labels:
-        - web-framework
-        - java
-        - apache
+  labels:
+    - web-framework
+    - java
+    - apache
+
+notifications:
+  jira_options: link label comment

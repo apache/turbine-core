@@ -107,8 +107,10 @@ contributed</a> to Turbine over the last 10+ years.</strong>
         Initial application development WAR archive creation tool using Ant</li>
     <li>
         Turbine Servlet works cleanly with Servlet API 2.4 and higher</li>
+   <li>
+        Turbine Servlet supports Jakarta Servlet API 6.0 and higher since Turbine 7.0</li>
     <li>
-        Version 5.1 requires JDK 1.8 and higher, Version 5.2 and above requires Java 11 and higher - 100% Pure Java</li>
+        Version 5.1 requires JDK 1.8 and higher, Version 5.2 and 6.0 require Java 11, Version 7.0 Java 17 and higher - 100% Pure Java</li>
 </ul>
 
 </section>

@@ -25,6 +25,7 @@ import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.turbine.util.HttpUtils;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.uri.URIConstants;
@@ -60,6 +61,13 @@ public class DetermineTargetValve implements Valve
 
             if (target != null)
             {
+                if (HttpUtils.keyRequiresClean( target ))
+                {
+                    String testAction = HttpUtils.getCleanedKey( target );
+                    String message = URIConstants.CGI_SCREEN_PARAM + " has invalid characters. ";
+                    log.warn("{}. Debug action key: {}.", message, testAction);
+                    throw new TurbineException( message );
+                }
                 runData.setScreen(target);
                 log.debug("Set screen target from request parameter");
             }

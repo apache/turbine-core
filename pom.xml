@@ -22,19 +22,19 @@
   <parent>
     <groupId>org.apache.turbine</groupId>
     <artifactId>turbine-parent</artifactId>
-    <version>14-SNAPSHOT</version>
+    <version>14</version>
     <relativePath />
   </parent>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
-  <version>7.0-SNAPSHOT</version>
+  <version>7.1-SNAPSHOT</version>
   <description>Turbine is a servlet based framework that allows experienced Java
     developers to quickly build secure web applications. Parts of Turbine
     can also be used independently of the web portion of Turbine as
     well. In other words, we strive to make portions of Turbine easily
     available for use in other applications.</description>
 
-  <url>http://turbine.apache.org/${turbine.site.path}</url>
+  <url>http://turbine.apache.org/${turbine.url.path}</url>
 
   <inceptionYear>2000</inceptionYear>
 
@@ -485,9 +485,8 @@
     <connection>scm:git:https://gitbox.apache.org/repos/asf/turbine-core.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/turbine-core.git</developerConnection>    
     <url>https://github.com/apache/${turbine.site.path}/tree/${project.scm.tag}</url>
-    <tag>HEAD</tag>
+    <tag>turbine-7.0-candidate</tag>
   </scm>
-
   
   <build>
     <sourceDirectory>src/java</sourceDirectory>
@@ -920,7 +919,7 @@
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
-      <version>1.9.4</version>
+      <version>1.11.0</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -937,7 +936,7 @@
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-cache</artifactId>
-      <version>2.0.0</version>
+      <version>2.0.1</version>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -1355,18 +1354,20 @@
   <properties>
     <!-- maven.compiler setting in turbine parent -->
     <turbine.site.path>turbine-core</turbine.site.path>
+    <!-- this is the context path of the turbine release -->
+    <turbine.url.path>turbine/turbine-7-0</turbine.url.path>
     <fulcrum.intake>4.0.0</fulcrum.intake>
     <fulcrum.parser>4.0.0</fulcrum.parser>
     <fulcrum.security>4.0.0</fulcrum.security>
     <fulcrum.localization>2.0.0</fulcrum.localization>
-    <fulcrum.quartz>2.0.0-SNAPSHOT</fulcrum.quartz>
+    <fulcrum.quartz>2.0.0</fulcrum.quartz>
     <fulcrum.testcontainer>2.0.1</fulcrum.testcontainer>
     <!-- inherited in fulcrum components, testcontainer -->
     <fulcrum.yaafi>2.0.1</fulcrum.yaafi>
     <torque.version>6.0</torque.version>
-    <jackson2.version>2.17.2</jackson2.version>
+    <jackson2.version>2.18.2</jackson2.version>
     <doclint>none</doclint>
-    <docker.testcontainers.version>1.18.3</docker.testcontainers.version>
+    <docker.testcontainers.version>1.20.4</docker.testcontainers.version>
     <!--jacoco.skip>true</jacoco.skip-->
     <argLine />
   </properties>
