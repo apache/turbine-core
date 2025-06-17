@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultLoginValve.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.pipeline</a> &gt; <span class="el_source">DefaultLoginValve.java</span></div><h1>DefaultLoginValve.java</h1><pre class="source lang-java linenums">package org.apache.turbine.pipeline;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
+import jakarta.servlet.http.HttpSession;
+
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineLoader;
+import org.apache.turbine.modules.Action;
+import org.apache.turbine.modules.ActionLoader;
+import org.apache.turbine.services.velocity.VelocityService;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.template.TemplateInfo;
+
+/**
+ * Handles the Login and Logout actions in the request process
+ * cycle.
+ *
+ * @author &lt;a href=&quot;mailto:jvanzyl@apache.org&quot;&gt;Jason van Zyl&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:dlr@apache.org&quot;&gt;Daniel Rall&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L50">public class DefaultLoginValve</span>
+    implements Valve
+{
+    /** Injected loader instance */
+    @TurbineLoader( Action.class )
+    private ActionLoader actionLoader;
+
+    @TurbineConfiguration( TurbineConstants.ACTION_LOGIN_KEY )
+    private String actionLogin;
+
+    @TurbineConfiguration( TurbineConstants.ACTION_LOGOUT_KEY )
+    private String actionLogout;
+
+    /**
+     * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
+     */
+    @Override
+    public void invoke(PipelineData pipelineData, ValveContext context)
+        throws IOException, TurbineException
+    {
+        try
+        {
+<span class="fc" id="L72">            process(pipelineData);</span>
+        }
+<span class="nc" id="L74">        catch (Exception e)</span>
+        {
+<span class="nc" id="L76">            throw new TurbineException(e);</span>
+<span class="fc" id="L77">        }</span>
+
+        // Pass control to the next Valve in the Pipeline
+<span class="fc" id="L80">        context.invokeNext(pipelineData);</span>
+<span class="fc" id="L81">    }</span>
+
+    /**
+     * Handles user sessions, parsing of the action from the query
+     * string, and access control.
+     *
+     * @param pipelineData The run-time data.
+     *
+     * @throws Exception if executing the action fails
+     */
+    protected void process(PipelineData pipelineData)
+        throws Exception
+    {
+<span class="fc" id="L94">        RunData data = pipelineData.getRunData();</span>
+        // Special case for login and logout, this must happen before the
+        // session validator is executed in order either to allow a user to
+        // even login, or to ensure that the session validator gets to
+        // mandate its page selection policy for non-logged in users
+        // after the logout has taken place.
+<span class="fc" id="L100">        String actionName = data.getAction();</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (data.hasAction() &amp;&amp;</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">            actionName.equalsIgnoreCase(actionLogin) ||</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">            actionName.equalsIgnoreCase(actionLogout))</span>
+        {
+            // If a User is logging in, we should refresh the
+            // session here.  Invalidating session and starting a
+            // new session would seem to be a good method, but I
+            // (JDM) could not get this to work well (it always
+            // required the user to login twice).  Maybe related
+            // to JServ?  If we do not clear out the session, it
+            // is possible a new User may accidently (if they
+            // login incorrectly) continue on with information
+            // associated with the previous User.  Currently the
+            // only keys stored in the session are &quot;turbine.user&quot;
+            // and &quot;turbine.acl&quot;.
+<span class="fc bfc" id="L116" title="All 2 branches covered.">            if (actionName.equalsIgnoreCase(actionLogin))</span>
+            {
+<span class="fc" id="L118">                Enumeration&lt;String&gt; names = data.getSession().getAttributeNames();</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">                if (names != null)</span>
+                {
+                    // copy keys into a new list, so we can clear the session
+                    // and not get ConcurrentModificationException
+<span class="nc" id="L123">                    List&lt;String&gt; nameList = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">                    while (names.hasMoreElements())</span>
+                    {
+<span class="nc" id="L126">                        nameList.add(names.nextElement());</span>
+                    }
+
+<span class="nc" id="L129">                    HttpSession session = data.getSession();</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">                    for (String name : nameList)</span>
+                    {
+                        try
+                        {
+<span class="nc" id="L134">                            session.removeAttribute(name);</span>
+                        }
+<span class="nc" id="L136">                        catch (IllegalStateException invalidatedSession)</span>
+                        {
+<span class="nc" id="L138">                            break;</span>
+<span class="nc" id="L139">                        }</span>
+<span class="nc" id="L140">                    }</span>
+                }
+            }
+
+<span class="fc" id="L144">            actionLoader.exec(pipelineData, data.getAction());</span>
+<span class="fc" id="L145">            cleanupTemplateContext(data);</span>
+<span class="fc" id="L146">            data.setAction(null);</span>
+        }
+<span class="fc" id="L148">    }</span>
+
+    /**
+     * cleans the Velocity Context if available.
+     *
+     * @param data A RunData Object
+     */
+    private void cleanupTemplateContext(RunData data)
+    {
+        // This is Velocity specific and shouldn't be done here.
+        // But this is a band aid until we get real listeners
+        // here.
+<span class="fc" id="L160">        TemplateInfo ti = data.getTemplateInfo();</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">        if (ti != null)</span>
+        {
+<span class="fc" id="L163">            ti.removeTemp(VelocityService.CONTEXT);</span>
+        }
+<span class="fc" id="L165">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

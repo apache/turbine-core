@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JSONSecureScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.screens</a> &gt; <span class="el_source">JSONSecureScreen.java</span></div><h1>JSONSecureScreen.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.screens;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import org.apache.turbine.pipeline.PipelineData;
+
+/**
+ * An extension to JSONScreen that performs a Security Check before invoking
+ * doBuildTemplate().  You should extend this class and add the specific
+ * security check needed.  If you have a number of screens that need to perform
+ * the same check, you could make a base screen by extending this class and
+ * implementing the isAuthorized().  Then each screen that needs to perform the
+ * same check could extend your base screen.
+ *
+ * &lt;p&gt;Typically you would extend this class and override the doOutput() method
+ * to use TurbineJsonRpc to register the POJOs that will provide the functions
+ * you are making available via JSON-RPC.  Use JSONScreen if you &lt;b&gt;do not&lt;/b&gt;
+ * need the user to be logged in prior to executing the functions you provide.&lt;/p&gt;
+ *
+ * &lt;p&gt;Here is an example from a superclass:
+ * &lt;code&gt;
+ * public void doOutput(PipelineData data) throws Exception
+ * {
+ *     User user = data.getUser();
+ *
+ *     MySecureJsonFunctions myFunctions
+ *             = new MySecureJsonFunctions(user.getName());
+ *
+ *     // Session specific
+ *     TurbineJsonRpc.registerObject(data.getSession(), &quot;myFunctions&quot;, myFunctions);
+ *
+ *     // Global
+ *     //TurbineJsonRpc.registerObjectGlobal(&quot;testGlobal&quot;, testObject);
+ *
+ *     super.doOutput(data);
+ * }
+ * &lt;/code&gt;&lt;/p&gt;
+ *
+ * &lt;p&gt;The class MyFunctions would be something like:
+ * &lt;code&gt;
+ * public class MySecureJsonFunctions
+ * {
+ *     private final String name;
+ *
+ *     public MySecureJsonFunctions(String name)
+ *     {
+ *         this.name = name;
+ *     }
+ *
+ *     private String getName(String clientParameter)
+ *     {
+ *         return &quot;Client &quot; + clientParameter + &quot; says Hello World to &quot; + name;
+ *     }
+ * }
+ * &lt;/code&gt;&lt;/p&gt;
+ *
+ * @author &lt;a href=&quot;mailto:seade@policypoint.net&quot;&gt;Scott Eade&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="nc" id="L77">public abstract class JSONSecureScreen extends JSONScreen</span>
+{
+    /**
+     * This method overrides the method in JSONScreen to perform a security
+     * check prior to producing the output.
+     *
+     * @param pipelineData Turbine information.
+     * @throws Exception a generic exception.
+     */
+    @Override
+    protected void doOutput(PipelineData pipelineData) throws Exception
+    {
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (isAuthorized(pipelineData))</span>
+        {
+<span class="nc" id="L91">            super.doOutput(pipelineData);</span>
+        }
+<span class="nc" id="L93">    }</span>
+
+    /**
+     * Override this method to perform the necessary security checks.
+     *
+     * @param pipelineData Turbine information.
+     * @return &lt;code&gt;true&lt;/code&gt; if the user is authorized to access the screen.
+     * @throws Exception A generic exception.
+     */
+    protected abstract boolean isAuthorized(PipelineData pipelineData)
+            throws Exception;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

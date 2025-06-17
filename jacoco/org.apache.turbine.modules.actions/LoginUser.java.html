@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoginUser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.actions</a> &gt; <span class="el_source">LoginUser.java</span></div><h1>LoginUser.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.actions;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.fulcrum.security.util.DataBackendException;
+import org.apache.fulcrum.security.util.FulcrumSecurityException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.modules.Action;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.security.SecurityService;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
+
+/**
+ * This is where we authenticate the user logging into the system
+ * against a user in the database. If the user exists in the database
+ * that users last login time will be updated.
+ *
+ * @author &lt;a href=&quot;mailto:mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L48">public class LoginUser implements Action</span>
+{
+    /** CGI Parameter for the user name */
+    public static final String CGI_USERNAME = &quot;username&quot;;
+
+    /** CGI Parameter for the password */
+    public static final String CGI_PASSWORD = &quot;password&quot;;
+
+    /** Logging */
+<span class="fc" id="L57">    private static Logger log = LogManager.getLogger(LoginUser.class);</span>
+
+    /** Injected service instance */
+    @TurbineService
+    private SecurityService security;
+
+<span class="fc" id="L63">    @TurbineConfiguration( TurbineConstants.LOGIN_ERROR )</span>
+    private String loginError = &quot;&quot;;
+
+    @TurbineConfiguration( TurbineConstants.TEMPLATE_LOGIN )
+    private String templateLogin;
+
+    @TurbineConfiguration( TurbineConstants.SCREEN_LOGIN )
+    private String screenLogin;
+
+    /**
+     * Updates the user's LastLogin timestamp, sets their state to
+     * &quot;logged in&quot; and calls RunData.setUser() .  If the user cannot
+     * be authenticated (database error?) the user is assigned
+     * anonymous status and, if tr.props contains a TEMPLATE_LOGIN,
+     * the screenTemplate is set to this, otherwise the screen is set
+     * to SCREEN_LOGIN
+     *
+     * @param     pipelineData Turbine information.
+     * @throws FulcrumSecurityException could not get instance of the
+     *            anonymous user
+     */
+    @Override
+    public void doPerform(PipelineData pipelineData)
+            throws FulcrumSecurityException
+    {
+<span class="fc" id="L88">        RunData data = pipelineData.getRunData();</span>
+<span class="fc" id="L89">        String username = data.getParameters().getString(CGI_USERNAME, &quot;&quot;);</span>
+<span class="fc" id="L90">        String password = data.getParameters().getString(CGI_PASSWORD, &quot;&quot;);</span>
+
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(username))</span>
+        {
+<span class="nc" id="L94">            return;</span>
+        }
+
+        try
+        {
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        	if (username.equals(security.getAnonymousUser().getName()))</span>
+            {
+<span class="nc" id="L101">                throw new TurbineException(&quot;Anonymous user cannot login&quot;);</span>
+            }
+
+            // Authenticate the user and get the object.
+<span class="fc" id="L105">            User user = security.getAuthenticatedUser(username, password);</span>
+
+            // Store the user object.
+<span class="fc" id="L108">            data.setUser(user);</span>
+
+            // Mark the user as being logged in.
+<span class="fc" id="L111">            user.setHasLoggedIn(Boolean.TRUE);</span>
+
+            // Set the last_login date in the database.
+<span class="fc" id="L114">            user.updateLastLogin();</span>
+
+            // This only happens if the user is valid; otherwise, we
+            // will get a valueBound in the User object when we don't
+            // want to because the username is not set yet.  Save the
+            // User object into the session.
+<span class="fc" id="L120">            data.save();</span>
+
+            /*
+             * If the setPage(&quot;template.vm&quot;) method has not
+             * been used in the template to authenticate the
+             * user (usually Login.vm), then the user will
+             * be forwarded to the template that is specified
+             * by the &quot;template.home&quot; property as listed in
+             * TR.props for the webapp.
+             */
+
+        }
+<span class="nc" id="L132">        catch (Exception e)</span>
+        {
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            if (e instanceof DataBackendException)</span>
+            {
+<span class="nc" id="L136">                log.error(e);</span>
+            }
+
+            // Set Error Message and clean out the user.
+<span class="nc" id="L140">            data.setMessage(loginError);</span>
+
+<span class="nc" id="L142">            User anonymousUser = security.getAnonymousUser();</span>
+<span class="nc" id="L143">            data.setUser(anonymousUser);</span>
+
+<span class="nc bnc" id="L145" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(templateLogin))</span>
+            {
+                // We're running in a templating solution
+<span class="nc" id="L148">                data.setScreenTemplate(templateLogin);</span>
+            }
+            else
+            {
+<span class="nc" id="L152">                data.setScreen(screenLogin);</span>
+            }
+<span class="fc" id="L154">        }</span>
+<span class="fc" id="L155">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

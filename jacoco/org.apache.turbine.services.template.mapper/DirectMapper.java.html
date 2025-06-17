@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DirectMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.template.mapper</a> &gt; <span class="el_source">DirectMapper.java</span></div><h1>DirectMapper.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.template.mapper;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.turbine.services.template.TemplateService;
+
+/**
+ * The most primitive mapper. It is used for the page objects in the
+ * Template service. It never caches and simply returns what is given to it.
+ *
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+public class DirectMapper
+    extends BaseMapper
+    implements Mapper
+{
+    /**
+     * Default C'tor. If you use this C'tor, you must use
+     * the bean setter to set the various properties needed for
+     * this mapper before first usage.
+     */
+    public DirectMapper()
+    {
+<span class="fc" id="L45">        super();</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * Strip off a possible extension, replace all &quot;,&quot; with &quot;.&quot;
+     *
+     * about,directions,Driving.vm --&amp;lt; about.directions.Driving
+     *
+     * @param template The template name.
+     * @return A class name for the given template.
+     */
+    @Override
+    public String doMapping(String template)
+    {
+<span class="nc" id="L59">        String [] components</span>
+<span class="nc" id="L60">            = StringUtils.split(template, String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR));</span>
+
+<span class="nc" id="L62">        String className = components[components.length - 1];</span>
+
+        // Strip off a possible Extension
+<span class="nc" id="L65">        int dotIndex = className.lastIndexOf(TemplateService.EXTENSION_SEPARATOR);</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        className = (dotIndex &lt; 0) ? className : className.substring(0, dotIndex);</span>
+<span class="nc" id="L67">        components[components.length -1] = className;</span>
+
+        // Class names are always separated by &quot;.&quot;
+<span class="nc" id="L70">        return StringUtils.join(components, String.valueOf(separator));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

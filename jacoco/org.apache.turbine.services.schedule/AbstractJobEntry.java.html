@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractJobEntry.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.schedule</a> &gt; <span class="el_source">AbstractJobEntry.java</span></div><h1>AbstractJobEntry.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.schedule;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.util.Calendar;
+import java.util.Date;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.util.TurbineException;
+
+/**
+ * This class provides the basic implementation of common features for a scheduled job entry.
+ *
+ * @author &lt;a href=&quot;mailto:tv@apache.org&quot;&gt;Thomas Vandahl&lt;/a&gt;
+ */
+public abstract class AbstractJobEntry implements JobEntry
+{
+    /** Logging */
+<span class="fc" id="L38">    protected static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);</span>
+
+    /** indicates if job is currently running */
+<span class="fc" id="L41">    private boolean jobIsActive = false;</span>
+
+    /** Next runtime. **/
+<span class="fc" id="L44">    private long runtime = 0;</span>
+
+    /** schedule types **/
+<span class="fc" id="L47">    protected enum ScheduleType {</span>
+<span class="fc" id="L48">        SECOND,</span>
+<span class="fc" id="L49">        MINUTE,</span>
+<span class="fc" id="L50">        WEEK_DAY,</span>
+<span class="fc" id="L51">        DAY_OF_MONTH,</span>
+<span class="fc" id="L52">        DAILY</span>
+    }
+
+    /**
+     * Default constructor
+     */
+    public AbstractJobEntry()
+    {
+<span class="fc" id="L60">        super();</span>
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * Schedule a job to run on a certain point of time.&lt;br&gt;
+     *
+     * Example 1: Run the DefaultScheduledJob at 8:00am every 15th of
+     * the month - &lt;br&gt;
+     *
+     * JobEntry je = new JobEntry(0,0,8,-1,15,&quot;DefaultScheduledJob&quot;);&lt;br&gt;
+     *
+     * Example 2: Run the DefaultScheduledJob at 8:00am every day -
+     * &lt;br&gt;
+     *
+     * JobEntry je = new JobEntry(0,0,8,-1,-1,&quot;DefaultScheduledJob&quot;);&lt;br&gt;
+     *
+     * Example 3: Run the DefaultScheduledJob every 2 hours. - &lt;br&gt;
+     *
+     * JobEntry je = new JobEntry(0,120,-1,-1,-1,&quot;DefaultScheduledJob&quot;);&lt;br&gt;
+     *
+     * Example 4: Run the DefaultScheduledJob every 30 seconds. - &lt;br&gt;
+     *
+     * JobEntry je = new JobEntry(30,-1,-1,-1,-1,&quot;DefaultScheduledJob&quot;);&lt;br&gt;
+     *
+     * @param sec Value for entry &quot;seconds&quot;.
+     * @param min Value for entry &quot;minutes&quot;.
+     * @param hour Value for entry &quot;hours&quot;.
+     * @param wd Value for entry &quot;week days&quot;.
+     * @param day_mo Value for entry &quot;month days&quot;.
+     * @param task Task to execute.
+     * @throws TurbineException a generic exception.
+     */
+    public AbstractJobEntry(int sec,
+                    int min,
+                    int hour,
+                    int wd,
+                    int day_mo,
+                    String task)
+            throws TurbineException
+    {
+<span class="fc" id="L102">        this();</span>
+
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(task))</span>
+        {
+<span class="nc" id="L106">            throw new TurbineException(&quot;Error in JobEntry. &quot; +</span>
+                    &quot;Bad Job parameter. Task not set.&quot;);
+        }
+
+<span class="fc" id="L110">        setSecond(sec);</span>
+<span class="fc" id="L111">        setMinute(min);</span>
+<span class="fc" id="L112">        setHour(hour);</span>
+<span class="fc" id="L113">        setWeekDay(wd);</span>
+<span class="fc" id="L114">        setDayOfMonth(day_mo);</span>
+<span class="fc" id="L115">        setTask(task);</span>
+
+<span class="fc" id="L117">        calcRunTime();</span>
+<span class="fc" id="L118">    }</span>
+
+    /**
+     * Used for ordering Jobentries
+     * Note: this comparator imposes orderings that are inconsistent with
+     * equals.
+     *
+     * @param je The first &lt;code&gt;JobEntry&lt;/code&gt; object.
+     * @return An &lt;code&gt;int&lt;/code&gt; indicating the result of the comparison.
+     */
+    @Override
+    public int compareTo(JobEntry je)
+    {
+<span class="fc" id="L131">        return getJobId() - je.getJobId();</span>
+    }
+
+    /**
+     * Sets whether the job is running.
+     *
+     * @param isActive Whether the job is running.
+     */
+    @Override
+    public void setActive(boolean isActive)
+    {
+<span class="fc" id="L142">        jobIsActive = isActive;</span>
+<span class="fc" id="L143">    }</span>
+
+    /**
+     * Check to see if job is currently active/running
+     *
+     * @return true if job is currently queuing run by the
+     *  worker thread, otherwise false
+     */
+    @Override
+    public boolean isActive()
+    {
+<span class="fc" id="L154">        return jobIsActive;</span>
+    }
+
+    /**
+     * Get the next runtime for this job as a long.
+     *
+     * @return The next run time as a long.
+     */
+    @Override
+    public long getNextRuntime()
+    {
+<span class="fc" id="L165">        return runtime;</span>
+    }
+
+    /**
+     * Gets the next runtime as a date
+     *
+     * @return Next run date
+     */
+    @Override
+    public Date getNextRunDate()
+    {
+<span class="nc" id="L176">        return new Date(runtime);</span>
+    }
+
+    /**
+     * Get the next runtime for this job as a String.
+     *
+     * @return The next run time as a String.
+     */
+    @Override
+    public String getNextRunAsString()
+    {
+<span class="nc" id="L187">        return getNextRunDate().toString();</span>
+    }
+
+    /**
+     * Calculate how long before the next runtime.&lt;br&gt;
+     *
+     * The runtime determines it's position in the job queue.
+     * Here's the logic:&lt;br&gt;
+     *
+     * 1. Create a date the represents when this job is to run.&lt;br&gt;
+     *
+     * 2. If this date has expired, them &quot;roll&quot; appropriate date
+     * fields forward to the next date.&lt;br&gt;
+     *
+     * 3. Calculate the diff in time between the current time and the
+     * next run time.&lt;br&gt;
+     *
+     * @throws TurbineException a generic exception.
+     */
+    @Override
+    public void calcRunTime()
+            throws TurbineException
+    {
+<span class="fc" id="L210">        Calendar schedrun = Calendar.getInstance();</span>
+<span class="fc" id="L211">        Calendar now = Calendar.getInstance();</span>
+
+<span class="pc bpc" id="L213" title="3 of 6 branches missed.">        switch (evaluateJobType())</span>
+        {
+            case SECOND:
+                // SECOND (every so many seconds...)
+<span class="fc" id="L217">                schedrun.add(Calendar.SECOND, getSecond());</span>
+<span class="fc" id="L218">                runtime = schedrun.getTime().getTime();</span>
+<span class="fc" id="L219">                break;</span>
+
+            case MINUTE:
+                // MINUTE (every so many minutes...)
+<span class="fc" id="L223">                schedrun.add(Calendar.SECOND, getSecond());</span>
+<span class="fc" id="L224">                schedrun.add(Calendar.MINUTE, getMinute());</span>
+<span class="fc" id="L225">                runtime = schedrun.getTime().getTime();</span>
+<span class="fc" id="L226">                break;</span>
+
+            case WEEK_DAY:
+                // WEEKDAY (day of the week)
+<span class="nc" id="L230">                schedrun.set(Calendar.SECOND, getSecond());</span>
+<span class="nc" id="L231">                schedrun.set(Calendar.MINUTE, getMinute());</span>
+<span class="nc" id="L232">                schedrun.set(Calendar.HOUR_OF_DAY, getHour());</span>
+<span class="nc" id="L233">                schedrun.set(Calendar.DAY_OF_WEEK, getWeekDay());</span>
+
+<span class="nc bnc" id="L235" title="All 2 branches missed.">                if (now.before(schedrun))</span>
+                {
+                    // Scheduled time has NOT expired.
+<span class="nc" id="L238">                    runtime = schedrun.getTime().getTime();</span>
+                }
+                else
+                {
+                    // Scheduled time has expired; roll to the next week.
+<span class="nc" id="L243">                    schedrun.add(Calendar.DAY_OF_WEEK, 7);</span>
+<span class="nc" id="L244">                    runtime = schedrun.getTime().getTime();</span>
+                }
+<span class="nc" id="L246">                break;</span>
+
+            case DAY_OF_MONTH:
+                // DAY_OF_MONTH (date of the month)
+<span class="fc" id="L250">                schedrun.set(Calendar.SECOND, getSecond());</span>
+<span class="fc" id="L251">                schedrun.set(Calendar.MINUTE, getMinute());</span>
+<span class="fc" id="L252">                schedrun.set(Calendar.HOUR_OF_DAY, getHour());</span>
+<span class="fc" id="L253">                schedrun.set(Calendar.DAY_OF_MONTH, getDayOfMonth());</span>
+
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">                if (now.before(schedrun))</span>
+                {
+                    // Scheduled time has NOT expired.
+<span class="nc" id="L258">                    runtime = schedrun.getTime().getTime();</span>
+                }
+                else
+                {
+                    // Scheduled time has expired; roll to the next month.
+<span class="fc" id="L263">                    schedrun.add(Calendar.MONTH, 1);</span>
+<span class="fc" id="L264">                    runtime = schedrun.getTime().getTime();</span>
+                }
+<span class="fc" id="L266">                break;</span>
+
+            case DAILY:
+                // DAILY (certain hour:minutes of the day)
+<span class="nc" id="L270">                schedrun.set(Calendar.SECOND, getSecond());</span>
+<span class="nc" id="L271">                schedrun.set(Calendar.MINUTE, getMinute());</span>
+<span class="nc" id="L272">                schedrun.set(Calendar.HOUR_OF_DAY, getHour());</span>
+
+                // Scheduled time has NOT expired.
+<span class="nc bnc" id="L275" title="All 2 branches missed.">                if (now.before(schedrun))</span>
+                {
+<span class="nc" id="L277">                    runtime = schedrun.getTime().getTime();</span>
+                }
+                else
+                {
+                    // Scheduled time has expired; roll forward 24 hours.
+<span class="nc" id="L282">                    schedrun.add(Calendar.HOUR_OF_DAY, 24);</span>
+<span class="nc" id="L283">                    runtime = schedrun.getTime().getTime();</span>
+                }
+<span class="nc" id="L285">                break;</span>
+
+            default:
+                // Do nothing.
+        }
+
+<span class="fc" id="L291">        log.info(&quot;Next runtime for task {} is {}&quot;, this::getTask, this::getNextRunDate);</span>
+<span class="fc" id="L292">    }</span>
+
+    /**
+     * What schedule am I on?
+     *
+     * I know this is kinda ugly!  If you can think of a cleaner way
+     * to do this, please jump in!
+     *
+     * @return A number specifying the type of schedule. See
+     * calcRunTime().
+     * @throws TurbineException a generic exception.
+     */
+    private ScheduleType evaluateJobType()
+            throws TurbineException
+    {
+
+        // First start by checking if it's a day of the month job.
+<span class="fc bfc" id="L309" title="All 2 branches covered.">        if (getDayOfMonth() &lt; 0)</span>
+        {
+            // Not a day of the month job... check weekday.
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">            if (getWeekDay() &lt; 0)</span>
+            {
+                // Not a weekday job...check if by the hour.
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">                if (getHour() &lt; 0)</span>
+                {
+                    // Not an hourly job...check if it is by the minute
+<span class="fc bfc" id="L318" title="All 2 branches covered.">                    if (getMinute() &lt; 0)</span>
+                    {
+                        // Not a by the minute job so must be by the second
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">                        if (getSecond() &lt; 0)</span>
+                        {
+<span class="nc" id="L323">                            throw new TurbineException(&quot;Error in JobEntry. Bad Job parameter.&quot;);</span>
+                        }
+
+<span class="fc" id="L326">                        return ScheduleType.SECOND;</span>
+                    }
+                    else
+                    {
+                        // Must be a job run by the minute so we need minutes and
+                        // seconds.
+<span class="pc bpc" id="L332" title="2 of 4 branches missed.">                        if (getMinute() &lt; 0 || getSecond() &lt; 0)</span>
+                        {
+<span class="nc" id="L334">                            throw new TurbineException(&quot;Error in JobEntry. Bad Job parameter.&quot;);</span>
+                        }
+
+<span class="fc" id="L337">                        return ScheduleType.MINUTE;</span>
+                    }
+                }
+                else
+                {
+                    // Must be a daily job by hours minutes, and seconds.  In
+                    // this case, we need the minute, second, and hour params.
+<span class="nc bnc" id="L344" title="All 6 branches missed.">                    if (getMinute() &lt; 0 || getHour() &lt; 0 || getSecond() &lt; 0)</span>
+                    {
+<span class="nc" id="L346">                        throw new TurbineException(&quot;Error in JobEntry. Bad Job parameter.&quot;);</span>
+                    }
+
+<span class="nc" id="L349">                    return ScheduleType.DAILY;</span>
+                }
+            }
+            else
+            {
+                // Must be a weekday job.  In this case, we need
+                // minute, second, and hour params
+<span class="nc bnc" id="L356" title="All 6 branches missed.">                if (getMinute() &lt; 0 || getHour() &lt; 0 || getSecond() &lt; 0)</span>
+                {
+<span class="nc" id="L358">                    throw new TurbineException(&quot;Error in JobEntry. Bad Job parameter.&quot;);</span>
+                }
+
+<span class="nc" id="L361">                return ScheduleType.WEEK_DAY;</span>
+            }
+        }
+        else
+        {
+            // Must be a day of the month job.  In this case, we need
+            // minute, second, and hour params
+<span class="pc bpc" id="L368" title="2 of 4 branches missed.">            if (getMinute() &lt; 0 || getHour() &lt; 0)</span>
+            {
+<span class="nc" id="L370">                throw new TurbineException(&quot;Error in JobEntry. Bad Job parameter.&quot;);</span>
+            }
+
+<span class="fc" id="L373">            return ScheduleType.DAY_OF_MONTH;</span>
+        }
+    }
+
+    /**
+     * Get the value of jobId.
+     *
+     * @return int
+     */
+    @Override
+    public abstract int getJobId();
+
+    /**
+     * Set the value of jobId.
+     *
+     * @param v new value
+     */
+    @Override
+    public abstract void setJobId(int v);
+
+    /**
+     * Get the value of second.
+     *
+     * @return int
+     */
+    public abstract int getSecond();
+
+    /**
+     * Set the value of second.
+     *
+     * @param v new value
+     */
+    public abstract void setSecond(int v);
+
+    /**
+     * Get the value of minute.
+     *
+     * @return int
+     */
+    public abstract int getMinute();
+
+    /**
+     * Set the value of minute.
+     *
+     * @param v new value
+     */
+    public abstract void setMinute(int v);
+
+    /**
+     * Get the value of hour.
+     *
+     * @return int
+     */
+    public abstract int getHour();
+
+    /**
+     * Set the value of hour.
+     *
+     * @param v new value
+     */
+    public abstract void setHour(int v);
+
+    /**
+     * Get the value of weekDay.
+     *
+     * @return int
+     */
+    public abstract int getWeekDay();
+
+    /**
+     * Set the value of weekDay.
+     *
+     * @param v new value
+     */
+    public abstract void setWeekDay(int v);
+
+    /**
+     * Get the value of dayOfMonth.
+     *
+     * @return int
+     */
+    public abstract int getDayOfMonth();
+
+    /**
+     * Set the value of dayOfMonth.
+     *
+     * @param v new value
+     */
+    public abstract void setDayOfMonth(int v);
+
+    /**
+     * Get the value of task.
+     *
+     * @return String
+     */
+    @Override
+    public abstract String getTask();
+
+    /**
+     * Set the value of task.
+     *
+     * @param v new value
+     */
+    @Override
+    public abstract void setTask(String v);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

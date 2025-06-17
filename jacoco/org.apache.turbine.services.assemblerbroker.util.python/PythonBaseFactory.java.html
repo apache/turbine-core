@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PythonBaseFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.assemblerbroker.util.python</a> &gt; <span class="el_source">PythonBaseFactory.java</span></div><h1>PythonBaseFactory.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.assemblerbroker.util.python;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.io.File;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.modules.Assembler;
+import org.apache.turbine.modules.Loader;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
+import org.python.core.Py;
+import org.python.util.PythonInterpreter;
+
+/**
+ * A factory that attempts to load a python class in the
+ * JPython interpreter and execute it as a Turbine screen.
+ * The JPython script should inherit from Turbine Screen or one
+ * of its subclasses.
+ *
+ * @author &lt;a href=&quot;mailto:leon@opticode.co.za&quot;&gt;Leon Messerschmidt&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @param &lt;T&gt; the specialized assembler type
+ */
+<span class="nc" id="L48">public abstract class PythonBaseFactory&lt;T extends Assembler&gt;</span>
+        implements AssemblerFactory&lt;T&gt;
+{
+    /** Key for the python path */
+    public static final String PYTHON_PATH = &quot;python.path&quot;;
+
+    /** Global config file. This is executed before every screen */
+    public static final String PYTHON_CONFIG_FILE = &quot;conf.py&quot;;
+
+    /** Logging */
+<span class="nc" id="L58">    private static Logger log = LogManager.getLogger(PythonBaseFactory.class);</span>
+
+    /** Our configuration */
+<span class="nc" id="L61">    private final Configuration conf = TurbineServices.getInstance().getConfiguration(AssemblerBrokerService.SERVICE_NAME);</span>
+
+    /**
+     * Get an Assembler.
+     *
+     * @param subDirectory subdirectory within python.path
+     * @param name name of the requested Assembler
+     * @return an Assembler
+     * @throws Exception generic exception
+     */
+    public T getAssembler(String subDirectory, String name)
+            throws Exception
+    {
+<span class="nc" id="L74">        String path = conf.getString(PYTHON_PATH);</span>
+
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (StringUtils.isEmpty(path))</span>
+        {
+<span class="nc" id="L78">            throw new Exception(</span>
+                &quot;Python path not found - check your Properties&quot;);
+        }
+
+<span class="nc" id="L82">        log.debug(&quot;Screen name for JPython: {}&quot;, name);</span>
+
+<span class="nc" id="L84">        T assembler = null;</span>
+
+<span class="nc" id="L86">        String confName = path + &quot;/&quot; + PYTHON_CONFIG_FILE;</span>
+
+        // The filename of the Python script
+<span class="nc" id="L89">        StringBuilder fName = new StringBuilder();</span>
+
+<span class="nc" id="L91">        fName.append(path);</span>
+<span class="nc" id="L92">        fName.append(&quot;/&quot;);</span>
+<span class="nc" id="L93">        fName.append(subDirectory);</span>
+<span class="nc" id="L94">        fName.append(&quot;/&quot;);</span>
+<span class="nc" id="L95">        fName.append(name.toLowerCase());</span>
+<span class="nc" id="L96">        fName.append(&quot;.py&quot;);</span>
+
+<span class="nc" id="L98">        File f = new File(fName.toString());</span>
+
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (f.exists())</span>
+        {
+            // We try to open the Py Interpreter
+<span class="nc" id="L103">            try (PythonInterpreter interp = new PythonInterpreter())</span>
+            {
+                // Make sure the Py Interpreter use the right classloader
+                // This is necessary for servlet engines generally has
+                // their own classloader implementations and servlets aren't
+                // loaded in the system classloader.  The python script will
+                // load java package
+                // org.apache.turbine.services.assemblerbroker.util.python;
+                // the new classes to it as well.
+<span class="nc" id="L112">                Py.getSystemState().setClassLoader(this.getClass().getClassLoader());</span>
+
+                // We import the Python SYS module. Now we don't need to do this
+                // explicitly in the script.  We always use the sys module to
+                // do stuff like loading java package
+                // org.apache.turbine.services.assemblerbroker.util.python;
+<span class="nc" id="L118">                interp.exec(&quot;import sys&quot;);</span>
+
+                // Now we try to load the script file
+<span class="nc" id="L121">                interp.execfile(confName);</span>
+<span class="nc" id="L122">                interp.execfile(fName.toString());</span>
+
+                try
+                {
+                    // We create an instance of the screen class from the
+                    // python script
+<span class="nc" id="L128">                    interp.exec(&quot;scr = &quot; + name + &quot;()&quot;);</span>
+                }
+<span class="nc" id="L130">                catch (Throwable e)</span>
+                {
+<span class="nc" id="L132">                    throw new Exception(</span>
+                        &quot;\nCannot create an instance of the python class.\n&quot;
+                        + &quot;You probably gave your class the wrong name.\n&quot;
+                        + &quot;Your class should have the same name as your &quot;
+                        + &quot;filename.\nFilenames should be all lowercase and &quot;
+                        + &quot;classnames should start with a capital.\n&quot;
+                        + &quot;Expected class name: &quot; + name + &quot;\n&quot;);
+<span class="nc" id="L139">                }</span>
+
+                // Here we convert the python screen instance to a java instance.
+                @SuppressWarnings(&quot;unchecked&quot;) // Cast from Object necessary
+<span class="nc" id="L143">				T t = (T) interp.get(&quot;scr&quot;, Assembler.class);</span>
+<span class="nc" id="L144">				assembler = t;</span>
+            }
+<span class="nc" id="L146">            catch (Exception e)</span>
+            {
+                // We log the error here because this code is not widely tested
+                // yet. After we tested the code on a range of platforms this
+                // won't be useful anymore.
+<span class="nc" id="L151">                log.error(&quot;PYTHON SCRIPT SCREEN LOADER ERROR:&quot;, e);</span>
+<span class="nc" id="L152">                throw e;</span>
+<span class="nc" id="L153">            }</span>
+        }
+<span class="nc" id="L155">        return assembler;</span>
+    }
+
+    /**
+     * Get the loader for this type of assembler
+     *
+     * @return a Loader
+     */
+    @Override
+    public abstract Loader&lt;T&gt; getLoader();
+
+    /**
+     * Get the size of a possibly configured cache
+     *
+     * @return the size of the cache in bytes
+     */
+    @Override
+    public int getCacheSize()
+
+    {
+<span class="nc" id="L175">        return getLoader().getCacheSize();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

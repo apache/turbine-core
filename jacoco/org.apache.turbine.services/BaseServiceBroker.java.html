@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseServiceBroker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services</a> &gt; <span class="el_source">BaseServiceBroker.java</span></div><h1>BaseServiceBroker.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+/**
+ * A generic implementation of a &lt;code&gt;ServiceBroker&lt;/code&gt; which
+ * provides:
+ *
+ * &lt;ul&gt;
+ * &lt;li&gt;Maintaining service name to class name mapping, allowing
+ * pluggable service implementations.&lt;/li&gt;
+ * &lt;li&gt;Providing &lt;code&gt;Services&lt;/code&gt; with a configuration based on
+ * system wide configuration mechanism.&lt;/li&gt;
+ * &lt;li&gt;Integration of TurbineServiceProviders for looking up
+ * non-local services&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * @author &lt;a href=&quot;mailto:burton@apache.org&quot;&gt;Kevin Burton&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:krzewski@e-point.pl&quot;&gt;Rafal Krzewski&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:dlr@finemaltcoding.com&quot;&gt;Daniel Rall&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:jvanzyl@apache.org&quot;&gt;Jason van Zyl&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:mpoeschl@marmot.at&quot;&gt;Martin Poeschl&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+public abstract class BaseServiceBroker implements ServiceBroker
+{
+    /**
+     * Mapping of Service names to class names, keep order.
+     */
+<span class="fc" id="L64">    private final Map&lt;String, Class&lt;?&gt;&gt; mapping = new LinkedHashMap&lt;&gt;();</span>
+
+    /**
+     * A repository of Service instances.
+     */
+<span class="fc" id="L69">    private final ConcurrentHashMap&lt;String, Service&gt; services = new ConcurrentHashMap&lt;&gt;();</span>
+
+    /**
+     * Lock access during service initialization
+     */
+<span class="fc" id="L74">    private final ReentrantLock serviceLock = new ReentrantLock();</span>
+
+    /**
+     * Configuration for the services broker.
+     * The configuration should be set by the application
+     * in which the services framework is running.
+     */
+    private Configuration configuration;
+
+    /**
+     * A prefix for &lt;code&gt;Service&lt;/code&gt; properties in
+     * TurbineResource.properties.
+     */
+    public static final String SERVICE_PREFIX = &quot;services.&quot;;
+
+    /**
+     * A &lt;code&gt;Service&lt;/code&gt; property determining its implementing
+     * class name .
+     */
+    public static final String CLASSNAME_SUFFIX = &quot;.classname&quot;;
+
+    /**
+     * These are objects that the parent application
+     * can provide so that application specific
+     * services have a mechanism to retrieve specialized
+     * information. For example, in Turbine there are services
+     * that require the RunData object: these services can
+     * retrieve the RunData object that Turbine has placed
+     * in the service manager. This alleviates us of
+     * the requirement of having init(Object) all
+     * together.
+     */
+<span class="fc" id="L106">    private final ConcurrentHashMap&lt;String, Object&gt; serviceObjects = new ConcurrentHashMap&lt;&gt;();</span>
+
+    /** Logging */
+<span class="fc" id="L109">    private static final Logger log = LogManager.getLogger(BaseServiceBroker.class);</span>
+
+    /**
+     * Application root path as set by the
+     * parent application.
+     */
+    private String applicationRoot;
+
+    /**
+     * mapping from service names to instances of TurbineServiceProviders
+     */
+<span class="fc" id="L120">    private final ConcurrentHashMap&lt;String, Service&gt; serviceProviderInstanceMap = new ConcurrentHashMap&lt;&gt;();</span>
+
+    /**
+     * Default constructor, protected as to only be usable by subclasses.
+     *
+     * This constructor does nothing.
+     */
+    protected BaseServiceBroker()
+<span class="fc" id="L128">    {</span>
+        // nothing to do
+<span class="fc" id="L130">    }</span>
+
+    /**
+     * Set the configuration object for the services broker.
+     * This is the configuration that contains information
+     * about all services in the care of this service
+     * manager.
+     *
+     * @param configuration Broker configuration.
+     */
+    public void setConfiguration(Configuration configuration)
+    {
+<span class="fc" id="L142">        this.configuration = configuration;</span>
+<span class="fc" id="L143">    }</span>
+
+    /**
+     * Get the configuration for this service manager.
+     *
+     * @return Broker configuration.
+     */
+    public Configuration getConfiguration()
+    {
+<span class="nc" id="L152">        return configuration;</span>
+    }
+
+    /**
+     * Initialize this service manager.
+     * @throws InitializationException if the initialization fails
+     */
+    public void init() throws InitializationException
+    {
+        // Check:
+        //
+        // 1. The configuration has been set.
+        // 2. Make sure the application root has been set.
+
+        // FIXME: Make some service framework exceptions to throw in
+        // the event these requirements aren't satisfied.
+
+        // Create the mapping between service names
+        // and their classes.
+<span class="fc" id="L171">        initMapping();</span>
+
+        // Start services that have their 'earlyInit'
+        // property set to 'true'.
+<span class="fc" id="L175">        initServices(false);</span>
+<span class="fc" id="L176">    }</span>
+
+    /**
+     * Set an application specific service object
+     * that can be used by application specific
+     * services.
+     *
+     * @param name name of service object
+     * @param value value of service object
+     */
+    public void setServiceObject(String name, Object value)
+    {
+<span class="nc" id="L188">        serviceObjects.put(name, value);</span>
+<span class="nc" id="L189">    }</span>
+
+    /**
+     * Get an application specific service object.
+     *
+     * @param name the name of the service object
+     * @return Object application specific service object
+     */
+    public Object getServiceObject(String name)
+    {
+<span class="nc" id="L199">        return serviceObjects.get(name);</span>
+    }
+
+    /**
+     * Check recursively if the given checkIfc interface is among the implemented
+     * interfaces
+     *
+     * @param checkIfc interface to check for
+     * @param interfaces interfaces to scan
+     * @return true if the interface is implemented
+     */
+    private boolean checkForInterface(Class&lt;?&gt; checkIfc, Class&lt;?&gt;[] interfaces)
+    {
+<span class="fc bfc" id="L212" title="All 2 branches covered.">        for (Class&lt;?&gt; ifc : interfaces)</span>
+        {
+<span class="fc bfc" id="L214" title="All 2 branches covered.">            if (ifc == checkIfc)</span>
+            {
+<span class="fc" id="L216">                return true;</span>
+            }
+
+<span class="fc" id="L219">            Class&lt;?&gt;[] subInterfaces = ifc.getInterfaces();</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">            if (checkForInterface(checkIfc, subInterfaces))</span>
+            {
+<span class="fc" id="L222">                return true;</span>
+            }
+        }
+
+<span class="fc" id="L226">        return false;</span>
+    }
+
+    /**
+     * Creates a mapping between Service names and class names.
+     *
+     * The mapping is built according to settings present in
+     * TurbineResources.properties.  The entries should have the
+     * following form:
+     *
+     * &lt;pre&gt;
+     * services.MyService.classname=com.mycompany.MyServiceImpl
+     * services.MyOtherService.classname=com.mycompany.MyOtherServiceImpl
+     * &lt;/pre&gt;
+     *
+     * &lt;br&gt;
+     *
+     * Generic ServiceBroker provides no Services.
+     * @throws InitializationException if a service class could not be found
+     */
+    protected void initMapping() throws InitializationException
+    {
+        // we need to temporarily store the earlyInit flags to avoid
+        // ConcurrentModificationExceptions
+<span class="fc" id="L250">        Map&lt;String, String&gt; earlyInitFlags = new LinkedHashMap&lt;&gt;();</span>
+
+        /*
+         * These keys returned in an order that corresponds
+         * to the order the services are listed in
+         * the TR.props.
+         */
+<span class="fc bfc" id="L257" title="All 2 branches covered.">        for (Iterator&lt;String&gt; keys = configuration.getKeys(); keys.hasNext();)</span>
+        {
+<span class="fc" id="L259">            String key = keys.next();</span>
+<span class="fc" id="L260">            String[] keyParts = StringUtils.split(key, &quot;.&quot;);</span>
+
+<span class="fc bfc" id="L262" title="All 2 branches covered.">            if (keyParts.length == 3</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">                    &amp;&amp; (keyParts[0] + &quot;.&quot;).equals(SERVICE_PREFIX)</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">                    &amp;&amp; (&quot;.&quot; + keyParts[2]).equals(CLASSNAME_SUFFIX))</span>
+            {
+<span class="fc" id="L266">                String serviceKey = keyParts[1];</span>
+<span class="fc" id="L267">                log.info(&quot;Added Mapping for Service: {}&quot;, serviceKey);</span>
+
+<span class="fc bfc" id="L269" title="All 2 branches covered.">                if (!mapping.containsKey(serviceKey))</span>
+                {
+<span class="fc" id="L271">                    String className = configuration.getString(key);</span>
+                    try
+                    {
+<span class="fc" id="L274">                        Class&lt;?&gt; clazz = Class.forName(className);</span>
+<span class="fc" id="L275">                        mapping.put(serviceKey, clazz);</span>
+
+                        // detect TurbineServiceProviders
+<span class="fc bfc" id="L278" title="All 2 branches covered.">                        if (checkForInterface(TurbineServiceProvider.class, clazz.getInterfaces()))</span>
+                        {
+<span class="fc" id="L280">                            log.info(&quot;Found a TurbineServiceProvider: {} - initializing it early&quot;, serviceKey);</span>
+<span class="fc" id="L281">                            earlyInitFlags.put(SERVICE_PREFIX + serviceKey + &quot;.earlyInit&quot;, &quot;true&quot;);</span>
+                        }
+                    }
+                    // those two errors must be passed to the VM
+<span class="nc" id="L285">                    catch (ThreadDeath t)</span>
+                    {
+<span class="nc" id="L287">                        throw t;</span>
+                    }
+<span class="nc" id="L289">                    catch (OutOfMemoryError t)</span>
+                    {
+<span class="nc" id="L291">                        throw t;</span>
+                    }
+<span class="nc" id="L293">                    catch (ClassNotFoundException | NoClassDefFoundError e)</span>
+                    {
+<span class="nc" id="L295">                        throw new InitializationException(&quot;Class &quot; + className +</span>
+                            &quot; is unavailable. Check your jars and classes.&quot;, e);
+<span class="fc" id="L297">                    }</span>
+                }
+            }
+<span class="fc" id="L300">        }</span>
+
+<span class="fc bfc" id="L302" title="All 2 branches covered.">        for (Map.Entry&lt;String, String&gt; entry : earlyInitFlags.entrySet())</span>
+        {
+<span class="fc" id="L304">            configuration.setProperty(entry.getKey(), entry.getValue());</span>
+<span class="fc" id="L305">        }</span>
+<span class="fc" id="L306">    }</span>
+
+    /**
+     * Determines whether a service is registered in the configured
+     * &lt;code&gt;TurbineResources.properties&lt;/code&gt;.
+     *
+     * @param serviceName The name of the service whose existence to check.
+     * @return Registration predicate for the desired services.
+     */
+    @Override
+    public boolean isRegistered(String serviceName)
+    {
+<span class="fc bfc" id="L318" title="All 2 branches covered.">        return (services.get(serviceName) != null);</span>
+    }
+
+    /**
+     * Returns an Iterator over all known service names.
+     *
+     * @return An Iterator of service names.
+     */
+    public Iterator&lt;String&gt; getServiceNames()
+    {
+<span class="fc" id="L328">        return Collections.unmodifiableSet(mapping.keySet()).iterator();</span>
+    }
+
+    /**
+     * Returns an Iterator over all known service names beginning with
+     * the provided prefix.
+     *
+     * @param prefix The prefix against which to test.
+     * @return An Iterator of service names which match the prefix.
+     */
+    public Iterator&lt;String&gt; getServiceNames(String prefix)
+    {
+<span class="nc" id="L340">        Set&lt;String&gt; keys = new LinkedHashSet&lt;&gt;(mapping.keySet());</span>
+
+<span class="nc bnc" id="L342" title="All 2 branches missed.">        keys.removeIf(key -&gt; !key.startsWith(prefix));</span>
+
+<span class="nc" id="L344">        return Collections.unmodifiableSet(keys).iterator();</span>
+    }
+
+    /**
+     * Performs early initialization of specified service.
+     *
+     * @param name The name of the service (generally the
+     * &lt;code&gt;SERVICE_NAME&lt;/code&gt; constant of the service's interface
+     * definition).
+     * @throws InitializationException Initialization of this
+     * service was not successful.
+     */
+    @Override
+    public void initService(String name)
+            throws InitializationException
+    {
+        // Calling getServiceInstance(name) assures that the Service
+        // implementation has its name and broker reference set before
+        // initialization.
+<span class="fc" id="L363">        Service instance = getServiceInstance(name);</span>
+        
+<span class="fc" id="L365">        serviceLock.lock();</span>
+        try {
+<span class="fc bfc" id="L367" title="All 2 branches covered.">            if (!instance.getInit())</span>
+            {
+                // this call might result in an indirect recursion
+<span class="fc" id="L370">                instance.init();</span>
+            }
+            
+        } finally {
+<span class="fc" id="L374">            serviceLock.unlock();</span>
+        }
+<span class="fc" id="L376">    }</span>
+
+    /**
+     * Performs early initialization of all services.  Failed early
+     * initialization of a Service may be non-fatal to the system,
+     * thus any exceptions are logged and the initialization process
+     * continues.
+     */
+    public void initServices()
+    {
+        try
+        {
+<span class="nc" id="L388">            initServices(false);</span>
+        }
+<span class="nc" id="L390">        catch (InstantiationException | InitializationException notThrown)</span>
+        {
+<span class="nc" id="L392">            log.debug(&quot;Caught non fatal exception&quot;, notThrown);</span>
+<span class="nc" id="L393">        }</span>
+<span class="nc" id="L394">    }</span>
+
+    /**
+     * Performs early initialization of all services. You can decide
+     * to handle failed initializations if you wish, but then
+     * after one service fails, the other will not have the chance
+     * to initialize.
+     *
+     * @param report &lt;code&gt;true&lt;/code&gt; if you want exceptions thrown.
+     * @throws InstantiationException if the service could not be instantiated
+     * @throws InitializationException if the service could not be initialized
+     */
+    public void initServices(boolean report)
+            throws InstantiationException, InitializationException
+    {
+<span class="pc bpc" id="L409" title="1 of 2 branches missed.">        if (report)</span>
+        {
+            // Throw exceptions
+<span class="nc bnc" id="L412" title="All 2 branches missed.">            for (Iterator&lt;String&gt; names = getServiceNames(); names.hasNext();)</span>
+            {
+<span class="nc" id="L414">                doInitService(names.next());</span>
+            }
+        }
+        else
+        {
+            // Eat exceptions
+<span class="fc bfc" id="L420" title="All 2 branches covered.">            for (Iterator&lt;String&gt; names = getServiceNames(); names.hasNext();)</span>
+            {
+                try
+                {
+<span class="fc" id="L424">                    doInitService(names.next());</span>
+                }
+                        // In case of an exception, file an error message; the
+                        // system may be still functional, though.
+<span class="fc" id="L428">                catch (InstantiationException | InitializationException e)</span>
+                {
+<span class="fc" id="L430">                    log.error(e);</span>
+<span class="fc" id="L431">                }</span>
+            }
+        }
+<span class="fc" id="L434">        log.info(&quot;Finished initializing all services!&quot;);</span>
+<span class="fc" id="L435">    }</span>
+
+    /**
+     * Internal utility method for use in {@link #initServices(boolean)}
+     * to prevent duplication of code.
+     */
+    private void doInitService(String name)
+            throws InstantiationException, InitializationException
+    {
+        // Only start up services that have their earlyInit flag set.
+<span class="fc bfc" id="L445" title="All 2 branches covered.">        if (getConfiguration(name).getBoolean(&quot;earlyInit&quot;, false))</span>
+        {
+<span class="fc" id="L447">            log.info(&quot;Start Initializing service (early): {}&quot;, name);</span>
+<span class="fc" id="L448">            initService(name);</span>
+<span class="fc" id="L449">            log.info(&quot;Finish Initializing service (early): {}&quot;, name);</span>
+        }
+<span class="fc" id="L451">    }</span>
+
+    /**
+     * Shuts down a &lt;code&gt;Service&lt;/code&gt;, releasing resources
+     * allocated by an &lt;code&gt;Service&lt;/code&gt;, and returns it to its
+     * initial (uninitialized) state.
+     *
+     * @param name The name of the &lt;code&gt;Service&lt;/code&gt; to be
+     * uninitialized.
+     */
+    @Override
+    public void shutdownService(String name)
+    {
+        try
+        {
+<span class="fc" id="L466">            Service service = getServiceInstance(name);</span>
+<span class="pc bpc" id="L467" title="1 of 4 branches missed.">            if (service != null &amp;&amp; service.getInit())</span>
+            {
+<span class="fc" id="L469">                serviceLock.lock();</span>
+                try {
+<span class="fc" id="L471">                    service.shutdown();</span>
+    
+<span class="pc bpc" id="L473" title="1 of 4 branches missed.">                    if (service.getInit() &amp;&amp; service instanceof BaseService)</span>
+                    {
+                        // BaseService::shutdown() does this by default,
+                        // but could've been overriden poorly.
+<span class="fc" id="L477">                        ((BaseService) service).setInit(false);</span>
+                    }
+                } finally {
+<span class="fc" id="L480">                    serviceLock.unlock();</span>
+                }
+            }
+        }
+<span class="nc" id="L484">        catch (InstantiationException e)</span>
+        {
+            // Assuming harmless -- log the error and continue.
+<span class="nc" id="L487">            log.error(&quot;Shutdown of a nonexistent Service '&quot;</span>
+                    + name + &quot;' was requested&quot;, e);
+<span class="fc" id="L489">        }</span>
+<span class="fc" id="L490">    }</span>
+
+    /**
+     * Shuts down all Turbine services, releasing allocated resources and
+     * returning them to their initial (uninitialized) state.
+     */
+    @Override
+    public void shutdownServices()
+    {
+<span class="fc" id="L499">        log.info(&quot;Shutting down all services!&quot;);</span>
+
+<span class="fc" id="L501">        String serviceName = null;</span>
+
+        /*
+         * Now we want to reverse the order of
+         * this list. This functionality should be added to
+         * the ExtendedProperties in the commons but
+         * this will fix the problem for now.
+         */
+
+<span class="fc" id="L510">        ArrayList&lt;String&gt; reverseServicesList = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L512" title="All 2 branches covered.">        for (Iterator&lt;String&gt; serviceNames = getServiceNames(); serviceNames.hasNext();)</span>
+        {
+<span class="fc" id="L514">            serviceName = serviceNames.next();</span>
+<span class="fc" id="L515">            reverseServicesList.add(0, serviceName);</span>
+        }
+
+<span class="fc bfc" id="L518" title="All 2 branches covered.">        for (String s : reverseServicesList)</span>
+        {
+<span class="fc" id="L520">            serviceName = s;</span>
+<span class="fc" id="L521">            log.info(&quot;Shutting down service: {}&quot;, serviceName);</span>
+<span class="fc" id="L522">            shutdownService(serviceName);</span>
+<span class="fc" id="L523">        }</span>
+<span class="fc" id="L524">    }</span>
+
+    /**
+     * Returns an instance of requested Service.
+     *
+     * @param name The name of the Service requested.
+     * @return An instance of requested Service.
+     * @throws InstantiationException if the service is unknown or
+     * can't be initialized.
+     */
+    @Override
+    public Object getService(String name) throws InstantiationException
+    {
+        Service service;
+
+<span class="fc bfc" id="L539" title="All 2 branches covered.">        if (this.isLocalService(name))</span>
+        {
+	        try
+	        {
+<span class="fc" id="L543">	            service = getServiceInstance(name);</span>
+<span class="fc bfc" id="L544" title="All 2 branches covered.">	            if (!service.getInit())</span>
+	            {
+<span class="fc" id="L546">	                serviceLock.lock(); // was synchronized (service.getClass(), but should be equivalent</span>
+	                try {
+<span class="pc bpc" id="L548" title="1 of 2 branches missed.">	                    if (!service.getInit())</span>
+	                    {
+<span class="fc" id="L550">	                        log.info(&quot;Start Initializing service (late): {}&quot;, name);</span>
+<span class="fc" id="L551">	                        service.init();</span>
+<span class="fc" id="L552">	                        log.info(&quot;Finish Initializing service (late): {}&quot;, name);</span>
+	                    }
+	                } finally {
+<span class="fc" id="L555">	                    serviceLock.unlock();</span>
+	                }
+	            }
+<span class="pc bpc" id="L558" title="1 of 2 branches missed.">	            if (!service.getInit())</span>
+	            {
+	                // this exception will be caught &amp; rethrown by this very method.
+	                // getInit() returning false indicates some initialization issue,
+	                // which in turn prevents the InitableBroker from passing a
+	                // reference to a working instance of the initable to the client.
+<span class="nc" id="L564">	                throw new InitializationException(</span>
+	                        &quot;init() failed to initialize service &quot; + name);
+	            }
+<span class="fc" id="L567">	            return service;</span>
+	        }
+<span class="nc" id="L569">	        catch (InitializationException e)</span>
+	        {
+<span class="nc" id="L571">	            throw new InstantiationException(&quot;Service &quot; + name +</span>
+	                    &quot; failed to initialize&quot;, e);
+	        }
+        }
+<span class="fc bfc" id="L575" title="All 2 branches covered.">        else if (this.isNonLocalService(name))</span>
+        {
+<span class="fc" id="L577">            return this.getNonLocalService(name);</span>
+        }
+        else
+        {
+<span class="fc" id="L581">            throw new InstantiationException(</span>
+                &quot;ServiceBroker: unknown service &quot; + name
+                + &quot; requested&quot;);
+        }
+    }
+
+    /**
+     * Retrieves an instance of a Service without triggering late
+     * initialization.
+     *
+     * Early initialization of a Service can require access to Service
+     * properties.  The Service must have its name and serviceBroker
+     * set by then.  Therefore, before calling
+     * Initable.initClass(Object), the class must be instantiated with
+     * InitableBroker.getInitableInstance(), and
+     * Service.setServiceBroker() and Service.setName() must be
+     * called.  This calls for two - level accessing the Services
+     * instances.
+     *
+     * @param name The name of the service requested.
+     *
+     * @return the Service instance
+     *
+     * @throws InstantiationException The service is unknown or
+     * can't be initialized.
+     */
+    protected Service getServiceInstance(String name)
+            throws InstantiationException
+    {
+<span class="fc" id="L610">        Service service = services.get(name);</span>
+
+<span class="fc bfc" id="L612" title="All 2 branches covered.">        if (service == null)</span>
+        {
+<span class="fc" id="L614">            serviceLock.lock();</span>
+
+            try
+            {
+                // Double check
+<span class="fc" id="L619">                service = services.get(name);</span>
+
+<span class="pc bpc" id="L621" title="1 of 2 branches missed.">                if (service == null)</span>
+                {
+<span class="pc bpc" id="L623" title="1 of 2 branches missed.">                    if (!this.isLocalService(name))</span>
+                    {
+<span class="nc" id="L625">                        throw new InstantiationException(</span>
+                                &quot;ServiceBroker: unknown service &quot; + name
+                                + &quot; requested&quot;);
+                    }
+
+                    try
+                    {
+<span class="fc" id="L632">                        Class&lt;?&gt; clazz = mapping.get(name);</span>
+
+                        try
+                        {
+<span class="fc" id="L636">                            service = (Service) clazz.getDeclaredConstructor().newInstance();</span>
+
+                            // check if the newly created service is also a
+                            // service provider - if so then remember it
+<span class="fc bfc" id="L640" title="All 2 branches covered.">                            if (service instanceof TurbineServiceProvider)</span>
+                            {
+<span class="fc" id="L642">                                Service _service = this.serviceProviderInstanceMap.putIfAbsent(name,service);</span>
+<span class="pc bpc" id="L643" title="1 of 2 branches missed.">                                if (_service != null)</span>
+                                {
+<span class="nc" id="L645">                                    service = _service;</span>
+                                }
+                            }
+                        }
+                        // those two errors must be passed to the VM
+<span class="nc" id="L650">                        catch (ClassCastException e)</span>
+                        {
+<span class="nc" id="L652">                            throw new InstantiationException(&quot;Class &quot; + clazz +</span>
+                                    &quot; doesn't implement the Service interface&quot;, e);
+                        }
+<span class="nc" id="L655">                        catch (ThreadDeath | OutOfMemoryError t)</span>
+                        {
+<span class="nc" id="L657">                            throw t;</span>
+                        }
+<span class="nc" id="L659">                        catch (Throwable t)</span>
+                        {
+<span class="nc" id="L661">                            throw new InstantiationException(&quot;Failed to instantiate &quot; + clazz, t);</span>
+<span class="fc" id="L662">                        }</span>
+                    }
+<span class="nc" id="L664">                    catch (InstantiationException e)</span>
+                    {
+<span class="nc" id="L666">                        throw new InstantiationException(</span>
+                                &quot;Failed to instantiate service &quot; + name, e);
+<span class="fc" id="L668">                    }</span>
+<span class="fc" id="L669">                    service.setServiceBroker(this);</span>
+<span class="fc" id="L670">                    service.setName(name);</span>
+<span class="fc" id="L671">                    Service _service = services.putIfAbsent(name, service);</span>
+<span class="pc bpc" id="L672" title="1 of 2 branches missed.">                    if (_service != null) // Unlikely</span>
+                    {
+<span class="nc" id="L674">                        service = _service;</span>
+                    }
+                }
+            }
+            finally
+            {
+<span class="fc" id="L680">                serviceLock.unlock();</span>
+            }
+        }
+
+<span class="fc" id="L684">        return service;</span>
+    }
+
+    /**
+     * Returns the configuration for the specified service.
+     *
+     * @param name The name of the service.
+     * @return Configuration of requested Service.
+     */
+    @Override
+    public Configuration getConfiguration(String name)
+    {
+<span class="fc" id="L696">        return configuration.subset(SERVICE_PREFIX + name);</span>
+    }
+
+    /**
+     * Set the application root.
+     *
+     * @param applicationRoot application root
+     */
+    public void setApplicationRoot(String applicationRoot)
+    {
+<span class="fc" id="L706">        this.applicationRoot = applicationRoot;</span>
+<span class="fc" id="L707">    }</span>
+
+    /**
+     * Get the application root as set by
+     * the parent application.
+     *
+     * @return String application root
+     */
+    @Override
+    public String getApplicationRoot()
+    {
+<span class="fc" id="L718">        return applicationRoot;</span>
+    }
+
+    /**
+     * Determines if the requested service is managed by this
+     * ServiceBroker.
+     *
+     * @param name The name of the Service requested.
+     * @return true if the service is managed by the this ServiceBroker
+     */
+    protected boolean isLocalService(String name)
+    {
+<span class="fc" id="L730">        return this.mapping.containsKey(name);</span>
+    }
+
+    /**
+     * Determines if the requested service is managed by an initialized
+     * TurbineServiceProvider. We use the service names to lookup
+     * the TurbineServiceProvider to ensure that we get a fully
+     * initialized service.
+     *
+     * @param name The name of the Service requested.
+     * @return true if the service is managed by a TurbineServiceProvider
+     */
+    protected boolean isNonLocalService(String name)
+    {
+<span class="fc" id="L744">        TurbineServiceProvider turbineServiceProvider = null;</span>
+
+<span class="fc bfc" id="L746" title="All 2 branches covered.">        for (Map.Entry&lt;String, Service&gt; entry : this.serviceProviderInstanceMap.entrySet())</span>
+        {
+<span class="fc" id="L748">            turbineServiceProvider = (TurbineServiceProvider) this.getService(entry.getKey());</span>
+
+<span class="fc bfc" id="L750" title="All 2 branches covered.">            if (turbineServiceProvider.exists(name))</span>
+            {
+<span class="fc" id="L752">                return true;</span>
+            }
+<span class="fc" id="L754">        }</span>
+
+<span class="fc" id="L756">        return false;</span>
+    }
+
+    /**
+     * Get a non-local service managed by a TurbineServiceProvider.
+     *
+     * @param name The name of the Service requested.
+     * @return the requested service
+     * @throws InstantiationException the service couldn't be instantiated
+     */
+    protected Object getNonLocalService(String name)
+    	throws InstantiationException
+    {
+<span class="fc" id="L769">        TurbineServiceProvider turbineServiceProvider = null;</span>
+
+<span class="pc bpc" id="L771" title="1 of 2 branches missed.">        for (Map.Entry&lt;String, Service&gt; entry : this.serviceProviderInstanceMap.entrySet())</span>
+        {
+<span class="fc" id="L773">            turbineServiceProvider = (TurbineServiceProvider) this.getService(entry.getKey());</span>
+
+<span class="pc bpc" id="L775" title="1 of 2 branches missed.">            if (turbineServiceProvider.exists(name))</span>
+            {
+<span class="fc" id="L777">                return turbineServiceProvider.get(name);</span>
+            }
+<span class="nc" id="L779">        }</span>
+
+<span class="nc" id="L781">        throw new InstantiationException(</span>
+            &quot;ServiceBroker: unknown non-local service &quot; + name
+            + &quot; requested&quot;);
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocaleUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util</a> &gt; <span class="el_source">LocaleUtils.java</span></div><h1>LocaleUtils.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util;
+
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.util.Locale;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.fulcrum.mimetype.MimeTypeService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.services.ServiceManager;
+import org.apache.turbine.services.TurbineServices;
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+/**
+ * This class provides utilities for handling locales and charsets
+ *
+ * @author &lt;a href=&quot;mailto:tv@apache.org&quot;&gt;Thomas Vandahl&lt;/a&gt;
+ */
+<span class="nc" id="L61">public class LocaleUtils</span>
+{
+    /** Logging */
+<span class="fc" id="L64">    private static final Logger log = LogManager.getLogger(LocaleUtils.class);</span>
+
+    /** The default locale. */
+<span class="fc" id="L67">    private static Locale defaultLocale = null;</span>
+
+    /** The default charset. */
+<span class="fc" id="L70">    private static Charset defaultCharSet = null;</span>
+
+    /**
+     * Returns the default input encoding for the servlet.
+     *
+     * @return the default input encoding.
+     */
+    public static String getDefaultInputEncoding()
+    {
+        // Get the default input defaultEncoding
+<span class="fc" id="L80">        String inputEncoding = Turbine.getConfiguration()</span>
+<span class="fc" id="L81">                .getString(TurbineConstants.PARAMETER_ENCODING_KEY,</span>
+                        TurbineConstants.PARAMETER_ENCODING_DEFAULT);
+
+<span class="fc" id="L84">        log.debug(&quot;Input Encoding has been set to {}&quot;, inputEncoding);</span>
+
+<span class="fc" id="L86">        return inputEncoding;</span>
+    }
+
+    /**
+     * Gets the default locale defined by properties named &quot;locale.default.lang&quot;
+     * and &quot;locale.default.country&quot;.
+     *
+     * This changed from earlier Turbine versions that you can rely on
+     * getDefaultLocale() to never return null.
+     *
+     * @return A Locale object.
+     */
+    public static Locale getDefaultLocale()
+    {
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (defaultLocale == null)</span>
+        {
+            /* Get the default locale and cache it in a static variable. */
+<span class="fc" id="L103">            String lang = Turbine.getConfiguration()</span>
+<span class="fc" id="L104">                    .getString(TurbineConstants.LOCALE_DEFAULT_LANGUAGE_KEY,</span>
+                            TurbineConstants.LOCALE_DEFAULT_LANGUAGE_DEFAULT);
+
+<span class="fc" id="L107">            String country = Turbine.getConfiguration()</span>
+<span class="fc" id="L108">                    .getString(TurbineConstants.LOCALE_DEFAULT_COUNTRY_KEY,</span>
+                            TurbineConstants.LOCALE_DEFAULT_COUNTRY_DEFAULT);
+
+            // We ensure that lang and country is never null
+<span class="fc" id="L112">            defaultLocale = new Locale(lang, country);</span>
+        }
+
+<span class="fc" id="L115">        return defaultLocale;</span>
+    }
+
+    /**
+     * Gets the default charset defined by a property named
+     * &quot;locale.default.charset&quot;
+     *
+     * @return the name of the default charset or null.
+     */
+    @Deprecated
+    public static String getDefaultCharSet()
+    {
+<span class="nc" id="L127">        return getDefaultCharset().name();</span>
+    }
+
+    /**
+     * Gets the default charset defined by a property named
+     * &quot;locale.default.charset&quot;
+     *
+     * @return the default charset, never null.
+     */
+    public static Charset getDefaultCharset()
+    {
+<span class="fc bfc" id="L138" title="All 2 branches covered.">        if (defaultCharSet == null)</span>
+        {
+            /* Get the default charset and cache it in a static variable. */
+<span class="fc" id="L141">            String charSet = Turbine.getConfiguration()</span>
+<span class="fc" id="L142">                    .getString(TurbineConstants.LOCALE_DEFAULT_CHARSET_KEY,</span>
+                            TurbineConstants.LOCALE_DEFAULT_CHARSET_DEFAULT);
+
+<span class="fc bfc" id="L145" title="All 2 branches covered.">            if (StringUtils.isNotEmpty(charSet))</span>
+            {
+<span class="fc" id="L147">                defaultCharSet = charSetForName(charSet);</span>
+<span class="fc" id="L148">                log.debug(&quot;defaultCharSet = {} (From Properties)&quot;, defaultCharSet);</span>
+            }
+        }
+
+<span class="fc" id="L152">        Charset charset = defaultCharSet;</span>
+
+<span class="fc bfc" id="L154" title="All 2 branches covered.">        if (charset == null) // can happen if set explicitly in the configuration</span>
+        {
+<span class="fc" id="L156">            log.debug(&quot;Default charset is empty!&quot;);</span>
+            /* Default charset isn't specified, get the locale specific one. */
+<span class="fc" id="L158">            Locale locale = getDefaultLocale();</span>
+<span class="fc" id="L159">            log.debug(&quot;Locale is {}&quot;, locale);</span>
+
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">            if (!locale.equals(Locale.US))</span>
+            {
+<span class="fc" id="L163">                log.debug(&quot;We don't have US Locale!&quot;);</span>
+<span class="fc" id="L164">                ServiceManager serviceManager = TurbineServices.getInstance();</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">                if (serviceManager.isRegistered(MimeTypeService.ROLE))</span>
+                {
+                    try
+                    {
+<span class="nc" id="L169">                        MimeTypeService mimeTypeService = (MimeTypeService) serviceManager.getService(MimeTypeService.ROLE);</span>
+<span class="nc" id="L170">                        charset = charSetForName(mimeTypeService.getCharSet(locale));</span>
+                    }
+<span class="nc" id="L172">                    catch (Exception e)</span>
+                    {
+<span class="nc" id="L174">                        throw new RuntimeException(e);</span>
+<span class="nc" id="L175">                    }</span>
+
+<span class="nc" id="L177">                    log.debug(&quot;Charset now {}&quot;, charset);</span>
+                }
+            }
+
+            // The fallback to end all fallbacks
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">            if (charset == null)</span>
+            {
+<span class="fc" id="L184">                charset = StandardCharsets.ISO_8859_1;</span>
+            }
+        }
+
+<span class="fc" id="L188">        log.debug(&quot;Returning default Charset of {}&quot;, charset);</span>
+<span class="fc" id="L189">        return charset;</span>
+    }
+
+    /**
+     * Gets the charset defined by a property named &quot;locale.override.charset&quot;
+     * This property has no default. If it exists, the output charset is always
+     * set to its value
+     *
+     * @return the name of the override charset or null.
+     */
+    @Deprecated
+    public static String getOverrideCharSet()
+    {
+<span class="nc" id="L202">        return Turbine.getConfiguration()</span>
+<span class="nc" id="L203">                .getString(TurbineConstants.LOCALE_OVERRIDE_CHARSET_KEY);</span>
+    }
+
+    /**
+     * Gets the charset defined by a property named &quot;locale.override.charset&quot;
+     * This property has no default. If it exists, the output charset is always
+     * set to its value
+     *
+     * @return the override charset or null.
+     */
+    public static Charset getOverrideCharset()
+    {
+<span class="fc" id="L215">        String charset = Turbine.getConfiguration()</span>
+<span class="fc" id="L216">                .getString(TurbineConstants.LOCALE_OVERRIDE_CHARSET_KEY);</span>
+
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(charset))</span>
+        {
+<span class="fc" id="L220">            return null;</span>
+        }
+
+<span class="nc" id="L223">        return charSetForName(charset);</span>
+    }
+
+    /**
+     * Get a Charset object for a given name
+     * This method does not throw exceptions on illegal input but returns null.
+     *
+     * @param charSet the charset name
+     *
+     * @return the Charset or null if it does not exist
+     */
+    private static Charset charSetForName(String charSet)
+    {
+        try
+        {
+<span class="fc" id="L238">            return Charset.forName(charSet);</span>
+        }
+<span class="nc" id="L240">        catch (IllegalCharsetNameException | UnsupportedCharsetException e)</span>
+        {
+<span class="nc" id="L242">            log.error(&quot;Illegal default charset {}&quot;, charSet);</span>
+        }
+
+<span class="nc" id="L245">        return null;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

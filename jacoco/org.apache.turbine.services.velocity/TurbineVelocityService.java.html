@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineVelocityService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.velocity</a> &gt; <span class="el_source">TurbineVelocityService.java</span></div><h1>TurbineVelocityService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.velocity;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.Charset;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.pull.PullService;
+import org.apache.turbine.services.template.BaseTemplateEngineService;
+import org.apache.turbine.util.LocaleUtils;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.app.event.EventCartridge;
+import org.apache.velocity.app.event.MethodExceptionEventHandler;
+import org.apache.velocity.context.Context;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.util.introspection.Info;
+
+/**
+ * This is a Service that can process Velocity templates from within a
+ * Turbine Screen. It is used in conjunction with the templating service
+ * as a Templating Engine for templates ending in &quot;vm&quot;. It registers
+ * itself as translation engine with the template service and gets
+ * accessed from there. After configuring it in your properties, it
+ * should never be necessary to call methods from this service directly.
+ *
+ * Here's an example of how you might use it from a
+ * screen:&lt;br&gt;
+ *
+ * &lt;code&gt;
+ * Context context = TurbineVelocity.getContext(data);&lt;br&gt;
+ * context.put(&quot;message&quot;, &quot;Hello from Turbine!&quot;);&lt;br&gt;
+ * String results = TurbineVelocity.handleRequest(context,&quot;helloWorld.vm&quot;);&lt;br&gt;
+ * data.getPage().getBody().addElement(results);&lt;br&gt;
+ * &lt;/code&gt;
+ *
+ * @author &lt;a href=&quot;mailto:mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:krzewski@e-point.pl&quot;&gt;Rafal Krzewski&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:jvanzyl@periapt.com&quot;&gt;Jason van Zyl&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:sean@informage.ent&quot;&gt;Sean Legassick&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:dlr@finemaltcoding.com&quot;&gt;Daniel Rall&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:epugh@upstate.com&quot;&gt;Eric Pugh&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L80">public class TurbineVelocityService</span>
+        extends BaseTemplateEngineService
+        implements VelocityService,
+                   MethodExceptionEventHandler
+{
+    /** The generic resource loader path property in velocity.*/
+    private static final String RESOURCE_LOADER_PATH = &quot;.resource.loader.path&quot;;
+
+    /** The prefix used for URIs which are of type &lt;code&gt;jar&lt;/code&gt;. */
+    private static final String JAR_PREFIX = &quot;jar:&quot;;
+
+    /** The prefix used for URIs which are of type &lt;code&gt;absolute&lt;/code&gt;. */
+    private static final String ABSOLUTE_PREFIX = &quot;file://&quot;;
+
+    /** Logging */
+<span class="fc" id="L95">    private static final Logger log = LogManager.getLogger(TurbineVelocityService.class);</span>
+
+    /** Encoding used when reading the templates. */
+    private Charset defaultInputEncoding;
+
+    /** Encoding used by the outputstream when handling the requests. */
+    private Charset defaultOutputEncoding;
+
+    /** Is the pullModelActive? */
+<span class="fc" id="L104">    private boolean pullModelActive = false;</span>
+
+    /** Shall we catch Velocity Errors and report them in the log file? */
+<span class="fc" id="L107">    private boolean catchErrors = true;</span>
+
+    /** Velocity runtime instance */
+<span class="fc" id="L110">    private VelocityEngine velocity = null;</span>
+
+    /** Internal Reference to the pull Service */
+<span class="fc" id="L113">    private PullService pullService = null;</span>
+
+
+    /**
+     * Load all configured components and initialize them. This is
+     * a zero parameter variant which queries the Turbine Servlet
+     * for its config.
+     *
+     * @throws InitializationException Something went wrong in the init
+     *         stage
+     */
+    @Override
+    public void init()
+            throws InitializationException
+    {
+        try
+        {
+<span class="fc" id="L130">            velocity = getInitializedVelocityEngine();</span>
+
+            // We can only load the Pull Model ToolBox
+            // if the Pull service has been listed in the TR.props
+            // and the service has successfully been initialized.
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">            if (TurbineServices.getInstance().isRegistered(PullService.SERVICE_NAME))</span>
+            {
+<span class="fc" id="L137">                pullModelActive = true;</span>
+<span class="fc" id="L138">                pullService = (PullService)TurbineServices.getInstance().getService(PullService.SERVICE_NAME);</span>
+
+<span class="fc" id="L140">                log.debug(&quot;Activated Pull Tools&quot;);</span>
+            }
+
+            // Register with the template service.
+<span class="fc" id="L144">            registerConfiguration(VelocityService.VELOCITY_EXTENSION);</span>
+
+<span class="fc" id="L146">            String inputEncoding = getConfiguration().getString(&quot;input.encoding&quot;, LocaleUtils.getDefaultInputEncoding());</span>
+<span class="fc" id="L147">            defaultInputEncoding = Charset.forName(inputEncoding);</span>
+
+<span class="fc" id="L149">            String outputEncodingString = getConfiguration().getString(&quot;output.encoding&quot;);</span>
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">            if (outputEncodingString == null)</span>
+            {
+<span class="fc" id="L152">                Charset outputEncoding = LocaleUtils.getOverrideCharset();</span>
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">                if (outputEncoding == null)</span>
+                {
+<span class="fc" id="L155">                    outputEncoding = defaultInputEncoding;</span>
+                }
+
+<span class="fc" id="L158">                defaultOutputEncoding = outputEncoding;</span>
+<span class="fc" id="L159">            }</span>
+            else
+            {
+<span class="nc" id="L162">                defaultOutputEncoding = Charset.forName(outputEncodingString);</span>
+            }
+
+<span class="fc" id="L165">            setInit(true);</span>
+        }
+<span class="nc" id="L167">        catch (Exception e)</span>
+        {
+<span class="nc" id="L169">            throw new InitializationException(</span>
+                &quot;Failed to initialize TurbineVelocityService&quot;, e);
+<span class="fc" id="L171">        }</span>
+<span class="fc" id="L172">    }</span>
+
+    /**
+     * Create a Context object that also contains the globalContext.
+     *
+     * @return A Context object.
+     */
+    @Override
+    public Context getContext()
+    {
+        Context globalContext =
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">                pullModelActive ? pullService.getGlobalContext() : null;</span>
+
+<span class="fc" id="L185">        Context ctx = new VelocityContext(globalContext);</span>
+<span class="fc" id="L186">        return ctx;</span>
+    }
+
+    /**
+     * This method returns a new, empty Context object.
+     *
+     * @return A Context Object.
+     */
+    @Override
+    public Context getNewContext()
+    {
+<span class="fc" id="L197">        Context ctx = new VelocityContext();</span>
+
+        // Attach an Event Cartridge to it, so we get exceptions
+        // while invoking methods from the Velocity Screens
+<span class="fc" id="L201">        EventCartridge ec = new EventCartridge();</span>
+<span class="fc" id="L202">        ec.addEventHandler(this);</span>
+<span class="fc" id="L203">        ec.attachToContext(ctx);</span>
+<span class="fc" id="L204">        return ctx;</span>
+    }
+
+    /**
+     * MethodException Event Cartridge handler
+     * for Velocity.
+     *
+     * It logs an exception thrown by the velocity processing
+     * on error level into the log file
+     *
+     * @param context The current context
+     * @param clazz The class that threw the exception
+     * @param method The Method name that threw the exception
+     * @param e The exception that would've been thrown
+     * @param info Information about the template, line and column the exception occurred
+     * @return A valid value to be used as Return value
+     */
+    @Override
+	public Object methodException(Context context, @SuppressWarnings(&quot;rawtypes&quot;) Class clazz, String method, Exception e, Info info)
+    {
+<span class="nc" id="L224">        log.error(&quot;Class {}.{} threw Exception&quot;, clazz.getName(), method, e);</span>
+
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        if (!catchErrors)</span>
+        {
+<span class="nc" id="L228">            throw new RuntimeException(e);</span>
+        }
+
+<span class="nc" id="L231">        return &quot;[Turbine caught an Error in template &quot; + info.getTemplateName()</span>
+<span class="nc" id="L232">            + &quot;, l:&quot; + info.getLine()</span>
+<span class="nc" id="L233">            + &quot;, c:&quot; + info.getColumn()</span>
+            + &quot;. Look into the turbine.log for further information]&quot;;
+    }
+
+    /**
+     * Create a Context from the PipelineData object.  Adds a pointer to
+     * the PipelineData object to the VelocityContext so that PipelineData
+     * is available in the templates.
+     *
+     * @param pipelineData The Turbine PipelineData object.
+     * @return A clone of the WebContext needed by Velocity.
+     */
+    @Override
+    public Context getContext(PipelineData pipelineData)
+    {
+        //Map runDataMap = (Map)pipelineData.get(RunData.class);
+<span class="fc" id="L249">        RunData data = (RunData)pipelineData;</span>
+        // Attempt to get it from the data first.  If it doesn't
+        // exist, create it and then stuff it into the data.
+<span class="fc" id="L252">        Context context = (Context)</span>
+<span class="fc" id="L253">            data.getTemplateInfo().getTemplateContext(VelocityService.CONTEXT);</span>
+
+<span class="fc bfc" id="L255" title="All 2 branches covered.">        if (context == null)</span>
+        {
+<span class="fc" id="L257">            context = getContext();</span>
+<span class="fc" id="L258">            context.put(VelocityService.RUNDATA_KEY, data);</span>
+            // we will add both data and pipelineData to the context.
+<span class="fc" id="L260">            context.put(VelocityService.PIPELINEDATA_KEY, pipelineData);</span>
+
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">            if (pullModelActive)</span>
+            {
+                // Populate the toolbox with request scope, session scope
+                // and persistent scope tools (global tools are already in
+                // the toolBoxContent which has been wrapped to construct
+                // this request-specific context).
+<span class="fc" id="L268">                pullService.populateContext(context, pipelineData);</span>
+            }
+
+<span class="fc" id="L271">            data.getTemplateInfo().setTemplateContext(</span>
+                VelocityService.CONTEXT, context);
+        }
+<span class="fc" id="L274">        return context;</span>
+    }
+
+    /**
+     * Process the request and fill in the template with the values
+     * you set in the Context.
+     *
+     * @param context  The populated context.
+     * @param filename The file name of the template.
+     * @return The process template as a String.
+     *
+     * @throws TurbineException Any exception thrown while processing will be
+     *         wrapped into a TurbineException and rethrown.
+     */
+    @Override
+    public String handleRequest(Context context, String filename)
+        throws TurbineException
+    {
+<span class="fc" id="L292">        String results = null;</span>
+<span class="fc" id="L293">        OutputStreamWriter writer = null;</span>
+<span class="fc" id="L294">        Charset charset = getOutputCharSet(context);</span>
+
+<span class="fc" id="L296">        try (ByteArrayOutputStream bytes = new ByteArrayOutputStream())</span>
+        {
+<span class="fc" id="L298">            writer = new OutputStreamWriter(bytes, charset);</span>
+
+<span class="fc" id="L300">            executeRequest(context, filename, writer);</span>
+<span class="fc" id="L301">            writer.flush();</span>
+<span class="fc" id="L302">            results = bytes.toString(charset.name());</span>
+        }
+<span class="nc" id="L304">        catch (Exception e)</span>
+        {
+<span class="nc" id="L306">            renderingError(filename, e);</span>
+<span class="fc" id="L307">        }</span>
+
+<span class="fc" id="L309">        return results;</span>
+    }
+
+    /**
+     * Process the request and fill in the template with the values
+     * you set in the Context.
+     *
+     * @param context A Context.
+     * @param filename A String with the filename of the template.
+     * @param output A OutputStream where we will write the process template as
+     * a String.
+     *
+     * @throws TurbineException Any exception thrown while processing will be
+     *         wrapped into a TurbineException and rethrown.
+     */
+    @Override
+    public void handleRequest(Context context, String filename,
+                              OutputStream output)
+            throws TurbineException
+    {
+<span class="fc" id="L329">        Charset charset  = getOutputCharSet(context);</span>
+
+<span class="fc" id="L331">        try (OutputStreamWriter writer = new OutputStreamWriter(output, charset))</span>
+        {
+<span class="fc" id="L333">            executeRequest(context, filename, writer);</span>
+        }
+<span class="nc" id="L335">        catch (Exception e)</span>
+        {
+<span class="nc" id="L337">            renderingError(filename, e);</span>
+<span class="fc" id="L338">        }</span>
+<span class="fc" id="L339">    }</span>
+
+    /**
+     * Process the request and fill in the template with the values
+     * you set in the Context.
+     *
+     * @param context A Context.
+     * @param filename A String with the filename of the template.
+     * @param writer A Writer where we will write the process template as
+     * a String.
+     *
+     * @throws TurbineException Any exception thrown while processing will be
+     *         wrapped into a TurbineException and rethrown.
+     */
+    @Override
+    public void handleRequest(Context context, String filename, Writer writer)
+            throws TurbineException
+    {
+        try
+        {
+<span class="nc" id="L359">            executeRequest(context, filename, writer);</span>
+        }
+<span class="nc" id="L361">        catch (Exception e)</span>
+        {
+<span class="nc" id="L363">            renderingError(filename, e);</span>
+        }
+        finally
+        {
+            try
+            {
+<span class="nc bnc" id="L369" title="All 2 branches missed.">                if (writer != null)</span>
+                {
+<span class="nc" id="L371">                    writer.flush();</span>
+                }
+            }
+<span class="nc" id="L374">            catch (Exception ignored)</span>
+            {
+                // do nothing.
+<span class="nc" id="L377">            }</span>
+        }
+<span class="nc" id="L379">    }</span>
+
+
+    /**
+     * Process the request and fill in the template with the values
+     * you set in the Context. Apply the character and template
+     * encodings from RunData to the result.
+     *
+     * @param context A Context.
+     * @param filename A String with the filename of the template.
+     * @param writer A OutputStream where we will write the process template as
+     * a String.
+     *
+     * @throws Exception A problem occurred.
+     */
+    private void executeRequest(Context context, String filename,
+                                Writer writer)
+            throws Exception
+    {
+<span class="fc" id="L398">        Charset encoding = getTemplateEncoding(context);</span>
+
+<span class="pc bpc" id="L400" title="1 of 2 branches missed.">        if (encoding == null)</span>
+        {
+<span class="nc" id="L402">          encoding = defaultOutputEncoding;</span>
+        }
+
+<span class="fc" id="L405">		velocity.mergeTemplate(filename, encoding.name(), context, writer);</span>
+<span class="fc" id="L406">    }</span>
+
+    /**
+     * Retrieve the required charset from the Turbine RunData in the context
+     *
+     * @param context A Context.
+     * @return The character set applied to the resulting String.
+     */
+    private Charset getOutputCharSet(Context context)
+    {
+<span class="fc" id="L416">        Charset charset = null;</span>
+
+<span class="fc" id="L418">        Object data = context.get(VelocityService.RUNDATA_KEY);</span>
+<span class="pc bpc" id="L419" title="2 of 4 branches missed.">        if ((data != null) &amp;&amp; (data instanceof RunData))</span>
+        {
+<span class="fc" id="L421">            charset = ((RunData) data).getCharset();</span>
+        }
+
+<span class="pc bpc" id="L424" title="1 of 2 branches missed.">        return charset == null ? defaultOutputEncoding : charset;</span>
+    }
+
+    /**
+     * Retrieve the required encoding from the Turbine RunData in the context
+     *
+     * @param context A Context.
+     * @return The encoding applied to the resulting String.
+     */
+    private Charset getTemplateEncoding(Context context)
+    {
+<span class="fc" id="L435">        Charset encoding = null;</span>
+
+<span class="fc" id="L437">        Object data = context.get(VelocityService.RUNDATA_KEY);</span>
+<span class="pc bpc" id="L438" title="3 of 6 branches missed.">        if ((data != null) &amp;&amp; (data instanceof RunData) &amp;&amp; (((RunData) data).getTemplateEncoding() != null) )</span>
+        {
+<span class="nc" id="L440">            encoding = Charset.forName(((RunData) data).getTemplateEncoding());</span>
+        }
+
+<span class="pc bpc" id="L443" title="1 of 2 branches missed.">        return encoding != null ? encoding : defaultInputEncoding;</span>
+    }
+
+    /**
+     * Macro to handle rendering errors.
+     *
+     * @param filename The file name of the unrenderable template.
+     * @param e        The error.
+     *
+     * @throws TurbineException Thrown every time.  Adds additional
+     *                             information to &lt;code&gt;e&lt;/code&gt;.
+     */
+    private static final void renderingError(String filename, Exception e)
+            throws TurbineException
+    {
+<span class="nc" id="L458">        String err = &quot;Error rendering Velocity template: &quot; + filename;</span>
+<span class="nc" id="L459">        log.error(err, e);</span>
+<span class="nc" id="L460">        throw new TurbineException(err, e);</span>
+    }
+
+    /**
+     * Setup the velocity runtime by using a subset of the
+     * Turbine configuration which relates to velocity.
+     *
+     * @throws Exception An Error occurred.
+     * @return an initialized VelocityEngine instance
+     */
+    private VelocityEngine getInitializedVelocityEngine()
+        throws Exception
+    {
+        // Get the configuration for this service.
+<span class="fc" id="L474">        Configuration conf = getConfiguration();</span>
+
+<span class="fc" id="L476">        catchErrors = conf.getBoolean(CATCH_ERRORS_KEY, CATCH_ERRORS_DEFAULT);</span>
+
+        // backward compatibility, can be overridden in the configuration
+<span class="fc" id="L479">        conf.setProperty(RuntimeConstants.RUNTIME_LOG_NAME, &quot;velocity&quot;);</span>
+
+<span class="fc" id="L481">        VelocityEngine velocity = new VelocityEngine();</span>
+<span class="fc" id="L482">        setVelocityProperties(velocity, conf);</span>
+<span class="fc" id="L483">        velocity.init();</span>
+
+<span class="fc" id="L485">        return velocity;</span>
+    }
+
+
+    /**
+     * This method generates the Properties object necessary
+     * for the initialization of Velocity. It also converts the various
+     * resource loader pathes into webapp relative pathes. It also
+     *
+     * @param velocity The Velocity engine
+     * @param conf The Velocity Service configuration
+     *
+     * @throws Exception If a problem occurred while converting the properties.
+     */
+
+    protected void setVelocityProperties(VelocityEngine velocity, Configuration conf)
+            throws Exception
+    {
+        // Fix up all the template resource loader pathes to be
+        // webapp relative. Copy all other keys verbatim into the
+        // veloConfiguration.
+
+<span class="fc bfc" id="L507" title="All 2 branches covered.">        for (Iterator&lt;String&gt; i = conf.getKeys(); i.hasNext();)</span>
+        {
+<span class="fc" id="L509">            String key = i.next();</span>
+<span class="fc bfc" id="L510" title="All 2 branches covered.">            if (!key.endsWith(RESOURCE_LOADER_PATH))</span>
+            {
+<span class="fc" id="L512">                Object value = conf.getProperty(key);</span>
+<span class="pc bpc" id="L513" title="1 of 2 branches missed.">                if (value instanceof List&lt;?&gt;)</span>
+                {
+<span class="nc bnc" id="L515" title="All 2 branches missed.">                    for (Object name2 : ((List&lt;?&gt;) value))</span>
+                    {
+<span class="nc" id="L517">                        velocity.addProperty(key, name2);</span>
+<span class="nc" id="L518">                    }</span>
+                }
+                else
+                {
+<span class="fc" id="L522">                    velocity.addProperty(key, value);</span>
+                }
+<span class="fc" id="L524">                log.debug(&quot;Adding {} -&gt; {}&quot;, key, value);</span>
+<span class="fc" id="L525">                continue; // for()</span>
+            }
+
+<span class="fc" id="L528">            List&lt;Object&gt; paths = conf.getList(key, null);</span>
+<span class="pc bpc" id="L529" title="1 of 2 branches missed.">            if (paths == null)</span>
+            {
+                // We don't copy this into VeloProperties, because
+                // null value is unhealthy for the ExtendedProperties object...
+<span class="nc" id="L533">                continue; // for()</span>
+            }
+
+            // Translate the supplied pathes given here.
+            // the following three different kinds of
+            // pathes must be translated to be webapp-relative
+            //
+            // jar:file://path-component!/entry-component
+            // file://path-component
+            // path/component
+<span class="fc bfc" id="L543" title="All 2 branches covered.">            for (Object p : paths)</span>
+            {
+<span class="fc" id="L545">            	String path = (String)p;</span>
+<span class="fc" id="L546">                log.debug(&quot;Translating {}&quot;, path);</span>
+
+<span class="fc bfc" id="L548" title="All 2 branches covered.">                if (path.startsWith(JAR_PREFIX))</span>
+                {
+                    // skip jar: -&gt; 4 chars
+<span class="fc bfc" id="L551" title="All 2 branches covered.">                    if (path.substring(4).startsWith(ABSOLUTE_PREFIX))</span>
+                    {
+                        // We must convert up to the jar path separator
+<span class="fc" id="L554">                        int jarSepIndex = path.indexOf(&quot;!/&quot;);</span>
+
+                        // jar:file:// -&gt; skip 11 chars
+<span class="fc bfc" id="L557" title="All 2 branches covered.">                        path = (jarSepIndex &lt; 0)</span>
+<span class="fc" id="L558">                            ? Turbine.getRealPath(path.substring(11))</span>
+                        // Add the path after the jar path separator again to the new url.
+<span class="fc" id="L560">                            : (Turbine.getRealPath(path.substring(11, jarSepIndex)) + path.substring(jarSepIndex));</span>
+
+<span class="fc" id="L562">                        log.debug(&quot;Result (absolute jar path): {}&quot;, path);</span>
+<span class="fc" id="L563">                    }</span>
+                }
+<span class="fc bfc" id="L565" title="All 2 branches covered.">                else if(path.startsWith(ABSOLUTE_PREFIX))</span>
+                {
+                    // skip file:// -&gt; 7 chars
+<span class="fc" id="L568">                    path = Turbine.getRealPath(path.substring(7));</span>
+
+<span class="fc" id="L570">                    log.debug(&quot;Result (absolute URL Path): {}&quot;, path);</span>
+                }
+                // Test if this might be some sort of URL that we haven't encountered yet.
+<span class="fc bfc" id="L573" title="All 2 branches covered.">                else if(path.indexOf(&quot;://&quot;) &lt; 0)</span>
+                {
+<span class="fc" id="L575">                    path = Turbine.getRealPath(path);</span>
+
+<span class="fc" id="L577">                    log.debug(&quot;Result (normal fs reference): {}&quot;, path);</span>
+                }
+
+<span class="fc" id="L580">                log.debug(&quot;Adding {} -&gt; {}&quot;, key, path);</span>
+                // Re-Add this property to the configuration object
+<span class="fc" id="L582">                velocity.addProperty(key, path);</span>
+<span class="fc" id="L583">            }</span>
+<span class="fc" id="L584">        }</span>
+<span class="fc" id="L585">    }</span>
+
+    /**
+     * Find out if a given template exists. Velocity
+     * will do its own searching to determine whether
+     * a template exists or not.
+     *
+     * @param template String template to search for
+     * @return True if the template can be loaded by Velocity
+     */
+    @Override
+    public boolean templateExists(String template)
+    {
+<span class="fc" id="L598">        return velocity.resourceExists(template);</span>
+    }
+
+    /**
+     * Performs post-request actions (releases context
+     * tools back to the object pool).
+     *
+     * @param context a Velocity Context
+     */
+    @Override
+    public void requestFinished(Context context)
+    {
+<span class="pc bpc" id="L610" title="1 of 2 branches missed.">        if (pullModelActive)</span>
+        {
+<span class="fc" id="L612">            pullService.releaseTools(context);</span>
+        }
+<span class="fc" id="L614">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineConstants.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine</a> &gt; <span class="el_source">TurbineConstants.java</span></div><h1>TurbineConstants.java</h1><pre class="source lang-java linenums">package org.apache.turbine;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+
+import org.apache.turbine.pipeline.TurbinePipeline;
+
+/**
+ * This interface contains all the constants used throughout
+ * the Turbine code base.
+ *
+ * @author &lt;a href=&quot;mailto:jvanzyl@apache.org&quot;&gt;Jason van Zyl&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:seade@backstagetech.com.au&quot;&gt;Scott Eade&lt;/a&gt;
+ * @version $Id$
+ */
+public interface TurbineConstants
+{
+	/**
+	 * &lt;p&gt;The prefix used to denote the namespace reserved for and
+	 * used by Turbine-specific configuration parameters (such as
+	 * those passed in via servlet container's config file
+	 * (&lt;code&gt;server.xml&lt;/code&gt;), or the web app deployment descriptor
+	 * (&lt;code&gt;web.xml&lt;/code&gt;).&lt;/p&gt;
+	 *
+	 * &lt;p&gt;For example, a parameter in the Turbine namespace would be
+	 * &lt;code&gt;org.apache.turbine.loggingRoot&lt;/code&gt;.&lt;/p&gt;
+	 */
+	String CONFIG_NAMESPACE = &quot;org.apache.turbine&quot;;
+
+	/** The key for the Log4J File */
+	String LOG4J2_CONFIG_FILE = &quot;log4j2.file&quot;;
+	/** old key as a reminder */
+	String LOG4J_CONFIG_FILE = &quot;log4j.file&quot;;
+
+	/** The default value for the Log4J File */
+	String LOG4J2_CONFIG_FILE_DEFAULT = &quot;/WEB-INF/conf/log4j2.xml&quot;;
+
+	/** This is the default log file to be used for logging */
+	String DEFAULT_LOGGER = &quot;turbine&quot;;
+
+	/** The logging facility which captures output from the SchedulerService. */
+	String SCHEDULER_LOG_FACILITY = &quot;scheduler&quot;;
+
+	/** The SMTP server Turbine uses to send mail. */
+	String MAIL_SERVER_KEY = &quot;mail.server&quot;;
+
+	/** Default Value for he SMTP server that Turbine uses to send mail. */
+	String MAIL_SERVER_DEFAULT = &quot;localhost&quot;;
+
+	/** The Smtp sender address property */
+	String MAIL_SMTP_FROM = &quot;mail.smtp.from&quot;;
+
+	/** Property that controls whether Turbine modules are cached or not. */
+	String MODULE_CACHE_KEY = &quot;module.cache&quot;;
+
+	/** Default value of the Turbine Module Caching */
+	boolean MODULE_CACHE_DEFAULT = true;
+
+    /** Property that controls the module cache size. */
+    String MODULE_CACHE_SIZE_KEY = &quot;module.cache.size&quot;;
+
+    /** Default value of the Turbine Module Cache Size */
+    int MODULE_CACHE_SIZE_DEFAULT = 128;
+
+	/** The packages where Turbine will look for modules. */
+	String MODULE_PACKAGES = &quot;module.packages&quot;;
+
+	/** Home page template. */
+	String TEMPLATE_HOMEPAGE = &quot;template.homepage&quot;;
+
+	/** Login template. */
+	String TEMPLATE_LOGIN = &quot;template.login&quot;;
+
+	/** Template error template Property. */
+	String TEMPLATE_ERROR_KEY = &quot;template.error&quot;;
+
+	/** Template error default for JSP */
+	String TEMPLATE_ERROR_JSP = &quot;error.jsp&quot;;
+
+	/** Template error default for Velocity */
+	String TEMPLATE_ERROR_VM = &quot;error.vm&quot;;
+
+	/** Home page screen. */
+	String SCREEN_HOMEPAGE = &quot;screen.homepage&quot;;
+
+	/** Login screen. */
+	String SCREEN_LOGIN = &quot;screen.login&quot;;
+
+	/** Login error screen. */
+	String SCREEN_ERROR_KEY = &quot;screen.error&quot;;
+
+	/** Default value for Login Screen */
+	String SCREEN_ERROR_DEFAULT = &quot;VelocityErrorScreen&quot;;
+
+	/** Report Screen for invalid state in the application*/
+	String SCREEN_INVALID_STATE = &quot;screen.invalidstate&quot;;
+
+	/** Report Template for invalid state in the application */
+	String TEMPLATE_INVALID_STATE = &quot;template.invalidstate&quot;;
+
+	/** Action to perform when a user logs in. */
+	String ACTION_LOGIN_KEY = &quot;action.login&quot;;
+
+	/** Default Value for login Action */
+	String ACTION_LOGIN_DEFAULT = &quot;LoginUser&quot;;
+
+	/** Action to perform when a user logs out. */
+	String ACTION_LOGOUT_KEY = &quot;action.logout&quot;;
+
+	/** Default Value for ACTION_LOGOUT */
+	String ACTION_LOGOUT_DEFAULT = &quot;LogoutUser&quot;;
+
+	/** Actions that performs session validation. */
+	String ACTION_SESSION_VALIDATOR_KEY = &quot;action.sessionvalidator&quot;;
+
+	/** Default value for the session validator. (org.apache.modules.actions.sessionvalidator.TemplateSessionValidator) */
+	String ACTION_SESSION_VALIDATOR_DEFAULT = &quot;sessionvalidator.TemplateSessionValidator&quot;;
+
+	/** Action that performs Access control */
+	String ACTION_ACCESS_CONTROLLER_KEY = &quot;action.accesscontroller&quot;;
+
+	/** Default value for the access controller. (org.apache.modules.actions.AccessController) */
+	String ACTION_ACCESS_CONTROLLER_DEFAULT = &quot;AccessController&quot;;
+
+	/** Select whether an Action Event must have a non-zero value */
+	String ACTION_EVENTSUBMIT_NEEDSVALUE_KEY = &quot;action.eventsubmit.needsvalue&quot;;
+
+	/** Default value for action.eventsubmit.needsvalue */
+	boolean ACTION_EVENTSUBMIT_NEEDSVALUE_DEFAULT = false;
+
+	/** Select whether an exception in an Action method is bubbled up to Turbine.handleException() */
+	String ACTION_EVENT_BUBBLE_EXCEPTION_UP = &quot;action.event.bubbleexception&quot;;
+
+	/** Default value for action.event.bubbleexception */
+	boolean ACTION_EVENT_BUBBLE_EXCEPTION_UP_DEFAULT = true;
+
+	/** Default layout. */
+	String LAYOUT_DEFAULT = &quot;layout.default&quot;;
+
+	/** Default page. */
+	String PAGE_DEFAULT_KEY = &quot;page.default&quot;;
+
+	/** Default value for the Default Page */
+	String PAGE_DEFAULT_DEFAULT = &quot;DefaultPage&quot;;
+
+	/** Default value for the Default Screen */
+	String SCREEN_DEFAULT_DEFAULT = &quot;DefaultScreen&quot;;
+
+	/** Message to display upon successful login. */
+	String LOGIN_MESSAGE = &quot;login.message&quot;;
+
+	/** Message to display when a user fails to login. */
+	String LOGIN_ERROR = &quot;login.error&quot;;
+
+	/** Message to display when screens variable invalid. */
+	String LOGIN_MESSAGE_NOSCREEN = &quot;login.message.noscreen&quot;;
+
+	/** Message to display when a user logs out. */
+	String LOGOUT_MESSAGE = &quot;logout.message&quot;;
+
+	/** Session Timeout */
+	String SESSION_TIMEOUT_KEY = &quot;session.timeout&quot;;
+
+	/** Session Timeout Default Value */
+	int SESSION_TIMEOUT_DEFAULT = -1;
+
+	/** 
+	 * Filter for classes that can be de-serialized from the persistent session storage 
+	 * See {@link java.io.ObjectInputFilter.Config#createFilter(String)}
+	 */
+	String SESSION_OBJECTINPUTFILTER = &quot;session.objectinputfilter&quot;;
+
+	/** Indicate whether this Turbine application is using SSL. */
+	String USE_SSL_KEY = &quot;use.ssl&quot;;
+
+	/** Default value for the SSL key */
+	boolean USE_SSL_DEFAULT = true;
+
+	/**
+	 * Should the PP fold the case of everything. Possible values are
+	 * &quot;upper&quot;, &quot;lower&quot; and &quot;none&quot;.
+	 */
+	String PP_URL_CASE_FOLDING = &quot;url.case.folding&quot;;
+
+	/** Default document type. */
+	String DEFAULT_DOCUMENT_TYPE_KEY = &quot;default.doctype&quot;;
+
+	/** Default doctype root element. */
+	String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY = &quot;default.html.doctype.root.element&quot;;
+
+	/** Default value for the doctype root element */
+	String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_DEFAULT = &quot;HTML&quot;;
+
+	/** Default doctype dtd. */
+	String DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY = &quot;default.html.doctype.identifier&quot;;
+
+	/** Default Doctype dtd value (empty for HTML5) */
+	String DEFAULT_HTML_DOCTYPE_IDENTIFIER_DEFAULT = &quot;&quot;;
+
+	/** Default doctype url. */
+	String DEFAULT_HTML_DOCTYPE_URI_KEY = &quot;default.html.doctype.url&quot;;
+
+	/** Default doctype url value. (empty for HTML5) */
+	String DEFAULT_HTML_DOCTYPE_URI_DEFAULT = &quot;&quot;;
+
+	/** Define content types **/
+	String DEFAULT_HTML_CONTENT_TYPE = &quot;text/html&quot;;
+	String DEFAULT_TEXT_CONTENT_TYPE = &quot;text/plain&quot;;
+	String DEFAULT_CSS_CONTENT_TYPE = &quot;text/css&quot;;
+
+	/** Default Language property */
+	String LOCALE_DEFAULT_LANGUAGE_KEY = &quot;locale.default.language&quot;;
+
+	/** Default value for Language property */
+<span class="fc" id="L235">	String LOCALE_DEFAULT_LANGUAGE_DEFAULT = Locale.US.getLanguage();</span>
+
+	/** Default Country property */
+	String LOCALE_DEFAULT_COUNTRY_KEY = &quot;locale.default.country&quot;;
+
+	/** Default value for Country property */
+<span class="fc" id="L241">	String LOCALE_DEFAULT_COUNTRY_DEFAULT = Locale.US.getCountry();</span>
+
+	/** Default Charset property */
+	String LOCALE_DEFAULT_CHARSET_KEY = &quot;locale.default.charset&quot;;
+
+	/** Default value for Charset property */
+<span class="fc" id="L247">	String LOCALE_DEFAULT_CHARSET_DEFAULT = StandardCharsets.ISO_8859_1.name();</span>
+
+    /** Override Charset property */
+    String LOCALE_OVERRIDE_CHARSET_KEY = &quot;locale.override.charset&quot;;
+
+	/** If this value is set as applicationRoot, then the webContext is used
+	 * as application root
+	 */
+	String WEB_CONTEXT = &quot;webContext&quot;;
+
+	/** Key for the Path to the TurbineResources.properties File */
+	String APPLICATION_ROOT_KEY = &quot;applicationRoot&quot;;
+
+	/** Default Value for the Path to the TurbineResources.properties File */
+	String APPLICATION_ROOT_DEFAULT = WEB_CONTEXT;
+
+	/** This is the key used in the Turbine.properties to access resources
+	 * relative to the Web Application root. It might differ from the
+	 * Application root, but the normal case is, that the webapp root
+	 * and the application root point to the same path.
+	 */
+	String WEBAPP_ROOT_KEY = &quot;webappRoot&quot;;
+
+	/** The Key in the deployment descriptor for the Logging Directory */
+	String LOGGING_ROOT_KEY = &quot;loggingRoot&quot;;
+
+	/** Default Value for the Logging Directory, relative to the webroot */
+	String LOGGING_ROOT_DEFAULT = &quot;/logs&quot;;
+
+	/** Key for loading the UUID Generator with a constant value */
+	String UUID_ADDRESS_KEY = &quot;uuid.address&quot;;
+
+	/** Context Key for the screen placeholder in the various velocity layouts */
+	String SCREEN_PLACEHOLDER = &quot;screen_placeholder&quot;;
+
+	/** Context Key for the navigation object placeholder in the various velocity layouts */
+	String NAVIGATION_PLACEHOLDER = &quot;navigation&quot;;
+
+	/** Context Key for the Processing Exception */
+	String PROCESSING_EXCEPTION_PLACEHOLDER = &quot;processingException&quot;;
+
+	/** Context Key for the Stack Trace */
+	String STACK_TRACE_PLACEHOLDER = &quot;stackTrace&quot;;
+
+    /** Encoding for Parameter Parser */
+    String PARAMETER_ENCODING_KEY = &quot;input.encoding&quot;;
+
+    /** Default Encoding for Parameter Parser */
+<span class="fc" id="L295">    String PARAMETER_ENCODING_DEFAULT = StandardCharsets.ISO_8859_1.name();</span>
+
+    /** Default serverName for ServerData */
+    String DEFAULT_SERVER_NAME_KEY
+            = &quot;serverdata.default.serverName&quot;;
+
+    /** Default serverPort for ServerData */
+    String DEFAULT_SERVER_PORT_KEY
+            = &quot;serverdata.default.serverPort&quot;;
+
+    /** Default serverScheme for ServerData */
+    String DEFAULT_SERVER_SCHEME_KEY
+            = &quot;serverdata.default.serverScheme&quot;;
+
+    /** Default scriptName for ServerData */
+    String DEFAULT_SCRIPT_NAME_KEY
+            = &quot;serverdata.default.scriptName&quot;;
+
+    /** Default contextPath for ServerData */
+    String DEFAULT_CONTEXT_PATH_KEY
+            = &quot;serverdata.default.contextPath&quot;;
+
+    /** The default Session key for the Access Control List */
+    String ACL_SESSION_KEY = &quot;turbine.AccessControlList&quot;;
+
+    /**
+	 * The fully qualified class name of the default {@link
+	 * org.apache.turbine.pipeline.Pipeline} implementation to use in the
+	 * {@link org.apache.turbine.Turbine} servlet.
+	 */
+<span class="fc" id="L325">	String STANDARD_PIPELINE = TurbinePipeline.class.getName();</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

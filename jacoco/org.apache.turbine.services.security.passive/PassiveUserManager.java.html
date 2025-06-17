@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PassiveUserManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.security.passive</a> &gt; <span class="el_source">PassiveUserManager.java</span></div><h1>PassiveUserManager.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.security.passive;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.List;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.fulcrum.security.acl.AccessControlList;
+import org.apache.fulcrum.security.util.DataBackendException;
+import org.apache.fulcrum.security.util.EntityExistsException;
+import org.apache.fulcrum.security.util.PasswordMismatchException;
+import org.apache.fulcrum.security.util.UnknownEntityException;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.security.UserManager;
+
+/**
+ * Void user manager can be used where no data storage is needed
+ * by the application.
+ * It's methods don't provide any useful functionality  except throwing
+ * DataBackendExceptions. Security service will be still able to create
+ * anonymous User objects when this UserManager is used.
+ *
+ * @author &lt;a href=&quot;mailto:Rafal.Krzewski@e-point.pl&quot;&gt;Rafal Krzewski&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="nc" id="L46">public class PassiveUserManager implements UserManager</span>
+{
+    /**
+     * Initializes the UserManager
+     *
+     * @param conf A Configuration object to init this Manager
+     */
+    @Override
+    public void init(Configuration conf)
+    {
+        // GNDN
+<span class="nc" id="L57">    }</span>
+
+    /**
+     * Check whether a specified user's account exists.
+     *
+     * The login name is used for looking up the account.
+     *
+     * @param user The user to be checked.
+     * @return true if the specified account exists
+     * @throws DataBackendException if there was an error accessing the data backend.
+     */
+    @Override
+    public boolean accountExists(User user)
+            throws DataBackendException
+    {
+<span class="nc" id="L72">        throw new DataBackendException(&quot;PassiveUserManager knows no users&quot;);</span>
+    }
+
+    /**
+     * Check whether a specified user's account exists.
+     *
+     * The login name is used for looking up the account.
+     *
+     * @param userName The name of the user to be checked.
+     * @return true if the specified account exists
+     * @throws DataBackendException if there was an error accessing the data backend.
+     */
+    @Override
+    public boolean accountExists(String userName)
+            throws DataBackendException
+    {
+<span class="nc" id="L88">        throw new DataBackendException(&quot;PassiveUserManager knows no users&quot;);</span>
+    }
+
+    /**
+     * Retrieve a user from persistent storage using username as the
+     * key.
+     *
+     * @param username the name of the user.
+     * @return an User object.
+     * @throws UnknownEntityException if the user's record does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    @Override
+    public &lt;U extends User&gt; U retrieve(String username)
+            throws UnknownEntityException, DataBackendException
+    {
+<span class="nc" id="L106">        throw new DataBackendException(&quot;PassiveUserManager knows no users&quot;);</span>
+    }
+
+    /**
+     * Retrieve a set of users that meet the specified criteria.
+     *
+     * As the keys for the criteria, you should use the constants that
+     * are defined in {@link User} interface, plus the names
+     * of the custom attributes you added to your user representation
+     * in the data storage. Use verbatim names of the attributes -
+     * without table name prefix in case of DB implementation.
+     *
+     * @param criteria The criteria of selection.
+     * @return a List of users meeting the criteria.
+     * @throws DataBackendException if there is a problem accessing the
+     *         storage.
+     */
+    @Override
+    public List&lt;? extends User&gt; retrieveList(Object criteria)
+            throws DataBackendException
+    {
+<span class="nc" id="L127">        throw new DataBackendException(&quot;PassiveUserManager knows no users&quot;);</span>
+    }
+
+    /**
+     * Retrieve a user from persistent storage using username as the
+     * key, and authenticate the user. The implementation may chose
+     * to authenticate to the server as the user whose data is being
+     * retrieved.
+     *
+     * @param username the name of the user.
+     * @param password the user supplied password.
+     * @return an User object.
+     * @throws PasswordMismatchException if the supplied password was
+     *            incorrect.
+     * @throws UnknownEntityException if the user's record does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    @Override
+    public &lt;U extends User&gt; U retrieve(String username, String password)
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException
+    {
+<span class="nc" id="L151">        throw new DataBackendException(&quot;PassiveUserManager knows no users&quot;);</span>
+    }
+
+    /**
+     * Save an User object to persistent storage. User's record is
+     * required to exist in the storage.
+     *
+     * @param user an User object to store.
+     * @throws UnknownEntityException if the user's record does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    @Override
+    public void store(User user)
+            throws UnknownEntityException, DataBackendException
+    {
+<span class="nc" id="L168">        throw new DataBackendException(&quot;PassiveUserManager does not support saving user data&quot;);</span>
+    }
+
+    /**
+     * Saves User data when the session is unbound. The user account is required
+     * to exist in the storage.
+     *
+     * LastLogin, AccessCounter, persistent pull tools, and any data stored
+     * in the permData hashmap that is not mapped to a column will be saved.
+     *
+     * @throws UnknownEntityException if the user's account does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    @Override
+    public void saveOnSessionUnbind(User user)
+            throws UnknownEntityException, DataBackendException
+    {
+<span class="nc" id="L187">        throw new DataBackendException(&quot;PassiveUserManager does not support saving user data&quot;);</span>
+    }
+
+    /**
+     * Authenticate an User with the specified password. If authentication
+     * is successful the method returns nothing. If there are any problems,
+     * exception was thrown.
+     *
+     * @param user an User object to authenticate.
+     * @param password the user supplied password.
+     * @throws PasswordMismatchException if the supplied password was
+     *            incorrect.
+     * @throws UnknownEntityException if the user's record does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    @Override
+    public void authenticate(User user, String password)
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException
+    {
+<span class="nc" id="L209">        throw new DataBackendException(&quot;PassiveUserManager knows no users&quot;);</span>
+    }
+
+    /**
+     * Creates new user account with specified attributes.
+     *
+     * @param user the object describing account to be created.
+     * @param initialPassword The password to use for the object creation
+     *
+     * @throws DataBackendException if there was an error accessing the data backend.
+     * @throws EntityExistsException if the user account already exists.
+     */
+    @Override
+    public void createAccount(User user, String initialPassword)
+            throws EntityExistsException, DataBackendException
+    {
+<span class="nc" id="L225">        throw new DataBackendException(&quot;PassiveUserManager does not support&quot;</span>
+                + &quot; creating accounts&quot;);
+    }
+
+    /**
+     * Removes an user account from the system.
+     *
+     * @param user the object describing the account to be removed.
+     * @throws DataBackendException if there was an error accessing the data backend.
+     * @throws UnknownEntityException if the user account is not present.
+     */
+    @Override
+    public void removeAccount(User user)
+            throws UnknownEntityException, DataBackendException
+    {
+<span class="nc" id="L240">        throw new DataBackendException(&quot;PassiveUserManager does not support removing accounts&quot;);</span>
+    }
+
+    /**
+     * Change the password for an User.
+     *
+     * @param user an User to change password for.
+     * @param oldPassword the current password supplied by the user.
+     * @param newPassword the current password requested by the user.
+     * @throws PasswordMismatchException if the supplied password was
+     *            incorrect.
+     * @throws UnknownEntityException if the user's record does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    @Override
+    public void changePassword(User user, String oldPassword,
+                               String newPassword)
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException
+    {
+<span class="nc" id="L262">        throw new DataBackendException(&quot;PassiveUserManager does not support setting passwords&quot;);</span>
+    }
+
+    /**
+     * Forcibly sets new password for an User.
+     *
+     * This is supposed by the administrator to change the forgotten or
+     * compromised passwords. Certain implementations of this feature
+     * would require administrative level access to the authenticating
+     * server / program.
+     *
+     * @param user an User to change password for.
+     * @param password the new password.
+     * @throws UnknownEntityException if the user's record does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    @Override
+    public void forcePassword(User user, String password)
+            throws UnknownEntityException, DataBackendException
+    {
+<span class="nc" id="L284">        throw new DataBackendException(&quot;PassiveUserManager does not support setting passwords&quot;);</span>
+    }
+
+    /**
+     * Constructs an User object to represent an anonymous user of the
+     * application.
+     *
+     * @return An anonymous Turbine User.
+     * @throws UnknownEntityException
+     *             if the anonymous User object couldn't be constructed.
+     */
+    @Override
+    public &lt;T extends User&gt; T getAnonymousUser() throws UnknownEntityException
+    {
+<span class="nc" id="L298">        throw new UnknownEntityException(&quot;PassiveUserManager knows no users&quot;);</span>
+    }
+
+    /**
+     * Checks whether a passed user object matches the anonymous user pattern
+     * according to the configured user manager
+     *
+     * @param u a user object
+     *
+     * @return true if this is an anonymous user
+     *
+     */
+    @Override
+    public boolean isAnonymousUser(User u)
+    {
+<span class="nc" id="L313">        return true;</span>
+    }
+
+    /**
+     * Construct a blank User object.
+     *
+     * This method calls getUserClass, and then creates a new object using the
+     * default constructor.
+     *
+     * @return an object implementing User interface.
+     * @throws DataBackendException
+     *             if the object could not be instantiated.
+     */
+    @Override
+    public &lt;T extends User&gt; T getUserInstance() throws DataBackendException
+    {
+<span class="nc" id="L329">        throw new DataBackendException(&quot;PassiveUserManager knows no users&quot;);</span>
+    }
+
+    /**
+     * Construct a blank User object.
+     *
+     * This method calls getUserClass, and then creates a new object using the
+     * default constructor.
+     *
+     * @param userName
+     *            The name of the user.
+     *
+     * @return an object implementing User interface.
+     * @throws DataBackendException
+     *             if the object could not be instantiated.
+     */
+    @Override
+    public &lt;T extends User&gt; T getUserInstance(String userName) throws DataBackendException
+    {
+<span class="nc" id="L348">        throw new DataBackendException(&quot;PassiveUserManager knows no users&quot;);</span>
+    }
+
+    /**
+     * Return a Class object representing the system's chosen implementation of
+     * of ACL interface.
+     *
+     * @return systems's chosen implementation of ACL interface.
+     * @throws UnknownEntityException
+     *             if the implementation of ACL interface could not be
+     *             determined, or does not exist.
+     */
+    @Override
+    public &lt;T extends AccessControlList&gt; T getACL(User user) throws UnknownEntityException
+    {
+<span class="nc" id="L363">        throw new UnknownEntityException(&quot;PassiveUserManager knows no users&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

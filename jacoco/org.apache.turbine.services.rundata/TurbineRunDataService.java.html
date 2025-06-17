@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineRunDataService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.rundata</a> &gt; <span class="el_source">TurbineRunDataService.java</span></div><h1>TurbineRunDataService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.rundata;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.fulcrum.parser.CookieParser;
+import org.apache.fulcrum.parser.DefaultCookieParser;
+import org.apache.fulcrum.parser.DefaultParameterParser;
+import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.fulcrum.parser.ParserService;
+import org.apache.fulcrum.pool.PoolException;
+import org.apache.fulcrum.pool.PoolService;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.ServerData;
+import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.TurbineRuntimeException;
+
+/**
+ * The RunData Service provides the implementations for RunData and
+ * related interfaces required by request processing. It supports
+ * different configurations of implementations, which can be selected
+ * by specifying a configuration key. It may use pooling, in which case
+ * the implementations should implement the Recyclable interface.
+ *
+ * @author &lt;a href=&quot;mailto:ilkka.priha@simsoft.fi&quot;&gt;Ilkka Priha&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+public class TurbineRunDataService
+    extends TurbineBaseService
+    implements RunDataService
+{
+
+    /** The default implementation of the RunData object*/
+<span class="fc" id="L66">    private static final String DEFAULT_RUN_DATA =</span>
+<span class="fc" id="L67">        DefaultTurbineRunData.class.getName();</span>
+
+    /** The default implementation of the Parameter Parser object */
+<span class="fc" id="L70">    private static final String DEFAULT_PARAMETER_PARSER =</span>
+<span class="fc" id="L71">        DefaultParameterParser.class.getName();</span>
+
+    /** The default implementation of the Cookie parser object */
+<span class="fc" id="L74">    private static final String DEFAULT_COOKIE_PARSER =</span>
+<span class="fc" id="L75">        DefaultCookieParser.class.getName();</span>
+
+    /** The map of configurations. */
+<span class="fc" id="L78">    private final ConcurrentMap&lt;String, Object&gt; configurations = new ConcurrentHashMap&lt;&gt;();</span>
+
+    /** A class cache. */
+<span class="fc" id="L81">    private final ConcurrentMap&lt;String, Class&lt;?&gt;&gt; classCache = new ConcurrentHashMap&lt;&gt;();</span>
+
+    /** Private reference to the pool service for object recycling */
+<span class="fc" id="L84">    private PoolService pool = null;</span>
+
+    /** Private reference to the parser service for parser recycling */
+<span class="fc" id="L87">    private ParserService parserService = null;</span>
+
+    /**
+     * Constructs a RunData Service.
+     */
+    public TurbineRunDataService()
+    {
+<span class="fc" id="L94">        super();</span>
+<span class="fc" id="L95">    }</span>
+
+    /**
+     * Initializes the service by setting the pool capacity.
+     *
+     * @throws InitializationException if initialization fails.
+     */
+    @Override
+    public void init()
+            throws InitializationException
+    {
+        // Create a default configuration.
+<span class="fc" id="L107">        String[] def = new String[]</span>
+        {
+            DEFAULT_RUN_DATA,
+            DEFAULT_PARAMETER_PARSER,
+            DEFAULT_COOKIE_PARSER
+        };
+<span class="fc" id="L113">        configurations.put(DEFAULT_CONFIG, def.clone());</span>
+
+        // Check other configurations.
+<span class="fc" id="L116">        Configuration conf = getConfiguration();</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">        if (conf != null)</span>
+        {
+            String key,value;
+            String[] config;
+<span class="fc" id="L121">            String[] plist = new String[]</span>
+            {
+                RUN_DATA_KEY,
+                PARAMETER_PARSER_KEY,
+                COOKIE_PARSER_KEY
+            };
+<span class="fc bfc" id="L127" title="All 2 branches covered.">            for (Iterator&lt;String&gt; i = conf.getKeys(); i.hasNext();)</span>
+            {
+<span class="fc" id="L129">                key = i.next();</span>
+<span class="fc" id="L130">                value = conf.getString(key);</span>
+<span class="fc" id="L131">                int j = 0;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">                for (String plistKey : plist)</span>
+                {
+<span class="pc bpc" id="L134" title="1 of 4 branches missed.">                    if (key.endsWith(plistKey) &amp;&amp; key.length() &gt; plistKey.length() + 1)</span>
+                    {
+<span class="fc" id="L136">                        key = key.substring(0, key.length() - plistKey.length() - 1);</span>
+<span class="fc" id="L137">                        config = (String[]) configurations.get(key);</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">                        if (config == null)</span>
+                        {
+<span class="nc" id="L140">                            config = def.clone();</span>
+<span class="nc" id="L141">                            configurations.put(key, config);</span>
+                        }
+<span class="fc" id="L143">                        config[j] = value;</span>
+<span class="fc" id="L144">                        break;</span>
+                    }
+<span class="fc" id="L146">                    j++;</span>
+                }
+<span class="fc" id="L148">            }</span>
+        }
+
+<span class="fc" id="L151">		pool = (PoolService)TurbineServices.getInstance().getService(PoolService.ROLE);</span>
+
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">        if (pool == null)</span>
+        {
+<span class="nc" id="L155">            throw new InitializationException(&quot;RunData Service requires&quot;</span>
+                + &quot; configured Pool Service!&quot;);
+        }
+
+<span class="fc" id="L159">        parserService = (ParserService)TurbineServices.getInstance().getService(ParserService.ROLE);</span>
+
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">        if (parserService == null)</span>
+        {
+<span class="nc" id="L163">            throw new InitializationException(&quot;RunData Service requires&quot;</span>
+                + &quot; configured Parser Service!&quot;);
+        }
+
+<span class="fc" id="L167">        setInit(true);</span>
+<span class="fc" id="L168">    }</span>
+
+    /**
+     * Shutdown the service
+     *
+     * @see org.apache.turbine.services.TurbineBaseService#shutdown()
+     */
+    @Override
+    public void shutdown()
+    {
+<span class="fc" id="L178">        classCache.clear();</span>
+<span class="fc" id="L179">        super.shutdown();</span>
+<span class="fc" id="L180">    }</span>
+
+    /**
+     * Gets a default RunData object.
+     *
+     * @param req a servlet request.
+     * @param res a servlet response.
+     * @param config a servlet config.
+     * @return a new or recycled RunData object.
+     * @throws TurbineException if the operation fails.
+     */
+    @Override
+    public RunData getRunData(HttpServletRequest req,
+                              HttpServletResponse res,
+                              ServletConfig config)
+            throws TurbineException
+    {
+<span class="fc" id="L197">        return getRunData(DEFAULT_CONFIG, req, res, config);</span>
+    }
+
+    /**
+     * Gets a RunData instance from a specific configuration.
+     *
+     * @param key a configuration key.
+     * @param req a servlet request.
+     * @param res a servlet response.
+     * @param config a servlet config.
+     * @return a new or recycled RunData object.
+     * @throws TurbineException if the operation fails.
+     * @throws IllegalArgumentException if any of the parameters are null.
+     * TODO The &quot;key&quot; parameter should be removed in favor of just looking up what class via the roleConfig avalon file.
+     */
+    @Override
+    public RunData getRunData(String key,
+                              HttpServletRequest req,
+                              HttpServletResponse res,
+                              ServletConfig config)
+            throws TurbineException,
+            IllegalArgumentException
+    {
+        // The RunData object caches all the information that is needed for
+        // the execution lifetime of a single request. A RunData object
+        // is created/recycled for each and every request and is passed
+        // to each and every module. Since each thread has its own RunData
+        // object, it is not necessary to perform synchronization for
+        // the data within this object.
+<span class="pc bpc" id="L226" title="3 of 6 branches missed.">        if (req == null || res == null || config == null)</span>
+        {
+<span class="nc" id="L228">            throw new IllegalArgumentException(&quot;HttpServletRequest, &quot;</span>
+                + &quot;HttpServletResponse or ServletConfig was null.&quot;);
+        }
+
+        // Get the specified configuration.
+<span class="fc" id="L233">        String[] cfg = (String[]) configurations.get(key);</span>
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">        if (cfg == null)</span>
+        {
+<span class="nc" id="L236">            throw new TurbineException(&quot;RunTime configuration '&quot; + key + &quot;' is undefined&quot;);</span>
+        }
+
+        TurbineRunData data;
+        try
+        {
+<span class="fc" id="L242">    		Class&lt;?&gt; runDataClazz = classCache.computeIfAbsent(cfg[0], this::classForName);</span>
+<span class="fc" id="L243">            Class&lt;?&gt; parameterParserClazz = classCache.computeIfAbsent(cfg[1], this::classForName);</span>
+<span class="fc" id="L244">            Class&lt;?&gt; cookieParserClazz = classCache.computeIfAbsent(cfg[2], this::classForName);</span>
+
+<span class="fc" id="L246">            data = (TurbineRunData) pool.getInstance(runDataClazz);</span>
+            @SuppressWarnings(&quot;unchecked&quot;) // ok
+<span class="fc" id="L248">            ParameterParser pp = parserService.getParser((Class&lt;ParameterParser&gt;)parameterParserClazz);</span>
+<span class="fc" id="L249">            data.get(Turbine.class).put(ParameterParser.class, pp);</span>
+
+            @SuppressWarnings(&quot;unchecked&quot;) // ok
+<span class="fc" id="L252">            CookieParser cp = parserService.getParser((Class&lt;CookieParser&gt;)cookieParserClazz);</span>
+<span class="fc" id="L253">            data.get(Turbine.class).put(CookieParser.class, cp);</span>
+
+<span class="fc" id="L255">            Locale locale = req.getLocale();</span>
+
+<span class="pc bpc" id="L257" title="1 of 2 branches missed.">            if (locale == null)</span>
+            {
+                // get the default from the Turbine configuration
+<span class="nc" id="L260">                locale = data.getLocale();</span>
+            }
+
+            // set the locale detected and propagate it to the parsers
+<span class="fc" id="L264">            data.setLocale(locale);</span>
+        }
+<span class="nc" id="L266">        catch (PoolException pe)</span>
+        {
+<span class="nc" id="L268">            throw new TurbineException(&quot;RunData configuration '&quot; + key + &quot;' is illegal caused a pool exception&quot;, pe);</span>
+        }
+<span class="nc" id="L270">        catch (TurbineRuntimeException | ClassCastException | InstantiationException x)</span>
+        {
+<span class="nc" id="L272">            throw new TurbineException(&quot;RunData configuration '&quot; + key + &quot;' is illegal&quot;, x);</span>
+<span class="fc" id="L273">        }</span>
+
+        // Set the request and response.
+<span class="fc" id="L276">        data.get(Turbine.class).put(HttpServletRequest.class, req);</span>
+<span class="fc" id="L277">        data.get(Turbine.class).put(HttpServletResponse.class, res);</span>
+
+        // Set the servlet configuration.
+<span class="fc" id="L280">        data.get(Turbine.class).put(ServletConfig.class, config);</span>
+<span class="fc" id="L281">        data.get(Turbine.class).put(ServletContext.class, config.getServletContext());</span>
+
+        // Set the ServerData.
+<span class="fc" id="L284">        data.get(Turbine.class).put(ServerData.class, new ServerData(req));</span>
+
+<span class="fc" id="L286">        return data;</span>
+    }
+
+    /**
+     * Puts the used RunData object back to the factory for recycling.
+     *
+     * @param data the used RunData object.
+     * @return true, if pooling is supported and the object was accepted.
+     */
+    @Override
+    public boolean putRunData(RunData data)
+    {
+<span class="pc bpc" id="L298" title="1 of 2 branches missed.">        if (data instanceof TurbineRunData)</span>
+        {
+<span class="fc" id="L300">            parserService.putParser(((TurbineRunData) data).getParameterParser());</span>
+<span class="fc" id="L301">            parserService.putParser(((TurbineRunData) data).getCookieParser());</span>
+
+<span class="fc" id="L303">            return pool.putInstance(data);</span>
+        }
+        else
+        {
+<span class="nc" id="L307">            return false;</span>
+        }
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;) // ok
+    private &lt;T&gt; Class&lt;T&gt; classForName(String className) throws TurbineRuntimeException
+    {
+        try
+        {
+<span class="fc" id="L316">            return (Class&lt;T&gt;) Class.forName(className);</span>
+        }
+<span class="nc" id="L318">        catch (ClassNotFoundException e)</span>
+        {
+<span class="nc" id="L320">            throw new TurbineRuntimeException(&quot;Could not load class &quot; + className, e);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineNonPersistentSchedulerService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.schedule</a> &gt; <span class="el_source">TurbineNonPersistentSchedulerService.java</span></div><h1>TurbineNonPersistentSchedulerService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.schedule;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.turbine.util.TurbineException;
+
+/**
+ * Service for a cron like scheduler that uses the
+ * TurbineResources.properties file instead of the database.
+ * The methods that operate on jobs ( get,add,update,remove )
+ * only operate on the queue in memory and changes are not reflected
+ * to the properties file which was used to initialize the jobs.
+ * An example is given below.  The job names are the class names that
+ * extend ScheduledJob.
+ *
+ * &lt;PRE&gt;
+ *
+ * services.SchedulerService.scheduler.jobs=scheduledJobName,scheduledJobName2
+ *
+ * services.SchedulerService.scheduler.job.scheduledJobName.ID=1
+ * services.SchedulerService.scheduler.job.scheduledJobName.SECOND=-1
+ * services.SchedulerService.scheduler.job.scheduledJobName.MINUTE=-1
+ * services.SchedulerService.scheduler.job.scheduledJobName.HOUR=7
+ * services.SchedulerService.scheduler.job.scheduledJobName.WEEKDAY=-1
+ * services.SchedulerService.scheduler.job.scheduledJobName.DAY_OF_MONTH=-1
+ *
+ * services.SchedulerService.scheduler.job.scheduledJobName2.ID=1
+ * services.SchedulerService.scheduler.job.scheduledJobName2.SECOND=-1
+ * services.SchedulerService.scheduler.job.scheduledJobName2.MINUTE=-1
+ * services.SchedulerService.scheduler.job.scheduledJobName2.HOUR=7
+ * services.SchedulerService.scheduler.job.scheduledJobName2.WEEKDAY=-1
+ * services.SchedulerService.scheduler.job.scheduledJobName2.DAY_OF_MONTH=-1
+ *
+ * &lt;/PRE&gt;
+ *
+ * Based on TamboraSchedulerService written by John Thorhauer.
+ *
+ * @author &lt;a href=&quot;mailto:ekkerbj@netscpae.net&quot;&gt;Jeff Brekke&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:john@zenplex.com&quot;&gt;John Thorhauer&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @version $Id: TurbineNonPersistentSchedulerService.java 534527 2007-05-02 16:10:59Z tv $
+ *
+ * @deprecated Use QuartzSchedulerService instead
+ */
+@Deprecated
+<span class="fc" id="L68">public class TurbineNonPersistentSchedulerService extends AbstractSchedulerService</span>
+{
+    /**
+     * @see org.apache.turbine.services.schedule.AbstractSchedulerService#loadJobs()
+     */
+    @Override
+    protected List&lt;? extends JobEntry&gt; loadJobs() throws TurbineException
+    {
+<span class="fc" id="L76">        Configuration conf = getConfiguration();</span>
+<span class="fc" id="L77">        List&lt;Object&gt; jobProps = conf.getList(&quot;scheduler.jobs&quot;);</span>
+<span class="fc" id="L78">        List&lt;JobEntry&gt; jobs = new ArrayList&lt;&gt;();</span>
+
+        // If there are scheduler.jobs defined then set up a job vector
+        // for the scheduleQueue
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (!jobProps.isEmpty())</span>
+        {
+<span class="fc bfc" id="L84" title="All 2 branches covered.">            for (int i = 0; i &lt; jobProps.size(); i++)</span>
+            {
+<span class="fc" id="L86">                String jobName = (String)jobProps.get(i);</span>
+<span class="fc" id="L87">                String jobPrefix = &quot;scheduler.job.&quot; + jobName;</span>
+
+<span class="fc" id="L89">                String jobId = conf.getString(jobPrefix + &quot;.ID&quot;, null);</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">                if (StringUtils.isEmpty(jobId))</span>
+                {
+<span class="nc" id="L92">                    throw new TurbineException(</span>
+                            &quot;There is an error in the TurbineResources.properties file. \n&quot;
+                            + jobPrefix + &quot;.ID is not found.\n&quot;);
+                }
+
+<span class="fc" id="L97">                int sec = conf.getInt(jobPrefix + &quot;.SECOND&quot;, -1);</span>
+<span class="fc" id="L98">                int min = conf.getInt(jobPrefix + &quot;.MINUTE&quot;, -1);</span>
+<span class="fc" id="L99">                int hr = conf.getInt(jobPrefix + &quot;.HOUR&quot;, -1);</span>
+<span class="fc" id="L100">                int wkday = conf.getInt(jobPrefix + &quot;.WEEKDAY&quot;, -1);</span>
+<span class="fc" id="L101">                int dayOfMonth = conf.getInt(jobPrefix + &quot;.DAY_OF_MONTH&quot;, -1);</span>
+
+<span class="fc" id="L103">                JobEntry je = newJob(</span>
+                        sec,
+                        min,
+                        hr,
+                        wkday,
+                        dayOfMonth,
+                        jobName);
+<span class="fc" id="L110">                je.setJobId(Integer.parseInt(jobId));</span>
+<span class="fc" id="L111">                jobs.add(je);</span>
+            }
+        }
+
+<span class="fc" id="L115">        return jobs;</span>
+    }
+
+    /**
+     * @see org.apache.turbine.services.schedule.ScheduleService#newJob(int, int, int, int, int, java.lang.String)
+     */
+    @Override
+    public JobEntry newJob(int sec, int min, int hour, int wd, int day_mo, String task) throws TurbineException
+    {
+<span class="fc" id="L124">        return new JobEntryNonPersistent(sec, min, hour, wd, day_mo, task);</span>
+    }
+
+    /**
+     * This method returns the job element from the internal queue.
+     *
+     * @param oid The int id for the job.
+     * @return A JobEntry.
+     * @throws TurbineException could not retrieve job
+     */
+    @Override
+    public JobEntry getJob(int oid)
+            throws TurbineException
+    {
+<span class="fc" id="L138">        JobEntry je = new JobEntryNonPersistent();</span>
+<span class="fc" id="L139">        je.setJobId(oid);</span>
+<span class="fc" id="L140">        return scheduleQueue.getJob(je);</span>
+    }
+
+    /**
+     * Remove a job from the queue.
+     *
+     * @param je A JobEntry with the job to remove.
+     */
+    @Override
+    public void removeJob(JobEntry je)
+    {
+        // Remove from the queue.
+<span class="fc" id="L152">        scheduleQueue.remove(je);</span>
+<span class="fc" id="L153">        restart();</span>
+<span class="fc" id="L154">    }</span>
+
+    /**
+     * Add/update a job
+     *
+     * @param je A JobEntry with the job to modify
+     * @throws TurbineException job could not be updated
+     */
+    @Override
+    public void updateJob(JobEntry je)
+            throws TurbineException
+    {
+        try
+        {
+<span class="fc" id="L168">            je.calcRunTime();</span>
+
+            // Update the queue.
+<span class="fc" id="L171">            scheduleQueue.modify(je);</span>
+<span class="fc" id="L172">            restart();</span>
+        }
+<span class="nc" id="L174">        catch (Exception e)</span>
+        {
+<span class="nc" id="L176">            throw new TurbineException(&quot;Problem updating Scheduled Job: &quot; + je.getTask(), e);</span>
+<span class="fc" id="L177">        }</span>
+<span class="fc" id="L178">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

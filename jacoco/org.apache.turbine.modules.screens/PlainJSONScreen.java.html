@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlainJSONScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.screens</a> &gt; <span class="el_source">PlainJSONScreen.java</span></div><h1>PlainJSONScreen.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.screens;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.util.RunData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+/**
+ * A Screen class for dealing with JSON requests.  Typically you would
+ * extend this class and override the doOutput() method to use it by setting the JSON output into
+ * rundata.setMessage( serialized ).
+ * As convenience you may use inject in your extended class the Turbine service JsonService
+ * Use {@link PlainJSONSecureAnnotatedScreen} if you need the user to be
+ * logged in or having a special role in prior to executing the functions you provide.
+ *
+ * &lt;p&gt;Here is an example from a subclass:
+ *
+ * &lt;code&gt;
+ *
+ *
+ * public void doOutput(PipelineData pipelineData) throws Exception
+ * {
+ *     RunData data = pipelineData.getRunData();
+ *     JSONStrategy strategy = null;
+ *
+ *     try
+ *     {
+ *        strategy = new XYStrategy();
+ *        // the result goes into rundata.message
+ *        strategy.execute(data, jsonService);
+ *     }
+ *       catch ( Exception e )
+ *       {
+ *          log.error( &quot;init failed for &quot;+strategy , e);
+ *          String msg = new JSONObject().put(&quot;error&quot;, e.getMessage()).toString();
+ *          data.setMessage( msg );
+ *       }
+ *
+ *     super.doOutput(data);
+ * }
+ * &lt;/code&gt;
+ *
+ *
+ * @author gk
+ * @version $Id$
+ */
+<span class="nc" id="L72">public class PlainJSONScreen extends RawScreen</span>
+{
+    protected static final String JSON_TYPE = &quot;application/json;charset=utf-8&quot;;
+
+    protected final static int BUFFER_SIZE = 4096;
+
+<span class="nc" id="L78">    static final Logger log = LoggerFactory.getLogger(PlainJSONScreen.class);</span>
+
+    /** Injected service instance */
+    //@TurbineService
+    //protected JsonService jsonService;
+
+    /**
+     * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.pipeline.PipelineData)
+     */
+    @Override
+    protected String getContentType(PipelineData pipelineData)
+    {
+<span class="nc" id="L90">        return JSON_TYPE;</span>
+    }
+
+    /**
+     * Output JSON content set into {@link RunData#getMessage()}.
+     *
+     * Encoding is UTF-8. @{@link #JSON_TYPE}: {@value #JSON_TYPE}.
+     *
+     * @param pipelineData The PipelineData object.
+     */
+    @Override
+    protected void doOutput(PipelineData pipelineData) throws Exception
+    {
+<span class="nc" id="L103">        RunData data = pipelineData.getRunData();</span>
+        // read in json!
+<span class="nc" id="L105">        Charset charset = StandardCharsets.UTF_8; //request.getCharacterEncoding();</span>
+
+<span class="nc" id="L107">        String json_res = data.getMessage();</span>
+
+<span class="nc" id="L109">        log.debug( &quot;json_res output: {}&quot;, json_res );</span>
+<span class="nc" id="L110">        try (PrintWriter out = new PrintWriter(</span>
+                new OutputStreamWriter(
+<span class="nc" id="L112">                    data.getResponse().getOutputStream(),charset)))</span>
+        {
+<span class="nc" id="L114">            out.print(json_res.toString());</span>
+<span class="nc" id="L115">            out.flush();</span>
+        }
+<span class="nc" id="L117">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TemplateSessionValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.actions.sessionvalidator</a> &gt; <span class="el_source">TemplateSessionValidator.java</span></div><h1>TemplateSessionValidator.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.actions.sessionvalidator;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.util.RunData;
+
+/**
+ * SessionValidator for use with the Template Service, the
+ * TemplateSessionValidator is virtually identical to the
+ * {@link TemplateSecureSessionValidator} except that it does not transfer to the
+ * login page when it detects a null user (or a user not logged in).
+ *
+ * &lt;p&gt;The Template Service requires a different Session Validator
+ * because of the way it handles screens.
+ *
+ * @see TemplateSecureSessionValidator
+ * @author &lt;a href=&quot;mailto:john.mcnally@clearink.com&quot;&gt;John D. McNally&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L46">public class TemplateSessionValidator</span>
+    extends SessionValidator
+{
+    /** Logging */
+<span class="fc" id="L50">    private static Logger log = LogManager.getLogger(TemplateSessionValidator.class);</span>
+
+    /**
+     * Execute the action.
+     *
+     * @param pipelineData Turbine information.
+     * @throws Exception The anonymous user could not be obtained
+     *         from the security service
+     */
+    @Override
+    public void doPerform(PipelineData pipelineData) throws Exception
+    {
+<span class="fc" id="L62">        RunData data = pipelineData.getRunData();</span>
+        // Pull user from session.
+<span class="fc" id="L64">        data.populate();</span>
+
+        // The user may have not logged in, so create a &quot;guest/anonymous&quot; user.
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        if (data.getUser() == null)</span>
+        {
+<span class="fc" id="L69">            log.debug(&quot;Creating an anonymous user object!&quot;);</span>
+<span class="fc" id="L70">            User anonymousUser = security.getAnonymousUser();</span>
+<span class="fc" id="L71">            data.setUser(anonymousUser);</span>
+<span class="fc" id="L72">            data.save();</span>
+        }
+
+        // Make sure we have some way to return a response
+<span class="pc bpc" id="L76" title="2 of 4 branches missed.">        if (!data.hasScreen() &amp;&amp; StringUtils.isEmpty(</span>
+<span class="fc" id="L77">                data.getTemplateInfo().getScreenTemplate()))</span>
+        {
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">            if (StringUtils.isNotEmpty(templateHomepage))</span>
+            {
+<span class="fc" id="L81">                data.getTemplateInfo().setScreenTemplate(templateHomepage);</span>
+            }
+            else
+            {
+<span class="nc" id="L85">                data.setScreen(screenHomepage);</span>
+            }
+        } else {
+<span class="nc" id="L88">            handleFormCounterToken(data, false);</span>
+        }
+
+        // We do not want to allow both a screen and template parameter.
+        // The template parameter is dominant.
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (data.getTemplateInfo().getScreenTemplate() != null)</span>
+        {
+<span class="fc" id="L95">            data.setScreen(null);</span>
+        }
+
+        // Comply with Turbine 4.0 standards
+<span class="fc" id="L99">        pipelineData.get(Turbine.class).put(User.class, data.getUser());</span>
+<span class="fc" id="L100">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

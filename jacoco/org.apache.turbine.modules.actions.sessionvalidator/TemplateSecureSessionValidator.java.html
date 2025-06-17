@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TemplateSecureSessionValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.actions.sessionvalidator</a> &gt; <span class="el_source">TemplateSecureSessionValidator.java</span></div><h1>TemplateSecureSessionValidator.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.actions.sessionvalidator;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.util.RunData;
+
+/**
+ * SessionValidator that requires login for use with Template Services
+ * like Velocity or WebMacro.
+ *
+ * &lt;br&gt;
+ *
+ * Templating services requires a different Session Validator
+ * because of the way it handles screens.  If you use the WebMacro or
+ * Velocity Service with the {@link DefaultSessionValidator}, users will be able to
+ * bypass login by directly addressing the template using
+ * template/index.wm.  This is because the Page class looks for the
+ * keyword &quot;template&quot; in the Path information and if it finds it will
+ * reset the screen using it's lookup mechanism and thereby bypass
+ * Login.
+ *
+ * Note that you will need to set the template.login property to the
+ * login template.
+ *
+ * @author &lt;a href=&quot;mailto:john.mcnally@clearink.com&quot;&gt;John D. McNally&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="nc" id="L56">public class TemplateSecureSessionValidator</span>
+    extends SessionValidator
+{
+    /** Logging */
+<span class="nc" id="L60">    private static Logger log = LogManager.getLogger(</span>
+            TemplateSecureSessionValidator.class);
+
+
+    @TurbineConfiguration( TurbineConstants.LOGIN_MESSAGE )
+    private String loginMessage;
+
+    @TurbineConfiguration( TurbineConstants.TEMPLATE_LOGIN )
+    private String templateLogin;
+
+
+    /**
+     * doPerform is virtually identical to DefaultSessionValidator
+     * except that it calls template methods instead of bare screen
+     * methods. For example, it uses &lt;code&gt;setScreenTemplate&lt;/code&gt; to
+     * load the tr.props TEMPLATE_LOGIN instead of the default's
+     * setScreen to TurbineConstants.SCREEN_LOGIN.
+     *
+     * @see DefaultSessionValidator
+     * @param pipelineData Turbine information.
+     * @throws Exception The anonymous user could not be obtained
+     *         from the security service
+     */
+    @Override
+    public void doPerform(PipelineData pipelineData)
+    throws Exception
+    {
+<span class="nc" id="L87">        RunData data = pipelineData.getRunData();</span>
+        // Pull user from session.
+<span class="nc" id="L89">        data.populate();</span>
+
+        // The user may have not logged in, so create a &quot;guest/anonymous&quot; user.
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (data.getUser() == null)</span>
+        {
+<span class="nc" id="L94">            log.debug(&quot;Creating an anonymous user object!&quot;);</span>
+<span class="nc" id="L95">            User anonymousUser = security.getAnonymousUser();</span>
+<span class="nc" id="L96">            data.setUser(anonymousUser);</span>
+<span class="nc" id="L97">            data.save();</span>
+        }
+
+        // This is the secure session validator, so user must be logged in.
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (!data.getUser().hasLoggedIn())</span>
+        {
+<span class="nc" id="L103">            log.debug(&quot;User is not logged in!&quot;);</span>
+
+            // only set the message if nothing else has already set it
+            // (e.g. the LogoutUser action).
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            if (StringUtils.isEmpty(data.getMessage()))</span>
+            {
+<span class="nc" id="L109">                data.setMessage(loginMessage);</span>
+            }
+
+            // Set the screen template to the login page.
+<span class="nc" id="L113">            log.debug(&quot;Sending User to the Login Screen ({})&quot;, templateLogin);</span>
+<span class="nc" id="L114">            data.getTemplateInfo().setScreenTemplate(templateLogin);</span>
+
+            // We're not doing any actions buddy! (except action.login which
+            // will have been performed already)
+<span class="nc" id="L118">            data.setAction(null);</span>
+        }
+
+<span class="nc" id="L121">        log.debug(&quot;Login Check finished!&quot;);</span>
+
+        // Make sure we have some way to return a response.
+<span class="nc bnc" id="L124" title="All 4 branches missed.">        if (!data.hasScreen() &amp;&amp; StringUtils.isEmpty(</span>
+<span class="nc" id="L125">                data.getTemplateInfo().getScreenTemplate()))</span>
+        {
+<span class="nc bnc" id="L127" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(templateHomepage))</span>
+            {
+<span class="nc" id="L129">                data.getTemplateInfo().setScreenTemplate(templateHomepage);</span>
+            }
+            else
+            {
+<span class="nc" id="L133">                data.setScreen(screenHomepage);</span>
+            }
+        } else {
+<span class="nc" id="L136">            handleFormCounterToken(data, false);</span>
+        }
+
+        // We do not want to allow both a screen and template parameter.
+        // The template parameter is dominant.
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (data.getTemplateInfo().getScreenTemplate() != null)</span>
+        {
+<span class="nc" id="L143">            data.setScreen(null);</span>
+        }
+
+        // Comply with Turbine 4.0 standards
+<span class="nc" id="L147">        pipelineData.get(Turbine.class).put(User.class, data.getUser());</span>
+<span class="nc" id="L148">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

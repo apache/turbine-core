@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineServletService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.servlet</a> &gt; <span class="el_source">TurbineServletService.java</span></div><h1>TurbineServletService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.servlet;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.util.ServletUtils;
+
+/**
+ * &lt;p&gt;This class provides a context service when the application
+ * is run in a ServletContainer. It is mainly a wrapper around
+ * the ServletContext API.&lt;/p&gt;
+ * &lt;p&gt;This class requires Jakarta Servlet API 6.0 or better.&lt;/p&gt;
+ *
+ * @author &lt;a href=&quot;mailto:burton@apache.org&quot;&gt;Kevin A. Burton&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:raphael@apache.org&quot;&gt;Raphaël Luta&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:ekkerbj@netscape.net&quot;&gt;Jeff Brekke&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:sgala@hisitech.com&quot;&gt;Santiago Gala&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:jvanzyl@periapt.com.com&quot;&gt;Jason van Zyl&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:jon@latchkey.com&quot;&gt;Jon S. Stevens&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L51">public class TurbineServletService</span>
+        extends TurbineBaseService implements ServletService
+{
+    /** Logging */
+<span class="fc" id="L55">    private static final Logger log = LogManager.getLogger(TurbineServletService.class);</span>
+
+    /** The servlet context for this servlet */
+<span class="fc" id="L58">    private ServletContext servletContext = null;</span>
+
+    /** The servlet configuration for this servlet */
+<span class="fc" id="L61">    private ServletConfig servletConfig = null;</span>
+
+    /**
+     * Load all configured components and initialize them. This is
+     * a zero parameter variant which queries the Turbine Servlet
+     * for its config.
+     */
+    @Override
+    public void init()
+    {
+<span class="fc" id="L71">        this.servletConfig = Turbine.getTurbineServletConfig();</span>
+        try
+        {
+<span class="fc" id="L74">            this.servletContext = servletConfig.getServletContext();</span>
+
+<span class="fc" id="L76">            log.debug(&quot;Initializing with ServletConfig&quot;);</span>
+        }
+<span class="nc" id="L78">        catch (Exception e)</span>
+        {
+<span class="nc" id="L80">            log.error(&quot;Cannot initialize TurbineServletService.&quot;, e);</span>
+<span class="fc" id="L81">        }</span>
+<span class="fc" id="L82">        setInit(true);</span>
+<span class="fc" id="L83">    }</span>
+
+    /**
+     * Returns an URL object for a given URI string.
+     * This URI is considered relative to the context.
+     *
+     * @see jakarta.servlet.ServletContext#getResource
+     * @param uri the URI to resolve as an URL
+     * @return an URL object or null is the uri is malformed or
+     * can't be resolved
+     */
+    @Override
+    public URL getResource(String uri)
+    {
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (servletContext == null)</span>
+        {
+<span class="nc" id="L99">            return null;</span>
+        }
+
+<span class="nc" id="L102">        URL url = null;</span>
+
+        try
+        {
+<span class="nc" id="L106">            url = getServletContext().getResource(uri);</span>
+            // work-around for Websphere 3.52
+<span class="nc bnc" id="L108" title="All 4 branches missed.">            if (url != null &amp;&amp; url.toString().startsWith(&quot;classloader:&quot;))</span>
+            {
+<span class="nc" id="L110">                url = new URL(&quot;file:&quot; + url.toString().substring(12));</span>
+            }
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            else if (url == null)</span>
+            {
+<span class="nc" id="L114">                url = new URL(&quot;file:&quot; + getServletContext().getRealPath(uri));</span>
+            }
+        }
+<span class="nc" id="L117">        catch (MalformedURLException e)</span>
+        {
+            //if the URL is wrong, return null
+<span class="nc" id="L120">        }</span>
+
+<span class="nc" id="L122">        return url;</span>
+    }
+
+    /**
+     * Same as getResource except that it returns an InputStream
+     *
+     * @see jakarta.servlet.ServletContext#getResourceAsStream
+     * @param uri the URI to resolve
+     * @return an InputStream on the URI content or null
+     */
+    @Override
+    public InputStream getResourceAsStream(String uri)
+    {
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        if (servletContext == null)</span>
+        {
+<span class="nc" id="L137">            return null;</span>
+        }
+
+<span class="fc" id="L140">        InputStream is = null;</span>
+<span class="fc" id="L141">        is = servletContext.getResourceAsStream(uri);</span>
+<span class="fc" id="L142">        return is;</span>
+    }
+
+    /**
+     * Returns the complete filesystem path for a
+     * given URI
+     *
+     * @see jakarta.servlet.ServletContext#getRealPath
+     * @param uri the URI to resolve
+     * @return the full system path of this URI
+     */
+    @Override
+    public String getRealPath(String uri)
+    {
+<span class="nc bnc" id="L156" title="All 4 branches missed.">        if (getServletContext() == null || uri == null)</span>
+        {
+<span class="nc" id="L158">            return null;</span>
+        }
+        else
+        {
+<span class="nc" id="L162">            return getServletContext().getRealPath(uri);</span>
+        }
+    }
+
+    /**
+     * Returns the servlet config used by this
+     * Turbine web application.
+     *
+     * @return turbine servlet config
+     */
+    @Override
+    public ServletConfig getServletConfig()
+    {
+<span class="nc" id="L175">        return servletConfig;</span>
+    }
+
+    /**
+     * Returns the servlet context used by this
+     * Turbine web application.
+     *
+     * @return turbine servlet context
+     */
+    @Override
+    public ServletContext getServletContext()
+    {
+<span class="nc" id="L187">        return servletContext;</span>
+    }
+
+    /**
+     * Returns the server scheme for this
+     * Turbine application. This will either
+     * be http or https.
+     *
+     * @return String
+     */
+    @Override
+    public String getServerScheme()
+    {
+<span class="nc" id="L200">        return Turbine.getServerScheme();</span>
+    }
+
+    /**
+     * Returns the server name that this
+     * Turbine application is running
+     * on.
+     *
+     * @return String
+     */
+    @Override
+    public String getServerName()
+    {
+<span class="nc" id="L213">        return Turbine.getServerName();</span>
+    }
+
+    /**
+     * Returns the port that this Turbine
+     * application is running through
+     * on the server.
+     *
+     * @return String
+     */
+    @Override
+    public String getServerPort()
+    {
+<span class="nc" id="L226">        return Turbine.getServerPort();</span>
+    }
+
+    /**
+     * Returns the context path for this
+     * Turbine application.
+     *
+     * @return String
+     */
+    @Override
+    public String getContextPath()
+    {
+<span class="nc" id="L238">        return Turbine.getContextPath();</span>
+    }
+
+    /**
+     * Expands a string that points to a relative path or path list,
+     * leaving it as an absolute path based on the servlet context.
+     * It will return null if the text is empty or the config object
+     * is null.
+     *
+     * @param path The String containing a path or path list.
+     * @return A String with the expanded path or path list.
+     */
+    public String expandRelative(String path)
+    {
+<span class="nc" id="L252">        return ServletUtils.expandRelative(getServletConfig(), path);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

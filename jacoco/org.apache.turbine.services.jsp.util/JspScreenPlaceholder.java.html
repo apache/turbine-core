@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JspScreenPlaceholder.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.jsp.util</a> &gt; <span class="el_source">JspScreenPlaceholder.java</span></div><h1>JspScreenPlaceholder.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.jsp.util;
+
+
+import org.apache.logging.log4j.LogManager;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.modules.Screen;
+import org.apache.turbine.modules.ScreenLoader;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.util.RunData;
+
+/**
+ * Returns output of a Screen module. An instance of this is placed in the
+ * request by the JspLayout. This allows template authors to
+ * place the screen template within the layout.&lt;br&gt;
+ * Here's how it's used in a JSP template:&lt;br&gt;
+ * &lt;code&gt;
+ * &amp;lt;%useBean id=&quot;screen_placeholder&quot; class=&quot;JspScreenPlaceholder&quot; scope=&quot;request&quot; %&amp;gt;
+ * ...
+ * &amp;lt;%= screen_placeholder %&amp;gt;
+ * &lt;/code&gt;
+ *
+ * @author &lt;a href=&quot;john.mcnally@clearink.com&quot;&gt;John D. McNally&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+public class JspScreenPlaceholder
+{
+    /** Logging */
+<span class="nc" id="L52">    private static Logger log = LogManager.getLogger(JspNavigation.class);</span>
+
+    /* The RunData object */
+    private final RunData data;
+
+    private final ScreenLoader screenLoader;
+
+    /**
+     * Constructor
+     *
+     * @param data A Rundata Object
+     */
+    public JspScreenPlaceholder(RunData data)
+<span class="nc" id="L65">    {</span>
+<span class="nc" id="L66">        this.data = data;</span>
+<span class="nc" id="L67">        AssemblerBrokerService abs = (AssemblerBrokerService)TurbineServices.getInstance()</span>
+<span class="nc" id="L68">            .getService(AssemblerBrokerService.SERVICE_NAME);</span>
+<span class="nc" id="L69">        this.screenLoader = (ScreenLoader)abs.getLoader(Screen.class);</span>
+<span class="nc" id="L70">    }</span>
+
+    /**
+     * builds the output of the navigation template
+     */
+    public void exec()
+    {
+<span class="nc" id="L77">        String template = null;</span>
+<span class="nc" id="L78">        String module = null;</span>
+        try
+        {
+<span class="nc" id="L81">            template = data.getTemplateInfo().getScreenTemplate();</span>
+<span class="nc" id="L82">            TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);</span>
+<span class="nc" id="L83">            module = templateService.getScreenName(template);</span>
+<span class="nc" id="L84">            screenLoader.exec(data, module);</span>
+        }
+<span class="nc" id="L86">        catch (Exception e)</span>
+        {
+<span class="nc" id="L88">            String message = &quot;Error processing screen template:&quot; +</span>
+                    template + &quot; using module: &quot; + module;
+<span class="nc" id="L90">            log.error(message, e);</span>
+            try
+            {
+<span class="nc" id="L93">                data.getResponse().getWriter().print(message);</span>
+            }
+<span class="nc" id="L95">            catch (java.io.IOException ioe)</span>
+            {
+                // ignore
+<span class="nc" id="L98">            }</span>
+<span class="nc" id="L99">        }</span>
+<span class="nc" id="L100">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

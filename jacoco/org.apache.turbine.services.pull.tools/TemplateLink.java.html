@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TemplateLink.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.pull.tools</a> &gt; <span class="el_source">TemplateLink.java</span></div><h1>TemplateLink.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.pull.tools;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.pull.ApplicationTool;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.uri.TemplateURI;
+
+/**
+ * This is a pull to to be used in Templates to convert links in
+ * Templates into the correct references.
+ *
+ * The pull service might insert this tool into the Context.
+ * in templates.  Here's an example of its Velocity use:
+ *
+ * &lt;p&gt;&lt;code&gt;
+ * $link.setPage(&quot;index.vm&quot;).addPathInfo(&quot;hello&quot;,&quot;world&quot;)
+ * This would return: http://foo.com/Turbine/template/index.vm/hello/world
+ * &lt;/code&gt;
+ *
+ * &lt;p&gt;
+ *
+ * This is an application pull tool for the template system. You should &lt;b&gt;not&lt;/b&gt;
+ * use it in a normal application!
+ *
+ * @author &lt;a href=&quot;mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:jon@latchkey.com&quot;&gt;Jon S. Stevens&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+
+public class TemplateLink
+    implements ApplicationTool
+{
+    /** Prefix for Parameters for this tool */
+    public static final String TEMPLATE_LINK_PREFIX = &quot;tool.link&quot;;
+
+    /** Should this tool return relative URIs or absolute? Default: Absolute. */
+    public static final String TEMPLATE_LINK_RELATIVE_KEY = &quot;want.relative&quot;;
+
+    /** Default Value for TEMPLATE_LINK_RELATIVE_KEY */
+    public static final boolean TEMPLATE_LINK_RELATIVE_DEFAULT = false;
+
+    /** Do we want a relative link? */
+<span class="fc" id="L72">    protected boolean wantRelative = false;</span>
+    
+    /**
+     * Should this tool add Container Encoding to the URIs returned?
+     * True might cause trouble e.g. if you run with Apache HTTP Daemon / Tomcat Combo.
+     *
+     * Default is false (like Turbine 2.2)
+     */
+    public static final String TEMPLATE_LINK_ENCODING_KEY = &quot;want.encoding&quot;;
+
+    /** Default Value for TEMPLATE_LINK_ENCODING_DEFAULT */
+    public static final boolean TEMPLATE_LINK_ENCODING_DEFAULT = false;
+    
+    /** Do we want the container to encode the response? */
+<span class="fc" id="L86">    boolean wantEncoding = false;</span>
+
+    /** cache of the template name for getPage() */
+<span class="fc" id="L89">    protected String template = null;</span>
+
+    /** TemplateURI used as backend for this object */
+<span class="fc" id="L92">    protected TemplateURI templateURI = null;</span>
+
+    /** Logging */
+<span class="fc" id="L95">    private static final Logger log = LogManager.getLogger(TemplateLink.class);</span>
+
+    /**
+     * Default constructor
+     * &lt;p&gt;
+     * The init method must be called before use.
+     */
+    public TemplateLink()
+<span class="fc" id="L103">    {</span>
+        // empty
+<span class="fc" id="L105">    }</span>
+
+    /*
+     * ========================================================================
+     *
+     * Application Tool Interface
+     *
+     * ========================================================================
+     *
+     */
+
+    /**
+     * This will initialize a TemplateLink object that was
+     * constructed with the default constructor (ApplicationTool
+     * method).
+     *
+     * @param data assumed to be a PipelineData object
+     */
+    @Override
+    public void init(Object data)
+    {
+        // we just blithely cast to RunData as if another object
+        // or null is passed in we'll throw an appropriate runtime
+        // exception.
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        if (data instanceof PipelineData)</span>
+        {
+<span class="fc" id="L131">            PipelineData pipelineData = (PipelineData) data;</span>
+<span class="fc" id="L132">            RunData runData = (RunData)pipelineData;</span>
+<span class="fc" id="L133">            templateURI = new TemplateURI(runData);</span>
+<span class="fc" id="L134">        }</span>
+        else
+        {
+<span class="nc" id="L137">            templateURI = new TemplateURI((RunData) data);</span>
+        }
+
+        Configuration conf =
+<span class="fc" id="L141">                Turbine.getConfiguration().subset(TEMPLATE_LINK_PREFIX);</span>
+
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">        if (conf != null)</span>
+        {
+<span class="fc" id="L145">            wantRelative = conf.getBoolean(TEMPLATE_LINK_RELATIVE_KEY,</span>
+                    TEMPLATE_LINK_RELATIVE_DEFAULT);
+<span class="fc" id="L147">            wantEncoding = conf.getBoolean(TEMPLATE_LINK_ENCODING_KEY,</span>
+                    TEMPLATE_LINK_ENCODING_DEFAULT);
+        }
+        
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        if (!wantEncoding)</span>
+        {
+<span class="fc" id="L153">            templateURI.clearResponse();</span>
+        }
+
+<span class="fc" id="L156">    }</span>
+
+    /**
+     * Refresh method - does nothing
+     */
+    @Override
+    public void refresh()
+    {
+        // empty
+<span class="nc" id="L165">    }</span>
+
+    /*
+     * ========================================================================
+     *
+     * getter/setter
+     *
+     * All setter return &quot;this&quot; so you can &quot;chain&quot; them together in the Context
+     *
+     * ========================================================================
+     */
+
+    /**
+     * This will turn off the execution of res.encodeURL()
+     * by making res == null. This is a hack for cases
+     * where you don't want to see the session information
+     *
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink setEncodeURLOff()
+    {
+<span class="nc" id="L186">        templateURI.clearResponse();</span>
+<span class="nc" id="L187">        return this;</span>
+    }
+
+    /**
+     * Sets the template variable used by the Template Service.
+     *
+     * @param template A String with the template name.
+     * @return A TemplateLink.
+     */
+    public TemplateLink setPage(String template)
+    {
+<span class="nc" id="L198">        log.debug(&quot;setPage({})&quot;, template);</span>
+<span class="nc" id="L199">        this.template = template;</span>
+<span class="nc" id="L200">        templateURI.setTemplate(template);</span>
+<span class="nc" id="L201">        return this;</span>
+    }
+
+    /**
+     * Gets the template variable used by the Template Service.
+     * It is only available after setPage() has been called.
+     *
+     * @return The template name.
+     */
+    public String getPage()
+    {
+<span class="nc" id="L212">        return template;</span>
+    }
+
+    /**
+     * Sets the action= value for this URL.
+     *
+     * By default it adds the information to the path_info instead
+     * of the query data.
+     *
+     * @param action A String with the action value.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink setAction(String action)
+    {
+<span class="nc" id="L226">        log.debug(&quot;setAction({})&quot;, action);</span>
+<span class="nc" id="L227">        templateURI.setAction(action);</span>
+<span class="nc" id="L228">        return this;</span>
+    }
+
+    /**
+     * Sets the action= and eventSubmit= values for this URL.
+     *
+     * By default it adds the information to the path_info instead
+     * of the query data.
+     *
+     * @param action A String with the action value.
+     * @param event A string with the event name.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink setActionEvent(String action, String event)
+    {
+<span class="nc" id="L243">        log.debug(&quot;setActionEvent({}, {})&quot;, action, event);</span>
+<span class="nc" id="L244">        templateURI.setActionEvent(action, event);</span>
+<span class="nc" id="L245">        return this;</span>
+    }
+
+    /**
+     * Sets the screen= value for this URL.
+     *
+     * By default it adds the information to the path_info instead
+     * of the query data.
+     *
+     * @param screen A String with the screen value.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink setScreen(String screen)
+    {
+<span class="nc" id="L259">        log.debug(&quot;setScreen({})&quot;, screen);</span>
+<span class="nc" id="L260">        templateURI.setScreen(screen);</span>
+<span class="nc" id="L261">        return this;</span>
+    }
+
+    /**
+     * Sets a reference anchor (#ref).
+     *
+     * @param reference A String containing the reference.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink setReference(String reference)
+    {
+<span class="nc" id="L272">        templateURI.setReference(reference);</span>
+<span class="nc" id="L273">        return this;</span>
+    }
+
+    /**
+     * Returns the current reference anchor.
+     *
+     * @return A String containing the reference.
+     */
+    public String getReference()
+    {
+<span class="nc" id="L283">        return templateURI.getReference();</span>
+    }
+
+    /*
+     * ========================================================================
+     *
+     * Adding and removing Data from the Path Info and Query Data
+     *
+     * ========================================================================
+     */
+
+
+    /**
+     * Adds a name=value pair for every entry in a ParameterParser
+     * object to the path_info string.
+     *
+     * @param pp A ParameterParser.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink addPathInfo(ParameterParser pp)
+    {
+<span class="nc" id="L304">        templateURI.addPathInfo(pp);</span>
+<span class="nc" id="L305">        return this;</span>
+    }
+
+    /**
+     * Adds a name=value pair to the path_info string.
+     *
+     * @param name A String with the name to add.
+     * @param value An Object with the value to add.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink addPathInfo(String name, Object value)
+    {
+<span class="nc" id="L317">        templateURI.addPathInfo(name, value);</span>
+<span class="nc" id="L318">        return this;</span>
+    }
+
+    /**
+     * Adds a name=value pair to the path_info string.
+     *
+     * @param name A String with the name to add.
+     * @param value A String with the value to add.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink addPathInfo(String name, String value)
+    {
+<span class="nc" id="L330">        templateURI.addPathInfo(name, value);</span>
+<span class="nc" id="L331">        return this;</span>
+    }
+
+    /**
+     * Adds a name=value pair to the path_info string.
+     *
+     * @param name A String with the name to add.
+     * @param value A double with the value to add.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink addPathInfo(String name, double value)
+    {
+<span class="nc" id="L343">        templateURI.addPathInfo(name, value);</span>
+<span class="nc" id="L344">        return this;</span>
+    }
+
+    /**
+     * Adds a name=value pair to the path_info string.
+     *
+     * @param name A String with the name to add.
+     * @param value An int with the value to add.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink addPathInfo(String name, int value)
+    {
+<span class="nc" id="L356">        templateURI.addPathInfo(name, value);</span>
+<span class="nc" id="L357">        return this;</span>
+    }
+
+    /**
+     * Adds a name=value pair to the path_info string.
+     *
+     * @param name A String with the name to add.
+     * @param value A long with the value to add.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink addPathInfo(String name, long value)
+    {
+<span class="nc" id="L369">        templateURI.addPathInfo(name, value);</span>
+<span class="nc" id="L370">        return this;</span>
+    }
+
+    /**
+     * Adds a name=value pair to the query string.
+     *
+     * @param name A String with the name to add.
+     * @param value An Object with the value to add.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink addQueryData(String name, Object value)
+    {
+<span class="nc" id="L382">        templateURI.addQueryData(name, value);</span>
+<span class="nc" id="L383">        return this;</span>
+    }
+
+    /**
+     * Adds a name=value pair to the query string.
+     *
+     * @param name A String with the name to add.
+     * @param value A String with the value to add.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink addQueryData(String name, String value)
+    {
+<span class="nc" id="L395">        templateURI.addQueryData(name, value);</span>
+<span class="nc" id="L396">        return this;</span>
+    }
+
+    /**
+     * Adds a name=value pair to the query string.
+     *
+     * @param name A String with the name to add.
+     * @param value A double with the value to add.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink addQueryData(String name, double value)
+    {
+<span class="nc" id="L408">        templateURI.addQueryData(name, value);</span>
+<span class="nc" id="L409">        return this;</span>
+    }
+
+    /**
+     * Adds a name=value pair to the query string.
+     *
+     * @param name A String with the name to add.
+     * @param value An int with the value to add.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink addQueryData(String name, int value)
+    {
+<span class="nc" id="L421">        templateURI.addQueryData(name, value);</span>
+<span class="nc" id="L422">        return this;</span>
+    }
+
+    /**
+     * Adds a name=value pair to the query string.
+     *
+     * @param name A String with the name to add.
+     * @param value A long with the value to add.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink addQueryData(String name, long value)
+    {
+<span class="nc" id="L434">        templateURI.addQueryData(name, value);</span>
+<span class="nc" id="L435">        return this;</span>
+    }
+
+    /**
+     * Adds a name=value pair for every entry in a ParameterParser
+     * object to the query string.
+     *
+     * @param pp A ParameterParser.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink addQueryData(ParameterParser pp)
+    {
+<span class="nc" id="L447">        templateURI.addQueryData(pp);</span>
+<span class="nc" id="L448">        return this;</span>
+    }
+
+    /**
+     * Removes all the path info elements.
+     *
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink removePathInfo()
+    {
+<span class="nc" id="L458">        templateURI.removePathInfo();</span>
+<span class="nc" id="L459">        return this;</span>
+    }
+
+    /**
+     * Removes a name=value pair from the path info.
+     *
+     * @param name A String with the name to be removed.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink removePathInfo(String name)
+    {
+<span class="nc" id="L470">        templateURI.removePathInfo(name);</span>
+<span class="nc" id="L471">        return this;</span>
+    }
+
+    /**
+     * Removes all the query string elements.
+     *
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink removeQueryData()
+    {
+<span class="nc" id="L481">        templateURI.removeQueryData();</span>
+<span class="nc" id="L482">        return this;</span>
+    }
+
+    /**
+     * Removes a name=value pair from the query string.
+     *
+     * @param name A String with the name to be removed.
+     * @return A &lt;code&gt;TemplateLink&lt;/code&gt; (self).
+     */
+    public TemplateLink removeQueryData(String name)
+    {
+<span class="nc" id="L493">        templateURI.removeQueryData(name);</span>
+<span class="nc" id="L494">        return this;</span>
+    }
+
+    /**
+     * Builds the URL with all of the data URL-encoded as well as
+     * encoded using HttpServletResponse.encodeUrl(). The resulting
+     * URL is absolute; it starts with http/https...
+     *
+     * &lt;pre&gt;
+     * TemplateURI tui = new TemplateURI (data, &quot;UserScreen&quot;);
+     * tui.addPathInfo(&quot;user&quot;,&quot;jon&quot;);
+     * tui.getAbsoluteLink();
+     * &lt;/pre&gt;
+     *
+     * The above call to absoluteLink() would return the String:
+     * &lt;p&gt;
+     * http://www.server.com/servlets/Turbine/screen/UserScreen/user/jon
+     * &lt;p&gt;
+     * After rendering the URI, it clears the
+     * pathInfo and QueryString portions of the TemplateURI. So you can
+     * use the $link reference multiple times on a page and start over
+     * with a fresh object every time.
+     *
+     * @return A String with the built URL.
+     */
+    public String getAbsoluteLink()
+    {
+<span class="nc" id="L521">        String output = templateURI.getAbsoluteLink();</span>
+
+        // This was added to use $link multiple times on a page and start
+        // over with a fresh set of data every time.
+<span class="nc" id="L525">        templateURI.removePathInfo();</span>
+<span class="nc" id="L526">        templateURI.removeQueryData();</span>
+
+<span class="nc" id="L528">        return output;</span>
+    }
+
+
+    /**
+     * Builds the URL with all of the data URL-encoded as well as
+     * encoded using HttpServletResponse.encodeUrl(). The resulting
+     * URL is relative to the webserver root.
+     *
+     * &lt;pre&gt;
+     * TemplateURI tui = new TemplateURI (data, &quot;UserScreen&quot;);
+     * tui.addPathInfo(&quot;user&quot;,&quot;jon&quot;);
+     * tui.getRelativeLink();
+     * &lt;/pre&gt;
+     *
+     * The above call to relativeLink() would return the String:
+     * &lt;p&gt;
+     * /servlets/Turbine/screen/UserScreen/user/jon
+     * &lt;p&gt;
+     * After rendering the URI, it clears the
+     * pathInfo and QueryString portions of the TemplateURI. So you can
+     * use the $link reference multiple times on a page and start over
+     * with a fresh object every time.
+     *
+     * @return A String with the built URL.
+     */
+    public String getRelativeLink()
+    {
+<span class="nc" id="L556">        String output = templateURI.getRelativeLink();</span>
+
+        // This was added to use $link multiple times on a page and start
+        // over with a fresh set of data every time.
+<span class="nc" id="L560">        templateURI.removePathInfo();</span>
+<span class="nc" id="L561">        templateURI.removeQueryData();</span>
+
+<span class="nc" id="L563">        return output;</span>
+    }
+
+    /**
+     * Returns the URI. After rendering the URI, it clears the
+     * pathInfo and QueryString portions of the TemplateURI.
+     *
+     * @return A String with the URI in the form
+     * http://foo.com/Turbine/template/index.wm/hello/world
+     */
+    public String getLink()
+    {
+<span class="nc bnc" id="L575" title="All 2 branches missed.">        return wantRelative ?</span>
+<span class="nc" id="L576">                getRelativeLink() : getAbsoluteLink();</span>
+    }
+
+    /**
+     * Returns the relative URI leaving the source intact. Use this
+     * if you need the path_info and query data multiple times.
+     * This is equivalent to $link.Link or just $link,
+     * but does not reset the path_info and query data.
+     *
+     * @return A String with the URI in the form
+     * http://foo.com/Turbine/template/index.wm/hello/world
+     */
+    public String getURI()
+    {
+<span class="nc bnc" id="L590" title="All 2 branches missed.">        return wantRelative ?</span>
+<span class="nc" id="L591">                templateURI.getRelativeLink() : templateURI.getAbsoluteLink();</span>
+    }
+
+    /**
+     * Returns the absolute URI leaving the source intact. Use this
+     * if you need the path_info and query data multiple times.
+     * This is equivalent to $link.AbsoluteLink but does not reset
+     * the path_info and query data.
+     *
+     * @return A String with the URI in the form
+     * http://foo.com/Turbine/template/index.wm/hello/world
+     */
+    public String getAbsoluteURI()
+    {
+<span class="nc" id="L605">        return templateURI.getAbsoluteLink();</span>
+    }
+
+    /**
+     * Returns the relative URI leaving the source intact. Use this
+     * if you need the path_info and query data multiple times.
+     * This is equivalent to $link.RelativeLink but does not reset
+     * the path_info and query data.
+     *
+     * @return A String with the URI in the form
+     * http://foo.com/Turbine/template/index.wm/hello/world
+     */
+    public String getRelativeURI()
+    {
+<span class="nc" id="L619">        return templateURI.getRelativeLink();</span>
+    }
+
+    /**
+     * Same as getLink().
+     *
+     * @return A String with the URI represented by this object.
+     *
+     */
+    @Override
+    public String toString()
+    {
+<span class="nc" id="L631">        return getLink();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

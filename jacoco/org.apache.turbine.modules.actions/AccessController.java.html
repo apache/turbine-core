@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AccessController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.actions</a> &gt; <span class="el_source">AccessController.java</span></div><h1>AccessController.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.actions;
+
+import org.apache.fulcrum.security.acl.AccessControlList;
+import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
+import org.apache.fulcrum.security.util.FulcrumSecurityException;
+import org.apache.logging.log4j.LogManager;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.modules.Action;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.security.SecurityService;
+import org.apache.turbine.util.RunData;
+
+/**
+ * This action doPerforms an Access Control List and places it into
+ * the RunData object, so it is easily available to modules.  The ACL
+ * is also placed into the session.  Modules can null out the ACL to
+ * force it to be rebuilt based on more information.
+ *
+ * &lt;p&gt;
+ *
+ * Turbine uses a User-Role-Permission arrangement for access control.
+ * Users are assigned Roles.  Roles are assigned Permissions.  Turbine
+ * modules then check the Permission required for an action or
+ * information with the set of Permissions currently associated with
+ * the session (which are dependent on the user associated with the
+ * session.)
+ *
+ * &lt;p&gt;
+ *
+ * The criteria for assigning Roles/Permissions is application
+ * dependent, in some cases an application may change a User's Roles
+ * during the session.  To achieve flexibility, the ACL takes an
+ * Object parameter, which the application can use to doPerform the
+ * ACL.
+ *
+ * &lt;p&gt;
+ *
+ * This action is special in that it should only be executed by the
+ * Turbine servlet.
+ *
+ * @author &lt;a href=&quot;mailto:john.mcnally@clearink.com&quot;&gt;John D. McNally&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:bmclaugh@algx.net&quot;&gt;Brett McLaughlin&lt;/a&gt;
+ * @author &lt;a href=&quot;quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L71">public class AccessController implements Action</span>
+{
+    /** Logging */
+<span class="fc" id="L74">    private static final Logger log = LogManager.getLogger(AccessController.class);</span>
+
+    /** Injected service instance */
+    @TurbineService
+    private SecurityService security;
+
+    /**
+     * If there is a user and the user is logged in, doPerform will
+     * set the RunData ACL.  The list is first sought from the current
+     * session, otherwise it is loaded through
+     * &lt;code&gt;link {@link SecurityService#getACL(User)}&lt;/code&gt; and added to the current
+     * session.
+     *
+     * @param pipelineData Turbine information.
+     * @throws FulcrumSecurityException problem with the security service.
+     */
+    @Override
+    public void doPerform(PipelineData pipelineData)
+    	throws FulcrumSecurityException
+    {
+<span class="fc" id="L94">        RunData data = pipelineData.getRunData();</span>
+<span class="fc" id="L95">        User user = data.getUser();</span>
+
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (!security.isAnonymousUser(user)</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">            &amp;&amp; user.hasLoggedIn())</span>
+        {
+<span class="fc" id="L100">            log.debug(&quot;Fetching ACL for {}&quot;, user::getName);</span>
+<span class="fc" id="L101">            AccessControlList acl = (AccessControlList)</span>
+<span class="fc" id="L102">                    data.getSession().getAttribute(</span>
+                            TurbineConstants.ACL_SESSION_KEY);
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">            if (acl == null)</span>
+            {
+<span class="fc" id="L106">                log.debug(&quot;No ACL found in Session, building fresh ACL&quot;);</span>
+<span class="fc" id="L107">                acl = security.getACL(user);</span>
+<span class="fc" id="L108">                data.getSession().setAttribute(</span>
+                        TurbineConstants.ACL_SESSION_KEY, acl);
+
+<span class="fc" id="L111">                log.debug(&quot;ACL is {}&quot;, acl);</span>
+            }
+<span class="fc" id="L113">            data.setACL(acl);</span>
+        }
+
+        // Comply with Turbine 4.0 standards
+<span class="fc" id="L117">        pipelineData.get(Turbine.class).put(TurbineAccessControlList.class, data.getACL());</span>
+<span class="fc" id="L118">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

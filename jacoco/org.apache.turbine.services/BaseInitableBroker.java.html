@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseInitableBroker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services</a> &gt; <span class="el_source">BaseInitableBroker.java</span></div><h1>BaseInitableBroker.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.Hashtable;
+import java.util.Stack;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+/**
+ * A generic implementation of &lt;code&gt;InitableBroker&lt;/code&gt;.
+ * Functionality provided by the broker includes:
+ *
+ * &lt;ul&gt;
+ *
+ * &lt;li&gt;Maintaining single instance of each &lt;code&gt;Initable&lt;/code&gt; in
+ * the system.&lt;/li&gt;
+ *
+ * &lt;li&gt;Early initialization of &lt;code&gt;Initables&lt;/code&gt; during system
+ * startup.&lt;/li&gt;
+ *
+ * &lt;li&gt;Late initialization of &lt;code&gt;Initables&lt;/code&gt; before they are
+ * used.&lt;/li&gt;
+ *
+ * &lt;li&gt;Providing instances of &lt;code&gt;Initables&lt;/code&gt; to requesting
+ * parties.&lt;/li&gt;
+ *
+ * &lt;li&gt;Maintaining dependencies between &lt;code&gt;Initables&lt;/code&gt; during
+ * early initialization phases, including circular dependencies
+ * detection.&lt;/li&gt;
+ *
+ * &lt;/ul&gt;
+ *
+ * @author &lt;a href=&quot;mailto:burton@apache.org&quot;&gt;Kevin Burton&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:krzewski@e-point.pl&quot;&gt;Rafal Krzewski&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+public abstract class BaseInitableBroker
+        implements InitableBroker
+{
+    /** A repository of Initable instances. */
+<span class="nc" id="L63">    protected Hashtable&lt;String, Initable&gt; initables = new Hashtable&lt;&gt;();</span>
+
+    /**
+     * Names of classes being early-initialized are pushed onto this
+     * stack.  A name appearing twice indicates a circular dependency
+     * chain.
+     */
+<span class="nc" id="L70">    protected Stack&lt;String&gt; stack = new Stack&lt;&gt;();</span>
+
+    /** Logging */
+<span class="nc" id="L73">    private final Logger log = LogManager.getLogger(this.getClass());</span>
+
+    /**
+     * Default constructor of InitableBroker.
+     * &lt;p&gt;
+     * This constructor does nothing. Your brokers should be
+     * singletons, therefore their constructors should be
+     * private. They should also have public YourBroker getInstance()
+     * methods.
+     * &lt;/p&gt;
+     */
+    protected BaseInitableBroker()
+<span class="nc" id="L85">    {</span>
+        // empty
+<span class="nc" id="L87">    }</span>
+
+    @Override
+    public void initClass(String className, Object data) throws InitializationException {
+<span class="nc" id="L91">        synchronized (stack) {</span>
+<span class="nc" id="L92">            int pos = stack.search(className);</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            if (pos != -1) {</span>
+<span class="nc" id="L94">                throw new InitializationException(buildCircularDependencyMessage(className, pos));</span>
+            }
+            try {
+<span class="nc" id="L97">                stack.push(className);</span>
+<span class="nc" id="L98">                Initable instance = getInitableInstance(className);</span>
+<span class="nc" id="L99">                boolean instanceInitialized = instance.getInit();</span>
+
+<span class="nc bnc" id="L101" title="All 2 branches missed.">                if (!instanceInitialized) {</span>
+<span class="nc" id="L102">                    instance.init(data);</span>
+                }
+            } finally {
+<span class="nc" id="L105">                stack.pop(); // Ensure class is removed from stack even if an exception occurs.</span>
+            }
+<span class="nc" id="L107">        }</span>
+<span class="nc" id="L108">    }</span>
+
+    /**
+     * Builds a message for a circular dependency exception.
+     * 
+     * @param className
+     * @param dependencyPosition
+     * @return
+     */
+    private String buildCircularDependencyMessage(String className, int dependencyPosition) {
+<span class="nc" id="L118">        StringBuilder msg = new StringBuilder()</span>
+<span class="nc" id="L119">                .append(className)</span>
+<span class="nc" id="L120">                .append(&quot; couldn't be initialized because of circular dependency chain:&quot;)</span>
+<span class="nc" id="L121">                .append(System.lineSeparator());</span>
+
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        for (int i = dependencyPosition; i &gt; 0; i--) {</span>
+<span class="nc" id="L124">            msg.append(stack.elementAt(stack.size() - i - 1))</span>
+<span class="nc" id="L125">                    .append(&quot;-&gt;&quot;);</span>
+        }
+<span class="nc" id="L127">        msg.append(className).append(System.lineSeparator());</span>
+<span class="nc" id="L128">        return msg.toString();</span>
+    }
+
+    /**
+     * Shuts down an &lt;code&gt;Initable&lt;/code&gt;.
+     *
+     * This method is used to release resources allocated by an
+     * &lt;code&gt;Initable&lt;/code&gt;, and return it to its initial (uninitialized)
+     * state.
+     *
+     * @param className The name of the class to be uninitialized.
+     */
+    @Override
+    public void shutdownClass(String className)
+    {
+        try
+        {
+<span class="nc" id="L145">            Initable initable = getInitableInstance(className);</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">            if (initable.getInit())</span>
+            {
+<span class="nc" id="L148">                initable.shutdown();</span>
+<span class="nc" id="L149">                ((BaseInitable) initable).setInit(false);</span>
+            }
+        }
+<span class="nc" id="L152">        catch (InstantiationException e)</span>
+        {
+            // Shutdown of a nonexistent class was requested.
+            // This does not hurt anything, so we log the error and continue.
+<span class="nc" id="L156">            log.error(&quot;Shutdown of a nonexistent class {} was requested&quot;, className, e);</span>
+<span class="nc" id="L157">        }</span>
+<span class="nc" id="L158">    }</span>
+
+    /**
+     * Provides an instance of Initable class ready to work.
+     * &lt;p&gt;
+     * If the requested class couldn't be instantiated or initialized,
+     * an InstantiationException will be thrown. You needn't handle
+     * this exception in your code, since it indicates fatal
+     * misconfiguration of the system.
+     * &lt;/p&gt;
+     * @param className The name of the Initable requested.
+     * @return An instance of the requested Initable.
+     * @throws InstantiationException if there was a problem
+     * during instantiation or initialization of the Initable.
+     */
+    @Override
+    public Initable getInitable(String className)
+            throws InstantiationException
+    {
+        Initable initable;
+        try
+        {
+<span class="nc" id="L180">            initable = getInitableInstance(className);</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">            if (!initable.getInit())</span>
+            {
+<span class="nc" id="L183">                synchronized (initable.getClass())</span>
+                {
+<span class="nc bnc" id="L185" title="All 2 branches missed.">                    if (!initable.getInit())</span>
+                    {
+<span class="nc" id="L187">                        initable.init();</span>
+                    }
+<span class="nc bnc" id="L189" title="All 2 branches missed.">                    if (!initable.getInit())</span>
+                    {
+                        // this exception will be caught &amp; rethrown by this
+                        // very method. getInit() returning false indicates
+                        // some initialization issue, which in turn prevents
+                        // the InitableBroker from passing a working
+                        // instance of the initable to the client.
+<span class="nc" id="L196">                        throw new InitializationException(</span>
+                                &quot;init() failed to initialize class &quot;
+                                + className);
+                    }
+<span class="nc" id="L200">                }</span>
+            }
+<span class="nc" id="L202">            return initable;</span>
+        }
+<span class="nc" id="L204">        catch (InitializationException e)</span>
+        {
+<span class="nc" id="L206">            throw new InstantiationException(&quot;Class &quot; + className +</span>
+                    &quot; failed to initialize&quot;, e);
+        }
+    }
+
+    /**
+     * Retrieves an instance of an Initable from the repository.
+     * &lt;p&gt;
+     * If the requested class is not present in the repository, it is
+     * instantiated and passed a reference to the broker, saved and
+     * then returned.
+     * &lt;/p&gt;
+     * @param className The name of the class to be instantiated.
+     *
+     * @return an instance of the requested class
+     *
+     * @throws InstantiationException if the requested class can't
+     * be instantiated.
+     */
+    protected Initable getInitableInstance(String className)
+            throws InstantiationException
+    {
+<span class="nc" id="L228">        Initable initable = initables.get(className);</span>
+
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        if (initable == null)</span>
+        {
+            try
+            {
+<span class="nc" id="L234">                initable = (Initable) Class.forName(className).getDeclaredConstructor().newInstance();</span>
+            }
+            // those two errors must be passed to the VM
+<span class="nc" id="L237">            catch (ThreadDeath | OutOfMemoryError t)</span>
+            {
+<span class="nc" id="L239">                throw t;</span>
+            }
+<span class="nc" id="L241">            catch (Throwable t)</span>
+            {
+                // Used to indicate error condition.
+<span class="nc" id="L244">                String msg = null;</span>
+
+<span class="nc bnc" id="L246" title="All 2 branches missed.">                if (t instanceof NoClassDefFoundError)</span>
+                {
+<span class="nc" id="L248">                    msg = &quot;A class referenced by &quot; + className +</span>
+                            &quot; is unavailable. Check your jars and classes.&quot;;
+                }
+<span class="nc bnc" id="L251" title="All 2 branches missed.">                else if (t instanceof ClassNotFoundException)</span>
+                {
+<span class="nc" id="L253">                    msg = &quot;Class &quot; + className +</span>
+                            &quot; is unavailable. Check your jars and classes.&quot;;
+                }
+<span class="nc bnc" id="L256" title="All 2 branches missed.">                else if (t instanceof ClassCastException)</span>
+                {
+<span class="nc" id="L258">                    msg = &quot;Class &quot; + className +</span>
+                            &quot; doesn't implement Initable.&quot;;
+                }
+                else
+                {
+<span class="nc" id="L263">                    msg = &quot;Failed to instantiate &quot; + className;</span>
+                }
+
+<span class="nc" id="L266">                throw new InstantiationException(msg, t);</span>
+<span class="nc" id="L267">            }</span>
+
+<span class="nc" id="L269">            initable.setInitableBroker(this);</span>
+<span class="nc" id="L270">            initables.put(className, initable);</span>
+        }
+
+<span class="nc" id="L273">        return initable;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

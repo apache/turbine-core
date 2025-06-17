@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SessionData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.pull.util</a> &gt; <span class="el_source">SessionData.java</span></div><h1>SessionData.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.pull.util;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.apache.turbine.services.pull.ApplicationTool;
+
+/**
+ * Pull tool designed to be used in the session scope for storage of
+ * temporary data.  This tool should eliminate the need for the
+ * {@link org.apache.turbine.om.security.User#setTemp} and
+ * {@link org.apache.turbine.om.security.User#getTemp} methods.
+ *
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L39">public class SessionData implements ApplicationTool</span>
+{
+    /** Storage of user defined data */
+    private Map&lt;String, Object&gt; dataStorage;
+
+    /**
+     * Initialize the application tool.
+     *
+     * @param data initialization data
+     */
+    @Override
+    public void init(Object data)
+    {
+<span class="fc" id="L52">        dataStorage = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * Refresh the application tool.
+     */
+    @Override
+    public void refresh()
+    {
+        // do nothing
+<span class="fc" id="L62">    }</span>
+
+    /**
+     * Gets the data stored under the key.  Null will be returned if the
+     * key does not exist or if null was stored under the key.
+     * &lt;p&gt;
+     * To check for a key with a null value use {@link #containsKey}.
+     *
+     * @param key key under which the data is stored.
+     * @return &lt;code&gt;Object&lt;/code&gt; stored under the key.
+     */
+    public Object get(String key)
+    {
+<span class="nc" id="L75">        return dataStorage.get(key);</span>
+    }
+
+    /**
+     * Determines is a given key is stored.
+     *
+     * @param key  the key to check for
+     * @return true if the key was found
+     */
+    public boolean containsKey(String key)
+    {
+<span class="nc" id="L86">        return dataStorage.containsKey(key);</span>
+    }
+
+    /**
+     * Stores the data.  If the key already exists, the value will be
+     * overwritten.
+     *
+     * @param key   key under which the data will be stored.
+     * @param value data to store under the key.  Null values are allowed.
+     */
+    public void put(String key, Object value)
+    {
+<span class="nc" id="L98">        dataStorage.put(key, value);</span>
+<span class="nc" id="L99">    }</span>
+
+    /**
+     * Clears all data
+     */
+    public void clear()
+    {
+<span class="nc" id="L106">        dataStorage.clear();</span>
+<span class="nc" id="L107">    }</span>
+
+    /**
+     * Gets a iterator for the keys.
+     *
+     * @return &lt;code&gt;Iterator&lt;/code&gt; for the keys
+     */
+    public Iterator&lt;String&gt; iterator()
+    {
+<span class="nc" id="L116">        return dataStorage.keySet().iterator();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SessionListener.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.session</a> &gt; <span class="el_source">SessionListener.java</span></div><h1>SessionListener.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.session;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.io.Serializable;
+
+import jakarta.servlet.http.HttpSessionActivationListener;
+import jakarta.servlet.http.HttpSessionEvent;
+import jakarta.servlet.http.HttpSessionListener;
+
+import org.apache.turbine.services.TurbineServices;
+
+/**
+ * This class is a listener for both session creation and destruction,
+ * and for session activation and passivation.  It must be configured
+ * via your web application's &lt;code&gt;web.xml&lt;/code&gt; deployment
+ * descriptor as follows for the container to call it:
+ *
+ * &lt;pre&gt;
+ * &amp;lt;listener&amp;gt;
+ *   &amp;lt;listener-class&amp;gt;
+ *     org.apache.turbine.session.SessionListener
+ *   &amp;lt;/listener-class&amp;gt;
+ * &amp;lt;/listener&amp;gt;
+ * &lt;/pre&gt;
+ *
+ * &lt;code&gt;&amp;lt;listener&amp;gt;&lt;/code&gt; elements can occur between
+ * &lt;code&gt;&amp;lt;context-param&amp;gt;&lt;/code&gt; and &lt;code&gt;&amp;lt;servlet&amp;gt;&lt;/code&gt;
+ * elements in your deployment descriptor.
+ *
+ * The {@link #sessionCreated(HttpSessionEvent)} callback will
+ * automatically add an instance of this listener to any newly created
+ * &lt;code&gt;HttpSession&lt;/code&gt; for detection of session passivation and
+ * re-activation.
+ *
+ * @since 2.3
+ * @version $Id$
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:dlr@apache.org&quot;&gt;Daniel Rall&lt;/a&gt;
+ * @see jakarta.servlet.http.HttpSessionListener
+ */
+<span class="nc" id="L61">public class SessionListener</span>
+        implements HttpSessionListener, HttpSessionActivationListener, Serializable
+{
+    // ---- HttpSessionListener implementation -----------------------------
+
+    /**
+     * Serial version.
+     */
+    private static final long serialVersionUID = -8083730704842809870L;
+
+    /**
+     * The session service.
+     */
+    private SessionService sessionService;
+
+    /**
+     * Lazy initialization
+     *
+     * @return the sessionService
+     */
+    private SessionService getSessionService()
+    {
+        // don't care about synchronization, lookup is cheap
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (sessionService == null)</span>
+        {
+<span class="nc" id="L86">            sessionService = (SessionService)TurbineServices.getInstance().getService(SessionService.SERVICE_NAME);</span>
+        }
+
+<span class="nc" id="L89">        return sessionService;</span>
+    }
+
+    /**
+     * Called by the servlet container when a new session is created
+     *
+     * @param event Session creation event.
+     */
+    @Override
+    public void sessionCreated(HttpSessionEvent event)
+    {
+<span class="nc" id="L100">        getSessionService().addSession(event.getSession());</span>
+<span class="nc" id="L101">        event.getSession().setAttribute(getClass().getName(), this);</span>
+<span class="nc" id="L102">    }</span>
+
+    /**
+     * Called by the servlet container when a session is destroyed
+     *
+     * @param event Session destruction event.
+     */
+    @Override
+    public void sessionDestroyed(HttpSessionEvent event)
+    {
+<span class="nc" id="L112">        getSessionService().removeSession(event.getSession());</span>
+<span class="nc" id="L113">    }</span>
+
+
+    // ---- HttpSessionActivationListener implementation -------------------
+
+    /**
+     * Called by the servlet container when an existing session is
+     * (re-)activated.
+     *
+     * @param event Session activation event.
+     */
+    @Override
+    public void sessionDidActivate(HttpSessionEvent event)
+    {
+<span class="nc" id="L127">        getSessionService().addSession(event.getSession());</span>
+<span class="nc" id="L128">    }</span>
+
+    /**
+     * Called by the servlet container when a an existing session is
+     * passivated.
+     *
+     * @param event Session passivation event.
+     */
+    @Override
+    public void sessionWillPassivate(HttpSessionEvent event)
+    {
+<span class="nc" id="L139">        getSessionService().removeSession(event.getSession());</span>
+<span class="nc" id="L140">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

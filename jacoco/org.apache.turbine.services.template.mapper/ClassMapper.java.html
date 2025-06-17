@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.template.mapper</a> &gt; <span class="el_source">ClassMapper.java</span></div><h1>ClassMapper.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.template.mapper;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.modules.Assembler;
+import org.apache.turbine.modules.Loader;
+import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.util.TurbineException;
+
+/**
+ * This mapper tries to map Template names to class names. If no direct match
+ * is found, it tries matches &quot;upwards&quot; in the package hierarchy until either
+ * a match is found or the root is hit. Then it returns the name of the
+ * default class from the TemplateEngineService.
+ *
+ * 1. about.directions.Driving     &amp;lt;- direct matching the template to the class name
+ * 2. about.directions.Default     &amp;lt;- matching the package, class name is Default
+ * 3. about.Default                &amp;lt;- stepping up in the package hierarchy, looking for Default
+ * 4. Default                      &amp;lt;- Class called &quot;Default&quot; without package
+ * 5. VelocityScreen               &amp;lt;- The class configured by the Service (VelocityService) to
+ *
+ * Please note, that no actual packages are searched. This is the scope of the
+ * TemplateEngine Loader which is passed at construction time.
+ *
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+
+public class ClassMapper
+    extends BaseMapper
+    implements Mapper
+{
+    /** The loader for actually trying out the package names */
+<span class="fc" id="L60">    private Loader&lt;? extends Assembler&gt; loader = null;</span>
+
+    /** Logging */
+<span class="fc" id="L63">    private static final Logger log = LogManager.getLogger(ClassMapper.class);</span>
+
+    /**
+     * Default C'tor. If you use this C'tor, you must use
+     * the bean setter to set the various properties needed for
+     * this mapper before first usage.
+     */
+    public ClassMapper()
+<span class="fc" id="L71">    {</span>
+    	// empty
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Get the Loader value.
+     * @return the Loader value.
+     */
+    public Loader&lt;? extends Assembler&gt; getLoader()
+    {
+<span class="nc" id="L81">        return loader;</span>
+    }
+
+    /**
+     * Set the Loader value.
+     * @param loader The new Loader value.
+     */
+    public void setLoader(Loader&lt;? extends Assembler&gt; loader)
+    {
+<span class="fc" id="L90">        this.loader = loader;</span>
+<span class="fc" id="L91">        log.debug(&quot;Loader is {}&quot;, this.loader);</span>
+<span class="fc" id="L92">    }</span>
+
+    /**
+     * Strip off a possible extension, replace all &quot;,&quot; with &quot;.&quot;
+     * Look through the given package path until a match is found.
+     *
+     * @param template The template name.
+     * @return A class name for the given template.
+     */
+    @Override
+	public String doMapping(String template)
+    {
+<span class="fc" id="L104">        log.debug(&quot;doMapping({})&quot;, template);</span>
+
+        // Copy our elements into an array
+<span class="fc" id="L107">        List&lt;String&gt; components</span>
+<span class="fc" id="L108">            = new ArrayList&lt;&gt;(Arrays.asList(StringUtils.split(</span>
+                                              template,
+<span class="fc" id="L110">                                              String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR))));</span>
+<span class="fc" id="L111">        int componentSize = components.size() - 1 ;</span>
+
+        // This method never gets an empty string passed.
+        // So this is never &lt; 0
+<span class="fc" id="L115">        String className = components.get(componentSize);</span>
+<span class="fc" id="L116">        components.remove(componentSize--);</span>
+
+<span class="fc" id="L118">        log.debug(&quot;className is {}&quot;, className);</span>
+
+        // Strip off a possible Extension
+<span class="fc" id="L121">        int dotIndex = className.lastIndexOf(TemplateService.EXTENSION_SEPARATOR);</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        className = (dotIndex &lt; 0) ? className : className.substring(0, dotIndex);</span>
+
+        // This is an optimization. If the name we're looking for is
+        // already the default name for the template, don't do a &quot;first run&quot;
+        // which looks for an exact match.
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        boolean firstRun = !className.equals(TemplateService.DEFAULT_NAME);</span>
+
+        for(;;)
+        {
+<span class="fc" id="L131">            String pkg = StringUtils.join(components.iterator(), String.valueOf(separator));</span>
+<span class="fc" id="L132">            StringBuilder testName = new StringBuilder();</span>
+
+<span class="fc" id="L134">            log.debug(&quot;classPackage is now: {}&quot;, pkg);</span>
+
+<span class="fc bfc" id="L136" title="All 2 branches covered.">            if (!components.isEmpty())</span>
+            {
+<span class="fc" id="L138">                testName.append(pkg);</span>
+<span class="fc" id="L139">                testName.append(separator);</span>
+            }
+
+<span class="fc bfc" id="L142" title="All 2 branches covered.">            testName.append((firstRun)</span>
+<span class="fc" id="L143">                ? className</span>
+<span class="fc" id="L144">                : TemplateService.DEFAULT_NAME);</span>
+
+<span class="fc" id="L146">            log.debug(&quot;Looking for {}&quot;, testName);</span>
+            try
+            {
+<span class="fc" id="L149">                loader.getAssembler(testName.toString());</span>
+<span class="fc" id="L150">                log.debug(&quot;Found it, returning {}&quot;, testName);</span>
+<span class="fc" id="L151">                return testName.toString();</span>
+            }
+<span class="nc" id="L153">            catch (TurbineException e)</span>
+            {
+<span class="nc" id="L155">                log.error(&quot;Turbine Exception Class mapping&quot;, e);</span>
+            }
+<span class="fc" id="L157">            catch (Exception e)</span>
+            {
+                // Not found. Go on.
+<span class="nc" id="L160">            }</span>
+
+<span class="fc bfc" id="L162" title="All 2 branches covered.">            if (firstRun)</span>
+            {
+<span class="fc" id="L164">                firstRun = false;</span>
+            }
+            else
+            {
+<span class="fc bfc" id="L168" title="All 2 branches covered.">                if (components.isEmpty())</span>
+                {
+<span class="fc" id="L170">                    break; // for(;;)</span>
+                }
+<span class="fc" id="L172">                components.remove(componentSize--);</span>
+            }
+<span class="fc" id="L174">        }</span>
+
+<span class="fc" id="L176">        log.debug(&quot;Returning default&quot;);</span>
+<span class="fc" id="L177">        return getDefaultName(template);</span>
+    }
+}
+
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

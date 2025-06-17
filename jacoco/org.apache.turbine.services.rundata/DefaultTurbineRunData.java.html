@@ -1,0 +1,1385 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultTurbineRunData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.rundata</a> &gt; <span class="el_source">DefaultTurbineRunData.java</span></div><h1>DefaultTurbineRunData.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.rundata;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.naming.Context;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.fulcrum.parser.CookieParser;
+import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.fulcrum.security.acl.AccessControlList;
+import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.DefaultPipelineData;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.util.FormMessages;
+import org.apache.turbine.util.LocaleUtils;
+import org.apache.turbine.util.ServerData;
+import org.apache.turbine.util.SystemError;
+import org.apache.turbine.util.template.TemplateInfo;
+
+/**
+ * DefaultTurbineRunData is the default implementation of the
+ * TurbineRunData interface, which is distributed by the Turbine
+ * RunData service, if another implementation is not defined in
+ * the default or specified RunData configuration.
+ * TurbineRunData is an extension to RunData, which
+ * is an interface to run-time information that is passed
+ * within Turbine. This provides the threading mechanism for the
+ * entire system because multiple requests can potentially come in
+ * at the same time.  Thus, there is only one RunData instance
+ * for each request that is being serviced.
+ *
+ * &lt;p&gt;DefaultTurbineRunData implements the Recyclable interface making
+ * it possible to pool its instances for recycling.
+ *
+ * @author &lt;a href=&quot;mailto:ilkka.priha@simsoft.fi&quot;&gt;Ilkka Priha&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:jon@latchkey.com&quot;&gt;Jon S. Stevens&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:bhoeneis@ee.ethz.ch&quot;&gt;Bernie Hoeneisen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:dlr@finemaltcoding.com&quot;&gt;Daniel Rall&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @version $Id$
+ */
+public class DefaultTurbineRunData
+        extends DefaultPipelineData
+        implements TurbineRunData
+{
+    /**
+     * The disposed flag.
+     */
+    private boolean disposed;
+
+    /** Cached action name to execute for this request. */
+    private String action;
+
+    /** This is the layout that the page will use to render the screen. */
+    private String layout;
+
+    /** Cached screen name to execute for this request. */
+    private String screen;
+
+    /** The character encoding of template files. */
+    private String templateEncoding;
+
+    /** This is what will build the title of the document. */
+    private String title;
+
+    /** Determines if there is information in the outputstream or not. */
+    private boolean outSet;
+
+    /**
+     * Cache the output stream because it can be used in many
+     * different places.
+     */
+    private PrintWriter out;
+
+    /** The HTTP charset. */
+    private Charset charSet;
+
+    /** The HTTP content type to return. */
+<span class="fc" id="L117">    private String contentType = TurbineConstants.DEFAULT_HTML_CONTENT_TYPE;</span>
+
+    /** If this is set, also set the status code to 302. */
+    private String redirectURI;
+
+    /** The HTTP status code to return. */
+<span class="fc" id="L123">    private int statusCode = HttpServletResponse.SC_OK;</span>
+
+    /** This is a List to hold critical system errors. */
+<span class="fc" id="L126">    private final List&lt;SystemError&gt; errors = new ArrayList&lt;&gt;();</span>
+
+    /** JNDI Contexts. */
+    private Map&lt;String, Context&gt; jndiContexts;
+
+    /** @see #getRemoteAddr() */
+    private String remoteAddr;
+
+    /** @see #getRemoteHost() */
+    private String remoteHost;
+
+    /** @see #getUserAgent() */
+    private String userAgent;
+
+    /** A holder for stack trace. */
+    private String stackTrace;
+
+    /** A holder for stack trace exception. */
+    private Throwable stackTraceException;
+
+    /**
+     * Put things here and they will be shown on the default Error
+     * screen.  This is great for debugging variable values when an
+     * exception is thrown.
+     */
+<span class="fc" id="L151">    private final Map&lt;String, Object&gt; debugVariables = new HashMap&lt;&gt;();</span>
+
+    /** Logging */
+<span class="fc" id="L154">    private static final Logger log = LogManager.getLogger(DefaultTurbineRunData.class);</span>
+
+    /**
+     * Attempts to get the User object from the session.  If it does
+     * not exist, it returns null.
+     *
+     * @param session An HttpSession.
+     *
+     * @param &lt;T&gt; a type extending {@link User}
+     *
+     * @return A User.
+     */
+    public static &lt;T extends User&gt; T getUserFromSession(HttpSession session)
+    {
+        try
+        {
+            @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L171">            T user = (T) session.getAttribute(User.SESSION_KEY);</span>
+<span class="fc" id="L172">            return user;</span>
+        }
+<span class="nc" id="L174">        catch (ClassCastException e)</span>
+        {
+<span class="nc" id="L176">            return null;</span>
+        }
+    }
+
+    /**
+     * Allows one to invalidate the user in a session.
+     *
+     * @param session An HttpSession.
+     * @return True if user was invalidated.
+     */
+    public static boolean removeUserFromSession(HttpSession session)
+    {
+        try
+        {
+<span class="nc" id="L190">            session.removeAttribute(User.SESSION_KEY);</span>
+        }
+<span class="nc" id="L192">        catch (Exception e)</span>
+        {
+<span class="nc" id="L194">            return false;</span>
+<span class="nc" id="L195">        }</span>
+<span class="nc" id="L196">        return true;</span>
+    }
+
+    /**
+     * Constructs a run data object.
+     */
+    public DefaultTurbineRunData()
+    {
+<span class="fc" id="L204">        super();</span>
+
+        // a map to hold information to be added to pipelineData
+<span class="fc" id="L207">        put(Turbine.class, new HashMap&lt;Class&lt;?&gt;, Object&gt;());</span>
+<span class="fc" id="L208">        recycle();</span>
+<span class="fc" id="L209">    }</span>
+
+    /**
+     * Recycles the object by removing its disposed flag.
+     */
+    @Override
+    public void recycle()
+    {
+<span class="fc" id="L217">        disposed = false;</span>
+<span class="fc" id="L218">    }</span>
+
+    /**
+     * Disposes a run data object.
+     */
+    @Override
+    public void dispose()
+    {
+        // empty pipelinedata map
+<span class="fc" id="L227">        get(Turbine.class).clear();</span>
+
+<span class="fc" id="L229">        action = null;</span>
+<span class="fc" id="L230">        layout = null;</span>
+<span class="fc" id="L231">        screen = null;</span>
+<span class="fc" id="L232">        templateEncoding = null;</span>
+<span class="fc" id="L233">        title = null;</span>
+<span class="fc" id="L234">        outSet = false;</span>
+<span class="fc" id="L235">        out = null;</span>
+<span class="fc" id="L236">        charSet = null;</span>
+<span class="fc" id="L237">        contentType = TurbineConstants.DEFAULT_HTML_CONTENT_TYPE;</span>
+<span class="fc" id="L238">        redirectURI = null;</span>
+<span class="fc" id="L239">        statusCode = HttpServletResponse.SC_OK;</span>
+<span class="fc" id="L240">        errors.clear();</span>
+<span class="fc" id="L241">        jndiContexts = null;</span>
+<span class="fc" id="L242">        remoteAddr = null;</span>
+<span class="fc" id="L243">        remoteHost = null;</span>
+<span class="fc" id="L244">        userAgent = null;</span>
+<span class="fc" id="L245">        stackTrace = null;</span>
+<span class="fc" id="L246">        stackTraceException = null;</span>
+<span class="fc" id="L247">        debugVariables.clear();</span>
+<span class="fc" id="L248">    }</span>
+
+    // ***************************************
+    // Implementation of the RunData interface
+    // ***************************************
+
+    /**
+     * Gets the parameters.
+     *
+     * @return a parameter parser.
+     */
+    @Override
+    public ParameterParser getParameters()
+    {
+        // Parse the parameters first, if not yet done.
+<span class="fc" id="L263">        ParameterParser parameters = getParameterParser();</span>
+<span class="fc" id="L264">        HttpServletRequest request = getRequest();</span>
+
+<span class="pc bpc" id="L266" title="1 of 4 branches missed.">        if (parameters != null &amp;&amp; parameters.getRequest() != request)</span>
+        {
+<span class="fc" id="L268">            parameters.setRequest(request);</span>
+        }
+
+<span class="fc" id="L271">        return parameters;</span>
+    }
+
+    /**
+     * Gets the cookies.
+     *
+     * @return a cookie parser.
+     */
+    @Override
+    public CookieParser getCookies()
+    {
+        // Parse the cookies first, if not yet done.
+<span class="nc" id="L283">        CookieParser cookies = getCookieParser();</span>
+<span class="nc" id="L284">        HttpServletRequest request = getRequest();</span>
+
+<span class="nc bnc" id="L286" title="All 4 branches missed.">        if (cookies != null &amp;&amp; cookies.getRequest() != request)</span>
+        {
+<span class="nc" id="L288">            cookies.setData(request, getResponse());</span>
+        }
+
+<span class="nc" id="L291">        return cookies;</span>
+    }
+
+    /**
+     * Gets the servlet request.
+     *
+     * @return the request.
+     */
+    @Override
+    public HttpServletRequest getRequest()
+    {
+<span class="fc" id="L302">        return get(Turbine.class, HttpServletRequest.class);</span>
+    }
+
+    /**
+     * Gets the servlet response.
+     *
+     * @return the response.
+     */
+    @Override
+    public HttpServletResponse getResponse()
+    {
+<span class="fc" id="L313">        return get(Turbine.class, HttpServletResponse.class);</span>
+    }
+
+    /**
+     * Gets the servlet session information.
+     *
+     * @return the session.
+     */
+    @Override
+    public HttpSession getSession()
+    {
+<span class="fc" id="L324">        return getRequest().getSession();</span>
+    }
+
+    /**
+     * Gets the servlet configuration used during servlet init.
+     *
+     * @return the configuration.
+     */
+    @Override
+    public ServletConfig getServletConfig()
+    {
+<span class="nc" id="L335">        return get(Turbine.class, ServletConfig.class);</span>
+    }
+
+    /**
+     * Gets the servlet context used during servlet init.
+     *
+     * @return the context.
+     */
+    @Override
+    public ServletContext getServletContext()
+    {
+<span class="nc" id="L346">        return get(Turbine.class, ServletContext.class);</span>
+    }
+
+    /**
+     * Gets the access control list.
+     *
+     * @return the access control list.
+     */
+    @Override
+    public &lt;A extends AccessControlList&gt; A getACL()
+    {
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L358">        A acl = (A)get(Turbine.class, TurbineAccessControlList.class);</span>
+<span class="fc" id="L359">        return acl;</span>
+    }
+
+    /**
+     * Sets the access control list.
+     *
+     * To delete ACL from session use key {@link TurbineConstants#ACL_SESSION_KEY}.
+     * Invalidate session, if session persist.
+     *
+     * @param acl an access control list.
+     */
+    @Override
+    public void setACL(AccessControlList acl)
+    {
+<span class="fc" id="L373">        get(Turbine.class).put(TurbineAccessControlList.class, acl);</span>
+<span class="fc" id="L374">    }</span>
+
+    /**
+     * Whether or not an action has been defined.
+     *
+     * @return true if an action has been defined.
+     */
+    @Override
+    public boolean hasAction()
+    {
+<span class="fc bfc" id="L384" title="All 2 branches covered.">        return StringUtils.isNotEmpty(this.action)</span>
+<span class="pc bpc" id="L385" title="1 of 2 branches missed.">          &amp;&amp; !this.action.equalsIgnoreCase(&quot;null&quot;);</span>
+    }
+
+    /**
+     * Gets the action. It returns an empty string if null so
+     * that it is easy to do conditionals on it based on the
+     * equalsIgnoreCase() method.
+     *
+     * @return a string, &quot;&quot; if null.
+     */
+    @Override
+    public String getAction()
+    {
+<span class="fc bfc" id="L398" title="All 2 branches covered.">        return hasAction() ? this.action : &quot;&quot;;</span>
+    }
+
+    /**
+     * Sets the action for the request.
+     *
+     * @param action a string.
+     */
+    @Override
+    public void setAction(String action)
+    {
+<span class="fc" id="L409">        this.action = action;</span>
+<span class="fc" id="L410">    }</span>
+
+    /**
+     * If the Layout has not been defined by the screen then set the
+     * layout to be &quot;DefaultLayout&quot;.  The screen object can also
+     * override this method to provide intelligent determination of
+     * the Layout to execute.  You can also define that logic here as
+     * well if you want it to apply on a global scale.  For example,
+     * if you wanted to allow someone to define layout &quot;preferences&quot;
+     * where they could dynamically change the layout for the entire
+     * site.
+     *
+     * @return a string.
+     */
+
+    @Override
+    public String getLayout()
+    {
+<span class="fc bfc" id="L428" title="All 2 branches covered.">        if (this.layout == null)</span>
+        {
+            /*
+             * This will return something if the template
+             * services are running. If we get nothing we
+             * will fall back to the ECS layout.
+             */
+<span class="fc" id="L435">            TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);</span>
+<span class="fc" id="L436">            layout = templateService.getDefaultLayoutName(this);</span>
+
+<span class="pc bpc" id="L438" title="1 of 2 branches missed.">            if (layout == null)</span>
+            {
+<span class="nc" id="L440">                layout = &quot;DefaultLayout&quot;;</span>
+            }
+        }
+
+<span class="fc" id="L444">        return this.layout;</span>
+    }
+
+    /**
+     * Set the layout for the request.
+     *
+     * @param layout a string.
+     */
+    @Override
+    public void setLayout(String layout)
+    {
+<span class="fc" id="L455">        this.layout = layout;</span>
+<span class="fc" id="L456">    }</span>
+
+    /**
+     * Convenience method for a template info that
+     * returns the layout template being used.
+     *
+     * @return a string.
+     */
+    @Override
+    public String getLayoutTemplate()
+    {
+<span class="nc" id="L467">        return getTemplateInfo().getLayoutTemplate();</span>
+    }
+
+    /**
+     * Modifies the layout template for the screen. This convenience
+     * method allows for a layout to be modified from within a
+     * template. For example;
+     *
+     *    $data.setLayoutTemplate(&quot;NewLayout.vm&quot;)
+     *
+     * @param layout a layout template.
+     */
+    @Override
+    public void setLayoutTemplate(String layout)
+    {
+<span class="nc" id="L482">        getTemplateInfo().setLayoutTemplate(layout);</span>
+<span class="nc" id="L483">    }</span>
+
+    /**
+     * Whether or not a screen has been defined.
+     *
+     * @return true if a screen has been defined.
+     */
+    @Override
+    public boolean hasScreen()
+    {
+<span class="fc" id="L493">        return StringUtils.isNotEmpty(this.screen);</span>
+    }
+
+    /**
+     * Gets the screen to execute.
+     *
+     * @return a string.
+     */
+    @Override
+    public String getScreen()
+    {
+<span class="fc bfc" id="L504" title="All 2 branches covered.">        return hasScreen() ? this.screen : &quot;&quot;;</span>
+    }
+
+    /**
+     * Sets the screen for the request.
+     *
+     * @param screen a string.
+     */
+    @Override
+    public void setScreen(String screen)
+    {
+<span class="fc" id="L515">        this.screen = screen;</span>
+<span class="fc" id="L516">    }</span>
+
+    /**
+     * Convenience method for a template info that
+     * returns the name of the template being used.
+     *
+     * @return a string.
+     */
+    @Override
+    public String getScreenTemplate()
+    {
+<span class="nc" id="L527">        return getTemplateInfo().getScreenTemplate();</span>
+    }
+
+    /**
+     * Sets the screen template for the request. For
+     * example;
+     *
+     *    $data.setScreenTemplate(&quot;NewScreen.vm&quot;)
+     *
+     * @param screen a screen template.
+     */
+    @Override
+    public void setScreenTemplate(String screen)
+    {
+<span class="fc" id="L541">        getTemplateInfo().setScreenTemplate(screen);</span>
+<span class="fc" id="L542">    }</span>
+
+    /**
+     * Gets the character encoding to use for reading template files.
+     *
+     * @return the template encoding or null if not specified.
+     */
+    @Override
+    public String getTemplateEncoding()
+    {
+<span class="fc" id="L552">        return templateEncoding;</span>
+    }
+
+    /**
+     * Sets the character encoding to use for reading template files.
+     *
+     * @param encoding the template encoding.
+     */
+    @Override
+    public void setTemplateEncoding(String encoding)
+    {
+<span class="nc" id="L563">        templateEncoding = encoding;</span>
+<span class="nc" id="L564">    }</span>
+
+    /**
+     * Gets the template info. Creates a new one if needed.
+     *
+     * @return a template info.
+     */
+    @Override
+    public TemplateInfo getTemplateInfo()
+    {
+<span class="fc" id="L574">        TemplateInfo templateInfo = get(Turbine.class, TemplateInfo.class);</span>
+
+<span class="fc bfc" id="L576" title="All 2 branches covered.">        if (templateInfo == null)</span>
+        {
+<span class="fc" id="L578">            templateInfo = new TemplateInfo(this);</span>
+<span class="fc" id="L579">            get(Turbine.class).put(TemplateInfo.class, templateInfo);</span>
+        }
+
+<span class="fc" id="L582">        return templateInfo;</span>
+    }
+
+    /**
+     * Whether or not a message has been defined.
+     *
+     * @return true if a message has been defined.
+     */
+    @Override
+    public boolean hasMessage()
+    {
+<span class="nc" id="L593">        StringBuilder message = get(Turbine.class, StringBuilder.class);</span>
+<span class="nc bnc" id="L594" title="All 4 branches missed.">        return message != null &amp;&amp; message.length() &gt; 0;</span>
+    }
+
+    /**
+     * Gets the results of an action or another message
+     * to be displayed as a string.
+     *
+     * @return a string.
+     */
+    @Override
+    public String getMessage()
+    {
+<span class="nc" id="L606">        StringBuilder message = get(Turbine.class, StringBuilder.class);</span>
+<span class="nc bnc" id="L607" title="All 2 branches missed.">        return message == null ? null : message.toString();</span>
+    }
+
+    /**
+     * Sets the message for the request as a string.
+     *
+     * @param msg a string.
+     */
+    @Override
+    public void setMessage(String msg)
+    {
+<span class="fc" id="L618">        get(Turbine.class).put(StringBuilder.class, new StringBuilder(msg));</span>
+<span class="fc" id="L619">    }</span>
+
+    /**
+     * Adds the string to message. If message has prior messages from
+     * other actions or screens, this method can be used to chain them.
+     *
+     * @param msg a string.
+     */
+    @Override
+    public void addMessage(String msg)
+    {
+<span class="nc" id="L630">        StringBuilder message = get(Turbine.class, StringBuilder.class);</span>
+<span class="nc bnc" id="L631" title="All 2 branches missed.">        if (message == null)</span>
+        {
+<span class="nc" id="L633">            setMessage(msg);</span>
+        }
+        else
+        {
+<span class="nc" id="L637">            message.append(msg);</span>
+        }
+<span class="nc" id="L639">    }</span>
+
+    /**
+     * Gets the results of an action or another message
+     * to be displayed as a string (never null).
+     *
+     * @return a string element.
+     */
+    @Override
+    public String getMessageAsHTML()
+    {
+<span class="nc" id="L650">        String message = getMessage();</span>
+<span class="nc bnc" id="L651" title="All 2 branches missed.">        return message == null ? &quot;&quot; : message;</span>
+    }
+
+    /**
+     * Unsets the message for the request.
+     */
+    @Override
+    public void unsetMessage()
+    {
+<span class="nc" id="L660">        get(Turbine.class).remove(StringBuilder.class);</span>
+<span class="nc" id="L661">    }</span>
+
+    /**
+     * Gets a FormMessages object where all the messages to the
+     * user should be stored.
+     *
+     * @return a FormMessages.
+     */
+    @Override
+    public FormMessages getMessages()
+    {
+<span class="nc" id="L672">        FormMessages messages = get(Turbine.class, FormMessages.class);</span>
+<span class="nc bnc" id="L673" title="All 2 branches missed.">        if (messages == null)</span>
+        {
+<span class="nc" id="L675">            messages = new FormMessages();</span>
+<span class="nc" id="L676">            setMessages(messages);</span>
+        }
+
+<span class="nc" id="L679">        return messages;</span>
+    }
+
+    /**
+     * Sets the FormMessages object for the request.
+     *
+     * @param msgs A FormMessages.
+     */
+    @Override
+    public void setMessages(FormMessages msgs)
+    {
+<span class="nc" id="L690">        get(Turbine.class).put(FormMessages.class, msgs);</span>
+<span class="nc" id="L691">    }</span>
+
+    /**
+     * Gets the title of the page.
+     *
+     * @return a string.
+     */
+    @Override
+    public String getTitle()
+    {
+<span class="nc bnc" id="L701" title="All 2 branches missed.">        return this.title == null ? &quot;&quot; : this.title;</span>
+    }
+
+    /**
+     * Sets the title of the page.
+     *
+     * @param title a string.
+     */
+    @Override
+    public void setTitle(String title)
+    {
+<span class="nc" id="L712">        this.title = title;</span>
+<span class="nc" id="L713">    }</span>
+
+    /**
+     * Checks if a user exists in this session.
+     *
+     * @return true if a user exists in this session.
+     */
+    @Override
+    public boolean userExists()
+    {
+<span class="nc" id="L723">        User user = getUserFromSession();</span>
+
+        // TODO: Check if this side effect is reasonable
+<span class="nc" id="L726">        get(Turbine.class).put(User.class, user);</span>
+
+<span class="nc bnc" id="L728" title="All 2 branches missed.">        return (user != null);</span>
+    }
+
+    /**
+     * Gets the user.
+     *
+     * @param &lt;T&gt; a type extending {@link User}
+     *
+     * @return a user.
+     */
+    @Override
+    public &lt;T extends User&gt; T getUser()
+    {
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L742">        T user = (T)get(Turbine.class, User.class);</span>
+<span class="fc" id="L743">        return user;</span>
+    }
+
+    /**
+     * Sets the user.
+     *
+     * @param user a user.
+     */
+    @Override
+    public void setUser(User user)
+    {
+<span class="fc" id="L754">        log.debug(&quot;user set: {}&quot;, user::getName);</span>
+<span class="fc" id="L755">        get(Turbine.class).put(User.class, user);</span>
+<span class="fc" id="L756">    }</span>
+
+    /**
+     * Attempts to get the user from the session. If it does
+     * not exist, it returns null.
+     *
+     * @return a user.
+     */
+    @Override
+    public &lt;T extends User&gt; T getUserFromSession()
+    {
+<span class="fc" id="L767">        return getUserFromSession(getSession());</span>
+    }
+
+    /**
+     * Allows one to invalidate the user in the default session.
+     *
+     * @return true if user was invalidated.
+     */
+    @Override
+    public boolean removeUserFromSession()
+    {
+<span class="nc" id="L778">        return removeUserFromSession(getSession());</span>
+    }
+
+    /**
+     * Checks to see if out is set.
+     *
+     * @return true if out is set.
+     * @deprecated no replacement planned, response writer will not be cached
+     */
+    @Override
+    @Deprecated
+    public boolean isOutSet()
+    {
+<span class="nc" id="L791">        return outSet;</span>
+    }
+
+    /**
+     * Gets the print writer. First time calling this
+     * will set the print writer via the response.
+     *
+     * @return a print writer.
+     * @throws IOException on failure getting the PrintWriter
+     */
+    @Override
+    public PrintWriter getOut()
+            throws IOException
+    {
+        // Check to see if null first.
+<span class="nc bnc" id="L806" title="All 2 branches missed.">        if (this.out == null)</span>
+        {
+<span class="nc" id="L808">            setOut(getResponse().getWriter());</span>
+        }
+<span class="nc" id="L810">        outSet = true;</span>
+<span class="nc" id="L811">        return this.out;</span>
+    }
+
+    /**
+     * Declares that output will be direct to the response stream,
+     * even though getOut() may never be called.  Useful for response
+     * mechanisms that may call res.getWriter() themselves
+     * (such as JSP.)
+     */
+    @Override
+    public void declareDirectResponse()
+    {
+<span class="nc" id="L823">        outSet = true;</span>
+<span class="nc" id="L824">    }</span>
+
+    /**
+     * Gets the locale. If it has not already been defined with
+     * setLocale(), then  properties named &quot;locale.default.lang&quot;
+     * and &quot;locale.default.country&quot; are checked from the Resource
+     * Service and the corresponding locale is returned. If these
+     * properties are undefined, JVM's default locale is returned.
+     *
+     * @return the locale.
+     */
+    @Override
+    public Locale getLocale()
+    {
+<span class="fc" id="L838">        Locale locale = get(Turbine.class, Locale.class);</span>
+<span class="pc bpc" id="L839" title="1 of 2 branches missed.">        if (locale == null)</span>
+        {
+<span class="nc" id="L841">            locale = LocaleUtils.getDefaultLocale();</span>
+        }
+<span class="fc" id="L843">        return locale;</span>
+    }
+
+    /**
+     * Sets the locale.
+     *
+     * @param locale the new locale.
+     */
+    @Override
+    public void setLocale(Locale locale)
+    {
+<span class="fc" id="L854">        get(Turbine.class).put(Locale.class, locale);</span>
+
+        // propagate the locale to the parsers
+<span class="fc" id="L857">        ParameterParser parameters = get(Turbine.class, ParameterParser.class);</span>
+<span class="fc" id="L858">        CookieParser cookies = get(Turbine.class, CookieParser.class);</span>
+
+<span class="pc bpc" id="L860" title="1 of 2 branches missed.">        if (parameters != null)</span>
+        {
+<span class="fc" id="L862">            parameters.setLocale(locale);</span>
+        }
+
+<span class="pc bpc" id="L865" title="1 of 2 branches missed.">        if (cookies != null)</span>
+        {
+<span class="fc" id="L867">            cookies.setLocale(locale);</span>
+        }
+<span class="fc" id="L869">    }</span>
+
+    /**
+     * Gets the charset. If it has not already been defined with
+     * setCharSet(), then a property named &quot;locale.default.charset&quot;
+     * is checked from the Resource Service and returned. If this
+     * property is undefined, the default charset of the locale
+     * is returned. If the locale is undefined, null is returned.
+     *
+     * @return the name of the charset or null.
+     */
+    @Override
+    public String getCharSet()
+    {
+<span class="nc" id="L883">        return getCharset().name();</span>
+    }
+
+    /**
+     * Sets the charset.
+     *
+     * @param charSet the name of the new charset.
+     */
+    @Override
+    public void setCharSet(String charSet)
+    {
+<span class="nc" id="L894">        setCharset(Charset.forName(charSet));</span>
+<span class="nc" id="L895">    }</span>
+
+    /**
+     * Gets the charset. If it has not already been defined with
+     * setCharSet(), then a property named &quot;locale.default.charset&quot;
+     * is checked from the Resource Service and returned. If this
+     * property is undefined, the default charset of the locale
+     * is returned. If the locale is undefined, null is returned.
+     *
+     * @return the charset or null.
+     */
+    @Override
+    public Charset getCharset()
+    {
+<span class="fc" id="L909">        log.debug(&quot;getCharset()&quot;);</span>
+
+<span class="fc bfc" id="L911" title="All 2 branches covered.">        if (charSet == null)</span>
+        {
+<span class="fc" id="L913">            log.debug(&quot;Charset was null!&quot;);</span>
+<span class="fc" id="L914">            charSet =  LocaleUtils.getDefaultCharset();</span>
+        }
+
+<span class="fc" id="L917">        return charSet;</span>
+    }
+
+    /**
+     * Sets the charset.
+     *
+     * @param charSet the new charset.
+     */
+    @Override
+    public void setCharset(Charset charSet)
+    {
+<span class="fc" id="L928">        log.debug(&quot;setCharset({})&quot;, charSet);</span>
+<span class="fc" id="L929">        this.charSet = charSet;</span>
+<span class="fc" id="L930">    }</span>
+
+    /**
+     * Gets the HTTP content type to return. If a charset
+     * has been specified, it is included in the content type.
+     * If the charset has not been specified and the main type
+     * of the content type is &quot;text&quot;, the default charset is
+     * included. If the default charset is undefined, but the
+     * default locale is defined and it is not the US locale,
+     * a locale specific charset is included.
+     *
+     * @return the content type or an empty string.
+     */
+    @Override
+    public String getContentType()
+    {
+<span class="pc bpc" id="L946" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(contentType))</span>
+        {
+<span class="pc bpc" id="L948" title="1 of 2 branches missed.">            if (charSet == null)</span>
+            {
+<span class="nc bnc" id="L950" title="All 2 branches missed.">                if (contentType.startsWith(&quot;text/&quot;))</span>
+                {
+<span class="nc" id="L952">                    return contentType + &quot;; charset=&quot; + LocaleUtils.getDefaultCharset();</span>
+                }
+
+<span class="nc" id="L955">                return contentType;</span>
+            }
+            else
+            {
+<span class="fc" id="L959">                return contentType + &quot;; charset=&quot; + charSet.name();</span>
+            }
+        }
+
+<span class="nc" id="L963">        return &quot;&quot;;</span>
+    }
+
+    /**
+     * Sets the HTTP content type to return.
+     *
+     * @param contentType a string.
+     */
+    @Override
+    public void setContentType(String contentType)
+    {
+<span class="nc" id="L974">        this.contentType = contentType;</span>
+<span class="nc" id="L975">    }</span>
+
+    /**
+     * Gets the redirect URI. If this is set, also make sure to set
+     * the status code to 302.
+     *
+     * @return a string, &quot;&quot; if null.
+     */
+    @Override
+    public String getRedirectURI()
+    {
+<span class="pc bpc" id="L986" title="1 of 2 branches missed.">        return (this.redirectURI == null ? &quot;&quot; : redirectURI);</span>
+    }
+
+    /**
+     * Sets the redirect uri. If this is set, also make sure to set
+     * the status code to 302.
+     *
+     * @param ruri a string.
+     */
+    @Override
+    public void setRedirectURI(String ruri)
+    {
+<span class="nc" id="L998">        this.redirectURI = ruri;</span>
+<span class="nc" id="L999">    }</span>
+
+    /**
+     * Gets the HTTP status code to return.
+     *
+     * @return the status.
+     */
+    @Override
+    public int getStatusCode()
+    {
+<span class="nc" id="L1009">        return statusCode;</span>
+    }
+
+    /**
+     * Sets the HTTP status code to return.
+     *
+     * @param statusCode the status.
+     */
+    @Override
+    public void setStatusCode(int statusCode)
+    {
+<span class="nc" id="L1020">        this.statusCode = statusCode;</span>
+<span class="nc" id="L1021">    }</span>
+
+    /**
+     * Gets an array of system errors.
+     *
+     * @return a SystemError[].
+     */
+    @Override
+    public SystemError[] getSystemErrors()
+    {
+<span class="nc" id="L1031">        SystemError[] result = new SystemError[errors.size()];</span>
+<span class="nc" id="L1032">        errors.toArray(result);</span>
+<span class="nc" id="L1033">        return result;</span>
+    }
+
+    /**
+     * Adds a critical system error.
+     *
+     * @param err a system error.
+     */
+    @Override
+    public void setSystemError(SystemError err)
+    {
+<span class="nc" id="L1044">        this.errors.add(err);</span>
+<span class="nc" id="L1045">    }</span>
+
+    /**
+     * Gets JNDI Contexts.
+     *
+     * @return a hashmap.
+     */
+    @Override
+    public Map&lt;String, Context&gt; getJNDIContexts()
+    {
+<span class="nc bnc" id="L1055" title="All 2 branches missed.">        if (jndiContexts == null)</span>
+        {
+<span class="nc" id="L1057">            jndiContexts = new HashMap&lt;&gt;();</span>
+        }
+<span class="nc" id="L1059">        return jndiContexts;</span>
+    }
+
+    /**
+     * Sets JNDI Contexts.
+     *
+     * @param contexts a hashmap.
+     */
+    @Override
+    public void setJNDIContexts(Map&lt;String, Context&gt; contexts)
+    {
+<span class="nc" id="L1070">        this.jndiContexts = contexts;</span>
+<span class="nc" id="L1071">    }</span>
+
+    /**
+     * Gets the cached server scheme.
+     *
+     * @return a string.
+     */
+    @Override
+    public String getServerScheme()
+    {
+<span class="nc" id="L1081">        return getServerData().getServerScheme();</span>
+    }
+
+    /**
+     * Gets the cached server name.
+     *
+     * @return a string.
+     */
+    @Override
+    public String getServerName()
+    {
+<span class="nc" id="L1092">        return getServerData().getServerName();</span>
+    }
+
+    /**
+     * Gets the cached server port.
+     *
+     * @return an int.
+     */
+    @Override
+    public int getServerPort()
+    {
+<span class="nc" id="L1103">        return getServerData().getServerPort();</span>
+    }
+
+    /**
+     * Gets the cached context path.
+     *
+     * @return a string.
+     */
+    @Override
+    public String getContextPath()
+    {
+<span class="nc" id="L1114">        return getServerData().getContextPath();</span>
+    }
+
+    /**
+     * Gets the cached script name.
+     *
+     * @return a string.
+     */
+    @Override
+    public String getScriptName()
+    {
+<span class="nc" id="L1125">        return getServerData().getScriptName();</span>
+    }
+
+    /**
+     * Gets the server data ofy the request.
+     *
+     * @return server data.
+     */
+    @Override
+    public ServerData getServerData()
+    {
+<span class="fc" id="L1136">        return get(Turbine.class, ServerData.class);</span>
+    }
+
+    /**
+     * Gets the IP address of the client that sent the request.
+     *
+     * @return a string.
+     */
+    @Override
+    public String getRemoteAddr()
+    {
+<span class="nc bnc" id="L1147" title="All 2 branches missed.">        if (this.remoteAddr == null)</span>
+        {
+<span class="nc" id="L1149">            this.remoteAddr = this.getRequest().getRemoteAddr();</span>
+        }
+
+<span class="nc" id="L1152">        return this.remoteAddr;</span>
+    }
+
+    /**
+     * Gets the qualified name of the client that sent the request.
+     *
+     * @return a string.
+     */
+    @Override
+    public String getRemoteHost()
+    {
+<span class="nc bnc" id="L1163" title="All 2 branches missed.">        if (this.remoteHost == null)</span>
+        {
+<span class="nc" id="L1165">            this.remoteHost = this.getRequest().getRemoteHost();</span>
+        }
+
+<span class="nc" id="L1168">        return this.remoteHost;</span>
+    }
+
+    /**
+     * Get the user agent for the request. The semantics here
+     * are muddled because RunData caches the value after the
+     * first invocation. This is different e.g. from getCharSet().
+     *
+     * @return a string.
+     */
+    @Override
+    public String getUserAgent()
+    {
+<span class="nc bnc" id="L1181" title="All 2 branches missed.">        if (StringUtils.isEmpty(userAgent))</span>
+        {
+<span class="nc" id="L1183">            userAgent = this.getRequest().getHeader(&quot;User-Agent&quot;);</span>
+        }
+
+<span class="nc" id="L1186">        return userAgent;</span>
+    }
+
+    /**
+     * Pulls a user object from the session and increments the access
+     * counter and sets the last access date for the object.
+     */
+    @Override
+    public void populate()
+    {
+<span class="fc" id="L1196">        User user = getUserFromSession();</span>
+<span class="fc" id="L1197">        get(Turbine.class).put(User.class, user);</span>
+
+<span class="fc bfc" id="L1199" title="All 2 branches covered.">        if (user != null)</span>
+        {
+<span class="fc" id="L1201">            user.setLastAccessDate();</span>
+<span class="fc" id="L1202">            user.incrementAccessCounter();</span>
+<span class="fc" id="L1203">            user.incrementAccessCounterForSession();</span>
+        }
+<span class="fc" id="L1205">    }</span>
+
+    /**
+     * Saves a user object into the session.
+     */
+    @Override
+    public void save()
+    {
+<span class="fc" id="L1213">        getSession().setAttribute(User.SESSION_KEY, getUser());</span>
+<span class="fc" id="L1214">    }</span>
+
+    /**
+     * Gets the stack trace if set.
+     *
+     * @return the stack trace.
+     */
+    @Override
+    public String getStackTrace()
+    {
+<span class="fc" id="L1224">        return stackTrace;</span>
+    }
+
+    /**
+     * Gets the stack trace exception if set.
+     *
+     * @return the stack exception.
+     */
+    @Override
+    public Throwable getStackTraceException()
+    {
+<span class="fc" id="L1235">        return stackTraceException;</span>
+    }
+
+    /**
+     * Sets the stack trace.
+     *
+     * @param trace the stack trace.
+     * @param exp the exception.
+     */
+    @Override
+    public void setStackTrace(String trace, Throwable exp)
+    {
+<span class="fc" id="L1247">        stackTrace = trace;</span>
+<span class="fc" id="L1248">        stackTraceException = exp;</span>
+<span class="fc" id="L1249">    }</span>
+
+    /**
+     * Sets a name/value pair in an internal Map that is accessible from the
+     * Error screen.  This is a good way to get debugging information
+     * when an exception is thrown.
+     *
+     * @param name name of the variable
+     * @param value value of the variable.
+     */
+    @Override
+    public void setDebugVariable(String name, Object value)
+    {
+<span class="nc" id="L1262">        this.debugVariables.put(name, value);</span>
+<span class="nc" id="L1263">    }</span>
+
+    /**
+     * Gets a Map of debug variables.
+     *
+     * @return a Map of debug variables.
+     */
+    @Override
+    public Map&lt;String, Object&gt; getDebugVariables()
+    {
+<span class="nc" id="L1273">        return this.debugVariables;</span>
+    }
+
+    // **********************************************
+    // Implementation of the TurbineRunData interface
+    // **********************************************
+
+    /**
+     * Gets the parameter parser without parsing the parameters.
+     *
+     * @return the parameter parser.
+     * TODO Does this method make sense? Pulling the parameter out of
+     *       the run data object before setting a request (which happens
+     *       only in getParameters() leads to the Parameter parser having
+     *       no object and thus the default or even an undefined encoding
+     *       instead of the actual request character encoding).
+     */
+    @Override
+    public ParameterParser getParameterParser()
+    {
+<span class="fc" id="L1293">        return get(Turbine.class, ParameterParser.class);</span>
+    }
+
+    /**
+     * Gets the cookie parser without parsing the cookies.
+     *
+     * @return the cookie parser.
+     */
+    @Override
+    public CookieParser getCookieParser()
+    {
+<span class="fc" id="L1304">        return get(Turbine.class, CookieParser.class);</span>
+    }
+
+    // ********************
+    // Miscellaneous setters
+    // ********************
+
+    /**
+     * Sets the print writer.
+     *
+     * @param out a print writer.
+     * @deprecated no replacement planned, response writer will not be cached
+     */
+    @Deprecated
+    protected void setOut(PrintWriter out)
+    {
+<span class="nc" id="L1320">        this.out = out;</span>
+<span class="nc" id="L1321">    }</span>
+
+    /**
+     * Sets the cached server scheme that is stored in the server data.
+     *
+     * @param serverScheme a string.
+     */
+    protected void setServerScheme(String serverScheme)
+    {
+<span class="nc" id="L1330">        getServerData().setServerScheme(serverScheme);</span>
+<span class="nc" id="L1331">    }</span>
+
+    /**
+     * Sets the cached server same that is stored in the server data.
+     *
+     * @param serverName a string.
+     */
+    protected void setServerName(String serverName)
+    {
+<span class="nc" id="L1340">        getServerData().setServerName(serverName);</span>
+<span class="nc" id="L1341">    }</span>
+
+    /**
+     * Sets the cached server port that is stored in the server data.
+     *
+     * @param port an int.
+     */
+    protected void setServerPort(int port)
+    {
+<span class="nc" id="L1350">        getServerData().setServerPort(port);</span>
+<span class="nc" id="L1351">    }</span>
+
+    /**
+     * Sets the cached context path that is stored in the server data.
+     *
+     * @param contextPath a string.
+     */
+    protected void setContextPath(String contextPath)
+    {
+<span class="nc" id="L1360">        getServerData().setContextPath(contextPath);</span>
+<span class="nc" id="L1361">    }</span>
+
+    /**
+     * Sets the cached script name that is stored in the server data.
+     *
+     * @param scriptName a string.
+     */
+    protected void setScriptName(String scriptName)
+    {
+<span class="nc" id="L1370">        getServerData().setScriptName(scriptName);</span>
+<span class="nc" id="L1371">    }</span>
+
+    /**
+     * Checks whether the object is disposed.
+     *
+     * @return true, if the object is disposed.
+     */
+    @Override
+    public boolean isDisposed()
+    {
+<span class="nc" id="L1381">        return disposed;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

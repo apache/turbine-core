@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NavigationLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules</a> &gt; <span class="el_source">NavigationLoader.java</span></div><h1>NavigationLoader.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.pipeline.PipelineData;
+
+/**
+ * The purpose of this class is to allow one to load and execute
+ * Navigation modules.
+ *
+ * @author &lt;a href=&quot;mailto:mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+public final class NavigationLoader
+    extends GenericLoader&lt;Navigation&gt;
+{
+    /** The single instance of this class. */
+<span class="fc" id="L38">    private static NavigationLoader instance = new NavigationLoader();</span>
+
+    /**
+     * These ctor's are private to force clients to use getInstance()
+     * to access this class.
+     */
+    private NavigationLoader()
+    {
+<span class="fc" id="L46">        super(Navigation.class,</span>
+<span class="fc" id="L47">                () -&gt; Turbine.getConfiguration().getInt(Navigation.CACHE_SIZE_KEY,</span>
+                        Navigation.CACHE_SIZE_DEFAULT));
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Attempts to load and execute the external Navigation. This is
+     * used when you want to execute a Navigation which returns its
+     * output via a MultiPartElement instead of out the data.getPage()
+     * value.  This allows you to easily chain the execution of
+     * Navigation modules together.
+     *
+     * @param pipelineData Turbine information.
+     * @param name Name of object that will execute the navigation.
+     * @return the navigation module output
+     * @throws Exception a generic exception.
+     */
+    public String eval(PipelineData pipelineData, String name)
+            throws Exception
+    {
+        // Execute Navigation
+<span class="nc" id="L67">        return getAssembler(name).build(pipelineData);</span>
+    }
+
+    /**
+     * Attempts to load and execute the external Navigation.
+     *
+     * @param pipelineData Turbine information.
+     * @param name Name of object instance.
+     * @throws Exception a generic exception.
+     */
+    @Override
+    public void exec(PipelineData pipelineData, String name)
+    		throws Exception
+    {
+<span class="nc" id="L81">        this.eval(pipelineData, name);</span>
+<span class="nc" id="L82">    }</span>
+
+    /**
+     * The method through which this class is accessed.
+     *
+     * @return The single instance of this class.
+     */
+    public static NavigationLoader getInstance()
+    {
+<span class="fc" id="L91">        return instance;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

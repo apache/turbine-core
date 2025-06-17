@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScreenLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules</a> &gt; <span class="el_source">ScreenLoader.java</span></div><h1>ScreenLoader.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.pipeline.PipelineData;
+
+/**
+ * The purpose of this class is to allow one to load and execute
+ * Screen modules.
+ *
+ * @author &lt;a href=&quot;mailto:mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+public final class ScreenLoader
+    extends GenericLoader&lt;Screen&gt;
+{
+    /** The single instance of this class. */
+<span class="fc" id="L40">    private static ScreenLoader instance = new ScreenLoader();</span>
+
+    /**
+     * These ctor's are private to force clients to use getInstance()
+     * to access this class.
+     */
+    private ScreenLoader()
+    {
+<span class="fc" id="L48">        super(Screen.class,</span>
+<span class="fc" id="L49">                () -&gt; Turbine.getConfiguration().getInt(Screen.CACHE_SIZE_KEY,</span>
+                        Screen.CACHE_SIZE_DEFAULT));
+<span class="fc" id="L51">    }</span>
+
+    /**
+     * Attempts to load and execute the external Screen. This is used
+     * when you want to execute a Screen which returns its output via
+     * a String instead of out the data.getResponse() value.
+     * This allows you to easily chain the execution of Screen modules
+     * together.
+     *
+     * @param pipelineData Turbine information.
+     * @param name Name of object that will execute the screen.
+     * @return the output of the screen module
+     * @throws Exception a generic exception.
+     */
+    public String eval(PipelineData pipelineData, String name)
+            throws Exception
+    {
+        // Execute screen
+<span class="fc" id="L69">        return getAssembler(name).build(pipelineData);</span>
+    }
+
+    /**
+     * Attempts to load and execute the Screen. This is used when you
+     * want to execute a Screen which returns its output via the
+     * data.getResponse() object.
+     *
+     * @param pipelineData Turbine information.
+     * @param name Name of object that will execute the screen.
+     * @throws Exception a generic exception.
+     */
+    @Override
+    public void exec(PipelineData pipelineData, String name)
+	throws Exception
+	{
+<span class="nc" id="L85">        this.eval(pipelineData, name);</span>
+<span class="nc" id="L86">	}</span>
+
+    /**
+     * The method through which this class is accessed.
+     *
+     * @return The single instance of this class.
+     */
+    public static ScreenLoader getInstance()
+    {
+<span class="fc" id="L95">        return instance;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

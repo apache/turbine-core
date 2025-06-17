@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HttpUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util</a> &gt; <span class="el_source">HttpUtils.java</span></div><h1>HttpUtils.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.pipeline.PipelineData;
+
+import jakarta.servlet.http.HttpServletResponse;
+
+/**
+ * This class provides utilities for handling some semi-trivial HTTP stuff that
+ * would otherwise be handled elsewhere.
+ *
+ * @author &lt;a href=&quot;mailto:magnus@handpoint.com&quot;&gt;Magnús Þór Torfason&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="nc" id="L41">public class HttpUtils</span>
+{
+    /**
+     * Characters not allowed in external keys (name), that is not alphanumeric, underscore, hyphen, slash and dot.
+     * Validates only external key (name), as internal key may also contain colon and space.
+     */
+    private static final String CHARACTERS_NOT_ALLOWED_IN_KEY = &quot;[^\\w_/\\.-]&quot;;
+    
+<span class="fc" id="L49">    private static final Pattern CNAIK_PATTERN = Pattern.compile(CHARACTERS_NOT_ALLOWED_IN_KEY);</span>
+    /**
+     * The date format to use for HTTP Dates.
+     */
+<span class="fc" id="L53">    private static FastDateFormat httpDateFormat = FastDateFormat.getInstance(</span>
+                &quot;EEE, dd MMM yyyy HH:mm:ss z&quot;,
+<span class="fc" id="L55">                TimeZone.getTimeZone(&quot;GMT&quot;),</span>
+                Locale.US);
+
+    /**
+     * Formats a java Date according to rfc 1123, the rfc standard for dates in
+     * http.
+     *
+     * @param date The Date to format
+     * @return A String representation of the date
+     */
+    public static String formatHttpDate(Date date)
+    {
+<span class="nc" id="L67">        return httpDateFormat.format(date);</span>
+    }
+
+    /**
+     * This method sets the required expiration headers in the response for a
+     * given {@link PipelineData} object.  This method attempts to set all relevant headers,
+     * both for HTTP 1.0 and HTTP 1.1.
+     *
+     * @param pipelineData The {@link PipelineData} object we are setting cache information for.
+     * @param expiry The number of milliseconds until the document should expire,
+     * &lt;code&gt;0&lt;/code&gt; indicating immediate expiration (i.e. no caching).
+     */
+    public static void setCacheHeaders(PipelineData pipelineData, int expiry)
+    {
+<span class="nc" id="L81">        HttpServletResponse response = pipelineData.get(Turbine.class, HttpServletResponse.class);</span>
+
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (0 == expiry)</span>
+        {
+<span class="nc" id="L85">            response.setHeader(&quot;Pragma&quot;, &quot;no-cache&quot;);</span>
+<span class="nc" id="L86">            response.setHeader(&quot;Cache-Control&quot;, &quot;no-cache&quot;);</span>
+<span class="nc" id="L87">            response.setDateHeader(&quot;Expires&quot;, System.currentTimeMillis());</span>
+        }
+        else
+        {
+<span class="nc" id="L91">            response.setDateHeader(&quot;Expires&quot;, System.currentTimeMillis() + expiry);</span>
+        }
+<span class="nc" id="L93">    }</span>
+    
+    /**
+     * Check, if there is any not allowed {@value #CHARACTERS_NOT_ALLOWED_IN_KEY}
+     * in parameters, eg. Turbine keys like actions, screens, layouts.
+     * 
+     * @param parameter or key to be checked
+     * @return True, if it contains any non allowed characters
+     */
+    public static boolean keyRequiresClean(String parameter) {
+<span class="fc" id="L103">        Matcher testMatcher = CNAIK_PATTERN.matcher(parameter);</span>
+<span class="fc" id="L104">        return testMatcher.find();</span>
+    }
+    
+    /**
+     * Cleans parameter/key from disallowed characters defined in {@link #CHARACTERS_NOT_ALLOWED_IN_KEY}.
+     * 
+     * @param parameter to be cleaned
+     * @return the cleaned parameter
+     */
+    public static String getCleanedKey(String parameter) {
+<span class="nc" id="L114">        return parameter.replaceAll(CHARACTERS_NOT_ALLOWED_IN_KEY,&quot;&quot;);</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

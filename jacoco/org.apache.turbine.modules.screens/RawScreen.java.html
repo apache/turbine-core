@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RawScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.screens</a> &gt; <span class="el_source">RawScreen.java</span></div><h1>RawScreen.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.screens;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+// Turbine stuff.
+
+import org.apache.turbine.modules.Screen;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.util.RunData;
+
+/**
+ * Base class for writing Screens that output binary data.  This class
+ * is provided as a helper class for those who want to write Screens
+ * that output raw binary data.  For example, it may be extended into
+ * a Screen that outputs a SVG file or a SWF (Flash Player format)
+ * movie.  The only thing one has to do is to implement the two
+ * methods &lt;code&gt;getContentType(PipelineData data)&lt;/code&gt; and
+ * &lt;code&gt;doOutput(PipelineData data)&lt;/code&gt; (see below).
+ *
+ * &lt;p&gt; You might want to take a look at the ImageServer screen class
+ * contained in the TDK.&lt;br&gt;
+ *
+ * @author &lt;a href=&quot;mailto:rkoenig@chez.com&quot;&gt;Regis Koenig&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="nc" id="L45">public abstract class RawScreen implements Screen</span>
+{
+    /**
+     * Build the Screen.  This method actually makes a call to the
+     * doOutput() method in order to generate the Screen content.
+     *
+     * @param pipelineData Turbine information.
+     * @return A ConcreteElement.
+     * @throws Exception a generic exception.
+     */
+    @Override
+    public final String doBuild(PipelineData pipelineData)
+            throws Exception
+    {
+<span class="nc" id="L59">        RunData data = pipelineData.getRunData();</span>
+<span class="nc" id="L60">        data.getResponse().setContentType(getContentType(pipelineData));</span>
+<span class="nc" id="L61">        data.declareDirectResponse();</span>
+<span class="nc" id="L62">        doOutput(pipelineData);</span>
+<span class="nc" id="L63">        return null;</span>
+    }
+
+    /**
+     * Set the content type.  This method should be overridden to
+     * actually set the real content-type header of the output.
+     *
+     * @param pipelineData Turbine information.
+     * @return A String with the content type.
+     */
+    protected abstract String getContentType(PipelineData pipelineData);
+
+    /**
+     * Actually output the dynamic content.  The OutputStream can be
+     * accessed like this: &lt;pre&gt;OutputStream out =
+     * data.getResponse().getOutputStream();&lt;/pre&gt;.
+     *
+     * @param pipelineData Turbine information.
+     * @throws Exception a generic exception.
+     */
+    protected abstract void doOutput(PipelineData pipelineData) throws Exception;
+
+    /**
+     * The layout must be set to null.
+     *
+     * @param pipelineData Turbine information.
+     * @return A null String.
+     */
+    @Override
+    public final String getLayout(PipelineData pipelineData)
+    {
+<span class="nc" id="L94">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GenericLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules</a> &gt; <span class="el_source">GenericLoader.java</span></div><h1>GenericLoader.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.util.List;
+import java.util.function.IntSupplier;
+import java.util.stream.Collectors;
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+
+/**
+ * This is the base class for the loaders. It contains code that is
+ * used across all of the loaders. It also specifies the interface
+ * that is required to be called a Loader.
+ *
+ * @author &lt;a href=&quot;mailto:mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @param &lt;T&gt; the specialized assembler type
+ */
+public abstract class GenericLoader&lt;T extends Assembler&gt; implements Loader&lt;T&gt;
+{
+    /** The Assembler Broker Service */
+    protected AssemblerBrokerService ab;
+
+    /** Class of loaded assembler */
+    private final Class&lt;T&gt; assemblerClass;
+
+    /** Supplier of configured cache for this assembler Class */
+    private final IntSupplier cacheSizeSupplier;
+
+    /** @serial This can be serialized */
+<span class="fc" id="L54">    private boolean reload = false;</span>
+
+    /** Base packages path for Turbine */
+    private static final String TURBINE_PACKAGE = &quot;org.apache.turbine.modules&quot;;
+
+    /** Packages paths for Turbine */
+<span class="fc" id="L60">    private static List&lt;String&gt; TURBINE_PACKAGES = null;</span>
+
+    /**
+     * Basic constructor for creating a loader.
+     *
+     * @param assemblerClass Class of loaded assembler
+     * @param cacheSizeSupplier Supplier of configured cache size for this assembler Class
+     */
+    public GenericLoader(Class&lt;T&gt; assemblerClass, IntSupplier cacheSizeSupplier)
+    {
+<span class="fc" id="L70">        super();</span>
+<span class="fc" id="L71">        this.assemblerClass = assemblerClass;</span>
+<span class="fc" id="L72">        this.cacheSizeSupplier = cacheSizeSupplier;</span>
+<span class="fc" id="L73">        this.ab = (AssemblerBrokerService)TurbineServices.getInstance()</span>
+<span class="fc" id="L74">                .getService(AssemblerBrokerService.SERVICE_NAME);</span>
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * Attempts to load and execute the external action that has been
+     * set.
+     * @param pipelineData the Turbine request
+     * @param name the name of the assembler module
+     * @throws Exception a generic exception.
+     */
+    public abstract void exec(PipelineData pipelineData, String name)
+            throws Exception;
+
+    /**
+     * Returns whether or not this external action is reload itself.
+     * This is in cases where the Next button would be clicked, but
+     * since we are checking for that, we would go into an endless
+     * loop.
+     *
+     * @return True if the action is reload.
+     */
+    public boolean reload()
+    {
+<span class="nc" id="L97">        return this.reload;</span>
+    }
+
+    /**
+     * Sets whether or not this external action is reload itself.
+     * This is in cases where the Next button would be clicked, but
+     * since we are checking for that, we would go into an endless
+     * loop.
+     *
+     * @param reload True if the action must be marked as reload.
+     * @return Itself.
+     */
+    public GenericLoader&lt;T&gt; setReload(boolean reload)
+    {
+<span class="nc" id="L111">        this.reload = reload;</span>
+<span class="nc" id="L112">        return this;</span>
+    }
+
+    /**
+     * Gets the base package where Turbine should find its default
+     * modules.
+     *
+     * @return A String with the base package name.
+     */
+    public static String getBasePackage()
+    {
+<span class="fc" id="L123">        return TURBINE_PACKAGE;</span>
+    }
+
+    /**
+     * Gets the package list where Turbine should find its
+     * modules.
+     *
+     * @return A List with the package names (including the base package).
+     */
+    public static List&lt;String&gt; getPackages()
+    {
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        if (TURBINE_PACKAGES == null)</span>
+        {
+<span class="fc" id="L136">            List&lt;String&gt; turbinePackages = Turbine.getConfiguration()</span>
+<span class="fc" id="L137">            .getList(TurbineConstants.MODULE_PACKAGES).stream().map( o -&gt; (String) o ).collect( Collectors.toList() );</span>
+
+<span class="fc" id="L139">            TURBINE_PACKAGES = turbinePackages;</span>
+        }
+
+<span class="fc" id="L142">        List&lt;String&gt; packages = TURBINE_PACKAGES;</span>
+
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        if (!packages.contains(TURBINE_PACKAGE))</span>
+        {
+<span class="fc" id="L146">            packages.add(TURBINE_PACKAGE);</span>
+        }
+
+<span class="fc" id="L149">        return packages;</span>
+    }
+
+    /**
+     * Pulls out an instance of the object by name.  Name is just the
+     * single name of the object.
+     *
+     * @param name Name of object instance.
+     * @return An Action with the specified name, or null.
+     * @throws Exception a generic exception.
+     */
+    @Override
+    public T getAssembler(String name)
+        throws Exception
+    {
+<span class="fc" id="L164">        return getAssembler(assemblerClass, name);</span>
+    }
+
+    /**
+     * Pulls out an instance of the object by name.  Name is just the
+     * single name of the object.
+     *
+     * @param type Type of the assembler.
+     * @param name Name of object instance.
+     * @return A Screen with the specified name, or null.
+     * @throws Exception a generic exception.
+     */
+    protected T getAssembler(Class&lt;T&gt; type, String name)
+        throws Exception
+    {
+<span class="fc" id="L179">        T asm = null;</span>
+
+        try
+        {
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">            if (ab != null)</span>
+            {
+                // Attempt to load the assembler
+<span class="fc" id="L186">                asm = ab.getAssembler(type, name);</span>
+            }
+        }
+<span class="nc" id="L189">        catch (ClassCastException cce)</span>
+        {
+            // This can alternatively let this exception be thrown
+            // So that the ClassCastException is shown in the
+            // browser window.  Like this it shows &quot;Screen not Found&quot;
+<span class="nc" id="L194">            asm = null;</span>
+<span class="fc" id="L195">        }</span>
+
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        if (asm == null)</span>
+        {
+            // If we did not find a screen we should try and give
+            // the user a reason for that...
+            // FIX ME: The AssemblerFactories should each add it's
+            // own string here...
+<span class="fc" id="L203">            List&lt;String&gt; packages = GenericLoader.getPackages();</span>
+
+<span class="fc" id="L205">            throw new ClassNotFoundException(</span>
+                    &quot;\n\n\tRequested &quot; + type + &quot; not found: &quot; + name +
+                    &quot;\n\tTurbine looked in the following &quot; +
+<span class="fc" id="L208">                    &quot;modules.packages path: \n\t&quot; + packages.toString() + &quot;\n&quot;);</span>
+        }
+
+<span class="fc" id="L211">        return asm;</span>
+    }
+
+    /**
+     * @see org.apache.turbine.modules.Loader#getCacheSize()
+     */
+    @Override
+    public int getCacheSize()
+    {
+<span class="fc" id="L220">        return cacheSizeSupplier.getAsInt();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

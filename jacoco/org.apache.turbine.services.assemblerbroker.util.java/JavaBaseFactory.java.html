@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JavaBaseFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.assemblerbroker.util.java</a> &gt; <span class="el_source">JavaBaseFactory.java</span></div><h1>JavaBaseFactory.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.assemblerbroker.util.java;
+
+
+import java.lang.reflect.InvocationTargetException;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.modules.Assembler;
+import org.apache.turbine.modules.GenericLoader;
+import org.apache.turbine.modules.Loader;
+import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
+
+/**
+ * A screen factory that attempts to load a java class from
+ * the module packages defined in the TurbineResource.properties.
+ *
+ * @author &lt;a href=&quot;mailto:leon@opticode.co.za&quot;&gt;Leon Messerschmidt&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @param &lt;T&gt; the specialized assembler type
+ */
+<span class="fc" id="L44">public abstract class JavaBaseFactory&lt;T extends Assembler&gt;</span>
+    implements AssemblerFactory&lt;T&gt;
+{
+    /** A vector of packages. */
+<span class="fc" id="L48">    private static List&lt;String&gt; packages = GenericLoader.getPackages();</span>
+
+    /** Logging */
+<span class="fc" id="L51">    protected Logger log = LogManager.getLogger(this.getClass());</span>
+
+    /**
+     * A cache for previously obtained Class instances, which we keep in order
+     * to reduce the Class.forName() overhead (which can be sizable).
+     */
+<span class="fc" id="L57">    private final ConcurrentHashMap&lt;String, Class&lt;T&gt;&gt; classCache = new ConcurrentHashMap&lt;&gt;();</span>
+
+    /**
+     * Get an Assembler.
+     *
+     * @param packageName java package name
+     * @param name name of the requested Assembler
+     * @return an Assembler
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public T getAssembler(String packageName, String name)
+    {
+<span class="fc" id="L69">        T assembler = null;</span>
+
+<span class="fc" id="L71">        log.debug(&quot;Class Fragment is {}&quot;, name);</span>
+
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(name))</span>
+        {
+<span class="fc bfc" id="L75" title="All 2 branches covered.">            for (String p : packages)</span>
+            {
+<span class="fc" id="L77">                StringBuilder sb = new StringBuilder();</span>
+
+<span class="fc" id="L79">                sb.append(p).append('.').append(packageName).append('.').append(name);</span>
+<span class="fc" id="L80">                String className = sb.toString();</span>
+
+<span class="fc" id="L82">                log.debug(&quot;Trying {}&quot;, className);</span>
+
+                try
+                {
+<span class="fc" id="L86">                    Class&lt;T&gt; servClass = classCache.get(className);</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">                    if (servClass == null)</span>
+                    {
+<span class="fc" id="L89">                        servClass = (Class&lt;T&gt;) Class.forName(className);</span>
+<span class="fc" id="L90">                        Class&lt;T&gt; _servClass = classCache.putIfAbsent(className, servClass);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">                        if (_servClass != null)</span>
+                        {
+<span class="fc" id="L93">                            servClass = _servClass;</span>
+                        }
+                    }
+<span class="fc" id="L96">                    assembler = servClass.getDeclaredConstructor().newInstance();</span>
+<span class="fc" id="L97">                    break; // for()</span>
+                }
+<span class="fc" id="L99">                catch (ClassNotFoundException cnfe)</span>
+                {
+                    // Do this so we loop through all the packages.
+<span class="fc" id="L102">                    log.debug(&quot;{}: Not found&quot;, className);</span>
+                }
+<span class="nc" id="L104">                catch (NoClassDefFoundError ncdfe)</span>
+                {
+                    // Do this so we loop through all the packages.
+<span class="nc" id="L107">                    log.debug(&quot;{}: No Class Definition found&quot;, className);</span>
+                }
+                // With ClassCastException, InstantiationException we hit big problems
+<span class="nc" id="L110">                catch (ClassCastException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)</span>
+                {
+                    // This means trouble!
+                    // Alternatively we can throw this exception so
+                    // that it will appear on the client browser
+<span class="nc" id="L115">                    log.error(&quot;Could not load {}&quot;, className, e);</span>
+<span class="nc" id="L116">                    break; // for()</span>
+<span class="pc" id="L117">                }</span>
+<span class="fc" id="L118">            }</span>
+        }
+
+<span class="fc" id="L121">        log.debug(&quot;Returning: {}&quot;, assembler);</span>
+
+<span class="fc" id="L123">        return assembler;</span>
+    }
+
+    /**
+     * Get the loader for this type of assembler
+     *
+     * @return a Loader
+     */
+    @Override
+    public abstract Loader&lt;T&gt; getLoader();
+
+    /**
+     * Get the size of a possibly configured cache
+     *
+     * @return the size of the cache in bytes
+     */
+    @Override
+    public int getCacheSize()
+    {
+<span class="nc" id="L142">        return getLoader().getCacheSize();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

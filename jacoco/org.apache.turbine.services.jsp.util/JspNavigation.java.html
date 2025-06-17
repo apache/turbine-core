@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JspNavigation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.jsp.util</a> &gt; <span class="el_source">JspNavigation.java</span></div><h1>JspNavigation.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.jsp.util;
+
+
+import org.apache.logging.log4j.LogManager;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.modules.NavigationLoader;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.util.RunData;
+
+/**
+ * Returns output of a Navigation module. An instance of this is placed in the
+ * request by the JspLayout. This allows template authors to
+ * set the navigation template they'd like to place in their templates.&lt;br&gt;
+ * Here's how it's used in a JSP template:&lt;br&gt;
+ * &lt;code&gt;
+ * &amp;lt;%useBean id=&quot;navigation&quot; class=&quot;JspNavigation&quot; scope=&quot;request&quot; %&amp;gt;
+ * ...
+ * &amp;lt;%= navigation.setTemplate(&quot;admin_navigation.jsp&quot;) %&amp;gt;
+ * &lt;/code&gt;
+ * @author &lt;a href=&quot;john.mcnally@clearink.com&quot;&gt;John D. McNally&lt;/a&gt;
+ * @author &lt;a href=&quot;mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+public class JspNavigation
+{
+    /** Logging */
+<span class="nc" id="L50">    private static Logger log = LogManager.getLogger(JspNavigation.class);</span>
+
+    /* The RunData object */
+    private final RunData data;
+
+    /**
+     * Constructor
+     *
+     * @param data Turbine request data
+     */
+    public JspNavigation(RunData data)
+<span class="nc" id="L61">    {</span>
+<span class="nc" id="L62">        this.data = data;</span>
+<span class="nc" id="L63">    }</span>
+
+    /**
+     * builds the output of the navigation template
+     * @param template the name of the navigation template
+     */
+    public void setTemplate(String template)
+    {
+<span class="nc" id="L71">        data.getTemplateInfo().setNavigationTemplate(template);</span>
+<span class="nc" id="L72">        String module = null;</span>
+        try
+        {
+<span class="nc" id="L75">            TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);</span>
+<span class="nc" id="L76">            module = templateService.getNavigationName(template);</span>
+<span class="nc" id="L77">            NavigationLoader.getInstance().exec(data, module);</span>
+        }
+<span class="nc" id="L79">        catch (Exception e)</span>
+        {
+<span class="nc" id="L81">            String message = &quot;Error processing navigation template:&quot; +</span>
+                    template + &quot; using module: &quot; + module;
+<span class="nc" id="L83">            log.error(message, e);</span>
+            try
+            {
+<span class="nc" id="L86">                data.getResponse().getWriter().print(message);</span>
+            }
+<span class="nc" id="L88">            catch (java.io.IOException ioe)</span>
+            {
+                // ignore
+<span class="nc" id="L91">            }</span>
+<span class="nc" id="L92">        }</span>
+<span class="nc" id="L93">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

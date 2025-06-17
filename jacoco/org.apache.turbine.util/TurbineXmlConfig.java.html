@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineXmlConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util</a> &gt; <span class="el_source">TurbineXmlConfig.java</span></div><h1>TurbineXmlConfig.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * A class used for initialization of Turbine without a servlet container.
+ *
+ * &lt;p&gt;
+ * If you need to use Turbine outside of a servlet container, you can
+ * use this class for initialization of the Turbine servlet.
+ * &lt;/p&gt;
+ *
+ * &lt;pre&gt;
+ * TurbineXmlConfig config = new TurbineXmlConfig(&quot;.&quot;, &quot;conf/TurbineResources.properties&quot;);
+ * &lt;/pre&gt;
+ *
+ * &lt;p&gt;
+ * All paths referenced in TurbineResources.properties and the path to
+ * the properties file itself (the second argument) will be resolved
+ * relative to the directory given as the first argument of the constructor,
+ * here - the directory where application was started. Don't worry about
+ * discarding the references to objects created above. They are not needed,
+ * once everything is initialized.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * In order to initialize the Services Framework outside of the Turbine Servlet,
+ * you need to call the &lt;code&gt;init()&lt;/code&gt; method. By default, this will
+ * initialize the Resource and Logging Services and any other services you
+ * have defined in your TurbineResources.properties file.
+ * &lt;/p&gt;
+ *
+ * TODO Make this class enforce the lifecycle contracts
+ *
+ * @author &lt;a href=&quot;mailto:epugh@upstate.com&quot;&gt;Eric Pugh&lt;/a&gt;
+ * @version $Id$
+ */
+public class TurbineXmlConfig
+        extends TurbineConfig
+{
+    /**
+     * Constructs a new TurbineXmlConfig.
+     *
+     * This is the general form of the constructor. You can provide
+     * a path to search for files, and a name-value map of init
+     * parameters.
+     *
+     * &lt;p&gt; For the list of recognized init parameters, see
+     * {@link org.apache.turbine.Turbine} class.
+     *
+     * @param path The web application root (i.e. the path for file lookup).
+     * @param attributes Servlet container (or emulator) attributes.
+     * @param initParams initialization parameters.
+     */
+    public TurbineXmlConfig(String path, Map&lt;String, Object&gt; attributes,
+            Map&lt;String, String&gt; initParams)
+    {
+<span class="fc" id="L79">        super(path, attributes, initParams);</span>
+<span class="fc" id="L80">    }</span>
+
+    /**
+     * Constructs a new TurbineXmlConfig.
+     *
+     * This is the general form of the constructor. You can provide
+     * a path to search for files, and a name-value map of init
+     * parameters.
+     *
+     * &lt;p&gt; For the list of recognized init parameters, see
+     * {@link org.apache.turbine.Turbine} class.
+     *
+     * @param path The web application root (i.e. the path for file lookup).
+     * @param initParams initialization parameters.
+     */
+    public TurbineXmlConfig(String path, Map&lt;String, String&gt; initParams)
+    {
+<span class="fc" id="L97">        this(path, new HashMap&lt;String, Object&gt;(0), initParams);</span>
+<span class="fc" id="L98">    }</span>
+
+    /**
+     * Constructs a TurbineXmlConfig.
+     *
+     * This is a specialized constructor that allows to configure
+     * Turbine easily in the common setups.
+     *
+     * @param path The web application root (i.e. the path for file lookup).
+     * @param config the relative path to TurbineResources.xml file
+     */
+    public TurbineXmlConfig(String path, String config)
+    {
+<span class="fc" id="L111">        this(path, new HashMap&lt;String, String&gt;(1));</span>
+<span class="fc" id="L112">        initParams.put(CONFIGURATION_PATH_KEY, config);</span>
+<span class="fc" id="L113">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

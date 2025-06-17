@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TemplatePage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.pages</a> &gt; <span class="el_source">TemplatePage.java</span></div><h1>TemplatePage.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.pages;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
+
+/**
+ * When building sites using templates, Screens need only be defined
+ * for templates which require dynamic (database or object) data.
+ *
+ * &lt;p&gt;
+ *
+ * This page can be used on sites where the number of Screens can be
+ * much less than the number of templates.  The templates can be
+ * grouped in directories with common layouts.  Screen modules are
+ * then expected to be placed in packages corresponding with the
+ * templates' directories and follow a specific naming scheme.
+ *
+ * &lt;p&gt;
+ *
+ * The template parameter is parsed and and a Screen whose package
+ * matches the templates path and shares the same name minus any
+ * extension and beginning with a capital letter is searched for.  If
+ * not found, a Screen in a package matching the template's path with
+ * name Default is searched for.  If still not found, a Screen with
+ * name Default is looked for in packages corresponding to parent
+ * directories in the template's path until a match is found.
+ *
+ * &lt;p&gt;
+ *
+ * For example if data.getParameters().getString(&quot;template&quot;) returns
+ * /about_us/directions/driving.wm, the search follows
+ * about_us.directions.Driving, about_us.directions.Default,
+ * about_us.Default, Default, WebMacroSiteScreen (i.e. the default
+ * screen set in TurbineResources).
+ *
+ * &lt;p&gt;
+ *
+ * Only one Layout module is used, since it is expected that any
+ * dynamic content will be placed in navigations and screens.  The
+ * layout template to be used is found in a similar way to the Screen.
+ * For example the following paths will be searched in the layouts
+ * subdirectory: /about_us/directions/driving.wm,
+ * /about_us/directions/default.wm, /about_us/default.wm, /default.wm,
+ * where wm is the value of the template.default.extension property.
+ *
+ * &lt;p&gt;
+ *
+ * This approach allows a site with largely static content to be
+ * updated and added to regularly by those with little Java
+ * experience.
+ *
+ * @author &lt;a href=&quot;mailto:john.mcnally@clearink.com&quot;&gt;John D. McNally&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L82">public class TemplatePage</span>
+    extends DefaultPage
+{
+    /** Injected service instance */
+    @TurbineService
+    private TemplateService templateService;
+
+    /**
+     * Works with TemplateService to set up default templates and
+     * corresponding class modules.
+     *
+     * @param pipelineData Turbine information.
+     * @throws Exception a generic exception.
+     */
+    @Override
+    protected void doBuildAfterAction(PipelineData pipelineData)
+        throws Exception
+    {
+<span class="fc" id="L100">        RunData data = pipelineData.getRunData();</span>
+        // The Template Service at this point must fetch the Screen class
+        // to match a given template. If the Screen class has already been
+        // set by an action, skip this, because the user has the already
+        // specified the Screen class he wants to use.
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        if (!data.hasScreen())</span>
+        {
+            // This is effectively getting the &quot;template&quot; parameter
+            // from the parameter parser in rundata. This is coming
+            // from the request for a template.
+<span class="fc" id="L110">            String template = data.getTemplateInfo().getScreenTemplate();</span>
+
+            // Get the layout template and the correct Screen.
+<span class="fc" id="L113">            String layoutTemplate =</span>
+<span class="fc" id="L114">                    templateService.getLayoutTemplateName(template);</span>
+<span class="fc" id="L115">            data.getTemplateInfo().setLayoutTemplate(layoutTemplate);</span>
+
+<span class="fc" id="L117">            String screen = templateService.getScreenName(template);</span>
+
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">            if (screen == null)</span>
+            {
+<span class="nc" id="L121">                String errMsg = &quot;Couldn't map Template &quot;</span>
+                    + template + &quot; to any Screen class!&quot;;
+<span class="nc" id="L123">                log.error(errMsg);</span>
+<span class="nc" id="L124">                throw new TurbineException(errMsg);</span>
+            }
+<span class="fc" id="L126">            data.setScreen(screen);</span>
+        }
+<span class="fc" id="L128">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

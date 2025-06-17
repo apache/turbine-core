@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultPipelineData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.pipeline</a> &gt; <span class="el_source">DefaultPipelineData.java</span></div><h1>DefaultPipelineData.java</h1><pre class="source lang-java linenums">package org.apache.turbine.pipeline;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.rundata.RunDataService;
+import org.apache.turbine.util.RunData;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+/**
+ * &lt;p&gt;A &lt;b&gt;PipelineData&lt;/b&gt; is a holder for data being passed from one
+ * Valve to the next.
+ * The detailed contract for a Valve is included in the description of
+ * the &lt;code&gt;invoke()&lt;/code&gt; method below.&lt;/p&gt;
+ *
+ * &lt;b&gt;HISTORICAL NOTE&lt;/b&gt;:  The &quot;PipelineData&quot; name was assigned to this
+ * holder as it functions similarly to the RunData object, but without
+ * the additional methods
+ *
+ * @author &lt;a href=&quot;mailto:epugh@opensourceconnections.com&quot;&gt;Eric Pugh&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ */
+<span class="fc" id="L44">public class DefaultPipelineData implements PipelineData</span>
+{
+<span class="fc" id="L46">    private final Map&lt;Class&lt;?&gt;, Map&lt;Class&lt;?&gt;, ? super Object&gt;&gt; map =</span>
+        new HashMap&lt;&gt;();
+
+    /**
+     * Put a configured map of objects into the pipeline data object
+     *
+     * @param key the key class
+     * @param value the value map
+     */
+    @Override
+    public void put(Class&lt;?&gt; key, Map&lt;Class&lt;?&gt;, ? super Object&gt; value)
+    {
+<span class="fc" id="L58">        map.put(key, value);</span>
+<span class="fc" id="L59">    }</span>
+
+    /**
+     * Get the configured map of objects for the given key
+     *
+     * @param key the key class
+     * @return the value map or null if no such key exists
+     */
+    @Override
+    public Map&lt;Class&lt;?&gt;, ? super Object&gt; get(Class&lt;?&gt; key)
+    {
+<span class="fc" id="L70">        return map.get(key);</span>
+    }
+
+    /**
+     * Get a value from the configured map of objects for the given keys
+     *
+     * @param key the key class
+     * @param innerKey the key into the value map
+     * @return the inner value or null if no such keys exist
+     */
+    @Override
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public &lt;T&gt; T get(Class&lt;?&gt; key, Class&lt;T&gt; innerKey)
+    {
+<span class="fc" id="L84">        Map&lt;Class&lt;?&gt;, ? super Object&gt; innerMap = get(key);</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (innerMap == null)</span>
+        {
+<span class="fc" id="L87">            return null;</span>
+        }
+<span class="fc" id="L89">        return (T) innerMap.get(innerKey);</span>
+    }
+
+    /**
+     * Put object back into RunDataService for recycling
+     */
+    @Override
+    public void close() throws Exception
+    {
+<span class="fc" id="L98">        RunDataService rds = (RunDataService) TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME);</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (rds != null)</span>
+        {
+<span class="fc" id="L101">            rds.putRunData((RunData) this);</span>
+        }
+<span class="fc" id="L103">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

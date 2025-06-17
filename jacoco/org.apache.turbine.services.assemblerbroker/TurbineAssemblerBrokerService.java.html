@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineAssemblerBrokerService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.assemblerbroker</a> &gt; <span class="el_source">TurbineAssemblerBrokerService.java</span></div><h1>TurbineAssemblerBrokerService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.assemblerbroker;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.AnnotationProcessor;
+import org.apache.turbine.modules.Assembler;
+import org.apache.turbine.modules.Loader;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
+import org.apache.turbine.util.HttpUtils;
+import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.uri.URIConstants;
+
+/**
+ * TurbineAssemblerBrokerService allows assemblers (like screens,
+ * actions and layouts) to be loaded from one or more AssemblerFactory
+ * classes.  AssemblerFactory classes are registered with this broker
+ * by adding them to the TurbineResources.properties file.
+ *
+ * @author &lt;a href=&quot;mailto:leon@opticode.co.za&quot;&gt;Leon Messerschmidt&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L57">public class TurbineAssemblerBrokerService</span>
+        extends TurbineBaseService
+        implements AssemblerBrokerService
+{
+    /** Logging */
+<span class="fc" id="L62">    private static Logger log</span>
+<span class="fc" id="L63">            = LogManager.getLogger(TurbineAssemblerBrokerService.class);</span>
+
+    /** A structure that holds the registered AssemblerFactories */
+<span class="fc" id="L66">    private Map&lt;Class&lt;?&gt;, List&lt;?&gt;&gt; factories = null;</span>
+
+    /** A cache that holds the generated Assemblers */
+<span class="fc" id="L69">    private ConcurrentMap&lt;String, Assembler&gt; assemblerCache = null;</span>
+
+    /** A cache that holds the Loaders */
+<span class="fc" id="L72">    private ConcurrentMap&lt;Class&lt;?&gt;, Loader&lt;? extends Assembler&gt;&gt; loaderCache = null;</span>
+
+    /** Caching on/off */
+    private boolean isCaching;
+
+    /**
+     * Get a list of AssemblerFactories of a certain type
+     *
+     * @param type type of Assembler
+     *
+     * @param &lt;T&gt; the type of the assembler
+     *
+     * @return list of AssemblerFactories
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private &lt;T extends Assembler&gt; List&lt;AssemblerFactory&lt;T&gt;&gt; getFactoryGroup(Class&lt;T&gt; type)
+    {
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (!factories.containsKey(type))</span>
+        {
+<span class="fc" id="L91">            factories.put(type, new ArrayList&lt;AssemblerFactory&lt;T&gt;&gt;());</span>
+        }
+<span class="fc" id="L93">        return (List&lt;AssemblerFactory&lt;T&gt;&gt;) factories.get(type);</span>
+    }
+
+    /**
+     * Utility method to register all factories for a given type.
+     *
+     * @param type type of Assembler
+     * @throws TurbineException if the factory for the given type could not be registered
+     */
+    private void registerFactories(String type)
+        throws TurbineException
+    {
+<span class="fc" id="L105">        List&lt;Object&gt; names = getConfiguration().getList(type);</span>
+
+<span class="fc" id="L107">        log.info(&quot;Registering {} {} factories.&quot;, Integer.valueOf(names.size()), type);</span>
+
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        for (Object name2 : names)</span>
+        {
+<span class="fc" id="L111">            String factory = (String) name2;</span>
+            try
+            {
+                @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L115">                AssemblerFactory&lt;? extends Assembler&gt; af =</span>
+<span class="fc" id="L116">                    (AssemblerFactory&lt;? extends Assembler&gt;) Class.forName(factory).getDeclaredConstructor().newInstance();</span>
+<span class="fc" id="L117">                registerFactory(af);</span>
+            }
+            // these must be passed to the VM
+<span class="nc" id="L120">            catch (ThreadDeath | OutOfMemoryError e)</span>
+            {
+<span class="nc" id="L122">                throw e;</span>
+            }
+            // when using Class.forName(), NoClassDefFoundErrors are likely
+            // to happen (missing jar files)
+<span class="nc" id="L126">            catch (Throwable t)</span>
+            {
+<span class="nc" id="L128">                throw new TurbineException(&quot;Failed registering &quot; + type</span>
+                        + &quot; factory: &quot; + factory, t);
+<span class="fc" id="L130">            }</span>
+<span class="fc" id="L131">        }</span>
+<span class="fc" id="L132">    }</span>
+
+    /**
+     * Initializes the AssemblerBroker and loads the AssemblerFactory
+     * classes registered in TurbineResources.Properties.
+     *
+     * @throws InitializationException if problems occur while registering the factories
+     */
+    @Override
+    public void init()
+        throws InitializationException
+    {
+<span class="fc" id="L144">        factories = new HashMap&lt;&gt;();</span>
+
+        try
+        {
+<span class="fc" id="L148">            Configuration conf = getConfiguration();</span>
+
+<span class="fc bfc" id="L150" title="All 2 branches covered.">            for (Iterator&lt;String&gt; i = conf.getKeys(); i.hasNext();)</span>
+            {
+<span class="fc" id="L152">                String type = i.next();</span>
+
+<span class="fc bfc" id="L154" title="All 2 branches covered.">                if (!&quot;classname&quot;.equalsIgnoreCase(type))</span>
+                {
+<span class="fc" id="L156">                    registerFactories(type);</span>
+                }
+<span class="fc" id="L158">            }</span>
+        }
+<span class="nc" id="L160">        catch (TurbineException e)</span>
+        {
+<span class="nc" id="L162">            throw new InitializationException(</span>
+                    &quot;AssemblerBrokerService failed to initialize&quot;, e);
+<span class="fc" id="L164">        }</span>
+
+<span class="fc" id="L166">        isCaching = Turbine.getConfiguration()</span>
+<span class="fc" id="L167">            .getBoolean(TurbineConstants.MODULE_CACHE_KEY,</span>
+                        TurbineConstants.MODULE_CACHE_DEFAULT);
+
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (isCaching)</span>
+        {
+<span class="fc" id="L172">            int cacheSize = Turbine.getConfiguration()</span>
+<span class="fc" id="L173">                .getInt(TurbineConstants.MODULE_CACHE_SIZE_KEY,</span>
+                        TurbineConstants.MODULE_CACHE_SIZE_DEFAULT);
+
+<span class="fc" id="L176">            assemblerCache = new ConcurrentHashMap&lt;&gt;(cacheSize);</span>
+<span class="fc" id="L177">            loaderCache = new ConcurrentHashMap&lt;&gt;(cacheSize);</span>
+        }
+
+<span class="fc" id="L180">        setInit(true);</span>
+<span class="fc" id="L181">    }</span>
+
+    /**
+     * Register a new AssemblerFactory
+     *
+     * @param factory factory to register
+     *
+     * @param &lt;T&gt; the type of the assembler
+     *
+     */
+    @Override
+    public &lt;T extends Assembler&gt; void registerFactory(AssemblerFactory&lt;T&gt; factory)
+    {
+<span class="fc" id="L194">        getFactoryGroup(factory.getManagedClass()).add(factory);</span>
+<span class="fc" id="L195">    }</span>
+
+    /**
+     * Attempt to retrieve an Assembler of a given type with
+     * a name.  Cycle through all the registered AssemblerFactory
+     * classes of type and return the first non-null assembly
+     * found.  If an assembly was not found return null.
+     *
+     * @param type type of Assembler
+     * @param name name of the requested Assembler
+     *
+     * @param &lt;T&gt; the type of the assembler
+     *
+     * @return an Assembler or null
+     * @throws TurbineException if the assembler could not be loaded
+     */
+    @Override
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public &lt;T extends Assembler&gt; T getAssembler(Class&lt;T&gt; type, String name)
+        throws TurbineException
+    {
+<span class="fc" id="L216">        String key = type + &quot;:&quot; + name;</span>
+<span class="fc" id="L217">        T assembler = null;</span>
+        
+<span class="fc" id="L219">        log.debug(&quot;Check name in key {} in assembler.&quot;, key);</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        if (HttpUtils.keyRequiresClean( name ))</span>
+        {
+<span class="nc" id="L222">            String message = &quot;Assembler key has invalid characters.&quot;;</span>
+<span class="nc" id="L223">            log.warn(&quot;{}. Abort assembling for cleaned key {}:{}.&quot;, message, type, HttpUtils.getCleanedKey( name ) );</span>
+<span class="nc" id="L224">            throw new TurbineException( message );</span>
+        }
+
+<span class="fc bfc" id="L227" title="All 4 branches covered.">        if (isCaching &amp;&amp; assemblerCache.containsKey(key))</span>
+        {
+<span class="fc" id="L229">            assembler = (T) assemblerCache.get(key);</span>
+<span class="fc" id="L230">            log.debug(&quot;Found {} in the cache!&quot;, key);</span>
+        }
+        else
+        {
+<span class="fc" id="L234">            log.debug(&quot;Loading {}&quot;, key);</span>
+<span class="fc" id="L235">            List&lt;AssemblerFactory&lt;T&gt;&gt; facs = getFactoryGroup(type);</span>
+
+<span class="fc bfc" id="L237" title="All 4 branches covered.">            for (Iterator&lt;AssemblerFactory&lt;T&gt;&gt; it = facs.iterator(); (assembler == null) &amp;&amp; it.hasNext();)</span>
+            {
+<span class="fc" id="L239">                AssemblerFactory&lt;T&gt; fac = it.next();</span>
+
+                try
+                {
+<span class="fc" id="L243">                    assembler = fac.getAssembler(name);</span>
+                }
+<span class="nc" id="L245">                catch (Exception e)</span>
+                {
+<span class="nc" id="L247">                    throw new TurbineException(&quot;Failed to load an assembler for &quot;</span>
+                                               + name + &quot; from the &quot;
+                                               + type + &quot; factory &quot;
+<span class="nc" id="L250">                                               + fac.getClass().getName(), e);</span>
+<span class="fc" id="L251">                }</span>
+
+<span class="fc bfc" id="L253" title="All 2 branches covered.">                if (assembler != null)</span>
+                {
+<span class="fc" id="L255">                    AnnotationProcessor.process(assembler);</span>
+
+<span class="fc bfc" id="L257" title="All 2 branches covered.">                    if (isCaching)</span>
+                    {
+<span class="fc" id="L259">                        T oldAssembler = (T) assemblerCache.putIfAbsent(key, assembler);</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">                        if (oldAssembler != null)</span>
+                        {
+<span class="fc" id="L262">                            assembler = oldAssembler;</span>
+                        }
+                    }
+                }
+<span class="fc" id="L266">            }</span>
+        }
+
+<span class="fc" id="L269">        return assembler;</span>
+    }
+
+    /**
+     * Get a Loader for the given assembler type
+     *
+     * @param type The Type of the Assembler
+     *
+     * @param &lt;T&gt; the type of the assembler
+     *
+     * @return A Loader instance for the requested type
+     */
+    @Override
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public &lt;T extends Assembler&gt; Loader&lt;T&gt; getLoader(Class&lt;T&gt; type)
+    {
+<span class="fc" id="L285">        Loader&lt;T&gt; loader = null;</span>
+
+<span class="fc bfc" id="L287" title="All 4 branches covered.">        if (isCaching &amp;&amp; loaderCache.containsKey(type))</span>
+        {
+<span class="fc" id="L289">            loader = (Loader&lt;T&gt;) loaderCache.get(type);</span>
+<span class="fc" id="L290">            log.debug(&quot;Found {} loader in the cache!&quot;, type);</span>
+        }
+        else
+        {
+<span class="fc" id="L294">            log.debug(&quot;Getting Loader for {}&quot;, type);</span>
+<span class="fc" id="L295">            List&lt;AssemblerFactory&lt;T&gt;&gt; facs = getFactoryGroup(type);</span>
+
+<span class="pc bpc" id="L297" title="1 of 4 branches missed.">            for (Iterator&lt;AssemblerFactory&lt;T&gt;&gt; it = facs.iterator(); (loader == null) &amp;&amp; it.hasNext();)</span>
+            {
+<span class="fc" id="L299">                AssemblerFactory&lt;T&gt; fac = it.next();</span>
+<span class="fc" id="L300">                loader = fac.getLoader();</span>
+<span class="fc" id="L301">            }</span>
+
+<span class="pc bpc" id="L303" title="1 of 4 branches missed.">            if (isCaching &amp;&amp; loader != null)</span>
+            {
+<span class="fc" id="L305">                loaderCache.put(type, loader);</span>
+            }
+        }
+
+<span class="pc bpc" id="L309" title="1 of 2 branches missed.">        if (loader == null)</span>
+        {
+<span class="nc" id="L311">            log.warn(&quot;Loader for {} is null.&quot;, type);</span>
+        }
+
+<span class="fc" id="L314">        return loader;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

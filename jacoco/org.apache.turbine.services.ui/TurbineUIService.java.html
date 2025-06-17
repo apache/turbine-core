@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineUIService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.ui</a> &gt; <span class="el_source">TurbineUIService.java</span></div><h1>TurbineUIService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.ui;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.io.File;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.pull.PullService;
+import org.apache.turbine.services.pull.tools.UITool;
+import org.apache.turbine.services.servlet.ServletService;
+import org.apache.turbine.util.ServerData;
+import org.apache.turbine.util.uri.DataURI;
+
+/**
+ * The UI service provides for shared access to User Interface (skin) files,
+ * as well as the ability for non-default skin files to inherit properties from
+ * a default skin.  Use TurbineUI to access skin properties from your screen
+ * classes and action code. UITool is provided as a pull tool for accessing
+ * skin properties from your templates.
+ *
+ * @author &lt;a href=&quot;mailto:jvanzyl@periapt.com&quot;&gt;Jason van Zyl&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:james_coltman@majorband.co.uk&quot;&gt;James Coltman&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:seade@backstagetech.com.au&quot;&gt;Scott Eade&lt;/a&gt;
+ * @author &lt;a href=&quot;thomas.vandahl@tewisoft.de&quot;&gt;Thomas Vandahl&lt;/a&gt;
+ * @version $Id$
+ * @see UIService
+ * @see UITool
+ */
+<span class="fc" id="L57">public class TurbineUIService</span>
+        extends TurbineBaseService
+        implements UIService
+{
+    /** Logging. */
+<span class="fc" id="L62">    private static final Logger log = LogManager.getLogger(TurbineUIService.class);</span>
+
+    /**
+     * The location of the skins within the application resources directory.
+     */
+    private static final String SKINS_DIRECTORY = &quot;/ui/skins&quot;;
+
+    /**
+     * The name of the directory where images are stored for this skin.
+     */
+    private static final String IMAGES_DIRECTORY = &quot;/images&quot;;
+
+    /**
+     * Property tag for the default skin that is to be used for the web
+     * application.
+     */
+    private static final String SKIN_PROPERTY = &quot;tool.ui.skin&quot;;
+
+    /**
+     * Property tag for the image directory inside the skin that is to be used
+     * for the web application.
+     */
+    private static final String IMAGEDIR_PROPERTY = &quot;tool.ui.dir.image&quot;;
+
+    /**
+     * Property tag for the skin directory that is to be used for the web
+     * application.
+     */
+    private static final String SKINDIR_PROPERTY = &quot;tool.ui.dir.skin&quot;;
+
+    /**
+     * Property tag for the css file that is to be used for the web application.
+     */
+    private static final String CSS_PROPERTY = &quot;tool.ui.css&quot;;
+
+    /**
+     * Property tag for indicating if relative links are wanted for the web
+     * application.
+     */
+    private static final String RELATIVE_PROPERTY = &quot;tool.ui.want.relative&quot;;
+
+    /**
+     * Default skin name. This name refers to a directory in the
+     * WEBAPP/resources/ui/skins directory. There is a file called skin.props
+     * which contains the name/value pairs to be made available via the skin.
+     */
+    public static final String SKIN_PROPERTY_DEFAULT = &quot;default&quot;;
+
+    /**
+     * The skins directory, qualified by the resources directory (which is
+     * relative to the webapp context). This is used for constructing URIs and
+     * for retrieving skin files.
+     */
+    private String skinsDirectory;
+
+    /**
+     * The file within the skin directory that contains the name/value pairs for
+     * the skin.
+     */
+    private static final String SKIN_PROPS_FILE = &quot;skin.props&quot;;
+
+    /**
+     * The file name for the skin style sheet.
+     */
+    private static final String DEFAULT_SKIN_CSS_FILE = &quot;skin.css&quot;;
+
+    /**
+     * The servlet service.
+     */
+    private ServletService servletService;
+
+    /**
+     * The directory within the skin directory that contains the skin images.
+     */
+    private String imagesDirectory;
+
+    /**
+     * The name of the css file within the skin directory.
+     */
+    private String cssFile;
+
+    /**
+     * The flag that determines if the links that are returned are are absolute
+     * or relative.
+     */
+<span class="fc" id="L147">    private boolean wantRelative = false;</span>
+
+    /**
+     * The skin Properties store.
+     */
+<span class="fc" id="L152">    private ConcurrentHashMap&lt;String, Properties&gt; skins = new ConcurrentHashMap&lt;&gt;();</span>
+
+    /**
+     * Refresh the service by clearing all skins.
+     */
+    @Override
+    public void refresh()
+    {
+<span class="nc" id="L160">        clearSkins();</span>
+<span class="nc" id="L161">    }</span>
+
+    /**
+     * Refresh a particular skin by clearing it.
+     *
+     * @param skinName the name of the skin to clear.
+     */
+    @Override
+    public void refresh(String skinName)
+    {
+<span class="fc" id="L171">        clearSkin(skinName);</span>
+<span class="fc" id="L172">    }</span>
+
+    /**
+     * Retrieve the Properties for a specific skin.  If they are not yet loaded
+     * they will be.  If the specified skin does not exist properties for the
+     * default skin configured for the webapp will be returned and an error
+     * level message will be written to the log.  If the webapp skin does not
+     * exist the default skin will be used and id that doesn't exist an empty
+     * Properties will be returned.
+     *
+     * @param skinName the name of the skin whose properties are to be
+     * retrieved.
+     * @return the Properties for the named skin or the properties for the
+     * default skin configured for the webapp if the named skin does not exist.
+     */
+    private Properties getSkinProperties(String skinName)
+    {
+<span class="nc" id="L189">        Properties skinProperties = skins.get(skinName);</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">        return null != skinProperties ? skinProperties : loadSkin(skinName);</span>
+    }
+
+    /**
+     * Retrieve a skin property from the named skin.  If the property is not
+     * defined in the named skin the value for the default skin will be
+     * provided.  If the named skin does not exist then the skin configured for
+     * the webapp will be used.  If the webapp skin does not exist the default
+     * skin will be used.  If the default skin does not exist then
+     * &lt;code&gt;null&lt;/code&gt; will be returned.
+     *
+     * @param skinName the name of the skin to retrieve the property from.
+     * @param key the key to retrieve from the skin.
+     * @return the value of the property for the named skin (defaulting to the
+     * default skin), the webapp skin, the default skin or &lt;code&gt;null&lt;/code&gt;,
+     * depending on whether or not the property or skins exist.
+     */
+    @Override
+    public String get(String skinName, String key)
+    {
+<span class="nc" id="L210">        Properties skinProperties = getSkinProperties(skinName);</span>
+<span class="nc" id="L211">        return skinProperties.getProperty(key);</span>
+    }
+
+    /**
+     * Retrieve a skin property from the default skin for the webapp.  If the
+     * property is not defined in the webapp skin the value for the default skin
+     * will be provided.  If the webapp skin does not exist the default skin
+     * will be used.  If the default skin does not exist then &lt;code&gt;null&lt;/code&gt;
+     * will be returned.
+     *
+     * @param key the key to retrieve.
+     * @return the value of the property for the webapp skin (defaulting to the
+     * default skin), the default skin or &lt;code&gt;null&lt;/code&gt;, depending on
+     * whether or not the property or skins exist.
+     */
+    @Override
+    public String get(String key)
+    {
+<span class="nc" id="L229">        return get(getWebappSkinName(), key);</span>
+    }
+
+    /**
+     * Provide access to the list of available skin names.
+     *
+     * @return the available skin names.
+     */
+    @Override
+    public String[] getSkinNames()
+    {
+<span class="nc" id="L240">        File skinsDir = new File(servletService.getRealPath(skinsDirectory));</span>
+<span class="nc" id="L241">        return skinsDir.list((dir, name) -&gt; {</span>
+<span class="nc" id="L242">            File directory = new File(dir, name);</span>
+<span class="nc" id="L243">            return directory.isDirectory();</span>
+        });
+    }
+
+    /**
+     * Clear the map of stored skins.
+     */
+    private void clearSkins()
+    {
+<span class="fc" id="L252">        skins.clear();</span>
+<span class="fc" id="L253">        log.debug(&quot;All skins were cleared.&quot;);</span>
+<span class="fc" id="L254">    }</span>
+
+    /**
+     * Clear a particular skin from the map of stored skins.
+     *
+     * @param skinName the name of the skin to clear.
+     */
+    private void clearSkin(String skinName)
+    {
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">        if (!skinName.equals(SKIN_PROPERTY_DEFAULT))</span>
+        {
+<span class="fc" id="L265">            skins.remove(SKIN_PROPERTY_DEFAULT);</span>
+        }
+<span class="fc" id="L267">        skins.remove(skinName);</span>
+<span class="fc" id="L268">        log.debug(&quot;The skin \&quot;{}\&quot; was cleared (will also clear \&quot;default\&quot; skin).&quot;, skinName);</span>
+<span class="fc" id="L269">    }</span>
+
+    /**
+     * Load the specified skin.
+     *
+     * @param skinName the name of the skin to load.
+     * @return the Properties for the named skin if it exists, or the skin
+     * configured for the web application if it does not exist, or the default
+     * skin if that does not exist, or an empty Parameters object if even that
+     * cannot be found.
+     */
+    private Properties loadSkin(String skinName)
+    {
+<span class="nc" id="L282">        Properties defaultSkinProperties = null;</span>
+
+<span class="nc bnc" id="L284" title="All 2 branches missed.">        if (!StringUtils.equals(skinName, SKIN_PROPERTY_DEFAULT))</span>
+        {
+<span class="nc" id="L286">            defaultSkinProperties = getSkinProperties(SKIN_PROPERTY_DEFAULT);</span>
+        }
+
+        // The following line is okay even for default.
+<span class="nc" id="L290">        Properties skinProperties = new Properties(defaultSkinProperties);</span>
+
+<span class="nc" id="L292">        StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L293">        sb.append('/').append(skinsDirectory);</span>
+<span class="nc" id="L294">        sb.append('/').append(skinName);</span>
+<span class="nc" id="L295">        sb.append('/').append(SKIN_PROPS_FILE);</span>
+<span class="nc" id="L296">        log.debug(&quot;Loading selected skin from: {}&quot;, sb::toString);</span>
+
+<span class="nc" id="L298">        try (InputStream is = servletService.getResourceAsStream(sb.toString()))</span>
+        {
+            // This will NPE if the directory associated with the skin does not
+            // exist, but it is handled correctly below.
+<span class="nc" id="L302">            skinProperties.load(is);</span>
+        }
+<span class="nc" id="L304">        catch (Exception e)</span>
+        {
+<span class="nc" id="L306">            log.error(&quot;Cannot load skin: {}, from: {}&quot;, skinName, sb.toString(), e);</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">            if (!StringUtils.equals(skinName, getWebappSkinName())</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">                    &amp;&amp; !StringUtils.equals(skinName, SKIN_PROPERTY_DEFAULT))</span>
+            {
+<span class="nc" id="L310">                log.error(&quot;Attempting to return the skin configured for webapp instead of {}&quot;, skinName);</span>
+<span class="nc" id="L311">                return getSkinProperties(getWebappSkinName());</span>
+            }
+<span class="nc bnc" id="L313" title="All 2 branches missed.">            else if (!StringUtils.equals(skinName, SKIN_PROPERTY_DEFAULT))</span>
+            {
+<span class="nc" id="L315">                log.error(&quot;Return the default skin instead of {}&quot;, skinName);</span>
+<span class="nc" id="L316">                return skinProperties; // Already contains the default skin.</span>
+            }
+            else
+            {
+<span class="nc" id="L320">                log.error(&quot;No skins available - returning an empty Properties&quot;);</span>
+<span class="nc" id="L321">                return new Properties();</span>
+            }
+<span class="nc" id="L323">        }</span>
+
+        // Replace in skins HashMap
+<span class="nc" id="L326">        skins.put(skinName, skinProperties);</span>
+
+<span class="nc" id="L328">        return skinProperties;</span>
+    }
+
+    /**
+     * Get the name of the default skin name for the web application from the
+     * TurbineResources.properties file. If the property is not present the
+     * name of the default skin will be returned.  Note that the web application
+     * skin name may be something other than default, in which case its
+     * properties will default to the skin with the name &quot;default&quot;.
+     *
+     * @return the name of the default skin for the web application.
+     */
+    @Override
+    public String getWebappSkinName()
+    {
+<span class="fc" id="L343">        return Turbine.getConfiguration()</span>
+<span class="fc" id="L344">                .getString(SKIN_PROPERTY, SKIN_PROPERTY_DEFAULT);</span>
+    }
+
+    /**
+     * Retrieve the URL for an image that is part of a skin. The images are
+     * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.
+     *
+     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server
+     * port change on a per request basis. I'm not sure if this would happen in
+     * a load balanced situation. I think in most cases the image(String image)
+     * method would probably be enough, but I'm not absolutely positive.
+     *
+     * @param skinName the name of the skin to retrieve the image from.
+     * @param imageId the id of the image whose URL will be generated.
+     * @param serverData the serverData to use as the basis for the URL.
+     */
+    @Override
+    public String image(String skinName, String imageId, ServerData serverData)
+    {
+<span class="nc" id="L363">        return getSkinResource(serverData, skinName, imagesDirectory, imageId);</span>
+    }
+
+    /**
+     * Retrieve the URL for an image that is part of a skin. The images are
+     * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.
+     *
+     * @param skinName the name of the skin to retrieve the image from.
+     * @param imageId the id of the image whose URL will be generated.
+     */
+    @Override
+    public String image(String skinName, String imageId)
+    {
+<span class="nc" id="L376">        return image(skinName, imageId, Turbine.getDefaultServerData());</span>
+    }
+
+    /**
+     * Retrieve the URL for the style sheet that is part of a skin. The style is
+     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the
+     * filename skin.css
+     *
+     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server
+     * port change on a per request basis. I'm not sure if this would happen in
+     * a load balanced situation. I think in most cases the style() method would
+     * probably be enough, but I'm not absolutely positive.
+     *
+     * @param skinName the name of the skin to retrieve the style sheet from.
+     * @param serverData the serverData to use as the basis for the URL.
+     */
+    @Override
+    public String getStylecss(String skinName, ServerData serverData)
+    {
+<span class="nc" id="L395">        return getSkinResource(serverData, skinName, null, cssFile);</span>
+    }
+
+    /**
+     * Retrieve the URL for the style sheet that is part of a skin. The style is
+     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the
+     * filename skin.css
+     *
+     * @param skinName the name of the skin to retrieve the style sheet from.
+     */
+    @Override
+    public String getStylecss(String skinName)
+    {
+<span class="nc" id="L408">        return getStylecss(skinName, Turbine.getDefaultServerData());</span>
+    }
+
+    /**
+     * Retrieve the URL for a given script that is part of a skin. The script is
+     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory.
+     *
+     * &lt;p&gt;Use this if for some reason your server name, server scheme, or server
+     * port change on a per request basis. I'm not sure if this would happen in
+     * a load balanced situation. I think in most cases the style() method would
+     * probably be enough, but I'm not absolutely positive.
+     *
+     * @param skinName the name of the skin to retrieve the image from.
+     * @param filename the name of the script file.
+     * @param serverData the serverData to use as the basis for the URL.
+     */
+    @Override
+    public String getScript(String skinName, String filename,
+            ServerData serverData)
+    {
+<span class="nc" id="L428">        return getSkinResource(serverData, skinName, null, filename);</span>
+    }
+
+    /**
+     * Retrieve the URL for a given script that is part of a skin. The script is
+     * stored in the WEBAPP/resources/ui/skins/[SKIN] directory.
+     *
+     * @param skinName the name of the skin to retrieve the image from.
+     * @param filename the name of the script file.
+     */
+    @Override
+    public String getScript(String skinName, String filename)
+    {
+<span class="nc" id="L441">        return getScript(skinName, filename, Turbine.getDefaultServerData());</span>
+    }
+
+    private String stripSlashes(final String path)
+    {
+<span class="pc bpc" id="L446" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(path))</span>
+        {
+<span class="nc" id="L448">            return &quot;&quot;;</span>
+        }
+
+<span class="fc" id="L451">        String ret = path;</span>
+<span class="fc" id="L452">        int len = ret.length() - 1;</span>
+
+<span class="pc bpc" id="L454" title="1 of 2 branches missed.">        if (ret.charAt(len) == '/')</span>
+        {
+<span class="fc" id="L456">            ret = ret.substring(0, len);</span>
+        }
+
+<span class="pc bpc" id="L459" title="2 of 4 branches missed.">        if (len &gt; 0 &amp;&amp; ret.charAt(0) == '/')</span>
+        {
+<span class="fc" id="L461">            ret = ret.substring(1);</span>
+        }
+
+<span class="fc" id="L464">        return ret;</span>
+    }
+
+    /**
+     * Construct the URL to the skin resource.
+     *
+     * @param serverData the serverData to use as the basis for the URL.
+     * @param skinName the name of the skin.
+     * @param subDir the sub-directory in which the resource resides or
+     * &lt;code&gt;null&lt;/code&gt; if it is in the root directory of the skin.
+     * @param resourceName the name of the resource to be retrieved.
+     * @return the path to the resource.
+     */
+    private String getSkinResource(ServerData serverData, String skinName,
+            String subDir, String resourceName)
+    {
+<span class="nc" id="L480">        StringBuilder sb = new StringBuilder(skinsDirectory);</span>
+<span class="nc" id="L481">        sb.append(&quot;/&quot;).append(skinName);</span>
+<span class="nc bnc" id="L482" title="All 2 branches missed.">        if (subDir != null)</span>
+        {
+<span class="nc" id="L484">            sb.append(&quot;/&quot;).append(subDir);</span>
+        }
+<span class="nc" id="L486">        sb.append(&quot;/&quot;).append(stripSlashes(resourceName));</span>
+
+<span class="nc" id="L488">        DataURI du = new DataURI(serverData);</span>
+<span class="nc" id="L489">        du.setScriptName(sb.toString());</span>
+<span class="nc bnc" id="L490" title="All 2 branches missed.">        return wantRelative ? du.getRelativeLink() : du.getAbsoluteLink();</span>
+    }
+
+    // ---- Service initilization ------------------------------------------
+
+    /**
+     * Initializes the service.
+     */
+    @Override
+    public void init() throws InitializationException
+    {
+<span class="fc" id="L501">        Configuration cfg = Turbine.getConfiguration();</span>
+
+<span class="fc" id="L503">        servletService = (ServletService)TurbineServices.getInstance().getService(ServletService.SERVICE_NAME);</span>
+<span class="fc" id="L504">        PullService pullService = (PullService)TurbineServices.getInstance().getService(PullService.SERVICE_NAME);</span>
+        // Get the resources directory that is specified in the TR.props or
+        // default to &quot;resources&quot;, relative to the webapp.
+<span class="fc" id="L507">        StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L508">        sb.append(stripSlashes(pullService.getResourcesDirectory()));</span>
+<span class="fc" id="L509">        sb.append(&quot;/&quot;);</span>
+<span class="fc" id="L510">        sb.append(stripSlashes(</span>
+<span class="fc" id="L511">                cfg.getString(SKINDIR_PROPERTY, SKINS_DIRECTORY)));</span>
+<span class="fc" id="L512">        skinsDirectory = sb.toString();</span>
+
+<span class="fc" id="L514">        imagesDirectory = stripSlashes(</span>
+<span class="fc" id="L515">                cfg.getString(IMAGEDIR_PROPERTY, IMAGES_DIRECTORY));</span>
+<span class="fc" id="L516">        cssFile = cfg.getString(CSS_PROPERTY, DEFAULT_SKIN_CSS_FILE);</span>
+<span class="fc" id="L517">        wantRelative = cfg.getBoolean(RELATIVE_PROPERTY, false);</span>
+
+<span class="fc" id="L519">        setInit(true);</span>
+<span class="fc" id="L520">    }</span>
+
+    /**
+     * Returns to uninitialized state.
+     */
+    @Override
+    public void shutdown()
+    {
+<span class="fc" id="L528">        clearSkins();</span>
+<span class="fc" id="L529">        setInit(false);</span>
+<span class="fc" id="L530">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

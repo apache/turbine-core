@@ -1,0 +1,917 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineURI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util.uri</a> &gt; <span class="el_source">TurbineURI.java</span></div><h1>TurbineURI.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util.uri;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.UnsupportedCharsetException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.fulcrum.parser.ParserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.ServerData;
+
+/**
+ * This class allows you to keep all the information needed for a single
+ * link at one place. It keeps your query data, path info, the server
+ * scheme, name, port and the script path.
+ *
+ * If you must generate a Turbine Link, use this class.
+ *
+ * @author &lt;a href=&quot;mailto:jon@clearink.com&quot;&gt;Jon S. Stevens&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:jvanzyl@periapt.com&quot;&gt;Jason van Zyl&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+
+public class TurbineURI
+        extends BaseURI
+{
+    /** Logging */
+<span class="fc" id="L59">    private static final Logger log = LogManager.getLogger(TurbineURI.class);</span>
+
+    /** Contains the PathInfo and QueryData vectors */
+<span class="pc" id="L62">    private List&lt;URIParam&gt; [] dataVectors = null;</span>
+
+    /** Local reference to the parser service for URI parameter folding */
+    private ParserService parserService;
+
+    /** URI Parameter encoding as defined by the parser service */
+    private Charset parameterEncoding;
+
+    /*
+     * ========================================================================
+     *
+     * Constructors
+     *
+     * ========================================================================
+     *
+     */
+
+    /**
+     * Empty C'tor. Uses Turbine.getDefaultServerData().
+     */
+    public TurbineURI()
+    {
+<span class="nc" id="L84">        super();</span>
+<span class="nc" id="L85">        init();</span>
+<span class="nc" id="L86">    }</span>
+
+    /**
+     * Constructor with a RunData object.
+     *
+     * @param runData A RunData object
+     */
+    public TurbineURI(RunData runData)
+    {
+<span class="fc" id="L95">        super(runData);</span>
+<span class="fc" id="L96">        init();</span>
+<span class="fc" id="L97">    }</span>
+
+    /**
+     * Constructor, set explicit redirection.
+     *
+     * @param runData A RunData object
+     * @param redirect True if redirection allowed.
+     */
+    public TurbineURI(RunData runData, boolean redirect)
+    {
+<span class="nc" id="L107">        super(runData, redirect);</span>
+<span class="nc" id="L108">        init();</span>
+<span class="nc" id="L109">    }</span>
+
+    /**
+     * Constructor, set Screen.
+     *
+     * @param runData A RunData object
+     * @param screen A Screen Name
+     */
+    public TurbineURI(RunData runData, String screen)
+    {
+<span class="nc" id="L119">        this(runData);</span>
+<span class="nc" id="L120">        setScreen(screen);</span>
+<span class="nc" id="L121">    }</span>
+
+    /**
+     * Constructor, set Screen, set explicit redirection.
+     *
+     * @param runData A RunData object
+     * @param screen A Screen Name
+     * @param redirect True if redirection allowed.
+     */
+    public TurbineURI(RunData runData, String screen, boolean redirect)
+    {
+<span class="nc" id="L132">        this(runData, redirect);</span>
+<span class="nc" id="L133">        setScreen(screen);</span>
+<span class="nc" id="L134">    }</span>
+
+    /**
+     * Constructor, set Screen and Action.
+     *
+     * @param runData A RunData object
+     * @param screen A Screen Name
+     * @param action An Action Name
+     */
+    public TurbineURI(RunData runData, String screen, String action)
+    {
+<span class="nc" id="L145">        this(runData, screen);</span>
+<span class="nc" id="L146">        setAction(action);</span>
+<span class="nc" id="L147">    }</span>
+
+    /**
+     * Constructor, set Screen and Action, set explicit redirection.
+     *
+     * @param runData A RunData object
+     * @param screen A Screen Name
+     * @param action An Action Name
+     * @param redirect True if redirection allowed.
+     */
+    public TurbineURI(RunData runData, String screen, String action, boolean redirect)
+    {
+<span class="nc" id="L159">        this(runData, screen, redirect);</span>
+<span class="nc" id="L160">        setAction(action);</span>
+<span class="nc" id="L161">    }</span>
+
+    /**
+     * Constructor with a ServerData object.
+     *
+     * @param serverData A ServerData object
+     */
+    public TurbineURI(ServerData serverData)
+    {
+<span class="fc" id="L170">        super(serverData);</span>
+<span class="fc" id="L171">        init();</span>
+<span class="fc" id="L172">    }</span>
+
+    /**
+     * Constructor, set explicit redirection.
+     *
+     * @param serverData A ServerData object
+     * @param redirect True if redirection allowed.
+     */
+    public TurbineURI(ServerData serverData, boolean redirect)
+    {
+<span class="nc" id="L182">        super(serverData, redirect);</span>
+<span class="nc" id="L183">        init();</span>
+<span class="nc" id="L184">    }</span>
+
+    /**
+     * Constructor, set Screen.
+     *
+     * @param serverData A ServerData object
+     * @param screen A Screen Name
+     */
+    public TurbineURI(ServerData serverData, String screen)
+    {
+<span class="nc" id="L194">        this(serverData);</span>
+<span class="nc" id="L195">        setScreen(screen);</span>
+<span class="nc" id="L196">    }</span>
+
+    /**
+     * Constructor, set Screen, set explicit redirection.
+     *
+     * @param serverData A ServerData object
+     * @param screen A Screen Name
+     * @param redirect True if redirection allowed.
+     */
+    public TurbineURI(ServerData serverData, String screen, boolean redirect)
+    {
+<span class="nc" id="L207">        this(serverData, redirect);</span>
+<span class="nc" id="L208">        setScreen(screen);</span>
+<span class="nc" id="L209">    }</span>
+
+    /**
+     * Constructor, set Screen and Action.
+     *
+     * @param serverData A ServerData object
+     * @param screen A Screen Name
+     * @param action An Action Name
+     */
+    public TurbineURI(ServerData serverData, String screen, String action)
+    {
+<span class="nc" id="L220">        this(serverData, screen);</span>
+<span class="nc" id="L221">        setAction(action);</span>
+<span class="nc" id="L222">    }</span>
+
+    /**
+     * Constructor, set Screen and Action, set explicit redirection.
+     *
+     * @param serverData A ServerData object
+     * @param screen A Screen Name
+     * @param action An Action Name
+     * @param redirect True if redirection allowed.
+     */
+    public TurbineURI(ServerData serverData, String screen, String action,
+                      boolean redirect)
+    {
+<span class="nc" id="L235">        this(serverData, screen, redirect);</span>
+<span class="nc" id="L236">        setAction(action);</span>
+<span class="nc" id="L237">    }</span>
+
+    /**
+     * Constructor, user Turbine.getDefaultServerData(), set Screen and Action.
+     *
+     * @param screen A Screen Name
+     * @param action An Action Name
+     */
+    public TurbineURI(String screen, String action)
+    {
+<span class="nc" id="L247">        this();</span>
+<span class="nc" id="L248">        setScreen(screen);</span>
+<span class="nc" id="L249">        setAction(action);</span>
+<span class="nc" id="L250">    }</span>
+
+    /*
+     * ========================================================================
+     *
+     * Init
+     *
+     * ========================================================================
+     *
+     */
+
+    /**
+     * Init the TurbineURI.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private void init()
+    {
+<span class="fc" id="L267">        dataVectors = new List[2];</span>
+<span class="fc" id="L268">        dataVectors[PATH_INFO]  = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L269">        dataVectors[QUERY_DATA] = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L270">        parserService = (ParserService)TurbineServices.getInstance().getService(ParserService.ROLE);</span>
+
+        try
+        {
+<span class="fc" id="L274">            parameterEncoding = Charset.forName(parserService.getParameterEncoding());</span>
+        }
+<span class="nc" id="L276">        catch (IllegalCharsetNameException | UnsupportedCharsetException e)</span>
+        {
+<span class="nc" id="L278">            log.error(&quot;Unsupported encoding {}&quot;, parserService.getParameterEncoding(), e);</span>
+<span class="fc" id="L279">        }</span>
+<span class="fc" id="L280">    }</span>
+
+    /**
+     * Sets the action= value for this URL.
+     *
+     * By default it adds the information to the path_info instead
+     * of the query data. An empty value (null or &quot;&quot;) cleans out
+     * an existing value.
+     *
+     * @param action A String with the action value.
+     */
+    public void setAction(String action)
+    {
+<span class="nc bnc" id="L293" title="All 2 branches missed.">        if(StringUtils.isNotEmpty(action))</span>
+        {
+<span class="nc" id="L295">            add(PATH_INFO, CGI_ACTION_PARAM, action);</span>
+        }
+        else
+        {
+<span class="nc" id="L299">            clearAction();</span>
+        }
+<span class="nc" id="L301">    }</span>
+
+    /**
+     * Sets the fired eventSubmit= value for this URL.
+     *
+     * @param event The event to fire.
+     *
+     */
+    public void setEvent(String event)
+    {
+<span class="nc" id="L311">        add(PATH_INFO, EVENT_PREFIX + event, event);</span>
+<span class="nc" id="L312">    }</span>
+
+    /**
+     * Sets the action= and eventSubmit= values for this URL.
+     *
+     * By default it adds the information to the path_info instead
+     * of the query data. An empty value (null or &quot;&quot;) for the action cleans out
+     * an existing value.  An empty value (null or &quot;&quot;) for the event has no
+     * effect.
+     *
+     * @param action A String with the action value.
+     * @param event A string with the event name.
+     */
+    public void setActionEvent(String action, String event)
+    {
+<span class="nc" id="L327">        setAction(action);</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">        if(StringUtils.isNotEmpty(event))</span>
+        {
+<span class="nc" id="L330">            setEvent(event);</span>
+        }
+<span class="nc" id="L332">    }</span>
+
+    /**
+     * Clears the action= value for this URL.
+     */
+    public void clearAction()
+    {
+<span class="nc" id="L339">        removePathInfo(CGI_ACTION_PARAM);</span>
+<span class="nc" id="L340">    }</span>
+
+    /**
+     * Sets the screen= value for this URL.
+     *
+     * By default it adds the information to the path_info instead
+     * of the query data. An empty value (null or &quot;&quot;) cleans out
+     * an existing value.
+     *
+     * @param screen A String with the screen value.
+     */
+    public void setScreen(String screen)
+    {
+<span class="nc bnc" id="L353" title="All 2 branches missed.">        if(StringUtils.isNotEmpty(screen))</span>
+        {
+<span class="nc" id="L355">            add(PATH_INFO, CGI_SCREEN_PARAM, screen);</span>
+        }
+        else
+        {
+<span class="nc" id="L359">            clearScreen();</span>
+        }
+<span class="nc" id="L361">    }</span>
+
+    /**
+     * Clears the screen= value for this URL.
+     */
+    public void clearScreen()
+    {
+<span class="nc" id="L368">        removePathInfo(CGI_SCREEN_PARAM);</span>
+<span class="nc" id="L369">    }</span>
+
+    /*
+     * ========================================================================
+     *
+     * Adding and removing Data from the Path Info and Query Data
+     *
+     * ========================================================================
+     */
+
+
+    /**
+     * Adds a name=value pair for every entry in a ParameterParser
+     * object to the path_info string.
+     *
+     * @param pp A ParameterParser.
+     */
+    public void addPathInfo(ParameterParser pp)
+    {
+<span class="fc" id="L388">        add(PATH_INFO, pp);</span>
+<span class="fc" id="L389">    }</span>
+
+    /**
+     * Adds an existing List of URIParam objects to
+     * the path_info string.
+     *
+     * @param list A list with URIParam objects.
+     */
+    public void addPathInfo(List&lt;URIParam&gt; list)
+    {
+<span class="nc" id="L399">        add(PATH_INFO, list);</span>
+<span class="nc" id="L400">    }</span>
+
+    /**
+     * Adds a name=value pair to the path_info string.
+     *
+     * @param name A String with the name to add.
+     * @param value An Object with the value to add.
+     */
+    public void addPathInfo(String name, Object value)
+    {
+<span class="nc bnc" id="L410" title="All 2 branches missed.">        add(PATH_INFO, name, null == value ? null : value.toString());</span>
+<span class="nc" id="L411">    }</span>
+
+    /**
+     * Adds a name=value pair to the path_info string.
+     *
+     * @param name A String with the name to add.
+     * @param value A String with the value to add.
+     */
+    public void addPathInfo(String name, String value)
+    {
+<span class="fc" id="L421">        add(PATH_INFO, name, value);</span>
+<span class="fc" id="L422">    }</span>
+
+    /**
+     * Adds a name=value pair to the path_info string.
+     *
+     * @param name A String with the name to add.
+     * @param value A double with the value to add.
+     */
+    public void addPathInfo(String name, double value)
+    {
+<span class="nc" id="L432">        add(PATH_INFO, name, Double.toString(value));</span>
+<span class="nc" id="L433">    }</span>
+
+    /**
+     * Adds a name=value pair to the path_info string.
+     *
+     * @param name A String with the name to add.
+     * @param value An int with the value to add.
+     */
+    public void addPathInfo(String name, int value)
+    {
+<span class="fc" id="L443">        add(PATH_INFO, name, Integer.toString(value));</span>
+<span class="fc" id="L444">    }</span>
+
+    /**
+     * Adds a name=value pair to the path_info string.
+     *
+     * @param name A String with the name to add.
+     * @param value A long with the value to add.
+     */
+    public void addPathInfo(String name, long value)
+    {
+<span class="nc" id="L454">        add(PATH_INFO, name, Long.toString(value));</span>
+<span class="nc" id="L455">    }</span>
+
+    /**
+     * Adds a name=value pair to the query string.
+     *
+     * @param name A String with the name to add.
+     * @param value An Object with the value to add.
+     */
+    public void addQueryData(String name, Object value)
+    {
+<span class="nc bnc" id="L465" title="All 2 branches missed.">        add(QUERY_DATA, name, null == value ? null : value.toString());</span>
+<span class="nc" id="L466">    }</span>
+
+    /**
+     * Adds a name=value pair to the query string.
+     *
+     * @param name A String with the name to add.
+     * @param value A String with the value to add.
+     */
+    public void addQueryData(String name, String value)
+    {
+<span class="fc" id="L476">        add(QUERY_DATA, name, value);</span>
+<span class="fc" id="L477">    }</span>
+
+    /**
+     * Adds a name=value pair to the query string.
+     *
+     * @param name A String with the name to add.
+     * @param value A double with the value to add.
+     */
+    public void addQueryData(String name, double value)
+    {
+<span class="nc" id="L487">        add(QUERY_DATA, name, Double.toString(value));</span>
+<span class="nc" id="L488">    }</span>
+
+    /**
+     * Adds a name=value pair to the query string.
+     *
+     * @param name A String with the name to add.
+     * @param value An int with the value to add.
+     */
+    public void addQueryData(String name, int value)
+    {
+<span class="fc" id="L498">        add(QUERY_DATA, name, Integer.toString(value));</span>
+<span class="fc" id="L499">    }</span>
+
+    /**
+     * Adds a name=value pair to the query string.
+     *
+     * @param name A String with the name to add.
+     * @param value A long with the value to add.
+     */
+    public void addQueryData(String name, long value)
+    {
+<span class="nc" id="L509">        add(QUERY_DATA, name, Long.toString(value));</span>
+<span class="nc" id="L510">    }</span>
+
+    /**
+     * Adds a name=value pair for every entry in a ParameterParser
+     * object to the query string.
+     *
+     * @param pp A ParameterParser.
+     */
+    public void addQueryData(ParameterParser pp)
+    {
+<span class="nc" id="L520">        add(QUERY_DATA, pp);</span>
+<span class="nc" id="L521">    }</span>
+
+    /**
+     * Adds an existing List of URIParam objects to the query data.
+     *
+     * @param list A list with URIParam objects.
+     */
+    public void addQueryData(List&lt;URIParam&gt; list)
+    {
+<span class="nc" id="L530">        add(QUERY_DATA, list);</span>
+<span class="nc" id="L531">    }</span>
+
+    /**
+     * Is Path Info data set in this URI?
+     *
+     * @return true if Path Info has values
+     */
+    public boolean hasPathInfo()
+    {
+<span class="fc bfc" id="L540" title="All 2 branches covered.">        return !dataVectors[PATH_INFO].isEmpty();</span>
+    }
+
+    /**
+     * Removes all the path info elements.
+     */
+    public void removePathInfo()
+    {
+<span class="nc" id="L548">        dataVectors[PATH_INFO].clear();</span>
+<span class="nc" id="L549">    }</span>
+
+    /**
+     * Removes a name=value pair from the path info.
+     *
+     * @param name A String with the name to be removed.
+     */
+    public void removePathInfo(String name)
+    {
+<span class="fc" id="L558">        remove(PATH_INFO, name);</span>
+<span class="fc" id="L559">    }</span>
+
+    /**
+     * Is Query data set in this URI?
+     *
+     * @return true if Query data has values
+     */
+    public boolean hasQueryData()
+    {
+<span class="fc bfc" id="L568" title="All 2 branches covered.">        return !dataVectors[QUERY_DATA].isEmpty();</span>
+    }
+
+    /**
+     * Removes all the query string elements.
+     */
+    public void removeQueryData()
+    {
+<span class="nc" id="L576">        dataVectors[QUERY_DATA].clear();</span>
+<span class="nc" id="L577">    }</span>
+
+    /**
+     * Removes a name=value pair from the query string.
+     *
+     * @param name A String with the name to be removed.
+     */
+    public void removeQueryData(String name)
+    {
+<span class="fc" id="L586">        remove (QUERY_DATA, name);</span>
+<span class="fc" id="L587">    }</span>
+
+    /**
+     * Template Link and friends want to be able to turn the encoding
+     * of the servlet container off. After calling this method,
+     * the no encoding will happen any longer. If you think, that you
+     * need this outside a template context, think again.
+     */
+    public void clearResponse()
+    {
+<span class="fc" id="L597">        setResponse(null);</span>
+<span class="fc" id="L598">    }</span>
+
+
+    /**
+     * Builds the URL with all of the data URL-encoded as well as
+     * encoded using HttpServletResponse.encodeUrl(). The resulting
+     * URL is absolute; it starts with http/https...
+     *
+     * &lt;pre&gt;
+     * TurbineURI tui = new TurbineURI (data, &quot;UserScreen&quot;);
+     * tui.addPathInfo(&quot;user&quot;,&quot;jon&quot;);
+     * tui.getAbsoluteLink();
+     * &lt;/pre&gt;
+     *
+     *  The above call to absoluteLink() would return the String:
+     *
+     * &lt;p&gt;
+     * http://www.server.com/servlets/Turbine/screen/UserScreen/user/jon
+     * &lt;/p&gt;
+     *
+     * @return A String with the built URL.
+     */
+    public String getAbsoluteLink()
+    {
+<span class="fc" id="L622">        StringBuilder output = new StringBuilder();</span>
+
+<span class="fc" id="L624">        getSchemeAndPort(output);</span>
+
+<span class="fc" id="L626">        buildRelativeLink(output);</span>
+
+        //
+        // Encode Response does all the fixup for the Servlet Container
+        //
+<span class="fc" id="L631">        return encodeResponse(output.toString());</span>
+    }
+
+    /**
+     * Builds the URL with all of the data URL-encoded as well as
+     * encoded using HttpServletResponse.encodeUrl(). The resulting
+     * URL is relative to the webserver root.
+     *
+     * &lt;pre&gt;
+     * TurbineURI tui = new TurbineURI (data, &quot;UserScreen&quot;);
+     * tui.addPathInfo(&quot;user&quot;,&quot;jon&quot;);
+     * tui.getRelativeLink();
+     * &lt;/pre&gt;
+     *
+     *  The above call to relativeLink() would return the String:
+     *
+     * &lt;p&gt;
+     * /servlets/Turbine/screen/UserScreen/user/jon
+     * &lt;/p&gt;
+     *
+     * @return A String with the built URL.
+     */
+    public String getRelativeLink()
+    {
+<span class="fc" id="L655">        StringBuilder output = new StringBuilder();</span>
+
+<span class="fc" id="L657">        buildRelativeLink(output);</span>
+
+        //
+        // Encode Response does all the fixup for the Servlet Container
+        //
+<span class="fc" id="L662">        return encodeResponse(output.toString());</span>
+    }
+
+    /**
+     * Add everything needed for a relative link to the passed StringBuilder.
+     *
+     * @param output A Stringbuffer
+     */
+    private void buildRelativeLink(StringBuilder output)
+    {
+<span class="fc" id="L672">        getContextAndScript(output);</span>
+
+<span class="fc bfc" id="L674" title="All 2 branches covered.">        if (hasPathInfo())</span>
+        {
+<span class="fc" id="L676">            output.append('/');</span>
+<span class="fc" id="L677">            getPathInfoAsString(output);</span>
+        }
+
+<span class="pc bpc" id="L680" title="1 of 2 branches missed.">        if (hasReference())</span>
+        {
+<span class="nc" id="L682">            output.append('#');</span>
+<span class="nc" id="L683">            output.append(getReference());</span>
+        }
+
+<span class="fc bfc" id="L686" title="All 2 branches covered.">        if (hasQueryData())</span>
+        {
+<span class="fc" id="L688">            output.append('?');</span>
+<span class="fc" id="L689">            getQueryDataAsString(output);</span>
+        }
+<span class="fc" id="L691">    }</span>
+
+    /**
+     * Gets the current Path Info List.
+     *
+     * @return A List which contains all query data keys. The keys
+     * are URIParam objects.
+     */
+    public List&lt;URIParam&gt; getPathInfo()
+    {
+<span class="fc" id="L701">        return dataVectors[PATH_INFO];</span>
+    }
+
+    /**
+     * Sets the Query Data List. Replaces the current query data list
+     * with the one supplied. The list must contain only URIParam
+     * objects!
+     *
+     * @param pathInfo A List with new param objects.
+     */
+
+    public void setPathInfo(List&lt;URIParam&gt; pathInfo)
+    {
+<span class="nc" id="L714">        dataVectors[PATH_INFO] = pathInfo;</span>
+<span class="nc" id="L715">    }</span>
+
+    /**
+     * Gets the current Query Data List.
+     *
+     * @return A List which contains all query data keys. The keys
+     * are URIParam objects.
+     */
+    public List&lt;URIParam&gt; getQueryData()
+    {
+<span class="fc" id="L725">        return dataVectors[QUERY_DATA];</span>
+    }
+
+    /**
+     * Sets the Query Data List. Replaces the current query data list
+     * with the one supplied. The list must contain only URIParam
+     * objects!
+     *
+     * @param queryData A List with new param objects.
+     */
+
+    public void setQueryData(List&lt;URIParam&gt; queryData)
+    {
+<span class="nc" id="L738">        dataVectors[QUERY_DATA] = queryData;</span>
+<span class="nc" id="L739">    }</span>
+
+    /**
+     * Simply calls getAbsoluteLink(). You should not use this in your
+     * code unless you have to. Use getAbsoluteLink.
+     *
+     * @return This URI as a String
+     *
+     */
+    @Override
+    public String toString()
+    {
+<span class="fc" id="L751">        return getAbsoluteLink();</span>
+    }
+
+    /*
+     * ========================================================================
+     *
+     * Protected / Private Methods
+     *
+     * ========================================================================
+     *
+     */
+
+    /**
+     * Returns the Path Info data as a String.
+     *
+     * @param output The StringBuilder that should hold the path info.
+     */
+    private void getPathInfoAsString(StringBuilder output)
+    {
+<span class="fc" id="L770">        doEncode(output, dataVectors[PATH_INFO], &quot;/&quot;, &quot;/&quot;);</span>
+<span class="fc" id="L771">    }</span>
+
+    /**
+     * Returns the Query data as a String.
+     *
+     * @param output The StringBuilder that should hold the query data.
+     */
+    private void getQueryDataAsString(StringBuilder output)
+    {
+<span class="fc" id="L780">        doEncode(output, dataVectors[QUERY_DATA], &quot;&amp;&quot;, &quot;=&quot;);</span>
+<span class="fc" id="L781">    }</span>
+
+    /**
+     * URL encode the given string, catching possible Exceptions
+     *
+     * @param string the string
+     * @return the encoded string
+     */
+    private String urlEncode(String string)
+    {
+        try
+        {
+            // Java10: return URLEncoder.encode(string, parameterEncoding);
+<span class="fc" id="L794">            return URLEncoder.encode(string, parameterEncoding.name());</span>
+        }
+<span class="nc" id="L796">        catch (UnsupportedEncodingException e)</span>
+        {
+<span class="nc" id="L798">            log.warn(&quot;Unsupported encoding {}&quot;, parameterEncoding);</span>
+        }
+
+<span class="nc" id="L801">        return StringUtils.EMPTY;</span>
+    }
+
+    /**
+     * Does the actual encoding for pathInfoAsString and queryDataAsString.
+     *
+     * @param output The String builder that should contain the information.
+     * @param list A list of key to value pairs
+     * @param fieldDelim A char which is used to separate key/value pairs
+     * @param valueDelim A char which is used to separate key and value
+     */
+    private void doEncode(StringBuilder output, Collection&lt;URIParam&gt; list, String fieldDelim, String valueDelim)
+    {
+<span class="pc bpc" id="L814" title="1 of 2 branches missed.">        if(!list.isEmpty())</span>
+        {
+<span class="fc" id="L816">            output.append(list.stream()</span>
+<span class="fc" id="L817">                    .map(uriParam -&gt;</span>
+<span class="fc" id="L818">                        String.join(</span>
+                                valueDelim,
+<span class="fc" id="L820">                                urlEncode(uriParam.getKey()),</span>
+<span class="fc" id="L821">                                urlEncode(Objects.toString(uriParam.getValue()))))</span>
+<span class="fc" id="L822">                    .collect(Collectors.joining(fieldDelim)));</span>
+        }
+<span class="fc" id="L824">    }</span>
+
+    /**
+     * If the type is PATH_INFO, then add name/value to the pathInfo
+     * hashtable.
+     * &lt;p&gt;
+     * If the type is QUERY_DATA, then add name/value to the queryData
+     * hashtable.
+     *
+     * @param type Type (PATH_INFO or QUERY_DATA) of insertion.
+     * @param name A String with the name to add.
+     * @param value A String with the value to add.
+     */
+    protected void add(int type,
+            String name,
+            String value)
+    {
+<span class="fc" id="L841">        URIParam uriParam = new URIParam(parserService.convertAndTrim(name), value);</span>
+<span class="fc" id="L842">        dataVectors[type].add(uriParam); // Code so clean you can eat from...</span>
+<span class="fc" id="L843">    }</span>
+
+    /**
+     * Method for a quick way to add all the parameters in a
+     * ParameterParser.
+     *
+     * &lt;p&gt;If the type is P (0), then add name/value to the pathInfo
+     * hashtable.
+     *
+     * &lt;p&gt;If the type is Q (1), then add name/value to the queryData
+     * hashtable.
+     *
+     * @param type Type of insertion (@see #add(char type, String name, String value))
+     * @param pp A ParameterParser.
+     */
+    protected void add(int type,
+            ParameterParser pp)
+    {
+<span class="fc bfc" id="L861" title="All 2 branches covered.">        for(String key : pp.keySet())</span>
+        {
+<span class="pc bpc" id="L863" title="1 of 2 branches missed.">            if (!key.equalsIgnoreCase(CGI_ACTION_PARAM) &amp;&amp;</span>
+<span class="pc bpc" id="L864" title="1 of 2 branches missed.">                    !key.equalsIgnoreCase(CGI_SCREEN_PARAM))</span>
+            {
+<span class="fc" id="L866">                String[] values = pp.getStrings(key);</span>
+<span class="fc bfc" id="L867" title="All 2 branches covered.">                if(values != null)</span>
+                {
+<span class="fc bfc" id="L869" title="All 2 branches covered.">                    for (String value : values)</span>
+                    {
+<span class="fc" id="L871">                        add(type, key, value);</span>
+                    }
+                }
+                else
+                {
+<span class="fc" id="L876">                    add(type, key, &quot;&quot;);</span>
+                }
+            }
+<span class="fc" id="L879">        }</span>
+<span class="fc" id="L880">    }</span>
+
+    /**
+     * Method for a quick way to add all the parameters in a
+     * List with URIParam objects.
+     *
+     * &lt;p&gt;If the type is P (0), then add name/value to the pathInfo
+     * hashtable.
+     *
+     * &lt;p&gt;If the type is Q (1), then add name/value to the queryData
+     * hashtable.
+     *
+     * @param type Type of insertion (@see #add(char type, String name, String value))
+     * @param list A List of URIParam objects
+     */
+    protected void add(int type, List&lt;URIParam&gt; list)
+    {
+<span class="nc" id="L897">        dataVectors[type].addAll(list);</span>
+<span class="nc" id="L898">    }</span>
+
+    /**
+     * If the type is P (0), then remove name/value from the
+     * pathInfo hashtable.
+     *
+     * &lt;p&gt;If the type is Q (1), then remove name/value from the
+     * queryData hashtable.
+     *
+     * @param type Type (P or Q) of removal.
+     * @param name A String with the name to be removed.
+     */
+    protected void remove (int type, String name)
+    {
+<span class="fc" id="L912">        String key = parserService.convertAndTrim(name);</span>
+
+<span class="fc" id="L914">        dataVectors[type].removeIf(uriParam -&gt; key.equals(uriParam.getKey()));</span>
+<span class="fc" id="L915">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

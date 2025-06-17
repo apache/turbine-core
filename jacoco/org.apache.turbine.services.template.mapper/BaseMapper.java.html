@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.template.mapper</a> &gt; <span class="el_source">BaseMapper.java</span></div><h1>BaseMapper.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.template.mapper;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.template.TemplateEngineService;
+import org.apache.turbine.services.template.TemplateService;
+
+/**
+ * A base class for the various mappers which contains common
+ * code.
+ *
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+
+public abstract class BaseMapper
+{
+    /** True if this mapper should cache template -&gt; name mappings */
+<span class="fc" id="L43">    private boolean useCache = false;</span>
+
+    /** Default cache size. Just a number out of thin air. Will be set at init time */
+<span class="fc" id="L46">    private int cacheSize = 5;</span>
+
+    /** The internal template -&gt; name mapping cache */
+<span class="fc" id="L49">    private Map&lt;String, String&gt; templateCache = null;</span>
+
+    /** The name of the default property to pull from the Template Engine Service if the default is requested */
+    protected String defaultProperty;
+
+    /** The separator used to concatenate the result parts for this mapper. */
+    protected char separator;
+
+    // Note: You might _not_ use TurbineTemplate.&lt;xxx&gt; in the C'tor and the init method.
+    // The service isn't configured yet and if you do, the Broker will try to reinit the
+    // Service which leads to an endless loop and a deadlock.
+
+    /**
+     * Default C'tor. If you use this C'tor, you must use
+     * the bean setter to set the various properties needed for
+     * this mapper before first usage.
+     */
+    public BaseMapper()
+<span class="fc" id="L67">    {</span>
+        // empty
+<span class="fc" id="L69">    }</span>
+
+    /**
+     * Get the CacheSize value.
+     * @return the CacheSize value.
+     */
+    public int getCacheSize()
+    {
+<span class="nc" id="L77">        return cacheSize;</span>
+    }
+
+    /**
+     * Set the CacheSize value.
+     * @param cacheSize The new CacheSize value.
+     */
+    public void setCacheSize(int cacheSize)
+    {
+<span class="fc" id="L86">        this.cacheSize = cacheSize;</span>
+<span class="fc" id="L87">    }</span>
+
+    /**
+     * Get the UseCache value.
+     * @return the UseCache value.
+     */
+    public boolean isUseCache()
+    {
+<span class="nc" id="L95">        return useCache;</span>
+    }
+
+    /**
+     * Set the UseCache value.
+     * @param useCache The new UseCache value.
+     */
+    public void setUseCache(boolean useCache)
+    {
+<span class="fc" id="L104">        this.useCache = useCache;</span>
+<span class="fc" id="L105">    }</span>
+
+    /**
+     * Get the DefaultProperty value.
+     * @return the DefaultProperty value.
+     */
+    public String getDefaultProperty()
+    {
+<span class="nc" id="L113">        return defaultProperty;</span>
+    }
+
+    /**
+     * Set the DefaultProperty value.
+     * @param defaultProperty The new DefaultProperty value.
+     */
+    public void setDefaultProperty(String defaultProperty)
+    {
+<span class="fc" id="L122">        this.defaultProperty = defaultProperty;</span>
+<span class="fc" id="L123">    }</span>
+
+    /**
+     * Get the Separator value.
+     * @return the Separator value.
+     */
+    public char getSeparator()
+    {
+<span class="nc" id="L131">        return separator;</span>
+    }
+
+    /**
+     * Set the Separator value.
+     * @param separator The new Separator value.
+     */
+    public void setSeparator(char separator)
+    {
+<span class="fc" id="L140">        this.separator = separator;</span>
+<span class="fc" id="L141">    }</span>
+
+    /**
+     * Initializes the Mapper. Must be called before the mapper might be used.
+     */
+    public void init()
+    {
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        if (useCache)</span>
+        {
+<span class="fc" id="L150">            templateCache = new HashMap&lt;&gt;(cacheSize);</span>
+        }
+<span class="fc" id="L152">    }</span>
+
+    /**
+     * Returns the default name for the passed Template.
+     * If the passed template has no extension,
+     * the default extension is assumed.
+     * If the template is empty, the default template is
+     * returned.
+     *
+     * @param template The template name.
+     *
+     * @return the mapped default name for the template.
+     */
+
+    public String getDefaultName(String template)
+    {
+        // We might get a Name without an extension passed. If yes, then we use
+        // the Default extension
+<span class="fc" id="L170">        TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);</span>
+<span class="fc" id="L171">        TemplateEngineService tes = templateService.getTemplateEngineService(template);</span>
+
+<span class="pc bpc" id="L173" title="1 of 4 branches missed.">        if (StringUtils.isEmpty(template) || (tes == null))</span>
+        {
+<span class="fc" id="L175">            return templateService.getDefaultTemplate();</span>
+        }
+
+<span class="fc" id="L178">        String defaultName = (String) tes.getTemplateEngineServiceConfiguration()</span>
+<span class="fc" id="L179">            .get(defaultProperty);</span>
+
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">        return StringUtils.isEmpty(defaultName)</span>
+<span class="nc" id="L182">            ? templateService.getDefaultTemplate()</span>
+<span class="fc" id="L183">            : defaultName;</span>
+    }
+
+    /**
+     * Return the first match name for the given template name.
+     *
+     * @param template The template name.
+     *
+     * @return The first matching class or template name.
+     */
+    public String getMappedName(String template)
+    {
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(template))</span>
+        {
+<span class="nc" id="L197">            return null;</span>
+        }
+
+<span class="pc bpc" id="L200" title="3 of 4 branches missed.">        if (useCache &amp;&amp; templateCache.containsKey(template))</span>
+        {
+<span class="nc" id="L202">            return templateCache.get(template);</span>
+        }
+
+<span class="fc" id="L205">        String res = doMapping(template);</span>
+
+        // Never cache &quot;null&quot; return values and empty Strings.
+<span class="pc bpc" id="L208" title="3 of 4 branches missed.">        if (useCache &amp;&amp; StringUtils.isNotEmpty(res))</span>
+        {
+<span class="nc" id="L210">            templateCache.put(template, res);</span>
+        }
+
+<span class="fc" id="L213">        return res;</span>
+    }
+
+    /**
+     * The actual mapping implementation class. It
+     * is guaranteed that never an empty or null
+     * template name is passed to it. This might
+     * return null.
+     *
+     * @param template The template name.
+     * @return The mapped class or template name.
+     */
+    public abstract String doMapping(String template);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

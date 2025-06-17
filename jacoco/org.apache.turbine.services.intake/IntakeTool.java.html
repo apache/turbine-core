@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IntakeTool.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.intake</a> &gt; <span class="el_source">IntakeTool.java</span></div><h1>IntakeTool.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.intake;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.fulcrum.intake.IntakeException;
+import org.apache.fulcrum.intake.IntakeService;
+import org.apache.fulcrum.intake.Retrievable;
+import org.apache.fulcrum.intake.model.Group;
+import org.apache.fulcrum.parser.ValueParser;
+import org.apache.fulcrum.pool.Recyclable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.services.pull.ApplicationTool;
+import org.apache.turbine.util.RunData;
+
+
+/**
+ * The main class through which Intake is accessed.  Provides easy access
+ * to the Fulcrum Intake component.
+ *
+ * @author &lt;a href=&quot;mailto:jmcnally@collab.net&quot;&gt;John D. McNally&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:epugh@upstate.com&quot;&gt;Eric Pugh&lt;/a&gt;
+ * @version $Id$
+ */
+public class IntakeTool
+        implements ApplicationTool, Recyclable
+{
+    /** Used for logging */
+<span class="fc" id="L56">    protected static final Logger log = LogManager.getLogger(IntakeTool.class);</span>
+
+    /** Constant for default key */
+    public static final String DEFAULT_KEY = &quot;_0&quot;;
+
+    /** Constant for the hidden fieldname */
+    public static final String INTAKE_GRP = &quot;intake-grp&quot;;
+
+    /** Groups from intake.xml */
+<span class="fc" id="L65">    protected HashMap&lt;String, Group&gt; groups = null;</span>
+
+    /** ValueParser instance */
+    protected ValueParser pp;
+
+<span class="fc" id="L70">    private final HashMap&lt;String, Group&gt; declaredGroups = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L71">    private final StringBuilder allGroupsSB = new StringBuilder(256);</span>
+<span class="fc" id="L72">    private final StringBuilder groupSB = new StringBuilder(128);</span>
+
+    /** The cache of PullHelpers. **/
+<span class="fc" id="L75">    private Map&lt;String, IntakeTool.PullHelper&gt; pullMap = null;</span>
+
+    /**
+     * The Intake service.
+     */
+    @TurbineService
+    protected IntakeService intakeService;
+
+    /**
+     * Constructor
+     */
+    public IntakeTool()
+<span class="fc" id="L87">    {</span>
+<span class="fc" id="L88">    }</span>
+
+    /**
+     * Prepares intake for a single request
+     */
+    @Override
+    public void init(Object runData)
+    {
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        if (groups == null) // Initialize only once</span>
+        {
+<span class="fc" id="L98">            String[] groupNames = intakeService.getGroupNames();</span>
+<span class="fc" id="L99">            int groupCount = 0;</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">            if (groupNames != null)</span>
+            {
+<span class="fc" id="L102">                groupCount = groupNames.length;</span>
+            }
+<span class="fc" id="L104">            groups = new HashMap&lt;&gt;((int) (1.25 * groupCount + 1));</span>
+<span class="fc" id="L105">            pullMap = new HashMap&lt;&gt;((int) (1.25 * groupCount + 1));</span>
+
+<span class="fc bfc" id="L107" title="All 2 branches covered.">            for (int i = groupCount - 1; i &gt;= 0; i--)</span>
+            {
+<span class="fc" id="L109">                pullMap.put(groupNames[i], new PullHelper(groupNames[i]));</span>
+            }
+        }
+
+<span class="fc" id="L113">        this.pp = ((RunData) runData).getParameters();</span>
+
+<span class="fc" id="L115">        String[] groupKeys = pp.getStrings(INTAKE_GRP);</span>
+<span class="fc" id="L116">        String[] groupNames = null;</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">        if (ArrayUtils.isEmpty(groupKeys))</span>
+        {
+<span class="fc" id="L119">            groupNames = intakeService.getGroupNames();</span>
+        }
+        else
+        {
+<span class="nc" id="L123">            groupNames = new String[groupKeys.length];</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            for (int i = groupKeys.length - 1; i &gt;= 0; i--)</span>
+            {
+<span class="nc" id="L126">                groupNames[i] = intakeService.getGroupName(groupKeys[i]);</span>
+            }
+        }
+
+<span class="fc bfc" id="L130" title="All 2 branches covered.">        for (int i = groupNames.length - 1; i &gt;= 0; i--)</span>
+        {
+            try
+            {
+<span class="fc" id="L134">                List&lt;Group&gt; foundGroups = intakeService.getGroup(groupNames[i])</span>
+<span class="fc" id="L135">                    .getObjects(pp);</span>
+
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">                if (foundGroups != null)</span>
+                {
+<span class="nc" id="L139">                    foundGroups.forEach(</span>
+<span class="nc" id="L140">                            group -&gt; groups.put(group.getObjectKey(), group));</span>
+                }
+            }
+<span class="nc" id="L143">            catch (IntakeException e)</span>
+            {
+<span class="nc" id="L145">                log.error(e);</span>
+<span class="fc" id="L146">            }</span>
+        }
+<span class="fc" id="L148">    }</span>
+
+    /**
+     * Add all registered group ids to the value parser
+     *
+     * @param vp the value parser
+     */
+    public void addGroupsToParameters(ValueParser vp)
+    {
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        for (Group group : groups.values())</span>
+        {
+<span class="nc bnc" id="L159" title="All 2 branches missed.">            if (!declaredGroups.containsKey(group.getIntakeGroupName()))</span>
+            {
+<span class="nc" id="L161">                declaredGroups.put(group.getIntakeGroupName(), null);</span>
+<span class="nc" id="L162">                vp.add(&quot;intake-grp&quot;, group.getGID());</span>
+            }
+<span class="nc" id="L164">            vp.add(group.getGID(), group.getOID());</span>
+<span class="nc" id="L165">        }</span>
+<span class="nc" id="L166">        declaredGroups.clear();</span>
+<span class="nc" id="L167">    }</span>
+
+    /**
+     * A convenience method to write out the hidden form fields
+     * that notify intake of the relevant groups.  It should be used
+     * only in templates with 1 form.  In multiform templates, the groups
+     * that are relevant for each form need to be declared using
+     * $intake.newForm() and $intake.declareGroup($group) for the relevant
+     * groups in the form.
+     *
+     * @return the HTML that declares all groups to Intake in hidden input fields
+     *
+     */
+    public String declareGroups()
+    {
+<span class="nc" id="L182">        allGroupsSB.setLength(0);</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">        for (Group group : groups.values())</span>
+        {
+<span class="nc" id="L185">            declareGroup(group, allGroupsSB);</span>
+<span class="nc" id="L186">        }</span>
+<span class="nc" id="L187">        return allGroupsSB.toString();</span>
+    }
+
+    /**
+     * A convenience method to write out the hidden form fields
+     * that notify intake of the group.
+     *
+     * @param group the group to declare
+     * @return the HTML that declares the group to Intake in a hidden input field
+     */
+    public String declareGroup(Group group)
+    {
+<span class="nc" id="L199">        groupSB.setLength(0);</span>
+<span class="nc" id="L200">        declareGroup(group, groupSB);</span>
+<span class="nc" id="L201">        return groupSB.toString();</span>
+    }
+
+    /**
+     * xhtml valid hidden input field(s) that notifies intake of the
+     * group's presence.
+     * @param group the group to declare
+     * @param sb a String Builder where the hidden field HTML will be appended
+     */
+    public void declareGroup(Group group, StringBuilder sb)
+    {
+<span class="nc bnc" id="L212" title="All 2 branches missed.">        if (!declaredGroups.containsKey(group.getIntakeGroupName()))</span>
+        {
+<span class="nc" id="L214">            declaredGroups.put(group.getIntakeGroupName(), null);</span>
+<span class="nc" id="L215">            sb.append(&quot;&lt;input type=\&quot;hidden\&quot; name=\&quot;&quot;)</span>
+<span class="nc" id="L216">                    .append(INTAKE_GRP)</span>
+<span class="nc" id="L217">                    .append(&quot;\&quot; value=\&quot;&quot;)</span>
+<span class="nc" id="L218">                    .append(group.getGID())</span>
+<span class="nc" id="L219">                    .append(&quot;\&quot;/&gt;\n&quot;);</span>
+        }
+<span class="nc" id="L221">        group.appendHtmlFormInput(sb);</span>
+<span class="nc" id="L222">    }</span>
+
+    /**
+     * Declare that a new form starts
+     */
+    public void newForm()
+    {
+<span class="nc" id="L229">        declaredGroups.clear();</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        for (Group group : groups.values())</span>
+        {
+<span class="nc" id="L232">            group.resetDeclared();</span>
+<span class="nc" id="L233">        }</span>
+<span class="nc" id="L234">    }</span>
+
+    /**
+     * Implementation of ApplicationTool interface is not needed for this
+     * tool as it is request scoped
+     */
+    @Override
+    public void refresh()
+    {
+        // empty
+<span class="fc" id="L244">    }</span>
+
+    /**
+     * Inner class to present a nice interface to the template designer
+     */
+    public class PullHelper
+    {
+        /** Name of the group used by the pull helper */
+        String groupName;
+
+        /**
+         * Protected constructor to force use of factory method.
+         *
+         * @param groupName the group name
+         */
+        protected PullHelper(String groupName)
+<span class="fc" id="L260">        {</span>
+<span class="fc" id="L261">            this.groupName = groupName;</span>
+<span class="fc" id="L262">        }</span>
+
+        /**
+         * Populates the object with the default values from the XML File
+         *
+         * @return a Group object with the default values
+         * @throws IntakeException if getting the group fails
+         */
+        public Group getDefault()
+                throws IntakeException
+        {
+<span class="nc" id="L273">            return setKey(DEFAULT_KEY);</span>
+        }
+
+        /**
+         * Calls setKey(key,true)
+         *
+         * @param key the group key
+         * @return an Intake Group
+         * @throws IntakeException if getting the group fails
+         */
+        public Group setKey(String key)
+                throws IntakeException
+        {
+<span class="nc" id="L286">            return setKey(key, true);</span>
+        }
+
+        /**
+         * Return the group identified by its key
+         *
+         * @param key the group key
+         * @param create true if a non-existing group should be created
+         * @return an Intake Group
+         * @throws IntakeException if getting the group fails
+         */
+        public Group setKey(String key, boolean create)
+                throws IntakeException
+        {
+<span class="fc" id="L300">            Group g = null;</span>
+
+<span class="fc" id="L302">            String inputKey = intakeService.getGroupKey(groupName) + key;</span>
+<span class="pc bpc" id="L303" title="1 of 2 branches missed.">            if (groups.containsKey(inputKey))</span>
+            {
+<span class="nc" id="L305">                g = groups.get(inputKey);</span>
+            }
+<span class="pc bpc" id="L307" title="1 of 2 branches missed.">            else if (create)</span>
+            {
+<span class="fc" id="L309">                g = intakeService.getGroup(groupName);</span>
+<span class="fc" id="L310">                groups.put(inputKey, g);</span>
+<span class="fc" id="L311">                g.init(key, pp);</span>
+            }
+
+<span class="fc" id="L314">            return g;</span>
+        }
+
+        /**
+         * maps an Intake Group to the values from a Retrievable object.
+         *
+         * @param obj A retrievable object
+         * @return an Intake Group
+         */
+        public Group mapTo(Retrievable obj)
+        {
+<span class="nc" id="L325">            Group g = null;</span>
+
+            try
+            {
+<span class="nc" id="L329">                String inputKey = intakeService.getGroupKey(groupName)</span>
+<span class="nc" id="L330">                        + obj.getQueryKey();</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">                if (groups.containsKey(inputKey))</span>
+                {
+<span class="nc" id="L333">                    g = groups.get(inputKey);</span>
+                }
+                else
+                {
+<span class="nc" id="L337">                    g = intakeService.getGroup(groupName);</span>
+<span class="nc" id="L338">                    groups.put(inputKey, g);</span>
+                }
+
+<span class="nc" id="L341">                return g.init(obj);</span>
+            }
+<span class="nc" id="L343">            catch (IntakeException e)</span>
+            {
+<span class="nc" id="L345">                log.error(e);</span>
+            }
+
+<span class="nc" id="L348">            return null;</span>
+        }
+    }
+
+    /**
+     * get a specific group
+     * @param groupName the name of the group
+     * @return a {@link PullHelper} wrapper around the group
+     */
+    public PullHelper get(String groupName)
+    {
+<span class="fc" id="L359">        return pullMap.get(groupName);</span>
+    }
+
+    /**
+     * Get a specific group
+     *
+     * @param groupName the name of the group
+     * @param throwExceptions if false, exceptions will be suppressed.
+     * @return a {@link PullHelper} wrapper around the group
+     * @throws IntakeException could not retrieve group
+     */
+    public PullHelper get(String groupName, boolean throwExceptions)
+            throws IntakeException
+    {
+<span class="nc" id="L373">        return pullMap.get(groupName);</span>
+    }
+
+    /**
+     * Loops through all of the Groups and checks to see if
+     * the data within the Group is valid.
+     * @return true if all groups are valid
+     */
+    public boolean isAllValid()
+    {
+<span class="nc" id="L383">        boolean allValid = true;</span>
+<span class="nc bnc" id="L384" title="All 2 branches missed.">        for (Group group : groups.values())</span>
+        {
+<span class="nc" id="L386">            allValid &amp;= group.isAllValid();</span>
+<span class="nc" id="L387">        }</span>
+<span class="nc" id="L388">        return allValid;</span>
+    }
+
+    /**
+     * Get a specific group by name and key.
+     * @param groupName the name of the group
+     * @param key the key for the group
+     * @return the {@link Group}
+     * @throws IntakeException if the group could not be retrieved
+     */
+    public Group get(String groupName, String key)
+            throws IntakeException
+    {
+<span class="fc" id="L401">        return get(groupName, key, true);</span>
+    }
+
+    /**
+     * Get a specific group by name and key. Also specify
+     * whether or not you want to create a new group.
+     * @param groupName the name of the group
+     * @param key the key for the group
+     * @param create true if a new group should be created
+     * @return the {@link Group}
+     * @throws IntakeException if the group could not be retrieved
+     */
+    public Group get(String groupName, String key, boolean create)
+            throws IntakeException
+    {
+<span class="pc bpc" id="L416" title="1 of 2 branches missed.">        if (groupName == null)</span>
+        {
+<span class="nc" id="L418">            throw new IntakeException(&quot;intakeService.get: groupName == null&quot;);</span>
+        }
+<span class="pc bpc" id="L420" title="1 of 2 branches missed.">        if (key == null)</span>
+        {
+<span class="nc" id="L422">            throw new IntakeException(&quot;intakeService.get: key == null&quot;);</span>
+        }
+
+<span class="fc" id="L425">        PullHelper ph = get(groupName);</span>
+<span class="pc bpc" id="L426" title="1 of 2 branches missed.">        return (ph == null) ? null : ph.setKey(key, create);</span>
+    }
+
+    /**
+     * Removes group.  Primary use is to remove a group that has
+     * been processed by an action and is no longer appropriate
+     * in the view (screen).
+     * @param group the group instance to remove
+     */
+    public void remove(Group group)
+    {
+<span class="nc bnc" id="L437" title="All 2 branches missed.">        if (group != null)</span>
+        {
+<span class="nc" id="L439">            groups.remove(group.getObjectKey());</span>
+<span class="nc" id="L440">            group.removeFromRequest();</span>
+
+<span class="nc" id="L442">            String[] groupKeys = pp.getStrings(INTAKE_GRP);</span>
+
+<span class="nc" id="L444">            pp.remove(INTAKE_GRP);</span>
+
+<span class="nc bnc" id="L446" title="All 2 branches missed.">			if (groupKeys != null)</span>
+			{
+<span class="nc bnc" id="L448" title="All 2 branches missed.">		        for (String groupKey : groupKeys)</span>
+                {
+<span class="nc bnc" id="L450" title="All 2 branches missed.">		            if (!groupKey.equals(group.getGID()))</span>
+		            {
+<span class="nc" id="L452">		                 pp.add(INTAKE_GRP, groupKey);</span>
+		            }
+                }
+		    }
+
+            try
+            {
+<span class="nc" id="L459">                intakeService.releaseGroup(group);</span>
+            }
+<span class="nc" id="L461">            catch (IntakeException ie)</span>
+            {
+<span class="nc" id="L463">                log.error(&quot;Tried to release unknown group {}&quot;, group.getIntakeGroupName(), ie);</span>
+<span class="nc" id="L464">            }</span>
+        }
+<span class="nc" id="L466">    }</span>
+
+    /**
+     * Removes all groups.  Primary use is to remove groups that have
+     * been processed by an action and are no longer appropriate
+     * in the view (screen).
+     */
+    public void removeAll()
+    {
+<span class="nc" id="L475">        Object[] allGroups = groups.values().toArray();</span>
+<span class="nc bnc" id="L476" title="All 2 branches missed.">        for (int i = allGroups.length - 1; i &gt;= 0; i--)</span>
+        {
+<span class="nc" id="L478">            Group group = (Group) allGroups[i];</span>
+<span class="nc" id="L479">            remove(group);</span>
+        }
+<span class="nc" id="L481">    }</span>
+
+    /**
+     * Get a Map containing all the groups.
+     *
+     * @return the Group Map
+     */
+    public Map&lt;String, Group&gt; getGroups()
+    {
+<span class="fc" id="L490">        return groups;</span>
+    }
+
+    // ****************** Recyclable implementation ************************
+
+    private boolean disposed;
+
+    /**
+     * Recycles the object for a new client. Recycle methods with
+     * parameters must be added to implementing object and they will be
+     * automatically called by pool implementations when the object is
+     * taken from the pool for a new client. The parameters must
+     * correspond to the parameters of the constructors of the object.
+     * For new objects, constructors can call their corresponding recycle
+     * methods whenever applicable.
+     * The recycle methods must call their super.
+     */
+    @Override
+    public void recycle()
+    {
+<span class="nc" id="L510">        disposed = false;</span>
+<span class="nc" id="L511">    }</span>
+
+    /**
+     * Disposes the object after use. The method is called
+     * when the object is returned to its pool.
+     * The dispose method must call its super.
+     */
+    @Override
+    public void dispose()
+    {
+<span class="nc bnc" id="L521" title="All 2 branches missed.">        for (Group group : groups.values())</span>
+        {
+            try
+            {
+<span class="nc" id="L525">                intakeService.releaseGroup(group);</span>
+            }
+<span class="nc" id="L527">            catch (IntakeException ie)</span>
+            {
+<span class="nc" id="L529">                log.error(&quot;Tried to release unknown group {}&quot;,</span>
+<span class="nc" id="L530">                        group.getIntakeGroupName(), ie);</span>
+<span class="nc" id="L531">            }</span>
+<span class="nc" id="L532">        }</span>
+
+<span class="nc" id="L534">        groups.clear();</span>
+<span class="nc" id="L535">        declaredGroups.clear();</span>
+<span class="nc" id="L536">        pp = null;</span>
+
+<span class="nc" id="L538">        disposed = true;</span>
+<span class="nc" id="L539">    }</span>
+
+    /**
+     * Checks whether the recyclable has been disposed.
+     *
+     * @return true, if the recyclable is disposed.
+     */
+    @Override
+    public boolean isDisposed()
+    {
+<span class="nc" id="L549">        return disposed;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

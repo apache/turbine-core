@@ -1,0 +1,927 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util</a> &gt; <span class="el_source">TurbineConfig.java</span></div><h1>TurbineConfig.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.EventListener;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.Vector;
+
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterRegistration;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRegistration;
+import jakarta.servlet.ServletRegistration.Dynamic;
+import jakarta.servlet.SessionCookieConfig;
+import jakarta.servlet.SessionTrackingMode;
+import jakarta.servlet.descriptor.JspConfigDescriptor;
+
+import org.apache.avalon.framework.activity.Disposable;
+import org.apache.avalon.framework.activity.Initializable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+
+/**
+ * A class used for initialization of Turbine without a servlet container.
+ * &lt;p&gt;
+ * If you need to use Turbine outside of a servlet container, you can
+ * use this class for initialization of the Turbine servlet.
+ * &lt;/p&gt;
+ *
+ * &lt;pre&gt;
+ * TurbineConfig config = new TurbineConfig(&quot;.&quot;, &quot;conf/TurbineResources.properties&quot;);
+ * &lt;/pre&gt;
+ *
+ * &lt;p&gt;
+ * All paths referenced in TurbineResources.properties and the path to
+ * the properties file itself (the second argument) will be resolved
+ * relative to the directory given as the first argument of the constructor,
+ * here - the directory where application was started. Don't worry about
+ * discarding the references to objects created above. They are not needed,
+ * once everything is initialized.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * In order to initialize the Services Framework outside of the Turbine Servlet,
+ * you need to call the &lt;code&gt;init()&lt;/code&gt; method. By default, this will
+ * initialize the Resource and Logging Services and any other services you
+ * have defined in your TurbineResources.properties file.
+ * &lt;/p&gt;
+ *
+ * TODO Make this class enforce the lifecycle contracts
+ * 
+ * @see &lt;a href=&quot;https://jakarta.ee/specifications/servlet/6.1/jakarta-servlet-spec-6.1&quot;&gt;Java Servlet Spec v6.1&lt;/a&gt;
+ *
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:krzewski@e-point.pl&quot;&gt;Rafal Krzewski&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:jon@latchkey.com&quot;&gt;Jon S. Stevens&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:dlr@collab.net&quot;&gt;Daniel Rall&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:epugh@upstate.com&quot;&gt;Eric Pugh&lt;/a&gt;
+ * @version $Id$
+ */
+public class TurbineConfig
+        implements ServletConfig, ServletContext, Initializable, Disposable
+{
+
+<span class="fc" id="L102">    @TurbineConfiguration( TurbineConstants.SESSION_TIMEOUT_KEY )</span>
+    protected int timeout = TurbineConstants.SESSION_TIMEOUT_DEFAULT;
+
+    /**
+     * Servlet initialization parameter name for the path to
+     * TurbineConfiguration.xml file used by Turbine
+     */
+    public static final String CONFIGURATION_PATH_KEY = &quot;configuration&quot;;
+
+    /**
+     * Servlet initialization parameter name for the path to
+     * Turbine.properties file used by Turbine
+     */
+    public static final String PROPERTIES_PATH_KEY = &quot;properties&quot;;
+
+    /**
+     * Default value of TurbineResources.properties file path
+     * (&lt;code&gt;/WEB-INF/conf/TurbineResources.properties&lt;/code&gt;).
+     */
+    public static final String PROPERTIES_PATH_DEFAULT =
+            &quot;/WEB-INF/conf/TurbineResources.properties&quot;;
+
+    /** Filenames are looked up in this directory. */
+    protected File root;
+
+    /** Servlet container (or emulator) attributes. */
+    protected Map&lt;String, Object&gt; attributes;
+
+    /** Turbine servlet initialization parameters. */
+    protected Map&lt;String, String&gt; initParams;
+
+    /** The Turbine servlet instance used for initialization. */
+    private Turbine turbine;
+
+    /** Logging */
+<span class="fc" id="L137">    private final Logger log = LogManager.getLogger(this.getClass());</span>
+
+    /**
+     * Constructs a new TurbineConfig.
+     *
+     * This is the general form of the constructor. You can provide
+     * a path to search for files, and a name-value map of init
+     * parameters.
+     *
+     * &lt;p&gt; For the list of recognized init parameters, see
+     * {@link org.apache.turbine.Turbine} class.
+     *
+     * @param path The web application root (i.e. the path for file lookup).
+     * @param attributes Servlet container (or emulator) attributes.
+     * @param initParams initialization parameters.
+     */
+    public TurbineConfig(String path, Map&lt;String, Object&gt; attributes,
+            Map&lt;String, String&gt; initParams)
+<span class="fc" id="L155">    {</span>
+<span class="fc" id="L156">        root = new File(path);</span>
+<span class="fc" id="L157">        this.attributes = attributes;</span>
+<span class="fc" id="L158">        this.initParams = initParams;</span>
+<span class="fc" id="L159">    }</span>
+
+    /**
+     * Constructs a new TurbineConfig.
+     *
+     * This is the general form of the constructor. You can provide
+     * a path to search for files, and a name-value map of init
+     * parameters.
+     *
+     * &lt;p&gt; For the list of recognized init parameters, see
+     * {@link org.apache.turbine.Turbine} class.
+     *
+     * @param path The web application root (i.e. the path for file lookup).
+     * @param initParams initialization parameters.
+     */
+    public TurbineConfig(String path, Map&lt;String, String&gt; initParams)
+    {
+<span class="fc" id="L176">        this(path, new HashMap&lt;&gt;(0), initParams);</span>
+<span class="fc" id="L177">    }</span>
+
+    /**
+     * Constructs a TurbineConfig.
+     *
+     * This is a specialized constructor that allows to configure
+     * Turbine easily in the common setups.
+     *
+     * Check also {@link TurbineXmlConfig} to load a {@link #CONFIGURATION_PATH_KEY}.
+     *
+     * @param path The web application root (i.e. the path for file lookup).
+     * @param properties the relative path to TurbineResources.properties file
+     */
+    public TurbineConfig(String path, String properties)
+    {
+<span class="fc" id="L192">        this(path, new HashMap&lt;String, String&gt;(1));</span>
+<span class="fc" id="L193">        initParams.put(PROPERTIES_PATH_KEY, properties);</span>
+<span class="fc" id="L194">    }</span>
+
+    /**
+     * Causes this class to initialize itself which in turn initializes
+     * all of the Turbine Services that need to be initialized.
+     */
+    @Override
+    public void initialize()
+    {
+        try
+        {
+<span class="fc" id="L205">            turbine = new Turbine();</span>
+<span class="fc" id="L206">            turbine.init(this);</span>
+        }
+<span class="fc" id="L208">        catch (Exception e)</span>
+        {
+<span class="fc" id="L210">            log.error(&quot;TurbineConfig: Initialization failed&quot;, e);</span>
+<span class="fc" id="L211">        }</span>
+<span class="fc" id="L212">    }</span>
+
+    /**
+     * Initialization requiring a HTTP &lt;code&gt;GET&lt;/code&gt; request.
+     * @param data the Turbine request
+     */
+    public void init(RunData data)
+    {
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        if (turbine != null)</span>
+        {
+<span class="nc" id="L222">            turbine.init(data);</span>
+        }
+<span class="nc" id="L224">    }</span>
+
+    /**
+     * Shutdown the Turbine System, lifecycle style
+     *
+     */
+    @Override
+    public void dispose()
+    {
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">        if (turbine != null)</span>
+        {
+<span class="fc" id="L235">            turbine.destroy();</span>
+        }
+<span class="fc" id="L237">    }</span>
+
+    /**
+     * Returns a reference to the Turbine servlet that was initialized.
+     *
+     * @return a ServletContext reference
+     */
+    public Turbine getTurbine()
+    {
+<span class="fc" id="L246">        return turbine;</span>
+    }
+
+    /**
+     * Returns a reference to the object cast onto ServletContext type.
+     *
+     * @return a ServletContext reference
+     */
+    @Override
+    public ServletContext getServletContext()
+    {
+<span class="fc" id="L257">        return this;</span>
+    }
+
+    /**
+     * Translates a path relative to the web application root into an
+     * absolute path.
+     *
+     * @param path A path relative to the web application root.
+     * @return An absolute version of the supplied path, or &lt;code&gt;null&lt;/code&gt;
+     * if the translated path doesn't map to a file or directory.
+     */
+    @Override
+    public String getRealPath(String path)
+    {
+<span class="fc" id="L271">        String result = null;</span>
+<span class="fc" id="L272">        File f = new File(root, path);</span>
+
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">        if (log.isDebugEnabled())</span>
+        {
+<span class="fc" id="L276">            log.debug(&quot;TurbineConfig.getRealPath: path '{}' translated to '{}' {}found&quot;,</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">                    path, f.getPath(), f.exists() ? &quot;&quot; : &quot;not &quot;);</span>
+        }
+
+<span class="fc bfc" id="L280" title="All 2 branches covered.">        if (f.exists())</span>
+        {
+<span class="fc" id="L282">          result = f.getPath();</span>
+        }
+        else
+        {
+<span class="fc" id="L286">            log.error(&quot;getRealPath(\&quot;{}\&quot;) is undefined, returning null&quot;, path);</span>
+        }
+
+<span class="fc" id="L289">        return result;</span>
+    }
+
+    /**
+     * Retrieves an initialization parameter.
+     *
+     * @param name the name of the parameter.
+     * @return the value of the parameter.
+     */
+    @Override
+    public String getInitParameter(String name)
+    {
+<span class="fc" id="L301">        return initParams.get(name);</span>
+    }
+
+    /**
+     * Retrieves an Enumeration of initialization parameter names.
+     *
+     * @return an Enumeration of initialization parameter names.
+     */
+    @Override
+    public Enumeration&lt;String&gt; getInitParameterNames()
+    {
+<span class="nc" id="L312">        return new Vector&lt;&gt;(initParams.keySet()).elements();</span>
+    }
+
+    /**
+     * Returns the servlet name.
+     *
+     * Fixed value &quot;Turbine&quot; is returned.
+     *
+     * @return the servlet name.
+     */
+    @Override
+    public String getServletName()
+    {
+<span class="nc" id="L325">        return &quot;Turbine&quot;;</span>
+    }
+
+    /**
+     * Returns the context name.
+     *
+     * Fixed value &quot;Turbine&quot; is returned
+     *
+     * @return the context name
+     */
+    @Override
+    public String getServletContextName()
+    {
+<span class="nc" id="L338">        return &quot;Turbine&quot;;</span>
+    }
+
+    /**
+     * Returns the context path.
+     *
+     * Fixed value &quot;/turbine&quot; is returned
+     *
+     * @return the context path
+     */
+    @Override
+    public String getContextPath()
+    {
+<span class="nc" id="L351">        return &quot;/turbine&quot;;</span>
+	}
+
+	/**
+     * Returns a URL to the resource that is mapped to a specified
+     * path. The path must begin with a &quot;/&quot; and is interpreted
+     * as relative to the current context root.
+     *
+     * @param s the path to the resource
+     * @return a URL pointing to the resource
+     * @throws MalformedURLException if unable to parse path
+     */
+    @Override
+    public URL getResource(String s)
+            throws MalformedURLException
+    {
+<span class="nc" id="L367">        return new URL(&quot;file://&quot; + getRealPath(s));</span>
+    }
+
+    /**
+     * Returns the resource located at the named path as
+     * an &lt;code&gt;InputStream&lt;/code&gt; object.
+     *
+     * @param s the path to the resource
+     * @return an InputStream object from which the resource can be read
+     */
+    @Override
+    public InputStream getResourceAsStream(String s)
+    {
+        try
+        {
+<span class="fc" id="L382">            FileInputStream fis = new FileInputStream(getRealPath(s));</span>
+<span class="fc" id="L383">            return new BufferedInputStream(fis);</span>
+        }
+<span class="nc" id="L385">        catch (FileNotFoundException e)</span>
+        {
+<span class="nc" id="L387">            return null;</span>
+        }
+    }
+
+    /**
+     * Logs a message.
+     *
+     * @param m a message.
+     */
+    @Override
+    public void log(String m)
+    {
+<span class="nc" id="L399">        log.info(m);</span>
+<span class="nc" id="L400">    }</span>
+
+    /**
+     * Logs an error message.
+     *
+     * @param t a Throwable object.
+     * @param m a message.
+     */
+    @Override
+    public void log(String m, Throwable t)
+    {
+<span class="nc" id="L411">        log.info(m, t);</span>
+<span class="nc" id="L412">    }</span>
+
+    /**
+     * Returns the servlet container attribute with the given name, or
+     * null if there is no attribute by that name.
+     */
+    @Override
+    public Object getAttribute(String s)
+    {
+<span class="nc" id="L421">        return attributes.get(s);</span>
+    }
+
+    /**
+     * Returns an Enumeration containing the attribute names available
+     * within this servlet context.
+     */
+    @Override
+    public Enumeration&lt;String&gt; getAttributeNames()
+    {
+<span class="nc" id="L431">        return new Vector&lt;&gt;(attributes.keySet()).elements();</span>
+    }
+
+    // Unimplemented methods follow
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletConfig or ServletContext interface that is not
+     * implemented and will throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt;
+     * upon invocation
+     */
+    @Override
+    public ServletContext getContext(String s)
+    {
+<span class="nc" id="L446">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletConfig or ServletContext interface that is not
+     * implemented and will throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt;
+     * upon invocation
+     */
+    @Override
+    public int getMajorVersion()
+    {
+<span class="nc" id="L459">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletConfig or ServletContext interface that is not
+     * implemented and will throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt;
+     * upon invocation
+     */
+    @Override
+    public String getMimeType(String s)
+    {
+<span class="nc" id="L472">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletConfig or ServletContext interface that is not
+     * implemented and will throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt;
+     * upon invocation
+     */
+    @Override
+    public int getMinorVersion()
+    {
+<span class="nc" id="L485">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletConfig or ServletContext interface that is not
+     * implemented and will throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt;
+     * upon invocation
+     */
+    @Override
+    public RequestDispatcher getNamedDispatcher(String s)
+    {
+<span class="nc" id="L498">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletConfig or ServletContext interface that is not
+     * implemented and will throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt;
+     * upon invocation
+     */
+    @Override
+    public RequestDispatcher getRequestDispatcher(String s)
+    {
+<span class="nc" id="L511">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext (2.3) interface that is not implemented and
+     * will throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public Set&lt;String&gt; getResourcePaths(String s)
+    {
+<span class="nc" id="L523">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext (2.3) interface that is not implemented and
+     * will throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public String getServerInfo()
+    {
+<span class="nc" id="L535">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public void removeAttribute(String s)
+    {
+<span class="nc" id="L547">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public void setAttribute(String s, Object o)
+    {
+<span class="nc" id="L559">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public int getEffectiveMajorVersion()
+    {
+<span class="nc" id="L571">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public int getEffectiveMinorVersion()
+    {
+<span class="nc" id="L583">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public boolean setInitParameter(String name, String value)
+    {
+<span class="nc" id="L595">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public Dynamic addServlet(String servletName, String className)
+    {
+<span class="nc" id="L607">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public Dynamic addServlet(String servletName, Servlet servlet)
+    {
+<span class="nc" id="L619">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public Dynamic addServlet(String servletName, Class&lt;? extends Servlet&gt; servletClass)
+    {
+<span class="nc" id="L631">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public &lt;T extends Servlet&gt; T createServlet(Class&lt;T&gt; clazz) throws ServletException
+    {
+<span class="nc" id="L643">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public ServletRegistration getServletRegistration(String servletName)
+    {
+<span class="nc" id="L655">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public Map&lt;String, ? extends ServletRegistration&gt; getServletRegistrations()
+    {
+<span class="nc" id="L667">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public jakarta.servlet.FilterRegistration.Dynamic addFilter(String filterName, String className)
+    {
+<span class="nc" id="L679">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public jakarta.servlet.FilterRegistration.Dynamic addFilter(String filterName, Filter filter)
+    {
+<span class="nc" id="L691">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public jakarta.servlet.FilterRegistration.Dynamic addFilter(String filterName, Class&lt;? extends Filter&gt; filterClass)
+    {
+<span class="nc" id="L703">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public &lt;T extends Filter&gt; T createFilter(Class&lt;T&gt; clazz) throws ServletException
+    {
+<span class="nc" id="L715">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public FilterRegistration getFilterRegistration(String filterName)
+    {
+<span class="nc" id="L727">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public Map&lt;String, ? extends FilterRegistration&gt; getFilterRegistrations()
+    {
+<span class="nc" id="L739">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public SessionCookieConfig getSessionCookieConfig()
+    {
+<span class="nc" id="L751">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public void setSessionTrackingModes(Set&lt;SessionTrackingMode&gt; sessionTrackingModes)
+    {
+<span class="nc" id="L763">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public Set&lt;SessionTrackingMode&gt; getDefaultSessionTrackingModes()
+    {
+<span class="nc" id="L775">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public Set&lt;SessionTrackingMode&gt; getEffectiveSessionTrackingModes()
+    {
+<span class="nc" id="L787">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public void addListener(String className)
+    {
+<span class="nc" id="L799">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public &lt;T extends EventListener&gt; void addListener(T t)
+    {
+<span class="nc" id="L811">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public void addListener(Class&lt;? extends EventListener&gt; listenerClass)
+    {
+<span class="nc" id="L823">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public &lt;T extends EventListener&gt; T createListener(Class&lt;T&gt; clazz) throws ServletException
+    {
+<span class="nc" id="L835">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public JspConfigDescriptor getJspConfigDescriptor()
+    {
+<span class="nc" id="L847">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public ClassLoader getClassLoader()
+    {
+<span class="nc" id="L859">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public void declareRoles(String... roleNames)
+    {
+<span class="nc" id="L871">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * Not implemented.
+     *
+     * A method in ServletContext interface that is not implemented and will
+     * throw &lt;code&gt;UnsuportedOperationException&lt;/code&gt; upon invocation
+     */
+    @Override
+    public String getVirtualServerName()
+    {
+<span class="nc" id="L883">        throw new UnsupportedOperationException();</span>
+    }
+
+    @Override
+    public Dynamic addJspFile(String servletName, String jspFile) {
+<span class="nc" id="L888">        return null;</span>
+    }
+
+    @Override
+    public int getSessionTimeout() {
+        // If the timeout is 0 or less the container ensures the default behavior of sessions is never to time out
+<span class="nc" id="L894">        return 0;</span>
+    }
+
+    /**
+     * in minutes
+     */
+    @Override
+    public void setSessionTimeout(int sessionTimeout) {
+        // todo check session.timeout
+<span class="nc" id="L903">    }</span>
+
+    @Override
+    public String getRequestCharacterEncoding() {
+        // no request character encoding is specified in deployment descriptor or container specific configuration (
+<span class="nc" id="L908">        return null;</span>
+    }
+
+    @Override
+    public void setRequestCharacterEncoding(String encoding) {
+<span class="nc" id="L913">    }</span>
+
+    @Override
+    public String getResponseCharacterEncoding() {
+        // no response character encoding is specified in deployment descriptor or container specific configuration
+<span class="nc" id="L918">        return null;</span>
+    }
+
+    @Override
+    public void setResponseCharacterEncoding(String encoding) {
+        
+<span class="nc" id="L924">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

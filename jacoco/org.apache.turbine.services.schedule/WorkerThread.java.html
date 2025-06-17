@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WorkerThread.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.schedule</a> &gt; <span class="el_source">WorkerThread.java</span></div><h1>WorkerThread.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.schedule;
+
+import org.apache.logging.log4j.LogManager;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.modules.ScheduledJobLoader;
+
+/**
+ * Wrapper for a &lt;code&gt;JobEntry&lt;/code&gt; to actually perform the job's action.
+ *
+ * @author &lt;a href=&quot;mailto:mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:dlr@finemaltcoding.com&quot;&gt;Daniel Rall&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @version $Id: WorkerThread.java 534527 2007-05-02 16:10:59Z tv $
+ */
+public class WorkerThread
+        implements Runnable
+{
+    /**
+     * The &lt;code&gt;JobEntry&lt;/code&gt; to run.
+     */
+<span class="fc" id="L42">    private JobEntry je = null;</span>
+
+    /** Logging */
+<span class="fc" id="L45">    private static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);</span>
+
+    /**
+     * Creates a new worker to run the specified &lt;code&gt;JobEntry&lt;/code&gt;.
+     *
+     * @param je The &lt;code&gt;JobEntry&lt;/code&gt; to create a worker for.
+     */
+    public WorkerThread(JobEntry je)
+<span class="fc" id="L53">    {</span>
+<span class="fc" id="L54">        this.je = je;</span>
+<span class="fc" id="L55">    }</span>
+
+    /**
+     * Run the job.
+     */
+    @Override
+    public void run()
+    {
+<span class="pc bpc" id="L63" title="2 of 4 branches missed.">        if (je == null || je.isActive())</span>
+        {
+<span class="nc" id="L65">            return;</span>
+        }
+
+        try
+        {
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">            if (!je.isActive())</span>
+            {
+<span class="fc" id="L72">                je.setActive(true);</span>
+<span class="fc" id="L73">                logStateChange(&quot;started&quot;);</span>
+<span class="fc" id="L74">                ScheduledJobLoader.getInstance().exec(je, je.getTask());</span>
+            }
+        }
+<span class="nc" id="L77">        catch (Exception e)</span>
+        {
+<span class="nc" id="L79">            log.error(&quot;Error in WorkerThread for scheduled job #{}, task: {}&quot;,</span>
+<span class="nc" id="L80">                    Integer.valueOf(je.getJobId()), je.getTask(), e);</span>
+        }
+        finally
+        {
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">            if (je.isActive())</span>
+            {
+<span class="fc" id="L86">                je.setActive(false);</span>
+<span class="fc" id="L87">                logStateChange(&quot;completed&quot;);</span>
+            }
+        }
+<span class="fc" id="L90">    }</span>
+
+    /**
+     * Macro to log &lt;code&gt;JobEntry&lt;/code&gt; status information.
+     *
+     * @param state The new state of the &lt;code&gt;JobEntry&lt;/code&gt;.
+     */
+    private final void logStateChange(String state)
+    {
+<span class="fc" id="L99">        log.error(&quot;Scheduled job #{} {}, task: {}&quot;,</span>
+<span class="fc" id="L100">                Integer.valueOf(je.getJobId()), state, je.getTask());</span>
+<span class="fc" id="L101">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

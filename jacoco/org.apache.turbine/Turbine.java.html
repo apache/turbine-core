@@ -1,0 +1,1094 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Turbine.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine</a> &gt; <span class="el_source">Turbine.java</span></div><h1>Turbine.java</h1><pre class="source lang-java linenums">package org.apache.turbine;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebInitParam;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Unmarshaller;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.combined.CombinedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.configuration2.io.HomeDirectoryLocationStrategy;
+import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.turbine.modules.PageLoader;
+import org.apache.turbine.pipeline.Pipeline;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.pipeline.TurbinePipeline;
+import org.apache.turbine.services.Initable;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.ServiceManager;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.rundata.RunDataService;
+import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.util.LocaleUtils;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.ServerData;
+import org.apache.turbine.util.TurbineConfig;
+import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.uri.URIConstants;
+
+/**
+ * &lt;p&gt;
+ * Turbine is the main servlet for the entire system. If you need to perform
+ * initialization of a service, then you should implement the Services API and
+ * let your code be initialized by it.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * Turbine servlet recognizes the following initialization parameters.
+ * &lt;/p&gt;
+ *
+ * &lt;ul&gt;
+ * &lt;li&gt;&lt;code&gt;properties&lt;/code&gt; the path to TurbineResources.properties file used
+ * to configure Turbine, relative to the application root.&lt;/li&gt;
+ * &lt;li&gt;&lt;code&gt;configuration&lt;/code&gt; the path to TurbineConfiguration.xml file used
+ * to configure Turbine from various sources, relative to the application
+ * root.&lt;/li&gt;
+ * &lt;li&gt;&lt;code&gt;applicationRoot&lt;/code&gt; this parameter defaults to the web context
+ * of the servlet container. You can use this parameter to specify the directory
+ * within the server's filesystem, that is the base of your web
+ * application.&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * @author &lt;a href=&quot;mailto:jon@latchkey.com&quot;&gt;Jon S. Stevens&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:bmclaugh@algx.net&quot;&gt;Brett McLaughlin&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:greg@shwoop.com&quot;&gt;Greg Ritter&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:john.mcnally@clearink.com&quot;&gt;John D. McNally&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:frank.kim@clearink.com&quot;&gt;Frank Y. Kim&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:krzewski@e-point.pl&quot;&gt;Rafal Krzewski&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:jvanzyl@apache.org&quot;&gt;Jason van Zyl&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:sean@informage.net&quot;&gt;Sean Legassick&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:mpoeschl@marmot.at&quot;&gt;Martin Poeschl&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:epugh@upstate.com&quot;&gt;Eric Pugh&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:tv@apache.org&quot;&gt;Thomas Vandahl&lt;/a&gt;
+ * @version $Id$
+ */
+@WebServlet(name = &quot;Turbine&quot;, urlPatterns = { &quot;/app&quot; }, loadOnStartup = 1, initParams = {
+        @WebInitParam(name = TurbineConstants.APPLICATION_ROOT_KEY, value = TurbineConstants.APPLICATION_ROOT_DEFAULT),
+        @WebInitParam(name = TurbineConfig.PROPERTIES_PATH_KEY, value = TurbineConfig.PROPERTIES_PATH_DEFAULT) })
+@MultipartConfig
+<span class="fc" id="L118">public class Turbine extends HttpServlet</span>
+{
+    /** Serial version */
+    private static final long serialVersionUID = -6317118078613623990L;
+
+    /**
+     * Name of path info parameter used to indicate the redirected stage of a
+     * given user's initial Turbine request
+     *
+     * @deprecated
+     */
+    @Deprecated // not used
+    public static final String REDIRECTED_PATHINFO_NAME = &quot;redirected&quot;;
+
+    /**
+     * The base directory key @deprecated
+     */
+    @Deprecated // not used
+    public static final String BASEDIR_KEY = &quot;basedir&quot;;
+
+    /**
+     * In certain situations the init() method is called more than once,
+     * sometimes even concurrently. This causes bad things to happen, so we use
+     * this flag to prevent it.
+     */
+<span class="fc" id="L143">    private static boolean firstInit = true;</span>
+
+    /**
+     * The pipeline to use when processing requests.
+     */
+<span class="fc" id="L148">    private static Pipeline pipeline = null;</span>
+
+    /** Whether init succeeded or not. */
+<span class="fc" id="L151">    private static Throwable initFailure = null;</span>
+
+    /**
+     * Should initialization activities be performed during doGet() execution?
+     */
+<span class="fc" id="L156">    private static boolean firstDoGet = true;</span>
+
+    /**
+     * Keep all the properties of the web server in a convenient data structure
+     */
+<span class="fc" id="L161">    private static volatile ServerData serverData = null;</span>
+
+    /** The base from which the Turbine application will operate. */
+    private static String applicationRoot;
+
+    /** Servlet config for this Turbine webapp. */
+    private static ServletConfig servletConfig;
+
+    /** Servlet context for this Turbine webapp. */
+    private static ServletContext servletContext;
+
+    /**
+     * The webapp root where the Turbine application is running in the servlet
+     * container. This might differ from the application root.
+     */
+    private static String webappRoot;
+
+    /** Our internal configuration object */
+<span class="fc" id="L179">    private static Configuration configuration = null;</span>
+
+    /** Which configuration method is being used */
+<span class="fc" id="L182">    private enum ConfigurationStyle</span>
+    {
+<span class="fc" id="L184">        XML, PROPERTIES, JSON, YAML, UNSET</span>
+    }
+
+<span class="fc" id="L187">    private static final Logger log = LogManager.getLogger(Turbine.class);</span>
+
+    /**
+     * This init method will load the default resources from a properties file.
+     *
+     * This method is called by init(ServletConfig config)
+     *
+     * @throws ServletException
+     *             a servlet exception.
+     */
+    @Override
+    public void init() throws ServletException
+    {
+<span class="fc" id="L200">        synchronized (Turbine.class)</span>
+        {
+<span class="fc" id="L202">            super.init();</span>
+
+<span class="fc bfc" id="L204" title="All 2 branches covered.">            if (!firstInit)</span>
+            {
+<span class="fc" id="L206">                log.info(&quot;Double initialization of Turbine was attempted!&quot;);</span>
+<span class="fc" id="L207">                return;</span>
+            }
+            // executing init will trigger some static initializers, so we have
+            // only one chance.
+<span class="fc" id="L211">            firstInit = false;</span>
+<span class="fc" id="L212">            ServletConfig config = getServletConfig();</span>
+
+            try
+            {
+<span class="fc" id="L216">                ServletContext context = config.getServletContext();</span>
+
+<span class="fc" id="L218">                configure(config, context);</span>
+
+<span class="fc" id="L220">                TemplateService templateService = (TemplateService) getServiceManager().getService(TemplateService.SERVICE_NAME);</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">                if (templateService == null)</span>
+                {
+<span class="nc" id="L223">                    throw new TurbineException(&quot;No Template Service configured!&quot;);</span>
+                }
+
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">                if (getRunDataService() == null)</span>
+                {
+<span class="nc" id="L228">                    throw new TurbineException(&quot;No RunData Service configured!&quot;);</span>
+                }
+            }
+<span class="fc" id="L231">            catch (Throwable e)</span>
+            {
+                // save the exception to complain loudly later :-)
+<span class="fc" id="L234">                initFailure = e;</span>
+<span class="fc" id="L235">                log.fatal(&quot;Turbine: init() failed&quot;, e);</span>
+<span class="fc" id="L236">                throw new ServletException(&quot;Turbine: init() failed&quot;, e);</span>
+<span class="fc" id="L237">            }</span>
+
+<span class="fc" id="L239">            log.info(&quot;Turbine: init() Ready to Rumble!&quot;);</span>
+<span class="fc" id="L240">        }</span>
+<span class="fc" id="L241">    }</span>
+
+    /**
+     * Read the master configuration file in, configure logging and start up any
+     * early services.
+     *
+     * @param config
+     *            The Servlet Configuration supplied by the container
+     * @param context
+     *            The Servlet Context supplied by the container
+     *
+     * @throws Exception
+     *             A problem occurred while reading the configuration or
+     *             performing early startup
+     */
+
+    protected void configure(ServletConfig config, ServletContext context)
+            throws Exception
+    {
+
+        // Set the application root. This defaults to the webapp
+        // context if not otherwise set.
+<span class="fc" id="L263">        applicationRoot = findInitParameter(context, config,</span>
+                TurbineConstants.APPLICATION_ROOT_KEY,
+                TurbineConstants.APPLICATION_ROOT_DEFAULT);
+
+<span class="fc" id="L267">        webappRoot = context.getRealPath(&quot;/&quot;);</span>
+        // log.info(&quot;Web Application root is &quot; + webappRoot);
+        // log.info(&quot;Application root is &quot; + applicationRoot);
+
+<span class="pc bpc" id="L271" title="2 of 4 branches missed.">        if (applicationRoot == null || applicationRoot.equals(TurbineConstants.WEB_CONTEXT))</span>
+        {
+<span class="fc" id="L273">            applicationRoot = webappRoot;</span>
+            // log.info(&quot;got empty or 'webContext' Application root. Application
+            // root now: &quot; + applicationRoot);
+        }
+
+        // Set the applicationRoot for this webapp.
+<span class="fc" id="L279">        setApplicationRoot(applicationRoot);</span>
+
+        //
+        // Now we run the Turbine configuration code. There are two ways
+        // to configure Turbine:
+        //
+        // a) By supplying an web.xml init parameter called &quot;configuration&quot;
+        //
+        // &lt;init-param&gt;
+        // &lt;param-name&gt;configuration&lt;/param-name&gt;
+        // &lt;param-value&gt;/WEB-INF/conf/turbine.xml&lt;/param-value&gt;
+        // &lt;/init-param&gt;
+        //
+        // This loads an XML based configuration file.
+        //
+        // b) By supplying an web.xml init parameter called &quot;properties&quot;
+        //
+        // &lt;init-param&gt;
+        // &lt;param-name&gt;properties&lt;/param-name&gt;
+        // &lt;param-value&gt;/WEB-INF/conf/TurbineResources.properties&lt;/param-value&gt;
+        // &lt;/init-param&gt;
+        //
+        // This loads a Properties based configuration file. Actually, these are
+        // extended properties as provided by commons-configuration
+        //
+        // If neither a) nor b) is supplied, Turbine will fall back to the
+        // known behaviour of loading a properties file called
+        // /WEB-INF/conf/TurbineResources.properties relative to the
+        // web application root.
+
+<span class="fc" id="L309">        Path confPath = configureApplication(config, context);</span>
+
+<span class="fc" id="L311">        configureLogging(confPath);</span>
+
+        //
+        // Logging with log4j 2 is done via convention, finding in path
+
+<span class="fc" id="L316">        setTurbineServletConfig(config);</span>
+<span class="fc" id="L317">        setTurbineServletContext(context);</span>
+
+<span class="fc" id="L319">        getServiceManager().setApplicationRoot(applicationRoot);</span>
+
+        // We want to set a few values in the configuration so
+        // that ${variable} interpolation will work for
+        //
+        // ${applicationRoot}
+        // ${webappRoot}
+<span class="fc" id="L326">        configuration.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, applicationRoot);</span>
+<span class="fc" id="L327">        configuration.setProperty(TurbineConstants.WEBAPP_ROOT_KEY, webappRoot);</span>
+
+<span class="fc" id="L329">        getServiceManager().setConfiguration(configuration);</span>
+
+        // Initialize the service manager. Services
+        // that have its 'earlyInit' property set to
+        // a value of 'true' will be started when
+        // the service manager is initialized.
+<span class="fc" id="L335">        getServiceManager().init();</span>
+
+        // Retrieve the pipeline class and then initialize it. The pipeline
+        // handles the processing of a webrequest/response cycle.
+<span class="fc" id="L339">        String descriptorPath = configuration.getString(</span>
+                &quot;pipeline.default.descriptor&quot;,
+                TurbinePipeline.CLASSIC_PIPELINE);
+
+<span class="fc" id="L343">        log.debug(&quot;Using descriptor path: {}&quot;, descriptorPath);</span>
+
+        // context resource path has to begin with slash, cft.
+        // context.getResource
+<span class="fc bfc" id="L347" title="All 2 branches covered.">        if (!descriptorPath.startsWith(&quot;/&quot;))</span>
+        {
+<span class="fc" id="L349">            descriptorPath = &quot;/&quot; + descriptorPath;</span>
+        }
+
+<span class="fc" id="L352">        try (InputStream reader = context.getResourceAsStream(descriptorPath))</span>
+        {
+<span class="fc" id="L354">            JAXBContext jaxb = JAXBContext.newInstance(TurbinePipeline.class);</span>
+<span class="fc" id="L355">            Unmarshaller unmarshaller = jaxb.createUnmarshaller();</span>
+<span class="fc" id="L356">            pipeline = (Pipeline) unmarshaller.unmarshal(reader);</span>
+        }
+
+<span class="fc" id="L359">        log.debug(&quot;Initializing pipeline&quot;);</span>
+
+<span class="fc" id="L361">        pipeline.initialize();</span>
+<span class="fc" id="L362">    }</span>
+
+    /**
+     * Checks configuraton style, resolves the location of the configuration and
+     * loads it to internal {@link Configuration} object
+     * ({@link #configuration}).
+     *
+     * Allows reading from a {@link CombinedConfigurationBuilder} xml configuration file.
+     *
+     * @param config
+     *            the Servlet Configuration
+     * @param context
+     *            Servlet Context
+     * @return The resolved Configuration Path
+     * @throws IOException
+     *             if configuration path not found
+     * @throws ConfigurationException
+     *             if failed to configure
+     */
+    protected Path configureApplication(ServletConfig config, ServletContext context)
+            throws IOException, ConfigurationException
+    {
+<span class="fc" id="L384">        ConfigurationStyle confStyle = ConfigurationStyle.UNSET;</span>
+        // first test
+<span class="fc" id="L386">        String confFile = findInitParameter(context, config,</span>
+                TurbineConfig.CONFIGURATION_PATH_KEY,
+                null);
+<span class="fc bfc" id="L389" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(confFile))</span>
+        {
+<span class="fc" id="L391">            confStyle = ConfigurationStyle.XML;</span>
+        }
+        else // second test
+        {
+<span class="fc" id="L395">            confFile = findInitParameter(context, config,</span>
+                    TurbineConfig.PROPERTIES_PATH_KEY,
+                    null);
+<span class="pc bpc" id="L398" title="1 of 2 branches missed.">            if (StringUtils.isNotEmpty(confFile))</span>
+            {
+<span class="fc" id="L400">                confStyle = ConfigurationStyle.PROPERTIES;</span>
+            }
+        }
+        // more tests ..
+        // last test
+<span class="pc bpc" id="L405" title="1 of 2 branches missed.">        if (confStyle == ConfigurationStyle.UNSET)</span>
+        { // last resort
+<span class="nc" id="L407">            confFile = findInitParameter(context, config,</span>
+                    TurbineConfig.PROPERTIES_PATH_KEY,
+                    TurbineConfig.PROPERTIES_PATH_DEFAULT);
+<span class="nc" id="L410">            confStyle = ConfigurationStyle.PROPERTIES;</span>
+        }
+
+        // First report
+<span class="fc" id="L414">        log.debug(&quot;Loading configuration ({}) from {}&quot;, confStyle, confFile);</span>
+
+        // now begin loading
+<span class="fc" id="L417">        Parameters params = new Parameters();</span>
+<span class="fc" id="L418">        File confPath = getApplicationRootAsFile();</span>
+
+<span class="fc bfc" id="L420" title="All 2 branches covered.">        if (confFile.startsWith(&quot;/&quot;))</span>
+        {
+<span class="fc" id="L422">            confFile = confFile.substring(1); // cft. RFC2396 should not start</span>
+                                              // with a slash, if not absolute
+                                              // path
+        }
+
+<span class="fc" id="L427">        Path confFileRelativePath = Paths.get(confFile);// relative to later</span>
+                                                        // join
+<span class="fc" id="L429">        Path targetPath = Paths.get(confPath.toURI());</span>
+<span class="fc" id="L430">        targetPath = targetPath.resolve(confFileRelativePath);</span>
+
+        // Get the target path directory
+<span class="fc" id="L433">        Path targetPathDirectory = targetPath.getParent();</span>
+<span class="pc bpc" id="L434" title="1 of 2 branches missed.">        if (targetPathDirectory != null)</span>
+        {
+            // set the configuration path
+<span class="fc" id="L437">            confPath = targetPathDirectory.normalize().toFile();</span>
+
+<span class="fc" id="L439">            Path targetFilePath = targetPath.getFileName();</span>
+<span class="pc bpc" id="L440" title="1 of 2 branches missed.">            if (targetFilePath != null)</span>
+            {
+                // set the configuration file name
+<span class="fc" id="L443">                confFile = targetFilePath.toString();</span>
+            }
+
+        }
+
+<span class="pc bpc" id="L448" title="2 of 4 branches missed.">        switch (confStyle)</span>
+        {
+            case XML:
+                // relative base path used for this and child configuration
+                // files
+<span class="fc" id="L453">                CombinedConfigurationBuilder combinedBuilder = new CombinedConfigurationBuilder()</span>
+<span class="fc" id="L454">                        .configure(params.fileBased()</span>
+<span class="fc" id="L455">                                .setFileName(confFile)</span>
+<span class="fc" id="L456">                                .setListDelimiterHandler(new DefaultListDelimiterHandler(','))</span>
+<span class="fc" id="L457">                                .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath.getCanonicalPath(), false)));</span>
+<span class="fc" id="L458">                configuration = combinedBuilder.getConfiguration();</span>
+<span class="fc" id="L459">                break;</span>
+
+            case PROPERTIES:
+<span class="fc" id="L462">                FileBasedConfigurationBuilder&lt;PropertiesConfiguration&gt; propertiesBuilder = new FileBasedConfigurationBuilder&lt;&gt;(</span>
+                        PropertiesConfiguration.class)
+<span class="fc" id="L464">                                .configure(params.properties()</span>
+<span class="fc" id="L465">                                        .setFileName(confFile)</span>
+<span class="fc" id="L466">                                        .setListDelimiterHandler(new DefaultListDelimiterHandler(','))</span>
+<span class="fc" id="L467">                                        .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath.getCanonicalPath(), false)));</span>
+                // meta configuration: this may contain any commons configuration: system&lt;&gt;, jndi, env
+<span class="fc" id="L469">                configuration = propertiesBuilder.getConfiguration();</span>
+<span class="fc" id="L470">                break;</span>
+            case JSON:
+            case YAML:
+<span class="nc" id="L473">                throw new NotImplementedException(&quot;JSON or XAML configuration style not yet implemented!&quot;);</span>
+
+            default:
+                break;
+        }
+        // Now report our successful configuration to the world
+<span class="fc" id="L479">        log.info(&quot;Loaded configuration ({}) from {} style: {}&quot;,</span>
+<span class="fc" id="L480">                confStyle, confFile, configuration.toString());</span>
+
+<span class="fc" id="L482">        return targetPath;</span>
+    }
+
+    /**
+     * Finds the specified servlet configuration/initialization parameter,
+     * looking first for a servlet-specific parameter, then for a global
+     * parameter, and using the provided default if not found.
+     *
+     * @param context
+     *            the servlet context
+     * @param config
+     *            configuration object
+     * @param name
+     *            name of parameter
+     * @param defaultValue
+     *            of the parameter
+     * @return String value of the parameter
+     */
+    protected String findInitParameter(ServletContext context,
+            ServletConfig config, String name, String defaultValue)
+    {
+<span class="fc" id="L503">        String path = null;</span>
+<span class="fc" id="L504">        String parameterName = name;</span>
+
+        // Try the name as provided first.
+<span class="fc" id="L507">        boolean usingNamespace = parameterName.startsWith(TurbineConstants.CONFIG_NAMESPACE);</span>
+        while (true)
+        {
+<span class="fc" id="L510">            path = config.getInitParameter(parameterName);</span>
+<span class="fc bfc" id="L511" title="All 2 branches covered.">            if (StringUtils.isEmpty(path))</span>
+            {
+<span class="fc" id="L513">                path = context.getInitParameter(parameterName);</span>
+<span class="pc bpc" id="L514" title="1 of 2 branches missed.">                if (StringUtils.isEmpty(path))</span>
+                {
+                    // The named parameter didn't yield a value.
+<span class="fc bfc" id="L517" title="All 2 branches covered.">                    if (usingNamespace)</span>
+                    {
+<span class="fc" id="L519">                        path = defaultValue;</span>
+                    }
+                    else
+                    {
+                        // Try again using Turbine's namespace.
+<span class="fc" id="L524">                        parameterName = TurbineConstants.CONFIG_NAMESPACE + '.' + parameterName;</span>
+<span class="fc" id="L525">                        usingNamespace = true;</span>
+<span class="fc" id="L526">                        continue;</span>
+                    }
+                }
+            }
+            break;
+        }
+
+<span class="fc" id="L533">        return path;</span>
+    }
+
+    /**
+     * Initializes the services which need &lt;code&gt;PipelineData&lt;/code&gt; to
+     * initialize themselves (post startup).
+     *
+     * @param data
+     *            The first &lt;code&gt;GET&lt;/code&gt; request.
+     */
+    public void init(PipelineData data)
+    {
+<span class="fc" id="L545">        synchronized (Turbine.class)</span>
+        {
+<span class="pc bpc" id="L547" title="1 of 2 branches missed.">            if (firstDoGet)</span>
+            {
+                // All we want to do here is save some servlet
+                // information so that services and processes
+                // that don't have direct access to a RunData
+                // object can still know something about
+                // the servlet environment.
+<span class="fc" id="L554">                saveServletInfo(data);</span>
+
+                // Initialize services with the PipelineData instance
+<span class="fc" id="L557">                TurbineServices services = (TurbineServices) getServiceManager();</span>
+
+<span class="fc bfc" id="L559" title="All 2 branches covered.">                for (Iterator&lt;String&gt; i = services.getServiceNames(); i.hasNext();)</span>
+                {
+<span class="fc" id="L561">                    String serviceName = i.next();</span>
+<span class="fc" id="L562">                    Object service = services.getService(serviceName);</span>
+
+<span class="pc bpc" id="L564" title="1 of 2 branches missed.">                    if (service instanceof Initable)</span>
+                    {
+                        try
+                        {
+<span class="fc" id="L568">                            ((Initable) service).init(data);</span>
+                        }
+<span class="nc" id="L570">                        catch (InitializationException e)</span>
+                        {
+<span class="nc" id="L572">                            log.warn(&quot;Could not initialize Initable {} with PipelineData&quot;, serviceName, e);</span>
+<span class="fc" id="L573">                        }</span>
+                    }
+<span class="fc" id="L575">                }</span>
+
+                // Mark that we're done.
+<span class="fc" id="L578">                firstDoGet = false;</span>
+<span class="fc" id="L579">                log.info(&quot;Turbine: first Request successful&quot;);</span>
+            }
+<span class="fc" id="L581">        }</span>
+<span class="fc" id="L582">    }</span>
+
+    /**
+     * Return the current configuration with all keys included
+     *
+     * @return a Configuration Object
+     */
+    public static Configuration getConfiguration()
+    {
+<span class="fc" id="L591">        return configuration;</span>
+    }
+
+    /**
+     * Return the server name.
+     *
+     * @return String server name
+     */
+    public static String getServerName()
+    {
+<span class="fc" id="L601">        return getDefaultServerData().getServerName();</span>
+    }
+
+    /**
+     * Return the server scheme.
+     *
+     * @return String server scheme
+     */
+    public static String getServerScheme()
+    {
+<span class="nc" id="L611">        return getDefaultServerData().getServerScheme();</span>
+    }
+
+    /**
+     * Return the server port.
+     *
+     * @return String server port
+     */
+    public static String getServerPort()
+    {
+<span class="fc" id="L621">        return Integer.toString(getDefaultServerData().getServerPort());</span>
+    }
+
+    /**
+     * Get the script name. This is the initial script name. Actually this is
+     * probably not needed any more. I'll check. jvz.
+     *
+     * @return String initial script name.
+     */
+    public static String getScriptName()
+    {
+<span class="fc" id="L632">        return getDefaultServerData().getScriptName();</span>
+    }
+
+    /**
+     * Return the context path.
+     *
+     * @return String context path
+     */
+    public static String getContextPath()
+    {
+<span class="nc" id="L642">        return getDefaultServerData().getContextPath();</span>
+    }
+
+    /**
+     * Return all the Turbine Servlet information (Server Name, Port, Scheme in
+     * a ServerData structure. This is generated from the values set when
+     * initializing the Turbine and may not be correct if you're running in a
+     * clustered structure. You can provide default values in your configuration
+     * for cases where access is requied before your application is first
+     * accessed by a user. This might be used if you need a DataURI and have no
+     * RunData object handy.
+     *
+     * @return An initialized ServerData object
+     */
+    public static ServerData getDefaultServerData()
+    {
+<span class="fc bfc" id="L658" title="All 2 branches covered.">        if (serverData == null)</span>
+        {
+<span class="fc" id="L660">            String serverName = configuration.getString(TurbineConstants.DEFAULT_SERVER_NAME_KEY);</span>
+<span class="pc bpc" id="L661" title="1 of 2 branches missed.">            if (serverName == null)</span>
+            {
+<span class="nc" id="L663">                log.error(&quot;ServerData Information requested from Turbine before first request!&quot;);</span>
+            }
+            else
+            {
+<span class="fc" id="L667">                log.info(&quot;ServerData Information retrieved from configuration.&quot;);</span>
+            }
+            // Will be overwritten once the first request is run;
+<span class="fc" id="L670">            serverData = new ServerData(serverName,</span>
+<span class="fc" id="L671">                    configuration.getInt(TurbineConstants.DEFAULT_SERVER_PORT_KEY,</span>
+                            URIConstants.HTTP_PORT),
+<span class="fc" id="L673">                    configuration.getString(TurbineConstants.DEFAULT_SERVER_SCHEME_KEY,</span>
+                            URIConstants.HTTP),
+<span class="fc" id="L675">                    configuration.getString(TurbineConstants.DEFAULT_SCRIPT_NAME_KEY),</span>
+<span class="fc" id="L676">                    configuration.getString(TurbineConstants.DEFAULT_CONTEXT_PATH_KEY));</span>
+        }
+<span class="fc" id="L678">        return serverData;</span>
+    }
+
+    /**
+     * Set the servlet config for this turbine webapp.
+     *
+     * @param config
+     *            New servlet config
+     */
+    public static void setTurbineServletConfig(ServletConfig config)
+    {
+<span class="fc" id="L689">        servletConfig = config;</span>
+<span class="fc" id="L690">    }</span>
+
+    /**
+     * Get the servlet config for this turbine webapp.
+     *
+     * @return ServletConfig
+     */
+    public static ServletConfig getTurbineServletConfig()
+    {
+<span class="fc" id="L699">        return servletConfig;</span>
+    }
+
+    /**
+     * Set the servlet context for this turbine webapp.
+     *
+     * @param context
+     *            New servlet context.
+     */
+    public static void setTurbineServletContext(ServletContext context)
+    {
+<span class="fc" id="L710">        servletContext = context;</span>
+<span class="fc" id="L711">    }</span>
+
+    /**
+     * Get the servlet context for this turbine webapp.
+     *
+     * @return ServletContext
+     */
+    public static ServletContext getTurbineServletContext()
+    {
+<span class="nc" id="L720">        return servletContext;</span>
+    }
+
+    /**
+     * The &lt;code&gt;Servlet&lt;/code&gt; destroy method. Invokes
+     * &lt;code&gt;ServiceBroker&lt;/code&gt; tear down method.
+     */
+    @Override
+    public void destroy()
+    {
+        // Shut down all Turbine Services.
+<span class="fc" id="L731">        getServiceManager().shutdownServices();</span>
+
+<span class="fc" id="L733">        firstInit = true;</span>
+<span class="fc" id="L734">        firstDoGet = true;</span>
+<span class="fc" id="L735">        log.info(&quot;Turbine: Done shutting down!&quot;);</span>
+<span class="fc" id="L736">    }</span>
+
+    /**
+     * The primary method invoked when the Turbine servlet is executed.
+     *
+     * @param req
+     *            Servlet request.
+     * @param res
+     *            Servlet response.
+     * @throws IOException
+     *             a servlet exception.
+     * @throws ServletException
+     *             a servlet exception.
+     */
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse res)
+            throws IOException, ServletException
+    {
+        // Check to make sure that we started up properly.
+<span class="pc bpc" id="L755" title="1 of 2 branches missed.">        if (initFailure != null)</span>
+        {
+<span class="nc" id="L757">            handleHorribleException(res, initFailure);</span>
+<span class="nc" id="L758">            return;</span>
+        }
+
+        // Get general PipelineData here...
+<span class="fc" id="L762">        try (PipelineData pipelineData = getRunDataService().getRunData(req, res, getServletConfig()))</span>
+        {
+            try
+            {
+                // Perform turbine specific initialization below.
+<span class="fc" id="L767">                Map&lt;Class&lt;?&gt;, Object&gt; runDataMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L768">                runDataMap.put(RunData.class, pipelineData);</span>
+                // put the data into the pipeline
+<span class="fc" id="L770">                pipelineData.put(RunData.class, runDataMap);</span>
+
+                // If this is the first invocation, perform some
+                // initialization. Certain services need RunData to initialize
+                // themselves.
+<span class="pc bpc" id="L775" title="1 of 2 branches missed.">                if (firstDoGet)</span>
+                {
+<span class="fc" id="L777">                    init(pipelineData);</span>
+                }
+
+                // Stages of Pipeline implementation execution
+                // configurable via attached Valve implementations in a
+                // XML properties file.
+<span class="nc" id="L783">                pipeline.invoke(pipelineData);</span>
+            }
+<span class="fc" id="L785">            catch (Throwable t)</span>
+            {
+<span class="fc" id="L787">                handleException(pipelineData, res, t);</span>
+<span class="nc" id="L788">            }</span>
+        }
+<span class="nc" id="L790">        catch (Throwable t)</span>
+        {
+<span class="nc" id="L792">            handleHorribleException(res, t);</span>
+
+<span class="fc" id="L794">        }</span>
+<span class="fc" id="L795">    }</span>
+
+    /**
+     * In this application doGet and doPost are the same thing.
+     *
+     * @param req
+     *            Servlet request.
+     * @param res
+     *            Servlet response.
+     * @throws IOException
+     *             a servlet exception.
+     * @throws ServletException
+     *             a servlet exception.
+     */
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse res)
+            throws IOException, ServletException
+    {
+<span class="nc" id="L813">        doGet(req, res);</span>
+<span class="nc" id="L814">    }</span>
+
+    /**
+     * Return the servlet info.
+     *
+     * @return a string with the servlet information.
+     */
+    @Override
+    public String getServletInfo()
+    {
+<span class="nc" id="L824">        return &quot;Turbine Servlet&quot;;</span>
+    }
+
+    /**
+     * This method is about making sure that we catch and display errors to the
+     * screen in one fashion or another. What happens is that it will attempt to
+     * show the error using your user defined Error Screen. If that fails, then
+     * it will resort to just displaying the error and logging it all over the
+     * place including the servlet engine log file, the Turbine log file and on
+     * the screen.
+     *
+     * @param pipelineData
+     *            A Turbine PipelineData object.
+     * @param res
+     *            Servlet response.
+     * @param t
+     *            The exception to report.
+     */
+    protected void handleException(PipelineData pipelineData, HttpServletResponse res,
+            Throwable t)
+    {
+<span class="fc" id="L845">        RunData data = (RunData) pipelineData;</span>
+        // make sure that the stack trace makes it the log
+<span class="fc" id="L847">        log.error(&quot;Turbine.handleException: &quot;, t);</span>
+
+        try
+        {
+            // This is where we capture all exceptions and show the
+            // Error Screen.
+<span class="fc" id="L853">            data.setStackTrace(ExceptionUtils.getStackTrace(t), t);</span>
+
+            // setup the screen
+<span class="fc" id="L856">            data.setScreen(configuration.getString(</span>
+                    TurbineConstants.SCREEN_ERROR_KEY,
+                    TurbineConstants.SCREEN_ERROR_DEFAULT));
+
+            // do more screen setup for template execution if needed
+<span class="pc bpc" id="L861" title="1 of 2 branches missed.">            if (data.getTemplateInfo() != null)</span>
+            {
+<span class="fc" id="L863">                data.getTemplateInfo()</span>
+<span class="fc" id="L864">                        .setScreenTemplate(configuration.getString(</span>
+                                TurbineConstants.TEMPLATE_ERROR_KEY,
+                                TurbineConstants.TEMPLATE_ERROR_VM));
+            }
+
+            // Make sure to not execute an action.
+<span class="fc" id="L870">            data.setAction(&quot;&quot;);</span>
+
+<span class="pc" id="L872">            PageLoader.getInstance().exec(pipelineData,</span>
+<span class="fc" id="L873">                    configuration.getString(TurbineConstants.PAGE_DEFAULT_KEY,</span>
+                            TurbineConstants.PAGE_DEFAULT_DEFAULT));
+
+<span class="nc" id="L876">            data.getResponse().setContentType(data.getContentType());</span>
+<span class="nc" id="L877">            data.getResponse().setStatus(data.getStatusCode());</span>
+        }
+        // Attempt to do *something* at this point...
+<span class="fc" id="L880">        catch (Throwable reallyScrewedNow)</span>
+        {
+<span class="fc" id="L882">            handleHorribleException(res, reallyScrewedNow);</span>
+<span class="nc" id="L883">        }</span>
+<span class="fc" id="L884">    }</span>
+
+    /**
+     * This method handles exception cases where no PipelineData object exists
+     *
+     * @param res
+     *            Servlet response.
+     * @param t
+     *            The exception to report.
+     */
+    protected void handleHorribleException(HttpServletResponse res, Throwable t)
+    {
+        try
+        {
+<span class="fc" id="L898">            res.setContentType(TurbineConstants.DEFAULT_TEXT_CONTENT_TYPE);</span>
+<span class="fc" id="L899">            res.setStatus(200);</span>
+<span class="fc" id="L900">            PrintWriter writer = res.getWriter();</span>
+<span class="nc" id="L901">            writer.println(&quot;Horrible Exception: &quot;);</span>
+<span class="nc" id="L902">            t.printStackTrace(writer);</span>
+        }
+<span class="fc" id="L904">        catch (Exception ignored)</span>
+        {
+            // ignore
+<span class="nc" id="L907">        }</span>
+
+<span class="fc" id="L909">        log.error(t.getMessage(), t);</span>
+<span class="fc" id="L910">    }</span>
+
+    /**
+     * Save some information about this servlet so that it can be utilized by
+     * object instances that do not have direct access to PipelineData.
+     *
+     * @param data
+     *            Turbine request data
+     */
+    public static synchronized void saveServletInfo(PipelineData data)
+    {
+        // Store the context path for tools like ContentURI and
+        // the UIManager that use webapp context path information
+        // for constructing URLs.
+
+        //
+        // Bundle all the information above up into a convenient structure
+        //
+<span class="fc" id="L928">        ServerData requestServerData = data.get(Turbine.class, ServerData.class);</span>
+<span class="fc" id="L929">        serverData = (ServerData) requestServerData.clone();</span>
+<span class="fc" id="L930">    }</span>
+
+    /**
+     * Checks Log4j 2 Context, loads log4File, if configured and configuration
+     * is not already located.
+     *
+     * @param logConf
+     *            Configuration file path
+     * @throws IOException
+     *             if path not found
+     */
+    protected void configureLogging(Path logConf) throws IOException
+    {
+<span class="fc" id="L943">        LoggerContext context = (LoggerContext) LogManager.getContext(false);</span>
+
+<span class="pc bpc" id="L945" title="1 of 2 branches missed.">        if (context.getConfiguration().getConfigurationSource().getLocation() == null)</span>
+        {
+<span class="nc" id="L947">            Path log4jFile = resolveLog4j2(logConf.getParent());</span>
+            // configured + no other log4j configuration already found
+<span class="nc bnc" id="L949" title="All 2 branches missed.">            if (log4jFile != null)</span>
+            {
+<span class="nc" id="L951">                org.apache.logging.log4j.spi.LoggerContext ctxContext = LogManager.getContext(null, false, log4jFile.toUri());</span>
+<span class="nc bnc" id="L952" title="All 2 branches missed.">                if (ctxContext instanceof LoggerContext) {</span>
+<span class="nc" id="L953">                    log.info(&quot;resolved log4j2 location: {}&quot;, context.getConfiguration().getConfigurationSource().getLocation());</span>
+                }
+                
+            }
+        }
+<span class="fc" id="L958">        log.info(&quot;found log4j2 location: {}&quot;, context.getConfiguration().getConfigurationSource().getLocation());</span>
+<span class="fc" id="L959">    }</span>
+
+    /**
+     * Check {@linkplain TurbineConstants#LOG4J2_CONFIG_FILE} in Turbine
+     * configuration.
+     *
+     * @param logConfPath
+     *            configuration directory
+     * @return Resolved log4j2 {@link Path} or null, if not found or configured
+     *         &quot;none&quot;.
+     */
+    protected Path resolveLog4j2(Path logConfPath)
+    {
+<span class="nc" id="L972">        String log4jFile = configuration.getString(TurbineConstants.LOG4J2_CONFIG_FILE,</span>
+                TurbineConstants.LOG4J2_CONFIG_FILE_DEFAULT);
+
+<span class="nc bnc" id="L975" title="All 2 branches missed.">        if (log4jFile.startsWith(&quot;/&quot;))</span>
+        {
+<span class="nc" id="L977">            log4jFile = log4jFile.substring(1);</span>
+        }
+<span class="nc" id="L979">        Path log4jTarget = null;</span>
+<span class="nc bnc" id="L980" title="All 4 branches missed.">        if (StringUtils.isNotEmpty(log4jFile) &amp;&amp; !log4jFile.equalsIgnoreCase(&quot;none&quot;))</span>
+        {
+            // log4j must either share path with configuration path or resolved
+            // relatively
+
+<span class="nc bnc" id="L985" title="All 2 branches missed.">            if (logConfPath != null)</span>
+            {
+<span class="nc" id="L987">                Path log4jFilePath = Paths.get(log4jFile);</span>
+<span class="nc" id="L988">                Path logFilePath = logConfPath.resolve(log4jFilePath);</span>
+<span class="nc bnc" id="L989" title="All 4 branches missed.">                if (logFilePath != null &amp;&amp; logFilePath.toFile().exists())</span>
+                {
+<span class="nc" id="L991">                    log4jTarget = logFilePath.normalize();</span>
+                }
+                else
+                {
+                    // fall back just using the filename, if path match
+<span class="nc bnc" id="L996" title="All 6 branches missed.">                    if (log4jFilePath != null &amp;&amp; log4jFilePath.getParent() != null &amp;&amp; logConfPath.endsWith(log4jFilePath.getParent()))</span>
+                    {
+<span class="nc" id="L998">                        logFilePath = logConfPath.resolve(log4jFilePath.getFileName());</span>
+<span class="nc bnc" id="L999" title="All 4 branches missed.">                        if (logFilePath != null &amp;&amp; logFilePath.toFile().exists())</span>
+                        {
+<span class="nc" id="L1001">                            log4jTarget = logFilePath.normalize();</span>
+                        }
+                    }
+                }
+            }
+        }
+<span class="nc" id="L1007">        return log4jTarget;</span>
+    }
+
+    /**
+     * Set the application root for the webapp.
+     *
+     * @param val
+     *            New app root.
+     */
+    public static void setApplicationRoot(String val)
+    {
+<span class="fc" id="L1018">        applicationRoot = val;</span>
+<span class="fc" id="L1019">    }</span>
+
+    /**
+     * Get the application root for this Turbine webapp.
+     *
+     * @return String applicationRoot
+     */
+    public static String getApplicationRoot()
+    {
+<span class="fc" id="L1028">        return applicationRoot;</span>
+    }
+
+    /**
+     * Get the application root for this Turbine webapp as a file object.
+     *
+     * @return File applicationRootFile
+     */
+    public static File getApplicationRootAsFile()
+    {
+<span class="fc" id="L1038">        return new File(applicationRoot);</span>
+    }
+
+    /**
+     * Used to get the real path of configuration and resource information. This
+     * can be used by an app being developed in a standard CVS layout.
+     *
+     * @param path
+     *            path translated to the application root
+     * @return the real path
+     */
+    public static String getRealPath(String path)
+    {
+<span class="fc bfc" id="L1051" title="All 2 branches covered.">        if (path.startsWith(&quot;/&quot;))</span>
+        {
+<span class="fc" id="L1053">            return new File(getApplicationRootAsFile(), path.substring(1)).getAbsolutePath();</span>
+        }
+
+<span class="fc" id="L1056">        return new File(getApplicationRootAsFile(), path).getAbsolutePath();</span>
+    }
+
+    /**
+     * Return an instance of the currently configured Service Manager
+     *
+     * @return A service Manager instance
+     */
+    private ServiceManager getServiceManager()
+    {
+<span class="fc" id="L1066">        return TurbineServices.getInstance();</span>
+    }
+
+    /**
+     * Returns the default input encoding for the servlet.
+     *
+     * @return the default input encoding.
+     *
+     * @deprecated Use
+     *             {@link org.apache.turbine.pipeline.DefaultSetEncodingValve}
+     *             to set default encoding
+     */
+    @Deprecated
+    public static String getDefaultInputEncoding()
+    {
+<span class="fc" id="L1081">        return LocaleUtils.getDefaultInputEncoding();</span>
+    }
+
+    /**
+     * Static Helper method for looking up the RunDataService
+     *
+     * @return A RunDataService
+     */
+    private RunDataService getRunDataService()
+    {
+<span class="fc" id="L1091">        return (RunDataService) getServiceManager().getService(RunDataService.SERVICE_NAME);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

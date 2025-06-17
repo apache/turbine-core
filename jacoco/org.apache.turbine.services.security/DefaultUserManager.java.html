@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultUserManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.security</a> &gt; <span class="el_source">DefaultUserManager.java</span></div><h1>DefaultUserManager.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.security;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.fulcrum.factory.FactoryService;
+import org.apache.fulcrum.security.acl.AccessControlList;
+import org.apache.fulcrum.security.model.turbine.TurbineUserManager;
+import org.apache.fulcrum.security.model.turbine.entity.TurbineUser;
+import org.apache.fulcrum.security.util.DataBackendException;
+import org.apache.fulcrum.security.util.EntityExistsException;
+import org.apache.fulcrum.security.util.PasswordMismatchException;
+import org.apache.fulcrum.security.util.UnknownEntityException;
+import org.apache.fulcrum.security.util.UserSet;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.om.security.TurbineUserDelegate;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.ServiceManager;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.util.ObjectUtils;
+
+/**
+ * Default user manager.
+ * &lt;p&gt;
+ * The user manager wraps Fulcrum security user objects into
+ * Turbine-specific ones.
+ *
+ *
+ * &lt;ol&gt;
+ * &lt;li&gt;either in a method with the same name (and very similar signature)&lt;/li&gt;
+ * &lt;li&gt;or mapped to method names as listed below:
+ *
+ * &lt;ul&gt;
+ * &lt;li&gt;method(s) in this manager -&amp;gt; Fulcrum manager method(s)
+ * &lt;li&gt;{@link #createAccount(User, String)}createAccount -&amp;gt; addUser(User, String)
+ * &lt;li&gt;{@link #removeAccount(User)} -&amp;gt; removeUser(User)
+ * &lt;li&gt;{@link #store(User)} -&amp;gt; saveUser(User)
+ * &lt;li&gt;{@link #retrieve(String)} and {@link #retrieve(String, String)} -&amp;gt; getUser(String), getUser(String, String)
+ * &lt;li&gt;{@link #retrieveList(Object)} -&amp;gt; getAllUsers()
+ * &lt;li&gt;{@link #accountExists(String)}, {@link #accountExists(User)} -&amp;gt; checkExists(String), checkExists(User)
+ * &lt;/ul&gt;
+ *
+ * &lt;/li&gt;
+ * &lt;/ol&gt;
+ *
+ * In this way all public methods of Fulcrum {@link TurbineUserManager} interface are used by reference of the Fulcrum delegate {@link #umDelegate}
+ * and wrapped by this manager.
+ *
+ * @author &lt;a href=&quot;mailto:tv@apache.org&quot;&gt;Thomas Vandahl&lt;/a&gt;
+ * @version $Id: PassiveUserManager.java 1096130 2011-04-23 10:37:19Z ludwig $
+ */
+<span class="fc" id="L76">public class DefaultUserManager implements UserManager</span>
+{
+    /** Fulcrum user manager instance to delegate to */
+<span class="fc" id="L79">    private TurbineUserManager umDelegate = null;</span>
+
+<span class="fc" id="L81">    private FactoryService factoryService = null;</span>
+
+    /** The user class, which the UserManager uses as wrapper for Fulcrum {@link TurbineUser} */
+    private String userWrapperClass;
+
+
+    /** Logging */
+<span class="fc" id="L88">    private static final Logger log = LogManager.getLogger(DefaultUserManager.class);</span>
+
+    /**
+     * Wrap a Fulcrum user object into a Turbine user object
+     *
+     * @param &lt;U&gt; user class
+     * @param user the user object to delegate to
+     *
+     * @return the wrapped object
+     */
+    protected &lt;U extends User&gt; U wrap(TurbineUser user)
+    {
+        @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L101">        U u = (U) getUserWrapper(user);</span>
+<span class="fc" id="L102">        return u;</span>
+    }
+
+    /**
+     * Exception could be ignored, as it is tested before in {@link #init(Configuration)}.
+     *
+     * @param &lt;U&gt; user class
+     * @param user the user object to wrap
+     * @return instance extending {@link User}
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+	public &lt;U extends User&gt; U getUserWrapper(TurbineUser user)
+    {
+		try
+		{
+<span class="fc" id="L117">            Object params[] = new Object[] { user };</span>
+<span class="fc" id="L118">            String signature[] = new String[] { TurbineUser.class.getName() };</span>
+<span class="fc" id="L119">            return (U) factoryService.getInstance(getUserWrapperClass(), params, signature);</span>
+		}
+<span class="nc" id="L121">		catch (Exception e)</span>
+		{
+<span class="nc" id="L123">			log.error(&quot;after init/late instantiation exception&quot;, e);</span>
+<span class="nc" id="L124">			return null; // (U)new DefaultUserImpl(user);</span>
+		}
+	}
+
+    /**
+     * Get the wrapper class for user objects
+     *
+     * @return the wrapper class name
+     */
+    public String getUserWrapperClass()
+    {
+<span class="fc" id="L135">		return userWrapperClass;</span>
+	}
+
+    /**
+     * Set the wrapper class for user objects
+     *
+     * @param userWrapperClass2 the wrapper class name
+     */
+    public void setUserWrapperClass(String userWrapperClass2)
+    {
+<span class="fc" id="L145">		userWrapperClass = userWrapperClass2;</span>
+<span class="fc" id="L146">	}</span>
+
+	/**
+     * Initializes the UserManager
+     *
+     * @param conf A Configuration object to init this Manager
+     */
+    @Override
+    public void init(Configuration conf) throws InitializationException
+    {
+<span class="fc" id="L156">        ServiceManager manager = TurbineServices.getInstance();</span>
+<span class="fc" id="L157">        this.umDelegate = (TurbineUserManager)manager.getService(TurbineUserManager.ROLE);</span>
+
+<span class="fc" id="L159">        String userWrapperClass = conf.getString(</span>
+                SecurityService.USER_WRAPPER_KEY,
+                SecurityService.USER_WRAPPER_DEFAULT);
+
+        try
+        {
+<span class="fc" id="L165">        	factoryService = (FactoryService)manager.getService(FactoryService.ROLE);</span>
+
+            //  check instantiation
+        	// should provide default constructor
+<span class="fc" id="L169">        	TurbineUser turbineUser = umDelegate.getUserInstance();</span>
+        			//(TurbineUser) factoryService.getInstance(userClass);
+<span class="fc" id="L171">            Object params[] = new Object[] { turbineUser };</span>
+<span class="fc" id="L172">            String signature[] = new String[] { TurbineUser.class.getName() };</span>
+
+            // Just check if exceptions would occur
+<span class="fc" id="L175">            factoryService.getInstance(userWrapperClass, params, signature);</span>
+
+<span class="fc" id="L177">            this.setUserWrapperClass(userWrapperClass);</span>
+        }
+<span class="nc" id="L179">        catch (Exception e)</span>
+	    {
+<span class="nc" id="L181">	       throw new InitializationException(&quot;Failed to instantiate user wrapper class&quot;, e);</span>
+<span class="fc" id="L182">	    }</span>
+<span class="fc" id="L183">    }</span>
+
+
+	/**
+     * Check whether a specified user's account exists.
+     * &lt;p&gt;
+     * The login name is used for looking up the account.
+     * &lt;/p&gt;
+     * @param user The user to be checked.
+     * @return true if the specified account exists
+     * @throws DataBackendException if there was an error accessing the data backend.
+     */
+    @Override
+    public boolean accountExists(User user)
+            throws DataBackendException
+    {
+<span class="fc" id="L199">        boolean result = false;</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">        if (user != null) {</span>
+<span class="fc" id="L201">            result = umDelegate.checkExists(user.getUserDelegate());</span>
+        }
+<span class="fc" id="L203">        return result;</span>
+    }
+
+    /**
+     * Check whether a specified user's account exists.
+     *
+     * The login name is used for looking up the account.
+     *
+     * @param userName The name of the user to be checked.
+     * @return true if the specified account exists
+     * @throws DataBackendException if there was an error accessing the data backend.
+     */
+    @Override
+    public boolean accountExists(String userName)
+            throws DataBackendException
+    {
+<span class="fc" id="L219">        return umDelegate.checkExists(userName);</span>
+    }
+
+    /**
+     * Retrieve a user from persistent storage using username as the
+     * key.
+     *
+     * @param username the name of the user.
+     * @return an User object.
+     * @throws UnknownEntityException if the user's record does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    @Override
+    public &lt;U extends User&gt; U retrieve(String username)
+            throws UnknownEntityException, DataBackendException
+    {
+<span class="fc" id="L237">        TurbineUser u = umDelegate.getUser(username);</span>
+<span class="fc" id="L238">        return wrap(u);</span>
+    }
+
+    /**
+     * Retrieve a set of users that meet the specified criteria.
+     *
+     * As the keys for the criteria, you should use the constants that
+     * are defined in {@link User} interface, plus the names
+     * of the custom attributes you added to your user representation
+     * in the data storage. Use verbatim names of the attributes -
+     * without table name prefix in case of DB implementation.
+     *
+     * @param criteria The criteria of selection.
+     * @return a List of users meeting the criteria.
+     * @throws DataBackendException if there is a problem accessing the
+     *         storage.
+     */
+    @Override
+    public List&lt;? extends User&gt; retrieveList(Object criteria)
+            throws DataBackendException
+    {
+<span class="nc" id="L259">        UserSet&lt;org.apache.fulcrum.security.entity.User&gt; uset = umDelegate.retrieveUserList(criteria);</span>
+
+<span class="nc" id="L261">        List&lt;User&gt; userList = uset.stream()</span>
+<span class="nc" id="L262">                .map(u -&gt; (TurbineUser) u)</span>
+<span class="nc" id="L263">                .map(this::wrap)</span>
+<span class="nc" id="L264">                .map(u -&gt; (User)u)</span>
+<span class="nc" id="L265">                .collect(Collectors.toList());</span>
+
+<span class="nc" id="L267">        return userList;</span>
+    }
+
+    /**
+     * Retrieve a user from persistent storage using username as the
+     * key, and authenticate the user. The implementation may chose
+     * to authenticate to the server as the user whose data is being
+     * retrieved.
+     *
+     * @param username the name of the user.
+     * @param password the user supplied password.
+     * @return an User object.
+     * @throws PasswordMismatchException if the supplied password was
+     *            incorrect.
+     * @throws UnknownEntityException if the user's record does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    @Override
+    public &lt;U extends User&gt; U retrieve(String username, String password)
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException
+    {
+<span class="fc" id="L291">        TurbineUser u = umDelegate.getUser(username, password);</span>
+<span class="fc" id="L292">        return wrap(u);</span>
+    }
+
+    /**
+     * Save an User object to persistent storage. User's record is
+     * required to exist in the storage.
+     *
+     * @param user an User object to store.
+     * @throws UnknownEntityException if the user's record does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    @Override
+    public void store(User user)
+            throws UnknownEntityException, DataBackendException
+    {
+<span class="pc bpc" id="L309" title="1 of 2 branches missed.">        if (user == null) {</span>
+<span class="nc" id="L310">            throw new UnknownEntityException(&quot;user is null&quot;);</span>
+        }
+        try
+        {
+<span class="fc" id="L314">            user.setObjectdata(ObjectUtils.serializeMap(user.getPermStorage()));</span>
+        }
+<span class="nc" id="L316">        catch (Exception e)</span>
+        {
+<span class="nc" id="L318">            throw new DataBackendException(&quot;Could not serialize permanent storage&quot;, e);</span>
+<span class="fc" id="L319">        }</span>
+
+<span class="fc" id="L321">        umDelegate.saveUser(((TurbineUserDelegate)user).getUserDelegate());</span>
+<span class="fc" id="L322">    }</span>
+
+    /**
+     * Saves User data when the session is unbound. The user account is required
+     * to exist in the storage.
+     *
+     * LastLogin, AccessCounter, persistent pull tools, and any data stored
+     * in the permData hashtable that is not mapped to a column will be saved.
+     *
+     * @throws UnknownEntityException if the user's account does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    @Override
+    public void saveOnSessionUnbind(User user)
+            throws UnknownEntityException, DataBackendException
+    {
+<span class="nc" id="L340">        store(user);</span>
+<span class="nc" id="L341">    }</span>
+
+    /**
+     * Authenticate an User with the specified password. If authentication
+     * is successful the method returns nothing. If there are any problems,
+     * exception was thrown.
+     *
+     * @param user an User object to authenticate.
+     * @param password the user supplied password.
+     * @throws PasswordMismatchException if the supplied password was
+     *            incorrect.
+     * @throws UnknownEntityException if the user's record does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    @Override
+    public void authenticate(User user, String password)
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException
+    {
+<span class="nc" id="L362">        umDelegate.authenticate(user, password);</span>
+<span class="nc" id="L363">    }</span>
+
+    /**
+     * Creates new user account with specified attributes.
+     *
+     * @param user the object describing account to be created.
+     * @param initialPassword The password to use for the object creation
+     *
+     * @throws DataBackendException if there was an error accessing the data backend.
+     * @throws EntityExistsException if the user account already exists.
+     */
+    @Override
+    public void createAccount(User user, String initialPassword)
+            throws UnknownEntityException, EntityExistsException, DataBackendException
+    {
+<span class="pc bpc" id="L378" title="1 of 2 branches missed.">        if (user == null) {</span>
+<span class="nc" id="L379">            throw new UnknownEntityException(&quot;user is null&quot;);</span>
+        }
+<span class="fc" id="L381">        umDelegate.addUser(user.getUserDelegate(), initialPassword);</span>
+<span class="fc" id="L382">    }</span>
+
+    /**
+     * Removes an user account from the system.
+     *
+     * @param user the object describing the account to be removed.
+     * @throws DataBackendException if there was an error accessing the data backend.
+     * @throws UnknownEntityException if the user account is not present.
+     */
+    @Override
+    public void removeAccount(User user)
+            throws UnknownEntityException, DataBackendException
+    {
+<span class="nc bnc" id="L395" title="All 2 branches missed.">        if (user == null) {</span>
+<span class="nc" id="L396">            throw new UnknownEntityException(&quot;user is null&quot;);</span>
+        }
+<span class="nc" id="L398">        umDelegate.removeUser(user.getUserDelegate());</span>
+<span class="nc" id="L399">    }</span>
+
+    /**
+     * Change the password for an User.
+     *
+     * @param user an User to change password for.
+     * @param oldPassword the current password supplied by the user.
+     * @param newPassword the current password requested by the user.
+     * @throws PasswordMismatchException if the supplied password was
+     *            incorrect.
+     * @throws UnknownEntityException if the user's record does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    @Override
+    public void changePassword(User user, String oldPassword,
+                               String newPassword)
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException
+    {
+<span class="nc bnc" id="L420" title="All 2 branches missed.">        if (user == null) {</span>
+<span class="nc" id="L421">            throw new UnknownEntityException(&quot;user is null&quot;);</span>
+        }
+<span class="nc" id="L423">        umDelegate.changePassword(</span>
+<span class="nc" id="L424">                ((TurbineUserDelegate)user).getUserDelegate(),</span>
+                oldPassword, newPassword);
+<span class="nc" id="L426">    }</span>
+
+    /**
+     * Forcibly sets new password for an User.
+     *
+     * This is supposed by the administrator to change the forgotten or
+     * compromised passwords. Certain implementations of this feature
+     * would require administrative level access to the authenticating
+     * server / program.
+     *
+     * @param user an User to change password for.
+     * @param password the new password.
+     * @throws UnknownEntityException if the user's record does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    @Override
+    public void forcePassword(User user, String password)
+            throws UnknownEntityException, DataBackendException
+    {
+<span class="nc bnc" id="L447" title="All 2 branches missed.">        if (user == null) {</span>
+<span class="nc" id="L448">            throw new UnknownEntityException(&quot;user is null&quot;);</span>
+        }
+<span class="nc" id="L450">        umDelegate.forcePassword(user.getUserDelegate(), password);</span>
+<span class="nc" id="L451">    }</span>
+
+    /**
+     * Constructs an User object to represent an anonymous user of the
+     * application.
+     *
+     * @return An anonymous Turbine User.
+     * @throws UnknownEntityException
+     *             if the anonymous User object couldn't be constructed.
+     */
+    @Override
+    public &lt;U extends User&gt; U getAnonymousUser() throws UnknownEntityException
+    {
+<span class="fc" id="L464">        TurbineUser u = umDelegate.getAnonymousUser();</span>
+<span class="fc" id="L465">        return wrap(u);</span>
+    }
+
+    /**
+     * Checks whether a passed user object matches the anonymous user pattern
+     * according to the configured user manager
+     *
+     * @param u a user object
+     *
+     * @return True if this is an anonymous user
+     *
+     */
+    @Override
+    public boolean isAnonymousUser(User u)
+    {
+<span class="fc" id="L480">        return umDelegate.isAnonymousUser(u);</span>
+    }
+
+    /**
+     * Construct a blank User object.
+     *
+     * This method calls getUserClass, and then creates a new object using the
+     * default constructor.
+     *
+     * @return an object implementing User interface.
+     * @throws DataBackendException
+     *             if the object could not be instantiated.
+     */
+    @Override
+    public &lt;U extends User&gt; U getUserInstance() throws DataBackendException
+    {
+<span class="fc" id="L496">        TurbineUser u = umDelegate.getUserInstance();</span>
+<span class="fc" id="L497">        return wrap(u);</span>
+    }
+
+    /**
+     * Construct a blank User object.
+     *
+     * This method calls getUserClass, and then creates a new object using the
+     * default constructor.
+     *
+     * @param userName
+     *            The name of the user.
+     *
+     * @return an object implementing User interface.
+     * @throws DataBackendException
+     *             if the object could not be instantiated.
+     */
+    @Override
+    public &lt;U extends User&gt; U getUserInstance(String userName) throws DataBackendException
+    {
+<span class="fc" id="L516">        TurbineUser u = umDelegate.getUserInstance(userName);</span>
+<span class="fc" id="L517">        return wrap(u);</span>
+    }
+
+    /**
+     * Return a Class object representing the system's chosen implementation of
+     * of ACL interface.
+     *
+     * @return systems's chosen implementation of ACL interface.
+     * @throws UnknownEntityException
+     *             if the implementation of ACL interface could not be
+     *             determined, or does not exist.
+     */
+    @Override
+    public &lt;A extends AccessControlList&gt; A getACL(User user) throws UnknownEntityException
+    {
+<span class="pc bpc" id="L532" title="1 of 2 branches missed.">        if (user == null) {</span>
+<span class="nc" id="L533">            throw new UnknownEntityException(&quot;user is null&quot;);</span>
+        }
+<span class="fc" id="L535">        return umDelegate.getACL(user.getUserDelegate());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbinePullService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.pull</a> &gt; <span class="el_source">TurbinePullService.java</span></div><h1>TurbinePullService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.pull;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.fulcrum.pool.PoolService;
+import org.apache.fulcrum.security.model.turbine.TurbineUserManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.annotation.AnnotationProcessor;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.velocity.VelocityService;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+
+/**
+ * This is the concrete implementation of the Turbine
+ * Pull Service.
+ * &lt;p&gt;
+ * These are tools that are placed in the context by the service
+ * These tools will be made available to all your
+ * templates. You list the tools in the following way:
+ * &lt;/p&gt;
+ * &lt;pre&gt;
+ * tool.&amp;lt;scope&amp;gt;.&amp;lt;id&amp;gt; = &amp;lt;classname&amp;gt;
+ *
+ * &amp;lt;scope&amp;gt;      is the tool scope: global, request, session,
+ *              authorized or persistent (see below for more details)
+ * &amp;lt;id&amp;gt;         is the name of the tool in the context
+ *
+ * You can configure the tools in this way:
+ * tool.&amp;lt;id&amp;gt;.&amp;lt;parameter&amp;gt; = &amp;lt;value&amp;gt;
+ *
+ * So if you find &quot;global&quot;, &quot;request&quot;, &quot;session&quot; or &quot;persistent&quot; as second
+ * part, it is a configuration to put a tool into the toolbox, else it is a
+ * tool specific configuration.
+ *
+ * For example:
+ *
+ * tool.global.ui    = org.apache.turbine.util.pull.UIManager
+ * tool.global.mm    = org.apache.turbine.util.pull.MessageManager
+ * tool.request.link = org.apache.turbine.services.pull.tools.TemplateLink
+ * tool.request.page = org.apache.turbine.util.template.TemplatePageAttributes
+ *
+ * Then:
+ *
+ * tool.ui.skin = default
+ *
+ * configures the value of &quot;skin&quot; for the &quot;ui&quot; tool.
+ *
+ * Tools are accessible in all templates by the &amp;lt;id&amp;gt; given
+ * to the tool. So for the above listings the UIManager would
+ * be available as $ui, the MessageManager as $mm, the TemplateLink
+ * as $link and the TemplatePageAttributes as $page.
+ *
+ * You should avoid using tool names called &quot;global&quot;, &quot;request&quot;,
+ * &quot;session&quot; or &quot;persistent&quot; because of clashes with the possible Scopes.
+ *
+ * Scopes:
+ *
+ *  global:     tool is instantiated once and that instance is available
+ *              to all templates for all requests. Tool must be threadsafe.
+ *
+ *  request:    tool is instantiated once for each request (although the
+ *              PoolService is used to recycle instances). Tool need not
+ *              be threadsafe.
+ *
+ *  session:    tool is instantiated once for each user session, and is
+ *              stored in the session.  These tools do not need to be
+ *              threadsafe.
+ *
+ *  authorized: tool is instantiated once for each user session once the
+ *              user logs in. After this, it is a normal session tool.
+ *
+ *  persistent: tool is instantitated once for each user session once
+ *              the user logs in and is is stored in the user's permanent
+ *              hashtable.
+ *              This means for a logged in user the tool will be persisted
+ *              in the user's objectdata. Tool should be Serializable.  These
+ *              tools do not need to be threadsafe.
+ *              &lt;b&gt;persistent scope tools are deprecated in 2.3&lt;/b&gt;
+ *
+ * Defaults: none
+ * &lt;/pre&gt;
+ *
+ * @author &lt;a href=&quot;mailto:jvanzyl@periapt.com&quot;&gt;Jason van Zyl&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:sean@informage.net&quot;&gt;Sean Legassick&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L121">public class TurbinePullService</span>
+        extends TurbineBaseService
+        implements PullService
+{
+    /** Logging */
+<span class="fc" id="L126">    private static Logger log = LogManager.getLogger(TurbinePullService.class);</span>
+
+    /** Reference to the pool service */
+<span class="fc" id="L129">    private PoolService pool = null;</span>
+
+    /** Reference to the templating (nee Velocity) service */
+<span class="fc" id="L132">    private VelocityService velocity = null;</span>
+
+    /**
+     * This is the container for the global web application
+     * tools that are used in conjunction with the
+     * Turbine Pull Model. All the global tools will be placed
+     * in this Context and be made accessible inside
+     * templates via the tool name specified in the TR.props
+     * file.
+     */
+    private Context globalContext;
+
+    /**
+     * This inner class is used in the lists below to store the
+     * tool name and class for each of request, session and persistent
+     * tools
+     */
+    private static class ToolData
+    {
+        String toolName;
+        String toolClassName;
+        Class&lt;ApplicationTool&gt; toolClass;
+
+        public ToolData(String toolName, String toolClassName, Class&lt;ApplicationTool&gt; toolClass)
+<span class="fc" id="L156">        {</span>
+<span class="fc" id="L157">            this.toolName = toolName;</span>
+<span class="fc" id="L158">            this.toolClassName = toolClassName;</span>
+<span class="fc" id="L159">            this.toolClass = toolClass;</span>
+<span class="fc" id="L160">        }</span>
+    }
+
+    /** Internal list of global tools */
+    private List&lt;ToolData&gt; globalTools;
+
+    /** Internal list of request tools */
+    private List&lt;ToolData&gt; requestTools;
+
+    /** Internal list of session tools */
+    private List&lt;ToolData&gt; sessionTools;
+
+    /** Internal list of authorized tools */
+    private List&lt;ToolData&gt; authorizedTools;
+
+    /** Internal list of persistent tools */
+    private List&lt;ToolData&gt; persistentTools;
+
+    /** Directory where application tool resources are stored.*/
+    private String resourcesDirectory;
+
+    /** Should we refresh the application tools on a per request basis? */
+<span class="fc" id="L182">    private boolean refreshToolsPerRequest = false;</span>
+
+    /**
+     * Called the first time the Service is used.
+     */
+    @Override
+    public void init()
+        throws InitializationException
+    {
+        try
+        {
+<span class="fc" id="L193">		    pool = (PoolService)TurbineServices.getInstance().getService(PoolService.ROLE);</span>
+
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">            if (pool == null)</span>
+            {
+<span class="nc" id="L197">                throw new InitializationException(&quot;Pull Service requires&quot;</span>
+                    + &quot; configured Pool Service!&quot;);
+            }
+
+<span class="fc" id="L201">            initPullService();</span>
+            // Make sure to setInit(true) because Tools may
+            // make calls back to the TurbinePull static methods
+            // which causes an init loop.
+<span class="fc" id="L205">            setInit(true);</span>
+
+            // Do _NOT_ move this before the setInit(true)
+<span class="fc" id="L208">            velocity = (VelocityService)TurbineServices.getInstance().getService(VelocityService.SERVICE_NAME);</span>
+
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">            if (velocity != null)</span>
+            {
+<span class="fc" id="L212">                initPullTools();</span>
+            }
+            else
+            {
+<span class="nc" id="L216">                log.info(&quot;Velocity Service not configured, skipping pull tools!&quot;);</span>
+            }
+        }
+<span class="fc" id="L219">        catch (Exception e)</span>
+        {
+<span class="fc" id="L221">            throw new InitializationException(&quot;TurbinePullService failed to initialize&quot;, e);</span>
+<span class="fc" id="L222">        }</span>
+<span class="fc" id="L223">    }</span>
+
+    /**
+     * Initialize the pull service
+     *
+     * @throws Exception A problem happened when starting up
+     */
+    private void initPullService()
+        throws Exception
+    {
+        // This is the per-service configuration, prefixed with services.PullService
+<span class="fc" id="L234">        Configuration conf = getConfiguration();</span>
+
+        // Get the resources directory that is specificed
+        // in the TR.props or default to &quot;resources&quot;, relative to the webapp.
+<span class="fc" id="L238">        resourcesDirectory = conf.getString(</span>
+            TOOL_RESOURCES_DIR_KEY,
+            TOOL_RESOURCES_DIR_DEFAULT);
+
+        // Should we refresh the tool box on a per
+        // request basis.
+<span class="fc" id="L244">        refreshToolsPerRequest =</span>
+<span class="fc" id="L245">            conf.getBoolean(</span>
+                TOOLS_PER_REQUEST_REFRESH_KEY,
+                TOOLS_PER_REQUEST_REFRESH_DEFAULT);
+
+        // Log the fact that the application tool box will
+        // be refreshed on a per request basis.
+<span class="fc bfc" id="L251" title="All 2 branches covered.">        if (refreshToolsPerRequest)</span>
+        {
+<span class="fc" id="L253">            log.info(&quot;Pull Model tools will be refreshed on a per request basis.&quot;);</span>
+        }
+<span class="fc" id="L255">    }</span>
+
+    /**
+     * Initialize the pull tools. At this point, the
+     * service must be marked as initialized, because the
+     * tools may call the methods of this service via the
+     * static facade class TurbinePull.
+     *
+     * @throws Exception A problem happened when starting up
+     */
+    private void initPullTools()
+        throws Exception
+    {
+        // And for reasons I never really fully understood,
+        // the tools directive is toplevel without the service
+        // prefix. This is brain-damaged but for legacy reasons we
+        // keep this. So this is the global turbine configuration:
+<span class="fc" id="L272">        Configuration conf = Turbine.getConfiguration();</span>
+
+        // Grab each list of tools that are to be used (for global scope,
+        // request scope, authorized scope, session scope and persistent
+        // scope tools). They are specified respectively in the TR.props
+        // like this:
+        //
+        // tool.global.ui = org.apache.turbine.util.pull.UIManager
+        // tool.global.mm = org.apache.turbine.util.pull.MessageManager
+        //
+        // tool.request.link = org.apache.turbine.services.pull.tools.TemplateLink
+        //
+        // tool.session.basket = org.sample.util.ShoppingBasket;
+        //
+        // tool.persistent.ui = org.apache.turbine.services.pull.util.PersistentUIManager
+
+<span class="fc" id="L288">        log.debug(&quot;Global Tools:&quot;);</span>
+<span class="fc" id="L289">        globalTools     = getTools(conf.subset(GLOBAL_TOOL));</span>
+<span class="fc" id="L290">        log.debug(&quot;Request Tools:&quot;);</span>
+<span class="fc" id="L291">        requestTools    = getTools(conf.subset(REQUEST_TOOL));</span>
+<span class="fc" id="L292">        log.debug(&quot;Session Tools:&quot;);</span>
+<span class="fc" id="L293">        sessionTools    = getTools(conf.subset(SESSION_TOOL));</span>
+<span class="fc" id="L294">        log.debug(&quot;Authorized Tools:&quot;);</span>
+<span class="fc" id="L295">        authorizedTools = getTools(conf.subset(AUTHORIZED_TOOL));</span>
+<span class="fc" id="L296">        log.debug(&quot;Persistent Tools:&quot;);</span>
+<span class="fc" id="L297">        persistentTools = getTools(conf.subset(PERSISTENT_TOOL));</span>
+
+        // Create and populate the global context right now
+
+        // This is unholy, because it entwines the VelocityService and
+        // the Pull Service even further. However, there isn't much we can
+        // do for the 2.3 release. Expect this to go post-2.3
+<span class="fc" id="L304">        globalContext = velocity.getNewContext();</span>
+
+<span class="fc" id="L306">        populateWithGlobalTools(globalContext);</span>
+<span class="fc" id="L307">    }</span>
+
+    /**
+     * Retrieve the tool names and classes for the tools defined
+     * in the configuration file with the prefix given.
+     *
+     * @param toolConfig The part of the configuration describing some tools
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private List&lt;ToolData&gt; getTools(Configuration toolConfig)
+    {
+<span class="fc" id="L318">        List&lt;ToolData&gt; tools = new ArrayList&lt;&gt;();</span>
+
+        // There might not be any tools for this prefix
+        // so return an empty list.
+<span class="pc bpc" id="L322" title="1 of 2 branches missed.">        if (toolConfig == null)</span>
+        {
+<span class="nc" id="L324">            return tools;</span>
+        }
+
+<span class="fc bfc" id="L327" title="All 2 branches covered.">        for (Iterator&lt;String&gt; it = toolConfig.getKeys(); it.hasNext();)</span>
+        {
+<span class="fc" id="L329">            String toolName = it.next();</span>
+<span class="fc" id="L330">            String toolClassName = toolConfig.getString(toolName);</span>
+
+            try
+            {
+                // Create an instance of the tool class.
+<span class="fc" id="L335">                Class&lt;ApplicationTool&gt; toolClass = (Class&lt;ApplicationTool&gt;) Class.forName(toolClassName);</span>
+
+                // Add the tool to the list being built.
+<span class="fc" id="L338">                tools.add(new ToolData(toolName, toolClassName, toolClass));</span>
+
+<span class="fc" id="L340">                log.info(&quot;Tool {} to add to the context as '${}'&quot;, toolClassName, toolName);</span>
+            }
+<span class="nc" id="L342">            catch (NoClassDefFoundError | ClassNotFoundException e)</span>
+            {
+<span class="nc" id="L344">                log.error(&quot;Cannot instantiate tool class {}&quot;, toolClassName, e);</span>
+<span class="fc" id="L345">            }</span>
+<span class="fc" id="L346">        }</span>
+
+<span class="fc" id="L348">        return tools;</span>
+    }
+
+    /**
+     * Return the Context which contains all global tools that
+     * are to be used in conjunction with the Turbine
+     * Pull Model. The tools are refreshed every time the
+     * global Context is pulled.
+     */
+    @Override
+    public Context getGlobalContext()
+    {
+<span class="pc bpc" id="L360" title="1 of 2 branches missed.">        if (refreshToolsPerRequest)</span>
+        {
+<span class="fc" id="L362">            refreshGlobalTools();</span>
+        }
+<span class="fc" id="L364">        return globalContext;</span>
+    }
+
+    /**
+     * Populate the given context with all request, session, authorized
+     * and persistent scope tools (it is assumed that the context
+     * already wraps the global context, and thus already contains
+     * the global tools).
+     *
+     * @param context a Velocity Context to populate
+     * @param data a RunData object for request specific data
+     */
+    @Override
+    public void populateContext(Context context, RunData data)
+    {
+<span class="fc" id="L379">        populateWithRequestTools(context, data);</span>
+
+        // session tools (whether session-only or persistent are
+        // very similar, so the same method is used - the
+        // boolean parameter indicates whether get/setPerm is to be used
+        // rather than get/setTemp)
+
+        //
+        // Session Tool start right at the session once the user has been set
+        // while persistent and authorized Tools are started when the user has
+        // logged in
+        //
+<span class="fc" id="L391">        User user = data.getUser();</span>
+
+        // Note: Session tools are currently lost after the login action
+        // because the anonymous user is replaced the the real user object.
+        // We should either store the session pull tools in the session or
+        // make Turbine.loginAction() copy the session pull tools into the
+        // new user object.
+<span class="fc" id="L398">        populateWithSessionTools(sessionTools, context, data, user);</span>
+
+        TurbineUserManager userManager =
+        	(TurbineUserManager)TurbineServices
+<span class="fc" id="L402">        		.getInstance()</span>
+<span class="fc" id="L403">        		.getService(TurbineUserManager.ROLE);</span>
+
+<span class="pc bpc" id="L405" title="3 of 4 branches missed.">        if (!userManager.isAnonymousUser(user) &amp;&amp; user.hasLoggedIn())</span>
+        {
+<span class="nc" id="L407">            populateWithSessionTools(authorizedTools, context, data, user);</span>
+<span class="nc" id="L408">            populateWithPermTools(persistentTools, context, data, user);</span>
+        }
+<span class="fc" id="L410">    }</span>
+
+    /**
+     * Populate the given context with all request, session, authorized
+     * and persistent scope tools (it is assumed that the context
+     * already wraps the global context, and thus already contains
+     * the global tools).
+     *
+     * @param context a Velocity Context to populate
+     * @param pipelineData a PipelineData object for request specific data
+     */
+    @Override
+    public void populateContext(Context context, PipelineData pipelineData)
+    {
+<span class="fc" id="L424">        RunData data = pipelineData.getRunData();</span>
+
+<span class="fc" id="L426">        populateWithRequestTools(context, pipelineData);</span>
+        // session tools (whether session-only or persistent are
+        // very similar, so the same method is used - the
+        // boolean parameter indicates whether get/setPerm is to be used
+        // rather than get/setTemp)
+
+        //
+        // Session Tool start right at the session once the user has been set
+        // while persistent and authorized Tools are started when the user has
+        // logged in
+        //
+<span class="fc" id="L437">        User user = data.getUser();</span>
+
+        // Note: Session tools are currently lost after the login action
+        // because the anonymous user is replaced the the real user object.
+        // We should either store the session pull tools in the session or
+        // make Turbine.loginAction() copy the session pull tools into the
+        // new user object.
+<span class="fc" id="L444">        populateWithSessionTools(sessionTools, context, data, user);</span>
+
+        TurbineUserManager userManager =
+        	(TurbineUserManager)TurbineServices
+<span class="fc" id="L448">        		.getInstance()</span>
+<span class="fc" id="L449">        		.getService(TurbineUserManager.ROLE);</span>
+
+<span class="pc bpc" id="L451" title="1 of 4 branches missed.">        if (!userManager.isAnonymousUser(user) &amp;&amp; user.hasLoggedIn())</span>
+        {
+<span class="fc" id="L453">            populateWithSessionTools(authorizedTools, context, data, user);</span>
+<span class="fc" id="L454">            populateWithPermTools(persistentTools, context, pipelineData, user);</span>
+        }
+<span class="fc" id="L456">    }</span>
+
+    /**
+     * Populate the given context with the global tools
+     *
+     * @param context a Velocity Context to populate
+     */
+    private void populateWithGlobalTools(Context context)
+    {
+<span class="fc bfc" id="L465" title="All 2 branches covered.">        for (ToolData toolData : globalTools)</span>
+        {
+            try
+            {
+<span class="fc" id="L469">                Object tool = toolData.toolClass.getDeclaredConstructor().newInstance();</span>
+
+                // global tools are init'd with a null data parameter
+<span class="fc" id="L472">                initTool(tool, null);</span>
+
+                // put the tool in the context
+<span class="fc" id="L475">                context.put(toolData.toolName, tool);</span>
+            }
+<span class="nc" id="L477">            catch (Exception e)</span>
+            {
+<span class="nc" id="L479">                log.error(&quot;Could not instantiate global tool {} from a {} object&quot;,</span>
+                    toolData.toolName, toolData.toolClassName, e);
+<span class="fc" id="L481">            }</span>
+<span class="fc" id="L482">        }</span>
+<span class="fc" id="L483">    }</span>
+
+    /**
+     * Populate the given context with the request-scope tools
+     *
+     * @param context a Velocity Context to populate
+     * @param data a RunData or PipelineData instance
+     */
+    private void populateWithRequestTools(Context context, Object data)
+    {
+        // Iterate the tools
+<span class="fc bfc" id="L494" title="All 2 branches covered.">        for (ToolData toolData : requestTools)</span>
+        {
+            try
+            {
+                // Fetch Object through the Pool.
+<span class="fc" id="L499">                Object tool = pool.getInstance(toolData.toolClass);</span>
+
+                // request tools are init'd with a RunData object
+<span class="fc" id="L502">                initTool(tool, data);</span>
+
+                // put the tool in the context
+<span class="fc" id="L505">                context.put(toolData.toolName, tool);</span>
+            }
+<span class="nc" id="L507">            catch (Exception e)</span>
+            {
+<span class="nc" id="L509">                log.error(&quot;Could not instantiate request tool {} from a {} object&quot;,</span>
+                        toolData.toolName, toolData.toolClassName, e);
+<span class="fc" id="L511">            }</span>
+<span class="fc" id="L512">        }</span>
+<span class="fc" id="L513">    }</span>
+
+    /**
+     * Populate the given context with the session-scoped tools.
+     *
+     * @param tools The list of tools with which to populate the session.
+     * @param context The context to populate.
+     * @param data The current RunData object
+     * @param user The &lt;code&gt;User&lt;/code&gt; object whose storage to
+     * retrieve the tool from.
+     */
+    private void populateWithSessionTools(List&lt;ToolData&gt; tools, Context context,
+            RunData data, User user)
+    {
+        // Iterate the tools
+<span class="fc bfc" id="L528" title="All 2 branches covered.">        for (ToolData toolData : tools)</span>
+        {
+            try
+            {
+                // ensure that tool is created only once for a user
+                // by synchronizing against the user object
+<span class="fc" id="L534">                synchronized (data.getSession())</span>
+                {
+                    // first try and fetch the tool from the user's
+                    // hashmap
+<span class="fc" id="L538">                    Object tool = data.getSession().getAttribute(</span>
+                            SESSION_TOOLS_ATTRIBUTE_PREFIX
+                            + toolData.toolClassName);
+
+<span class="fc bfc" id="L542" title="All 2 branches covered.">                    if (tool == null)</span>
+                    {
+                        // if not there, an instance must be fetched from
+                        // the pool
+<span class="fc" id="L546">                        tool = pool.getInstance(toolData.toolClass);</span>
+
+                        // session tools are init'd with the User object
+<span class="fc" id="L549">                        initTool(tool, user);</span>
+                    }
+
+                    // *NOT* else
+<span class="pc bpc" id="L553" title="1 of 2 branches missed.">                    if(tool != null)</span>
+                    {
+                        // store the newly created tool in the session
+<span class="fc" id="L556">                        data.getSession().setAttribute(</span>
+                                SESSION_TOOLS_ATTRIBUTE_PREFIX
+<span class="fc" id="L558">                                + tool.getClass().getName(), tool);</span>
+
+                        // This is a semantics change. In the old
+                        // Turbine, Session tools were initialized and
+                        // then refreshed every time they were pulled
+                        // into the context if &quot;refreshToolsPerRequest&quot;
+                        // was wanted.
+                        //
+                        // RunDataApplicationTools now have a parameter
+                        // for refresh. If it is not refreshed immediately
+                        // after init(), the parameter value will be undefined
+                        // until the 2nd run. So we refresh all the session
+                        // tools on every run, even if we just init'ed it.
+                        //
+
+<span class="pc bpc" id="L573" title="1 of 2 branches missed.">                        if (refreshToolsPerRequest)</span>
+                        {
+<span class="fc" id="L575">                            refreshTool(tool, data);</span>
+                        }
+
+                        // put the tool in the context
+<span class="fc" id="L579">                        log.debug(&quot;Adding {} to ctx as {}&quot;, tool, toolData.toolName);</span>
+<span class="fc" id="L580">                        context.put(toolData.toolName, tool);</span>
+                    }
+                    else
+                    {
+<span class="nc" id="L584">                        log.info(&quot;Tool {} was null, skipping it.&quot;, toolData.toolName);</span>
+                    }
+<span class="fc" id="L586">                }</span>
+            }
+<span class="nc" id="L588">            catch (Exception e)</span>
+            {
+<span class="nc" id="L590">                log.error(&quot;Could not instantiate session tool {} from a {} object&quot;,</span>
+                        toolData.toolName, toolData.toolClassName, e);
+<span class="fc" id="L592">            }</span>
+<span class="fc" id="L593">        }</span>
+<span class="fc" id="L594">    }</span>
+
+    /**
+     * Populate the given context with the perm-scoped tools.
+     *
+     * @param tools The list of tools with which to populate the
+     * session.
+     * @param context The context to populate.
+     * @param data The current RunData or PipelineData object
+     * @param user The &lt;code&gt;User&lt;/code&gt; object whose storage to
+     * retrieve the tool from.
+     */
+    private void populateWithPermTools(List&lt;ToolData&gt; tools, Context context,
+            Object data, User user)
+    {
+        // Iterate the tools
+<span class="pc bpc" id="L610" title="1 of 2 branches missed.">        for (ToolData toolData : tools)</span>
+        {
+            try
+            {
+                // ensure that tool is created only once for a user
+                // by synchronizing against the user object
+<span class="nc" id="L616">                synchronized (user)</span>
+                {
+                    // first try and fetch the tool from the user's
+                    // hashtable
+<span class="nc" id="L620">                    Object tool = user.getPerm(toolData.toolClassName);</span>
+
+<span class="nc bnc" id="L622" title="All 2 branches missed.">                    if (tool == null)</span>
+                    {
+                        // if not there, an instance must be fetched from
+                        // the pool
+<span class="nc" id="L626">                        tool = pool.getInstance(toolData.toolClass);</span>
+
+                        // session tools are init'd with the User object
+<span class="nc" id="L629">                        initTool(tool, user);</span>
+
+                        // store the newly created tool in the user's hashtable
+<span class="nc" id="L632">                        user.setPerm(toolData.toolClassName, tool);</span>
+                    }
+
+                    // *NOT* else
+<span class="nc bnc" id="L636" title="All 2 branches missed.">                    if (tool != null)</span>
+                    {
+                        // This is a semantics change. In the old
+                        // Turbine, Session tools were initialized and
+                        // then refreshed every time they were pulled
+                        // into the context if &quot;refreshToolsPerRequest&quot;
+                        // was wanted.
+                        //
+                        // RunDataApplicationTools now have a parameter
+                        // for refresh. If it is not refreshed immediately
+                        // after init(), the parameter value will be undefined
+                        // until the 2nd run. So we refresh all the session
+                        // tools on every run, even if we just init'ed it.
+                        //
+
+<span class="nc bnc" id="L651" title="All 2 branches missed.">                        if (refreshToolsPerRequest)</span>
+                        {
+<span class="nc" id="L653">                            refreshTool(tool, data);</span>
+                        }
+
+                        // put the tool in the context
+<span class="nc" id="L657">                        log.debug(&quot;Adding {} to ctx as {}&quot;, tool, toolData.toolName);</span>
+<span class="nc" id="L658">                        log.warn(&quot;Persistent scope tools are deprecated.&quot;);</span>
+<span class="nc" id="L659">                        context.put(toolData.toolName, tool);</span>
+                    }
+                    else
+                    {
+<span class="nc" id="L663">                        log.info(&quot;Tool {} was null, skipping it.&quot;, toolData.toolName);</span>
+                    }
+<span class="nc" id="L665">                }</span>
+            }
+<span class="nc" id="L667">            catch (Exception e)</span>
+            {
+<span class="nc" id="L669">                log.error(&quot;Could not instantiate perm tool {} from a {} object&quot;,</span>
+                        toolData.toolName, toolData.toolClassName, e);
+<span class="nc" id="L671">            }</span>
+<span class="nc" id="L672">        }</span>
+<span class="fc" id="L673">    }</span>
+
+
+
+    /**
+     * Return the absolute path to the resources directory
+     * used by the application tools.
+     *
+     * @return the absolute path of the resources directory
+     */
+    @Override
+    public String getAbsolutePathToResourcesDirectory()
+    {
+<span class="nc" id="L686">        return Turbine.getRealPath(resourcesDirectory);</span>
+    }
+
+    /**
+     * Return the resources directory. This is
+     * relative to the web context.
+     *
+     * @return the relative path of the resources directory
+     */
+    @Override
+    public String getResourcesDirectory()
+    {
+<span class="fc" id="L698">        return resourcesDirectory;</span>
+    }
+
+    /**
+     * Refresh the global tools. We can
+     * only refresh those tools that adhere to
+     * ApplicationTool interface because we
+     * know those types of tools have a refresh
+     * method.
+     */
+    private void refreshGlobalTools()
+    {
+<span class="pc bpc" id="L710" title="1 of 2 branches missed.">        if (globalTools != null)</span>
+        {
+<span class="fc bfc" id="L712" title="All 2 branches covered.">            for (ToolData toolData : globalTools)</span>
+            {
+<span class="fc" id="L714">                Object tool = globalContext.get(toolData.toolName);</span>
+<span class="fc" id="L715">                refreshTool(tool, null);</span>
+<span class="fc" id="L716">            }</span>
+        }
+<span class="fc" id="L718">    }</span>
+
+    /**
+     * Release the request-scope tool instances in the
+     * given Context back to the pool
+     *
+     * @param context the Velocity Context to release tools from
+     */
+    @Override
+    public void releaseTools(Context context)
+    {
+        // only the request tools can be released - other scoped
+        // tools will have continuing references to them
+<span class="fc" id="L731">        releaseTools(context, requestTools);</span>
+<span class="fc" id="L732">    }</span>
+
+    /**
+     * Release the given list of tools from the context back
+     * to the pool
+     *
+     * @param context the Context containing the tools
+     * @param tools a List of ToolData objects
+     */
+    private void releaseTools(Context context, List&lt;ToolData&gt; tools)
+    {
+<span class="pc bpc" id="L743" title="1 of 2 branches missed.">        if (tools != null)</span>
+        {
+<span class="fc bfc" id="L745" title="All 2 branches covered.">            for (ToolData toolData : tools)</span>
+            {
+<span class="fc" id="L747">                Object tool = context.remove(toolData.toolName);</span>
+
+<span class="pc bpc" id="L749" title="1 of 2 branches missed.">                if (tool != null)</span>
+                {
+<span class="fc" id="L751">                    pool.putInstance(tool);</span>
+                }
+<span class="fc" id="L753">            }</span>
+        }
+<span class="fc" id="L755">    }</span>
+
+    /**
+     * Initialized a given Tool with the passed init Object
+     *
+     * @param tool A Tool Object
+     * @param param The Init Parameter
+     *
+     * @throws Exception If anything went wrong.
+     */
+    private void initTool(Object tool, Object param)
+        throws Exception
+    {
+<span class="fc" id="L768">        AnnotationProcessor.process(tool);</span>
+
+<span class="fc bfc" id="L770" title="All 2 branches covered.">        if (param instanceof PipelineData)</span>
+        {
+<span class="pc bpc" id="L772" title="1 of 2 branches missed.">            if (tool instanceof PipelineDataApplicationTool)</span>
+            {
+<span class="nc" id="L774">                ((PipelineDataApplicationTool) tool).init(param);</span>
+            }
+<span class="pc bpc" id="L776" title="1 of 2 branches missed.">            else if (tool instanceof RunDataApplicationTool)</span>
+            {
+<span class="nc" id="L778">                RunData data = getRunData((PipelineData)param);</span>
+<span class="nc" id="L779">                ((RunDataApplicationTool) tool).init(data);</span>
+<span class="nc" id="L780">            }</span>
+<span class="pc bpc" id="L781" title="1 of 2 branches missed.">            else if (tool instanceof ApplicationTool)</span>
+            {
+<span class="fc" id="L783">                RunData data = getRunData((PipelineData)param);</span>
+<span class="fc" id="L784">                ((ApplicationTool) tool).init(data);</span>
+<span class="fc" id="L785">            }</span>
+        }
+        else
+        {
+<span class="pc bpc" id="L789" title="1 of 2 branches missed.">            if (tool instanceof PipelineDataApplicationTool)</span>
+            {
+<span class="nc" id="L791">                ((PipelineDataApplicationTool) tool).init(param);</span>
+            }
+<span class="pc bpc" id="L793" title="1 of 2 branches missed.">            else if (tool instanceof RunDataApplicationTool)</span>
+            {
+<span class="nc" id="L795">                ((RunDataApplicationTool) tool).init(param);</span>
+            }
+<span class="pc bpc" id="L797" title="1 of 2 branches missed.">            else if (tool instanceof ApplicationTool)</span>
+            {
+<span class="fc" id="L799">                ((ApplicationTool) tool).init(param);</span>
+            }
+        }
+<span class="fc" id="L802">    }</span>
+
+    /**
+     * Refresh a given Tool.
+     *
+     * @param tool A Tool Object
+     * @param dataObject The current RunData Object
+     */
+    private void refreshTool(Object tool, Object dataObject)
+    {
+<span class="fc" id="L812">        RunData data = null;</span>
+<span class="fc" id="L813">        PipelineData pipelineData = null;</span>
+<span class="fc bfc" id="L814" title="All 2 branches covered.">        if (dataObject instanceof PipelineData)</span>
+        {
+<span class="fc" id="L816">            pipelineData = (PipelineData)dataObject;</span>
+<span class="fc" id="L817">            data = pipelineData.getRunData();</span>
+<span class="pc bpc" id="L818" title="1 of 2 branches missed.">            if (tool instanceof PipelineDataApplicationTool)</span>
+            {
+<span class="nc" id="L820">                ((PipelineDataApplicationTool) tool).refresh(pipelineData);</span>
+            }
+        }
+<span class="pc bpc" id="L823" title="1 of 2 branches missed.">        if (tool instanceof ApplicationTool)</span>
+        {
+<span class="fc" id="L825">            ((ApplicationTool) tool).refresh();</span>
+        }
+<span class="nc bnc" id="L827" title="All 2 branches missed.">        else if (tool instanceof RunDataApplicationTool)</span>
+        {
+<span class="nc" id="L829">            ((RunDataApplicationTool) tool).refresh(data);</span>
+        }
+<span class="fc" id="L831">    }</span>
+
+    private RunData getRunData(PipelineData pipelineData)
+    {
+<span class="pc bpc" id="L835" title="1 of 2 branches missed.">        if (!(pipelineData instanceof RunData))</span>
+        {
+<span class="nc" id="L837">            throw new RuntimeException(&quot;Can't cast to rundata from pipeline data.&quot;);</span>
+        }
+<span class="fc" id="L839">        return (RunData)pipelineData;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

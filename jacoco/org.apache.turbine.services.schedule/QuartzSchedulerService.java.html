@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QuartzSchedulerService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.schedule</a> &gt; <span class="el_source">QuartzSchedulerService.java</span></div><h1>QuartzSchedulerService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.schedule;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.apache.fulcrum.quartz.QuartzScheduler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.util.TurbineException;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.impl.matchers.GroupMatcher;
+
+/**
+ * Service for a quartz scheduler.
+ *
+ * @author &lt;a href=&quot;mailto:tv@apache.org&quot;&gt;Thomas Vandahl&lt;/a&gt;
+ */
+<span class="fc" id="L49">public class QuartzSchedulerService</span>
+        extends TurbineBaseService
+        implements ScheduleService
+{
+    /** Logging */
+<span class="fc" id="L54">    protected static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);</span>
+
+    /** Current status of the scheduler */
+<span class="fc" id="L57">    protected boolean enabled = false;</span>
+
+    /** The Quartz scheduler instance */
+    private Scheduler scheduler;
+
+    /**
+     * Initializes the SchedulerService. Retrieves the Quartz {@link #scheduler} from the Fulcrum {@link QuartzScheduler} service.
+     *
+     * @throws InitializationException Something went wrong in the init
+     *         stage
+     */
+    @Override
+    public void init()
+            throws InitializationException
+    {
+<span class="fc" id="L72">        setEnabled(getConfiguration().getBoolean(&quot;enabled&quot;, true));</span>
+<span class="fc" id="L73">        QuartzScheduler qs = (QuartzScheduler) TurbineServices.getInstance()</span>
+<span class="fc" id="L74">            .getService(QuartzScheduler.class.getName());</span>
+<span class="fc" id="L75">        this.scheduler = qs.getScheduler();</span>
+
+<span class="fc" id="L77">        restart();</span>
+<span class="fc" id="L78">        setInit(true);</span>
+<span class="fc" id="L79">    }</span>
+
+    /**
+     * Shutdowns the service.
+     *
+     * This methods interrupts the housekeeping thread.
+     */
+    @Override
+    public void shutdown()
+    {
+        try
+        {
+<span class="fc" id="L91">            this.scheduler.shutdown();</span>
+        }
+<span class="nc" id="L93">        catch (SchedulerException e)</span>
+        {
+<span class="nc" id="L95">            log.error(&quot;Could not shut down the scheduler service&quot;, e);</span>
+<span class="fc" id="L96">        }</span>
+<span class="fc" id="L97">    }</span>
+
+    /**
+     * @see org.apache.turbine.services.schedule.ScheduleService#newJob(int, int, int, int, int, java.lang.String)
+     */
+    @Override
+    public JobEntry newJob(int sec, int min, int hour, int wd, int day_mo, String task) throws TurbineException
+    {
+        try
+        {
+<span class="fc" id="L107">            JobDetail jd = JobBuilder.newJob(JobEntryQuartz.class)</span>
+<span class="fc" id="L108">                    .withIdentity(task, JobEntryQuartz.DEFAULT_JOB_GROUP_NAME)</span>
+<span class="fc" id="L109">                    .build();</span>
+
+<span class="fc" id="L111">            CronScheduleBuilder csb = createCronExpression(sec, min, hour, wd, day_mo);</span>
+
+<span class="fc" id="L113">            Trigger t = TriggerBuilder.newTrigger()</span>
+<span class="fc" id="L114">                    .withIdentity(task, JobEntryQuartz.DEFAULT_JOB_GROUP_NAME)</span>
+<span class="fc" id="L115">                    .withSchedule(csb)</span>
+<span class="fc" id="L116">                    .forJob(jd)</span>
+<span class="fc" id="L117">                    .build();</span>
+
+<span class="fc" id="L119">            JobEntryQuartz jeq = new JobEntryQuartz(t, jd);</span>
+
+<span class="fc" id="L121">            return jeq;</span>
+        }
+<span class="nc" id="L123">        catch (ParseException e)</span>
+        {
+<span class="nc" id="L125">            throw new TurbineException(&quot;Could not create scheduled job &quot; + task, e);</span>
+        }
+    }
+
+    /**
+     * Create a Cron expression from separate elements
+     *
+     * @param sec Value for entry &quot;seconds&quot;.
+     * @param min Value for entry &quot;minutes&quot;.
+     * @param hour Value for entry &quot;hours&quot;.
+     * @param wd Value for entry &quot;week days&quot;.
+     * @param day_mo Value for entry &quot;month days&quot;.
+     * @return a CronScheduleBuilder
+     * @throws ParseException if the expression is invalid
+     */
+    private CronScheduleBuilder createCronExpression(int sec, int min, int hour, int wd, int day_mo) throws ParseException
+    {
+<span class="fc" id="L142">        StringBuilder sb = new StringBuilder();</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">        sb.append(sec == -1 ? &quot;*&quot; : String.valueOf(sec)).append(' ');</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        sb.append(min == -1 ? &quot;*&quot; : String.valueOf(min)).append(' ');</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">        sb.append(hour == -1 ? &quot;*&quot; : String.valueOf(hour)).append(' ');</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">        if (day_mo == -1)</span>
+        {
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">            sb.append(wd == -1 ? &quot;*&quot; : &quot;?&quot;).append(' ');</span>
+        }
+        else
+        {
+<span class="nc" id="L152">            sb.append(day_mo).append(' ');</span>
+        }
+<span class="fc" id="L154">        sb.append(&quot;* &quot;); // Month not supported</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">        if (day_mo == -1)</span>
+        {
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">            sb.append(wd == -1 ? &quot;?&quot; : String.valueOf(wd));</span>
+        }
+        else
+        {
+<span class="nc" id="L161">            sb.append(&quot;*&quot;);</span>
+        }
+
+<span class="fc" id="L164">        return CronScheduleBuilder.cronSchedule(sb.toString());</span>
+    }
+
+    /**
+     * Get a specific Job from Storage.
+     *
+     * @param oid The int id for the job.
+     * @return A JobEntry.
+     * @throws TurbineException job could not be retrieved.
+     */
+    @Override
+    public JobEntry getJob(int oid)
+            throws TurbineException
+    {
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">        for (JobEntry je : listJobs())</span>
+        {
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">            if (je.getJobId() == oid)</span>
+            {
+<span class="fc" id="L182">                return je;</span>
+            }
+<span class="nc" id="L184">        }</span>
+
+<span class="nc" id="L186">        throw new TurbineException(&quot;Could not retrieve scheduled job with id &quot; + oid);</span>
+    }
+
+    /**
+     * Add a new job to the queue.
+     *
+     * @param je A JobEntry with the job to add.
+     * @throws TurbineException job could not be added
+     */
+    @Override
+    public void addJob(JobEntry je)
+            throws TurbineException
+    {
+        try
+        {
+            // Update the scheduler.
+<span class="fc" id="L202">            JobEntryQuartz jq = downCast(je);</span>
+<span class="fc" id="L203">            this.scheduler.scheduleJob(jq.getJobDetail(), jq.getJobTrigger());</span>
+        }
+<span class="nc" id="L205">        catch (SchedulerException e)</span>
+        {
+<span class="nc" id="L207">            throw new TurbineException(&quot;Problem adding Scheduled Job: &quot; + je.getTask(), e);</span>
+<span class="fc" id="L208">        }</span>
+<span class="fc" id="L209">    }</span>
+
+    /**
+     * Remove a job from the queue.
+     *
+     * @param je A JobEntry with the job to remove.
+     * @throws TurbineException job could not be removed
+     */
+    @Override
+    public void removeJob(JobEntry je)
+            throws TurbineException
+    {
+        try
+        {
+<span class="fc" id="L223">            JobEntryQuartz jq = downCast(je);</span>
+<span class="fc" id="L224">            this.scheduler.deleteJob(jq.getJobTrigger().getJobKey());</span>
+
+        }
+<span class="nc" id="L227">        catch (SchedulerException e)</span>
+        {
+<span class="nc" id="L229">            throw new TurbineException(&quot;Problem removing Scheduled Job: &quot; + je.getTask(), e);</span>
+<span class="fc" id="L230">        }</span>
+<span class="fc" id="L231">    }</span>
+
+    /**
+     * Add or update a job.
+     *
+     * @param je A JobEntry with the job to modify
+     * @throws TurbineException job could not be updated
+     */
+    @Override
+    public void updateJob(JobEntry je)
+            throws TurbineException
+    {
+        try
+        {
+            // Update the scheduler.
+<span class="nc" id="L246">            JobEntryQuartz jq = downCast(je);</span>
+<span class="nc" id="L247">            this.scheduler.rescheduleJob(jq.getJobTrigger().getKey(), jq.getJobTrigger());</span>
+        }
+<span class="nc" id="L249">        catch (SchedulerException e)</span>
+        {
+<span class="nc" id="L251">            throw new TurbineException(&quot;Problem updating Scheduled Job: &quot; + je.getTask(), e);</span>
+<span class="nc" id="L252">        }</span>
+<span class="nc" id="L253">    }</span>
+
+    /**
+     * List jobs in the queue.  This is used by the scheduler UI.
+     *
+     * @return A List of jobs.
+     */
+    @Override
+    public List&lt;? extends JobEntry&gt; listJobs()
+    {
+<span class="fc" id="L263">        List&lt;JobEntryQuartz&gt; jobs = new ArrayList&lt;&gt;();</span>
+
+        try
+        {
+<span class="fc" id="L267">            GroupMatcher&lt;JobKey&gt; groupMatcher = GroupMatcher.groupEquals(JobEntryQuartz.DEFAULT_JOB_GROUP_NAME);</span>
+<span class="fc" id="L268">            Set&lt;JobKey&gt; jobKeys = scheduler.getJobKeys(groupMatcher);</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">            for (JobKey jk : jobKeys)</span>
+            {
+<span class="fc" id="L271">                List&lt;? extends Trigger&gt; triggers = this.scheduler.getTriggersOfJob(jk);</span>
+
+<span class="pc bpc" id="L273" title="2 of 4 branches missed.">                if (triggers == null || triggers.isEmpty())</span>
+                {
+<span class="nc" id="L275">                    continue; // skip</span>
+                }
+<span class="fc" id="L277">                JobDetail jd = this.scheduler.getJobDetail(jk);</span>
+<span class="fc" id="L278">                JobEntryQuartz job = new JobEntryQuartz(triggers.get(0), jd);</span>
+<span class="fc" id="L279">                job.setJobId(jk.hashCode());</span>
+<span class="fc" id="L280">                jobs.add(job);</span>
+<span class="fc" id="L281">            }</span>
+        }
+<span class="nc" id="L283">        catch (SchedulerException e)</span>
+        {
+<span class="nc" id="L285">            log.error(&quot;Problem listing Scheduled Jobs&quot;, e);</span>
+<span class="fc" id="L286">        }</span>
+
+<span class="fc" id="L288">        return jobs;</span>
+    }
+
+
+    /**
+     * Sets the enabled status of the scheduler
+     *
+     * @param enabled true if enabled
+     *
+     */
+    protected void setEnabled(boolean enabled)
+    {
+<span class="fc" id="L300">        this.enabled = enabled;</span>
+<span class="fc" id="L301">    }</span>
+
+    /**
+     * Determines if the scheduler service is currently enabled.
+     *
+     * @return Status of the scheduler service.
+     */
+    @Override
+    public boolean isEnabled()
+    {
+<span class="fc" id="L311">        return enabled;</span>
+    }
+
+    /**
+     * Starts or restarts the scheduler if not already running.
+     */
+    @Override
+    public synchronized void startScheduler()
+    {
+<span class="fc" id="L320">        setEnabled(true);</span>
+<span class="fc" id="L321">        restart();</span>
+<span class="fc" id="L322">    }</span>
+
+    /**
+     * Stops the scheduler if it is currently running.
+     */
+    @Override
+    public synchronized void stopScheduler()
+    {
+<span class="fc" id="L330">        log.info(&quot;Stopping job scheduler&quot;);</span>
+        try
+        {
+<span class="fc" id="L333">            this.scheduler.standby();</span>
+<span class="fc" id="L334">            enabled = false;</span>
+        }
+<span class="nc" id="L336">        catch (SchedulerException e)</span>
+        {
+<span class="nc" id="L338">            log.error(&quot;Could not stop scheduler&quot;, e);</span>
+<span class="fc" id="L339">        }</span>
+<span class="fc" id="L340">    }</span>
+
+    /**
+     * Start (or restart) a thread to process commands, or wake up an
+     * existing thread if one is already running.  This method can be
+     * invoked if the background thread crashed due to an
+     * unrecoverable exception in an executed command.
+     */
+    public synchronized void restart()
+    {
+<span class="fc bfc" id="L350" title="All 2 branches covered.">        if (enabled)</span>
+        {
+<span class="fc" id="L352">            log.info(&quot;Starting job scheduler&quot;);</span>
+            try
+            {
+<span class="pc bpc" id="L355" title="1 of 2 branches missed.">                if (!this.scheduler.isStarted())</span>
+                {
+<span class="nc" id="L357">                    this.scheduler.start();</span>
+                }
+                else
+                {
+<span class="fc" id="L361">                    notify();</span>
+                }
+            }
+<span class="nc" id="L364">            catch (SchedulerException e)</span>
+            {
+<span class="nc" id="L366">                log.error(&quot;Could not start scheduler&quot;, e);</span>
+<span class="fc" id="L367">            }</span>
+        }
+<span class="fc" id="L369">    }</span>
+
+    /**
+     * @param je a generic job entry
+     * @throws TurbineException - If the cast fails.
+     *
+     * @return A downcasted JobEntry type
+     */
+    private JobEntryQuartz downCast(JobEntry je) throws TurbineException
+    {
+<span class="pc bpc" id="L379" title="1 of 2 branches missed.">        if (je instanceof JobEntryQuartz)</span>
+        {
+<span class="fc" id="L381">            return (JobEntryQuartz)je;</span>
+        }
+        else
+        {
+<span class="nc" id="L385">            throw new TurbineException(&quot;Invalid job type for this scheduler &quot; + je.getClass());</span>
+        }
+    }
+
+    /**
+     * Exposing the Quartz scheduler to handle jobs/triggers in more detail.
+     *
+     * @return the {@link Scheduler} of this service.
+     */
+	public Scheduler getScheduler()
+	{
+<span class="nc" id="L396">		return scheduler;</span>
+	}
+
+	/**
+	 * Builds a {@link JobEntryQuartz} from Quartz trigger/job.
+	 *
+	 * The developer should be aware to set identity/context properly, i.e. to
+     * {@link JobEntryQuartz#DEFAULT_JOB_GROUP_NAME}, if adding triggers/jobs.
+	 *
+	 * @param trigger a Quartz {@link Trigger}.
+	 * @param jd a Quartz {@link JobDetail} (built from a {@link org.quartz.Job} with {@link JobBuilder}).
+	 * @return A JobEntryQuartz.
+	 */
+	public JobEntryQuartz buildJobEntry(Trigger trigger, JobDetail jd) {
+<span class="nc" id="L410">        JobEntryQuartz job = new JobEntryQuartz(trigger, jd);</span>
+<span class="nc" id="L411">		return job;</span>
+	}
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

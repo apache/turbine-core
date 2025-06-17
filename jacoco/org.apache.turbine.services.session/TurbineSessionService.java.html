@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineSessionService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.session</a> &gt; <span class="el_source">TurbineSessionService.java</span></div><h1>TurbineSessionService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.session;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+import jakarta.servlet.http.HttpSession;
+
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.TurbineBaseService;
+
+/**
+ * The SessionService allows thread-safe access to the current
+ * sessions of the current context.  The session objects that are
+ * cached by this service are obtained through a listener, which must
+ * be configured via your web application's &lt;code&gt;web.xml&lt;/code&gt;
+ * deployment descriptor as follows:
+ *
+ * &lt;pre&gt;
+ * &amp;lt;listener&amp;gt;
+ *   &amp;lt;listener-class&amp;gt;
+ *     org.apache.turbine.session.SessionListener
+ *   &amp;lt;/listener-class&amp;gt;
+ * &amp;lt;/listener&amp;gt;
+ * &lt;/pre&gt;
+ *
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:dlr@collab.net&quot;&gt;Daniel Rall&lt;/a&gt;
+ * @since 2.3
+ * @version $Id$
+ * @see org.apache.turbine.services.session.SessionListener
+ */
+<span class="nc" id="L55">public class TurbineSessionService</span>
+        extends TurbineBaseService
+        implements SessionService
+{
+    /** Map of active sessions */
+    private ConcurrentMap&lt;String, HttpSession&gt; activeSessions;
+
+    /**
+     * Gets a list of the active sessions.
+     *
+     * @return A copy of the list of &lt;code&gt;HttpSession&lt;/code&gt; objects.
+     */
+    @Override
+    public Collection&lt;HttpSession&gt; getActiveSessions()
+    {
+<span class="nc" id="L70">        return new ArrayList&lt;&gt;(activeSessions.values());</span>
+    }
+
+    /**
+     * Adds a session to the current list.  This method should only be
+     * called by the listener.
+     *
+     * @param session Session to add
+     */
+    @Override
+    public void addSession(HttpSession session)
+    {
+<span class="nc" id="L82">        activeSessions.put(session.getId(), session);</span>
+<span class="nc" id="L83">    }</span>
+
+    /**
+     * Removes a session from the current list.  This method should only be
+     * called by the listener.
+     *
+     * @param session Session to remove
+     */
+    @Override
+    public void removeSession(HttpSession session)
+    {
+<span class="nc" id="L94">        activeSessions.remove(session.getId());</span>
+<span class="nc" id="L95">    }</span>
+
+    /**
+     * Determines if a given user is currently logged in.  The actual
+     * implementation of the User object must implement the equals()
+     * method.  By default, Torque based objects (liek TurbineUser)
+     * have an implementation of equals() that will compare the
+     * result of getPrimaryKey().
+     *
+     * @param user User to check for
+     * @return true if the user is logged in on one of the
+     * active sessions.
+     */
+    @Override
+    public boolean isUserLoggedIn(User user)
+    {
+<span class="nc" id="L111">        return getActiveUsers().contains(user);</span>
+    }
+
+    /**
+     * Gets a collection of all user objects representing the users currently
+     * logged in.  This will exclude any instances of anonymous user that
+     * Turbine will use before the user actually logs on.
+     *
+     * @return A set of {@link org.apache.turbine.om.security.User} objects.
+     */
+    @Override
+    public Collection&lt;User&gt; getActiveUsers()
+    {
+        Collection&lt;User&gt; users;
+        // Pre-allocate a list which won't need expansion more
+        // than once.
+<span class="nc" id="L127">        users = new ArrayList&lt;&gt;((int) (activeSessions.size() * 0.7));</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        for (HttpSession session : activeSessions.values())</span>
+        {
+<span class="nc" id="L130">            User u = getUserFromSession(session);</span>
+<span class="nc bnc" id="L131" title="All 4 branches missed.">            if (u != null &amp;&amp; u.hasLoggedIn())</span>
+            {
+<span class="nc" id="L133">                users.add(u);</span>
+            }
+<span class="nc" id="L135">        }</span>
+
+<span class="nc" id="L137">        return users;</span>
+    }
+
+    /**
+     * Gets the User object of the the specified HttpSession.
+     *
+     * @param session The session from which to extract a user.
+     * @return The Turbine User object.
+     */
+    @Override
+    public User getUserFromSession(HttpSession session)
+    {
+        // Not sure of other containers, but Tomcat 5.0.28 sometimes returns
+        // invalid sessions which will result in IllegalStateException when
+        // session.getAttribute() is invoked below.
+        try
+        {
+<span class="nc" id="L154">            return (User) session.getAttribute(User.SESSION_KEY);</span>
+        }
+<span class="nc" id="L156">        catch (IllegalStateException e)</span>
+        {
+<span class="nc" id="L158">            return null;</span>
+        }
+    }
+
+    /**
+     * Gets the HttpSession by the session identifier
+     *
+     * @param sessionId The unique session identifier.
+     * @return The session keyed by the specified identifier.
+     */
+    @Override
+    public HttpSession getSession(String sessionId)
+    {
+<span class="nc" id="L171">        return this.activeSessions.get(sessionId);</span>
+    }
+
+    /**
+     * Get a collection of all session on which the given user
+     * is logged in.
+     *
+     * @param user the user
+     * @return Collection of HtttSession objects
+     */
+    @Override
+    public Collection&lt;HttpSession&gt; getSessionsForUser(User user)
+    {
+<span class="nc" id="L184">        Collection&lt;HttpSession&gt; sessions = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">        for (HttpSession session : activeSessions.values())</span>
+        {
+<span class="nc" id="L187">            User u = this.getUserFromSession(session);</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">            if (user.equals(u))</span>
+            {
+<span class="nc" id="L190">                sessions.add(session);</span>
+            }
+<span class="nc" id="L192">        }</span>
+
+<span class="nc" id="L194">        return sessions;</span>
+    }
+
+
+    // ---- Service initialization ------------------------------------------
+
+    /**
+     * Initializes the service
+     */
+    @Override
+    public void init()
+    {
+<span class="nc" id="L206">        this.activeSessions = new ConcurrentHashMap&lt;&gt;();</span>
+
+<span class="nc" id="L208">        setInit(true);</span>
+<span class="nc" id="L209">    }</span>
+
+    /**
+     * Returns to uninitialized state.
+     */
+    @Override
+    public void shutdown()
+    {
+<span class="nc" id="L217">        this.activeSessions = null;</span>
+
+<span class="nc" id="L219">        setInit(false);</span>
+<span class="nc" id="L220">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

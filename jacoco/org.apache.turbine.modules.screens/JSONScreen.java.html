@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JSONScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.screens</a> &gt; <span class="el_source">JSONScreen.java</span></div><h1>JSONScreen.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.screens;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.io.BufferedReader;
+import java.io.CharArrayWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.jsonrpc.JsonRpcService;
+import org.apache.turbine.util.RunData;
+import org.jabsorb.JSONRPCBridge;
+
+
+/**
+ * A Screen class for dealing with JSON-RPC requests.  Typically you would
+ * extend this class and override the doOutput() method to use TurbineJsonRpc
+ * to register the POJOs that will provide the functions you are making
+ * available via JSON-RPC.  Use JSONSecureScreen if you need the user to be
+ * logged in prior to executing the functions you provide.
+ *
+ * &lt;p&gt;Here is an example from a superclass:
+ * {@code
+ * public void doOutput(PipelineData data) throws Exception
+ * {
+ *     User user = data.getUser();
+ *
+ *     MyJsonFunctions myFunctions = new MyJsonFunctions(user.getName());
+ *
+ *     // Session specific
+ *     TurbineJsonRpc.registerObject(data.getSession(), &quot;myFunctions&quot;, myFunctions);
+ *
+ *     // Global
+ *     //TurbineJsonRpc.registerObjectGlobal(&quot;testGlobal&quot;, testObject);
+ *
+ *     super.doOutput(data);
+ * }
+ * }
+ *
+ * &lt;p&gt;The class MyFunctions would be something like:
+ * &lt;code&gt;
+ * public class MyJsonFunctions
+ * {
+ *     private String getHello(String clientParameter)
+ *     {
+ *         return &quot;Hello &quot; + clientParameter;
+ *     }
+ * }
+ * &lt;/code&gt;
+ *
+ * &lt;p&gt;This code is derived from the com.metaparadigm.jsonrpc.JSONRPCServlet and (after upgrade) checked against
+ * org.jabsorb.JSONRPCServlet.
+ *
+ * @author brad@folkens.com
+ * @author &lt;a href=&quot;mailto:seade@backstagetech.com.au&quot;&gt;Scott Eade&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="nc" id="L82">public class JSONScreen extends RawScreen</span>
+{
+    protected static final String JSONRPC_CONTENT_TYPE = &quot;application/json;charset=utf-8&quot;;
+
+    protected final static int BUFFER_SIZE = 4096;
+
+    /** Injected service instance */
+    @TurbineService
+    protected JsonRpcService jsonRpcService;
+
+    /**
+     * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.pipeline.PipelineData)
+     */
+    @Override
+    protected String getContentType(PipelineData pipelineData)
+    {
+<span class="nc" id="L98">        return JSONRPC_CONTENT_TYPE;</span>
+    }
+
+    /**
+     * Output the dynamic content.
+     *
+     * Encoding is UTF-8. @{@link #JSONRPC_CONTENT_TYPE}: {@value #JSONRPC_CONTENT_TYPE}.
+     *
+     * @param pipelineData The PipelineData object.
+     */
+    @Override
+    protected void doOutput(PipelineData pipelineData) throws Exception
+    {
+<span class="nc" id="L111">        RunData data = pipelineData.getRunData();</span>
+<span class="nc" id="L112">        data.declareDirectResponse();</span>
+<span class="nc" id="L113">        HttpServletRequest request = data.getRequest();</span>
+
+        // we require utf-8, cft
+<span class="nc" id="L116">        Charset charset =  StandardCharsets.UTF_8; //request.getCharacterEncoding();</span>
+<span class="nc" id="L117">        BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), charset));</span>
+
+        // Read the request
+<span class="nc" id="L120">        CharArrayWriter cdata = new CharArrayWriter();</span>
+<span class="nc" id="L121">        char buf[] = new char[BUFFER_SIZE];</span>
+        int ret;
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        while ((ret = in.read(buf, 0, BUFFER_SIZE)) != -1)</span>
+        {
+<span class="nc" id="L125">            cdata.write(buf, 0, ret);</span>
+        }
+
+        // Find the JSONRPCBridge for this session or create one
+        // if it doesn't exist
+<span class="nc" id="L130">        JSONRPCBridge json_bridge = jsonRpcService.getBridge(data.getSession());</span>
+
+        // Process the request
+<span class="nc" id="L133">        Object json_res = jsonRpcService.processCall(cdata, json_bridge, request);</span>
+
+<span class="nc" id="L135">        try (PrintWriter out = new PrintWriter(</span>
+                new OutputStreamWriter(
+<span class="nc" id="L137">                    data.getResponse().getOutputStream(), charset)))</span>
+        {
+<span class="nc" id="L139">            out.print(json_res.toString());</span>
+<span class="nc" id="L140">            out.flush();</span>
+        }
+<span class="nc" id="L142">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

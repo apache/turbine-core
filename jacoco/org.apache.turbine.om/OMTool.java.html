@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OMTool.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.om</a> &gt; <span class="el_source">OMTool.java</span></div><h1>OMTool.java</h1><pre class="source lang-java linenums">package org.apache.turbine.om;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+import org.apache.fulcrum.pool.Recyclable;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.services.pull.ApplicationTool;
+
+/**
+ * A Pull tool to make om objects available to a template
+ *
+ * @author &lt;a href=&quot;mailto:jmcnally@collab.net&quot;&gt;John D. McNally&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ *
+ * @deprecated This class is probably not used anymore, it may have been intended for cacheable Torque OM or might be used with Fulcrum Security Torque.
+ */
+@Deprecated
+public class OMTool implements ApplicationTool, Recyclable
+{
+    protected ConcurrentMap&lt;String, Object&gt; omMap;
+
+    // note the following could be a static attribute to reduce memory
+    // footprint. Might require a service to front load the
+    // PullHelpers to avoid MT issues. A multiple write is not so bad
+    // though
+
+    /** The cache of PullHelpers. **/
+<span class="fc" id="L49">    private ConcurrentMap&lt;String, OMTool.PullHelper&gt; pullMap =</span>
+            new ConcurrentHashMap&lt;&gt;();
+
+    /**
+     *  The Factory responsible for retrieving the
+     *  objects from storage
+     */
+    protected RetrieverFactory omFactory;
+
+    /**
+     * Default constructor
+     * @throws Exception if creating the factory fails
+     */
+    public OMTool() throws Exception
+<span class="fc" id="L63">    {</span>
+<span class="fc" id="L64">        omMap = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L65">        String className = Turbine.getConfiguration().getString(&quot;tool.om.factory&quot;);</span>
+<span class="fc" id="L66">        this.omFactory = (RetrieverFactory)Class.forName(className).getDeclaredConstructor().newInstance();</span>
+<span class="fc" id="L67">    }</span>
+
+    /**
+     * Prepares tool for a single request
+     *
+     * @param data the initialization data
+     */
+    @Override
+    public void init(Object data)
+    {
+        // data = (RunData)data;
+<span class="nc" id="L78">    }</span>
+
+    /**
+     * Implementation of ApplicationTool interface is not needed for this
+     * method as the tool is request scoped
+     */
+    @Override
+    public void refresh()
+    {
+        // empty
+<span class="nc" id="L88">    }</span>
+
+    /**
+     * Inner class to present a nice interface to the template designer
+     */
+    protected class PullHelper
+    {
+        String omName;
+
+        protected PullHelper(String omName)
+<span class="fc" id="L98">        {</span>
+<span class="fc" id="L99">            this.omName = omName;</span>
+<span class="fc" id="L100">        }</span>
+
+        public Object setKey(String key)
+            throws Exception
+        {
+<span class="fc" id="L105">            Object om = null;</span>
+<span class="fc" id="L106">            String inputKey = omName + key;</span>
+
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            if (omMap.containsKey(inputKey))</span>
+            {
+<span class="fc" id="L110">                om = omMap.get(inputKey);</span>
+            }
+            else
+            {
+<span class="fc" id="L114">                om = omFactory.getInstance(omName).retrieve(key);</span>
+<span class="fc" id="L115">                omMap.put(inputKey, om);</span>
+            }
+
+<span class="fc" id="L118">            return om;</span>
+        }
+    }
+
+    /**
+     * Get the {@link PullHelper} object with the given name
+     * @param omName the object name
+     * @return the PullHelper
+     * @throws Exception if retrieving the object fails
+     */
+    public PullHelper get(String omName) throws Exception
+    {
+<span class="fc" id="L130">        PullHelper ph = pullMap.putIfAbsent(omName, new OMTool.PullHelper(omName));</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        if (ph == null)</span>
+        {
+<span class="fc" id="L133">            return pullMap.get(omName);</span>
+        }
+
+<span class="fc" id="L136">        return ph;</span>
+    }
+
+    /**
+     * Get the object with the given name and key
+     * @param omName the object name
+     * @param key the object key
+     * @return the object
+     * @throws Exception if retrieving the object fails
+     */
+    public Object get(String omName, String key) throws Exception
+    {
+<span class="fc" id="L148">        return get(omName).setKey(key);</span>
+    }
+
+    // ****************** Recyclable implementation ************************
+
+    private boolean disposed;
+
+    /**
+     * Recycles the object for a new client. Recycle methods with
+     * parameters must be added to implementing object and they will be
+     * automatically called by pool implementations when the object is
+     * taken from the pool for a new client. The parameters must
+     * correspond to the parameters of the constructors of the object.
+     * For new objects, constructors can call their corresponding recycle
+     * methods whenever applicable.
+     * The recycle methods must call their super.
+     */
+    @Override
+    public void recycle()
+    {
+<span class="nc" id="L168">        disposed = false;</span>
+<span class="nc" id="L169">    }</span>
+
+    /**
+     * Disposes the object after use. The method is called
+     * when the object is returned to its pool.
+     * The dispose method must call its super.
+     */
+    @Override
+    public void dispose()
+    {
+<span class="nc" id="L179">        omMap.clear();</span>
+<span class="nc" id="L180">        disposed = true;</span>
+<span class="nc" id="L181">    }</span>
+
+    /**
+     * Checks whether the recyclable has been disposed.
+     * @return true, if the recyclable is disposed.
+     */
+    @Override
+    public boolean isDisposed()
+    {
+<span class="nc" id="L190">        return disposed;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

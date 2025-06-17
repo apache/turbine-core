@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LogoutUser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.actions</a> &gt; <span class="el_source">LogoutUser.java</span></div><h1>LogoutUser.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.actions;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import org.apache.fulcrum.security.util.FulcrumSecurityException;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.modules.Action;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.security.SecurityService;
+import org.apache.turbine.util.RunData;
+
+/**
+ * This action removes a user from the session. It makes sure to save
+ * the User object in the session.
+ *
+ * @author &lt;a href=&quot;mailto:mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L41">public class LogoutUser implements Action</span>
+{
+    /** Injected service instance */
+    @TurbineService
+    private SecurityService security;
+
+    @TurbineConfiguration( TurbineConstants.LOGOUT_MESSAGE )
+    private String logoutMessage;
+
+<span class="fc" id="L50">    @TurbineConfiguration( TurbineConstants.ACTION_LOGOUT_KEY )</span>
+    private String actionLogout = TurbineConstants.ACTION_LOGOUT_DEFAULT;
+
+    @TurbineConfiguration( TurbineConstants.SCREEN_HOMEPAGE )
+    private String screenHomepage;
+
+    /**
+     * Clears the PipelineData user object back to an anonymous status not
+     * logged in, and with a null ACL.  If the tr.props ACTION_LOGIN
+     * is anything except &quot;LogoutUser&quot;, flow is transfered to the
+     * SCREEN_HOMEPAGE
+     *
+     * If this action name is the value of action.logout then we are
+     * being run before the session validator, so we don't need to
+     * set the screen (we assume that the session validator will handle
+     * that). This is basically still here simply to preserve old behavior
+     * - it is recommended that action.logout is set to &quot;LogoutUser&quot; and
+     * that the session validator does handle setting the screen/template
+     * for a logged out (read not-logged-in) user.
+     *
+     * @param pipelineData Turbine information.
+     * @throws FulcrumSecurityException a problem occurred in the security
+     *            service.
+     */
+    @Override
+    public void doPerform(PipelineData pipelineData)
+            throws FulcrumSecurityException
+    {
+<span class="fc" id="L78">        RunData data = pipelineData.getRunData();</span>
+
+        // Session validator did not run, so RunData is not populated
+<span class="fc" id="L81">        User user = data.getUserFromSession();</span>
+
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        if (!security.isAnonymousUser(user))</span>
+        {
+            // Make sure that the user has really logged in...
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">            if (!user.hasLoggedIn())</span>
+            {
+<span class="nc" id="L88">                return;</span>
+            }
+
+<span class="fc" id="L91">            user.setHasLoggedIn(Boolean.FALSE);</span>
+<span class="fc" id="L92">            security.saveUser(user);</span>
+        }
+
+<span class="fc" id="L95">        data.setMessage(logoutMessage);</span>
+
+        // This will cause the acl to be removed from the session in
+        // the Turbine servlet code.
+<span class="fc" id="L99">        data.setACL(null);</span>
+
+        // Retrieve an anonymous user.
+<span class="fc" id="L102">        User anonymousUser = security.getAnonymousUser();</span>
+<span class="fc" id="L103">        data.setUser(anonymousUser);</span>
+<span class="fc" id="L104">        data.save();</span>
+
+        // In the event that the current screen or related navigations
+        // require acl info, we cannot wait for Turbine to handle
+        // regenerating acl.
+<span class="fc" id="L109">        data.getSession().removeAttribute(TurbineConstants.ACL_SESSION_KEY);</span>
+
+        // If this action name is the value of action.logout then we are
+        // being run before the session validator, so we don't need to
+        // set the screen (we assume that the session validator will handle
+        // that). This is basically still here simply to preserve old behavior
+        // - it is recommended that action.logout is set to &quot;LogoutUser&quot; and
+        // that the session validator does handle setting the screen/template
+        // for a logged out (read not-logged-in) user.
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">        if (!actionLogout.equals(TurbineConstants.ACTION_LOGOUT_DEFAULT))</span>
+        {
+<span class="nc" id="L120">            data.setScreen(screenHomepage);</span>
+        }
+<span class="fc" id="L122">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

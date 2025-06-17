@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DateFormatter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.pull.util</a> &gt; <span class="el_source">DateFormatter.java</span></div><h1>DateFormatter.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.pull.util;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.services.pull.ApplicationTool;
+
+/**
+ * This pull tool is used to format date objects into strings.
+ *
+ * @author &lt;a href=&quot;mailto:qmccombs@nequalsone.com&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:seade@backstagetech.com.au&quot;&gt;Scott Eade&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L38">public class DateFormatter</span>
+        implements ApplicationTool
+{
+    /** Default date format */
+    private static final String DATE_FORMAT_DEFAULT = &quot;MM/dd/yyyy&quot;;
+
+    /**
+     * Property tag for the date format that is to be used for the web
+     * application.
+     */
+    private static final String DATE_FORMAT_KEY = &quot;tool.dateTool.format&quot;;
+
+<span class="fc" id="L50">    private String dateFormat = null;</span>
+
+    /**
+     * Initialize the application tool. The data parameter holds a different
+     * type depending on how the tool is being instantiated:
+     * &lt;ul&gt;
+     * &lt;li&gt;For global tools data will be null&lt;/li&gt;
+     * &lt;li&gt;For request tools data will be of type RunData&lt;/li&gt;
+     * &lt;li&gt;For session and persistent tools data will be of type User&lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * @param data initialization data
+     */
+    @Override
+    public void init(Object data)
+    {
+<span class="fc" id="L66">        dateFormat = Turbine.getConfiguration()</span>
+<span class="fc" id="L67">                .getString(DATE_FORMAT_KEY, DATE_FORMAT_DEFAULT);</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * Refresh the application tool. This is
+     * necessary for development work where you
+     * probably want the tool to refresh itself
+     * if it is using configuration information
+     * that is typically cached after initialization
+     */
+    @Override
+    public void refresh()
+    {
+        // empty
+<span class="nc" id="L81">    }</span>
+
+    /**
+     * Formats the given date as a String using the default date format.
+     * The default date format is MM/dd/yyyy
+     *
+     * @param theDate date to format
+     * @return String value of the date
+     */
+    public String format(Date theDate)
+    {
+<span class="nc" id="L92">        return format(theDate, dateFormat);</span>
+    }
+
+    /**
+     * Formats the given date as a String.
+     *
+     * @param theDate date to format
+     * @param dateFormatString format string to use.  See java.text.SimpleDateFormat
+     * for details.
+     * @return String value of the date
+     */
+    public String format(Date theDate, String dateFormatString)
+    {
+<span class="fc" id="L105">        String result = null;</span>
+<span class="fc" id="L106">        SimpleDateFormat sdf = new SimpleDateFormat();</span>
+
+<span class="fc bfc" id="L108" title="All 4 branches covered.">        if (StringUtils.isEmpty(dateFormatString) || theDate == null)</span>
+        {
+<span class="fc" id="L110">            result = &quot;&quot;;</span>
+        }
+        else
+        {
+<span class="fc" id="L114">            sdf.applyPattern(dateFormatString);</span>
+<span class="fc" id="L115">            result = sdf.format(theDate);</span>
+        }
+<span class="fc" id="L117">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

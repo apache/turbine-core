@@ -1,0 +1,818 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineTemplateService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.template</a> &gt; <span class="el_source">TurbineTemplateService.java</span></div><h1>TurbineTemplateService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.template;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.fulcrum.factory.FactoryException;
+import org.apache.fulcrum.factory.FactoryService;
+import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.modules.Assembler;
+import org.apache.turbine.modules.Layout;
+import org.apache.turbine.modules.Loader;
+import org.apache.turbine.modules.Navigation;
+import org.apache.turbine.modules.Page;
+import org.apache.turbine.modules.Screen;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+import org.apache.turbine.services.servlet.ServletService;
+import org.apache.turbine.services.template.mapper.BaseTemplateMapper;
+import org.apache.turbine.services.template.mapper.ClassMapper;
+import org.apache.turbine.services.template.mapper.DirectMapper;
+import org.apache.turbine.services.template.mapper.DirectTemplateMapper;
+import org.apache.turbine.services.template.mapper.LayoutTemplateMapper;
+import org.apache.turbine.services.template.mapper.Mapper;
+import org.apache.turbine.services.template.mapper.ScreenTemplateMapper;
+import org.apache.turbine.util.uri.URIConstants;
+
+/**
+ * This service provides a method for mapping templates to their
+ * appropriate Screens or Navigations.  It also allows templates to
+ * define a layout/navigations/screen modularization within the
+ * template structure.  It also performs caching if turned on in the
+ * properties file.
+ *
+ * This service is not bound to a specific templating engine but we
+ * will use the Velocity templating engine for the examples. It is
+ * available by using the VelocityService.
+ *
+ * This assumes the following properties in the Turbine configuration:
+ *
+ * &lt;pre&gt;
+ * # Register the VelocityService for the &quot;vm&quot; extension.
+ * services.VelocityService.template.extension=vm
+ *
+ * # Default Java class for rendering a Page in this service
+ * # (must be found on the class path (org.apache.turbine.modules.page.VelocityPage))
+ * services.VelocityService.default.page = VelocityPage
+ *
+ * # Default Java class for rendering a Screen in this service
+ * # (must be found on the class path (org.apache.turbine.modules.screen.VelocityScreen))
+ * services.VelocityService.default.screen=VelocityScreen
+ *
+ * # Default Java class for rendering a Layout in this service
+ * # (must be found on the class path (org.apache.turbine.modules.layout.VelocityOnlyLayout))
+ * services.VelocityService.default.layout = VelocityOnlyLayout
+ *
+ * # Default Java class for rendering a Navigation in this service
+ * # (must be found on the class path (org.apache.turbine.modules.navigation.VelocityNavigation))
+ * services.VelocityService.default.navigation=VelocityNavigation
+ *
+ * # Default Template Name to be used as Layout. If nothing else is
+ * # found, return this as the default name for a layout
+ * services.VelocityService.default.layout.template = Default.vm
+ * &lt;/pre&gt;
+ * If you want to render a template, a search path is used to find
+ * a Java class which might provide information for the context of
+ * this template.
+ *
+ * If you request e.g. the template screen
+ * &lt;pre&gt;
+ * about,directions,Driving.vm
+ * &lt;/pre&gt;
+ * then the following class names are searched (on the module search
+ * path):
+ * &lt;pre&gt;
+ * 1. about.directions.Driving     &amp;lt;- direct matching the template to the class name
+ * 2. about.directions.Default     &amp;lt;- matching the package, class name is Default
+ * 3. about.Default                &amp;lt;- stepping up in the package hierarchy, looking for Default
+ * 4. Default                      &amp;lt;- Class called &quot;Default&quot; without package
+ * 5. VelocityScreen               &amp;lt;- The class configured by the Service (VelocityService) to
+ * &lt;/pre&gt;
+ * And if you have the following module packages configured:
+ * &lt;pre&gt;
+ * module.packages = org.apache.turbine.modules, com.mycorp.modules
+ * &lt;/pre&gt;
+ * then the class loader will look for
+ * &lt;pre&gt;
+ * org.apache.turbine.modules.screens.about.directions.Driving
+ * com.mycorp.modules.screens.about.directions.Driving
+ * org.apache.turbine.modules.screens.about.directions.Default
+ * com.mycorp.modules.screens.about.directions.Default
+ * org.apache.turbine.modules.screens.about.Default
+ * com.mycorp.modules.screens.about.Default
+ * org.apache.turbine.modules.screens.Default
+ * com.mycorp.modules.screens.Default
+ * org.apache.turbine.modules.screens.VelocityScreen
+ * com.mycorp.modules.screens.VelocityScreen
+ * &lt;/pre&gt;
+ * Most of the times, you don't have any backing Java class for a
+ * template screen, so the first match will be
+ * org.apache.turbine.modules.screens.VelocityScreen
+ * which then renders your screen.
+ * &lt;p&gt;
+ * Please note, that your Screen Template (Driving.vm) must exist!
+ * If it does not exist, the Template Service will report an error.
+ * &lt;p&gt;
+ * Once the screen is found, the template service will look for
+ * the Layout and Navigation templates of your Screen. Here, the
+ * template service looks for matching template names!
+ * &lt;p&gt;
+ * Consider our example:
+ * &lt;pre&gt;
+ * about,directions,Driving.vm (Screen Name)
+ * &lt;/pre&gt;
+ * Now the template service will look for the following Navigation
+ * and Layout templates:
+ * &lt;pre&gt;
+ * 1. about,directions,Driving.vm      &amp;lt;- exact match
+ * 2. about,directions,Default.vm      &amp;lt;- package match, Default name
+ * 3. about,Default.vm                 &amp;lt;- stepping up in the hierarchy
+ * 4. Default.vm                       &amp;lt;- The name configured as default.layout.template
+ *                                        in the Velocity service.
+ * &lt;/pre&gt;
+ * And now Hennings' two golden rules for using templates:
+ * &lt;p&gt;
+ * Many examples and docs from older Turbine code show template pathes
+ * with a slashes. Repeat after me: &quot;TEMPLATE NAMES NEVER CONTAIN SLASHES!&quot;
+ * &lt;p&gt;
+ * Many examples and docs from older Turbine code show templates that start
+ * with &quot;/&quot;. This is not only a violation of the rule above but actively breaks
+ * things like loading templates from a jar with the velocity jar loader. Repeat
+ * after me: &quot;TEMPLATE NAMES ARE NOT PATHES. THEY'RE NOT ABSOLUTE AND HAVE NO
+ * LEADING /&quot;.
+ * &lt;p&gt;
+ * If you now wonder how a template name is mapped to a file name: This is
+ * scope of the templating engine. Velocity e.g. has this wonderful option to
+ * load templates from jar archives. There is no single file but you tell
+ * velocity &quot;get about,directions,Driving.vm&quot; and it returns the rendered
+ * template. This is not the job of the Templating Service but of the Template
+ * rendering services like VelocityService.
+ *
+ * @author &lt;a href=&quot;mailto:john.mcnally@clearink.com&quot;&gt;John D. McNally&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:jvanzyl@apache.org&quot;&gt;Jason van Zyl&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:dlr@finemaltcoding.com&quot;&gt;Daniel Rall&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:ilkka.priha@simsoft.fi&quot;&gt;Ilkka Priha&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+public class TurbineTemplateService
+    extends TurbineBaseService
+    implements TemplateService
+{
+    /** Logging */
+<span class="fc" id="L186">    private static final Logger log = LogManager.getLogger(TurbineTemplateService.class);</span>
+
+    /** Represents Page Objects */
+    public static final int PAGE_KEY = 0;
+
+    /** Represents Screen Objects */
+    public static final int SCREEN_KEY = 1;
+
+    /** Represents Layout Objects */
+    public static final int LAYOUT_KEY = 2;
+
+    /** Represents Navigation Objects */
+    public static final int NAVIGATION_KEY = 3;
+
+    /** Represents Layout Template Objects */
+    public static final int LAYOUT_TEMPLATE_KEY = 4;
+
+    /** Represents Layout Template Objects */
+    public static final String LAYOUT_TEMPLATE_NAME = &quot;layout.template&quot;;
+
+    /** Represents Screen Template Objects */
+    public static final int SCREEN_TEMPLATE_KEY = 5;
+
+    /** Represents Screen Template Objects */
+    public static final String SCREEN_TEMPLATE_NAME = &quot;screen.template&quot;;
+
+    /** Represents Navigation Template Objects */
+    public static final int NAVIGATION_TEMPLATE_KEY = 6;
+
+    /** Represents Navigation Template Objects */
+    public static final String NAVIGATION_TEMPLATE_NAME = &quot;navigation.template&quot;;
+
+    /** Number of different Template Types that we know of */
+    public static final int TEMPLATE_TYPES = 7;
+
+    /** Here we register the mapper objects for our various object types */
+<span class="fc" id="L222">    private Mapper [] mapperRegistry = null;</span>
+
+    /**
+     * The default file extension used as a registry key when a
+     * template's file extension cannot be determined.
+     *
+     * @deprecated Use TemplateService.DEFAULT_EXTENSION_VALUE.
+     */
+    @Deprecated
+    protected static final String NO_FILE_EXT = TemplateService.DEFAULT_EXTENSION_VALUE;
+
+
+    /** Flag set if cache is to be used. */
+<span class="fc" id="L235">    private boolean useCache = false;</span>
+
+    /** Default extension for templates. */
+    private String defaultExtension;
+
+    /** Default template without the default extension. */
+    private String defaultTemplate;
+
+    /**
+     * The servlet service.
+     */
+    private ServletService servletService;
+
+    /**
+     * The mappings of template file extensions to {@link
+     * org.apache.turbine.services.template.TemplateEngineService}
+     * implementations. Implementing template engines can locate
+     * templates within the capability of any resource loaders they
+     * may possess, and other template engines are stuck with file
+     * based template hierarchy only.
+     */
+<span class="fc" id="L256">    private ConcurrentMap&lt;String, TemplateEngineService&gt; templateEngineRegistry = null;</span>
+
+    /**
+     * C'tor
+     */
+    public TurbineTemplateService()
+<span class="fc" id="L262">    {</span>
+        // empty
+<span class="fc" id="L264">    }</span>
+
+    /**
+     * Called the first time the Service is used.
+     *
+     * @throws InitializationException Something went wrong when
+     *                                     setting up the Template Service.
+     */
+    @Override
+    public void init()
+        throws InitializationException
+    {
+        // Get the configuration for the template service.
+<span class="fc" id="L277">        Configuration config = getConfiguration();</span>
+
+<span class="fc" id="L279">        servletService = (ServletService)TurbineServices.getInstance().getService(ServletService.SERVICE_NAME);</span>
+
+        // Get the default extension to use if nothing else is applicable.
+<span class="fc" id="L282">        defaultExtension = config.getString(TemplateService.DEFAULT_EXTENSION_KEY,</span>
+            TemplateService.DEFAULT_EXTENSION_VALUE);
+
+<span class="fc" id="L285">        defaultTemplate =  config.getString(TemplateService.DEFAULT_TEMPLATE_KEY,</span>
+            TemplateService.DEFAULT_TEMPLATE_VALUE);
+
+        // Check to see if we are going to be caching modules.
+        // Aaargh, who moved this _out_ of the TemplateService package?
+<span class="fc" id="L290">        useCache = Turbine.getConfiguration().getBoolean(TurbineConstants.MODULE_CACHE_KEY,</span>
+            TurbineConstants.MODULE_CACHE_DEFAULT);
+
+<span class="fc" id="L293">        log.debug(&quot;Default Extension: {}&quot;, defaultExtension);</span>
+<span class="fc" id="L294">        log.debug(&quot;Default Template:  {}&quot;, defaultTemplate);</span>
+<span class="fc" id="L295">        log.debug(&quot;Use Caching:       {}&quot;, Boolean.valueOf(useCache));</span>
+
+<span class="fc" id="L297">        templateEngineRegistry = new ConcurrentHashMap&lt;&gt;();</span>
+
+<span class="fc" id="L299">        initMapper(config);</span>
+<span class="fc" id="L300">        setInit(true);</span>
+<span class="fc" id="L301">    }</span>
+
+    /**
+     * Returns true if the Template Service has caching activated
+     *
+     * @return true if Caching is active.
+     */
+    @Override
+    public boolean isCaching()
+    {
+<span class="fc" id="L311">        return useCache;</span>
+    }
+
+    /**
+     * Get the default template name extension specified
+     * in the template service properties. If no extension
+     * is defined, return the empty string.
+     *
+     * @return The default extension.
+     */
+    @Override
+    public String getDefaultExtension()
+    {
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">        return StringUtils.isNotEmpty(defaultExtension) ? defaultExtension : &quot;&quot;;</span>
+    }
+
+    /**
+     * Return Extension for a supplied template
+     *
+     * @param template The template name
+     *
+     * @return extension The extension for the supplied template
+     */
+    @Override
+    public String getExtension(String template)
+    {
+<span class="pc bpc" id="L337" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(template))</span>
+        {
+<span class="nc" id="L339">            return getDefaultExtension();</span>
+        }
+
+<span class="fc" id="L342">        int dotIndex = template.lastIndexOf(EXTENSION_SEPARATOR);</span>
+
+<span class="fc bfc" id="L344" title="All 2 branches covered.">        return dotIndex &lt; 0 ? getDefaultExtension() : template.substring(dotIndex + 1);</span>
+    }
+
+
+    /**
+     * Returns the Default Template Name with the Default Extension.
+     * If the extension is unset, return only the template name
+     *
+     * @return The default template Name
+     */
+    @Override
+    public String getDefaultTemplate()
+    {
+<span class="fc" id="L357">        StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L358">        sb.append(defaultTemplate);</span>
+<span class="pc bpc" id="L359" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(defaultExtension))</span>
+        {
+<span class="nc" id="L361">            sb.append(EXTENSION_SEPARATOR);</span>
+<span class="nc" id="L362">            sb.append(getDefaultExtension());</span>
+        }
+<span class="fc" id="L364">        return sb.toString();</span>
+    }
+
+    /**
+     * Get the default page module name of the template engine
+     * service corresponding to the default template name extension.
+     *
+     * @return The default page module name.
+     */
+    @Override
+    public String getDefaultPage()
+    {
+<span class="fc" id="L376">        return getDefaultPageName(getDefaultTemplate());</span>
+    }
+
+    /**
+     * Get the default screen module name of the template engine
+     * service corresponding to the default template name extension.
+     *
+     * @return The default screen module name.
+     */
+    @Override
+    public String getDefaultScreen()
+    {
+<span class="fc" id="L388">        return getDefaultScreenName(getDefaultTemplate());</span>
+    }
+
+    /**
+     * Get the default layout module name of the template engine
+     * service corresponding to the default template name extension.
+     *
+     * @return The default layout module name.
+     */
+    @Override
+    public String getDefaultLayout()
+    {
+<span class="fc" id="L400">        return getDefaultLayoutName(getDefaultTemplate());</span>
+    }
+
+    /**
+     * Get the default navigation module name of the template engine
+     * service corresponding to the default template name extension.
+     *
+     * @return The default navigation module name.
+     */
+    @Override
+    public String getDefaultNavigation()
+    {
+<span class="fc" id="L412">        return getDefaultNavigationName(getDefaultTemplate());</span>
+    }
+
+    /**
+     * Get the default layout template name of the template engine
+     * service corresponding to the default template name extension.
+     *
+     * @return The default layout template name.
+     */
+    @Override
+    public String getDefaultLayoutTemplate()
+    {
+<span class="fc" id="L424">        return getDefaultLayoutTemplateName(getDefaultTemplate());</span>
+    }
+
+    /**
+     * Get the default page module name of the template engine
+     * service corresponding to the template name extension of
+     * the named template.
+     *
+     * @param template The template name.
+     * @return The default page module name.
+     */
+    @Override
+    public String getDefaultPageName(String template)
+    {
+<span class="fc" id="L438">        return mapperRegistry[PAGE_KEY].getDefaultName(template);</span>
+    }
+
+    /**
+     * Get the default screen module name of the template engine
+     * service corresponding to the template name extension of
+     * the named template.
+     *
+     * @param template The template name.
+     * @return The default screen module name.
+     */
+    @Override
+    public String getDefaultScreenName(String template)
+    {
+<span class="fc" id="L452">        return mapperRegistry[SCREEN_KEY].getDefaultName(template);</span>
+    }
+
+    /**
+     * Get the default layout module name of the template engine
+     * service corresponding to the template name extension of
+     * the named template.
+     *
+     * @param template The template name.
+     * @return The default layout module name.
+     */
+    @Override
+    public String getDefaultLayoutName(String template)
+    {
+<span class="fc" id="L466">        return mapperRegistry[LAYOUT_KEY].getDefaultName(template);</span>
+    }
+
+    /**
+     * Get the default navigation module name of the template engine
+     * service corresponding to the template name extension of
+     * the named template.
+     *
+     * @param template The template name.
+     * @return The default navigation module name.
+     */
+    @Override
+    public String getDefaultNavigationName(String template)
+    {
+<span class="fc" id="L480">        return mapperRegistry[NAVIGATION_KEY].getDefaultName(template);</span>
+    }
+
+    /**
+     * Get the default layout template name of the template engine
+     * service corresponding to the template name extension of
+     * the named template.
+     *
+     * @param template The template name.
+     * @return The default layout template name.
+     */
+    @Override
+    public String getDefaultLayoutTemplateName(String template)
+    {
+<span class="fc" id="L494">        return mapperRegistry[LAYOUT_TEMPLATE_KEY].getDefaultName(template);</span>
+    }
+
+    /**
+     * Find the default page module name for the given request.
+     *
+     * @param pipelineData The encapsulation of the request to retrieve the
+     *             default page for.
+     * @return The default page module name.
+     */
+    @Override
+    public String getDefaultPageName(PipelineData pipelineData)
+    {
+<span class="fc" id="L507">        ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);</span>
+<span class="fc" id="L508">        String template = pp.get(URIConstants.CGI_TEMPLATE_PARAM);</span>
+<span class="pc bpc" id="L509" title="1 of 2 branches missed.">        return template != null ? getDefaultPageName(template) : getDefaultPage();</span>
+    }
+
+    /**
+     * Find the default layout module name for the given request.
+     *
+     * @param pipelineData The encapsulation of the request to retrieve the
+     *             default layout for.
+     * @return The default layout module name.
+     */
+    @Override
+    public String getDefaultLayoutName(PipelineData pipelineData)
+    {
+<span class="fc" id="L522">        ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);</span>
+<span class="fc" id="L523">        String template = pp.get(URIConstants.CGI_TEMPLATE_PARAM);</span>
+<span class="pc bpc" id="L524" title="1 of 2 branches missed.">        return template != null ? getDefaultLayoutName(template) : getDefaultLayout();</span>
+    }
+
+    /**
+     * Locate and return the name of the screen module to be used
+     * with the named screen template.
+     *
+     * @param template The screen template name.
+     * @return The found screen module name.
+     * @throws Exception a generic exception.
+     */
+    @Override
+    public String getScreenName(String template)
+        throws Exception
+    {
+<span class="fc" id="L539">        return mapperRegistry[SCREEN_KEY].getMappedName(template);</span>
+    }
+
+    /**
+     * Locate and return the name of the layout module to be used
+     * with the named layout template.
+     *
+     * @param template The layout template name.
+     * @return The found layout module name.
+     * @throws Exception a generic exception.
+     */
+    @Override
+    public String getLayoutName(String template)
+        throws Exception
+    {
+<span class="fc" id="L554">        return mapperRegistry[LAYOUT_KEY].getMappedName(template);</span>
+    }
+
+    /**
+     * Locate and return the name of the navigation module to be used
+     * with the named navigation template.
+     *
+     * @param template The navigation template name.
+     * @return The found navigation module name.
+     * @throws Exception a generic exception.
+     */
+    @Override
+    public String getNavigationName(String template)
+        throws Exception
+    {
+<span class="fc" id="L569">        return mapperRegistry[NAVIGATION_KEY].getMappedName(template);</span>
+    }
+
+    /**
+     * Locate and return the name of the screen template corresponding
+     * to the given template name parameter. This might return null if
+     * the screen is not found!
+     *
+     * @param template The template name parameter.
+     * @return The found screen template name.
+     * @throws Exception a generic exception.
+     */
+    @Override
+    public String getScreenTemplateName(String template)
+        throws Exception
+    {
+<span class="fc" id="L585">        return mapperRegistry[SCREEN_TEMPLATE_KEY].getMappedName(template);</span>
+    }
+
+    /**
+     * Locate and return the name of the layout template corresponding
+     * to the given screen template name parameter.
+     *
+     * @param template The template name parameter.
+     * @return The found screen template name.
+     * @throws Exception a generic exception.
+     */
+    @Override
+    public String getLayoutTemplateName(String template)
+        throws Exception
+    {
+<span class="fc" id="L600">        return mapperRegistry[LAYOUT_TEMPLATE_KEY].getMappedName(template);</span>
+    }
+
+    /**
+     * Locate and return the name of the navigation template corresponding
+     * to the given template name parameter. This might return null if
+     * the navigation is not found!
+     *
+     * @param template The template name parameter.
+     * @return The found navigation template name.
+     * @throws Exception a generic exception.
+     */
+    @Override
+    public String getNavigationTemplateName(String template)
+        throws Exception
+    {
+<span class="nc" id="L616">        return mapperRegistry[NAVIGATION_TEMPLATE_KEY].getMappedName(template);</span>
+    }
+
+    /**
+     * Translates the supplied template paths into their Turbine-canonical
+     * equivalent (probably absolute paths). This is used if the templating
+     * engine (e.g. JSP) does not provide any means to load a page but
+     * the page path is passed to the servlet container.
+     *
+     * @param templatePaths An array of template paths.
+     * @return An array of translated template paths.
+     * @deprecated Each template engine service should know how to translate
+     *             a request onto a file.
+     */
+    @Override
+    @Deprecated
+    public String[] translateTemplatePaths(String[] templatePaths)
+    {
+<span class="nc bnc" id="L634" title="All 2 branches missed.">        for (int i = 0; i &lt; templatePaths.length; i++)</span>
+        {
+<span class="nc" id="L636">            templatePaths[i] = servletService.getRealPath(templatePaths[i]);</span>
+        }
+<span class="nc" id="L638">        return templatePaths;</span>
+    }
+
+    /**
+     * Delegates to the appropriate {@link
+     * org.apache.turbine.services.template.TemplateEngineService} to
+     * check the existence of the specified template.
+     *
+     * @param template The template to check for the existence of.
+     * @param templatePaths The paths to check for the template.
+     * @deprecated Use templateExists from the various Templating Engines
+     */
+    @Override
+    @Deprecated
+    public boolean templateExists(String template, String[] templatePaths)
+    {
+<span class="nc" id="L654">        return Arrays.stream(templatePaths)</span>
+<span class="nc" id="L655">                .anyMatch(templatePath -&gt; new File(templatePath, template)</span>
+<span class="nc" id="L656">                        .exists());</span>
+    }
+
+    /**
+     * Registers the provided template engine for use by the
+     * &lt;code&gt;TemplateService&lt;/code&gt;.
+     *
+     * @param service The &lt;code&gt;TemplateEngineService&lt;/code&gt; to register.
+     */
+    @Override
+    public void registerTemplateEngineService(TemplateEngineService service)
+    {
+<span class="fc" id="L668">        String[] exts = service.getAssociatedFileExtensions();</span>
+
+<span class="fc bfc" id="L670" title="All 2 branches covered.">        for (String ext : exts)</span>
+        {
+<span class="fc" id="L672">            templateEngineRegistry.put(ext, service);</span>
+        }
+<span class="fc" id="L674">    }</span>
+
+    /**
+     * The {@link org.apache.turbine.services.template.TemplateEngineService}
+     * associated with the specified template's file extension.
+     *
+     * @param template The template name.
+     * @return The template engine service.
+     */
+    @Override
+    public TemplateEngineService getTemplateEngineService(String template)
+    {
+<span class="fc" id="L686">        return templateEngineRegistry.get(getExtension(template));</span>
+    }
+
+    /**
+     * Register a template Mapper to the service. This Mapper
+     * performs the template mapping and searching for a specific
+     * object type which is managed by the TemplateService.
+     *
+     * @param templateKey  One of the _KEY constants for the Template object types.
+     * @param mapper  An object which implements the Mapper interface.
+     */
+    private void registerMapper(int templateKey, Mapper mapper)
+    {
+<span class="fc" id="L699">        mapper.init();</span>
+<span class="fc" id="L700">        mapperRegistry[templateKey] = mapper;</span>
+<span class="fc" id="L701">    }</span>
+
+    /**
+     * Load and configure the Template mappers for
+     * the Template Service.
+     *
+     * @param conf The current configuration object.
+     * @throws InitializationException A problem occurred trying to set up the mappers.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private void initMapper(Configuration conf)
+            throws InitializationException
+    {
+        // Create a registry with the number of Template Types managed by this service.
+        // We could use a List object here and extend the number of managed objects
+        // dynamically. However, by using an Object Array, we get much more performance
+        // out of the Template Service.
+<span class="fc" id="L718">        mapperRegistry = new Mapper[TEMPLATE_TYPES];</span>
+
+<span class="fc" id="L720">        String [] mapperNames = new String [] {</span>
+            Page.NAME, Screen.NAME, Layout.NAME, Navigation.NAME,
+            LAYOUT_TEMPLATE_NAME, SCREEN_TEMPLATE_NAME, NAVIGATION_TEMPLATE_NAME
+        };
+
+<span class="fc" id="L725">        Class&lt;?&gt; [] mapperKeys = new Class&lt;?&gt; [] {</span>
+            Page.class, Screen.class, Layout.class, Navigation.class,
+            Layout.class, Screen.class, Navigation.class
+        };
+
+<span class="fc" id="L730">        String [] mapperClasses = new String [] {</span>
+<span class="fc" id="L731">            DirectMapper.class.getName(),</span>
+<span class="fc" id="L732">            ClassMapper.class.getName(),</span>
+<span class="fc" id="L733">            ClassMapper.class.getName(),</span>
+<span class="fc" id="L734">            ClassMapper.class.getName(),</span>
+<span class="fc" id="L735">            LayoutTemplateMapper.class.getName(),</span>
+<span class="fc" id="L736">            ScreenTemplateMapper.class.getName(),</span>
+<span class="fc" id="L737">            DirectTemplateMapper.class.getName()</span>
+        };
+
+<span class="fc" id="L740">        AssemblerBrokerService ab = (AssemblerBrokerService)TurbineServices.getInstance()</span>
+<span class="fc" id="L741">                                        .getService(AssemblerBrokerService.SERVICE_NAME);</span>
+
+<span class="fc" id="L743">        int [] mapperCacheSize = new int [mapperKeys.length];</span>
+<span class="fc" id="L744">        Loader&lt;? extends Assembler&gt; [] mapperLoader = new Loader&lt;?&gt;[mapperKeys.length];</span>
+
+<span class="fc bfc" id="L746" title="All 2 branches covered.">        for (int i = 0; i &lt; mapperKeys.length; i++)</span>
+        {
+<span class="fc" id="L748">            mapperLoader[i] = ab.getLoader((Class&lt;? extends Assembler&gt;)mapperKeys[i]);</span>
+<span class="pc bpc" id="L749" title="1 of 2 branches missed.">            mapperCacheSize[i] = (mapperLoader[i] != null) ? mapperLoader[i].getCacheSize() : 0;</span>
+        }
+
+        // HACK: to achieve the same behavior as before
+<span class="fc" id="L753">        mapperLoader[LAYOUT_TEMPLATE_KEY] = null;</span>
+<span class="fc" id="L754">        mapperLoader[SCREEN_TEMPLATE_KEY] = null;</span>
+<span class="fc" id="L755">        mapperLoader[NAVIGATION_TEMPLATE_KEY] = null;</span>
+
+<span class="fc" id="L757">        String [] mapperDefaultProperty = new String [] {</span>
+            TemplateEngineService.DEFAULT_PAGE,
+            TemplateEngineService.DEFAULT_SCREEN,
+            TemplateEngineService.DEFAULT_LAYOUT,
+            TemplateEngineService.DEFAULT_NAVIGATION,
+            TemplateEngineService.DEFAULT_LAYOUT_TEMPLATE,
+            TemplateEngineService.DEFAULT_SCREEN_TEMPLATE,
+            TemplateEngineService.DEFAULT_NAVIGATION_TEMPLATE
+        };
+
+<span class="fc" id="L767">        char [] mapperSeparator = new char [] { '.', '.', '.', '.', '/', '/', '/' };</span>
+
+<span class="fc" id="L769">        String [] mapperPrefix = new String [] {</span>
+            null, null, null, null,
+            Layout.PREFIX,
+            Screen.PREFIX,
+            Navigation.PREFIX  };
+
+<span class="fc bfc" id="L775" title="All 2 branches covered.">        for (int i = 0; i &lt; TEMPLATE_TYPES; i++)</span>
+        {
+<span class="fc" id="L777">            StringBuilder mapperProperty = new StringBuilder();</span>
+<span class="fc" id="L778">            mapperProperty.append(&quot;mapper.&quot;);</span>
+<span class="fc" id="L779">            mapperProperty.append(mapperNames[i]);</span>
+<span class="fc" id="L780">            mapperProperty.append(&quot;.class&quot;);</span>
+
+<span class="fc" id="L782">            String mapperClass =</span>
+<span class="fc" id="L783">                    conf.getString(mapperProperty.toString(), mapperClasses[i]);</span>
+
+<span class="fc" id="L785">            log.info(&quot;Using {} to map {} elements&quot;, mapperClass, mapperNames[i]);</span>
+
+<span class="fc" id="L787">            Mapper tm = null;</span>
+
+            try
+            {
+<span class="fc" id="L791">    		    FactoryService factory = (FactoryService)TurbineServices.getInstance().getService(FactoryService.ROLE);</span>
+<span class="fc" id="L792">    		    tm = factory.getInstance(mapperClass);</span>
+            }
+<span class="nc" id="L794">            catch (FactoryException e)</span>
+            {
+<span class="nc" id="L796">        		throw new InitializationException(&quot;&quot;, e);</span>
+<span class="fc" id="L797">		    }</span>
+
+<span class="fc" id="L799">            tm.setUseCache(useCache);</span>
+<span class="fc" id="L800">            tm.setCacheSize(mapperCacheSize[i]);</span>
+<span class="fc" id="L801">            tm.setDefaultProperty(mapperDefaultProperty[i]);</span>
+<span class="fc" id="L802">            tm.setSeparator(mapperSeparator[i]);</span>
+
+<span class="fc bfc" id="L804" title="All 4 branches covered.">            if (mapperLoader[i] != null &amp;&amp; tm instanceof ClassMapper)</span>
+            {
+<span class="fc" id="L806">                ((ClassMapper) tm).setLoader(mapperLoader[i]);</span>
+            }
+
+<span class="pc bpc" id="L809" title="1 of 4 branches missed.">            if (mapperPrefix[i] != null &amp;&amp; tm instanceof BaseTemplateMapper)</span>
+            {
+<span class="fc" id="L811">                ((BaseTemplateMapper) tm).setPrefix(mapperPrefix[i]);</span>
+            }
+
+<span class="fc" id="L814">            registerMapper(i, tm);</span>
+        }
+<span class="fc" id="L816">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

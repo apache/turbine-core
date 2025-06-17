@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TemplateScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util.template</a> &gt; <span class="el_source">TemplateScreen.java</span></div><h1>TemplateScreen.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util.template;
+
+
+import org.apache.logging.log4j.LogManager;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.modules.ScreenLoader;
+import org.apache.turbine.pipeline.PipelineData;
+
+/**
+ * Returns output of a Screen module.  An instance of this is
+ * placed in the Velocity context by the VelocityDirectLayout.  This
+ * allows the screen to be executed only at rendering.
+ * Here's how it's used in a template:
+ *
+ * &lt;p&gt;
+ * &lt;code&gt;
+ * $screen_placeholder
+ * &lt;/code&gt;
+ * &lt;p&gt;
+ * &lt;code&gt;
+ * $screen_placeholder.setScreen(&quot;Test&quot;)
+ * &lt;/code&gt;
+ * &lt;/p&gt;
+ *
+ * @author &lt;a href=&quot;raphael@apache.org&quot;&gt;Raphaël Luta&lt;/a&gt;
+ * @version $Id$
+ */
+public class TemplateScreen
+{
+    /** Logging */
+<span class="nc" id="L52">    private static final Logger log = LogManager.getLogger(TemplateScreen.class);</span>
+
+    /* The PipelineData object. */
+    private final PipelineData pipelineData;
+
+    /* The name of the screen template. */
+    private String screen;
+
+    /**
+     * Constructor
+     *
+     * @param pipelineData A Turbine PipelineData object.
+     */
+    public TemplateScreen(PipelineData pipelineData)
+<span class="nc" id="L66">    {</span>
+<span class="nc" id="L67">        this.pipelineData = pipelineData;</span>
+<span class="nc" id="L68">        this.screen = pipelineData.getRunData().getScreen();</span>
+<span class="nc" id="L69">    }</span>
+
+    /**
+     * Set the screen.
+     *
+     * @param screen A String with the name of the screen module
+     * @return A TemplateScreen (self).
+     */
+    public TemplateScreen setScreen(String screen)
+    {
+<span class="nc" id="L79">        this.screen = screen;</span>
+<span class="nc" id="L80">        return this;</span>
+    }
+
+    /**
+     * Builds the output of the navigation template.
+     *
+     * @return A String.
+     */
+    @Override
+    public String toString()
+    {
+<span class="nc" id="L91">        String returnValue = &quot;&quot;;</span>
+
+        try
+        {
+<span class="nc" id="L95">            String results = ScreenLoader.getInstance().eval(pipelineData, this.screen);</span>
+
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (results != null)</span>
+            {
+<span class="nc" id="L99">                returnValue = results;</span>
+            }
+        }
+<span class="nc" id="L102">        catch (Exception e)</span>
+        {
+<span class="nc" id="L104">            log.error(e);</span>
+<span class="nc" id="L105">        }</span>
+
+<span class="nc" id="L107">        return returnValue;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

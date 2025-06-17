@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseTemplateMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.template.mapper</a> &gt; <span class="el_source">BaseTemplateMapper.java</span></div><h1>BaseTemplateMapper.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.template.mapper;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.template.TemplateService;
+
+/**
+ * This is a mapper like the BaseMapper but it returns its
+ * results with the extension of the template names passed or (if no
+ * extension is passed), the default extension.
+ *
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+
+public abstract class BaseTemplateMapper
+    extends BaseMapper
+{
+    /** A prefix which is used to separate the various template types (screen, layouts, navigation) */
+<span class="fc" id="L41">    protected String prefix = &quot;&quot;;</span>
+
+    /**
+     * Default C'tor. If you use this C'tor, you must use
+     * the bean setter to set the various properties needed for
+     * this mapper before first usage.
+     */
+    public BaseTemplateMapper()
+    {
+<span class="fc" id="L50">        super();</span>
+<span class="fc" id="L51">    }</span>
+
+    /**
+     * Get the Prefix value.
+     * @return the Prefix value.
+     */
+    public String getPrefix()
+    {
+<span class="nc" id="L59">        return prefix;</span>
+    }
+
+    /**
+     * Set the Prefix value.
+     * @param prefix The new Prefix value.
+     */
+    public void setPrefix(String prefix)
+    {
+<span class="fc" id="L68">        this.prefix = prefix;</span>
+<span class="fc" id="L69">    }</span>
+
+    /**
+     * Returns the default name for the passed Template.
+     * If the template has no extension, the default extension
+     * is added.
+     * If the template is empty, the default template is
+     * returned.
+     *
+     * @param template The template name.
+     *
+     * @return the mapped default name for the template.
+     */
+    @Override
+    public String getDefaultName(String template)
+    {
+<span class="fc" id="L85">        String res = super.getDefaultName(template);</span>
+
+        // Does the Template Name component have an extension?
+<span class="fc" id="L88">        String [] components</span>
+<span class="fc" id="L89">            = StringUtils.split(res, String.valueOf(separator));</span>
+
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (components[components.length -1 ].indexOf(TemplateService.EXTENSION_SEPARATOR) &lt; 0)</span>
+        {
+<span class="fc" id="L93">            StringBuilder resBuf = new StringBuilder();</span>
+<span class="fc" id="L94">            resBuf.append(res);</span>
+<span class="fc" id="L95">            String [] templateComponents = StringUtils.split(template, String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR));</span>
+
+            // Only the extension of the Template name component is interesting...
+<span class="fc" id="L98">            int dotIndex = templateComponents[templateComponents.length -1].lastIndexOf(TemplateService.EXTENSION_SEPARATOR);</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">            if (dotIndex &lt; 0)</span>
+            {
+<span class="fc" id="L101">                TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);</span>
+
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">                if (StringUtils.isNotEmpty(templateService.getDefaultExtension()))</span>
+                {
+<span class="nc" id="L105">                    resBuf.append(TemplateService.EXTENSION_SEPARATOR);</span>
+<span class="nc" id="L106">                    resBuf.append(templateService.getDefaultExtension());</span>
+                }
+<span class="fc" id="L108">            }</span>
+            else
+            {
+<span class="nc" id="L111">                resBuf.append(templateComponents[templateComponents.length -1].substring(dotIndex));</span>
+            }
+<span class="fc" id="L113">            res = resBuf.toString();</span>
+        }
+<span class="fc" id="L115">        return res;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

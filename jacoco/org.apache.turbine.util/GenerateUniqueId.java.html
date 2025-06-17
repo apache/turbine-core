@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GenerateUniqueId.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util</a> &gt; <span class="el_source">GenerateUniqueId.java</span></div><h1>GenerateUniqueId.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.Random;
+
+/**
+ * This class generates a unique 10+ character id.  This is good for
+ * authenticating users or tracking users around.
+ *
+ * &lt;p&gt;This code was borrowed from Apache
+ * JServ.JServServletManager.java.  It is what Apache JServ uses to
+ * generate session ids for users.  Unfortunately, it was not included
+ * in Apache JServ as a class, so I had to create one here in order to
+ * use it.
+ *
+ * @author &lt;a href=&quot;mailto:jon@clearink.com&quot;&gt;Jon S. Stevens&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:neeme@one.lv&quot;&gt;Neeme Praks&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="nc" id="L40">public class GenerateUniqueId</span>
+{
+    /*
+     * Create a suitable string for session identification.  Use
+     * synchronized count and time to ensure uniqueness.  Use random
+     * string to ensure the timestamp cannot be guessed by programmed
+     * attack.
+     *
+     * Format of id is &lt;6 chars random&gt;&lt;3 chars time&gt;&lt;1+ char count&gt;
+     */
+<span class="nc" id="L50">    static private int session_count = 0;</span>
+<span class="nc" id="L51">    static private long lastTimeVal = 0;</span>
+<span class="nc" id="L52">    static private Random randomSource = new java.util.Random();</span>
+
+    // MAX_RADIX is 36
+
+    /**
+     * We want to have a random string with a length of 6 characters.
+     * Since we encode it BASE 36, we've to modulo it with the
+     * following value:
+     */
+    public final static long maxRandomLen = 2176782336L; // 36 ** 6
+
+    /**
+     * The session identifier must be unique within the typical
+     * lifespan of a Session; the value can roll over after that.  3
+     * characters: (this means a roll over after over a day, which is
+     * much larger than a typical lifespan)
+     */
+    public final static long maxSessionLifespanTics = 46656; // 36 ** 3
+
+    /**
+     * Millisecons between different tics.  So this means that the
+     * 3-character time string has a new value every 2 seconds:
+     */
+    public final static long ticDifference = 2000;
+
+    /**
+     * Get the unique id.
+     *
+     * &lt;p&gt;NOTE: This must work together with
+     * get_jserv_session_balance() in jserv_balance.c
+     *
+     * @return A String with the new unique id.
+     */
+    static synchronized public String getIdentifier()
+    {
+<span class="nc" id="L87">        StringBuilder sessionId = new StringBuilder();</span>
+
+        // Random value.
+<span class="nc" id="L90">        long n = randomSource.nextLong();</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (n &lt; 0)</span>
+        {
+<span class="nc" id="L93">            n = -n;</span>
+        }
+<span class="nc" id="L95">        n %= maxRandomLen;</span>
+
+        // Add maxLen to pad the leading characters with '0'; remove
+        // first digit with substring.
+<span class="nc" id="L99">        n += maxRandomLen;</span>
+<span class="nc" id="L100">        sessionId.append(Long.toString(n, Character.MAX_RADIX)</span>
+<span class="nc" id="L101">                .substring(1));</span>
+
+<span class="nc" id="L103">        long timeVal = (System.currentTimeMillis() / ticDifference);</span>
+
+        // Cut.
+<span class="nc" id="L106">        timeVal %= maxSessionLifespanTics;</span>
+
+        // Padding, see above.
+<span class="nc" id="L109">        timeVal += maxSessionLifespanTics;</span>
+
+<span class="nc" id="L111">        sessionId.append(Long.toString(timeVal, Character.MAX_RADIX)</span>
+<span class="nc" id="L112">                .substring(1));</span>
+
+        /*
+         * Make the string unique: append the session count since last
+         * time flip.
+         */
+
+        // Count sessions only within tics.  So the 'real' session
+        // count isn't exposed to the public.
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (lastTimeVal != timeVal)</span>
+        {
+<span class="nc" id="L123">            lastTimeVal = timeVal;</span>
+<span class="nc" id="L124">            session_count = 0;</span>
+        }
+<span class="nc" id="L126">        sessionId.append(Long.toString(++session_count,</span>
+                Character.MAX_RADIX));
+
+<span class="nc" id="L129">        return sessionId.toString();</span>
+    }
+
+    /**
+     * Get the unique id.
+     *
+     * @param jsIdent A String.
+     * @return A String with the new unique id.
+     */
+    synchronized public String getIdentifier(String jsIdent)
+    {
+<span class="nc bnc" id="L140" title="All 4 branches missed.">        if (jsIdent != null &amp;&amp; jsIdent.length() &gt; 0)</span>
+        {
+<span class="nc" id="L142">            return getIdentifier() + &quot;.&quot; + jsIdent;</span>
+        }
+<span class="nc" id="L144">        return getIdentifier();</span>
+    }
+
+    /**
+     * Simple test of the functionality.
+     *
+     * @param args A String[] with the command line arguments.
+     */
+    public static void main(String[] args)
+    {
+<span class="nc" id="L154">        System.out.println(GenerateUniqueId.getIdentifier());</span>
+<span class="nc" id="L155">        System.out.println(GenerateUniqueId.getIdentifier());</span>
+<span class="nc" id="L156">        System.out.println(GenerateUniqueId.getIdentifier());</span>
+<span class="nc" id="L157">        System.out.println(GenerateUniqueId.getIdentifier());</span>
+<span class="nc" id="L158">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

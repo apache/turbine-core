@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Valve.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.pipeline</a> &gt; <span class="el_source">Valve.java</span></div><h1>Valve.java</h1><pre class="source lang-java linenums">package org.apache.turbine.pipeline;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.io.IOException;
+
+import org.apache.turbine.util.TurbineException;
+
+/**
+ * &lt;p&gt;A &lt;b&gt;Valve&lt;/b&gt; is a request processing component.  A series of
+ * Valves are generally associated with each other into a Pipeline.
+ * The detailed contract for a Valve is included in the description of
+ * the &lt;code&gt;invoke()&lt;/code&gt; method below.&lt;/p&gt;
+ *
+ * &lt;b&gt;HISTORICAL NOTE&lt;/b&gt;:  The &quot;Valve&quot; name was assigned to this concept
+ * because a valve is what you use in a real world pipeline to control and/or
+ * modify flows through it.
+ *
+ * @author Craig R. McClanahan
+ * @author Gunnar Rjnning
+ * @author Peter Donald
+ * @author &lt;a href=&quot;mailto:dlr@finemaltcoding.com&quot;&gt;Daniel Rall&lt;/a&gt;
+ *
+ * @see #invoke(PipelineData, ValveContext)
+ */
+@FunctionalInterface
+public interface Valve
+{
+    /**
+     * &lt;p&gt;Perform request processing as required by this Valve.&lt;/p&gt;
+     *
+     * &lt;p&gt;An individual Valve &lt;b&gt;MAY&lt;/b&gt; perform the following actions, in
+     * the specified order:&lt;/p&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt;Examine and/or modify the properties of the specified Request and
+     *     Response.
+     * &lt;li&gt;Examine the properties of the specified Request, completely generate
+     *     the corresponding Response, and return control to the caller.
+     * &lt;li&gt;Examine the properties of the specified Request and Response, wrap
+     *     either or both of these objects to supplement their functionality,
+     *     and pass them on.
+     * &lt;li&gt;If the corresponding Response was not generated (and control was not
+     *     returned, call the next Valve in the pipeline (if there is one) by
+     *     executing &lt;code&gt;context.invokeNext()&lt;/code&gt;.
+     * &lt;li&gt;Examine, but not modify, the properties of the resulting Response
+     *     (which was created by a subsequently invoked Valve via a
+     *     call to &lt;code&gt;context.invokeNext()&lt;/code&gt;).
+     * &lt;/ul&gt;
+     *
+     * &lt;p&gt;A Valve &lt;b&gt;MUST NOT&lt;/b&gt; do any of the following things:&lt;/p&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt;Change request properties that have already been used to direct
+     *     the flow of processing control for this request.
+     * &lt;li&gt;Create a completed Response &lt;strong&gt;AND&lt;/strong&gt; pass this
+     *     Request and Response on to the next Valve in the pipeline.
+     * &lt;li&gt;Consume bytes from the input stream associated with the Request,
+     *     unless it is completely generating the response, or wrapping the
+     *     request before passing it on.
+     * &lt;li&gt;Modify the HTTP headers included with the Response after the
+     *     &lt;code&gt;invokeNext()&lt;/code&gt; method has returned.
+     * &lt;li&gt;Perform any actions on the output stream associated with the
+     *     specified Response after the &lt;code&gt;invokeNext()&lt;/code&gt; method has
+     *     returned.
+     * &lt;/ul&gt;
+     *
+     * @param pipelineData The run-time information, including the servlet
+     * request and response we are processing.
+     * @param context The valve context used to invoke the next valve
+     *  in the current processing pipeline
+     *
+     * @throws IOException Thrown by a subsequent Valve.
+     * @throws TurbineException Thrown by a subsequent Valve.
+     */
+    void invoke(PipelineData pipelineData, ValveContext context)
+        throws IOException, TurbineException;
+
+    /**
+     * Initialize the valve before using in a pipeline.
+     * @throws Exception if initialization fails
+     */
+    default void initialize() throws Exception
+    {
+        // empty
+<span class="fc" id="L103">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

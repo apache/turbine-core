@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionEvent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules</a> &gt; <span class="el_source">ActionEvent.java</span></div><h1>ActionEvent.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.fulcrum.parser.ValueParser.URLCaseFolding;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.AnnotationProcessor;
+import org.apache.turbine.annotation.TurbineActionEvent;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.pipeline.PipelineData;
+
+/**
+ * &lt;p&gt;
+ *
+ * This is an alternative to the Action class that allows you to do
+ * event based actions. Essentially, you label all your submit buttons
+ * with the prefix of &quot;eventSubmit_&quot; and the suffix of &quot;methodName&quot;.
+ * For example, &quot;eventSubmit_doDelete&quot;. Then any class that subclasses
+ * this class will get its &quot;doDelete(PipelineData data)&quot; method executed.
+ * If for any reason, it was not able to execute the method, it will
+ * fall back to executing the doPerform() method which is required to
+ * be implemented.
+ *
+ * &lt;p&gt;
+ *
+ * Limitations:
+ *
+ * &lt;p&gt;
+ *
+ * Because ParameterParser makes all the key values lowercase, we have
+ * to do some work to format the string into a method name. For
+ * example, a button name eventSubmit_doDelete gets converted into
+ * eventsubmit_dodelete. Thus, we need to form some sort of naming
+ * convention so that dodelete can be turned into doDelete.
+ *
+ * &lt;p&gt;
+ *
+ * Thus, the convention is this:
+ *
+ * &lt;ul&gt;
+ * &lt;li&gt;The variable name MUST have the prefix &quot;eventSubmit_&quot;.&lt;/li&gt;
+ * &lt;li&gt;The variable name after the prefix MUST begin with the letters
+ * &quot;do&quot;.&lt;/li&gt;
+ * &lt;li&gt;The first letter after the &quot;do&quot; will be capitalized and the
+ * rest will be lowercase&lt;/li&gt;
+ * &lt;/ul&gt;
+ *
+ * If you follow these conventions, then you should be ok with your
+ * method naming in your Action class.
+ *
+ * @author &lt;a href=&quot;mailto:jon@latchkey.com&quot;&gt;Jon S. Stevens &lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L87">public abstract class ActionEvent implements Action</span>
+{
+	/** Logging */
+<span class="fc" id="L90">	protected Logger log = LogManager.getLogger(this.getClass());</span>
+
+	/** The name of the button to look for. */
+	protected static final String BUTTON = &quot;eventSubmit_&quot;;
+	/** The length of the button to look for. */
+<span class="fc" id="L95">	protected static final int BUTTON_LENGTH = BUTTON.length();</span>
+    /** The default method. */
+    protected static final String DEFAULT_METHOD = &quot;doPerform&quot;;
+	/** The prefix of the method name. */
+	protected static final String METHOD_NAME_PREFIX = &quot;do&quot;;
+	/** The length of the method name. */
+<span class="fc" id="L101">	protected static final int METHOD_NAME_LENGTH = METHOD_NAME_PREFIX.length();</span>
+	/** The length of the button to look for. */
+<span class="fc" id="L103">	protected static final int LENGTH = BUTTON.length();</span>
+
+	/**
+	 * If true, the eventSubmit_do&amp;lt;xxx&amp;gt; variable must contain
+	 * a not null value to be executed.
+	 */
+<span class="fc" id="L109">    @TurbineConfiguration( TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_KEY )</span>
+	private boolean submitValueKey = TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_DEFAULT;
+
+	/**
+	 * If true, then exceptions raised in eventSubmit_do&amp;lt;xxx&amp;gt; methods
+	 * as well as in doPerform methods are bubbled up to the Turbine
+	 * servlet's handleException method.
+	 */
+<span class="fc" id="L117">    @TurbineConfiguration( TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP )</span>
+	protected boolean bubbleUpException = TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP_DEFAULT;
+
+	/**
+	 * Cache for the methods to invoke
+	 */
+<span class="fc" id="L123">	private ConcurrentMap&lt;String, Method&gt; methodCache = new ConcurrentHashMap&lt;&gt;();</span>
+
+	/**
+	 * Retrieve a method of the given name and signature. The value is cached.
+	 *
+	 * @param name the name of the method
+	 * @param signature an array of classes forming the signature of the method
+	 * @param pp ParameterParser for correct folding
+	 *
+	 * @return the method object
+	 * @throws NoSuchMethodException if the method does not exist
+	 */
+	protected Method getMethod(String name, Class&lt;?&gt;[] signature, ParameterParser pp) throws NoSuchMethodException
+	{
+<span class="fc" id="L137">	    String cacheKey =</span>
+<span class="fc" id="L138">				Arrays.stream(signature)</span>
+<span class="fc" id="L139">						.map(clazz -&gt; ':' + clazz.getCanonicalName())</span>
+<span class="fc" id="L140">						.collect(Collectors.joining(&quot;&quot;, name, &quot;&quot;));</span>
+
+<span class="fc" id="L142">		Method method = this.methodCache.get(cacheKey);</span>
+
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">	    if (method == null)</span>
+	    {
+	        // Try annotations of public methods
+<span class="fc" id="L147">	        Method[] methods = getClass().getMethods();</span>
+
+        methodLoop:
+<span class="fc bfc" id="L150" title="All 2 branches covered.">	        for (Method m : methods)</span>
+	        {
+<span class="fc" id="L152">	            Annotation[] annotations = AnnotationProcessor.getAnnotations(m);</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">	            for (Annotation a : annotations)</span>
+	            {
+<span class="fc bfc" id="L155" title="All 2 branches covered.">    	            if (a instanceof TurbineActionEvent)</span>
+    	            {
+<span class="fc" id="L157">    	                TurbineActionEvent tae = (TurbineActionEvent) a;</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">    	                if (name.equals(pp.convert(tae.value()))</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">                            &amp;&amp; Arrays.equals(signature, m.getParameterTypes()))</span>
+    	                {
+<span class="fc" id="L161">    	                    method = m;</span>
+<span class="fc" id="L162">    	                    break methodLoop;</span>
+    	                }
+    	            }
+	            }
+	        }
+
+	        // Try legacy mode
+<span class="fc bfc" id="L169" title="All 2 branches covered.">	        if (method == null)</span>
+	        {
+<span class="fc" id="L171">                String tmp = name.toLowerCase().substring(METHOD_NAME_LENGTH);</span>
+<span class="fc" id="L172">	            method = getClass().getMethod(METHOD_NAME_PREFIX + StringUtils.capitalize(tmp), signature);</span>
+	        }
+
+<span class="fc" id="L175">	        Method oldMethod = this.methodCache.putIfAbsent(cacheKey, method);</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">	        if (oldMethod != null)</span>
+	        {
+<span class="nc" id="L178">	            method = oldMethod;</span>
+	        }
+	    }
+
+<span class="fc" id="L182">	    return method;</span>
+	}
+
+	/**
+	 * This overrides the default Action.doPerform() to execute the
+	 * doEvent() method. If that fails, then it will execute the
+	 * doPerform() method instead.
+	 *
+	 * @param pipelineData Turbine information.
+	 * @throws Exception a generic exception.
+	 */
+	@Override
+    public void doPerform(PipelineData pipelineData)
+			throws Exception
+	{
+<span class="nc" id="L197">	    ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);</span>
+<span class="nc" id="L198">		executeEvents(pp, new Class&lt;?&gt;[]{ PipelineData.class }, new Object[]{ pipelineData });</span>
+<span class="nc" id="L199">	}</span>
+
+	/**
+	 * This method should be called to execute the event based system.
+	 *
+	 * @param pp the parameter parser
+	 * @param signature the signature of the method to call
+	 * @param parameters the parameters for the method to call
+	 *
+	 * @throws Exception a generic exception.
+	 */
+	protected void executeEvents(ParameterParser pp, Class&lt;?&gt;[] signature, Object[] parameters)
+			throws Exception
+	{
+		// Name of the button.
+<span class="fc" id="L214">		String theButton = null;</span>
+
+<span class="fc" id="L216">		String button = pp.convert(BUTTON);</span>
+<span class="fc" id="L217">		String key = null;</span>
+
+		// Loop through and find the button.
+<span class="fc bfc" id="L220" title="All 2 branches covered.">		for (String k : pp)</span>
+		{
+<span class="fc" id="L222">			key = k;</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">			if (key.startsWith(button))</span>
+			{
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">				if (considerKey(key, pp))</span>
+				{
+<span class="fc" id="L227">					theButton = key;</span>
+<span class="fc" id="L228">					break;</span>
+				}
+			}
+<span class="fc" id="L231">		}</span>
+
+<span class="fc bfc" id="L233" title="All 2 branches covered.">		if (theButton == null)</span>
+		{
+<span class="fc" id="L235">		    theButton = BUTTON + DEFAULT_METHOD;</span>
+<span class="fc" id="L236">		    key = null;</span>
+		}
+
+<span class="fc" id="L239">		theButton = formatString(theButton, pp);</span>
+<span class="fc" id="L240">		Method method = null;</span>
+
+        try
+        {
+<span class="fc" id="L244">            method = getMethod(theButton, signature, pp);</span>
+        }
+<span class="nc" id="L246">        catch (NoSuchMethodException e)</span>
+        {
+<span class="nc" id="L248">            method = getMethod(DEFAULT_METHOD, signature, pp);</span>
+        }
+        finally
+        {
+<span class="fc bfc" id="L252" title="All 2 branches covered.">            if (key != null)</span>
+            {
+<span class="fc" id="L254">                pp.remove(key);</span>
+            }
+        }
+
+		try
+		{
+<span class="fc" id="L260">			log.debug(&quot;Invoking {}&quot;, method);</span>
+
+<span class="fc" id="L262">			method.invoke(this, parameters);</span>
+		}
+<span class="fc" id="L264">		catch (InvocationTargetException ite)</span>
+		{
+<span class="fc" id="L266">			Throwable t = ite.getTargetException();</span>
+<span class="fc bfc" id="L267" title="All 2 branches covered.">			if (bubbleUpException)</span>
+			{
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">                if (t instanceof Exception)</span>
+                {
+<span class="fc" id="L271">                    throw (Exception) t;</span>
+                }
+                else
+                {
+<span class="nc" id="L275">                    throw ite;</span>
+                }
+			}
+			else
+			{
+<span class="fc" id="L280">			    log.error(&quot;Invokation of {}&quot;, method, t);</span>
+			}
+<span class="fc" id="L282">		}</span>
+<span class="fc" id="L283">	}</span>
+
+	/**
+	 * This method does the conversion of the lowercase method name
+	 * into the proper case.
+	 *
+	 * @param input The unconverted method name.
+	 * @param pp The parameter parser (for correct folding)
+	 * @return A string with the method name in the proper case.
+	 */
+	protected String formatString(String input, ParameterParser pp)
+	{
+<span class="fc" id="L295">		String tmp = input;</span>
+
+<span class="pc bpc" id="L297" title="1 of 2 branches missed.">		if (StringUtils.isNotEmpty(input))</span>
+		{
+<span class="fc" id="L299">			tmp = input.toLowerCase();</span>
+
+			// Chop off suffixes (for image type)
+<span class="pc bpc" id="L302" title="2 of 4 branches missed.">			String methodName = (tmp.endsWith(&quot;.x&quot;) || tmp.endsWith(&quot;.y&quot;))</span>
+<span class="nc" id="L303">					? input.substring(0, input.length() - 2)</span>
+<span class="fc" id="L304">					: input;</span>
+
+<span class="pc bpc" id="L306" title="1 of 2 branches missed.">			if (pp.getUrlFolding() == URLCaseFolding.NONE)</span>
+			{
+<span class="fc" id="L308">                tmp = methodName.substring(BUTTON_LENGTH);</span>
+			}
+			else
+			{
+<span class="nc" id="L312">                tmp = methodName.toLowerCase().substring(BUTTON_LENGTH);</span>
+			}
+		}
+
+<span class="fc" id="L316">		return tmp;</span>
+	}
+
+	/**
+	 * Checks whether the selected key really is a valid event.
+	 *
+	 * @param key The selected key
+	 * @param pp The parameter parser to look for the key value
+	 *
+	 * @return true if this key is really an ActionEvent Key
+	 */
+	protected boolean considerKey(String key, ParameterParser pp)
+	{
+<span class="pc bpc" id="L329" title="1 of 2 branches missed.">		if (!submitValueKey)</span>
+		{
+<span class="fc" id="L331">			log.debug(&quot;No Value required, accepting {}&quot;, key);</span>
+<span class="fc" id="L332">			return true;</span>
+		}
+		else
+		{
+			// If the action.eventsubmit.needsvalue key is true,
+			// events with a &quot;0&quot; or empty value are ignored.
+			// This can be used if you have multiple eventSubmit_do&amp;lt;xxx&amp;gt;
+			// fields in your form which are selected by client side code,
+			// e.g. JavaScript.
+			//
+			// If this key is unset or missing, nothing changes for the
+			// current behavior.
+			//
+<span class="nc" id="L345">			String keyValue = pp.getString(key);</span>
+<span class="nc" id="L346">			log.debug(&quot;Key Value is {}&quot;, keyValue);</span>
+<span class="nc bnc" id="L347" title="All 2 branches missed.">			if (StringUtils.isEmpty(keyValue))</span>
+			{
+<span class="nc" id="L349">				log.debug(&quot;Key is empty, rejecting {}&quot;, key);</span>
+<span class="nc" id="L350">				return false;</span>
+			}
+
+			try
+			{
+<span class="nc bnc" id="L355" title="All 2 branches missed.">				if (Integer.parseInt(keyValue) != 0)</span>
+				{
+<span class="nc" id="L357">					log.debug(&quot;Integer != 0, accepting {}&quot;, key);</span>
+<span class="nc" id="L358">					return true;</span>
+				}
+			}
+<span class="nc" id="L361">			catch (NumberFormatException nfe)</span>
+			{
+				// Not a number. So it might be a
+				// normal Key like &quot;continue&quot; or &quot;exit&quot;. Accept
+				// it.
+<span class="nc" id="L366">				log.debug(&quot;Not a number, accepting &quot; + key);</span>
+<span class="nc" id="L367">				return true;</span>
+<span class="nc" id="L368">			}</span>
+		}
+<span class="nc" id="L370">		log.debug(&quot;Rejecting {}&quot;, key);</span>
+<span class="nc" id="L371">		return false;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

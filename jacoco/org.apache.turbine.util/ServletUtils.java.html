@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServletUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util</a> &gt; <span class="el_source">ServletUtils.java</span></div><h1>ServletUtils.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util;
+
+
+import java.io.File;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.StringTokenizer;
+import java.util.stream.Stream;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.turbine.Turbine;
+
+/**
+ * This is where common Servlet manipulation routines should go.
+ *
+ * @author &lt;a href=&quot;mailto:gonzalo.diethelm@sonda.com&quot;&gt;Gonzalo Diethelm&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="nc" id="L42">public class ServletUtils</span>
+{
+    /**
+     * Expands a string that points to a relative path or path list,
+     * leaving it as an absolute path based on the servlet context.
+     * It will return null if the text is empty or the config object
+     * is null.
+     *
+     * @param config The ServletConfig.
+     * @param text The String containing a path or path list.
+     * @return A String with the expanded path or path list.
+     */
+    public static String expandRelative(ServletConfig config,
+                                        String text)
+    {
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (StringUtils.isEmpty(text))</span>
+        {
+<span class="nc" id="L59">            return text;</span>
+        }
+
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (config == null)</span>
+        {
+<span class="nc" id="L64">            return null;</span>
+        }
+
+        final String expandedText;
+
+        // attempt to make it relative
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        if (Stream.of(&quot;/&quot;, &quot;./&quot;, &quot;\\&quot;, &quot;.\\&quot;).noneMatch(text::startsWith))</span>
+        {
+<span class="nc" id="L72">            StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L73">            sb.append(&quot;./&quot;);</span>
+<span class="nc" id="L74">            sb.append(text);</span>
+<span class="nc" id="L75">            expandedText = sb.toString();</span>
+<span class="nc" id="L76">        }</span>
+        else
+        {
+<span class="nc" id="L79">            expandedText = text;</span>
+        }
+
+<span class="nc" id="L82">        ServletContext context = config.getServletContext();</span>
+<span class="nc" id="L83">        String base = StringUtils.defaultIfEmpty(context.getRealPath(&quot;/&quot;),</span>
+<span class="nc" id="L84">                Turbine.getApplicationRoot());</span>
+
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (StringUtils.isEmpty(base))</span>
+        {
+<span class="nc" id="L88">            return expandedText;</span>
+        }
+
+<span class="nc" id="L91">        StringTokenizer tokenizer = new StringTokenizer(expandedText, File.pathSeparator);</span>
+<span class="nc" id="L92">        StringBuilder buffer = new StringBuilder();</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        while (tokenizer.hasMoreTokens())</span>
+        {
+<span class="nc" id="L95">            buffer.append(base).append(tokenizer.nextToken());</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            if (tokenizer.hasMoreTokens())</span>
+            {
+<span class="nc" id="L98">                buffer.append(File.pathSeparator);</span>
+            }
+        }
+<span class="nc" id="L101">        return buffer.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

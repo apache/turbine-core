@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExecutePageValve.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.pipeline</a> &gt; <span class="el_source">ExecutePageValve.java</span></div><h1>ExecutePageValve.java</h1><pre class="source lang-java linenums">package org.apache.turbine.pipeline;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.io.IOException;
+
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineLoader;
+import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.modules.Page;
+import org.apache.turbine.modules.PageLoader;
+import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.util.TurbineException;
+
+/**
+ * Implements the Page Generation portion of the &quot;Turbine classic&quot;
+ * processing pipeline (from the Turbine 2.x series).
+ *
+ * @author &lt;a href=&quot;mailto:epugh@opensourceConnections.com&quot;&gt;Eric Pugh&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L43">public class ExecutePageValve</span>
+    implements Valve
+{
+    /** Injected service instance */
+    @TurbineService
+    private TemplateService templateService;
+
+    /** Injected loader instance */
+    @TurbineLoader( Page.class )
+    private PageLoader pageLoader;
+
+<span class="fc" id="L54">    @TurbineConfiguration( TurbineConstants.PAGE_DEFAULT_KEY )</span>
+    private String pageDefault = TurbineConstants.PAGE_DEFAULT_DEFAULT;
+
+    /**
+     * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
+     */
+    @Override
+    public void invoke(PipelineData pipelineData, ValveContext context)
+        throws IOException, TurbineException
+    {
+        try
+        {
+<span class="fc" id="L66">            executePage(pipelineData);</span>
+        }
+<span class="fc" id="L68">        catch (Exception e)</span>
+        {
+<span class="fc" id="L70">            throw new TurbineException(e);</span>
+<span class="fc" id="L71">        }</span>
+
+        // Pass control to the next Valve in the Pipeline
+<span class="fc" id="L74">        context.invokeNext(pipelineData);</span>
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * execute the page generation.
+     *
+     * @param pipelineData The run-time data.
+     *
+     * @throws Exception if the page execution fails
+     */
+    protected void executePage(PipelineData pipelineData)
+        throws Exception
+    {
+        // Start the execution phase. DefaultPage will execute the
+        // appropriate action as well as get the Layout from the
+        // Screen and then execute that. The Layout is then
+        // responsible for executing the Navigation and Screen
+        // modules.
+        //
+        // Note that by default, this cannot be overridden from
+        // parameters passed in via post/query data. This is for
+        // security purposes.  You should really never need more
+        // than just the default page.  If you do, add logic to
+        // DefaultPage to do what you want.
+
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        String defaultPage = (templateService == null)</span>
+<span class="pc" id="L100">        ? null : templateService.getDefaultPageName(pipelineData);</span>
+
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        if (defaultPage == null)</span>
+        {
+            /*
+             * In this case none of the template services are running.
+             * The application may be using ECS for views, or a
+             * decendent of RawScreen is trying to produce output.
+             * If there is a 'page.default' property in the TR.props
+             * then use that, otherwise return DefaultPage which will
+             * handle ECS view scenarios and RawScreen scenarios. The
+             * app developer can still specify the 'page.default'
+             * if they wish but the DefaultPage should work in
+             * most cases.
+             */
+<span class="nc" id="L115">            defaultPage = pageDefault;</span>
+        }
+
+<span class="fc" id="L118">        pageLoader.exec(pipelineData, defaultPage);</span>
+<span class="fc" id="L119">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

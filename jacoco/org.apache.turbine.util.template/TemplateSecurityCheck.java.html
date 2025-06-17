@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TemplateSecurityCheck.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util.template</a> &gt; <span class="el_source">TemplateSecurityCheck.java</span></div><h1>TemplateSecurityCheck.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util.template;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import org.apache.fulcrum.security.entity.Permission;
+import org.apache.fulcrum.security.entity.Role;
+import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
+import org.apache.fulcrum.security.model.turbine.TurbineUserManager;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.util.RunData;
+
+/**
+ * Utility class to help check for proper authorization when using
+ * template screens.  Sample usages:
+ *
+ * &lt;pre&gt;
+ * TemplateSecurityCheck secCheck = new TemplateSecurityCheck( data );
+ * secCheck.setMessage( &quot;Sorry, you do not have permission to &quot; +
+ *                      &quot;access this area.&quot; );
+ * secCheck.setFailTemplate(&quot;login.wm&quot;);
+ * if ( !secCheck.hasRole(&quot;ADMIN&quot;) )
+ *     return;
+ * &lt;/pre&gt;
+ *
+ * @author &lt;a href=&quot;mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+public class TemplateSecurityCheck
+{
+<span class="nc" id="L54">    private String message = &quot;Sorry, you do not have permission to access this area.&quot;;</span>
+    private String failScreen;
+    private String failTemplate;
+
+    /* The RunData object. */
+    private final RunData data;
+
+    /**
+     * Constructor.
+     *
+     * @param pipelineData A Turbine PipelineData object.
+     * @param message A String with the message to display upon
+     * failure.
+     */
+    public TemplateSecurityCheck(PipelineData pipelineData, String message)
+    {
+<span class="nc" id="L70">        this(pipelineData);</span>
+<span class="nc" id="L71">        setMessage(message);</span>
+<span class="nc" id="L72">    }</span>
+
+    /**
+     * Generic Constructor.
+     *
+     * @param pipelineData A Turbine PipelineData object.
+     */
+    public TemplateSecurityCheck(PipelineData pipelineData)
+<span class="nc" id="L80">    {</span>
+<span class="nc" id="L81">        this.data = pipelineData.getRunData();</span>
+<span class="nc" id="L82">        TemplateService templateService = (TemplateService)TurbineServices.getInstance()</span>
+<span class="nc" id="L83">                .getService(TemplateService.SERVICE_NAME);</span>
+<span class="nc" id="L84">        this.failScreen = templateService.getDefaultScreen();</span>
+<span class="nc" id="L85">    }</span>
+
+    /**
+     * Does the User have this role?
+     *
+     * @param role The role to be checked.
+     * @return Whether the user has the role.
+     * @throws Exception Trouble validating.
+     */
+    public boolean hasRole(Role role)
+        throws Exception
+    {
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (!checkLogin())</span>
+        {
+<span class="nc" id="L99">            return false;</span>
+        }
+
+<span class="nc" id="L102">        TurbineAccessControlList&lt;?&gt; acl = data.getACL();</span>
+<span class="nc bnc" id="L103" title="All 4 branches missed.">        if (acl == null || !acl.hasRole(role))</span>
+        {
+<span class="nc" id="L105">            data.setScreen(getFailScreen());</span>
+<span class="nc" id="L106">            data.getTemplateInfo().setScreenTemplate(getFailTemplate());</span>
+<span class="nc" id="L107">            data.setMessage(getMessage());</span>
+<span class="nc" id="L108">            return false;</span>
+        }
+
+<span class="nc" id="L111">        return true;</span>
+    }
+
+    /**
+     * Does the User have this permission?
+     *
+     * @param permission The permission to be checked.
+     * @return Whether the user has the permission.
+     * @throws Exception Trouble validating.
+     */
+    public boolean hasPermission(Permission permission)
+        throws Exception
+    {
+<span class="nc" id="L124">        boolean value = true;</span>
+<span class="nc" id="L125">        TurbineAccessControlList&lt;?&gt; acl = data.getACL();</span>
+<span class="nc bnc" id="L126" title="All 4 branches missed.">        if (acl == null || !acl.hasPermission(permission))</span>
+        {
+<span class="nc" id="L128">            data.setScreen(getFailScreen());</span>
+<span class="nc" id="L129">            data.getTemplateInfo().setScreenTemplate(getFailTemplate());</span>
+<span class="nc" id="L130">            data.setMessage(getMessage());</span>
+<span class="nc" id="L131">            value = false;</span>
+        }
+
+<span class="nc" id="L134">        return value;</span>
+    }
+
+    /**
+     * Check that the user has logged in.
+     *
+     * @return True if user has logged in.
+     * @throws Exception a generic exception.
+     */
+    public boolean checkLogin()
+        throws Exception
+    {
+<span class="nc" id="L146">        boolean value = true;</span>
+
+        // Do it like the AccessController
+        TurbineUserManager userManager =
+        	(TurbineUserManager)TurbineServices
+<span class="nc" id="L151">        		.getInstance()</span>
+<span class="nc" id="L152">        		.getService(TurbineUserManager.ROLE);</span>
+
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (!userManager.isAnonymousUser(data.getUser())</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">            &amp;&amp; !data.getUser().hasLoggedIn())</span>
+        {
+<span class="nc" id="L157">            data.setMessage(Turbine.getConfiguration()</span>
+<span class="nc" id="L158">                .getString(TurbineConstants.LOGIN_MESSAGE));</span>
+
+<span class="nc" id="L160">            data.getTemplateInfo().setScreenTemplate(getFailTemplate());</span>
+<span class="nc" id="L161">            value = false;</span>
+        }
+
+<span class="nc" id="L164">        return value;</span>
+    }
+
+    /**
+     * Set the message that should be displayed.  This is initialized
+     * in the constructor.
+     *
+     * @param v A String with the message that should be displayed.
+     */
+    public void setMessage(String v)
+    {
+<span class="nc" id="L175">        this.message = v;</span>
+<span class="nc" id="L176">    }</span>
+
+    /**
+     * Get the message that should be displayed.  This is initialized
+     * in the constructor.
+     *
+     * @return A String with the message that should be displayed.
+     */
+    public String getMessage()
+    {
+<span class="nc" id="L186">        return message;</span>
+    }
+
+    /**
+     * Get the value of failScreen.
+     *
+     * @return A String with the value of failScreen.
+     */
+    public String getFailScreen()
+    {
+<span class="nc" id="L196">        return failScreen;</span>
+    }
+
+    /**
+     * Set the value of failScreen.
+     *
+     * @param v A String with the value of failScreen.
+     */
+    public void setFailScreen(String v)
+    {
+<span class="nc" id="L206">        this.failScreen = v;</span>
+<span class="nc" id="L207">    }</span>
+
+    /**
+     * Get the value of failTemplate.
+     *
+     * @return A String with the value of failTemplate.
+     */
+    public String getFailTemplate()
+    {
+<span class="nc" id="L216">        return failTemplate;</span>
+    }
+
+    /**
+     * Set the value of failTemplate.
+     *
+     * @param v A String with the value of failTemplate.
+     */
+    public void setFailTemplate(String v)
+    {
+<span class="nc" id="L226">        this.failTemplate = v;</span>
+<span class="nc" id="L227">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

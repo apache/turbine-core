@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HtmlPageAttributes.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util.template</a> &gt; <span class="el_source">HtmlPageAttributes.java</span></div><h1>HtmlPageAttributes.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util.template;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.services.pull.ApplicationTool;
+
+/**
+ * Template context tool that can be used to set various attributes of a
+ * HTML page.  This tool does not automatically make the changes in the HTML
+ * page for you.  You must use this tool in your layout template to retrieve
+ * the attributes.
+ * &lt;p&gt;
+ * The set/add methods are can be used from a screen template, action, screen
+ * class, layour template, or anywhere else.  The get methods should be used in
+ * your layout template(s) to construct the appropriate HTML tags.
+ * &lt;/p&gt;
+ *
+ *&lt;p&gt;
+ * Example usage of this tool to build the HEAD and BODY tags in your layout
+ * templates:
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ *  &lt;code&gt;
+ *  ## Set defaults for all pages using this layout.  Anything set here can&lt;br&gt;
+ *  ## be overridden in the screen template.&lt;br&gt;
+ *  $page.setTitle(&quot;My default page title&quot;);&lt;br&gt;
+ *  $page.setHttpEquiv(&quot;Content-Style-Type&quot;,&quot;text/css&quot;)&lt;br&gt;
+ *  $page.addStyleSheet($content.getURI(&quot;myStyleSheet.css&quot;))&lt;br&gt;
+ *  $page.addScript($content.getURI(&quot;globalJavascriptCode.js&quot;))&lt;br&gt;
+ *  &lt;br&gt;
+ *  ## build the HTML, HEAD, and BODY tags dynamically&lt;br&gt;
+ *  &amp;lt;html&amp;gt;&lt;br&gt;
+ *    &amp;lt;head&amp;gt;&lt;br&gt;
+ *      #if( $page.Title != &quot;&quot; )&lt;br&gt;
+ *      &amp;lt;title&amp;gt;$page.Title&amp;lt;/title&amp;gt;&lt;br&gt;
+ *      #end&lt;br&gt;
+ *      #foreach($metaTag in $page.MetaTags.keySet())&lt;br&gt;
+ *      &amp;lt;meta name=&quot;$metaTag&quot; content=&quot;$page.MetaTags.get($metaTag)&quot;&amp;gt;&lt;br&gt;
+ *      #end&lt;br&gt;
+ *      #foreach($httpEquiv in $page.HttpEquivs.keySet())&lt;br&gt;
+ *      &amp;lt;meta http-equiv=&quot;$httpEquiv&quot; content=&quot;$page.HttpEquivs.get($httpEquiv)&quot;&amp;gt;&lt;br&gt;
+ *      #end&lt;br&gt;
+ *      #foreach( $styleSheet in $page.StyleSheets )&lt;br&gt;
+ *        &amp;lt;link rel=&quot;stylesheet&quot; href=&quot;$styleSheet.Url&quot;&lt;br&gt;
+ *          #if($styleSheet.Type != &quot;&quot; ) type=&quot;$styleSheet.Type&quot; #end&lt;br&gt;
+ *          #if($styleSheet.Media != &quot;&quot;) media=&quot;$styleSheet.Media&quot; #end&lt;br&gt;
+ *          #if($styleSheet.Title != &quot;&quot;) title=&quot;$styleSheet.Title&quot; #end&lt;br&gt;
+ *        &amp;gt;&lt;br&gt;
+ *      #end&lt;br&gt;
+ *      #foreach( $script in $page.Scripts )&lt;br&gt;
+ *        &amp;lt;script type=&quot;text/javascript&quot; src=&quot;$script&quot; language=&quot;JavaScript&quot;&amp;gt;&amp;lt;/script&amp;gt;&lt;br&gt;
+ *      #end&lt;br&gt;
+ *    &amp;lt;/head&amp;gt;&lt;br&gt;
+ *&lt;br&gt;
+ *    ## Construct the body tag.  Iterate through the body attributes to build the opening tag&lt;br&gt;
+ *    &amp;lt;body&lt;br&gt;
+ *      #foreach( $attributeName in $page.BodyAttributes.keySet() )&lt;br&gt;
+ *        $attributeName = &quot;$page.BodyAttributes.get($attributeName)&quot;&lt;br&gt;
+ *      #end&lt;br&gt;
+ *     &amp;gt;
+ * &lt;/code&gt;
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * Example usages of this tool in your screen templates:&lt;br&gt;
+ *   &lt;code&gt;$page.addScript($content.getURI(&quot;myJavascript.js&quot;)&lt;br&gt;
+ *   $page.setTitle(&quot;My page title&quot;)&lt;br&gt;
+ *   $page.setHttpEquiv(&quot;refresh&quot;,&quot;5; URL=http://localhost/nextpage.html&quot;)&lt;/code&gt;
+ * &lt;/p&gt;
+ *
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:seade@backstagetech.com.au&quot;&gt;Scott Eade&lt;/a&gt;
+ * @version $Id$
+ */
+public class HtmlPageAttributes
+        implements ApplicationTool
+{
+    /** The title */
+    private String title;
+
+    /** Body Attributes */
+<span class="fc" id="L110">    private final Map&lt;String, String&gt; bodyAttributes = new LinkedHashMap&lt;&gt;();</span>
+
+    /** Script references */
+<span class="fc" id="L113">    private final List&lt;String&gt; scripts = new ArrayList&lt;&gt;();</span>
+
+    /** External references */
+<span class="fc" id="L116">    private final List&lt;LinkTag&gt; linkTags = new ArrayList&lt;&gt;();</span>
+
+    /** Inline styles */
+<span class="fc" id="L119">    private final List&lt;String&gt; styles = new ArrayList&lt;&gt;();</span>
+
+    /** Meta tags for the HEAD */
+<span class="fc" id="L122">    private final Map&lt;String, String&gt; metaTags = new LinkedHashMap&lt;&gt;();</span>
+
+    /** http-equiv tags */
+<span class="fc" id="L125">    private final Map&lt;String, String&gt; httpEquivs = new LinkedHashMap&lt;&gt;();</span>
+
+    /** Doctype */
+<span class="fc" id="L128">    private String doctype = null;</span>
+
+<span class="fc" id="L130">    @TurbineConfiguration( TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY )</span>
+    private String defaultHtmlDoctypeRootElement = TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_DEFAULT;
+
+    @TurbineConfiguration( TurbineConstants.DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY )
+    private String defaultHtmlDoctypeIdentifier;
+
+    @TurbineConfiguration( TurbineConstants.DEFAULT_HTML_DOCTYPE_URI_KEY )
+    private String defaultHtmlDoctypeUri;
+
+    /**
+     * Construct a new instance
+     */
+    public HtmlPageAttributes()
+<span class="fc" id="L143">    {</span>
+<span class="fc" id="L144">        init(null);</span>
+<span class="fc" id="L145">    }</span>
+
+    /**
+     * Initialize this instance.
+     * (ApplicationTool method)
+     *
+     * @param data not used
+     */
+    @Override
+    public void init(Object data)
+    {
+<span class="fc" id="L156">        this.title = null;</span>
+<span class="fc" id="L157">        this.bodyAttributes.clear();</span>
+<span class="fc" id="L158">        this.scripts.clear();</span>
+<span class="fc" id="L159">        this.linkTags.clear();</span>
+<span class="fc" id="L160">        this.styles.clear();</span>
+<span class="fc" id="L161">        this.metaTags.clear();</span>
+<span class="fc" id="L162">        this.httpEquivs.clear();</span>
+<span class="fc" id="L163">    }</span>
+
+    /**
+     * Refresh method - does nothing
+     */
+    @Override
+    public void refresh()
+    {
+        // empty
+<span class="nc" id="L172">    }</span>
+
+    /**
+     * Set the title in the page.  This returns an empty String so
+     * that the template doesn't complain about getting a null return
+     * value.  Subsequent calls to this method will replace the current
+     * title.
+     *
+     * @param title A String with the title.
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes setTitle(String title)
+    {
+<span class="nc" id="L185">        this.title = title;</span>
+<span class="nc" id="L186">        return this;</span>
+    }
+
+    /**
+     * Get the title in the page.  This returns an empty String if
+     * empty so that the template doesn't complain about getting a null
+     * return value.
+     *
+     * @return A String with the title.
+     */
+    public String getTitle()
+    {
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        if (StringUtils.isEmpty(this.title))</span>
+        {
+<span class="nc" id="L200">            return &quot;&quot;;</span>
+        }
+<span class="nc" id="L202">        return title;</span>
+    }
+
+    /**
+     * Adds an attribute to the BODY tag.
+     *
+     * @param name A String.
+     * @param value A String.
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes addBodyAttribute(String name, String value)
+    {
+<span class="nc" id="L214">        this.bodyAttributes.put(name, value);</span>
+<span class="nc" id="L215">        return this;</span>
+    }
+
+    /**
+     * Returns the map of body attributes
+     *
+     * @return the map
+     */
+    public Map&lt;String, String&gt; getBodyAttributes()
+    {
+<span class="nc" id="L225">        return this.bodyAttributes;</span>
+    }
+
+    /**
+     * Adds a script reference
+     *
+     * @param scriptURL the url
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes addScript(String scriptURL)
+    {
+<span class="nc" id="L236">        this.scripts.add(scriptURL);</span>
+<span class="nc" id="L237">        return this;</span>
+    }
+
+    /**
+     * Returns a collection of script URLs
+     *
+     * @return list of String objects containing URLs of javascript files
+     * to include
+     */
+    public List&lt;String&gt; getScripts()
+    {
+<span class="nc" id="L248">        return this.scripts;</span>
+    }
+
+    /**
+     * Adds a style sheet reference
+     *
+     * @param styleSheetURL URL of the style sheet
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes addStyleSheet(String styleSheetURL)
+    {
+<span class="nc" id="L259">        addStyleSheet(styleSheetURL, &quot;screen&quot;, null, &quot;text/css&quot;);</span>
+<span class="nc" id="L260">        return this;</span>
+    }
+
+    /**
+     * Adds a style sheet reference
+     *
+     * @param styleSheetURL URL of the style sheet
+     * @param media name of the media
+     * @param title title of the stylesheet
+     * @param type content type
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes addStyleSheet(String styleSheetURL,
+                                            String media, String title, String type)
+    {
+<span class="nc" id="L275">        LinkTag ss = new LinkTag(&quot;stylesheet&quot;, styleSheetURL);</span>
+<span class="nc" id="L276">        ss.setMedia(media);</span>
+<span class="nc" id="L277">        ss.setTitle(title);</span>
+<span class="nc" id="L278">        ss.setType(type);</span>
+<span class="nc" id="L279">        this.linkTags.add(ss);</span>
+<span class="nc" id="L280">        return this;</span>
+    }
+
+    /**
+     * Adds a generic external reference
+     *
+     * @param relation type of the reference (prev, next, first, last, top, etc.)
+     * @param linkURL URL of the reference
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes addLink(String relation, String linkURL)
+    {
+<span class="nc" id="L292">        return addLink(relation, linkURL, null, null);</span>
+    }
+
+    /**
+     * Adds a generic external reference
+     *
+     * @param relation type of the reference (prev, next, first, last, top, etc.)
+     * @param linkURL URL of the reference
+     * @param title title of the reference
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes addLink(String relation, String linkURL, String title)
+    {
+<span class="nc" id="L305">        return addLink(relation, linkURL, title, null);</span>
+    }
+
+    /**
+     * Adds a generic external reference
+     *
+     * @param relation type of the reference (prev, next, first, last, top, etc.)
+     * @param linkURL URL of the reference
+     * @param title title of the reference
+     * @param type content type
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes addLink(String relation, String linkURL, String title,
+                                        String type)
+    {
+<span class="nc" id="L320">        LinkTag ss = new LinkTag(relation, linkURL);</span>
+<span class="nc" id="L321">        ss.setTitle(title);</span>
+<span class="nc" id="L322">        ss.setType(type);</span>
+<span class="nc" id="L323">        this.linkTags.add(ss);</span>
+<span class="nc" id="L324">        return this;</span>
+    }
+
+    /**
+     * Returns a collection of link URLs
+     *
+     * @return list LinkTag objects (inner class)
+     */
+    public List&lt;LinkTag&gt; getLinks()
+    {
+<span class="nc" id="L334">        return this.linkTags;</span>
+    }
+
+    /**
+     * Adds a STYLE element to the HEAD of the page with the provided content.
+     *
+     * @param styleText The contents of the &lt;code&gt;style&lt;/code&gt; tag.
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes addStyle(String styleText)
+    {
+<span class="nc" id="L345">        this.styles.add(styleText);</span>
+<span class="nc" id="L346">        return this;</span>
+    }
+
+    /**
+     * Returns a collection of styles
+     *
+     * @return list of String objects containing the contents of style tags
+     */
+    public List&lt;String&gt; getStyles()
+    {
+<span class="nc" id="L356">        return this.styles;</span>
+    }
+
+    /**
+     * Set a keywords META tag in the HEAD of the page.
+     *
+     * @param keywords A String.
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes setKeywords(String keywords)
+    {
+<span class="nc" id="L367">        this.metaTags.put(&quot;keywords&quot;, keywords);</span>
+<span class="nc" id="L368">        return this;</span>
+    }
+
+    /**
+     * Sets a HttpEquiv META tag in the HEAD of the page, usage:
+     * &lt;br&gt;&lt;code&gt;setHttpEquiv(&quot;refresh&quot;, &quot;5; URL=http://localhost/nextpage.html&quot;)&lt;/code&gt;
+     * &lt;br&gt;&lt;code&gt;setHttpEquiv(&quot;Expires&quot;, &quot;Tue, 20 Aug 1996 14:25:27 GMT&quot;)&lt;/code&gt;
+     *
+     * @param httpEquiv The value to use for the http-equiv attribute.
+     * @param content   The text for the content attribute of the meta tag.
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes setHttpEquiv(String httpEquiv, String content)
+    {
+<span class="nc" id="L382">        this.httpEquivs.put(httpEquiv, content);</span>
+<span class="nc" id="L383">        return this;</span>
+    }
+
+    /**
+     * Add a description META tag to the HEAD of the page.
+     *
+     * @param description A String.
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes setDescription(String description)
+    {
+<span class="nc" id="L394">        this.metaTags.put(&quot;description&quot;, description);</span>
+<span class="nc" id="L395">        return this;</span>
+    }
+
+    /**
+     * Set the background image for the BODY tag.
+     *
+     * @param url A String.
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes setBackground(String url)
+    {
+<span class="nc" id="L406">        this.bodyAttributes.put(&quot;background&quot;, url);</span>
+<span class="nc" id="L407">        return this;</span>
+    }
+
+    /**
+     * Set the background color for the BODY tag.  You can use either
+     * color names or color values (e.g. &quot;white&quot; or &quot;#ffffff&quot; or
+     * &quot;ffffff&quot;).
+     *
+     * @param color A String.
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes setBgColor(String color)
+    {
+<span class="nc" id="L420">        this.bodyAttributes.put(&quot;BGCOLOR&quot;, color);</span>
+<span class="nc" id="L421">        return this;</span>
+    }
+
+    /**
+     * Set the text color for the BODY tag.  You can use either color
+     * names or color values (e.g. &quot;white&quot; or &quot;#ffffff&quot; or &quot;ffffff&quot;).
+     *
+     * @param color A String.
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes setTextColor(String color)
+    {
+<span class="nc" id="L433">        this.bodyAttributes.put(&quot;TEXT&quot;, color);</span>
+<span class="nc" id="L434">        return this;</span>
+    }
+
+    /**
+     * Set the link color for the BODY tag.  You can use either color
+     * names or color values (e.g. &quot;white&quot; or &quot;#ffffff&quot; or &quot;ffffff&quot;).
+     *
+     * @param color A String.
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes setLinkColor(String color)
+    {
+<span class="nc" id="L446">        this.bodyAttributes.put(&quot;LINK&quot;, color);</span>
+<span class="nc" id="L447">        return this;</span>
+    }
+
+    /**
+     * Set the visited link color for the BODY tag.
+     *
+     * @param color A String.
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes setVlinkColor(String color)
+    {
+<span class="nc" id="L458">        this.bodyAttributes.put(&quot;VLINK&quot;, color);</span>
+<span class="nc" id="L459">        return this;</span>
+    }
+
+    /**
+     * Set the active link color for the BODY tag.
+     *
+     * @param color A String.
+     * @return a &lt;code&gt;HtmlPageAttributes&lt;/code&gt; (self).
+     */
+    public HtmlPageAttributes setAlinkColor(String color)
+    {
+<span class="nc" id="L470">        this.bodyAttributes.put(&quot;ALINK&quot;, color);</span>
+<span class="nc" id="L471">        return this;</span>
+    }
+
+    /**
+     * Gets the map of http equiv tags
+     *
+     * @return Map of http equiv names to the contents
+     */
+    public Map&lt;String, String&gt; getHttpEquivs()
+    {
+<span class="nc" id="L481">        return this.httpEquivs;</span>
+    }
+
+    /**
+     * Gets the map of meta tags
+     *
+     * @return Map of http equiv names to the contents
+     */
+    public Map&lt;String, String&gt; getMetaTags()
+    {
+<span class="nc" id="L491">        return this.metaTags;</span>
+    }
+
+    /**
+     * A dummy toString method that returns an empty string.
+     *
+     * @return An empty String (&quot;&quot;).
+     */
+    @Override
+    public String toString()
+    {
+<span class="fc" id="L502">        return &quot;&quot;;</span>
+    }
+
+    /**
+     * Helper class to hold data about a &amp;lt;link ... /&amp;gt; html header tag
+     */
+    public static class LinkTag
+    {
+        private String relation;
+        private String url;
+        private String title;
+        private String media;
+        private String type;
+
+        /**
+         * Constructor requiring the URL and relation to be set
+         *
+         * @param relation Relation type the external link such as prev, next,
+         *        stylesheet, shortcut icon
+         * @param url URL of the external link
+         */
+        public LinkTag(String relation, String url)
+<span class="nc" id="L524">        {</span>
+<span class="nc" id="L525">            setRelation(relation);</span>
+<span class="nc" id="L526">            setUrl(url);</span>
+<span class="nc" id="L527">        }</span>
+
+        /**
+         * Gets the content type of the style sheet
+         *
+         * @return content type
+         */
+        public String getType()
+        {
+<span class="nc bnc" id="L536" title="All 2 branches missed.">            return (StringUtils.isEmpty(type) ? &quot;&quot; : type);</span>
+        }
+
+        /**
+         * Sets the content type of the style sheet
+         *
+         * @param type content type
+         */
+        public void setType(String type)
+        {
+<span class="nc" id="L546">            this.type = type;</span>
+<span class="nc" id="L547">        }</span>
+
+        /**
+         * @return String representation of the URL
+         */
+        public String getUrl()
+        {
+<span class="nc" id="L554">            return url;</span>
+        }
+
+        /**
+         * Sets the URL of the external style sheet
+         *
+         * @param url The URL of the stylesheet
+         */
+        private void setUrl(String url)
+        {
+<span class="nc" id="L564">            this.url = url;</span>
+<span class="nc" id="L565">        }</span>
+
+        /**
+         * Gets the title of the style sheet
+         *
+         * @return title
+         */
+        public String getTitle()
+        {
+<span class="nc bnc" id="L574" title="All 2 branches missed.">            return (StringUtils.isEmpty(title) ? &quot;&quot; : title);</span>
+        }
+
+        /**
+         * Sets the title of the stylesheet
+         *
+         * @param title of the stylesheet
+         */
+        public void setTitle(String title)
+        {
+<span class="nc" id="L584">            this.title = title;</span>
+<span class="nc" id="L585">        }</span>
+
+        /**
+         * Gets the media for which the stylesheet should be applied.
+         *
+         * @return name of the media
+         */
+        public String getMedia()
+        {
+<span class="nc bnc" id="L594" title="All 2 branches missed.">            return (StringUtils.isEmpty(media) ? &quot;&quot; : media);</span>
+        }
+
+        /**
+         * Sets the media for which the stylesheet should be applied.
+         *
+         * @param media name of the media
+         */
+        public void setMedia(String media)
+        {
+<span class="nc" id="L604">            this.media = media;</span>
+<span class="nc" id="L605">        }</span>
+
+        /**
+         * Gets the relation type of the tag.
+         *
+         * @return name of the relation
+         */
+        public String getRelation()
+        {
+<span class="nc bnc" id="L614" title="All 2 branches missed.">            return (StringUtils.isEmpty(relation) ? &quot;&quot; : relation);</span>
+        }
+
+        /**
+         * Sets the relation type of the tag.
+         *
+         * @param relation name of the relation
+         */
+        public void setRelation(String relation)
+        {
+<span class="nc" id="L624">            this.relation = relation;</span>
+<span class="nc" id="L625">        }</span>
+    }
+
+    /**
+     * Retrieve the default Doctype as configured by the
+     * TurbineResources.peoperties
+     * default.doctype.root.element, default.doctype.identifier and
+     * default.doctype.url properties (defaults are &quot;HTML&quot;,
+     * &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; and
+     * &quot;http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd&quot; respectively).
+     *
+     * @return the DOCTYPE tag constructed from the properties in
+     * TurbineResources.properties.
+     */
+    public String getDefaultDoctype()
+    {
+<span class="pc bpc" id="L641" title="1 of 2 branches missed.">        if (doctype == null)</span>
+        {
+<span class="fc" id="L643">            String tag = defaultHtmlDoctypeRootElement;</span>
+
+<span class="pc bpc" id="L645" title="1 of 2 branches missed.">            if (StringUtils.isEmpty(tag))</span>
+            {
+<span class="nc" id="L647">                doctype = &quot;&quot;;</span>
+            }
+            else
+            {
+<span class="fc" id="L651">                doctype = getDoctype(tag, defaultHtmlDoctypeIdentifier, defaultHtmlDoctypeUri);</span>
+            }
+        }
+
+<span class="fc" id="L655">        return doctype;</span>
+    }
+
+    /**
+     * Build the doctype element.
+     *
+     * @param tag the tag whose DTD is being declared.
+     * @param identifier the identifier for the doctype declaration.
+     * @param uri the uri for the doctype declaration.
+     * @return the doctype.
+     */
+    public String getDoctype(String tag, String identifier, String uri)
+    {
+<span class="fc" id="L668">        StringBuilder doctypeBuf = new StringBuilder(&quot;&lt;!DOCTYPE &quot;);</span>
+<span class="fc" id="L669">        doctypeBuf.append(tag);</span>
+
+<span class="fc bfc" id="L671" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(identifier))</span>
+        {
+<span class="fc" id="L673">            doctypeBuf.append(&quot; PUBLIC \&quot;&quot;);</span>
+<span class="fc" id="L674">            doctypeBuf.append(identifier);</span>
+<span class="fc" id="L675">            doctypeBuf.append(&quot;\&quot; \&quot;&quot;);</span>
+<span class="fc" id="L676">            doctypeBuf.append(uri);</span>
+<span class="fc" id="L677">            doctypeBuf.append('&quot;');</span>
+        }
+<span class="fc bfc" id="L679" title="All 2 branches covered.">        else if (StringUtils.isNotEmpty(uri))</span>
+        {
+<span class="fc" id="L681">            doctypeBuf.append(&quot; SYSTEM \&quot;&quot;);</span>
+<span class="fc" id="L682">            doctypeBuf.append(uri);</span>
+<span class="fc" id="L683">            doctypeBuf.append('&quot;');</span>
+        }
+
+<span class="fc" id="L686">        doctypeBuf.append('&gt;');</span>
+
+<span class="fc" id="L688">        return doctypeBuf.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

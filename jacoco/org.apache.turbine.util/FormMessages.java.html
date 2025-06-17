@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FormMessages.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util</a> &gt; <span class="el_source">FormMessages.java</span></div><h1>FormMessages.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util;
+
+import java.util.ArrayList;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.util.Hashtable;
+import java.util.List;
+
+/**
+ * Used for adding and accessing messages that relate to a specific form and field. Allows to query for messages by form
+ * name and field name. Used together with FormMessage class.
+ *
+ * @author &lt;a href=&quot;mailto:neeme@one.lv&quot;&gt;Neeme Praks&lt;/a&gt;
+ * @version $Id$
+ */
+public class FormMessages
+{
+    private final Hashtable&lt;String, List&lt;String&gt;&gt; forms_messages;
+
+    private final Hashtable&lt;String, List&lt;String&gt;&gt; fields_messages;
+
+    private final Hashtable&lt;String, List&lt;String&gt;&gt; messages_fields;
+
+    private final Hashtable&lt;String, List&lt;String&gt;&gt; forms_fields;
+
+    /**
+     * Constructor.
+     */
+    public FormMessages()
+<span class="nc" id="L48">    {</span>
+<span class="nc" id="L49">        forms_messages = new Hashtable&lt;&gt;();</span>
+<span class="nc" id="L50">        fields_messages = new Hashtable&lt;&gt;();</span>
+<span class="nc" id="L51">        messages_fields = new Hashtable&lt;&gt;();</span>
+<span class="nc" id="L52">        forms_fields = new Hashtable&lt;&gt;();</span>
+<span class="nc" id="L53">    }</span>
+
+    /**
+     * Sets a message for a field of a form. The message is given as a long representing a return code.
+     *
+     * @param formName A String with the form name.
+     * @param fieldName A String with the field name.
+     * @param returnCode A long with the return code.
+     */
+    public void setMessage( String formName, String fieldName, long returnCode )
+    {
+<span class="nc" id="L64">        setMessage( formName, fieldName, String.valueOf( returnCode ) );</span>
+<span class="nc" id="L65">    }</span>
+
+    /**
+     * Sets a message for a field of a form. The message is given as a String.
+     *
+     * @param formName A String with the form name.
+     * @param fieldName A String with the field name.
+     * @param messageName A String with the message.
+     */
+    public void setMessage( String formName, String fieldName, String messageName )
+    {
+<span class="nc" id="L76">        String formFieldName = formName + &quot;-&quot; + fieldName;</span>
+<span class="nc" id="L77">        addValue( forms_messages, formName, messageName );</span>
+<span class="nc" id="L78">        addValue( fields_messages, formFieldName, messageName );</span>
+<span class="nc" id="L79">        addValue( messages_fields, messageName, formFieldName );</span>
+<span class="nc" id="L80">        addValue( forms_fields, formName, formFieldName );</span>
+<span class="nc" id="L81">    }</span>
+
+    /**
+     * Adds a pair key/value to a table, making sure not to add duplicate keys.
+     *
+     * @param table A Hashtable.
+     * @param key A String with the key.
+     * @param value A String with value.
+     */
+    private void addValue( Hashtable&lt;String, List&lt;String&gt;&gt; table, String key, String value )
+    {
+        List&lt;String&gt; values;
+
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if ( !table.containsKey( key ) )</span>
+        {
+<span class="nc" id="L96">            values = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L97">            values.add( value );</span>
+<span class="nc" id="L98">            table.put( key, values );</span>
+        }
+        else
+        {
+<span class="nc" id="L102">            values = table.get( key );</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">            if ( !values.contains( value ) )</span>
+            {
+<span class="nc" id="L105">                values.add( value );</span>
+            }
+        }
+<span class="nc" id="L108">    }</span>
+
+    /**
+     * Gets a pair key/value from a table.
+     *
+     * @param table A Hashtable.
+     * @param key A String with the key.
+     * @return A List with the pair key/value, or null.
+     */
+    private final List&lt;String&gt; getValues( Hashtable&lt;String, List&lt;String&gt;&gt; table, String key )
+    {
+<span class="nc" id="L119">        return table.get( key );</span>
+    }
+
+    /**
+     * Gets all form messages for a given form.
+     *
+     * @param formName A String with the form name.
+     * @return A FormMessage[].
+     */
+    public FormMessage[] getFormMessages( String formName )
+    {
+        List&lt;String&gt; messages, fields;
+        String messageName, fieldName;
+<span class="nc" id="L132">        messages = getValues( forms_messages, formName );</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if ( messages != null )</span>
+        {
+<span class="nc" id="L135">            FormMessage[] result = new FormMessage[messages.size()];</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">            for ( int i = 0; i &lt; messages.size(); i++ )</span>
+            {
+<span class="nc" id="L138">                result[i] = new FormMessage( formName );</span>
+<span class="nc" id="L139">                messageName = messages.get( i );</span>
+<span class="nc" id="L140">                result[i].setMessage( messageName );</span>
+<span class="nc" id="L141">                fields = getValues( messages_fields, messageName );</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                for (String field : fields)</span>
+                {
+<span class="nc" id="L144">                    fieldName = field;</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">                    if ( formHasField( formName, fieldName ) )</span>
+                    {
+<span class="nc" id="L147">                        result[i].setFieldName( fieldName );</span>
+                    }
+<span class="nc" id="L149">                }</span>
+            }
+<span class="nc" id="L151">            return result;</span>
+        }
+<span class="nc" id="L153">        return null;</span>
+    }
+
+    /**
+     * Get form messages for a given form and field.
+     *
+     * @param formName A String with the form name.
+     * @param fieldName A String with the field name.
+     * @return A FormMessage[].
+     */
+    public FormMessage[] getFormMessages( String formName, String fieldName )
+    {
+<span class="nc" id="L165">        String key = formName + &quot;-&quot; + fieldName;</span>
+
+<span class="nc" id="L167">        List&lt;String&gt; messages = getValues( fields_messages, key );</span>
+        String messageName;
+
+<span class="nc bnc" id="L170" title="All 2 branches missed.">        if ( messages != null )</span>
+        {
+<span class="nc" id="L172">            FormMessage[] result = new FormMessage[messages.size()];</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">            for ( int i = 0; i &lt; messages.size(); i++ )</span>
+            {
+<span class="nc" id="L175">                result[i] = new FormMessage( formName, fieldName );</span>
+<span class="nc" id="L176">                messageName = messages.get( i );</span>
+<span class="nc" id="L177">                result[i].setMessage( messageName );</span>
+            }
+<span class="nc" id="L179">            return result;</span>
+        }
+<span class="nc" id="L181">        return null;</span>
+    }
+
+    /**
+     * Check whether a form as a field.
+     *
+     * @param formName A String with the form name.
+     * @param fieldName A String with the field name.
+     * @return True if form has the field.
+     */
+    private boolean formHasField( String formName, String fieldName )
+    {
+<span class="nc" id="L193">        List&lt;String&gt; fields = getValues( forms_fields, formName );</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        for (String field : fields)</span>
+        {
+<span class="nc bnc" id="L196" title="All 2 branches missed.">            if ( fieldName.equals( field.toString() ) )</span>
+            {
+<span class="nc" id="L198">                return true;</span>
+            }
+<span class="nc" id="L200">        }</span>
+<span class="nc" id="L201">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

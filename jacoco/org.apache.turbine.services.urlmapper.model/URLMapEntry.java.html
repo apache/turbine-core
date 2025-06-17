@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>URLMapEntry.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.urlmapper.model</a> &gt; <span class="el_source">URLMapEntry.java</span></div><h1>URLMapEntry.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.urlmapper.model;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
+
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/**
+ * The url map model class
+ *
+ * @author &lt;a href=&quot;mailto:tv@apache.org&quot;&gt;Thomas Vandahl&lt;/a&gt;
+ */
+@XmlType(name=&quot;map&quot;)
+@XmlAccessorType(XmlAccessType.NONE)
+@JsonIgnoreProperties(ignoreUnknown = true)
+<span class="fc" id="L44">public class URLMapEntry</span>
+{
+    private Pattern urlPattern;
+<span class="fc" id="L47">    private Map&lt;String, String&gt; implicit = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc" id="L48">    private Map&lt;String, String&gt; ignore = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc" id="L49">    private Map&lt;String, String&gt; override = new LinkedHashMap&lt;&gt;();</span>
+
+    private Map&lt;String, Integer&gt; groupNamesMap;
+<span class="fc" id="L52">    private Set&lt;String&gt; relevantKeys = null;</span>
+
+    /**
+     * @return the urlPattern
+     */
+    @XmlElement(name=&quot;pattern&quot;)
+    @XmlJavaTypeAdapter(XmlPatternAdapter.class)
+    @JsonProperty(&quot;pattern&quot;)
+    public Pattern getUrlPattern()
+    {
+<span class="fc" id="L62">        return urlPattern;</span>
+    }
+
+    /**
+     * @param urlPattern the urlPattern to set
+     */
+    protected void setUrlPattern(Pattern urlPattern)
+    {
+<span class="fc" id="L70">        this.urlPattern = urlPattern;</span>
+<span class="fc" id="L71">    }</span>
+
+    /**
+     * @return the implicit parameters
+     */
+    @XmlElement(name=&quot;implicit-parameters&quot;)
+    @XmlJavaTypeAdapter(XmlParameterAdapter.class)
+    @JsonProperty(&quot;implicit-parameters&quot;)
+    public Map&lt;String, String&gt; getImplicitParameters()
+    {
+<span class="fc" id="L81">        return implicit;</span>
+    }
+
+    /**
+     * @param implicit the implicit parameters to set
+     */
+    protected void setImplicitParameters(Map&lt;String, String&gt; implicit)
+    {
+<span class="fc" id="L89">        this.implicit = implicit;</span>
+<span class="fc" id="L90">    }</span>
+
+    /**
+     * @return the ignored parameters
+     */
+    @XmlElement(name=&quot;ignore-parameters&quot;)
+    @XmlJavaTypeAdapter(XmlParameterAdapter.class)
+    @JsonProperty(&quot;ignore-parameters&quot;)
+    public Map&lt;String, String&gt; getIgnoreParameters()
+    {
+<span class="fc" id="L100">        return ignore;</span>
+    }
+
+    /**
+     * @param ignore the ignored parameters to set
+     */
+    protected void setIgnoreParameters(Map&lt;String, String&gt; ignore)
+    {
+<span class="fc" id="L108">        this.ignore = ignore;</span>
+<span class="fc" id="L109">    }</span>
+
+    /**
+     * @return the override parameters
+     */
+    @XmlElement(name=&quot;override-parameters&quot;)
+    @XmlJavaTypeAdapter(XmlParameterAdapter.class)
+    @JsonProperty(&quot;override-parameters&quot;)
+    public Map&lt;String, String&gt; getOverrideParameters()
+    {
+<span class="fc" id="L119">        return override;</span>
+    }
+
+    /**
+     * @param override the override parameters to set
+     */
+    protected void setOverrideParameters(Map&lt;String, String&gt; override)
+    {
+<span class="fc" id="L127">        this.override = override;</span>
+<span class="fc" id="L128">    }</span>
+
+    /**
+     * Get the map of group names to group indices for the stored Pattern
+     *
+     * @return the groupNamesMap
+     */
+    public Map&lt;String, Integer&gt; getGroupNamesMap()
+    {
+<span class="fc" id="L137">        return groupNamesMap;</span>
+    }
+
+    /**
+     * Set the map of group names to group indices for the stored Pattern
+     *
+     * @param groupNamesMap the groupNamesMap to set
+     */
+    public void setGroupNamesMap(Map&lt;String, Integer&gt; groupNamesMap)
+    {
+<span class="fc" id="L147">        this.groupNamesMap = groupNamesMap;</span>
+<span class="fc" id="L148">    }</span>
+
+    /**
+     * Get the set of relevant keys for comparison (cached for performance)
+     *
+     * @return the relevantKeys
+     */
+    public Set&lt;String&gt; getRelevantKeys()
+    {
+<span class="nc" id="L157">        return relevantKeys;</span>
+    }
+
+    /**
+     * Set the set of relevant keys for comparison (cached for performance)
+     *
+     * @param relevantKeys the relevantKeys to set
+     */
+    public void setRelevantKeys(Set&lt;String&gt; relevantKeys)
+    {
+<span class="nc" id="L167">        this.relevantKeys = relevantKeys;</span>
+<span class="nc" id="L168">    }</span>
+
+    @Override
+    public String toString()
+    {
+<span class="nc" id="L173">    	return &quot;URLMapEntry: [ pattern: &quot; + urlPattern + &quot;, implicit-parameters: &quot; + implicit + &quot;, override-parameters: &quot; + override + &quot;, ignore-parameters:&quot; + ignore + &quot; ]&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

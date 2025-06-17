@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang="">
 <head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <title>TurbineConstants xref</title>
 <link type="text/css" rel="stylesheet" href="../../../stylesheet.css" />
@@ -192,142 +192,148 @@
 <a class="jxr_linenumber" name="L184" href="#L184">184</a> 	<em class="jxr_javadoccomment">/** Session Timeout Default Value */</em>
 <a class="jxr_linenumber" name="L185" href="#L185">185</a> 	<strong class="jxr_keyword">int</strong> SESSION_TIMEOUT_DEFAULT = -1;
 <a class="jxr_linenumber" name="L186" href="#L186">186</a> 
-<a class="jxr_linenumber" name="L187" href="#L187">187</a> 	<em class="jxr_javadoccomment">/** Indicate whether this Turbine application is using SSL. */</em>
-<a class="jxr_linenumber" name="L188" href="#L188">188</a> 	String USE_SSL_KEY = <span class="jxr_string">"use.ssl"</span>;
-<a class="jxr_linenumber" name="L189" href="#L189">189</a> 
-<a class="jxr_linenumber" name="L190" href="#L190">190</a> 	<em class="jxr_javadoccomment">/** Default value for the SSL key */</em>
-<a class="jxr_linenumber" name="L191" href="#L191">191</a> 	<strong class="jxr_keyword">boolean</strong> USE_SSL_DEFAULT = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L187" href="#L187">187</a> 	<em class="jxr_javadoccomment">/** </em>
+<a class="jxr_linenumber" name="L188" href="#L188">188</a> <em class="jxr_javadoccomment">	 * Filter for classes that can be de-serialized from the persistent session storage </em>
+<a class="jxr_linenumber" name="L189" href="#L189">189</a> <em class="jxr_javadoccomment">	 * See {@link java.io.ObjectInputFilter.Config#createFilter(String)}</em>
+<a class="jxr_linenumber" name="L190" href="#L190">190</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="L191" href="#L191">191</a> 	String SESSION_OBJECTINPUTFILTER = <span class="jxr_string">"session.objectinputfilter"</span>;
 <a class="jxr_linenumber" name="L192" href="#L192">192</a> 
-<a class="jxr_linenumber" name="L193" href="#L193">193</a> 	<em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L194" href="#L194">194</a> <em class="jxr_javadoccomment">	 * Should the PP fold the case of everything. Possible values are</em>
-<a class="jxr_linenumber" name="L195" href="#L195">195</a> <em class="jxr_javadoccomment">	 * "upper", "lower" and "none".</em>
-<a class="jxr_linenumber" name="L196" href="#L196">196</a> <em class="jxr_javadoccomment">	 */</em>
-<a class="jxr_linenumber" name="L197" href="#L197">197</a> 	String PP_URL_CASE_FOLDING = <span class="jxr_string">"url.case.folding"</span>;
+<a class="jxr_linenumber" name="L193" href="#L193">193</a> 	<em class="jxr_javadoccomment">/** Indicate whether this Turbine application is using SSL. */</em>
+<a class="jxr_linenumber" name="L194" href="#L194">194</a> 	String USE_SSL_KEY = <span class="jxr_string">"use.ssl"</span>;
+<a class="jxr_linenumber" name="L195" href="#L195">195</a> 
+<a class="jxr_linenumber" name="L196" href="#L196">196</a> 	<em class="jxr_javadoccomment">/** Default value for the SSL key */</em>
+<a class="jxr_linenumber" name="L197" href="#L197">197</a> 	<strong class="jxr_keyword">boolean</strong> USE_SSL_DEFAULT = <strong class="jxr_keyword">true</strong>;
 <a class="jxr_linenumber" name="L198" href="#L198">198</a> 
-<a class="jxr_linenumber" name="L199" href="#L199">199</a> 	<em class="jxr_javadoccomment">/** Default document type. */</em>
-<a class="jxr_linenumber" name="L200" href="#L200">200</a> 	String DEFAULT_DOCUMENT_TYPE_KEY = <span class="jxr_string">"default.doctype"</span>;
-<a class="jxr_linenumber" name="L201" href="#L201">201</a> 
-<a class="jxr_linenumber" name="L202" href="#L202">202</a> 	<em class="jxr_javadoccomment">/** Default doctype root element. */</em>
-<a class="jxr_linenumber" name="L203" href="#L203">203</a> 	String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY = <span class="jxr_string">"default.html.doctype.root.element"</span>;
+<a class="jxr_linenumber" name="L199" href="#L199">199</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L200" href="#L200">200</a> <em class="jxr_javadoccomment">	 * Should the PP fold the case of everything. Possible values are</em>
+<a class="jxr_linenumber" name="L201" href="#L201">201</a> <em class="jxr_javadoccomment">	 * "upper", "lower" and "none".</em>
+<a class="jxr_linenumber" name="L202" href="#L202">202</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="L203" href="#L203">203</a> 	String PP_URL_CASE_FOLDING = <span class="jxr_string">"url.case.folding"</span>;
 <a class="jxr_linenumber" name="L204" href="#L204">204</a> 
-<a class="jxr_linenumber" name="L205" href="#L205">205</a> 	<em class="jxr_javadoccomment">/** Default value for the doctype root element */</em>
-<a class="jxr_linenumber" name="L206" href="#L206">206</a> 	String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_DEFAULT = <span class="jxr_string">"HTML"</span>;
+<a class="jxr_linenumber" name="L205" href="#L205">205</a> 	<em class="jxr_javadoccomment">/** Default document type. */</em>
+<a class="jxr_linenumber" name="L206" href="#L206">206</a> 	String DEFAULT_DOCUMENT_TYPE_KEY = <span class="jxr_string">"default.doctype"</span>;
 <a class="jxr_linenumber" name="L207" href="#L207">207</a> 
-<a class="jxr_linenumber" name="L208" href="#L208">208</a> 	<em class="jxr_javadoccomment">/** Default doctype dtd. */</em>
-<a class="jxr_linenumber" name="L209" href="#L209">209</a> 	String DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY = <span class="jxr_string">"default.html.doctype.identifier"</span>;
+<a class="jxr_linenumber" name="L208" href="#L208">208</a> 	<em class="jxr_javadoccomment">/** Default doctype root element. */</em>
+<a class="jxr_linenumber" name="L209" href="#L209">209</a> 	String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY = <span class="jxr_string">"default.html.doctype.root.element"</span>;
 <a class="jxr_linenumber" name="L210" href="#L210">210</a> 
-<a class="jxr_linenumber" name="L211" href="#L211">211</a> 	<em class="jxr_javadoccomment">/** Default Doctype dtd value (empty for HTML5) */</em>
-<a class="jxr_linenumber" name="L212" href="#L212">212</a> 	String DEFAULT_HTML_DOCTYPE_IDENTIFIER_DEFAULT = <span class="jxr_string">""</span>;
+<a class="jxr_linenumber" name="L211" href="#L211">211</a> 	<em class="jxr_javadoccomment">/** Default value for the doctype root element */</em>
+<a class="jxr_linenumber" name="L212" href="#L212">212</a> 	String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_DEFAULT = <span class="jxr_string">"HTML"</span>;
 <a class="jxr_linenumber" name="L213" href="#L213">213</a> 
-<a class="jxr_linenumber" name="L214" href="#L214">214</a> 	<em class="jxr_javadoccomment">/** Default doctype url. */</em>
-<a class="jxr_linenumber" name="L215" href="#L215">215</a> 	String DEFAULT_HTML_DOCTYPE_URI_KEY = <span class="jxr_string">"default.html.doctype.url"</span>;
+<a class="jxr_linenumber" name="L214" href="#L214">214</a> 	<em class="jxr_javadoccomment">/** Default doctype dtd. */</em>
+<a class="jxr_linenumber" name="L215" href="#L215">215</a> 	String DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY = <span class="jxr_string">"default.html.doctype.identifier"</span>;
 <a class="jxr_linenumber" name="L216" href="#L216">216</a> 
-<a class="jxr_linenumber" name="L217" href="#L217">217</a> 	<em class="jxr_javadoccomment">/** Default doctype url value. (empty for HTML5) */</em>
-<a class="jxr_linenumber" name="L218" href="#L218">218</a> 	String DEFAULT_HTML_DOCTYPE_URI_DEFAULT = <span class="jxr_string">""</span>;
+<a class="jxr_linenumber" name="L217" href="#L217">217</a> 	<em class="jxr_javadoccomment">/** Default Doctype dtd value (empty for HTML5) */</em>
+<a class="jxr_linenumber" name="L218" href="#L218">218</a> 	String DEFAULT_HTML_DOCTYPE_IDENTIFIER_DEFAULT = <span class="jxr_string">""</span>;
 <a class="jxr_linenumber" name="L219" href="#L219">219</a> 
-<a class="jxr_linenumber" name="L220" href="#L220">220</a> 	<em class="jxr_javadoccomment">/** Define content types **/</em>
-<a class="jxr_linenumber" name="L221" href="#L221">221</a> 	String DEFAULT_HTML_CONTENT_TYPE = <span class="jxr_string">"text/html"</span>;
-<a class="jxr_linenumber" name="L222" href="#L222">222</a> 	String DEFAULT_TEXT_CONTENT_TYPE = <span class="jxr_string">"text/plain"</span>;
-<a class="jxr_linenumber" name="L223" href="#L223">223</a> 	String DEFAULT_CSS_CONTENT_TYPE = <span class="jxr_string">"text/css"</span>;
-<a class="jxr_linenumber" name="L224" href="#L224">224</a> 
-<a class="jxr_linenumber" name="L225" href="#L225">225</a> 	<em class="jxr_javadoccomment">/** Default Language property */</em>
-<a class="jxr_linenumber" name="L226" href="#L226">226</a> 	String LOCALE_DEFAULT_LANGUAGE_KEY = <span class="jxr_string">"locale.default.language"</span>;
-<a class="jxr_linenumber" name="L227" href="#L227">227</a> 
-<a class="jxr_linenumber" name="L228" href="#L228">228</a> 	<em class="jxr_javadoccomment">/** Default value for Language property */</em>
-<a class="jxr_linenumber" name="L229" href="#L229">229</a> 	String LOCALE_DEFAULT_LANGUAGE_DEFAULT = Locale.US.getLanguage();
+<a class="jxr_linenumber" name="L220" href="#L220">220</a> 	<em class="jxr_javadoccomment">/** Default doctype url. */</em>
+<a class="jxr_linenumber" name="L221" href="#L221">221</a> 	String DEFAULT_HTML_DOCTYPE_URI_KEY = <span class="jxr_string">"default.html.doctype.url"</span>;
+<a class="jxr_linenumber" name="L222" href="#L222">222</a> 
+<a class="jxr_linenumber" name="L223" href="#L223">223</a> 	<em class="jxr_javadoccomment">/** Default doctype url value. (empty for HTML5) */</em>
+<a class="jxr_linenumber" name="L224" href="#L224">224</a> 	String DEFAULT_HTML_DOCTYPE_URI_DEFAULT = <span class="jxr_string">""</span>;
+<a class="jxr_linenumber" name="L225" href="#L225">225</a> 
+<a class="jxr_linenumber" name="L226" href="#L226">226</a> 	<em class="jxr_javadoccomment">/** Define content types **/</em>
+<a class="jxr_linenumber" name="L227" href="#L227">227</a> 	String DEFAULT_HTML_CONTENT_TYPE = <span class="jxr_string">"text/html"</span>;
+<a class="jxr_linenumber" name="L228" href="#L228">228</a> 	String DEFAULT_TEXT_CONTENT_TYPE = <span class="jxr_string">"text/plain"</span>;
+<a class="jxr_linenumber" name="L229" href="#L229">229</a> 	String DEFAULT_CSS_CONTENT_TYPE = <span class="jxr_string">"text/css"</span>;
 <a class="jxr_linenumber" name="L230" href="#L230">230</a> 
-<a class="jxr_linenumber" name="L231" href="#L231">231</a> 	<em class="jxr_javadoccomment">/** Default Country property */</em>
-<a class="jxr_linenumber" name="L232" href="#L232">232</a> 	String LOCALE_DEFAULT_COUNTRY_KEY = <span class="jxr_string">"locale.default.country"</span>;
+<a class="jxr_linenumber" name="L231" href="#L231">231</a> 	<em class="jxr_javadoccomment">/** Default Language property */</em>
+<a class="jxr_linenumber" name="L232" href="#L232">232</a> 	String LOCALE_DEFAULT_LANGUAGE_KEY = <span class="jxr_string">"locale.default.language"</span>;
 <a class="jxr_linenumber" name="L233" href="#L233">233</a> 
-<a class="jxr_linenumber" name="L234" href="#L234">234</a> 	<em class="jxr_javadoccomment">/** Default value for Country property */</em>
-<a class="jxr_linenumber" name="L235" href="#L235">235</a> 	String LOCALE_DEFAULT_COUNTRY_DEFAULT = Locale.US.getCountry();
+<a class="jxr_linenumber" name="L234" href="#L234">234</a> 	<em class="jxr_javadoccomment">/** Default value for Language property */</em>
+<a class="jxr_linenumber" name="L235" href="#L235">235</a> 	String LOCALE_DEFAULT_LANGUAGE_DEFAULT = Locale.US.getLanguage();
 <a class="jxr_linenumber" name="L236" href="#L236">236</a> 
-<a class="jxr_linenumber" name="L237" href="#L237">237</a> 	<em class="jxr_javadoccomment">/** Default Charset property */</em>
-<a class="jxr_linenumber" name="L238" href="#L238">238</a> 	String LOCALE_DEFAULT_CHARSET_KEY = <span class="jxr_string">"locale.default.charset"</span>;
+<a class="jxr_linenumber" name="L237" href="#L237">237</a> 	<em class="jxr_javadoccomment">/** Default Country property */</em>
+<a class="jxr_linenumber" name="L238" href="#L238">238</a> 	String LOCALE_DEFAULT_COUNTRY_KEY = <span class="jxr_string">"locale.default.country"</span>;
 <a class="jxr_linenumber" name="L239" href="#L239">239</a> 
-<a class="jxr_linenumber" name="L240" href="#L240">240</a> 	<em class="jxr_javadoccomment">/** Default value for Charset property */</em>
-<a class="jxr_linenumber" name="L241" href="#L241">241</a> 	String LOCALE_DEFAULT_CHARSET_DEFAULT = StandardCharsets.ISO_8859_1.name();
+<a class="jxr_linenumber" name="L240" href="#L240">240</a> 	<em class="jxr_javadoccomment">/** Default value for Country property */</em>
+<a class="jxr_linenumber" name="L241" href="#L241">241</a> 	String LOCALE_DEFAULT_COUNTRY_DEFAULT = Locale.US.getCountry();
 <a class="jxr_linenumber" name="L242" href="#L242">242</a> 
-<a class="jxr_linenumber" name="L243" href="#L243">243</a>     <em class="jxr_javadoccomment">/** Override Charset property */</em>
-<a class="jxr_linenumber" name="L244" href="#L244">244</a>     String LOCALE_OVERRIDE_CHARSET_KEY = <span class="jxr_string">"locale.override.charset"</span>;
+<a class="jxr_linenumber" name="L243" href="#L243">243</a> 	<em class="jxr_javadoccomment">/** Default Charset property */</em>
+<a class="jxr_linenumber" name="L244" href="#L244">244</a> 	String LOCALE_DEFAULT_CHARSET_KEY = <span class="jxr_string">"locale.default.charset"</span>;
 <a class="jxr_linenumber" name="L245" href="#L245">245</a> 
-<a class="jxr_linenumber" name="L246" href="#L246">246</a> 	<em class="jxr_javadoccomment">/** If this value is set as applicationRoot, then the webContext is used</em>
-<a class="jxr_linenumber" name="L247" href="#L247">247</a> <em class="jxr_javadoccomment">	 * as application root</em>
-<a class="jxr_linenumber" name="L248" href="#L248">248</a> <em class="jxr_javadoccomment">	 */</em>
-<a class="jxr_linenumber" name="L249" href="#L249">249</a> 	String WEB_CONTEXT = <span class="jxr_string">"webContext"</span>;
-<a class="jxr_linenumber" name="L250" href="#L250">250</a> 
-<a class="jxr_linenumber" name="L251" href="#L251">251</a> 	<em class="jxr_javadoccomment">/** Key for the Path to the TurbineResources.properties File */</em>
-<a class="jxr_linenumber" name="L252" href="#L252">252</a> 	String APPLICATION_ROOT_KEY = <span class="jxr_string">"applicationRoot"</span>;
-<a class="jxr_linenumber" name="L253" href="#L253">253</a> 
-<a class="jxr_linenumber" name="L254" href="#L254">254</a> 	<em class="jxr_javadoccomment">/** Default Value for the Path to the TurbineResources.properties File */</em>
-<a class="jxr_linenumber" name="L255" href="#L255">255</a> 	String APPLICATION_ROOT_DEFAULT = WEB_CONTEXT;
+<a class="jxr_linenumber" name="L246" href="#L246">246</a> 	<em class="jxr_javadoccomment">/** Default value for Charset property */</em>
+<a class="jxr_linenumber" name="L247" href="#L247">247</a> 	String LOCALE_DEFAULT_CHARSET_DEFAULT = StandardCharsets.ISO_8859_1.name();
+<a class="jxr_linenumber" name="L248" href="#L248">248</a> 
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>     <em class="jxr_javadoccomment">/** Override Charset property */</em>
+<a class="jxr_linenumber" name="L250" href="#L250">250</a>     String LOCALE_OVERRIDE_CHARSET_KEY = <span class="jxr_string">"locale.override.charset"</span>;
+<a class="jxr_linenumber" name="L251" href="#L251">251</a> 
+<a class="jxr_linenumber" name="L252" href="#L252">252</a> 	<em class="jxr_javadoccomment">/** If this value is set as applicationRoot, then the webContext is used</em>
+<a class="jxr_linenumber" name="L253" href="#L253">253</a> <em class="jxr_javadoccomment">	 * as application root</em>
+<a class="jxr_linenumber" name="L254" href="#L254">254</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="L255" href="#L255">255</a> 	String WEB_CONTEXT = <span class="jxr_string">"webContext"</span>;
 <a class="jxr_linenumber" name="L256" href="#L256">256</a> 
-<a class="jxr_linenumber" name="L257" href="#L257">257</a> 	<em class="jxr_javadoccomment">/** This is the key used in the Turbine.properties to access resources</em>
-<a class="jxr_linenumber" name="L258" href="#L258">258</a> <em class="jxr_javadoccomment">	 * relative to the Web Application root. It might differ from the</em>
-<a class="jxr_linenumber" name="L259" href="#L259">259</a> <em class="jxr_javadoccomment">	 * Application root, but the normal case is, that the webapp root</em>
-<a class="jxr_linenumber" name="L260" href="#L260">260</a> <em class="jxr_javadoccomment">	 * and the application root point to the same path.</em>
-<a class="jxr_linenumber" name="L261" href="#L261">261</a> <em class="jxr_javadoccomment">	 */</em>
-<a class="jxr_linenumber" name="L262" href="#L262">262</a> 	String WEBAPP_ROOT_KEY = <span class="jxr_string">"webappRoot"</span>;
-<a class="jxr_linenumber" name="L263" href="#L263">263</a> 
-<a class="jxr_linenumber" name="L264" href="#L264">264</a> 	<em class="jxr_javadoccomment">/** The Key in the deployment descriptor for the Logging Directory */</em>
-<a class="jxr_linenumber" name="L265" href="#L265">265</a> 	String LOGGING_ROOT_KEY = <span class="jxr_string">"loggingRoot"</span>;
-<a class="jxr_linenumber" name="L266" href="#L266">266</a> 
-<a class="jxr_linenumber" name="L267" href="#L267">267</a> 	<em class="jxr_javadoccomment">/** Default Value for the Logging Directory, relative to the webroot */</em>
-<a class="jxr_linenumber" name="L268" href="#L268">268</a> 	String LOGGING_ROOT_DEFAULT = <span class="jxr_string">"/logs"</span>;
+<a class="jxr_linenumber" name="L257" href="#L257">257</a> 	<em class="jxr_javadoccomment">/** Key for the Path to the TurbineResources.properties File */</em>
+<a class="jxr_linenumber" name="L258" href="#L258">258</a> 	String APPLICATION_ROOT_KEY = <span class="jxr_string">"applicationRoot"</span>;
+<a class="jxr_linenumber" name="L259" href="#L259">259</a> 
+<a class="jxr_linenumber" name="L260" href="#L260">260</a> 	<em class="jxr_javadoccomment">/** Default Value for the Path to the TurbineResources.properties File */</em>
+<a class="jxr_linenumber" name="L261" href="#L261">261</a> 	String APPLICATION_ROOT_DEFAULT = WEB_CONTEXT;
+<a class="jxr_linenumber" name="L262" href="#L262">262</a> 
+<a class="jxr_linenumber" name="L263" href="#L263">263</a> 	<em class="jxr_javadoccomment">/** This is the key used in the Turbine.properties to access resources</em>
+<a class="jxr_linenumber" name="L264" href="#L264">264</a> <em class="jxr_javadoccomment">	 * relative to the Web Application root. It might differ from the</em>
+<a class="jxr_linenumber" name="L265" href="#L265">265</a> <em class="jxr_javadoccomment">	 * Application root, but the normal case is, that the webapp root</em>
+<a class="jxr_linenumber" name="L266" href="#L266">266</a> <em class="jxr_javadoccomment">	 * and the application root point to the same path.</em>
+<a class="jxr_linenumber" name="L267" href="#L267">267</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="L268" href="#L268">268</a> 	String WEBAPP_ROOT_KEY = <span class="jxr_string">"webappRoot"</span>;
 <a class="jxr_linenumber" name="L269" href="#L269">269</a> 
-<a class="jxr_linenumber" name="L270" href="#L270">270</a> 	<em class="jxr_javadoccomment">/** Key for loading the UUID Generator with a constant value */</em>
-<a class="jxr_linenumber" name="L271" href="#L271">271</a> 	String UUID_ADDRESS_KEY = <span class="jxr_string">"uuid.address"</span>;
+<a class="jxr_linenumber" name="L270" href="#L270">270</a> 	<em class="jxr_javadoccomment">/** The Key in the deployment descriptor for the Logging Directory */</em>
+<a class="jxr_linenumber" name="L271" href="#L271">271</a> 	String LOGGING_ROOT_KEY = <span class="jxr_string">"loggingRoot"</span>;
 <a class="jxr_linenumber" name="L272" href="#L272">272</a> 
-<a class="jxr_linenumber" name="L273" href="#L273">273</a> 	<em class="jxr_javadoccomment">/** Context Key for the screen placeholder in the various velocity layouts */</em>
-<a class="jxr_linenumber" name="L274" href="#L274">274</a> 	String SCREEN_PLACEHOLDER = <span class="jxr_string">"screen_placeholder"</span>;
+<a class="jxr_linenumber" name="L273" href="#L273">273</a> 	<em class="jxr_javadoccomment">/** Default Value for the Logging Directory, relative to the webroot */</em>
+<a class="jxr_linenumber" name="L274" href="#L274">274</a> 	String LOGGING_ROOT_DEFAULT = <span class="jxr_string">"/logs"</span>;
 <a class="jxr_linenumber" name="L275" href="#L275">275</a> 
-<a class="jxr_linenumber" name="L276" href="#L276">276</a> 	<em class="jxr_javadoccomment">/** Context Key for the navigation object placeholder in the various velocity layouts */</em>
-<a class="jxr_linenumber" name="L277" href="#L277">277</a> 	String NAVIGATION_PLACEHOLDER = <span class="jxr_string">"navigation"</span>;
+<a class="jxr_linenumber" name="L276" href="#L276">276</a> 	<em class="jxr_javadoccomment">/** Key for loading the UUID Generator with a constant value */</em>
+<a class="jxr_linenumber" name="L277" href="#L277">277</a> 	String UUID_ADDRESS_KEY = <span class="jxr_string">"uuid.address"</span>;
 <a class="jxr_linenumber" name="L278" href="#L278">278</a> 
-<a class="jxr_linenumber" name="L279" href="#L279">279</a> 	<em class="jxr_javadoccomment">/** Context Key for the Processing Exception */</em>
-<a class="jxr_linenumber" name="L280" href="#L280">280</a> 	String PROCESSING_EXCEPTION_PLACEHOLDER = <span class="jxr_string">"processingException"</span>;
+<a class="jxr_linenumber" name="L279" href="#L279">279</a> 	<em class="jxr_javadoccomment">/** Context Key for the screen placeholder in the various velocity layouts */</em>
+<a class="jxr_linenumber" name="L280" href="#L280">280</a> 	String SCREEN_PLACEHOLDER = <span class="jxr_string">"screen_placeholder"</span>;
 <a class="jxr_linenumber" name="L281" href="#L281">281</a> 
-<a class="jxr_linenumber" name="L282" href="#L282">282</a> 	<em class="jxr_javadoccomment">/** Context Key for the Stack Trace */</em>
-<a class="jxr_linenumber" name="L283" href="#L283">283</a> 	String STACK_TRACE_PLACEHOLDER = <span class="jxr_string">"stackTrace"</span>;
+<a class="jxr_linenumber" name="L282" href="#L282">282</a> 	<em class="jxr_javadoccomment">/** Context Key for the navigation object placeholder in the various velocity layouts */</em>
+<a class="jxr_linenumber" name="L283" href="#L283">283</a> 	String NAVIGATION_PLACEHOLDER = <span class="jxr_string">"navigation"</span>;
 <a class="jxr_linenumber" name="L284" href="#L284">284</a> 
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>     <em class="jxr_javadoccomment">/** Encoding for Parameter Parser */</em>
-<a class="jxr_linenumber" name="L286" href="#L286">286</a>     String PARAMETER_ENCODING_KEY = <span class="jxr_string">"input.encoding"</span>;
+<a class="jxr_linenumber" name="L285" href="#L285">285</a> 	<em class="jxr_javadoccomment">/** Context Key for the Processing Exception */</em>
+<a class="jxr_linenumber" name="L286" href="#L286">286</a> 	String PROCESSING_EXCEPTION_PLACEHOLDER = <span class="jxr_string">"processingException"</span>;
 <a class="jxr_linenumber" name="L287" href="#L287">287</a> 
-<a class="jxr_linenumber" name="L288" href="#L288">288</a>     <em class="jxr_javadoccomment">/** Default Encoding for Parameter Parser */</em>
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>     String PARAMETER_ENCODING_DEFAULT = StandardCharsets.ISO_8859_1.name();
+<a class="jxr_linenumber" name="L288" href="#L288">288</a> 	<em class="jxr_javadoccomment">/** Context Key for the Stack Trace */</em>
+<a class="jxr_linenumber" name="L289" href="#L289">289</a> 	String STACK_TRACE_PLACEHOLDER = <span class="jxr_string">"stackTrace"</span>;
 <a class="jxr_linenumber" name="L290" href="#L290">290</a> 
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>     <em class="jxr_javadoccomment">/** Default serverName for ServerData */</em>
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>     String DEFAULT_SERVER_NAME_KEY
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>             = <span class="jxr_string">"serverdata.default.serverName"</span>;
-<a class="jxr_linenumber" name="L294" href="#L294">294</a> 
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>     <em class="jxr_javadoccomment">/** Default serverPort for ServerData */</em>
-<a class="jxr_linenumber" name="L296" href="#L296">296</a>     String DEFAULT_SERVER_PORT_KEY
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>             = <span class="jxr_string">"serverdata.default.serverPort"</span>;
-<a class="jxr_linenumber" name="L298" href="#L298">298</a> 
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>     <em class="jxr_javadoccomment">/** Default serverScheme for ServerData */</em>
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>     String DEFAULT_SERVER_SCHEME_KEY
-<a class="jxr_linenumber" name="L301" href="#L301">301</a>             = <span class="jxr_string">"serverdata.default.serverScheme"</span>;
-<a class="jxr_linenumber" name="L302" href="#L302">302</a> 
-<a class="jxr_linenumber" name="L303" href="#L303">303</a>     <em class="jxr_javadoccomment">/** Default scriptName for ServerData */</em>
-<a class="jxr_linenumber" name="L304" href="#L304">304</a>     String DEFAULT_SCRIPT_NAME_KEY
-<a class="jxr_linenumber" name="L305" href="#L305">305</a>             = <span class="jxr_string">"serverdata.default.scriptName"</span>;
-<a class="jxr_linenumber" name="L306" href="#L306">306</a> 
-<a class="jxr_linenumber" name="L307" href="#L307">307</a>     <em class="jxr_javadoccomment">/** Default contextPath for ServerData */</em>
-<a class="jxr_linenumber" name="L308" href="#L308">308</a>     String DEFAULT_CONTEXT_PATH_KEY
-<a class="jxr_linenumber" name="L309" href="#L309">309</a>             = <span class="jxr_string">"serverdata.default.contextPath"</span>;
-<a class="jxr_linenumber" name="L310" href="#L310">310</a> 
-<a class="jxr_linenumber" name="L311" href="#L311">311</a>     <em class="jxr_javadoccomment">/** The default Session key for the Access Control List */</em>
-<a class="jxr_linenumber" name="L312" href="#L312">312</a>     String ACL_SESSION_KEY = <span class="jxr_string">"turbine.AccessControlList"</span>;
-<a class="jxr_linenumber" name="L313" href="#L313">313</a> 
-<a class="jxr_linenumber" name="L314" href="#L314">314</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L315" href="#L315">315</a> <em class="jxr_javadoccomment">	 * The fully qualified class name of the default {@link</em>
-<a class="jxr_linenumber" name="L316" href="#L316">316</a> <em class="jxr_javadoccomment">	 * org.apache.turbine.pipeline.Pipeline} implementation to use in the</em>
-<a class="jxr_linenumber" name="L317" href="#L317">317</a> <em class="jxr_javadoccomment">	 * {@link org.apache.turbine.Turbine} servlet.</em>
-<a class="jxr_linenumber" name="L318" href="#L318">318</a> <em class="jxr_javadoccomment">	 */</em>
-<a class="jxr_linenumber" name="L319" href="#L319">319</a> 	String STANDARD_PIPELINE = TurbinePipeline.<strong class="jxr_keyword">class</strong>.getName();
-<a class="jxr_linenumber" name="L320" href="#L320">320</a> }
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>     <em class="jxr_javadoccomment">/** Encoding for Parameter Parser */</em>
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>     String PARAMETER_ENCODING_KEY = <span class="jxr_string">"input.encoding"</span>;
+<a class="jxr_linenumber" name="L293" href="#L293">293</a> 
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>     <em class="jxr_javadoccomment">/** Default Encoding for Parameter Parser */</em>
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>     String PARAMETER_ENCODING_DEFAULT = StandardCharsets.ISO_8859_1.name();
+<a class="jxr_linenumber" name="L296" href="#L296">296</a> 
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>     <em class="jxr_javadoccomment">/** Default serverName for ServerData */</em>
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>     String DEFAULT_SERVER_NAME_KEY
+<a class="jxr_linenumber" name="L299" href="#L299">299</a>             = <span class="jxr_string">"serverdata.default.serverName"</span>;
+<a class="jxr_linenumber" name="L300" href="#L300">300</a> 
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>     <em class="jxr_javadoccomment">/** Default serverPort for ServerData */</em>
+<a class="jxr_linenumber" name="L302" href="#L302">302</a>     String DEFAULT_SERVER_PORT_KEY
+<a class="jxr_linenumber" name="L303" href="#L303">303</a>             = <span class="jxr_string">"serverdata.default.serverPort"</span>;
+<a class="jxr_linenumber" name="L304" href="#L304">304</a> 
+<a class="jxr_linenumber" name="L305" href="#L305">305</a>     <em class="jxr_javadoccomment">/** Default serverScheme for ServerData */</em>
+<a class="jxr_linenumber" name="L306" href="#L306">306</a>     String DEFAULT_SERVER_SCHEME_KEY
+<a class="jxr_linenumber" name="L307" href="#L307">307</a>             = <span class="jxr_string">"serverdata.default.serverScheme"</span>;
+<a class="jxr_linenumber" name="L308" href="#L308">308</a> 
+<a class="jxr_linenumber" name="L309" href="#L309">309</a>     <em class="jxr_javadoccomment">/** Default scriptName for ServerData */</em>
+<a class="jxr_linenumber" name="L310" href="#L310">310</a>     String DEFAULT_SCRIPT_NAME_KEY
+<a class="jxr_linenumber" name="L311" href="#L311">311</a>             = <span class="jxr_string">"serverdata.default.scriptName"</span>;
+<a class="jxr_linenumber" name="L312" href="#L312">312</a> 
+<a class="jxr_linenumber" name="L313" href="#L313">313</a>     <em class="jxr_javadoccomment">/** Default contextPath for ServerData */</em>
+<a class="jxr_linenumber" name="L314" href="#L314">314</a>     String DEFAULT_CONTEXT_PATH_KEY
+<a class="jxr_linenumber" name="L315" href="#L315">315</a>             = <span class="jxr_string">"serverdata.default.contextPath"</span>;
+<a class="jxr_linenumber" name="L316" href="#L316">316</a> 
+<a class="jxr_linenumber" name="L317" href="#L317">317</a>     <em class="jxr_javadoccomment">/** The default Session key for the Access Control List */</em>
+<a class="jxr_linenumber" name="L318" href="#L318">318</a>     String ACL_SESSION_KEY = <span class="jxr_string">"turbine.AccessControlList"</span>;
+<a class="jxr_linenumber" name="L319" href="#L319">319</a> 
+<a class="jxr_linenumber" name="L320" href="#L320">320</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L321" href="#L321">321</a> <em class="jxr_javadoccomment">	 * The fully qualified class name of the default {@link</em>
+<a class="jxr_linenumber" name="L322" href="#L322">322</a> <em class="jxr_javadoccomment">	 * org.apache.turbine.pipeline.Pipeline} implementation to use in the</em>
+<a class="jxr_linenumber" name="L323" href="#L323">323</a> <em class="jxr_javadoccomment">	 * {@link org.apache.turbine.Turbine} servlet.</em>
+<a class="jxr_linenumber" name="L324" href="#L324">324</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="L325" href="#L325">325</a> 	String STANDARD_PIPELINE = TurbinePipeline.<strong class="jxr_keyword">class</strong>.getName();
+<a class="jxr_linenumber" name="L326" href="#L326">326</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2000&#x2013;2024 <a href="https://www.apache.org/">The Apache Software Foundation</a>. All rights reserved.</div>
+<div id="footer">© 2000–2025 <a href="https://www.apache.org/">The Apache Software Foundation</a></div>
 </body>
 </html>

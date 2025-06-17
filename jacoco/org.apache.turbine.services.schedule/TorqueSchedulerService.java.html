@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TorqueSchedulerService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.schedule</a> &gt; <span class="el_source">TorqueSchedulerService.java</span></div><h1>TorqueSchedulerService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.schedule;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.util.List;
+
+import org.apache.torque.TorqueException;
+import org.apache.torque.criteria.Criteria;
+import org.apache.turbine.util.TurbineException;
+
+/**
+ * Service for a cron like scheduler.
+ *
+ * @author &lt;a href=&quot;mailto:mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @version $Id: TorqueSchedulerService.java 534527 2007-05-02 16:10:59Z tv $
+ *
+ * @deprecated Use {@link QuartzSchedulerService} instead
+ */
+@Deprecated
+<span class="nc" id="L38">public class TorqueSchedulerService extends AbstractSchedulerService</span>
+{
+    /**
+     * Load all jobs from configuration storage
+     *
+     * @return the list of pre-configured jobs
+     * @throws TurbineException if unable to load jobs
+     */
+    @Override
+    protected List&lt;? extends JobEntry&gt; loadJobs() throws TurbineException
+    {
+        // Load all from cold storage.
+        try
+        {
+<span class="nc" id="L52">            List&lt;JobEntryTorque&gt; jobsTorque = JobEntryTorquePeer.doSelect(new Criteria());</span>
+
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            for (JobEntryTorque job : jobsTorque)</span>
+            {
+<span class="nc" id="L56">                job.calcRunTime();</span>
+<span class="nc" id="L57">            }</span>
+
+<span class="nc" id="L59">            return jobsTorque;</span>
+        }
+<span class="nc" id="L61">        catch (TorqueException e)</span>
+        {
+<span class="nc" id="L63">            throw new TurbineException(&quot;Error retrieving initial job list from persistent storage.&quot;, e);</span>
+        }
+    }
+
+    /**
+     * @see org.apache.turbine.services.schedule.ScheduleService#newJob(int, int, int, int, int, java.lang.String)
+     */
+    @Override
+    public JobEntry newJob(int sec, int min, int hour, int wd, int day_mo, String task) throws TurbineException
+    {
+<span class="nc" id="L73">        JobEntryTorque jet = new JobEntryTorque();</span>
+<span class="nc" id="L74">        jet.setSecond(sec);</span>
+<span class="nc" id="L75">        jet.setMinute(min);</span>
+<span class="nc" id="L76">        jet.setHour(hour);</span>
+<span class="nc" id="L77">        jet.setWeekDay(wd);</span>
+<span class="nc" id="L78">        jet.setDayOfMonth(day_mo);</span>
+<span class="nc" id="L79">        jet.setTask(task);</span>
+
+<span class="nc" id="L81">        return jet;</span>
+    }
+
+    /**
+     * Get a specific Job from Storage.
+     *
+     * @param oid
+     *            The int id for the job.
+     * @return A JobEntry.
+     * @throws TurbineException
+     *                job could not be retrieved.
+     */
+    @Override
+    public JobEntry getJob(int oid) throws TurbineException
+    {
+        try
+        {
+<span class="nc" id="L98">            JobEntryTorque je = JobEntryTorquePeer.retrieveByPK(oid);</span>
+<span class="nc" id="L99">            return scheduleQueue.getJob(je);</span>
+        }
+<span class="nc" id="L101">        catch (TorqueException e)</span>
+        {
+<span class="nc" id="L103">            throw new TurbineException(&quot;Error retrieving job from persistent storage.&quot;, e);</span>
+        }
+    }
+
+    /**
+     * Remove a job from the queue.
+     *
+     * @param je
+     *            A JobEntry with the job to remove.
+     * @throws TurbineException
+     *                job could not be removed
+     */
+    @Override
+    public void removeJob(JobEntry je) throws TurbineException
+    {
+        try
+        {
+            // First remove from DB.
+<span class="nc" id="L121">            Criteria c = new Criteria().where(JobEntryTorquePeer.JOB_ID, Integer.valueOf(je.getJobId()));</span>
+<span class="nc" id="L122">            JobEntryTorquePeer.doDelete(c);</span>
+
+            // Remove from the queue.
+<span class="nc" id="L125">            scheduleQueue.remove(je);</span>
+
+            // restart the scheduler
+<span class="nc" id="L128">            restart();</span>
+        }
+<span class="nc" id="L130">        catch (TorqueException e)</span>
+        {
+<span class="nc" id="L132">            throw new TurbineException(&quot;Problem removing Scheduled Job: &quot; + je.getTask(), e);</span>
+<span class="nc" id="L133">        }</span>
+<span class="nc" id="L134">    }</span>
+
+    /**
+     * Add or update a job.
+     *
+     * @param je
+     *            A JobEntry with the job to modify
+     * @throws TurbineException
+     *             job could not be updated
+     */
+    @Override
+    public void updateJob(JobEntry je) throws TurbineException
+    {
+        try
+        {
+<span class="nc" id="L149">            je.calcRunTime();</span>
+
+            // Update the queue.
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            if (je.isNew())</span>
+            {
+<span class="nc" id="L154">                scheduleQueue.add(je);</span>
+            }
+            else
+            {
+<span class="nc" id="L158">                scheduleQueue.modify(je);</span>
+            }
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">            if (je instanceof JobEntryTorque)</span>
+            {
+<span class="nc" id="L163">                ((JobEntryTorque)je).save();</span>
+            }
+
+<span class="nc" id="L166">            restart();</span>
+        }
+<span class="nc" id="L168">        catch (TorqueException e)</span>
+        {
+<span class="nc" id="L170">            throw new TurbineException(&quot;Problem persisting Scheduled Job: &quot; + je.getTask(), e);</span>
+        }
+<span class="nc" id="L172">        catch (TurbineException e)</span>
+        {
+<span class="nc" id="L174">            throw new TurbineException(&quot;Problem updating Scheduled Job: &quot; + je.getTask(), e);</span>
+<span class="nc" id="L175">        }</span>
+<span class="nc" id="L176">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

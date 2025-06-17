@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JobQueue.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.schedule</a> &gt; <span class="el_source">JobQueue.java</span></div><h1>JobQueue.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.schedule;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.util.List;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentSkipListSet;
+
+import org.apache.turbine.util.TurbineException;
+
+/**
+ * Queue for the scheduler.
+ *
+ * @author &lt;a href=&quot;mailto:mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @version $Id: JobQueue.java 615328 2008-01-25 20:25:05Z tv $
+ * @param &lt;J&gt; a specialized job entry type
+ */
+public class JobQueue&lt;J extends JobEntry&gt;
+{
+    /**
+     * The queue of &lt;code&gt;JobEntry&lt;/code&gt; objects.
+     */
+<span class="fc" id="L41">    private ConcurrentSkipListSet&lt;J&gt; queue = null;</span>
+
+    /**
+     * Creates a new instance.
+     */
+    public JobQueue()
+<span class="fc" id="L47">    {</span>
+<span class="fc" id="L48">        queue = new ConcurrentSkipListSet&lt;J&gt;((o1, o2) -&gt; Long.compare(o1.getNextRuntime(), o2.getNextRuntime()));</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Return the next job off the top of the queue and remove it from the queue, or &lt;code&gt;null&lt;/code&gt; if
+     * there are no jobs in the queue.
+     *
+     * @return The next job in the queue.
+     */
+    public J getNext()
+    {
+<span class="fc" id="L59">        return queue.pollFirst();</span>
+    }
+    
+    /**
+     * Return the next job of the top of the queue or &lt;code&gt;null&lt;/code&gt; if
+     * there are no jobs in the queue.
+     *
+     * @return The next job in the queue.
+     */
+    public J getFirst()
+    {
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        return !queue.isEmpty()? queue.first(): null;</span>
+    }
+
+    /**
+     * Return a specific job.
+     *
+     * @param je The JobEntry we are looking for. Falls back to check job id, if job was not found.
+     * @return A JobEntry.
+     */
+    public J getJob(J je)
+    {
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (je != null)</span>
+        {
+<span class="fc" id="L83">          J job = queue.floor(je);</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">          if (je.equals(job))</span>
+          {
+<span class="fc" id="L86">              return job;</span>
+          }
+<span class="fc bfc" id="L88" title="All 2 branches covered.">          for (J jobEntry : list())</span>
+            {
+<span class="fc bfc" id="L90" title="All 2 branches covered.">                if (jobEntry.getJobId() == je.getJobId())</span>
+                {
+<span class="fc" id="L92">                    return jobEntry;</span>
+                }
+<span class="fc" id="L94">            } </span>
+        }
+<span class="fc" id="L96">        return null;</span>
+    }
+
+    /**
+     * List jobs in the queue.  This is used by the scheduler UI.
+     *
+     * @return A Vector of &lt;code&gt;JobEntry&lt;/code&gt; objects.
+     */
+    public Vector&lt;J&gt; list()
+    {
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (!queue.isEmpty())</span>
+        {
+<span class="fc" id="L108">            return new Vector&lt;&gt;(queue);</span>
+        }
+        else
+        {
+<span class="fc" id="L112">            return null;</span>
+        }
+    }
+
+    /**
+     * Add a job to the queue.
+     *
+     * @param je A JobEntry job.
+     */
+    public void add(J je)
+    {
+<span class="fc" id="L123">        queue.add(je);</span>
+<span class="fc" id="L124">    }</span>
+
+    /**
+     * Batch load jobs.  Retains any already enqueued jobs.  Called on
+     * &lt;code&gt;SchedulerService&lt;/code&gt; start-up.
+     *
+     * @param jobEntries A list of the &lt;code&gt;JobEntry&lt;/code&gt; objects to load.
+     */
+    public void batchLoad(List&lt;J&gt; jobEntries)
+    {
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        if (jobEntries != null)</span>
+        {
+<span class="fc" id="L136">            queue.addAll(jobEntries);</span>
+        }
+<span class="fc" id="L138">    }</span>
+
+    /**
+     * Remove a job from the queue.
+     *
+     * @param je A JobEntry with the job to remove.
+     */
+    public void remove(J je)
+    {
+<span class="fc" id="L147">        queue.remove(je);</span>
+<span class="fc" id="L148">    }</span>
+
+    /**
+     * Modify a job on the queue.
+     *
+     * @param je A JobEntry with the job to modify
+     * @throws TurbineException if the runtime calculation fails
+     */
+    public void modify(J je) throws TurbineException
+    {
+<span class="fc" id="L158">        remove(je);</span>
+<span class="fc" id="L159">        je.calcRunTime();</span>
+<span class="fc" id="L160">        add(je);</span>
+<span class="fc" id="L161">    }</span>
+
+    /**
+     * Update the job for its next run time.
+     *
+     * @param je A JobEntry to be updated.
+     * @throws TurbineException a generic exception.
+     */
+    public void updateQueue(J je)
+            throws TurbineException
+    {
+<span class="fc" id="L172">        modify(je);</span>
+<span class="fc" id="L173">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

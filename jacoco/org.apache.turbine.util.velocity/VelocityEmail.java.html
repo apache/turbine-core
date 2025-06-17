@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VelocityEmail.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util.velocity</a> &gt; <span class="el_source">VelocityEmail.java</span></div><h1>VelocityEmail.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util.velocity;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.mail2.core.EmailException;
+import org.apache.commons.mail2.jakarta.SimpleEmail;
+import org.apache.commons.text.WordUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.velocity.VelocityService;
+import org.apache.velocity.context.Context;
+
+/**
+ * This is a simple class for sending email from within Velocity.
+ * Essentially, the body of the email is processed with a
+ * Velocity Context object.
+ * The beauty of this is that you can send email from within your
+ * Velocity template or from your business logic in your Java code.
+ * The body of the email is just a Velocity template so you can use
+ * all the template functionality of Velocity within your emails!
+ *
+ * &lt;p&gt;Example Usage (This all needs to be on one line in your
+ * template):
+ *
+ * &lt;p&gt;Setup your context:
+ *
+ * &lt;p&gt;&lt;code&gt;context.put (&quot;VelocityEmail&quot;, new VelocityEmail() );&lt;/code&gt;
+ *
+ * &lt;p&gt;Then, in your template:
+ *
+ * &lt;pre&gt;
+ * $VelocityEmail.setTo(&quot;Jon Stevens&quot;, &quot;jon@latchkey.com&quot;)
+ *     .setFrom(&quot;Mom&quot;, &quot;mom@mom.com&quot;).setSubject(&quot;Eat dinner&quot;)
+ *     .setTemplate(&quot;email/momEmail.vm&quot;)
+ *     .setContext($context)
+ * &lt;/pre&gt;
+ *
+ * The email/momEmail.wm template will then be parsed with the
+ * Context that was defined with setContext().
+ *
+ * &lt;p&gt;If you want to use this class from within your Java code all you
+ * have to do is something like this:
+ *
+ * &lt;pre&gt;
+ * VelocityEmail ve = new VelocityEmail();
+ * ve.setTo(&quot;Jon Stevens&quot;, &quot;jon@latchkey.com&quot;);
+ * ve.setFrom(&quot;Mom&quot;, &quot;mom@mom.com&quot;).setSubject(&quot;Eat dinner&quot;);
+ * ve.setContext(context);
+ * ve.setTemplate(&quot;email/momEmail.vm&quot;)
+ * ve.send();
+ * &lt;/pre&gt;
+ *
+ * &lt;p&gt;(Note that when used within a Velocity template, the send method
+ * will be called for you when Velocity tries to convert the
+ * VelocityEmail to a string by calling toString()).&lt;/p&gt;
+ *
+ * &lt;p&gt;If you need your email to be word-wrapped, you can add the
+ * following call to those above:
+ *
+ * &lt;pre&gt;
+ * ve.setWordWrap (60);
+ * &lt;/pre&gt;
+ *
+ * &lt;p&gt;This class is just a wrapper around the SimpleEmail class from
+ * commons-mail using the JavaMail API.
+ * Thus, it depends on having the
+ * mail.server property set in the TurbineResources.properties file.
+ * If you want to use this class outside of Turbine for general
+ * processing that is also possible by making sure to set the path to
+ * the TurbineResources.properties.  See the
+ * TurbineConfig class for more information.&lt;/p&gt;
+ *
+ * &lt;p&gt;You can turn on debugging for the JavaMail API by calling
+ * setDebug(true).  The debugging messages will be written to System.out.
+ *
+ * @author &lt;a href=&quot;mailto:jon@latchkey.com&quot;&gt;Jon S. Stevens&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:gcoladonato@yahoo.com&quot;&gt;Greg Coladonato&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ */
+public class VelocityEmail extends SimpleEmail
+{
+    /** Logging */
+<span class="nc" id="L107">    private static final Logger log = LogManager.getLogger(VelocityEmail.class);</span>
+
+    /** The column to word-wrap at.  &lt;code&gt;0&lt;/code&gt; indicates no wrap. */
+<span class="nc" id="L110">    private int wordWrap = 0;</span>
+
+    /** Address of outgoing mail server */
+    private String mailServer;
+
+    /** The template to process, relative to Velocity template directory. */
+<span class="nc" id="L116">    private String template = null;</span>
+
+    /** Velocity context */
+<span class="nc" id="L119">    private Context context = null;</span>
+
+    /**
+     * Constructor
+     */
+    public VelocityEmail()
+    {
+<span class="nc" id="L126">        super();</span>
+<span class="nc" id="L127">    }</span>
+
+    /**
+     * Constructor
+     * @param context the velocity context to use
+     */
+    public VelocityEmail(Context context)
+    {
+<span class="nc" id="L135">        this();</span>
+<span class="nc" id="L136">        this.context = context;</span>
+<span class="nc" id="L137">    }</span>
+
+    /**
+     * To: toName, toEmail
+     *
+     * @param toName A String with the TO toName.
+     * @param toEmail A String with the TO toEmail.
+     * @deprecated use addTo(email,name) instead
+     * @throws EmailException email address could not be parsed
+     * @return A VelocityEmail (self).
+     */
+    @Deprecated
+    public VelocityEmail setTo(String toName, String toEmail)
+            throws EmailException
+    {
+<span class="nc" id="L152">        addTo(toEmail,toName);</span>
+<span class="nc" id="L153">        return this;</span>
+    }
+
+    /**
+     * Velocity template to execute. Path is relative to the Velocity
+     * templates directory.
+     *
+     * @param template relative path of the template to parse including the
+     *                 filename.
+     * @return A VelocityEmail (self).
+     */
+    public VelocityEmail setTemplate(String template)
+    {
+<span class="nc" id="L166">        this.template = template;</span>
+<span class="nc" id="L167">        return this;</span>
+    }
+
+    /**
+     * Set the column at which long lines of text should be word-
+     * wrapped. Setting to zero turns off word-wrap (default).
+     *
+     * NOTE: don't use tabs in your email template document,
+     * or your word-wrapping will be off for the lines with tabs
+     * in them.
+     *
+     * @param wordWrap The column at which to wrap long lines.
+     * @return A VelocityEmail (self).
+     */
+    public VelocityEmail setWordWrap(int wordWrap)
+    {
+<span class="nc" id="L183">        this.wordWrap = wordWrap;</span>
+<span class="nc" id="L184">        return this;</span>
+    }
+
+    /**
+     * Set the context object that will be merged with the
+     * template.
+     *
+     * @param context A Velocity context object.
+     * @return A VelocityEmail (self).
+     */
+    public VelocityEmail setContext(Context context)
+    {
+<span class="nc" id="L196">        this.context = context;</span>
+<span class="nc" id="L197">        return this;</span>
+    }
+
+    /**
+     * Get the context object that will be merged with the
+     * template.
+     *
+     * @return A Context (self).
+     */
+    public Context getContext()
+    {
+<span class="nc" id="L208">        return this.context;</span>
+    }
+
+    /**
+     * Sets the address of the outgoing mail server.  This method
+     * should be used when you need to override the value stored in
+     * TR.props.
+     *
+     * @param serverAddress host name of your outgoing mail server
+     */
+    public void setMailServer(String serverAddress)
+    {
+<span class="nc" id="L220">        this.mailServer = serverAddress;</span>
+<span class="nc" id="L221">    }</span>
+
+    /**
+     * Gets the host name of the outgoing mail server.  If the server
+     * name has not been set by calling setMailServer(), the value
+     * from TR.props for mail.server will be returned.  If TR.props
+     * has no value for mail.server, localhost will be returned.
+     *
+     * @return host name of the mail server.
+     */
+    public String getMailServer()
+    {
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        return StringUtils.isNotEmpty(mailServer) ? mailServer</span>
+<span class="nc" id="L234">                : Turbine.getConfiguration().getString(</span>
+                TurbineConstants.MAIL_SERVER_KEY,
+                TurbineConstants.MAIL_SERVER_DEFAULT);
+    }
+
+    /**
+     * This method sends the email.
+     * &lt;p&gt;If the mail server was not set by calling, setMailServer()
+     * the value of mail.server will be used from TR.props.  If that
+     * value was not set, localhost is used.
+     *
+     * @throws EmailException Failure during merging the velocity
+     * template or sending the email.
+     */
+    @Override
+    public String send() throws EmailException
+    {
+<span class="nc" id="L251">        String body = null;</span>
+        try
+        {
+            // Process the template.
+<span class="nc" id="L255">            VelocityService velocityService = (VelocityService)TurbineServices.getInstance().getService(VelocityService.SERVICE_NAME);</span>
+<span class="nc" id="L256">            body = velocityService.handleRequest(context, template);</span>
+        }
+<span class="nc" id="L258">        catch (Exception e)</span>
+        {
+<span class="nc" id="L260">            throw new EmailException(</span>
+                    &quot;Could not render velocity template&quot;, e);
+<span class="nc" id="L262">        }</span>
+
+        // If the caller desires word-wrapping, do it here
+<span class="nc bnc" id="L265" title="All 2 branches missed.">        if (wordWrap &gt; 0)</span>
+        {
+<span class="nc" id="L267">            body = WordUtils.wrap(body, wordWrap,</span>
+<span class="nc" id="L268">                    System.getProperty(&quot;line.separator&quot;), false);</span>
+        }
+
+<span class="nc" id="L271">        setMsg(body);</span>
+<span class="nc" id="L272">        setHostName(getMailServer());</span>
+<span class="nc" id="L273">        return super.send();</span>
+    }
+
+    /**
+     * The method toString() calls send() for ease of use within a
+     * Velocity template (see example usage above).
+     *
+     * @return An empty string.
+     */
+    @Override
+    public String toString()
+    {
+        try
+        {
+<span class="nc" id="L287">            send();</span>
+        }
+<span class="nc" id="L289">        catch (EmailException e)</span>
+        {
+<span class="nc" id="L291">            log.error(&quot;VelocityEmail error&quot;, e);</span>
+<span class="nc" id="L292">        }</span>
+<span class="nc" id="L293">        return &quot;&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

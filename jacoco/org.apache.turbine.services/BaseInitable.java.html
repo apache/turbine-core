@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseInitable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services</a> &gt; <span class="el_source">BaseInitable.java</span></div><h1>BaseInitable.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+/**
+ * This class provides a generic implementation of
+ * &lt;code&gt;Initable&lt;/code&gt;.  This implementation, that other
+ * &lt;code&gt;Initables&lt;/code&gt; are welcome to extend, contains facilities
+ * to maintain internal state.
+ *
+ * @author &lt;a href=&quot;mailto:burton@apache.org&quot;&gt;Kevin Burton&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:krzewski@e-point.pl&quot;&gt;Rafal Krzewski&lt;/a&gt;
+ * @version $Id$
+ */
+public class BaseInitable
+        implements Initable
+{
+    /** InitableBroker that instantiatd this class. */
+    protected InitableBroker initableBroker;
+
+    /** Initialization status of this class. */
+<span class="fc" id="L41">    protected boolean isInitialized = false;</span>
+
+    /**
+     * Default constructor of BaseInitable.
+     *
+     * This constructor does nothing.  Your own constructurs should be
+     * modest in allocating memory and other resources, leaving this
+     * to the &lt;code&gt;init()&lt;/code&gt; method.
+     */
+    public BaseInitable()
+<span class="fc" id="L51">    {</span>
+        // empty
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * Saves InitableBroker reference for later use.
+     *
+     * @param broker The InitableBroker that instantiated this object.
+     */
+    @Override
+    public void setInitableBroker(InitableBroker broker)
+    {
+<span class="nc" id="L63">        this.initableBroker = broker;</span>
+<span class="nc" id="L64">    }</span>
+
+    /**
+     * Returns an InitableBroker reference.
+     *
+     * @return The InitableBroker that instantiated this object.
+     */
+    public InitableBroker getInitableBroker()
+    {
+<span class="nc" id="L73">        return initableBroker;</span>
+    }
+
+    /**
+     * Performs early initialization.  Used in a manner similar to a ctor.
+     *
+     * BaseInitable doesn't need early initialization, therefore it
+     * ignores all objects passed to it and performs no initialization
+     * activities.
+     *
+     * @param data An Object to use for initialization activities.
+     * @throws InitializationException Initialization of this
+     * class was not successful.
+     */
+    @Override
+    public void init(Object data) throws InitializationException
+    {
+        // empty
+<span class="nc" id="L91">    }</span>
+
+    /**
+     * Performs late initialization.  Called when the Service is requested
+     * for the first time (if not already completely initialized by the
+     * early initializer).
+     *
+     * Late initialization of a BaseInitable is always successful.
+     *
+     * @throws InitializationException Initialization of this
+     * class was not successful.
+     */
+    @Override
+    public void init() throws InitializationException
+    {
+        // empty
+<span class="nc" id="L107">    }</span>
+
+    /**
+     * Returns an Initable to uninitialized state.
+     *
+     * Calls setInit(false) to mark that we are no longer in initialized
+     * state.
+     */
+    @Override
+    public void shutdown()
+    {
+<span class="nc" id="L118">        setInit(false);</span>
+<span class="nc" id="L119">    }</span>
+
+    /**
+     * Returns initialization status.
+     *
+     * @return True if the initable is initialized.
+     */
+    @Override
+    public boolean getInit()
+    {
+<span class="fc" id="L129">        return isInitialized;</span>
+    }
+
+    /**
+     * Sets initialization status.
+     *
+     * @param value The new initialization status.
+     */
+    protected void setInit(boolean value)
+    {
+<span class="fc" id="L139">        this.isInitialized = value;</span>
+<span class="fc" id="L140">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

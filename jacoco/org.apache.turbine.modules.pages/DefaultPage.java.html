@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultPage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.pages</a> &gt; <span class="el_source">DefaultPage.java</span></div><h1>DefaultPage.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.pages;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.turbine.annotation.TurbineLoader;
+import org.apache.turbine.modules.Action;
+import org.apache.turbine.modules.ActionLoader;
+import org.apache.turbine.modules.Layout;
+import org.apache.turbine.modules.LayoutLoader;
+import org.apache.turbine.modules.Page;
+import org.apache.turbine.modules.Screen;
+import org.apache.turbine.modules.ScreenLoader;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.util.RunData;
+
+/**
+ * When building sites using templates, Screens need only be defined
+ * for templates which require dynamic (database or object) data.
+ *
+ * &lt;p&gt;
+ *
+ * This page can be used on sites where the number of Screens can be
+ * much less than the number of templates.  The templates can be
+ * grouped in directories with common layouts.  Screen modules are
+ * then expected to be placed in packages corresponding with the
+ * templates' directories and follow a specific naming scheme.
+ *
+ * &lt;p&gt;
+ *
+ * The template parameter is parsed and and a Screen whose package
+ * matches the templates path and shares the same name minus any
+ * extension and beginning with a capital letter is searched for.  If
+ * not found, a Screen in a package matching the template's path with
+ * name Default is searched for.  If still not found, a Screen with
+ * name Default is looked for in packages corresponding to parent
+ * directories in the template's path until a match is found.
+ *
+ * &lt;p&gt;
+ *
+ * For example if data.getParameters().getString(&quot;template&quot;) returns
+ * /about_us/directions/driving.wm, the search follows
+ * about_us.directions.Driving, about_us.directions.Default,
+ * about_us.Default, Default, VelocitySiteScreen.
+ *
+ * &lt;p&gt;
+ *
+ * Only one Layout module is used, since it is expected that any
+ * dynamic content will be placed in navigations and screens.  The
+ * layout template to be used is found in a similar way to the Screen.
+ * For example the following paths will be searched in the layouts
+ * subdirectory: /about_us/directions/driving.wm,
+ * /about_us/directions/default.wm, /about_us/default.wm, /default.wm.
+ *
+ * &lt;p&gt;
+ *
+ * This approach allows a site with largely static content to be
+ * updated and added to regularly by those with little Java
+ * experience.
+ *
+ * &lt;p&gt;
+ *
+ * The code is an almost a complete clone of the FreeMarkerSitePage
+ * written by John McNally.  I've only modified it for Template use.
+ *
+ * @author &lt;a href=&quot;mailto:mbryson@mont.mindspring.com&quot;&gt;Dave Bryson&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L92">public class DefaultPage implements Page</span>
+{
+    /** Logging */
+<span class="fc" id="L95">    protected final Logger log = LogManager.getLogger(this.getClass());</span>
+
+    /** Injected loader instance */
+    @TurbineLoader( Action.class )
+    protected ActionLoader actionLoader;
+
+    /** Injected loader instance */
+    @TurbineLoader( Screen.class )
+    protected ScreenLoader screenLoader;
+
+    /** Injected loader instance */
+    @TurbineLoader( Layout.class )
+    protected LayoutLoader layoutLoader;
+
+    /**
+     * Builds the Page.
+     *
+     * @param pipelineData Turbine information.
+     * @throws Exception a generic exception.
+     */
+    @Override
+    public void doBuild(PipelineData pipelineData)
+            throws Exception
+    {
+<span class="fc" id="L119">        RunData data = pipelineData.getRunData();</span>
+        // Template pages can use this to set up the context, so it is
+        // available to the Action and Screen.  It does nothing here.
+<span class="fc" id="L122">        doBuildBeforeAction(pipelineData);</span>
+
+        // If an action has been defined, execute it here.  Actions
+        // can re-define the template definition.
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        if (data.hasAction())</span>
+        {
+<span class="fc" id="L128">            actionLoader.exec(pipelineData, data.getAction());</span>
+        }
+
+        // if a redirect was setup in data, don't do anything else
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(data.getRedirectURI()))</span>
+        {
+<span class="nc" id="L134">            return;</span>
+        }
+
+        // Template pages can use this to set up default templates and
+        // associated class modules.  It does nothing here.
+<span class="fc" id="L139">        doBuildAfterAction(pipelineData);</span>
+
+<span class="fc" id="L141">        String screenName = data.getScreen();</span>
+
+<span class="fc" id="L143">        log.debug(&quot;Building {}&quot;, screenName);</span>
+
+        // Ask the Screen for its Layout and then execute the Layout.
+        // The Screen can override the getLayout() method to re-define
+        // the Layout depending on data passed in via the
+        // data.parameters object.
+<span class="fc" id="L149">        Screen aScreen = screenLoader.getAssembler(screenName);</span>
+<span class="fc" id="L150">        String layout = aScreen.getLayout(pipelineData);</span>
+
+        // If the Layout has been set to be null, attempt to execute
+        // the Screen that has been defined.
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">        if (layout != null)</span>
+        {
+<span class="fc" id="L156">            layoutLoader.exec(pipelineData, layout);</span>
+        }
+        else
+        {
+<span class="nc" id="L160">            screenLoader.exec(pipelineData, screenName);</span>
+        }
+
+        // Do any post build actions (overridable by subclasses -
+        // does nothing here).
+<span class="fc" id="L165">        doPostBuild(pipelineData);</span>
+<span class="fc" id="L166">    }</span>
+
+    /**
+     * Can be used by template Pages to stuff the Context into the
+     * PipelineData so that it is available to the Action module and the
+     * Screen module via getContext().  It does nothing here.
+     *
+     * @param pipelineData Turbine information.
+     * @throws Exception a generic exception.
+     */
+    protected void doBuildBeforeAction(PipelineData pipelineData)
+            throws Exception
+    {
+        // do nothing by default
+<span class="fc" id="L180">    }</span>
+
+    /**
+     * Can be overridden by template Pages to set up data needed to
+     * process a template.  It does nothing here.
+     *
+     * @param pipelineData Turbine information.
+     * @throws Exception a generic exception.
+     */
+    protected void doBuildAfterAction(PipelineData pipelineData)
+            throws Exception
+    {
+        // do nothing by default
+<span class="fc" id="L193">    }</span>
+
+    /**
+     * Can be overridden to perform actions when the request is
+     * fully processed. It does nothing here.
+     *
+     * @param pipelineData Turbine information.
+     * @throws Exception a generic exception.
+     */
+    protected void doPostBuild(PipelineData pipelineData)
+            throws Exception
+    {
+        // do nothing by default
+<span class="nc" id="L206">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

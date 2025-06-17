@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DataURI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util.uri</a> &gt; <span class="el_source">DataURI.java</span></div><h1>DataURI.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util.uri;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.ServerData;
+
+/**
+ * This class can convert a simple link into a turbine relative
+ * URL. It should be used to convert references for images, style
+ * sheets and similar references.
+ *
+ * The resulting links have no query data or path info. If you need
+ * this, use TurbineURI or TemplateURI.
+ *
+ * @author &lt;a href=&quot;mailto:hps@intermeta.de&quot;&gt;Henning P. Schmiedehausen&lt;/a&gt;
+ * @version $Id$
+ *
+ */
+
+public class DataURI
+        extends BaseURI
+{
+    /**
+     * Empty C'tor. Uses Turbine.getDefaultServerData().
+     *
+     */
+    public DataURI()
+    {
+<span class="nc" id="L49">        super();</span>
+<span class="nc" id="L50">    }</span>
+
+    /**
+     * Constructor with a RunData object
+     *
+     * @param runData A RunData object
+     */
+    public DataURI(RunData runData)
+    {
+<span class="fc" id="L59">        super(runData);</span>
+<span class="fc" id="L60">    }</span>
+
+    /**
+     * Constructor, set explicit redirection
+     *
+     * @param runData A RunData object
+     * @param redirect True if redirection allowed.
+     */
+    public DataURI(RunData runData, boolean redirect)
+    {
+<span class="nc" id="L70">        super(runData, redirect);</span>
+<span class="nc" id="L71">    }</span>
+
+    /**
+     * Constructor with a ServerData object
+     *
+     * @param serverData A ServerData object
+     */
+    public DataURI(ServerData serverData)
+    {
+<span class="nc" id="L80">        super(serverData);</span>
+<span class="nc" id="L81">    }</span>
+
+    /**
+     * Constructor, set explicit redirection
+     *
+     * @param serverData A ServerData object
+     * @param redirect True if redirection allowed.
+     */
+    public DataURI(ServerData serverData, boolean redirect)
+    {
+<span class="nc" id="L91">        super(serverData, redirect);</span>
+<span class="nc" id="L92">    }</span>
+
+
+    /**
+     * Content Tool wants to be able to turn the encoding
+     * of the servlet container off. After calling this method,
+     * the encoding will not happen any longer.
+     */
+    public void clearResponse()
+    {
+<span class="fc" id="L102">        setResponse(null);</span>
+<span class="fc" id="L103">    }</span>
+
+    /**
+     * Builds the URL with all of the data URL-encoded as well as
+     * encoded using HttpServletResponse.encodeUrl(). The resulting
+     * URL is absolute; it starts with http/https...
+     *
+     * &lt;pre&gt;
+     * TurbineURI tui = new TurbineURI (data, &quot;UserScreen&quot;);
+     * tui.addPathInfo(&quot;user&quot;,&quot;jon&quot;);
+     * tui.getAbsoluteLink();
+     * &lt;/pre&gt;
+     *
+     *  The above call to getAbsoluteLink() would return the String:
+     *
+     * &lt;p&gt;
+     * http://www.server.com/servlets/Turbine/screen/UserScreen/user/jon
+     * &lt;/p&gt;
+     *
+     * @return A String with the built URL.
+     */
+    public String getAbsoluteLink()
+    {
+<span class="nc" id="L126">        StringBuilder output = new StringBuilder();</span>
+
+<span class="nc" id="L128">        getSchemeAndPort(output);</span>
+<span class="nc" id="L129">        getContextAndScript(output);</span>
+
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (hasReference())</span>
+        {
+<span class="nc" id="L133">            output.append('#');</span>
+<span class="nc" id="L134">            output.append(getReference());</span>
+        }
+
+        //
+        // Encode Response does all the fixup for the Servlet Container
+        //
+<span class="nc" id="L140">        return encodeResponse(output.toString());</span>
+    }
+
+    /**
+     * Builds the URL with all of the data URL-encoded as well as
+     * encoded using HttpServletResponse.encodeUrl(). The resulting
+     * URL is relative to the webserver root.
+     *
+     * &lt;pre&gt;
+     * TurbineURI tui = new TurbineURI (data, &quot;UserScreen&quot;);
+     * tui.addPathInfo(&quot;user&quot;,&quot;jon&quot;);
+     * tui.getRelativeLink();
+     * &lt;/pre&gt;
+     *
+     *  The above call to getRelativeLink() would return the String:
+     *
+     * &lt;p&gt;
+     * /servlets/Turbine/screen/UserScreen/user/jon
+     * &lt;/p&gt;
+     *
+     * @return A String with the built URL.
+     */
+    public String getRelativeLink()
+    {
+<span class="nc" id="L164">        StringBuilder output = new StringBuilder();</span>
+
+<span class="nc" id="L166">        getContextAndScript(output);</span>
+
+<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (hasReference())</span>
+        {
+<span class="nc" id="L170">            output.append('#');</span>
+<span class="nc" id="L171">            output.append(getReference());</span>
+        }
+
+        //
+        // Encode Response does all the fixup for the Servlet Container
+        //
+<span class="nc" id="L177">        return encodeResponse(output.toString());</span>
+    }
+
+    /**
+     * toString() simply calls getAbsoluteLink. You should not use this in your
+     * code unless you have to. Use getAbsoluteLink.
+     *
+     * @return This URI as a String
+     *
+     */
+    @Override
+    public String toString()
+    {
+<span class="nc" id="L190">        return getAbsoluteLink();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

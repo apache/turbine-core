@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util</a> &gt; <span class="el_source">TurbineException.java</span></div><h1>TurbineException.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+/**
+ * The base class of all exceptions thrown by Turbine.
+ *
+ * &lt;p&gt;
+ * It is intended to ease the debugging by carrying on the information
+ * about the exception which was caught and provoked throwing the
+ * current exception. Catching and rethrowing may occur multiple
+ * times, and provided that all exceptions except the first one
+ * are descendands of &lt;code&gt;TurbineException&lt;/code&gt;, when the
+ * exception is finally printed out using any of the &lt;code&gt;
+ * printStackTrace()&lt;/code&gt; methods, the stacktrace will contain
+ * the information about all exceptions thrown and caught on the way.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt; Running the following program &lt;/p&gt;
+ *
+ * &lt;pre&gt;
+ *  1 import org.apache.turbine.util.TurbineException;
+ *  2
+ *  3 public class Test {
+ *  4     public static void main( String[] args ) {
+ *  5         try {
+ *  6             a();
+ *  7         } catch(Exception e) {
+ *  8             e.printStackTrace();
+ *  9         }
+ * 10      }
+ * 11
+ * 12      public static void a() throws TurbineException {
+ * 13          try {
+ * 14              b();
+ * 15          } catch(Exception e) {
+ * 16              throw new TurbineException(&quot;foo&quot;, e);
+ * 17          }
+ * 18      }
+ * 19
+ * 20      public static void b() throws TurbineException {
+ * 21          try {
+ * 22              c();
+ * 23          } catch(Exception e) {
+ * 24              throw new TurbineException(&quot;bar&quot;, e);
+ * 25          }
+ * 26      }
+ * 27
+ * 28      public static void c() throws TurbineException {
+ * 29          throw new Exception(&quot;baz&quot;);
+ * 30      }
+ * 31 }
+ * &lt;/pre&gt;
+ *
+ * &lt;p&gt;Yields the following stacktrace: &lt;/p&gt;
+ *
+ * &lt;pre&gt;
+ * java.lang.Exception: baz: bar: foo
+ *    at Test.c(Test.java:29)
+ *    at Test.b(Test.java:22)
+ * rethrown as TurbineException: bar
+ *    at Test.b(Test.java:24)
+ *    at Test.a(Test.java:14)
+ * rethrown as TurbineException: foo
+ *    at Test.a(Test.java:16)
+ *    at Test.main(Test.java:6)
+ * &lt;/pre&gt;
+ *
+ * @author &lt;a href=&quot;mailto:Rafal.Krzewski@e-point.pl&quot;&gt;Rafal Krzewski&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:dlr@finemaltcoding.com&quot;&gt;Daniel Rall&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
+ */
+public class TurbineException extends Exception
+{
+    /** Serial version */
+    private static final long serialVersionUID = 6287570348053189763L;
+
+    /**
+     * Constructs a new &lt;code&gt;TurbineException&lt;/code&gt; without specified
+     * detail message.
+     */
+    public TurbineException()
+    {
+<span class="nc" id="L103">        super();</span>
+<span class="nc" id="L104">    }</span>
+
+    /**
+     * Constructs a new &lt;code&gt;TurbineException&lt;/code&gt; with specified
+     * detail message.
+     *
+     * @param msg The error message.
+     */
+    public TurbineException(String msg)
+    {
+<span class="nc" id="L114">        super(msg);</span>
+<span class="nc" id="L115">    }</span>
+
+    /**
+     * Constructs a new &lt;code&gt;TurbineException&lt;/code&gt; with specified
+     * nested &lt;code&gt;Throwable&lt;/code&gt;.
+     *
+     * @param nested The exception or error that caused this exception
+     *               to be thrown.
+     */
+    public TurbineException(Throwable nested)
+    {
+<span class="fc" id="L126">        super(nested);</span>
+<span class="fc" id="L127">    }</span>
+
+    /**
+     * Constructs a new &lt;code&gt;TurbineException&lt;/code&gt; with specified
+     * detail message and nested &lt;code&gt;Throwable&lt;/code&gt;.
+     *
+     * @param msg    The error message.
+     * @param nested The exception or error that caused this exception
+     *               to be thrown.
+     */
+    public TurbineException(String msg, Throwable nested)
+    {
+<span class="fc" id="L139">        super(msg, nested);</span>
+<span class="fc" id="L140">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

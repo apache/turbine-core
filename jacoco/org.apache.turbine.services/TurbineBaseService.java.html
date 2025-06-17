@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineBaseService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services</a> &gt; <span class="el_source">TurbineBaseService.java</span></div><h1>TurbineBaseService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services;
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.util.RunData;
+
+/**
+ * &lt;p&gt;This class provides a &lt;code&gt;Service&lt;/code&gt; implementation that
+ * Services used in Turbine are required to extend.  The
+ * functionality provided in addition to &lt;code&gt;BaseService&lt;/code&gt;
+ * functionality is recognizing objects used in early initialization
+ * of &lt;code&gt;Services&lt;/code&gt; in Turbine, and passing them to
+ * appropriate convenience methods.  These methods should be overridden
+ * to provide desired initialization functionality.&lt;/p&gt;
+ *
+ * &lt;p&gt;&lt;strong&gt;Note!&lt;/strong&gt;&lt;br&gt;Remember to call
+ * &lt;code&gt;setInit(true)&lt;/code&gt; after successful initialization.&lt;/p&gt;
+ *
+ * &lt;p&gt;&lt;strong&gt;Note!&lt;/strong&gt;&lt;br&gt;If you need to use another
+ * &lt;code&gt;Service&lt;/code&gt; inside your early initialization, remember to
+ * request initialization of that &lt;code&gt;Service&lt;/code&gt; before using
+ * it:&lt;/p&gt;
+ *
+ * &lt;pre&gt;
+ * getServiceBroker().initClass(&quot;OtherService&quot;,data);
+ * OtherService service =
+ *         (OtherService)getServiceBroker().getService(&quot;OtherService&quot;);
+ * &lt;/pre&gt;
+ *
+ * @author &lt;a href=&quot;mailto:greg@shwoop.com&quot;&gt;Greg Ritter&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:bmclaugh@algx.net&quot;&gt;Brett McLaughlin&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:burton@apache.org&quot;&gt;Kevin Burton&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:krzewski@e-point.pl&quot;&gt;Rafal Krzewski&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:jon@latchkey.com&quot;&gt;Jon S. Stevens&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:jvanzyl@periapt.com&quot;&gt;Jason van Zyl&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ * @version $Id$
+ */
+<span class="fc" id="L59">public abstract class TurbineBaseService</span>
+        extends BaseService
+{
+    /**
+     * Performs early initialization.  Overrides init() method in
+     * BaseService to detect objects used in Turbine's Service
+     * initialization and pass them to appropriate init() methods.
+     *
+     * @param data An Object to use for initialization activities.
+     * @throws InitializationException if initialization of this
+     * class was not successful.
+     */
+    @Override
+    public void init(Object data)
+            throws InitializationException
+    {
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (data instanceof RunData)</span>
+        {
+<span class="fc" id="L77">            init((RunData) data);</span>
+        }
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        else if (data instanceof PipelineData)</span>
+        {
+<span class="nc" id="L81">            init((PipelineData) data);</span>
+        }
+<span class="fc" id="L83">    }</span>
+
+    /**
+     * Performs early initialization.
+     *
+     * @param pipelineData A PipelineData to use for initialization activities.
+     * @throws InitializationException if initialization of this
+     * class was not successful.
+     */
+    public void init(PipelineData pipelineData) throws InitializationException
+    {
+        // empty
+<span class="fc" id="L95">    }</span>
+
+    /**
+     * Performs late initialization.
+     *
+     * If your class relies on early initialization, and the object it
+     * expects was not received, you can use late initialization to
+     * throw an exception and complain.
+     *
+     * @throws InitializationException if initialization of this
+     * class was not successful.
+     */
+    @Override
+    public void init() throws InitializationException
+    {
+<span class="nc" id="L110">        setInit(true);</span>
+<span class="nc" id="L111">    }</span>
+
+    /**
+     * Returns to uninitialized state.
+     *
+     * You can use this method to release resources that your Service
+     * allocated when Turbine shuts down.
+     */
+    @Override
+    public void shutdown()
+    {
+<span class="fc" id="L122">        setInit(false);</span>
+<span class="fc" id="L123">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

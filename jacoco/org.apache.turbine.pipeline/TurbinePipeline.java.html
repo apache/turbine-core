@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbinePipeline.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.pipeline</a> &gt; <span class="el_source">TurbinePipeline.java</span></div><h1>TurbinePipeline.java</h1><pre class="source lang-java linenums">package org.apache.turbine.pipeline;
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * &quot;License&quot;); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElementWrapper;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.apache.turbine.annotation.AnnotationProcessor;
+import org.apache.turbine.util.TurbineException;
+
+/**
+ * Flexible implementation of a {@link org.apache.turbine.pipeline.Pipeline}.
+ * Originally based on code from Catalina and ideas from Apache httpd.
+ *
+ * @author &lt;a href=&quot;mailto:dlr@finemaltcoding.com&quot;&gt;Daniel Rall&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:jvanzyl@zenplex.com&quot;&gt;Jason van Zyl&lt;/a&gt;
+ * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
+ */
+@XmlRootElement(name=&quot;pipeline&quot;)
+@XmlAccessorType(XmlAccessType.NONE)
+<span class="fc" id="L48">public class TurbinePipeline</span>
+        implements Pipeline, ValveContext
+{
+    /**
+     * The &quot;Turbine Classic&quot; pipeline.
+     */
+    public static final String CLASSIC_PIPELINE =
+            &quot;/WEB-INF/conf/turbine-classic-pipeline.xml&quot;;
+
+    /**
+     * Name of this pipeline.
+     */
+    @XmlAttribute
+    private String name;
+
+    /**
+     * The set of Valves associated with this Pipeline.
+     */
+<span class="fc" id="L66">    private CopyOnWriteArrayList&lt;Valve&gt; valves = new CopyOnWriteArrayList&lt;&gt;();</span>
+
+    /**
+     * The per-thread execution state for processing through this pipeline.
+     */
+<span class="fc" id="L71">    private ThreadLocal&lt;Iterator&lt;Valve&gt;&gt; state = new ThreadLocal&lt;&gt;();</span>
+
+    /**
+     * @see org.apache.turbine.pipeline.Pipeline#initialize()
+     */
+    @Override
+    public void initialize()
+            throws Exception
+    {
+        // Valve implementations are added to this Pipeline using the
+        // Mapper.
+
+        // Initialize the valves
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        for (Valve v : valves)</span>
+        {
+<span class="fc" id="L86">            AnnotationProcessor.process(v);</span>
+<span class="fc" id="L87">            v.initialize();</span>
+<span class="fc" id="L88">        }</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * Set the name of this pipeline.
+     *
+     * @param name
+     *            Name of this pipeline.
+     */
+    public void setName(String name)
+    {
+<span class="nc" id="L99">        this.name = name;</span>
+<span class="nc" id="L100">    }</span>
+
+    /**
+     * Get the name of this pipeline.
+     *
+     * @return String Name of this pipeline.
+     */
+    public String getName()
+    {
+<span class="nc" id="L109">        return name;</span>
+    }
+
+    /**
+     * @see org.apache.turbine.pipeline.Pipeline#addValve(Valve)
+     */
+    @Override
+    public void addValve(Valve valve)
+    {
+        // Add this Valve to the end of the set associated with this Pipeline
+<span class="fc" id="L119">        valves.add(valve);</span>
+<span class="fc" id="L120">    }</span>
+
+    /**
+     * @see org.apache.turbine.pipeline.Pipeline#getValves()
+     */
+    @Override
+    @XmlElementWrapper(name=&quot;valves&quot;)
+    @XmlElement(name=&quot;valve&quot;)
+    @XmlJavaTypeAdapter(XmlValveAdapter.class)
+    public Valve[] getValves()
+    {
+<span class="fc" id="L131">        return valves.toArray(new Valve[0]);</span>
+    }
+
+    /**
+     * Set new valves during deserialization
+     *
+     * @param valves the valves to set
+     */
+    protected void setValves(Valve[] valves)
+    {
+<span class="fc" id="L141">        this.valves = new CopyOnWriteArrayList&lt;&gt;(valves);</span>
+<span class="fc" id="L142">    }</span>
+
+    /**
+     * @see org.apache.turbine.pipeline.Pipeline#removeValve(Valve)
+     */
+    @Override
+    public void removeValve(Valve valve)
+    {
+<span class="nc" id="L150">        valves.remove(valve);</span>
+<span class="nc" id="L151">    }</span>
+
+    /**
+     * @see org.apache.turbine.pipeline.Pipeline#invoke(PipelineData)
+     */
+    @Override
+    public void invoke(PipelineData pipelineData)
+            throws TurbineException, IOException
+    {
+        // Initialize the per-thread state for this thread
+<span class="fc" id="L161">        state.set(Collections.unmodifiableCollection(valves).iterator());</span>
+
+        // Invoke the first Valve in this pipeline for this request
+<span class="fc" id="L164">        invokeNext(pipelineData);</span>
+<span class="fc" id="L165">    }</span>
+
+    /**
+     * @see org.apache.turbine.pipeline.ValveContext#invokeNext(PipelineData)
+     */
+    @Override
+    public void invokeNext(PipelineData pipelineData)
+            throws TurbineException, IOException
+    {
+        // Identify the current valve for the current request thread
+<span class="fc" id="L175">        Iterator&lt;Valve&gt; current = state.get();</span>
+
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        if (current.hasNext())</span>
+        {
+            // Invoke the requested Valve for the current request
+            // thread and increment its thread-local state.
+<span class="fc" id="L181">            current.next().invoke(pipelineData, this);</span>
+        }
+<span class="fc" id="L183">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
