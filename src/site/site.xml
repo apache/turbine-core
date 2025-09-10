@@ -18,16 +18,12 @@
  under the License.
 -->
 
-<site xmlns="http://maven.apache.org/SITE/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd"
+<project xmlns="http://maven.apache.org/DECORATION/1.8.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.0 https://maven.apache.org/xsd/decoration-1.8.0.xsd"
   name="Apache Turbine" combine.self="merge">  
 
-  <bannerLeft href="https://turbine.apache.org/">
-    <image src="/images/turbine-project-apache-separate.png" alt="Apache Turbine" />
-  </bannerLeft>
-   <bannerRight href="https://turbine.apache.org/">
-        <image src="/images/logo.gif" />
-    </bannerRight>
+  <!-- banners in parent -->
+  
   <publishDate format="dd MMMM yyyy" position="left" />
   <version position="left" />
   
@@ -37,8 +33,7 @@
   
      <head>
       <![CDATA[ 
-      <link rel="icon" type="image/png" sizes="48x48" href="./images/favicon.ico"> 
-      <link rel="icon" type="image/png" sizes="48x48" href="../images/favicon.ico"> 
+      <link rel="icon" type="image/png" sizes="48x48" href="https://apache.org/favicons/favicon.ico">
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">       
        ]]>
     </head>
@@ -137,4 +132,4 @@
         </fluidoSkin>
     </custom>
   
-</site>
+</project>
