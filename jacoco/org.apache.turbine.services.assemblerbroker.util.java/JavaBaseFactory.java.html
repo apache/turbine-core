@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JavaBaseFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.assemblerbroker.util.java</a> &gt; <span class="el_source">JavaBaseFactory.java</span></div><h1>JavaBaseFactory.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.assemblerbroker.util.java;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JavaBaseFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.assemblerbroker.util.java</a> &gt; <span class="el_source">JavaBaseFactory.java</span></div><h1>JavaBaseFactory.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.assemblerbroker.util.java;
 
 
 import java.lang.reflect.InvocationTargetException;
@@ -66,40 +66,40 @@ import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
     @SuppressWarnings(&quot;unchecked&quot;)
     public T getAssembler(String packageName, String name)
     {
-<span class="fc" id="L69">        T assembler = null;</span>
+<span class="nc" id="L69">        T assembler = null;</span>
 
-<span class="fc" id="L71">        log.debug(&quot;Class Fragment is {}&quot;, name);</span>
+<span class="nc" id="L71">        log.debug(&quot;Class Fragment is {}&quot;, name);</span>
 
-<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(name))</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (StringUtils.isNotEmpty(name))</span>
         {
-<span class="fc bfc" id="L75" title="All 2 branches covered.">            for (String p : packages)</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">            for (String p : packages)</span>
             {
-<span class="fc" id="L77">                StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L77">                StringBuilder sb = new StringBuilder();</span>
 
-<span class="fc" id="L79">                sb.append(p).append('.').append(packageName).append('.').append(name);</span>
-<span class="fc" id="L80">                String className = sb.toString();</span>
+<span class="nc" id="L79">                sb.append(p).append('.').append(packageName).append('.').append(name);</span>
+<span class="nc" id="L80">                String className = sb.toString();</span>
 
-<span class="fc" id="L82">                log.debug(&quot;Trying {}&quot;, className);</span>
+<span class="nc" id="L82">                log.debug(&quot;Trying {}&quot;, className);</span>
 
                 try
                 {
-<span class="fc" id="L86">                    Class&lt;T&gt; servClass = classCache.get(className);</span>
-<span class="fc bfc" id="L87" title="All 2 branches covered.">                    if (servClass == null)</span>
+<span class="nc" id="L86">                    Class&lt;T&gt; servClass = classCache.get(className);</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">                    if (servClass == null)</span>
                     {
-<span class="fc" id="L89">                        servClass = (Class&lt;T&gt;) Class.forName(className);</span>
-<span class="fc" id="L90">                        Class&lt;T&gt; _servClass = classCache.putIfAbsent(className, servClass);</span>
-<span class="fc bfc" id="L91" title="All 2 branches covered.">                        if (_servClass != null)</span>
+<span class="nc" id="L89">                        servClass = (Class&lt;T&gt;) Class.forName(className);</span>
+<span class="nc" id="L90">                        Class&lt;T&gt; _servClass = classCache.putIfAbsent(className, servClass);</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">                        if (_servClass != null)</span>
                         {
-<span class="fc" id="L93">                            servClass = _servClass;</span>
+<span class="nc" id="L93">                            servClass = _servClass;</span>
                         }
                     }
-<span class="fc" id="L96">                    assembler = servClass.getDeclaredConstructor().newInstance();</span>
-<span class="fc" id="L97">                    break; // for()</span>
+<span class="nc" id="L96">                    assembler = servClass.getDeclaredConstructor().newInstance();</span>
+<span class="nc" id="L97">                    break; // for()</span>
                 }
-<span class="fc" id="L99">                catch (ClassNotFoundException cnfe)</span>
+<span class="nc" id="L99">                catch (ClassNotFoundException cnfe)</span>
                 {
                     // Do this so we loop through all the packages.
-<span class="fc" id="L102">                    log.debug(&quot;{}: Not found&quot;, className);</span>
+<span class="nc" id="L102">                    log.debug(&quot;{}: Not found&quot;, className);</span>
                 }
 <span class="nc" id="L104">                catch (NoClassDefFoundError ncdfe)</span>
                 {
@@ -114,13 +114,13 @@ import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
                     // that it will appear on the client browser
 <span class="nc" id="L115">                    log.error(&quot;Could not load {}&quot;, className, e);</span>
 <span class="nc" id="L116">                    break; // for()</span>
-<span class="pc" id="L117">                }</span>
-<span class="fc" id="L118">            }</span>
+<span class="nc" id="L117">                }</span>
+<span class="nc" id="L118">            }</span>
         }
 
-<span class="fc" id="L121">        log.debug(&quot;Returning: {}&quot;, assembler);</span>
+<span class="nc" id="L121">        log.debug(&quot;Returning: {}&quot;, assembler);</span>
 
-<span class="fc" id="L123">        return assembler;</span>
+<span class="nc" id="L123">        return assembler;</span>
     }
 
     /**

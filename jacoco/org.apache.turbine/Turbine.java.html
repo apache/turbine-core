@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Turbine.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine</a> &gt; <span class="el_source">Turbine.java</span></div><h1>Turbine.java</h1><pre class="source lang-java linenums">package org.apache.turbine;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Turbine.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine</a> &gt; <span class="el_source">Turbine.java</span></div><h1>Turbine.java</h1><pre class="source lang-java linenums">package org.apache.turbine;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -201,10 +201,10 @@ import org.apache.turbine.util.uri.URIConstants;
         {
 <span class="fc" id="L202">            super.init();</span>
 
-<span class="fc bfc" id="L204" title="All 2 branches covered.">            if (!firstInit)</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">            if (!firstInit)</span>
             {
-<span class="fc" id="L206">                log.info(&quot;Double initialization of Turbine was attempted!&quot;);</span>
-<span class="fc" id="L207">                return;</span>
+<span class="nc" id="L206">                log.info(&quot;Double initialization of Turbine was attempted!&quot;);</span>
+<span class="nc" id="L207">                return;</span>
             }
             // executing init will trigger some static initializers, so we have
             // only one chance.
@@ -228,12 +228,12 @@ import org.apache.turbine.util.uri.URIConstants;
 <span class="nc" id="L228">                    throw new TurbineException(&quot;No RunData Service configured!&quot;);</span>
                 }
             }
-<span class="fc" id="L231">            catch (Throwable e)</span>
+<span class="nc" id="L231">            catch (Throwable e)</span>
             {
                 // save the exception to complain loudly later :-)
-<span class="fc" id="L234">                initFailure = e;</span>
-<span class="fc" id="L235">                log.fatal(&quot;Turbine: init() failed&quot;, e);</span>
-<span class="fc" id="L236">                throw new ServletException(&quot;Turbine: init() failed&quot;, e);</span>
+<span class="nc" id="L234">                initFailure = e;</span>
+<span class="nc" id="L235">                log.fatal(&quot;Turbine: init() failed&quot;, e);</span>
+<span class="nc" id="L236">                throw new ServletException(&quot;Turbine: init() failed&quot;, e);</span>
 <span class="fc" id="L237">            }</span>
 
 <span class="fc" id="L239">            log.info(&quot;Turbine: init() Ready to Rumble!&quot;);</span>
@@ -344,9 +344,9 @@ import org.apache.turbine.util.uri.URIConstants;
 
         // context resource path has to begin with slash, cft.
         // context.getResource
-<span class="fc bfc" id="L347" title="All 2 branches covered.">        if (!descriptorPath.startsWith(&quot;/&quot;))</span>
+<span class="pc bpc" id="L347" title="1 of 2 branches missed.">        if (!descriptorPath.startsWith(&quot;/&quot;))</span>
         {
-<span class="fc" id="L349">            descriptorPath = &quot;/&quot; + descriptorPath;</span>
+<span class="nc" id="L349">            descriptorPath = &quot;/&quot; + descriptorPath;</span>
         }
 
 <span class="fc" id="L352">        try (InputStream reader = context.getResourceAsStream(descriptorPath))</span>
@@ -386,9 +386,9 @@ import org.apache.turbine.util.uri.URIConstants;
 <span class="fc" id="L386">        String confFile = findInitParameter(context, config,</span>
                 TurbineConfig.CONFIGURATION_PATH_KEY,
                 null);
-<span class="fc bfc" id="L389" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(confFile))</span>
+<span class="pc bpc" id="L389" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(confFile))</span>
         {
-<span class="fc" id="L391">            confStyle = ConfigurationStyle.XML;</span>
+<span class="nc" id="L391">            confStyle = ConfigurationStyle.XML;</span>
         }
         else // second test
         {
@@ -417,7 +417,7 @@ import org.apache.turbine.util.uri.URIConstants;
 <span class="fc" id="L417">        Parameters params = new Parameters();</span>
 <span class="fc" id="L418">        File confPath = getApplicationRootAsFile();</span>
 
-<span class="fc bfc" id="L420" title="All 2 branches covered.">        if (confFile.startsWith(&quot;/&quot;))</span>
+<span class="pc bpc" id="L420" title="1 of 2 branches missed.">        if (confFile.startsWith(&quot;/&quot;))</span>
         {
 <span class="fc" id="L422">            confFile = confFile.substring(1); // cft. RFC2396 should not start</span>
                                               // with a slash, if not absolute
@@ -445,18 +445,18 @@ import org.apache.turbine.util.uri.URIConstants;
 
         }
 
-<span class="pc bpc" id="L448" title="2 of 4 branches missed.">        switch (confStyle)</span>
+<span class="pc bpc" id="L448" title="3 of 4 branches missed.">        switch (confStyle)</span>
         {
             case XML:
                 // relative base path used for this and child configuration
                 // files
-<span class="fc" id="L453">                CombinedConfigurationBuilder combinedBuilder = new CombinedConfigurationBuilder()</span>
-<span class="fc" id="L454">                        .configure(params.fileBased()</span>
-<span class="fc" id="L455">                                .setFileName(confFile)</span>
-<span class="fc" id="L456">                                .setListDelimiterHandler(new DefaultListDelimiterHandler(','))</span>
-<span class="fc" id="L457">                                .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath.getCanonicalPath(), false)));</span>
-<span class="fc" id="L458">                configuration = combinedBuilder.getConfiguration();</span>
-<span class="fc" id="L459">                break;</span>
+<span class="nc" id="L453">                CombinedConfigurationBuilder combinedBuilder = new CombinedConfigurationBuilder()</span>
+<span class="nc" id="L454">                        .configure(params.fileBased()</span>
+<span class="nc" id="L455">                                .setFileName(confFile)</span>
+<span class="nc" id="L456">                                .setListDelimiterHandler(new DefaultListDelimiterHandler(','))</span>
+<span class="nc" id="L457">                                .setLocationStrategy(new HomeDirectoryLocationStrategy(confPath.getCanonicalPath(), false)));</span>
+<span class="nc" id="L458">                configuration = combinedBuilder.getConfiguration();</span>
+<span class="nc" id="L459">                break;</span>
 
             case PROPERTIES:
 <span class="fc" id="L462">                FileBasedConfigurationBuilder&lt;PropertiesConfiguration&gt; propertiesBuilder = new FileBasedConfigurationBuilder&lt;&gt;(</span>
@@ -542,44 +542,44 @@ import org.apache.turbine.util.uri.URIConstants;
      */
     public void init(PipelineData data)
     {
-<span class="fc" id="L545">        synchronized (Turbine.class)</span>
+<span class="nc" id="L545">        synchronized (Turbine.class)</span>
         {
-<span class="pc bpc" id="L547" title="1 of 2 branches missed.">            if (firstDoGet)</span>
+<span class="nc bnc" id="L547" title="All 2 branches missed.">            if (firstDoGet)</span>
             {
                 // All we want to do here is save some servlet
                 // information so that services and processes
                 // that don't have direct access to a RunData
                 // object can still know something about
                 // the servlet environment.
-<span class="fc" id="L554">                saveServletInfo(data);</span>
+<span class="nc" id="L554">                saveServletInfo(data);</span>
 
                 // Initialize services with the PipelineData instance
-<span class="fc" id="L557">                TurbineServices services = (TurbineServices) getServiceManager();</span>
+<span class="nc" id="L557">                TurbineServices services = (TurbineServices) getServiceManager();</span>
 
-<span class="fc bfc" id="L559" title="All 2 branches covered.">                for (Iterator&lt;String&gt; i = services.getServiceNames(); i.hasNext();)</span>
+<span class="nc bnc" id="L559" title="All 2 branches missed.">                for (Iterator&lt;String&gt; i = services.getServiceNames(); i.hasNext();)</span>
                 {
-<span class="fc" id="L561">                    String serviceName = i.next();</span>
-<span class="fc" id="L562">                    Object service = services.getService(serviceName);</span>
+<span class="nc" id="L561">                    String serviceName = i.next();</span>
+<span class="nc" id="L562">                    Object service = services.getService(serviceName);</span>
 
-<span class="pc bpc" id="L564" title="1 of 2 branches missed.">                    if (service instanceof Initable)</span>
+<span class="nc bnc" id="L564" title="All 2 branches missed.">                    if (service instanceof Initable)</span>
                     {
                         try
                         {
-<span class="fc" id="L568">                            ((Initable) service).init(data);</span>
+<span class="nc" id="L568">                            ((Initable) service).init(data);</span>
                         }
 <span class="nc" id="L570">                        catch (InitializationException e)</span>
                         {
 <span class="nc" id="L572">                            log.warn(&quot;Could not initialize Initable {} with PipelineData&quot;, serviceName, e);</span>
-<span class="fc" id="L573">                        }</span>
+<span class="nc" id="L573">                        }</span>
                     }
-<span class="fc" id="L575">                }</span>
+<span class="nc" id="L575">                }</span>
 
                 // Mark that we're done.
-<span class="fc" id="L578">                firstDoGet = false;</span>
-<span class="fc" id="L579">                log.info(&quot;Turbine: first Request successful&quot;);</span>
+<span class="nc" id="L578">                firstDoGet = false;</span>
+<span class="nc" id="L579">                log.info(&quot;Turbine: first Request successful&quot;);</span>
             }
-<span class="fc" id="L581">        }</span>
-<span class="fc" id="L582">    }</span>
+<span class="nc" id="L581">        }</span>
+<span class="nc" id="L582">    }</span>
 
     /**
      * Return the current configuration with all keys included
@@ -598,7 +598,7 @@ import org.apache.turbine.util.uri.URIConstants;
      */
     public static String getServerName()
     {
-<span class="fc" id="L601">        return getDefaultServerData().getServerName();</span>
+<span class="nc" id="L601">        return getDefaultServerData().getServerName();</span>
     }
 
     /**
@@ -618,7 +618,7 @@ import org.apache.turbine.util.uri.URIConstants;
      */
     public static String getServerPort()
     {
-<span class="fc" id="L621">        return Integer.toString(getDefaultServerData().getServerPort());</span>
+<span class="nc" id="L621">        return Integer.toString(getDefaultServerData().getServerPort());</span>
     }
 
     /**
@@ -629,7 +629,7 @@ import org.apache.turbine.util.uri.URIConstants;
      */
     public static String getScriptName()
     {
-<span class="fc" id="L632">        return getDefaultServerData().getScriptName();</span>
+<span class="nc" id="L632">        return getDefaultServerData().getScriptName();</span>
     }
 
     /**
@@ -655,27 +655,27 @@ import org.apache.turbine.util.uri.URIConstants;
      */
     public static ServerData getDefaultServerData()
     {
-<span class="fc bfc" id="L658" title="All 2 branches covered.">        if (serverData == null)</span>
+<span class="nc bnc" id="L658" title="All 2 branches missed.">        if (serverData == null)</span>
         {
-<span class="fc" id="L660">            String serverName = configuration.getString(TurbineConstants.DEFAULT_SERVER_NAME_KEY);</span>
-<span class="pc bpc" id="L661" title="1 of 2 branches missed.">            if (serverName == null)</span>
+<span class="nc" id="L660">            String serverName = configuration.getString(TurbineConstants.DEFAULT_SERVER_NAME_KEY);</span>
+<span class="nc bnc" id="L661" title="All 2 branches missed.">            if (serverName == null)</span>
             {
 <span class="nc" id="L663">                log.error(&quot;ServerData Information requested from Turbine before first request!&quot;);</span>
             }
             else
             {
-<span class="fc" id="L667">                log.info(&quot;ServerData Information retrieved from configuration.&quot;);</span>
+<span class="nc" id="L667">                log.info(&quot;ServerData Information retrieved from configuration.&quot;);</span>
             }
             // Will be overwritten once the first request is run;
-<span class="fc" id="L670">            serverData = new ServerData(serverName,</span>
-<span class="fc" id="L671">                    configuration.getInt(TurbineConstants.DEFAULT_SERVER_PORT_KEY,</span>
+<span class="nc" id="L670">            serverData = new ServerData(serverName,</span>
+<span class="nc" id="L671">                    configuration.getInt(TurbineConstants.DEFAULT_SERVER_PORT_KEY,</span>
                             URIConstants.HTTP_PORT),
-<span class="fc" id="L673">                    configuration.getString(TurbineConstants.DEFAULT_SERVER_SCHEME_KEY,</span>
+<span class="nc" id="L673">                    configuration.getString(TurbineConstants.DEFAULT_SERVER_SCHEME_KEY,</span>
                             URIConstants.HTTP),
-<span class="fc" id="L675">                    configuration.getString(TurbineConstants.DEFAULT_SCRIPT_NAME_KEY),</span>
-<span class="fc" id="L676">                    configuration.getString(TurbineConstants.DEFAULT_CONTEXT_PATH_KEY));</span>
+<span class="nc" id="L675">                    configuration.getString(TurbineConstants.DEFAULT_SCRIPT_NAME_KEY),</span>
+<span class="nc" id="L676">                    configuration.getString(TurbineConstants.DEFAULT_CONTEXT_PATH_KEY));</span>
         }
-<span class="fc" id="L678">        return serverData;</span>
+<span class="nc" id="L678">        return serverData;</span>
     }
 
     /**
@@ -752,29 +752,29 @@ import org.apache.turbine.util.uri.URIConstants;
             throws IOException, ServletException
     {
         // Check to make sure that we started up properly.
-<span class="pc bpc" id="L755" title="1 of 2 branches missed.">        if (initFailure != null)</span>
+<span class="nc bnc" id="L755" title="All 2 branches missed.">        if (initFailure != null)</span>
         {
 <span class="nc" id="L757">            handleHorribleException(res, initFailure);</span>
 <span class="nc" id="L758">            return;</span>
         }
 
         // Get general PipelineData here...
-<span class="fc" id="L762">        try (PipelineData pipelineData = getRunDataService().getRunData(req, res, getServletConfig()))</span>
+<span class="nc" id="L762">        try (PipelineData pipelineData = getRunDataService().getRunData(req, res, getServletConfig()))</span>
         {
             try
             {
                 // Perform turbine specific initialization below.
-<span class="fc" id="L767">                Map&lt;Class&lt;?&gt;, Object&gt; runDataMap = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L768">                runDataMap.put(RunData.class, pipelineData);</span>
+<span class="nc" id="L767">                Map&lt;Class&lt;?&gt;, Object&gt; runDataMap = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L768">                runDataMap.put(RunData.class, pipelineData);</span>
                 // put the data into the pipeline
-<span class="fc" id="L770">                pipelineData.put(RunData.class, runDataMap);</span>
+<span class="nc" id="L770">                pipelineData.put(RunData.class, runDataMap);</span>
 
                 // If this is the first invocation, perform some
                 // initialization. Certain services need RunData to initialize
                 // themselves.
-<span class="pc bpc" id="L775" title="1 of 2 branches missed.">                if (firstDoGet)</span>
+<span class="nc bnc" id="L775" title="All 2 branches missed.">                if (firstDoGet)</span>
                 {
-<span class="fc" id="L777">                    init(pipelineData);</span>
+<span class="nc" id="L777">                    init(pipelineData);</span>
                 }
 
                 // Stages of Pipeline implementation execution
@@ -782,17 +782,17 @@ import org.apache.turbine.util.uri.URIConstants;
                 // XML properties file.
 <span class="nc" id="L783">                pipeline.invoke(pipelineData);</span>
             }
-<span class="fc" id="L785">            catch (Throwable t)</span>
+<span class="nc" id="L785">            catch (Throwable t)</span>
             {
-<span class="fc" id="L787">                handleException(pipelineData, res, t);</span>
+<span class="nc" id="L787">                handleException(pipelineData, res, t);</span>
 <span class="nc" id="L788">            }</span>
         }
 <span class="nc" id="L790">        catch (Throwable t)</span>
         {
 <span class="nc" id="L792">            handleHorribleException(res, t);</span>
 
-<span class="fc" id="L794">        }</span>
-<span class="fc" id="L795">    }</span>
+<span class="nc" id="L794">        }</span>
+<span class="nc" id="L795">    }</span>
 
     /**
      * In this application doGet and doPost are the same thing.
@@ -842,46 +842,46 @@ import org.apache.turbine.util.uri.URIConstants;
     protected void handleException(PipelineData pipelineData, HttpServletResponse res,
             Throwable t)
     {
-<span class="fc" id="L845">        RunData data = (RunData) pipelineData;</span>
+<span class="nc" id="L845">        RunData data = (RunData) pipelineData;</span>
         // make sure that the stack trace makes it the log
-<span class="fc" id="L847">        log.error(&quot;Turbine.handleException: &quot;, t);</span>
+<span class="nc" id="L847">        log.error(&quot;Turbine.handleException: &quot;, t);</span>
 
         try
         {
             // This is where we capture all exceptions and show the
             // Error Screen.
-<span class="fc" id="L853">            data.setStackTrace(ExceptionUtils.getStackTrace(t), t);</span>
+<span class="nc" id="L853">            data.setStackTrace(ExceptionUtils.getStackTrace(t), t);</span>
 
             // setup the screen
-<span class="fc" id="L856">            data.setScreen(configuration.getString(</span>
+<span class="nc" id="L856">            data.setScreen(configuration.getString(</span>
                     TurbineConstants.SCREEN_ERROR_KEY,
                     TurbineConstants.SCREEN_ERROR_DEFAULT));
 
             // do more screen setup for template execution if needed
-<span class="pc bpc" id="L861" title="1 of 2 branches missed.">            if (data.getTemplateInfo() != null)</span>
+<span class="nc bnc" id="L861" title="All 2 branches missed.">            if (data.getTemplateInfo() != null)</span>
             {
-<span class="fc" id="L863">                data.getTemplateInfo()</span>
-<span class="fc" id="L864">                        .setScreenTemplate(configuration.getString(</span>
+<span class="nc" id="L863">                data.getTemplateInfo()</span>
+<span class="nc" id="L864">                        .setScreenTemplate(configuration.getString(</span>
                                 TurbineConstants.TEMPLATE_ERROR_KEY,
                                 TurbineConstants.TEMPLATE_ERROR_VM));
             }
 
             // Make sure to not execute an action.
-<span class="fc" id="L870">            data.setAction(&quot;&quot;);</span>
+<span class="nc" id="L870">            data.setAction(&quot;&quot;);</span>
 
-<span class="pc" id="L872">            PageLoader.getInstance().exec(pipelineData,</span>
-<span class="fc" id="L873">                    configuration.getString(TurbineConstants.PAGE_DEFAULT_KEY,</span>
+<span class="nc" id="L872">            PageLoader.getInstance().exec(pipelineData,</span>
+<span class="nc" id="L873">                    configuration.getString(TurbineConstants.PAGE_DEFAULT_KEY,</span>
                             TurbineConstants.PAGE_DEFAULT_DEFAULT));
 
 <span class="nc" id="L876">            data.getResponse().setContentType(data.getContentType());</span>
 <span class="nc" id="L877">            data.getResponse().setStatus(data.getStatusCode());</span>
         }
         // Attempt to do *something* at this point...
-<span class="fc" id="L880">        catch (Throwable reallyScrewedNow)</span>
+<span class="nc" id="L880">        catch (Throwable reallyScrewedNow)</span>
         {
-<span class="fc" id="L882">            handleHorribleException(res, reallyScrewedNow);</span>
+<span class="nc" id="L882">            handleHorribleException(res, reallyScrewedNow);</span>
 <span class="nc" id="L883">        }</span>
-<span class="fc" id="L884">    }</span>
+<span class="nc" id="L884">    }</span>
 
     /**
      * This method handles exception cases where no PipelineData object exists
@@ -895,19 +895,19 @@ import org.apache.turbine.util.uri.URIConstants;
     {
         try
         {
-<span class="fc" id="L898">            res.setContentType(TurbineConstants.DEFAULT_TEXT_CONTENT_TYPE);</span>
-<span class="fc" id="L899">            res.setStatus(200);</span>
-<span class="fc" id="L900">            PrintWriter writer = res.getWriter();</span>
+<span class="nc" id="L898">            res.setContentType(TurbineConstants.DEFAULT_TEXT_CONTENT_TYPE);</span>
+<span class="nc" id="L899">            res.setStatus(200);</span>
+<span class="nc" id="L900">            PrintWriter writer = res.getWriter();</span>
 <span class="nc" id="L901">            writer.println(&quot;Horrible Exception: &quot;);</span>
 <span class="nc" id="L902">            t.printStackTrace(writer);</span>
         }
-<span class="fc" id="L904">        catch (Exception ignored)</span>
+<span class="nc" id="L904">        catch (Exception ignored)</span>
         {
             // ignore
 <span class="nc" id="L907">        }</span>
 
-<span class="fc" id="L909">        log.error(t.getMessage(), t);</span>
-<span class="fc" id="L910">    }</span>
+<span class="nc" id="L909">        log.error(t.getMessage(), t);</span>
+<span class="nc" id="L910">    }</span>
 
     /**
      * Save some information about this servlet so that it can be utilized by
@@ -925,9 +925,9 @@ import org.apache.turbine.util.uri.URIConstants;
         //
         // Bundle all the information above up into a convenient structure
         //
-<span class="fc" id="L928">        ServerData requestServerData = data.get(Turbine.class, ServerData.class);</span>
-<span class="fc" id="L929">        serverData = (ServerData) requestServerData.clone();</span>
-<span class="fc" id="L930">    }</span>
+<span class="nc" id="L928">        ServerData requestServerData = data.get(Turbine.class, ServerData.class);</span>
+<span class="nc" id="L929">        serverData = (ServerData) requestServerData.clone();</span>
+<span class="nc" id="L930">    }</span>
 
     /**
      * Checks Log4j 2 Context, loads log4File, if configured and configuration
@@ -1025,7 +1025,7 @@ import org.apache.turbine.util.uri.URIConstants;
      */
     public static String getApplicationRoot()
     {
-<span class="fc" id="L1028">        return applicationRoot;</span>
+<span class="nc" id="L1028">        return applicationRoot;</span>
     }
 
     /**
@@ -1048,9 +1048,9 @@ import org.apache.turbine.util.uri.URIConstants;
      */
     public static String getRealPath(String path)
     {
-<span class="fc bfc" id="L1051" title="All 2 branches covered.">        if (path.startsWith(&quot;/&quot;))</span>
+<span class="pc bpc" id="L1051" title="1 of 2 branches missed.">        if (path.startsWith(&quot;/&quot;))</span>
         {
-<span class="fc" id="L1053">            return new File(getApplicationRootAsFile(), path.substring(1)).getAbsolutePath();</span>
+<span class="nc" id="L1053">            return new File(getApplicationRootAsFile(), path.substring(1)).getAbsolutePath();</span>
         }
 
 <span class="fc" id="L1056">        return new File(getApplicationRootAsFile(), path).getAbsolutePath();</span>
@@ -1078,7 +1078,7 @@ import org.apache.turbine.util.uri.URIConstants;
     @Deprecated
     public static String getDefaultInputEncoding()
     {
-<span class="fc" id="L1081">        return LocaleUtils.getDefaultInputEncoding();</span>
+<span class="nc" id="L1081">        return LocaleUtils.getDefaultInputEncoding();</span>
     }
 
     /**

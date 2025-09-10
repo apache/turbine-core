@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbinePipeline.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.pipeline</a> &gt; <span class="el_source">TurbinePipeline.java</span></div><h1>TurbinePipeline.java</h1><pre class="source lang-java linenums">package org.apache.turbine.pipeline;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbinePipeline.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.pipeline</a> &gt; <span class="el_source">TurbinePipeline.java</span></div><h1>TurbinePipeline.java</h1><pre class="source lang-java linenums">package org.apache.turbine.pipeline;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -116,8 +116,8 @@ import org.apache.turbine.util.TurbineException;
     public void addValve(Valve valve)
     {
         // Add this Valve to the end of the set associated with this Pipeline
-<span class="fc" id="L119">        valves.add(valve);</span>
-<span class="fc" id="L120">    }</span>
+<span class="nc" id="L119">        valves.add(valve);</span>
+<span class="nc" id="L120">    }</span>
 
     /**
      * @see org.apache.turbine.pipeline.Pipeline#getValves()
@@ -128,7 +128,7 @@ import org.apache.turbine.util.TurbineException;
     @XmlJavaTypeAdapter(XmlValveAdapter.class)
     public Valve[] getValves()
     {
-<span class="fc" id="L131">        return valves.toArray(new Valve[0]);</span>
+<span class="nc" id="L131">        return valves.toArray(new Valve[0]);</span>
     }
 
     /**
@@ -158,11 +158,11 @@ import org.apache.turbine.util.TurbineException;
             throws TurbineException, IOException
     {
         // Initialize the per-thread state for this thread
-<span class="fc" id="L161">        state.set(Collections.unmodifiableCollection(valves).iterator());</span>
+<span class="nc" id="L161">        state.set(Collections.unmodifiableCollection(valves).iterator());</span>
 
         // Invoke the first Valve in this pipeline for this request
-<span class="fc" id="L164">        invokeNext(pipelineData);</span>
-<span class="fc" id="L165">    }</span>
+<span class="nc" id="L164">        invokeNext(pipelineData);</span>
+<span class="nc" id="L165">    }</span>
 
     /**
      * @see org.apache.turbine.pipeline.ValveContext#invokeNext(PipelineData)
@@ -172,14 +172,14 @@ import org.apache.turbine.util.TurbineException;
             throws TurbineException, IOException
     {
         // Identify the current valve for the current request thread
-<span class="fc" id="L175">        Iterator&lt;Valve&gt; current = state.get();</span>
+<span class="nc" id="L175">        Iterator&lt;Valve&gt; current = state.get();</span>
 
-<span class="fc bfc" id="L177" title="All 2 branches covered.">        if (current.hasNext())</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">        if (current.hasNext())</span>
         {
             // Invoke the requested Valve for the current request
             // thread and increment its thread-local state.
-<span class="fc" id="L181">            current.next().invoke(pipelineData, this);</span>
+<span class="nc" id="L181">            current.next().invoke(pipelineData, this);</span>
         }
-<span class="fc" id="L183">    }</span>
+<span class="nc" id="L183">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

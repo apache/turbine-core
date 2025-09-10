@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TemplateInfo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util.template</a> &gt; <span class="el_source">TemplateInfo.java</span></div><h1>TemplateInfo.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util.template;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TemplateInfo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util.template</a> &gt; <span class="el_source">TemplateInfo.java</span></div><h1>TemplateInfo.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util.template;
 
 
 /*
@@ -51,10 +51,10 @@ public class TemplateInfo
     public static final String SERVICE_NAME = &quot;template_service&quot;;
 
     /* Handle to the RunData object. */
-<span class="fc" id="L54">    private RunData data = null;</span>
+<span class="nc" id="L54">    private RunData data = null;</span>
 
     /* Place to store information about templates. */
-<span class="fc" id="L57">    private Map&lt;String, Object&gt; tempStorage = null;</span>
+<span class="nc" id="L57">    private Map&lt;String, Object&gt; tempStorage = null;</span>
 
     /**
      * Constructor
@@ -62,10 +62,10 @@ public class TemplateInfo
      * @param data A Turbine RunData object.
      */
     public TemplateInfo(RunData data)
-<span class="fc" id="L65">    {</span>
-<span class="fc" id="L66">        this.data = data;</span>
-<span class="fc" id="L67">        tempStorage = new HashMap&lt;&gt;(10);</span>
-<span class="fc" id="L68">    }</span>
+<span class="nc" id="L65">    {</span>
+<span class="nc" id="L66">        this.data = data;</span>
+<span class="nc" id="L67">        tempStorage = new HashMap&lt;&gt;(10);</span>
+<span class="nc" id="L68">    }</span>
 
     /**
      * Get the value of navigationTemplate.
@@ -95,7 +95,7 @@ public class TemplateInfo
      */
     public String getScreenTemplate()
     {
-<span class="fc" id="L98">        return data.getParameters().getString(URIConstants.CGI_TEMPLATE_PARAM, null);</span>
+<span class="nc" id="L98">        return data.getParameters().getString(URIConstants.CGI_TEMPLATE_PARAM, null);</span>
     }
 
     /**
@@ -106,7 +106,7 @@ public class TemplateInfo
      */
     public void setScreenTemplate(String v)
     {
-<span class="fc" id="L109">        data.getParameters().setString(URIConstants.CGI_TEMPLATE_PARAM, v);</span>
+<span class="nc" id="L109">        data.getParameters().setString(URIConstants.CGI_TEMPLATE_PARAM, v);</span>
 
         // We have changed the screen template so
         // we should now update the layout template
@@ -114,16 +114,16 @@ public class TemplateInfo
         // to help us out.
         try
         {
-<span class="fc" id="L117">            TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);</span>
-<span class="fc" id="L118">            setLayoutTemplate(templateService.getLayoutTemplateName(v));</span>
+<span class="nc" id="L117">            TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);</span>
+<span class="nc" id="L118">            setLayoutTemplate(templateService.getLayoutTemplateName(v));</span>
         }
 <span class="nc" id="L120">        catch (Exception e)</span>
         {
             /*
              * do nothing.
              */
-<span class="fc" id="L125">        }</span>
-<span class="fc" id="L126">    }</span>
+<span class="nc" id="L125">        }</span>
+<span class="nc" id="L126">    }</span>
 
     /**
      * Get the value of layout.
@@ -132,8 +132,8 @@ public class TemplateInfo
      */
     public String getLayoutTemplate()
     {
-<span class="fc" id="L135">        String value = getString(TemplateInfo.LAYOUT_TEMPLATE);</span>
-<span class="fc" id="L136">        return value;</span>
+<span class="nc" id="L135">        String value = getString(TemplateInfo.LAYOUT_TEMPLATE);</span>
+<span class="nc" id="L136">        return value;</span>
     }
 
     /**
@@ -143,8 +143,8 @@ public class TemplateInfo
      */
     public void setLayoutTemplate(String v)
     {
-<span class="fc" id="L146">        setTemp(TemplateInfo.LAYOUT_TEMPLATE, v);</span>
-<span class="fc" id="L147">    }</span>
+<span class="nc" id="L146">        setTemp(TemplateInfo.LAYOUT_TEMPLATE, v);</span>
+<span class="nc" id="L147">    }</span>
 
     /**
      * Get the value of Template context.  This will be cast to the
@@ -155,7 +155,7 @@ public class TemplateInfo
      */
     public Object getTemplateContext(String name)
     {
-<span class="fc" id="L158">        return getTemp(name);</span>
+<span class="nc" id="L158">        return getTemp(name);</span>
     }
 
     /**
@@ -166,8 +166,8 @@ public class TemplateInfo
      */
     public void setTemplateContext(String name, Object v)
     {
-<span class="fc" id="L169">        setTemp(name, v);</span>
-<span class="fc" id="L170">    }</span>
+<span class="nc" id="L169">        setTemp(name, v);</span>
+<span class="nc" id="L170">    }</span>
 
     /**
      * Get the value of service.
@@ -197,7 +197,7 @@ public class TemplateInfo
      */
     public Object getTemp(String name)
     {
-<span class="fc" id="L200">        return tempStorage.get(name);</span>
+<span class="nc" id="L200">        return tempStorage.get(name);</span>
     }
 
     /**
@@ -211,8 +211,8 @@ public class TemplateInfo
     {
         try
         {
-<span class="fc" id="L214">            Object val = tempStorage.get(name);</span>
-<span class="pc bpc" id="L215" title="1 of 2 branches missed.">            return (val != null) ? val : def;</span>
+<span class="nc" id="L214">            Object val = tempStorage.get(name);</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">            return (val != null) ? val : def;</span>
         }
 <span class="nc" id="L217">        catch (Exception e)</span>
         {
@@ -228,8 +228,8 @@ public class TemplateInfo
      */
     public void setTemp(String name, Object value)
     {
-<span class="fc" id="L231">        tempStorage.put(name, value);</span>
-<span class="fc" id="L232">    }</span>
+<span class="nc" id="L231">        tempStorage.put(name, value);</span>
+<span class="nc" id="L232">    }</span>
 
     /**
      * Return a String[] from the temp hash map.
@@ -256,13 +256,13 @@ public class TemplateInfo
      */
     public String getString(String name)
     {
-<span class="fc" id="L259">        String value = null;</span>
-<span class="fc" id="L260">        Object object = getTemp(name, null);</span>
-<span class="pc bpc" id="L261" title="1 of 2 branches missed.">        if (object != null)</span>
+<span class="nc" id="L259">        String value = null;</span>
+<span class="nc" id="L260">        Object object = getTemp(name, null);</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">        if (object != null)</span>
         {
-<span class="fc" id="L263">            value = (String) object;</span>
+<span class="nc" id="L263">            value = (String) object;</span>
         }
-<span class="fc" id="L265">        return value;</span>
+<span class="nc" id="L265">        return value;</span>
     }
 
     /**
@@ -274,7 +274,7 @@ public class TemplateInfo
      */
     public Object removeTemp(String name)
     {
-<span class="fc" id="L277">        return tempStorage.remove(name);</span>
+<span class="nc" id="L277">        return tempStorage.remove(name);</span>
     }
 
     /**

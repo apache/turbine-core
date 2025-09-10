@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineVelocityService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.velocity</a> &gt; <span class="el_source">TurbineVelocityService.java</span></div><h1>TurbineVelocityService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.velocity;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineVelocityService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.velocity</a> &gt; <span class="el_source">TurbineVelocityService.java</span></div><h1>TurbineVelocityService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.velocity;
 
 
 /*
@@ -180,10 +180,10 @@ import org.apache.velocity.util.introspection.Info;
     public Context getContext()
     {
         Context globalContext =
-<span class="pc bpc" id="L183" title="1 of 2 branches missed.">                pullModelActive ? pullService.getGlobalContext() : null;</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">                pullModelActive ? pullService.getGlobalContext() : null;</span>
 
-<span class="fc" id="L185">        Context ctx = new VelocityContext(globalContext);</span>
-<span class="fc" id="L186">        return ctx;</span>
+<span class="nc" id="L185">        Context ctx = new VelocityContext(globalContext);</span>
+<span class="nc" id="L186">        return ctx;</span>
     }
 
     /**
@@ -246,32 +246,32 @@ import org.apache.velocity.util.introspection.Info;
     public Context getContext(PipelineData pipelineData)
     {
         //Map runDataMap = (Map)pipelineData.get(RunData.class);
-<span class="fc" id="L249">        RunData data = (RunData)pipelineData;</span>
+<span class="nc" id="L249">        RunData data = (RunData)pipelineData;</span>
         // Attempt to get it from the data first.  If it doesn't
         // exist, create it and then stuff it into the data.
-<span class="fc" id="L252">        Context context = (Context)</span>
-<span class="fc" id="L253">            data.getTemplateInfo().getTemplateContext(VelocityService.CONTEXT);</span>
+<span class="nc" id="L252">        Context context = (Context)</span>
+<span class="nc" id="L253">            data.getTemplateInfo().getTemplateContext(VelocityService.CONTEXT);</span>
 
-<span class="fc bfc" id="L255" title="All 2 branches covered.">        if (context == null)</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">        if (context == null)</span>
         {
-<span class="fc" id="L257">            context = getContext();</span>
-<span class="fc" id="L258">            context.put(VelocityService.RUNDATA_KEY, data);</span>
+<span class="nc" id="L257">            context = getContext();</span>
+<span class="nc" id="L258">            context.put(VelocityService.RUNDATA_KEY, data);</span>
             // we will add both data and pipelineData to the context.
-<span class="fc" id="L260">            context.put(VelocityService.PIPELINEDATA_KEY, pipelineData);</span>
+<span class="nc" id="L260">            context.put(VelocityService.PIPELINEDATA_KEY, pipelineData);</span>
 
-<span class="pc bpc" id="L262" title="1 of 2 branches missed.">            if (pullModelActive)</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">            if (pullModelActive)</span>
             {
                 // Populate the toolbox with request scope, session scope
                 // and persistent scope tools (global tools are already in
                 // the toolBoxContent which has been wrapped to construct
                 // this request-specific context).
-<span class="fc" id="L268">                pullService.populateContext(context, pipelineData);</span>
+<span class="nc" id="L268">                pullService.populateContext(context, pipelineData);</span>
             }
 
-<span class="fc" id="L271">            data.getTemplateInfo().setTemplateContext(</span>
+<span class="nc" id="L271">            data.getTemplateInfo().setTemplateContext(</span>
                 VelocityService.CONTEXT, context);
         }
-<span class="fc" id="L274">        return context;</span>
+<span class="nc" id="L274">        return context;</span>
     }
 
     /**
@@ -289,24 +289,24 @@ import org.apache.velocity.util.introspection.Info;
     public String handleRequest(Context context, String filename)
         throws TurbineException
     {
-<span class="fc" id="L292">        String results = null;</span>
-<span class="fc" id="L293">        OutputStreamWriter writer = null;</span>
-<span class="fc" id="L294">        Charset charset = getOutputCharSet(context);</span>
+<span class="nc" id="L292">        String results = null;</span>
+<span class="nc" id="L293">        OutputStreamWriter writer = null;</span>
+<span class="nc" id="L294">        Charset charset = getOutputCharSet(context);</span>
 
-<span class="fc" id="L296">        try (ByteArrayOutputStream bytes = new ByteArrayOutputStream())</span>
+<span class="nc" id="L296">        try (ByteArrayOutputStream bytes = new ByteArrayOutputStream())</span>
         {
-<span class="fc" id="L298">            writer = new OutputStreamWriter(bytes, charset);</span>
+<span class="nc" id="L298">            writer = new OutputStreamWriter(bytes, charset);</span>
 
-<span class="fc" id="L300">            executeRequest(context, filename, writer);</span>
-<span class="fc" id="L301">            writer.flush();</span>
-<span class="fc" id="L302">            results = bytes.toString(charset.name());</span>
+<span class="nc" id="L300">            executeRequest(context, filename, writer);</span>
+<span class="nc" id="L301">            writer.flush();</span>
+<span class="nc" id="L302">            results = bytes.toString(charset.name());</span>
         }
 <span class="nc" id="L304">        catch (Exception e)</span>
         {
 <span class="nc" id="L306">            renderingError(filename, e);</span>
-<span class="fc" id="L307">        }</span>
+<span class="nc" id="L307">        }</span>
 
-<span class="fc" id="L309">        return results;</span>
+<span class="nc" id="L309">        return results;</span>
     }
 
     /**
@@ -326,17 +326,17 @@ import org.apache.velocity.util.introspection.Info;
                               OutputStream output)
             throws TurbineException
     {
-<span class="fc" id="L329">        Charset charset  = getOutputCharSet(context);</span>
+<span class="nc" id="L329">        Charset charset  = getOutputCharSet(context);</span>
 
-<span class="fc" id="L331">        try (OutputStreamWriter writer = new OutputStreamWriter(output, charset))</span>
+<span class="nc" id="L331">        try (OutputStreamWriter writer = new OutputStreamWriter(output, charset))</span>
         {
-<span class="fc" id="L333">            executeRequest(context, filename, writer);</span>
+<span class="nc" id="L333">            executeRequest(context, filename, writer);</span>
         }
 <span class="nc" id="L335">        catch (Exception e)</span>
         {
 <span class="nc" id="L337">            renderingError(filename, e);</span>
-<span class="fc" id="L338">        }</span>
-<span class="fc" id="L339">    }</span>
+<span class="nc" id="L338">        }</span>
+<span class="nc" id="L339">    }</span>
 
     /**
      * Process the request and fill in the template with the values
@@ -395,15 +395,15 @@ import org.apache.velocity.util.introspection.Info;
                                 Writer writer)
             throws Exception
     {
-<span class="fc" id="L398">        Charset encoding = getTemplateEncoding(context);</span>
+<span class="nc" id="L398">        Charset encoding = getTemplateEncoding(context);</span>
 
-<span class="pc bpc" id="L400" title="1 of 2 branches missed.">        if (encoding == null)</span>
+<span class="nc bnc" id="L400" title="All 2 branches missed.">        if (encoding == null)</span>
         {
 <span class="nc" id="L402">          encoding = defaultOutputEncoding;</span>
         }
 
-<span class="fc" id="L405">		velocity.mergeTemplate(filename, encoding.name(), context, writer);</span>
-<span class="fc" id="L406">    }</span>
+<span class="nc" id="L405">		velocity.mergeTemplate(filename, encoding.name(), context, writer);</span>
+<span class="nc" id="L406">    }</span>
 
     /**
      * Retrieve the required charset from the Turbine RunData in the context
@@ -413,15 +413,15 @@ import org.apache.velocity.util.introspection.Info;
      */
     private Charset getOutputCharSet(Context context)
     {
-<span class="fc" id="L416">        Charset charset = null;</span>
+<span class="nc" id="L416">        Charset charset = null;</span>
 
-<span class="fc" id="L418">        Object data = context.get(VelocityService.RUNDATA_KEY);</span>
-<span class="pc bpc" id="L419" title="2 of 4 branches missed.">        if ((data != null) &amp;&amp; (data instanceof RunData))</span>
+<span class="nc" id="L418">        Object data = context.get(VelocityService.RUNDATA_KEY);</span>
+<span class="nc bnc" id="L419" title="All 4 branches missed.">        if ((data != null) &amp;&amp; (data instanceof RunData))</span>
         {
-<span class="fc" id="L421">            charset = ((RunData) data).getCharset();</span>
+<span class="nc" id="L421">            charset = ((RunData) data).getCharset();</span>
         }
 
-<span class="pc bpc" id="L424" title="1 of 2 branches missed.">        return charset == null ? defaultOutputEncoding : charset;</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">        return charset == null ? defaultOutputEncoding : charset;</span>
     }
 
     /**
@@ -432,15 +432,15 @@ import org.apache.velocity.util.introspection.Info;
      */
     private Charset getTemplateEncoding(Context context)
     {
-<span class="fc" id="L435">        Charset encoding = null;</span>
+<span class="nc" id="L435">        Charset encoding = null;</span>
 
-<span class="fc" id="L437">        Object data = context.get(VelocityService.RUNDATA_KEY);</span>
-<span class="pc bpc" id="L438" title="3 of 6 branches missed.">        if ((data != null) &amp;&amp; (data instanceof RunData) &amp;&amp; (((RunData) data).getTemplateEncoding() != null) )</span>
+<span class="nc" id="L437">        Object data = context.get(VelocityService.RUNDATA_KEY);</span>
+<span class="nc bnc" id="L438" title="All 6 branches missed.">        if ((data != null) &amp;&amp; (data instanceof RunData) &amp;&amp; (((RunData) data).getTemplateEncoding() != null) )</span>
         {
 <span class="nc" id="L440">            encoding = Charset.forName(((RunData) data).getTemplateEncoding());</span>
         }
 
-<span class="pc bpc" id="L443" title="1 of 2 branches missed.">        return encoding != null ? encoding : defaultInputEncoding;</span>
+<span class="nc bnc" id="L443" title="All 2 branches missed.">        return encoding != null ? encoding : defaultInputEncoding;</span>
     }
 
     /**
@@ -545,32 +545,32 @@ import org.apache.velocity.util.introspection.Info;
 <span class="fc" id="L545">            	String path = (String)p;</span>
 <span class="fc" id="L546">                log.debug(&quot;Translating {}&quot;, path);</span>
 
-<span class="fc bfc" id="L548" title="All 2 branches covered.">                if (path.startsWith(JAR_PREFIX))</span>
+<span class="pc bpc" id="L548" title="1 of 2 branches missed.">                if (path.startsWith(JAR_PREFIX))</span>
                 {
                     // skip jar: -&gt; 4 chars
-<span class="fc bfc" id="L551" title="All 2 branches covered.">                    if (path.substring(4).startsWith(ABSOLUTE_PREFIX))</span>
+<span class="nc bnc" id="L551" title="All 2 branches missed.">                    if (path.substring(4).startsWith(ABSOLUTE_PREFIX))</span>
                     {
                         // We must convert up to the jar path separator
-<span class="fc" id="L554">                        int jarSepIndex = path.indexOf(&quot;!/&quot;);</span>
+<span class="nc" id="L554">                        int jarSepIndex = path.indexOf(&quot;!/&quot;);</span>
 
                         // jar:file:// -&gt; skip 11 chars
-<span class="fc bfc" id="L557" title="All 2 branches covered.">                        path = (jarSepIndex &lt; 0)</span>
-<span class="fc" id="L558">                            ? Turbine.getRealPath(path.substring(11))</span>
+<span class="nc bnc" id="L557" title="All 2 branches missed.">                        path = (jarSepIndex &lt; 0)</span>
+<span class="nc" id="L558">                            ? Turbine.getRealPath(path.substring(11))</span>
                         // Add the path after the jar path separator again to the new url.
-<span class="fc" id="L560">                            : (Turbine.getRealPath(path.substring(11, jarSepIndex)) + path.substring(jarSepIndex));</span>
+<span class="nc" id="L560">                            : (Turbine.getRealPath(path.substring(11, jarSepIndex)) + path.substring(jarSepIndex));</span>
 
-<span class="fc" id="L562">                        log.debug(&quot;Result (absolute jar path): {}&quot;, path);</span>
-<span class="fc" id="L563">                    }</span>
+<span class="nc" id="L562">                        log.debug(&quot;Result (absolute jar path): {}&quot;, path);</span>
+<span class="nc" id="L563">                    }</span>
                 }
-<span class="fc bfc" id="L565" title="All 2 branches covered.">                else if(path.startsWith(ABSOLUTE_PREFIX))</span>
+<span class="pc bpc" id="L565" title="1 of 2 branches missed.">                else if(path.startsWith(ABSOLUTE_PREFIX))</span>
                 {
                     // skip file:// -&gt; 7 chars
-<span class="fc" id="L568">                    path = Turbine.getRealPath(path.substring(7));</span>
+<span class="nc" id="L568">                    path = Turbine.getRealPath(path.substring(7));</span>
 
-<span class="fc" id="L570">                    log.debug(&quot;Result (absolute URL Path): {}&quot;, path);</span>
+<span class="nc" id="L570">                    log.debug(&quot;Result (absolute URL Path): {}&quot;, path);</span>
                 }
                 // Test if this might be some sort of URL that we haven't encountered yet.
-<span class="fc bfc" id="L573" title="All 2 branches covered.">                else if(path.indexOf(&quot;://&quot;) &lt; 0)</span>
+<span class="pc bpc" id="L573" title="1 of 2 branches missed.">                else if(path.indexOf(&quot;://&quot;) &lt; 0)</span>
                 {
 <span class="fc" id="L575">                    path = Turbine.getRealPath(path);</span>
 
@@ -595,7 +595,7 @@ import org.apache.velocity.util.introspection.Info;
     @Override
     public boolean templateExists(String template)
     {
-<span class="fc" id="L598">        return velocity.resourceExists(template);</span>
+<span class="nc" id="L598">        return velocity.resourceExists(template);</span>
     }
 
     /**
@@ -607,10 +607,10 @@ import org.apache.velocity.util.introspection.Info;
     @Override
     public void requestFinished(Context context)
     {
-<span class="pc bpc" id="L610" title="1 of 2 branches missed.">        if (pullModelActive)</span>
+<span class="nc bnc" id="L610" title="All 2 branches missed.">        if (pullModelActive)</span>
         {
-<span class="fc" id="L612">            pullService.releaseTools(context);</span>
+<span class="nc" id="L612">            pullService.releaseTools(context);</span>
         }
-<span class="fc" id="L614">    }</span>
+<span class="nc" id="L614">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

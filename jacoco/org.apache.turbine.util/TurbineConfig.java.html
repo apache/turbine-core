@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util</a> &gt; <span class="el_source">TurbineConfig.java</span></div><h1>TurbineConfig.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util</a> &gt; <span class="el_source">TurbineConfig.java</span></div><h1>TurbineConfig.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util;
 
 
 /*
@@ -205,9 +205,9 @@ public class TurbineConfig
 <span class="fc" id="L205">            turbine = new Turbine();</span>
 <span class="fc" id="L206">            turbine.init(this);</span>
         }
-<span class="fc" id="L208">        catch (Exception e)</span>
+<span class="nc" id="L208">        catch (Exception e)</span>
         {
-<span class="fc" id="L210">            log.error(&quot;TurbineConfig: Initialization failed&quot;, e);</span>
+<span class="nc" id="L210">            log.error(&quot;TurbineConfig: Initialization failed&quot;, e);</span>
 <span class="fc" id="L211">        }</span>
 <span class="fc" id="L212">    }</span>
 
@@ -243,7 +243,7 @@ public class TurbineConfig
      */
     public Turbine getTurbine()
     {
-<span class="fc" id="L246">        return turbine;</span>
+<span class="nc" id="L246">        return turbine;</span>
     }
 
     /**
@@ -274,16 +274,16 @@ public class TurbineConfig
 <span class="pc bpc" id="L274" title="1 of 2 branches missed.">        if (log.isDebugEnabled())</span>
         {
 <span class="fc" id="L276">            log.debug(&quot;TurbineConfig.getRealPath: path '{}' translated to '{}' {}found&quot;,</span>
-<span class="fc bfc" id="L277" title="All 2 branches covered.">                    path, f.getPath(), f.exists() ? &quot;&quot; : &quot;not &quot;);</span>
+<span class="pc bpc" id="L277" title="1 of 2 branches missed.">                    path, f.getPath(), f.exists() ? &quot;&quot; : &quot;not &quot;);</span>
         }
 
-<span class="fc bfc" id="L280" title="All 2 branches covered.">        if (f.exists())</span>
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">        if (f.exists())</span>
         {
 <span class="fc" id="L282">          result = f.getPath();</span>
         }
         else
         {
-<span class="fc" id="L286">            log.error(&quot;getRealPath(\&quot;{}\&quot;) is undefined, returning null&quot;, path);</span>
+<span class="nc" id="L286">            log.error(&quot;getRealPath(\&quot;{}\&quot;) is undefined, returning null&quot;, path);</span>
         }
 
 <span class="fc" id="L289">        return result;</span>

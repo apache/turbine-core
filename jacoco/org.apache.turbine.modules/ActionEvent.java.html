@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionEvent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules</a> &gt; <span class="el_source">ActionEvent.java</span></div><h1>ActionEvent.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionEvent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules</a> &gt; <span class="el_source">ActionEvent.java</span></div><h1>ActionEvent.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -84,29 +84,29 @@ import org.apache.turbine.pipeline.PipelineData;
  * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
  * @version $Id$
  */
-<span class="fc" id="L87">public abstract class ActionEvent implements Action</span>
+<span class="nc" id="L87">public abstract class ActionEvent implements Action</span>
 {
 	/** Logging */
-<span class="fc" id="L90">	protected Logger log = LogManager.getLogger(this.getClass());</span>
+<span class="nc" id="L90">	protected Logger log = LogManager.getLogger(this.getClass());</span>
 
 	/** The name of the button to look for. */
 	protected static final String BUTTON = &quot;eventSubmit_&quot;;
 	/** The length of the button to look for. */
-<span class="fc" id="L95">	protected static final int BUTTON_LENGTH = BUTTON.length();</span>
+<span class="nc" id="L95">	protected static final int BUTTON_LENGTH = BUTTON.length();</span>
     /** The default method. */
     protected static final String DEFAULT_METHOD = &quot;doPerform&quot;;
 	/** The prefix of the method name. */
 	protected static final String METHOD_NAME_PREFIX = &quot;do&quot;;
 	/** The length of the method name. */
-<span class="fc" id="L101">	protected static final int METHOD_NAME_LENGTH = METHOD_NAME_PREFIX.length();</span>
+<span class="nc" id="L101">	protected static final int METHOD_NAME_LENGTH = METHOD_NAME_PREFIX.length();</span>
 	/** The length of the button to look for. */
-<span class="fc" id="L103">	protected static final int LENGTH = BUTTON.length();</span>
+<span class="nc" id="L103">	protected static final int LENGTH = BUTTON.length();</span>
 
 	/**
 	 * If true, the eventSubmit_do&amp;lt;xxx&amp;gt; variable must contain
 	 * a not null value to be executed.
 	 */
-<span class="fc" id="L109">    @TurbineConfiguration( TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_KEY )</span>
+<span class="nc" id="L109">    @TurbineConfiguration( TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_KEY )</span>
 	private boolean submitValueKey = TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_DEFAULT;
 
 	/**
@@ -114,13 +114,13 @@ import org.apache.turbine.pipeline.PipelineData;
 	 * as well as in doPerform methods are bubbled up to the Turbine
 	 * servlet's handleException method.
 	 */
-<span class="fc" id="L117">    @TurbineConfiguration( TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP )</span>
+<span class="nc" id="L117">    @TurbineConfiguration( TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP )</span>
 	protected boolean bubbleUpException = TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP_DEFAULT;
 
 	/**
 	 * Cache for the methods to invoke
 	 */
-<span class="fc" id="L123">	private ConcurrentMap&lt;String, Method&gt; methodCache = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="nc" id="L123">	private ConcurrentMap&lt;String, Method&gt; methodCache = new ConcurrentHashMap&lt;&gt;();</span>
 
 	/**
 	 * Retrieve a method of the given name and signature. The value is cached.
@@ -134,52 +134,52 @@ import org.apache.turbine.pipeline.PipelineData;
 	 */
 	protected Method getMethod(String name, Class&lt;?&gt;[] signature, ParameterParser pp) throws NoSuchMethodException
 	{
-<span class="fc" id="L137">	    String cacheKey =</span>
-<span class="fc" id="L138">				Arrays.stream(signature)</span>
-<span class="fc" id="L139">						.map(clazz -&gt; ':' + clazz.getCanonicalName())</span>
-<span class="fc" id="L140">						.collect(Collectors.joining(&quot;&quot;, name, &quot;&quot;));</span>
+<span class="nc" id="L137">	    String cacheKey =</span>
+<span class="nc" id="L138">				Arrays.stream(signature)</span>
+<span class="nc" id="L139">						.map(clazz -&gt; ':' + clazz.getCanonicalName())</span>
+<span class="nc" id="L140">						.collect(Collectors.joining(&quot;&quot;, name, &quot;&quot;));</span>
 
-<span class="fc" id="L142">		Method method = this.methodCache.get(cacheKey);</span>
+<span class="nc" id="L142">		Method method = this.methodCache.get(cacheKey);</span>
 
-<span class="pc bpc" id="L144" title="1 of 2 branches missed.">	    if (method == null)</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">	    if (method == null)</span>
 	    {
 	        // Try annotations of public methods
-<span class="fc" id="L147">	        Method[] methods = getClass().getMethods();</span>
+<span class="nc" id="L147">	        Method[] methods = getClass().getMethods();</span>
 
         methodLoop:
-<span class="fc bfc" id="L150" title="All 2 branches covered.">	        for (Method m : methods)</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">	        for (Method m : methods)</span>
 	        {
-<span class="fc" id="L152">	            Annotation[] annotations = AnnotationProcessor.getAnnotations(m);</span>
-<span class="fc bfc" id="L153" title="All 2 branches covered.">	            for (Annotation a : annotations)</span>
+<span class="nc" id="L152">	            Annotation[] annotations = AnnotationProcessor.getAnnotations(m);</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">	            for (Annotation a : annotations)</span>
 	            {
-<span class="fc bfc" id="L155" title="All 2 branches covered.">    	            if (a instanceof TurbineActionEvent)</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">    	            if (a instanceof TurbineActionEvent)</span>
     	            {
-<span class="fc" id="L157">    	                TurbineActionEvent tae = (TurbineActionEvent) a;</span>
-<span class="fc bfc" id="L158" title="All 2 branches covered.">    	                if (name.equals(pp.convert(tae.value()))</span>
-<span class="pc bpc" id="L159" title="1 of 2 branches missed.">                            &amp;&amp; Arrays.equals(signature, m.getParameterTypes()))</span>
+<span class="nc" id="L157">    	                TurbineActionEvent tae = (TurbineActionEvent) a;</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">    	                if (name.equals(pp.convert(tae.value()))</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">                            &amp;&amp; Arrays.equals(signature, m.getParameterTypes()))</span>
     	                {
-<span class="fc" id="L161">    	                    method = m;</span>
-<span class="fc" id="L162">    	                    break methodLoop;</span>
+<span class="nc" id="L161">    	                    method = m;</span>
+<span class="nc" id="L162">    	                    break methodLoop;</span>
     	                }
     	            }
 	            }
 	        }
 
 	        // Try legacy mode
-<span class="fc bfc" id="L169" title="All 2 branches covered.">	        if (method == null)</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">	        if (method == null)</span>
 	        {
-<span class="fc" id="L171">                String tmp = name.toLowerCase().substring(METHOD_NAME_LENGTH);</span>
-<span class="fc" id="L172">	            method = getClass().getMethod(METHOD_NAME_PREFIX + StringUtils.capitalize(tmp), signature);</span>
+<span class="nc" id="L171">                String tmp = name.toLowerCase().substring(METHOD_NAME_LENGTH);</span>
+<span class="nc" id="L172">	            method = getClass().getMethod(METHOD_NAME_PREFIX + StringUtils.capitalize(tmp), signature);</span>
 	        }
 
-<span class="fc" id="L175">	        Method oldMethod = this.methodCache.putIfAbsent(cacheKey, method);</span>
-<span class="pc bpc" id="L176" title="1 of 2 branches missed.">	        if (oldMethod != null)</span>
+<span class="nc" id="L175">	        Method oldMethod = this.methodCache.putIfAbsent(cacheKey, method);</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">	        if (oldMethod != null)</span>
 	        {
 <span class="nc" id="L178">	            method = oldMethod;</span>
 	        }
 	    }
 
-<span class="fc" id="L182">	    return method;</span>
+<span class="nc" id="L182">	    return method;</span>
 	}
 
 	/**
@@ -211,37 +211,37 @@ import org.apache.turbine.pipeline.PipelineData;
 			throws Exception
 	{
 		// Name of the button.
-<span class="fc" id="L214">		String theButton = null;</span>
+<span class="nc" id="L214">		String theButton = null;</span>
 
-<span class="fc" id="L216">		String button = pp.convert(BUTTON);</span>
-<span class="fc" id="L217">		String key = null;</span>
+<span class="nc" id="L216">		String button = pp.convert(BUTTON);</span>
+<span class="nc" id="L217">		String key = null;</span>
 
 		// Loop through and find the button.
-<span class="fc bfc" id="L220" title="All 2 branches covered.">		for (String k : pp)</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">		for (String k : pp)</span>
 		{
-<span class="fc" id="L222">			key = k;</span>
-<span class="fc bfc" id="L223" title="All 2 branches covered.">			if (key.startsWith(button))</span>
+<span class="nc" id="L222">			key = k;</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">			if (key.startsWith(button))</span>
 			{
-<span class="pc bpc" id="L225" title="1 of 2 branches missed.">				if (considerKey(key, pp))</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">				if (considerKey(key, pp))</span>
 				{
-<span class="fc" id="L227">					theButton = key;</span>
-<span class="fc" id="L228">					break;</span>
+<span class="nc" id="L227">					theButton = key;</span>
+<span class="nc" id="L228">					break;</span>
 				}
 			}
-<span class="fc" id="L231">		}</span>
+<span class="nc" id="L231">		}</span>
 
-<span class="fc bfc" id="L233" title="All 2 branches covered.">		if (theButton == null)</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">		if (theButton == null)</span>
 		{
-<span class="fc" id="L235">		    theButton = BUTTON + DEFAULT_METHOD;</span>
-<span class="fc" id="L236">		    key = null;</span>
+<span class="nc" id="L235">		    theButton = BUTTON + DEFAULT_METHOD;</span>
+<span class="nc" id="L236">		    key = null;</span>
 		}
 
-<span class="fc" id="L239">		theButton = formatString(theButton, pp);</span>
-<span class="fc" id="L240">		Method method = null;</span>
+<span class="nc" id="L239">		theButton = formatString(theButton, pp);</span>
+<span class="nc" id="L240">		Method method = null;</span>
 
         try
         {
-<span class="fc" id="L244">            method = getMethod(theButton, signature, pp);</span>
+<span class="nc" id="L244">            method = getMethod(theButton, signature, pp);</span>
         }
 <span class="nc" id="L246">        catch (NoSuchMethodException e)</span>
         {
@@ -249,26 +249,26 @@ import org.apache.turbine.pipeline.PipelineData;
         }
         finally
         {
-<span class="fc bfc" id="L252" title="All 2 branches covered.">            if (key != null)</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">            if (key != null)</span>
             {
-<span class="fc" id="L254">                pp.remove(key);</span>
+<span class="nc" id="L254">                pp.remove(key);</span>
             }
         }
 
 		try
 		{
-<span class="fc" id="L260">			log.debug(&quot;Invoking {}&quot;, method);</span>
+<span class="nc" id="L260">			log.debug(&quot;Invoking {}&quot;, method);</span>
 
-<span class="fc" id="L262">			method.invoke(this, parameters);</span>
+<span class="nc" id="L262">			method.invoke(this, parameters);</span>
 		}
-<span class="fc" id="L264">		catch (InvocationTargetException ite)</span>
+<span class="nc" id="L264">		catch (InvocationTargetException ite)</span>
 		{
-<span class="fc" id="L266">			Throwable t = ite.getTargetException();</span>
-<span class="fc bfc" id="L267" title="All 2 branches covered.">			if (bubbleUpException)</span>
+<span class="nc" id="L266">			Throwable t = ite.getTargetException();</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">			if (bubbleUpException)</span>
 			{
-<span class="pc bpc" id="L269" title="1 of 2 branches missed.">                if (t instanceof Exception)</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">                if (t instanceof Exception)</span>
                 {
-<span class="fc" id="L271">                    throw (Exception) t;</span>
+<span class="nc" id="L271">                    throw (Exception) t;</span>
                 }
                 else
                 {
@@ -277,10 +277,10 @@ import org.apache.turbine.pipeline.PipelineData;
 			}
 			else
 			{
-<span class="fc" id="L280">			    log.error(&quot;Invokation of {}&quot;, method, t);</span>
+<span class="nc" id="L280">			    log.error(&quot;Invokation of {}&quot;, method, t);</span>
 			}
-<span class="fc" id="L282">		}</span>
-<span class="fc" id="L283">	}</span>
+<span class="nc" id="L282">		}</span>
+<span class="nc" id="L283">	}</span>
 
 	/**
 	 * This method does the conversion of the lowercase method name
@@ -292,20 +292,20 @@ import org.apache.turbine.pipeline.PipelineData;
 	 */
 	protected String formatString(String input, ParameterParser pp)
 	{
-<span class="fc" id="L295">		String tmp = input;</span>
+<span class="nc" id="L295">		String tmp = input;</span>
 
-<span class="pc bpc" id="L297" title="1 of 2 branches missed.">		if (StringUtils.isNotEmpty(input))</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">		if (StringUtils.isNotEmpty(input))</span>
 		{
-<span class="fc" id="L299">			tmp = input.toLowerCase();</span>
+<span class="nc" id="L299">			tmp = input.toLowerCase();</span>
 
 			// Chop off suffixes (for image type)
-<span class="pc bpc" id="L302" title="2 of 4 branches missed.">			String methodName = (tmp.endsWith(&quot;.x&quot;) || tmp.endsWith(&quot;.y&quot;))</span>
+<span class="nc bnc" id="L302" title="All 4 branches missed.">			String methodName = (tmp.endsWith(&quot;.x&quot;) || tmp.endsWith(&quot;.y&quot;))</span>
 <span class="nc" id="L303">					? input.substring(0, input.length() - 2)</span>
-<span class="fc" id="L304">					: input;</span>
+<span class="nc" id="L304">					: input;</span>
 
-<span class="pc bpc" id="L306" title="1 of 2 branches missed.">			if (pp.getUrlFolding() == URLCaseFolding.NONE)</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">			if (pp.getUrlFolding() == URLCaseFolding.NONE)</span>
 			{
-<span class="fc" id="L308">                tmp = methodName.substring(BUTTON_LENGTH);</span>
+<span class="nc" id="L308">                tmp = methodName.substring(BUTTON_LENGTH);</span>
 			}
 			else
 			{
@@ -313,7 +313,7 @@ import org.apache.turbine.pipeline.PipelineData;
 			}
 		}
 
-<span class="fc" id="L316">		return tmp;</span>
+<span class="nc" id="L316">		return tmp;</span>
 	}
 
 	/**
@@ -326,10 +326,10 @@ import org.apache.turbine.pipeline.PipelineData;
 	 */
 	protected boolean considerKey(String key, ParameterParser pp)
 	{
-<span class="pc bpc" id="L329" title="1 of 2 branches missed.">		if (!submitValueKey)</span>
+<span class="nc bnc" id="L329" title="All 2 branches missed.">		if (!submitValueKey)</span>
 		{
-<span class="fc" id="L331">			log.debug(&quot;No Value required, accepting {}&quot;, key);</span>
-<span class="fc" id="L332">			return true;</span>
+<span class="nc" id="L331">			log.debug(&quot;No Value required, accepting {}&quot;, key);</span>
+<span class="nc" id="L332">			return true;</span>
 		}
 		else
 		{

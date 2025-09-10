@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServerData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util</a> &gt; <span class="el_source">ServerData.java</span></div><h1>ServerData.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServerData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util</a> &gt; <span class="el_source">ServerData.java</span></div><h1>ServerData.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util;
 
 
 /*
@@ -42,22 +42,22 @@ import org.apache.turbine.util.uri.URIConstants;
 public class ServerData
 {
     /** Cached serverName, */
-<span class="fc" id="L45">    private String serverName = null;</span>
+<span class="nc" id="L45">    private String serverName = null;</span>
 
     /** Cached serverPort. */
-<span class="fc" id="L48">    private int serverPort = 0;</span>
+<span class="nc" id="L48">    private int serverPort = 0;</span>
 
     /** Cached serverScheme. */
-<span class="fc" id="L51">    private String serverScheme = null;</span>
+<span class="nc" id="L51">    private String serverScheme = null;</span>
 
     /** Cached script name. */
-<span class="fc" id="L54">    private String  scriptName = null;</span>
+<span class="nc" id="L54">    private String  scriptName = null;</span>
 
     /** Cached context path. */
-<span class="fc" id="L57">    private String  contextPath = null;</span>
+<span class="nc" id="L57">    private String  contextPath = null;</span>
 
     /** Logging */
-<span class="fc" id="L60">    private static final Logger log = LogManager.getLogger(ServerData.class);</span>
+<span class="nc" id="L60">    private static final Logger log = LogManager.getLogger(ServerData.class);</span>
 
     /**
      * Constructor.
@@ -73,22 +73,22 @@ public class ServerData
         String serverScheme,
         String scriptName,
         String contextPath)
-<span class="fc" id="L76">    {</span>
-<span class="pc bpc" id="L77" title="1 of 2 branches missed.">        if (log.isDebugEnabled())</span>
+<span class="nc" id="L76">    {</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (log.isDebugEnabled())</span>
         {
-<span class="fc" id="L79">            log.debug(&quot;Constructor({}, {}, {}, {}, {})&quot;, serverName,</span>
-<span class="fc" id="L80">                    Integer.valueOf(serverPort),</span>
+<span class="nc" id="L79">            log.debug(&quot;Constructor({}, {}, {}, {}, {})&quot;, serverName,</span>
+<span class="nc" id="L80">                    Integer.valueOf(serverPort),</span>
                     serverScheme,
                     scriptName,
                     contextPath);
         }
 
-<span class="fc" id="L86">        setServerName(serverName);</span>
-<span class="fc" id="L87">        setServerPort(serverPort);</span>
-<span class="fc" id="L88">        setServerScheme(serverScheme);</span>
-<span class="fc" id="L89">        setScriptName(scriptName);</span>
-<span class="fc" id="L90">        setContextPath(contextPath);</span>
-<span class="fc" id="L91">    }</span>
+<span class="nc" id="L86">        setServerName(serverName);</span>
+<span class="nc" id="L87">        setServerPort(serverPort);</span>
+<span class="nc" id="L88">        setServerScheme(serverScheme);</span>
+<span class="nc" id="L89">        setScriptName(scriptName);</span>
+<span class="nc" id="L90">        setContextPath(contextPath);</span>
+<span class="nc" id="L91">    }</span>
 
     /**
      * Copy-Constructor
@@ -96,15 +96,15 @@ public class ServerData
      * @param serverData A ServerData Object
      */
     public ServerData(ServerData serverData)
-<span class="fc" id="L99">    {</span>
-<span class="fc" id="L100">        log.debug(&quot;Copy Constructor({})&quot;, serverData);</span>
+<span class="nc" id="L99">    {</span>
+<span class="nc" id="L100">        log.debug(&quot;Copy Constructor({})&quot;, serverData);</span>
 
-<span class="fc" id="L102">        setServerName(serverData.getServerName());</span>
-<span class="fc" id="L103">        setServerPort(serverData.getServerPort());</span>
-<span class="fc" id="L104">        setServerScheme(serverData.getServerScheme());</span>
-<span class="fc" id="L105">        setScriptName(serverData.getScriptName());</span>
-<span class="fc" id="L106">        setContextPath(serverData.getContextPath());</span>
-<span class="fc" id="L107">    }</span>
+<span class="nc" id="L102">        setServerName(serverData.getServerName());</span>
+<span class="nc" id="L103">        setServerPort(serverData.getServerPort());</span>
+<span class="nc" id="L104">        setServerScheme(serverData.getServerScheme());</span>
+<span class="nc" id="L105">        setScriptName(serverData.getScriptName());</span>
+<span class="nc" id="L106">        setContextPath(serverData.getContextPath());</span>
+<span class="nc" id="L107">    }</span>
 
     /**
      * A C'tor that takes a HTTP Request object and
@@ -113,13 +113,13 @@ public class ServerData
      * @param req The HTTP Request
      */
     public ServerData(HttpServletRequest req)
-<span class="fc" id="L116">    {</span>
-<span class="fc" id="L117">        setServerName(req.getServerName());</span>
-<span class="fc" id="L118">        setServerPort(req.getServerPort());</span>
-<span class="fc" id="L119">        setServerScheme(req.getScheme());</span>
-<span class="fc" id="L120">        setScriptName(req.getServletPath());</span>
-<span class="fc" id="L121">        setContextPath(req.getContextPath());</span>
-<span class="fc" id="L122">    }</span>
+<span class="nc" id="L116">    {</span>
+<span class="nc" id="L117">        setServerName(req.getServerName());</span>
+<span class="nc" id="L118">        setServerPort(req.getServerPort());</span>
+<span class="nc" id="L119">        setServerScheme(req.getScheme());</span>
+<span class="nc" id="L120">        setScriptName(req.getServletPath());</span>
+<span class="nc" id="L121">        setContextPath(req.getContextPath());</span>
+<span class="nc" id="L122">    }</span>
 
     /**
      * generates a new Object with the same values as this one.
@@ -129,8 +129,8 @@ public class ServerData
     @Override
     public Object clone()
     {
-<span class="fc" id="L132">        log.debug(&quot;clone()&quot;);</span>
-<span class="fc" id="L133">        return new ServerData(this);</span>
+<span class="nc" id="L132">        log.debug(&quot;clone()&quot;);</span>
+<span class="nc" id="L133">        return new ServerData(this);</span>
     }
 
     /**
@@ -140,7 +140,7 @@ public class ServerData
      */
     public String getServerName()
     {
-<span class="fc bfc" id="L143" title="All 2 branches covered.">        return StringUtils.isEmpty(serverName) ? &quot;&quot; : serverName;</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        return StringUtils.isEmpty(serverName) ? &quot;&quot; : serverName;</span>
     }
 
     /**
@@ -150,9 +150,9 @@ public class ServerData
      */
     public void setServerName(String serverName)
     {
-<span class="fc" id="L153">        log.debug(&quot;setServerName({})&quot;, serverName);</span>
-<span class="fc" id="L154">        this.serverName = serverName;</span>
-<span class="fc" id="L155">    }</span>
+<span class="nc" id="L153">        log.debug(&quot;setServerName({})&quot;, serverName);</span>
+<span class="nc" id="L154">        this.serverName = serverName;</span>
+<span class="nc" id="L155">    }</span>
 
     /**
      * Get the server port.
@@ -161,7 +161,7 @@ public class ServerData
      */
     public int getServerPort()
     {
-<span class="fc" id="L164">        return this.serverPort;</span>
+<span class="nc" id="L164">        return this.serverPort;</span>
     }
 
     /**
@@ -171,9 +171,9 @@ public class ServerData
      */
     public void setServerPort(int serverPort)
     {
-<span class="fc" id="L174">        log.debug(&quot;setServerPort({})&quot;, Integer.valueOf(serverPort));</span>
-<span class="fc" id="L175">        this.serverPort = serverPort;</span>
-<span class="fc" id="L176">    }</span>
+<span class="nc" id="L174">        log.debug(&quot;setServerPort({})&quot;, Integer.valueOf(serverPort));</span>
+<span class="nc" id="L175">        this.serverPort = serverPort;</span>
+<span class="nc" id="L176">    }</span>
 
     /**
      * Get the server scheme.
@@ -182,7 +182,7 @@ public class ServerData
      */
     public String getServerScheme()
     {
-<span class="fc" id="L185">        return StringUtils.defaultIfEmpty(serverScheme, &quot;&quot;);</span>
+<span class="nc" id="L185">        return StringUtils.defaultIfEmpty(serverScheme, &quot;&quot;);</span>
     }
 
     /**
@@ -192,9 +192,9 @@ public class ServerData
      */
     public void setServerScheme(String serverScheme)
     {
-<span class="fc" id="L195">        log.debug(&quot;setServerScheme({})&quot;, serverScheme);</span>
-<span class="fc" id="L196">        this.serverScheme = serverScheme;</span>
-<span class="fc" id="L197">    }</span>
+<span class="nc" id="L195">        log.debug(&quot;setServerScheme({})&quot;, serverScheme);</span>
+<span class="nc" id="L196">        this.serverScheme = serverScheme;</span>
+<span class="nc" id="L197">    }</span>
 
     /**
      * Get the script name
@@ -203,7 +203,7 @@ public class ServerData
      */
     public String getScriptName()
     {
-<span class="fc" id="L206">        return StringUtils.defaultIfEmpty(scriptName, &quot;&quot;);</span>
+<span class="nc" id="L206">        return StringUtils.defaultIfEmpty(scriptName, &quot;&quot;);</span>
     }
 
     /**
@@ -213,9 +213,9 @@ public class ServerData
      */
     public void setScriptName(String scriptName)
     {
-<span class="fc" id="L216">        log.debug(&quot;setScriptName({})&quot;, scriptName);</span>
-<span class="fc" id="L217">        this.scriptName = scriptName;</span>
-<span class="fc" id="L218">    }</span>
+<span class="nc" id="L216">        log.debug(&quot;setScriptName({})&quot;, scriptName);</span>
+<span class="nc" id="L217">        this.scriptName = scriptName;</span>
+<span class="nc" id="L218">    }</span>
 
     /**
      * Get the context path.
@@ -224,7 +224,7 @@ public class ServerData
      */
     public String getContextPath()
     {
-<span class="fc" id="L227">        return StringUtils.defaultIfEmpty(contextPath, &quot;&quot;);</span>
+<span class="nc" id="L227">        return StringUtils.defaultIfEmpty(contextPath, &quot;&quot;);</span>
     }
 
     /**
@@ -234,9 +234,9 @@ public class ServerData
      */
     public void setContextPath(String contextPath)
     {
-<span class="fc" id="L237">        log.debug(&quot;setContextPath({})&quot;, contextPath);</span>
-<span class="fc" id="L238">        this.contextPath = contextPath;</span>
-<span class="fc" id="L239">    }</span>
+<span class="nc" id="L237">        log.debug(&quot;setContextPath({})&quot;, contextPath);</span>
+<span class="nc" id="L238">        this.contextPath = contextPath;</span>
+<span class="nc" id="L239">    }</span>
 
     /**
      * Appends the Host URL to the supplied StringBuilder.
@@ -245,20 +245,20 @@ public class ServerData
      */
     public void getHostUrl(StringBuilder url)
     {
-<span class="fc" id="L248">        url.append(getServerScheme());</span>
-<span class="fc" id="L249">        url.append(&quot;://&quot;);</span>
-<span class="fc" id="L250">        url.append(getServerName());</span>
-<span class="fc bfc" id="L251" title="All 2 branches covered.">        if ((getServerScheme().equals(URIConstants.HTTP)</span>
-<span class="pc bpc" id="L252" title="1 of 2 branches missed.">                &amp;&amp; getServerPort() != URIConstants.HTTP_PORT)</span>
+<span class="nc" id="L248">        url.append(getServerScheme());</span>
+<span class="nc" id="L249">        url.append(&quot;://&quot;);</span>
+<span class="nc" id="L250">        url.append(getServerName());</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">        if ((getServerScheme().equals(URIConstants.HTTP)</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">                &amp;&amp; getServerPort() != URIConstants.HTTP_PORT)</span>
             ||
-<span class="pc bpc" id="L254" title="1 of 2 branches missed.">            (getServerScheme().equals(URIConstants.HTTPS)</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">            (getServerScheme().equals(URIConstants.HTTPS)</span>
 <span class="nc bnc" id="L255" title="All 2 branches missed.">                &amp;&amp; getServerPort() != URIConstants.HTTPS_PORT)</span>
             )
         {
 <span class="nc" id="L258">            url.append(&quot;:&quot;);</span>
 <span class="nc" id="L259">            url.append(getServerPort());</span>
         }
-<span class="fc" id="L261">    }</span>
+<span class="nc" id="L261">    }</span>
 
     /**
      * Returns this object as an URL.
@@ -268,13 +268,13 @@ public class ServerData
     @Override
     public String toString()
     {
-<span class="fc" id="L271">        StringBuilder url = new StringBuilder();</span>
+<span class="nc" id="L271">        StringBuilder url = new StringBuilder();</span>
 
-<span class="fc" id="L273">        getHostUrl(url);</span>
+<span class="nc" id="L273">        getHostUrl(url);</span>
 
-<span class="fc" id="L275">        url.append(getContextPath());</span>
-<span class="fc" id="L276">        url.append(getScriptName());</span>
-<span class="fc" id="L277">        return url.toString();</span>
+<span class="nc" id="L275">        url.append(getContextPath());</span>
+<span class="nc" id="L276">        url.append(getScriptName());</span>
+<span class="nc" id="L277">        return url.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

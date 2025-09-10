@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.template.mapper</a> &gt; <span class="el_source">ClassMapper.java</span></div><h1>ClassMapper.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.template.mapper;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.template.mapper</a> &gt; <span class="el_source">ClassMapper.java</span></div><h1>ClassMapper.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.template.mapper;
 
 
 /*
@@ -101,80 +101,80 @@ public class ClassMapper
     @Override
 	public String doMapping(String template)
     {
-<span class="fc" id="L104">        log.debug(&quot;doMapping({})&quot;, template);</span>
+<span class="nc" id="L104">        log.debug(&quot;doMapping({})&quot;, template);</span>
 
         // Copy our elements into an array
-<span class="fc" id="L107">        List&lt;String&gt; components</span>
-<span class="fc" id="L108">            = new ArrayList&lt;&gt;(Arrays.asList(StringUtils.split(</span>
+<span class="nc" id="L107">        List&lt;String&gt; components</span>
+<span class="nc" id="L108">            = new ArrayList&lt;&gt;(Arrays.asList(StringUtils.split(</span>
                                               template,
-<span class="fc" id="L110">                                              String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR))));</span>
-<span class="fc" id="L111">        int componentSize = components.size() - 1 ;</span>
+<span class="nc" id="L110">                                              String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR))));</span>
+<span class="nc" id="L111">        int componentSize = components.size() - 1 ;</span>
 
         // This method never gets an empty string passed.
         // So this is never &lt; 0
-<span class="fc" id="L115">        String className = components.get(componentSize);</span>
-<span class="fc" id="L116">        components.remove(componentSize--);</span>
+<span class="nc" id="L115">        String className = components.get(componentSize);</span>
+<span class="nc" id="L116">        components.remove(componentSize--);</span>
 
-<span class="fc" id="L118">        log.debug(&quot;className is {}&quot;, className);</span>
+<span class="nc" id="L118">        log.debug(&quot;className is {}&quot;, className);</span>
 
         // Strip off a possible Extension
-<span class="fc" id="L121">        int dotIndex = className.lastIndexOf(TemplateService.EXTENSION_SEPARATOR);</span>
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        className = (dotIndex &lt; 0) ? className : className.substring(0, dotIndex);</span>
+<span class="nc" id="L121">        int dotIndex = className.lastIndexOf(TemplateService.EXTENSION_SEPARATOR);</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        className = (dotIndex &lt; 0) ? className : className.substring(0, dotIndex);</span>
 
         // This is an optimization. If the name we're looking for is
         // already the default name for the template, don't do a &quot;first run&quot;
         // which looks for an exact match.
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        boolean firstRun = !className.equals(TemplateService.DEFAULT_NAME);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        boolean firstRun = !className.equals(TemplateService.DEFAULT_NAME);</span>
 
         for(;;)
         {
-<span class="fc" id="L131">            String pkg = StringUtils.join(components.iterator(), String.valueOf(separator));</span>
-<span class="fc" id="L132">            StringBuilder testName = new StringBuilder();</span>
+<span class="nc" id="L131">            String pkg = StringUtils.join(components.iterator(), String.valueOf(separator));</span>
+<span class="nc" id="L132">            StringBuilder testName = new StringBuilder();</span>
 
-<span class="fc" id="L134">            log.debug(&quot;classPackage is now: {}&quot;, pkg);</span>
+<span class="nc" id="L134">            log.debug(&quot;classPackage is now: {}&quot;, pkg);</span>
 
-<span class="fc bfc" id="L136" title="All 2 branches covered.">            if (!components.isEmpty())</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">            if (!components.isEmpty())</span>
             {
-<span class="fc" id="L138">                testName.append(pkg);</span>
-<span class="fc" id="L139">                testName.append(separator);</span>
+<span class="nc" id="L138">                testName.append(pkg);</span>
+<span class="nc" id="L139">                testName.append(separator);</span>
             }
 
-<span class="fc bfc" id="L142" title="All 2 branches covered.">            testName.append((firstRun)</span>
-<span class="fc" id="L143">                ? className</span>
-<span class="fc" id="L144">                : TemplateService.DEFAULT_NAME);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">            testName.append((firstRun)</span>
+<span class="nc" id="L143">                ? className</span>
+<span class="nc" id="L144">                : TemplateService.DEFAULT_NAME);</span>
 
-<span class="fc" id="L146">            log.debug(&quot;Looking for {}&quot;, testName);</span>
+<span class="nc" id="L146">            log.debug(&quot;Looking for {}&quot;, testName);</span>
             try
             {
-<span class="fc" id="L149">                loader.getAssembler(testName.toString());</span>
-<span class="fc" id="L150">                log.debug(&quot;Found it, returning {}&quot;, testName);</span>
-<span class="fc" id="L151">                return testName.toString();</span>
+<span class="nc" id="L149">                loader.getAssembler(testName.toString());</span>
+<span class="nc" id="L150">                log.debug(&quot;Found it, returning {}&quot;, testName);</span>
+<span class="nc" id="L151">                return testName.toString();</span>
             }
 <span class="nc" id="L153">            catch (TurbineException e)</span>
             {
 <span class="nc" id="L155">                log.error(&quot;Turbine Exception Class mapping&quot;, e);</span>
             }
-<span class="fc" id="L157">            catch (Exception e)</span>
+<span class="nc" id="L157">            catch (Exception e)</span>
             {
                 // Not found. Go on.
 <span class="nc" id="L160">            }</span>
 
-<span class="fc bfc" id="L162" title="All 2 branches covered.">            if (firstRun)</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">            if (firstRun)</span>
             {
-<span class="fc" id="L164">                firstRun = false;</span>
+<span class="nc" id="L164">                firstRun = false;</span>
             }
             else
             {
-<span class="fc bfc" id="L168" title="All 2 branches covered.">                if (components.isEmpty())</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">                if (components.isEmpty())</span>
                 {
-<span class="fc" id="L170">                    break; // for(;;)</span>
+<span class="nc" id="L170">                    break; // for(;;)</span>
                 }
-<span class="fc" id="L172">                components.remove(componentSize--);</span>
+<span class="nc" id="L172">                components.remove(componentSize--);</span>
             }
-<span class="fc" id="L174">        }</span>
+<span class="nc" id="L174">        }</span>
 
-<span class="fc" id="L176">        log.debug(&quot;Returning default&quot;);</span>
-<span class="fc" id="L177">        return getDefaultName(template);</span>
+<span class="nc" id="L176">        log.debug(&quot;Returning default&quot;);</span>
+<span class="nc" id="L177">        return getDefaultName(template);</span>
     }
 }
 

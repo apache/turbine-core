@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultPage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.pages</a> &gt; <span class="el_source">DefaultPage.java</span></div><h1>DefaultPage.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.pages;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultPage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.pages</a> &gt; <span class="el_source">DefaultPage.java</span></div><h1>DefaultPage.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.pages;
 
 
 /*
@@ -89,10 +89,10 @@ import org.apache.turbine.util.RunData;
  * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
  * @version $Id$
  */
-<span class="fc" id="L92">public class DefaultPage implements Page</span>
+<span class="nc" id="L92">public class DefaultPage implements Page</span>
 {
     /** Logging */
-<span class="fc" id="L95">    protected final Logger log = LogManager.getLogger(this.getClass());</span>
+<span class="nc" id="L95">    protected final Logger log = LogManager.getLogger(this.getClass());</span>
 
     /** Injected loader instance */
     @TurbineLoader( Action.class )
@@ -116,44 +116,44 @@ import org.apache.turbine.util.RunData;
     public void doBuild(PipelineData pipelineData)
             throws Exception
     {
-<span class="fc" id="L119">        RunData data = pipelineData.getRunData();</span>
+<span class="nc" id="L119">        RunData data = pipelineData.getRunData();</span>
         // Template pages can use this to set up the context, so it is
         // available to the Action and Screen.  It does nothing here.
-<span class="fc" id="L122">        doBuildBeforeAction(pipelineData);</span>
+<span class="nc" id="L122">        doBuildBeforeAction(pipelineData);</span>
 
         // If an action has been defined, execute it here.  Actions
         // can re-define the template definition.
-<span class="fc bfc" id="L126" title="All 2 branches covered.">        if (data.hasAction())</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (data.hasAction())</span>
         {
-<span class="fc" id="L128">            actionLoader.exec(pipelineData, data.getAction());</span>
+<span class="nc" id="L128">            actionLoader.exec(pipelineData, data.getAction());</span>
         }
 
         // if a redirect was setup in data, don't do anything else
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(data.getRedirectURI()))</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (StringUtils.isNotEmpty(data.getRedirectURI()))</span>
         {
 <span class="nc" id="L134">            return;</span>
         }
 
         // Template pages can use this to set up default templates and
         // associated class modules.  It does nothing here.
-<span class="fc" id="L139">        doBuildAfterAction(pipelineData);</span>
+<span class="nc" id="L139">        doBuildAfterAction(pipelineData);</span>
 
-<span class="fc" id="L141">        String screenName = data.getScreen();</span>
+<span class="nc" id="L141">        String screenName = data.getScreen();</span>
 
-<span class="fc" id="L143">        log.debug(&quot;Building {}&quot;, screenName);</span>
+<span class="nc" id="L143">        log.debug(&quot;Building {}&quot;, screenName);</span>
 
         // Ask the Screen for its Layout and then execute the Layout.
         // The Screen can override the getLayout() method to re-define
         // the Layout depending on data passed in via the
         // data.parameters object.
-<span class="fc" id="L149">        Screen aScreen = screenLoader.getAssembler(screenName);</span>
-<span class="fc" id="L150">        String layout = aScreen.getLayout(pipelineData);</span>
+<span class="nc" id="L149">        Screen aScreen = screenLoader.getAssembler(screenName);</span>
+<span class="nc" id="L150">        String layout = aScreen.getLayout(pipelineData);</span>
 
         // If the Layout has been set to be null, attempt to execute
         // the Screen that has been defined.
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">        if (layout != null)</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (layout != null)</span>
         {
-<span class="fc" id="L156">            layoutLoader.exec(pipelineData, layout);</span>
+<span class="nc" id="L156">            layoutLoader.exec(pipelineData, layout);</span>
         }
         else
         {
@@ -162,8 +162,8 @@ import org.apache.turbine.util.RunData;
 
         // Do any post build actions (overridable by subclasses -
         // does nothing here).
-<span class="fc" id="L165">        doPostBuild(pipelineData);</span>
-<span class="fc" id="L166">    }</span>
+<span class="nc" id="L165">        doPostBuild(pipelineData);</span>
+<span class="nc" id="L166">    }</span>
 
     /**
      * Can be used by template Pages to stuff the Context into the
@@ -177,7 +177,7 @@ import org.apache.turbine.util.RunData;
             throws Exception
     {
         // do nothing by default
-<span class="fc" id="L180">    }</span>
+<span class="nc" id="L180">    }</span>
 
     /**
      * Can be overridden by template Pages to set up data needed to
@@ -190,7 +190,7 @@ import org.apache.turbine.util.RunData;
             throws Exception
     {
         // do nothing by default
-<span class="fc" id="L193">    }</span>
+<span class="nc" id="L193">    }</span>
 
     /**
      * Can be overridden to perform actions when the request is

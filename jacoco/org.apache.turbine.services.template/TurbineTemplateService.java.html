@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineTemplateService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.template</a> &gt; <span class="el_source">TurbineTemplateService.java</span></div><h1>TurbineTemplateService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.template;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineTemplateService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.template</a> &gt; <span class="el_source">TurbineTemplateService.java</span></div><h1>TurbineTemplateService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.template;
 
 
 /*
@@ -308,7 +308,7 @@ public class TurbineTemplateService
     @Override
     public boolean isCaching()
     {
-<span class="fc" id="L311">        return useCache;</span>
+<span class="nc" id="L311">        return useCache;</span>
     }
 
     /**
@@ -321,7 +321,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultExtension()
     {
-<span class="pc bpc" id="L324" title="1 of 2 branches missed.">        return StringUtils.isNotEmpty(defaultExtension) ? defaultExtension : &quot;&quot;;</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">        return StringUtils.isNotEmpty(defaultExtension) ? defaultExtension : &quot;&quot;;</span>
     }
 
     /**
@@ -334,14 +334,14 @@ public class TurbineTemplateService
     @Override
     public String getExtension(String template)
     {
-<span class="pc bpc" id="L337" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(template))</span>
+<span class="nc bnc" id="L337" title="All 2 branches missed.">        if (StringUtils.isEmpty(template))</span>
         {
 <span class="nc" id="L339">            return getDefaultExtension();</span>
         }
 
-<span class="fc" id="L342">        int dotIndex = template.lastIndexOf(EXTENSION_SEPARATOR);</span>
+<span class="nc" id="L342">        int dotIndex = template.lastIndexOf(EXTENSION_SEPARATOR);</span>
 
-<span class="fc bfc" id="L344" title="All 2 branches covered.">        return dotIndex &lt; 0 ? getDefaultExtension() : template.substring(dotIndex + 1);</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">        return dotIndex &lt; 0 ? getDefaultExtension() : template.substring(dotIndex + 1);</span>
     }
 
 
@@ -354,14 +354,14 @@ public class TurbineTemplateService
     @Override
     public String getDefaultTemplate()
     {
-<span class="fc" id="L357">        StringBuilder sb = new StringBuilder();</span>
-<span class="fc" id="L358">        sb.append(defaultTemplate);</span>
-<span class="pc bpc" id="L359" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(defaultExtension))</span>
+<span class="nc" id="L357">        StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L358">        sb.append(defaultTemplate);</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">        if (StringUtils.isNotEmpty(defaultExtension))</span>
         {
 <span class="nc" id="L361">            sb.append(EXTENSION_SEPARATOR);</span>
 <span class="nc" id="L362">            sb.append(getDefaultExtension());</span>
         }
-<span class="fc" id="L364">        return sb.toString();</span>
+<span class="nc" id="L364">        return sb.toString();</span>
     }
 
     /**
@@ -373,7 +373,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultPage()
     {
-<span class="fc" id="L376">        return getDefaultPageName(getDefaultTemplate());</span>
+<span class="nc" id="L376">        return getDefaultPageName(getDefaultTemplate());</span>
     }
 
     /**
@@ -385,7 +385,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultScreen()
     {
-<span class="fc" id="L388">        return getDefaultScreenName(getDefaultTemplate());</span>
+<span class="nc" id="L388">        return getDefaultScreenName(getDefaultTemplate());</span>
     }
 
     /**
@@ -397,7 +397,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultLayout()
     {
-<span class="fc" id="L400">        return getDefaultLayoutName(getDefaultTemplate());</span>
+<span class="nc" id="L400">        return getDefaultLayoutName(getDefaultTemplate());</span>
     }
 
     /**
@@ -409,7 +409,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultNavigation()
     {
-<span class="fc" id="L412">        return getDefaultNavigationName(getDefaultTemplate());</span>
+<span class="nc" id="L412">        return getDefaultNavigationName(getDefaultTemplate());</span>
     }
 
     /**
@@ -421,7 +421,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultLayoutTemplate()
     {
-<span class="fc" id="L424">        return getDefaultLayoutTemplateName(getDefaultTemplate());</span>
+<span class="nc" id="L424">        return getDefaultLayoutTemplateName(getDefaultTemplate());</span>
     }
 
     /**
@@ -435,7 +435,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultPageName(String template)
     {
-<span class="fc" id="L438">        return mapperRegistry[PAGE_KEY].getDefaultName(template);</span>
+<span class="nc" id="L438">        return mapperRegistry[PAGE_KEY].getDefaultName(template);</span>
     }
 
     /**
@@ -449,7 +449,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultScreenName(String template)
     {
-<span class="fc" id="L452">        return mapperRegistry[SCREEN_KEY].getDefaultName(template);</span>
+<span class="nc" id="L452">        return mapperRegistry[SCREEN_KEY].getDefaultName(template);</span>
     }
 
     /**
@@ -463,7 +463,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultLayoutName(String template)
     {
-<span class="fc" id="L466">        return mapperRegistry[LAYOUT_KEY].getDefaultName(template);</span>
+<span class="nc" id="L466">        return mapperRegistry[LAYOUT_KEY].getDefaultName(template);</span>
     }
 
     /**
@@ -477,7 +477,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultNavigationName(String template)
     {
-<span class="fc" id="L480">        return mapperRegistry[NAVIGATION_KEY].getDefaultName(template);</span>
+<span class="nc" id="L480">        return mapperRegistry[NAVIGATION_KEY].getDefaultName(template);</span>
     }
 
     /**
@@ -491,7 +491,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultLayoutTemplateName(String template)
     {
-<span class="fc" id="L494">        return mapperRegistry[LAYOUT_TEMPLATE_KEY].getDefaultName(template);</span>
+<span class="nc" id="L494">        return mapperRegistry[LAYOUT_TEMPLATE_KEY].getDefaultName(template);</span>
     }
 
     /**
@@ -504,9 +504,9 @@ public class TurbineTemplateService
     @Override
     public String getDefaultPageName(PipelineData pipelineData)
     {
-<span class="fc" id="L507">        ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);</span>
-<span class="fc" id="L508">        String template = pp.get(URIConstants.CGI_TEMPLATE_PARAM);</span>
-<span class="pc bpc" id="L509" title="1 of 2 branches missed.">        return template != null ? getDefaultPageName(template) : getDefaultPage();</span>
+<span class="nc" id="L507">        ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);</span>
+<span class="nc" id="L508">        String template = pp.get(URIConstants.CGI_TEMPLATE_PARAM);</span>
+<span class="nc bnc" id="L509" title="All 2 branches missed.">        return template != null ? getDefaultPageName(template) : getDefaultPage();</span>
     }
 
     /**
@@ -519,9 +519,9 @@ public class TurbineTemplateService
     @Override
     public String getDefaultLayoutName(PipelineData pipelineData)
     {
-<span class="fc" id="L522">        ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);</span>
-<span class="fc" id="L523">        String template = pp.get(URIConstants.CGI_TEMPLATE_PARAM);</span>
-<span class="pc bpc" id="L524" title="1 of 2 branches missed.">        return template != null ? getDefaultLayoutName(template) : getDefaultLayout();</span>
+<span class="nc" id="L522">        ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);</span>
+<span class="nc" id="L523">        String template = pp.get(URIConstants.CGI_TEMPLATE_PARAM);</span>
+<span class="nc bnc" id="L524" title="All 2 branches missed.">        return template != null ? getDefaultLayoutName(template) : getDefaultLayout();</span>
     }
 
     /**
@@ -536,7 +536,7 @@ public class TurbineTemplateService
     public String getScreenName(String template)
         throws Exception
     {
-<span class="fc" id="L539">        return mapperRegistry[SCREEN_KEY].getMappedName(template);</span>
+<span class="nc" id="L539">        return mapperRegistry[SCREEN_KEY].getMappedName(template);</span>
     }
 
     /**
@@ -551,7 +551,7 @@ public class TurbineTemplateService
     public String getLayoutName(String template)
         throws Exception
     {
-<span class="fc" id="L554">        return mapperRegistry[LAYOUT_KEY].getMappedName(template);</span>
+<span class="nc" id="L554">        return mapperRegistry[LAYOUT_KEY].getMappedName(template);</span>
     }
 
     /**
@@ -566,7 +566,7 @@ public class TurbineTemplateService
     public String getNavigationName(String template)
         throws Exception
     {
-<span class="fc" id="L569">        return mapperRegistry[NAVIGATION_KEY].getMappedName(template);</span>
+<span class="nc" id="L569">        return mapperRegistry[NAVIGATION_KEY].getMappedName(template);</span>
     }
 
     /**
@@ -582,7 +582,7 @@ public class TurbineTemplateService
     public String getScreenTemplateName(String template)
         throws Exception
     {
-<span class="fc" id="L585">        return mapperRegistry[SCREEN_TEMPLATE_KEY].getMappedName(template);</span>
+<span class="nc" id="L585">        return mapperRegistry[SCREEN_TEMPLATE_KEY].getMappedName(template);</span>
     }
 
     /**
@@ -597,7 +597,7 @@ public class TurbineTemplateService
     public String getLayoutTemplateName(String template)
         throws Exception
     {
-<span class="fc" id="L600">        return mapperRegistry[LAYOUT_TEMPLATE_KEY].getMappedName(template);</span>
+<span class="nc" id="L600">        return mapperRegistry[LAYOUT_TEMPLATE_KEY].getMappedName(template);</span>
     }
 
     /**
@@ -683,7 +683,7 @@ public class TurbineTemplateService
     @Override
     public TemplateEngineService getTemplateEngineService(String template)
     {
-<span class="fc" id="L686">        return templateEngineRegistry.get(getExtension(template));</span>
+<span class="nc" id="L686">        return templateEngineRegistry.get(getExtension(template));</span>
     }
 
     /**

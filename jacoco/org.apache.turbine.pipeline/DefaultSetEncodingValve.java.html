@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultSetEncodingValve.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.pipeline</a> &gt; <span class="el_source">DefaultSetEncodingValve.java</span></div><h1>DefaultSetEncodingValve.java</h1><pre class="source lang-java linenums">package org.apache.turbine.pipeline;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultSetEncodingValve.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.pipeline</a> &gt; <span class="el_source">DefaultSetEncodingValve.java</span></div><h1>DefaultSetEncodingValve.java</h1><pre class="source lang-java linenums">package org.apache.turbine.pipeline;
 
 
 /*
@@ -56,38 +56,38 @@ import org.apache.turbine.util.TurbineException;
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
-<span class="fc" id="L59">        HttpServletRequest req = pipelineData.get(Turbine.class, HttpServletRequest.class);</span>
+<span class="nc" id="L59">        HttpServletRequest req = pipelineData.get(Turbine.class, HttpServletRequest.class);</span>
 
         // If the servlet container gives us no clear indication about the
         // encoding of the contents, set it to our default value.
-<span class="fc" id="L63">        String requestEncoding = req.getCharacterEncoding();</span>
+<span class="nc" id="L63">        String requestEncoding = req.getCharacterEncoding();</span>
 
-<span class="fc bfc" id="L65" title="All 2 branches covered.">        if (requestEncoding == null)</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (requestEncoding == null)</span>
         {
-<span class="fc" id="L67">            requestEncoding = LocaleUtils.getDefaultInputEncoding();</span>
-<span class="fc" id="L68">            log.debug(&quot;Changing Input Encoding to {}&quot;, requestEncoding);</span>
+<span class="nc" id="L67">            requestEncoding = LocaleUtils.getDefaultInputEncoding();</span>
+<span class="nc" id="L68">            log.debug(&quot;Changing Input Encoding to {}&quot;, requestEncoding);</span>
 
             try
             {
-<span class="fc" id="L72">                req.setCharacterEncoding(requestEncoding);</span>
+<span class="nc" id="L72">                req.setCharacterEncoding(requestEncoding);</span>
             }
 <span class="nc" id="L74">            catch (UnsupportedEncodingException uee)</span>
             {
 <span class="nc" id="L76">                throw new TurbineException(&quot;Could not change request encoding to &quot; + requestEncoding, uee);</span>
-<span class="fc" id="L77">            }</span>
+<span class="nc" id="L77">            }</span>
         }
 
         // Copy encoding charset to RunData to set a reasonable default for the response
-<span class="fc" id="L81">        Charset outputEncoding = LocaleUtils.getOverrideCharset();</span>
-<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (outputEncoding == null)</span>
+<span class="nc" id="L81">        Charset outputEncoding = LocaleUtils.getOverrideCharset();</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (outputEncoding == null)</span>
         {
-<span class="fc" id="L84">            outputEncoding = Charset.forName(requestEncoding);</span>
+<span class="nc" id="L84">            outputEncoding = Charset.forName(requestEncoding);</span>
         }
 
-<span class="fc" id="L87">        pipelineData.getRunData().setCharset(outputEncoding);</span>
+<span class="nc" id="L87">        pipelineData.getRunData().setCharset(outputEncoding);</span>
 
         // Pass control to the next Valve in the Pipeline
-<span class="fc" id="L90">        context.invokeNext(pipelineData);</span>
-<span class="fc" id="L91">    }</span>
+<span class="nc" id="L90">        context.invokeNext(pipelineData);</span>
+<span class="nc" id="L91">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

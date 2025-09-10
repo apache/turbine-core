@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VelocityOnlyLayout.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.layouts</a> &gt; <span class="el_source">VelocityOnlyLayout.java</span></div><h1>VelocityOnlyLayout.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.layouts;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VelocityOnlyLayout.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.layouts</a> &gt; <span class="el_source">VelocityOnlyLayout.java</span></div><h1>VelocityOnlyLayout.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.layouts;
 
 
 /*
@@ -62,7 +62,7 @@ import org.apache.velocity.context.Context;
  * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
  * @version $Id$
  */
-<span class="fc" id="L65">public class VelocityOnlyLayout extends VelocityLayout</span>
+<span class="nc" id="L65">public class VelocityOnlyLayout extends VelocityLayout</span>
 {
     /** Injected loader instance */
     @TurbineLoader( Screen.class )
@@ -74,21 +74,21 @@ import org.apache.velocity.context.Context;
     @Override
     protected void populateContext(PipelineData pipelineData, Context context) throws Exception
     {
-<span class="fc" id="L77">        String screenName = pipelineData.getRunData().getScreen();</span>
+<span class="nc" id="L77">        String screenName = pipelineData.getRunData().getScreen();</span>
 
-<span class="fc" id="L79">        log.debug(&quot;Loading Screen {}&quot;, screenName);</span>
+<span class="nc" id="L79">        log.debug(&quot;Loading Screen {}&quot;, screenName);</span>
 
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
-<span class="fc" id="L83">        String results = screenLoader.eval(pipelineData, screenName);</span>
-<span class="fc" id="L84">        String returnValue = StringUtils.defaultIfEmpty(results, StringUtils.EMPTY);</span>
+<span class="nc" id="L83">        String results = screenLoader.eval(pipelineData, screenName);</span>
+<span class="nc" id="L84">        String returnValue = StringUtils.defaultIfEmpty(results, StringUtils.EMPTY);</span>
 
         // variable for the screen in the layout template
-<span class="fc" id="L87">        context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);</span>
+<span class="nc" id="L87">        context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);</span>
 
         // variable to reference the navigation screen in the layout template
-<span class="fc" id="L90">        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER,</span>
+<span class="nc" id="L90">        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER,</span>
                     new TemplateNavigation(pipelineData));
-<span class="fc" id="L92">    }</span>
+<span class="nc" id="L92">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

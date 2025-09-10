@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractSchedulerService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.schedule</a> &gt; <span class="el_source">AbstractSchedulerService.java</span></div><h1>AbstractSchedulerService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.schedule;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractSchedulerService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.schedule</a> &gt; <span class="el_source">AbstractSchedulerService.java</span></div><h1>AbstractSchedulerService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.schedule;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -38,16 +38,16 @@ import org.apache.turbine.util.TurbineException;
  * @author &lt;a href=&quot;mailto:quintonm@bellsouth.net&quot;&gt;Quinton McCombs&lt;/a&gt;
  * @version $Id: TorqueSchedulerService.java 534527 2007-05-02 16:10:59Z tv $
  */
-<span class="fc" id="L41">public abstract class AbstractSchedulerService extends TurbineBaseService implements ScheduleService</span>
+<span class="nc" id="L41">public abstract class AbstractSchedulerService extends TurbineBaseService implements ScheduleService</span>
 {
     /** Logging */
-<span class="fc" id="L44">    protected static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);</span>
+<span class="nc" id="L44">    protected static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);</span>
 
     /** The queue */
-<span class="fc" id="L47">    protected JobQueue&lt;JobEntry&gt; scheduleQueue = null;</span>
+<span class="nc" id="L47">    protected JobQueue&lt;JobEntry&gt; scheduleQueue = null;</span>
 
     /** Current status of the scheduler */
-<span class="fc" id="L50">    private AtomicBoolean enabled = new AtomicBoolean(false);</span>
+<span class="nc" id="L50">    private AtomicBoolean enabled = new AtomicBoolean(false);</span>
 
     /** The housekeeping thread. */
     protected Thread houseKeepingThread;
@@ -66,26 +66,26 @@ import org.apache.turbine.util.TurbineException;
     {
         try
         {
-<span class="fc" id="L69">            setEnabled(getConfiguration().getBoolean(&quot;enabled&quot;, true));</span>
-<span class="fc" id="L70">            scheduleQueue = new JobQueue&lt;&gt;();</span>
-<span class="fc" id="L71">            threadPool = Executors.newCachedThreadPool(</span>
+<span class="nc" id="L69">            setEnabled(getConfiguration().getBoolean(&quot;enabled&quot;, true));</span>
+<span class="nc" id="L70">            scheduleQueue = new JobQueue&lt;&gt;();</span>
+<span class="nc" id="L71">            threadPool = Executors.newCachedThreadPool(</span>
                     new BasicThreadFactory.Builder()
-<span class="fc" id="L73">                        .namingPattern(&quot;Turbine-ScheduledJob-&quot;)</span>
-<span class="fc" id="L74">                        .daemon(true)</span>
-<span class="fc" id="L75">                        .build());</span>
+<span class="nc" id="L73">                        .namingPattern(&quot;Turbine-ScheduledJob-&quot;)</span>
+<span class="nc" id="L74">                        .daemon(true)</span>
+<span class="nc" id="L75">                        .build());</span>
 
             @SuppressWarnings(&quot;unchecked&quot;) // Why is this cast necessary?
-<span class="fc" id="L78">            List&lt;JobEntry&gt; jobs = (List&lt;JobEntry&gt;)loadJobs();</span>
-<span class="fc" id="L79">            scheduleQueue.batchLoad(jobs);</span>
-<span class="fc" id="L80">            restart();</span>
+<span class="nc" id="L78">            List&lt;JobEntry&gt; jobs = (List&lt;JobEntry&gt;)loadJobs();</span>
+<span class="nc" id="L79">            scheduleQueue.batchLoad(jobs);</span>
+<span class="nc" id="L80">            restart();</span>
 
-<span class="fc" id="L82">            setInit(true);</span>
+<span class="nc" id="L82">            setInit(true);</span>
         }
 <span class="nc" id="L84">        catch (Exception e)</span>
         {
 <span class="nc" id="L86">            throw new InitializationException(&quot;Could not initialize the scheduler service&quot;, e);</span>
-<span class="fc" id="L87">        }</span>
-<span class="fc" id="L88">    }</span>
+<span class="nc" id="L87">        }</span>
+<span class="nc" id="L88">    }</span>
 
     /**
      * Load all jobs from configuration storage
@@ -103,13 +103,13 @@ import org.apache.turbine.util.TurbineException;
     @Override
     public void shutdown()
     {
-<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (getThread() != null)</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (getThread() != null)</span>
         {
-<span class="fc" id="L108">            getThread().interrupt();</span>
+<span class="nc" id="L108">            getThread().interrupt();</span>
         }
 
-<span class="fc" id="L111">        threadPool.shutdownNow();</span>
-<span class="fc" id="L112">    }</span>
+<span class="nc" id="L111">        threadPool.shutdownNow();</span>
+<span class="nc" id="L112">    }</span>
 
     /**
      * @see org.apache.turbine.services.schedule.ScheduleService#newJob(int, int, int, int, int, java.lang.String)
@@ -140,8 +140,8 @@ import org.apache.turbine.util.TurbineException;
     @Override
     public void addJob(JobEntry je) throws TurbineException
     {
-<span class="fc" id="L143">        updateJob(je);</span>
-<span class="fc" id="L144">    }</span>
+<span class="nc" id="L143">        updateJob(je);</span>
+<span class="nc" id="L144">    }</span>
 
     /**
      * Remove a job from the queue.
@@ -173,7 +173,7 @@ import org.apache.turbine.util.TurbineException;
     @Override
     public List&lt;JobEntry&gt; listJobs()
     {
-<span class="fc" id="L176">        return scheduleQueue.list();</span>
+<span class="nc" id="L176">        return scheduleQueue.list();</span>
     }
 
     /**
@@ -184,8 +184,8 @@ import org.apache.turbine.util.TurbineException;
      */
     protected void setEnabled(boolean enabled)
     {
-<span class="fc" id="L187">        this.enabled.set(enabled);</span>
-<span class="fc" id="L188">    }</span>
+<span class="nc" id="L187">        this.enabled.set(enabled);</span>
+<span class="nc" id="L188">    }</span>
 
     /**
      * Determines if the scheduler service is currently enabled.
@@ -195,7 +195,7 @@ import org.apache.turbine.util.TurbineException;
     @Override
     public boolean isEnabled()
     {
-<span class="fc" id="L198">        return enabled.get();</span>
+<span class="nc" id="L198">        return enabled.get();</span>
     }
 
     /**
@@ -204,9 +204,9 @@ import org.apache.turbine.util.TurbineException;
     @Override
     public synchronized void startScheduler()
     {
-<span class="fc" id="L207">        setEnabled(true);</span>
-<span class="fc" id="L208">        restart();</span>
-<span class="fc" id="L209">    }</span>
+<span class="nc" id="L207">        setEnabled(true);</span>
+<span class="nc" id="L208">        restart();</span>
+<span class="nc" id="L209">    }</span>
 
     /**
      * Stops the scheduler if it is currently running.
@@ -214,14 +214,14 @@ import org.apache.turbine.util.TurbineException;
     @Override
     public synchronized void stopScheduler()
     {
-<span class="fc" id="L217">        log.info(&quot;Stopping job scheduler&quot;);</span>
-<span class="fc" id="L218">        Thread thread = getThread();</span>
-<span class="pc bpc" id="L219" title="1 of 2 branches missed.">        if (thread != null)</span>
+<span class="nc" id="L217">        log.info(&quot;Stopping job scheduler&quot;);</span>
+<span class="nc" id="L218">        Thread thread = getThread();</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">        if (thread != null)</span>
         {
-<span class="fc" id="L221">            thread.interrupt();</span>
+<span class="nc" id="L221">            thread.interrupt();</span>
         }
-<span class="fc" id="L223">        setEnabled(false);</span>
-<span class="fc" id="L224">    }</span>
+<span class="nc" id="L223">        setEnabled(false);</span>
+<span class="nc" id="L224">    }</span>
 
     /**
      * Return the thread being used to process commands, or null if there is no
@@ -232,7 +232,7 @@ import org.apache.turbine.util.TurbineException;
      */
     public synchronized Thread getThread()
     {
-<span class="fc" id="L235">        return houseKeepingThread;</span>
+<span class="nc" id="L235">        return houseKeepingThread;</span>
     }
 
     /**
@@ -240,8 +240,8 @@ import org.apache.turbine.util.TurbineException;
      */
     protected synchronized void clearThread()
     {
-<span class="fc" id="L243">        houseKeepingThread = null;</span>
-<span class="fc" id="L244">    }</span>
+<span class="nc" id="L243">        houseKeepingThread = null;</span>
+<span class="nc" id="L244">    }</span>
 
     /**
      * Start (or restart) a thread to process commands, or wake up an existing
@@ -251,28 +251,28 @@ import org.apache.turbine.util.TurbineException;
      */
     public synchronized void restart()
     {
-<span class="pc bpc" id="L254" title="1 of 2 branches missed.">        if (enabled.get())</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">        if (enabled.get())</span>
         {
-<span class="fc" id="L256">            log.info(&quot;Starting job scheduler&quot;);</span>
-<span class="fc bfc" id="L257" title="All 2 branches covered.">            if (houseKeepingThread == null)</span>
+<span class="nc" id="L256">            log.info(&quot;Starting job scheduler&quot;);</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">            if (houseKeepingThread == null)</span>
             {
                 // Create the the housekeeping thread of the scheduler. It will
                 // wait for the time when the next task needs to be started,
                 // and then launch a worker thread to execute the task.
-<span class="fc" id="L262">                houseKeepingThread = new Thread(this::houseKeeping, ScheduleService.SERVICE_NAME);</span>
+<span class="nc" id="L262">                houseKeepingThread = new Thread(this::houseKeeping, ScheduleService.SERVICE_NAME);</span>
                 // Indicate that this is a system thread. JVM will quit only
                 // when there are no more enabled user threads. Settings threads
                 // spawned internally by Turbine as daemons allows commandline
                 // applications using Turbine to terminate in an orderly manner.
-<span class="fc" id="L267">                houseKeepingThread.setDaemon(true);</span>
-<span class="fc" id="L268">                houseKeepingThread.start();</span>
+<span class="nc" id="L267">                houseKeepingThread.setDaemon(true);</span>
+<span class="nc" id="L268">                houseKeepingThread.start();</span>
             }
             else
             {
-<span class="fc" id="L272">                notify();</span>
+<span class="nc" id="L272">                notify();</span>
             }
         }
-<span class="fc" id="L275">    }</span>
+<span class="nc" id="L275">    }</span>
 
     /**
      * Return the next Job to execute, or null if thread is interrupted.
@@ -285,44 +285,44 @@ import org.apache.turbine.util.TurbineException;
     {
         try
         {
-<span class="fc bfc" id="L288" title="All 2 branches covered.">            while (!Thread.interrupted())</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">            while (!Thread.interrupted())</span>
             {
                 // Grab the next job off the queue.
                 //JobEntry je = scheduleQueue.getNext();
-<span class="fc" id="L292">                JobEntry je = scheduleQueue.getFirst();</span>
+<span class="nc" id="L292">                JobEntry je = scheduleQueue.getFirst();</span>
 
-<span class="pc bpc" id="L294" title="1 of 2 branches missed.">                if (je == null)</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">                if (je == null)</span>
                 {
                     // Queue must be empty. Wait on it.
 <span class="nc" id="L297">                    wait();</span>
                 }
                 else
                 {
-<span class="fc" id="L301">                    long now = System.currentTimeMillis();</span>
-<span class="fc" id="L302">                    long when = je.getNextRuntime();</span>
+<span class="nc" id="L301">                    long now = System.currentTimeMillis();</span>
+<span class="nc" id="L302">                    long when = je.getNextRuntime();</span>
 
-<span class="fc bfc" id="L304" title="All 2 branches covered.">                    if (when &gt; now)</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">                    if (when &gt; now)</span>
                     {
                         // Wait till next runtime.
-<span class="fc" id="L307">                        wait(when - now);</span>
+<span class="nc" id="L307">                        wait(when - now);</span>
                     }
                     else
                     {
                         // Update the next runtime for the job.
-<span class="fc" id="L312">                        scheduleQueue.updateQueue(je);</span>
+<span class="nc" id="L312">                        scheduleQueue.updateQueue(je);</span>
                         // Return the job to run it.
-<span class="fc" id="L314">                        return je;</span>
+<span class="nc" id="L314">                        return je;</span>
                     }
                 }
-<span class="fc" id="L317">            }</span>
+<span class="nc" id="L317">            }</span>
         }
-<span class="fc" id="L319">        catch (InterruptedException ex)</span>
+<span class="nc" id="L319">        catch (InterruptedException ex)</span>
         {
             // ignore
-<span class="fc" id="L322">        }</span>
+<span class="nc" id="L322">        }</span>
 
         // On interrupt.
-<span class="fc" id="L325">        return null;</span>
+<span class="nc" id="L325">        return null;</span>
     }
 
     /**
@@ -332,24 +332,24 @@ import org.apache.turbine.util.TurbineException;
      */
     private void houseKeeping()
     {
-<span class="fc" id="L335">        String taskName = null;</span>
+<span class="nc" id="L335">        String taskName = null;</span>
         try
         {
-<span class="pc bpc" id="L338" title="1 of 2 branches missed.">            while (enabled.get())</span>
+<span class="nc bnc" id="L338" title="All 2 branches missed.">            while (enabled.get())</span>
             {
-<span class="fc" id="L340">                JobEntry je = nextJob();</span>
-<span class="fc bfc" id="L341" title="All 2 branches covered.">                if (je != null)</span>
+<span class="nc" id="L340">                JobEntry je = nextJob();</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">                if (je != null)</span>
                 {
-<span class="fc" id="L343">                    taskName = je.getTask();</span>
+<span class="nc" id="L343">                    taskName = je.getTask();</span>
 
                     // Get a thread to run the job.
-<span class="fc" id="L346">                    threadPool.execute(new WorkerThread(je));</span>
+<span class="nc" id="L346">                    threadPool.execute(new WorkerThread(je));</span>
                 }
                 else
                 {
                     break;
                 }
-<span class="fc" id="L352">            }</span>
+<span class="nc" id="L352">            }</span>
         }
 <span class="nc" id="L354">        catch (Exception e)</span>
         {
@@ -358,8 +358,8 @@ import org.apache.turbine.util.TurbineException;
         }
         finally
         {
-<span class="fc" id="L361">            clearThread();</span>
+<span class="nc" id="L361">            clearThread();</span>
         }
-<span class="fc" id="L363">    }</span>
+<span class="nc" id="L363">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

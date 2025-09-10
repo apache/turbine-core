@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocaleUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util</a> &gt; <span class="el_source">LocaleUtils.java</span></div><h1>LocaleUtils.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocaleUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util</a> &gt; <span class="el_source">LocaleUtils.java</span></div><h1>LocaleUtils.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util;
 
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
@@ -135,34 +135,34 @@ import org.apache.turbine.services.TurbineServices;
      */
     public static Charset getDefaultCharset()
     {
-<span class="fc bfc" id="L138" title="All 2 branches covered.">        if (defaultCharSet == null)</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (defaultCharSet == null)</span>
         {
             /* Get the default charset and cache it in a static variable. */
-<span class="fc" id="L141">            String charSet = Turbine.getConfiguration()</span>
-<span class="fc" id="L142">                    .getString(TurbineConstants.LOCALE_DEFAULT_CHARSET_KEY,</span>
+<span class="nc" id="L141">            String charSet = Turbine.getConfiguration()</span>
+<span class="nc" id="L142">                    .getString(TurbineConstants.LOCALE_DEFAULT_CHARSET_KEY,</span>
                             TurbineConstants.LOCALE_DEFAULT_CHARSET_DEFAULT);
 
-<span class="fc bfc" id="L145" title="All 2 branches covered.">            if (StringUtils.isNotEmpty(charSet))</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">            if (StringUtils.isNotEmpty(charSet))</span>
             {
-<span class="fc" id="L147">                defaultCharSet = charSetForName(charSet);</span>
-<span class="fc" id="L148">                log.debug(&quot;defaultCharSet = {} (From Properties)&quot;, defaultCharSet);</span>
+<span class="nc" id="L147">                defaultCharSet = charSetForName(charSet);</span>
+<span class="nc" id="L148">                log.debug(&quot;defaultCharSet = {} (From Properties)&quot;, defaultCharSet);</span>
             }
         }
 
-<span class="fc" id="L152">        Charset charset = defaultCharSet;</span>
+<span class="nc" id="L152">        Charset charset = defaultCharSet;</span>
 
-<span class="fc bfc" id="L154" title="All 2 branches covered.">        if (charset == null) // can happen if set explicitly in the configuration</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (charset == null) // can happen if set explicitly in the configuration</span>
         {
-<span class="fc" id="L156">            log.debug(&quot;Default charset is empty!&quot;);</span>
+<span class="nc" id="L156">            log.debug(&quot;Default charset is empty!&quot;);</span>
             /* Default charset isn't specified, get the locale specific one. */
-<span class="fc" id="L158">            Locale locale = getDefaultLocale();</span>
-<span class="fc" id="L159">            log.debug(&quot;Locale is {}&quot;, locale);</span>
+<span class="nc" id="L158">            Locale locale = getDefaultLocale();</span>
+<span class="nc" id="L159">            log.debug(&quot;Locale is {}&quot;, locale);</span>
 
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">            if (!locale.equals(Locale.US))</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">            if (!locale.equals(Locale.US))</span>
             {
-<span class="fc" id="L163">                log.debug(&quot;We don't have US Locale!&quot;);</span>
-<span class="fc" id="L164">                ServiceManager serviceManager = TurbineServices.getInstance();</span>
-<span class="pc bpc" id="L165" title="1 of 2 branches missed.">                if (serviceManager.isRegistered(MimeTypeService.ROLE))</span>
+<span class="nc" id="L163">                log.debug(&quot;We don't have US Locale!&quot;);</span>
+<span class="nc" id="L164">                ServiceManager serviceManager = TurbineServices.getInstance();</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">                if (serviceManager.isRegistered(MimeTypeService.ROLE))</span>
                 {
                     try
                     {
@@ -179,14 +179,14 @@ import org.apache.turbine.services.TurbineServices;
             }
 
             // The fallback to end all fallbacks
-<span class="pc bpc" id="L182" title="1 of 2 branches missed.">            if (charset == null)</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">            if (charset == null)</span>
             {
-<span class="fc" id="L184">                charset = StandardCharsets.ISO_8859_1;</span>
+<span class="nc" id="L184">                charset = StandardCharsets.ISO_8859_1;</span>
             }
         }
 
-<span class="fc" id="L188">        log.debug(&quot;Returning default Charset of {}&quot;, charset);</span>
-<span class="fc" id="L189">        return charset;</span>
+<span class="nc" id="L188">        log.debug(&quot;Returning default Charset of {}&quot;, charset);</span>
+<span class="nc" id="L189">        return charset;</span>
     }
 
     /**
@@ -235,7 +235,7 @@ import org.apache.turbine.services.TurbineServices;
     {
         try
         {
-<span class="fc" id="L238">            return Charset.forName(charSet);</span>
+<span class="nc" id="L238">            return Charset.forName(charSet);</span>
         }
 <span class="nc" id="L240">        catch (IllegalCharsetNameException | UnsupportedCharsetException e)</span>
         {

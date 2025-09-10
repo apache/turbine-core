@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VelocityErrorScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.screens</a> &gt; <span class="el_source">VelocityErrorScreen.java</span></div><h1>VelocityErrorScreen.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.screens;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VelocityErrorScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.screens</a> &gt; <span class="el_source">VelocityErrorScreen.java</span></div><h1>VelocityErrorScreen.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.screens;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -33,7 +33,7 @@ import org.apache.velocity.context.Context;
  * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
  * @version $Id$
  */
-<span class="fc" id="L36">public class VelocityErrorScreen</span>
+<span class="nc" id="L36">public class VelocityErrorScreen</span>
     extends VelocityScreen
 {
     /**
@@ -47,13 +47,13 @@ import org.apache.velocity.context.Context;
     protected void doBuildTemplate(PipelineData pipelineData, Context context)
             throws Exception
     {
-<span class="fc" id="L50">        RunData data = pipelineData.getRunData();</span>
-<span class="fc" id="L51">        context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER,</span>
-<span class="fc" id="L52">                data.getStackTraceException().toString());</span>
-<span class="fc" id="L53">        context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER,</span>
-<span class="fc" id="L54">                data.getStackTrace());</span>
+<span class="nc" id="L50">        RunData data = pipelineData.getRunData();</span>
+<span class="nc" id="L51">        context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER,</span>
+<span class="nc" id="L52">                data.getStackTraceException().toString());</span>
+<span class="nc" id="L53">        context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER,</span>
+<span class="nc" id="L54">                data.getStackTrace());</span>
 
-<span class="fc" id="L56">        setTemplate(pipelineData, templateError);</span>
-<span class="fc" id="L57">    }</span>
+<span class="nc" id="L56">        setTemplate(pipelineData, templateError);</span>
+<span class="nc" id="L57">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

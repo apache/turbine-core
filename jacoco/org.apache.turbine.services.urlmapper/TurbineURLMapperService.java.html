@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineURLMapperService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.urlmapper</a> &gt; <span class="el_source">TurbineURLMapperService.java</span></div><h1>TurbineURLMapperService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.urlmapper;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineURLMapperService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.urlmapper</a> &gt; <span class="el_source">TurbineURLMapperService.java</span></div><h1>TurbineURLMapperService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.urlmapper;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -130,83 +130,83 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
     @Override
     public void mapToURL(TurbineURI uri)
     {
-<span class="pc bpc" id="L133" title="3 of 4 branches missed.">        if (!uri.hasPathInfo() &amp;&amp; !uri.hasQueryData())</span>
+<span class="nc bnc" id="L133" title="All 4 branches missed.">        if (!uri.hasPathInfo() &amp;&amp; !uri.hasQueryData())</span>
         {
 <span class="nc" id="L135">            return; // no mapping or mapping already done</span>
         }
 
-<span class="fc" id="L138">        List&lt;URIParam&gt; pathInfo = uri.getPathInfo();</span>
-<span class="fc" id="L139">        List&lt;URIParam&gt; queryData = uri.getQueryData();</span>
+<span class="nc" id="L138">        List&lt;URIParam&gt; pathInfo = uri.getPathInfo();</span>
+<span class="nc" id="L139">        List&lt;URIParam&gt; queryData = uri.getQueryData();</span>
 
         // Create map from list, taking only the first appearance of a key
         // PathInfo takes precedence
-<span class="fc" id="L143">        Map&lt;String, Object&gt; uriParameterMap =</span>
-<span class="fc" id="L144">                Stream.concat(pathInfo.stream(), queryData.stream())</span>
-<span class="fc" id="L145">                    .collect(Collectors.toMap(</span>
+<span class="nc" id="L143">        Map&lt;String, Object&gt; uriParameterMap =</span>
+<span class="nc" id="L144">                Stream.concat(pathInfo.stream(), queryData.stream())</span>
+<span class="nc" id="L145">                    .collect(Collectors.toMap(</span>
                         URIParam::getKey,
                         URIParam::getValue,
-<span class="fc" id="L148">                        (e1, e2) -&gt; e1,</span>
+<span class="nc" id="L148">                        (e1, e2) -&gt; e1,</span>
                         LinkedHashMap::new));
 
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        for (URLMapEntry urlMap : container.getMapEntries())</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        for (URLMapEntry urlMap : container.getMapEntries())</span>
         {
-<span class="fc" id="L153">            Set&lt;String&gt; keys = new HashSet&lt;&gt;(uriParameterMap.keySet());</span>
-<span class="fc" id="L154">            keys.removeAll(urlMap.getIgnoreParameters().keySet());</span>
+<span class="nc" id="L153">            Set&lt;String&gt; keys = new HashSet&lt;&gt;(uriParameterMap.keySet());</span>
+<span class="nc" id="L154">            keys.removeAll(urlMap.getIgnoreParameters().keySet());</span>
 
-<span class="fc" id="L156">            Set&lt;String&gt; entryKeys = new HashSet&lt;&gt;(urlMap.getGroupNamesMap().keySet());</span>
+<span class="nc" id="L156">            Set&lt;String&gt; entryKeys = new HashSet&lt;&gt;(urlMap.getGroupNamesMap().keySet());</span>
 
-<span class="fc" id="L158">            Set&lt;String&gt; implicitKeysFound = urlMap.getImplicitParameters().entrySet().stream()</span>
-<span class="fc" id="L159">                    .filter(entry -&gt; Objects.equals(uriParameterMap.get(entry.getKey()), entry.getValue()))</span>
-<span class="fc" id="L160">                    .map(Map.Entry::getKey)</span>
-<span class="fc" id="L161">                    .collect(Collectors.toSet());</span>
+<span class="nc" id="L158">            Set&lt;String&gt; implicitKeysFound = urlMap.getImplicitParameters().entrySet().stream()</span>
+<span class="nc" id="L159">                    .filter(entry -&gt; Objects.equals(uriParameterMap.get(entry.getKey()), entry.getValue()))</span>
+<span class="nc" id="L160">                    .map(Map.Entry::getKey)</span>
+<span class="nc" id="L161">                    .collect(Collectors.toSet());</span>
 
-<span class="fc" id="L163">            entryKeys.addAll(implicitKeysFound);</span>
+<span class="nc" id="L163">            entryKeys.addAll(implicitKeysFound);</span>
 
-<span class="fc bfc" id="L165" title="All 2 branches covered.">            if (entryKeys.containsAll(keys))</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">            if (entryKeys.containsAll(keys))</span>
             {
-<span class="fc" id="L167">                Matcher matcher = NAMED_GROUPS_PATTERN.matcher(urlMap.getUrlPattern().pattern());</span>
-<span class="fc" id="L168">                StringBuffer sb = new StringBuffer();</span>
+<span class="nc" id="L167">                Matcher matcher = NAMED_GROUPS_PATTERN.matcher(urlMap.getUrlPattern().pattern());</span>
+<span class="nc" id="L168">                StringBuffer sb = new StringBuffer();</span>
 
-<span class="fc bfc" id="L170" title="All 2 branches covered.">                while (matcher.find())</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">                while (matcher.find())</span>
                 {
-<span class="fc" id="L172">                    String key = matcher.group(1);</span>
+<span class="nc" id="L172">                    String key = matcher.group(1);</span>
 
-<span class="fc bfc" id="L174" title="All 2 branches covered.">                    if (CONTEXT_PATH_PARAMETER.equals(key))</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">                    if (CONTEXT_PATH_PARAMETER.equals(key))</span>
                     {
                         // remove
-<span class="fc" id="L177">                        matcher.appendReplacement(sb, &quot;&quot;);</span>
-<span class="fc bfc" id="L178" title="All 2 branches covered.">                    } else if (WEBAPP_ROOT_PARAMETER.equals(key))</span>
+<span class="nc" id="L177">                        matcher.appendReplacement(sb, &quot;&quot;);</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">                    } else if (WEBAPP_ROOT_PARAMETER.equals(key))</span>
                     {
-<span class="fc" id="L180">                        matcher.appendReplacement(sb, uri.getScriptName());</span>
+<span class="nc" id="L180">                        matcher.appendReplacement(sb, uri.getScriptName());</span>
                     } else
                     {
-<span class="fc" id="L183">                        boolean ignore = urlMap.getIgnoreParameters().keySet().stream()</span>
-<span class="fc" id="L184">                                .anyMatch( x-&gt; x.equals( key ) );</span>
-<span class="fc" id="L185">                        matcher.appendReplacement(sb,</span>
-<span class="fc" id="L186">                                 Matcher.quoteReplacement(</span>
-<span class="fc bfc" id="L187" title="All 2 branches covered.">                                        (!ignore)? Objects.toString(uriParameterMap.get(key)):&quot;&quot;));</span>
+<span class="nc" id="L183">                        boolean ignore = urlMap.getIgnoreParameters().keySet().stream()</span>
+<span class="nc" id="L184">                                .anyMatch( x-&gt; x.equals( key ) );</span>
+<span class="nc" id="L185">                        matcher.appendReplacement(sb,</span>
+<span class="nc" id="L186">                                 Matcher.quoteReplacement(</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">                                        (!ignore)? Objects.toString(uriParameterMap.get(key)):&quot;&quot;));</span>
                         // Remove handled parameters (all of them!)
-<span class="fc" id="L189">                        pathInfo.removeIf(uriParam -&gt; key.equals(uriParam.getKey()));</span>
-<span class="fc" id="L190">                        queryData.removeIf(uriParam -&gt; key.equals(uriParam.getKey()));</span>
+<span class="nc" id="L189">                        pathInfo.removeIf(uriParam -&gt; key.equals(uriParam.getKey()));</span>
+<span class="nc" id="L190">                        queryData.removeIf(uriParam -&gt; key.equals(uriParam.getKey()));</span>
                     }
-<span class="fc" id="L192">                }</span>
+<span class="nc" id="L192">                }</span>
 
-<span class="fc" id="L194">                matcher.appendTail(sb);</span>
+<span class="nc" id="L194">                matcher.appendTail(sb);</span>
                 
-<span class="fc" id="L196">                implicitKeysFound.forEach(key -&gt; {</span>
-<span class="fc" id="L197">                    pathInfo.removeIf(uriParam -&gt; key.equals(uriParam.getKey()));</span>
-<span class="fc" id="L198">                    queryData.removeIf(uriParam -&gt; key.equals(uriParam.getKey()));</span>
-<span class="fc" id="L199">                });</span>
+<span class="nc" id="L196">                implicitKeysFound.forEach(key -&gt; {</span>
+<span class="nc" id="L197">                    pathInfo.removeIf(uriParam -&gt; key.equals(uriParam.getKey()));</span>
+<span class="nc" id="L198">                    queryData.removeIf(uriParam -&gt; key.equals(uriParam.getKey()));</span>
+<span class="nc" id="L199">                });</span>
 
                 // Clean up
-<span class="fc" id="L202">                uri.setScriptName(MULTI_SLASH_PATTERN.matcher(sb).replaceAll(&quot;/&quot;).replaceFirst( &quot;/$&quot;, &quot;&quot; ));</span>
+<span class="nc" id="L202">                uri.setScriptName(MULTI_SLASH_PATTERN.matcher(sb).replaceAll(&quot;/&quot;).replaceFirst( &quot;/$&quot;, &quot;&quot; ));</span>
                 
-<span class="fc" id="L204">                break;</span>
+<span class="nc" id="L204">                break;</span>
             }
-<span class="fc" id="L206">        }</span>
+<span class="nc" id="L206">        }</span>
         
-<span class="fc" id="L208">        log.debug(&quot;mapped to uri: {} &quot;, uri);</span>
-<span class="fc" id="L209">    }</span>
+<span class="nc" id="L208">        log.debug(&quot;mapped to uri: {} &quot;, uri);</span>
+<span class="nc" id="L209">    }</span>
 
     /**
      * Map a simplified URL to a set of parameters
@@ -217,37 +217,37 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
     @Override
     public void mapFromURL(String url, ParameterParser pp)
     {
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        for (URLMapEntry urlMap : container.getMapEntries())</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        for (URLMapEntry urlMap : container.getMapEntries())</span>
         {
-<span class="fc" id="L222">            url = url.replaceFirst( &quot;/$&quot;, &quot;&quot; );</span>
-<span class="fc" id="L223">            Matcher matcher = urlMap.getUrlPattern().matcher(url);</span>
-<span class="fc bfc" id="L224" title="All 2 branches covered.">            if (matcher.matches())</span>
+<span class="nc" id="L222">            url = url.replaceFirst( &quot;/$&quot;, &quot;&quot; );</span>
+<span class="nc" id="L223">            Matcher matcher = urlMap.getUrlPattern().matcher(url);</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">            if (matcher.matches())</span>
             {
                 // extract parameters from URL
-<span class="fc" id="L227">                urlMap.getGroupNamesMap().entrySet().stream()</span>
+<span class="nc" id="L227">                urlMap.getGroupNamesMap().entrySet().stream()</span>
                         // ignore default parameters
-<span class="fc bfc" id="L229" title="All 2 branches covered.">                        .filter(group -&gt; !DEFAULT_PARAMETERS.contains(group.getKey()))</span>
-<span class="fc" id="L230">                        .forEach(group -&gt;</span>
-<span class="fc" id="L231">                                pp.setString(group.getKey(), matcher.group(group.getValue().intValue())));</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">                        .filter(group -&gt; !DEFAULT_PARAMETERS.contains(group.getKey()))</span>
+<span class="nc" id="L230">                        .forEach(group -&gt;</span>
+<span class="nc" id="L231">                                pp.setString(group.getKey(), matcher.group(group.getValue().intValue())));</span>
 
                 // add implicit parameters
-<span class="fc" id="L234">                urlMap.getImplicitParameters()</span>
-<span class="fc" id="L235">                        .forEach(pp::add);</span>
+<span class="nc" id="L234">                urlMap.getImplicitParameters()</span>
+<span class="nc" id="L235">                        .forEach(pp::add);</span>
 
                 // add override parameters
-<span class="fc" id="L238">                urlMap.getOverrideParameters()</span>
-<span class="fc" id="L239">                        .forEach(pp::setString);</span>
+<span class="nc" id="L238">                urlMap.getOverrideParameters()</span>
+<span class="nc" id="L239">                        .forEach(pp::setString);</span>
 
                 // remove ignore parameters
-<span class="fc" id="L242">                urlMap.getIgnoreParameters().keySet()</span>
-<span class="fc" id="L243">                        .forEach(pp::remove);</span>
+<span class="nc" id="L242">                urlMap.getIgnoreParameters().keySet()</span>
+<span class="nc" id="L243">                        .forEach(pp::remove);</span>
                 
-<span class="fc" id="L245">                log.debug(&quot;mapped {} params from url {} &quot;, pp.getKeys().length, url);</span>
+<span class="nc" id="L245">                log.debug(&quot;mapped {} params from url {} &quot;, pp.getKeys().length, url);</span>
 
-<span class="fc" id="L247">                break;</span>
+<span class="nc" id="L247">                break;</span>
             }
-<span class="fc" id="L249">        }</span>
-<span class="fc" id="L250">    }</span>
+<span class="nc" id="L249">        }</span>
+<span class="nc" id="L250">    }</span>
 
     // ---- Service initialization ------------------------------------------
 
@@ -257,61 +257,61 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
     @Override
     public void init() throws InitializationException
     {
-<span class="fc" id="L260">        Configuration cfg = getConfiguration();</span>
+<span class="nc" id="L260">        Configuration cfg = getConfiguration();</span>
 
-<span class="fc" id="L262">        String configFile = cfg.getString(CONFIGURATION_FILE_KEY, DEFAULT_CONFIGURATION_FILE);</span>
+<span class="nc" id="L262">        String configFile = cfg.getString(CONFIGURATION_FILE_KEY, DEFAULT_CONFIGURATION_FILE);</span>
 
         // context resource path has to begin with slash, cft.
         // context.getResource
-<span class="fc bfc" id="L266" title="All 2 branches covered.">        if (!configFile.startsWith(&quot;/&quot;))</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">        if (!configFile.startsWith(&quot;/&quot;))</span>
         {
-<span class="fc" id="L268">            configFile = &quot;/&quot; + configFile;</span>
+<span class="nc" id="L268">            configFile = &quot;/&quot; + configFile;</span>
         }
 
-<span class="fc" id="L271">        ServletService servletService = (ServletService) TurbineServices.getInstance().getService(ServletService.SERVICE_NAME);</span>
+<span class="nc" id="L271">        ServletService servletService = (ServletService) TurbineServices.getInstance().getService(ServletService.SERVICE_NAME);</span>
 
-<span class="fc" id="L273">        try (InputStream reader = servletService.getResourceAsStream(configFile))</span>
+<span class="nc" id="L273">        try (InputStream reader = servletService.getResourceAsStream(configFile))</span>
         {
-<span class="fc bfc" id="L275" title="All 2 branches covered.">            if (configFile.endsWith(&quot;.xml&quot;))</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">            if (configFile.endsWith(&quot;.xml&quot;))</span>
             {
-<span class="fc" id="L277">                JAXBContext jaxb = JAXBContext.newInstance(URLMappingContainer.class);</span>
-<span class="fc" id="L278">                Unmarshaller unmarshaller = jaxb.createUnmarshaller();</span>
-<span class="fc" id="L279">                container = (URLMappingContainer) unmarshaller.unmarshal(reader);</span>
-<span class="pc bpc" id="L280" title="1 of 2 branches missed.">            } else if (configFile.endsWith(&quot;.yml&quot;))</span>
+<span class="nc" id="L277">                JAXBContext jaxb = JAXBContext.newInstance(URLMappingContainer.class);</span>
+<span class="nc" id="L278">                Unmarshaller unmarshaller = jaxb.createUnmarshaller();</span>
+<span class="nc" id="L279">                container = (URLMappingContainer) unmarshaller.unmarshal(reader);</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">            } else if (configFile.endsWith(&quot;.yml&quot;))</span>
             {
                 // org.apache.commons.configuration2.YAMLConfiguration does only expose property like configuration values,
                 // which is not what we need here -&gt; java object deserialization.
 <span class="nc" id="L284">                ObjectMapper mapper = new ObjectMapper(new YAMLFactory());</span>
 <span class="nc" id="L285">                container = mapper.readValue(reader, URLMappingContainer.class);</span>
-<span class="pc bpc" id="L286" title="1 of 2 branches missed.">            } else if (configFile.endsWith(&quot;.json&quot;))</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">            } else if (configFile.endsWith(&quot;.json&quot;))</span>
             {
-<span class="fc" id="L288">                ObjectMapper mapper = JsonMapper.builder().build();</span>
-<span class="fc" id="L289">                container = mapper.readValue(reader, URLMappingContainer.class);</span>
+<span class="nc" id="L288">                ObjectMapper mapper = JsonMapper.builder().build();</span>
+<span class="nc" id="L289">                container = mapper.readValue(reader, URLMappingContainer.class);</span>
             }
         }
 <span class="nc" id="L292">        catch (IOException | JAXBException e)</span>
         {
 <span class="nc" id="L294">            throw new InitializationException(&quot;Could not load configuration file &quot; + configFile, e);</span>
-<span class="fc" id="L295">        }</span>
+<span class="nc" id="L295">        }</span>
 
         // Get groupNamesMap for every Pattern and store it in the entry
-<span class="fc bfc" id="L298" title="All 2 branches covered.">        for (URLMapEntry urlMap : container.getMapEntries())</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">        for (URLMapEntry urlMap : container.getMapEntries())</span>
         {
-<span class="fc" id="L300">            int position = 1;</span>
-<span class="fc" id="L301">            Map&lt;String, Integer&gt; groupNamesMap = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L302">            Matcher matcher = NAMED_GROUPS_PATTERN.matcher(urlMap.getUrlPattern().pattern());</span>
+<span class="nc" id="L300">            int position = 1;</span>
+<span class="nc" id="L301">            Map&lt;String, Integer&gt; groupNamesMap = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L302">            Matcher matcher = NAMED_GROUPS_PATTERN.matcher(urlMap.getUrlPattern().pattern());</span>
 
-<span class="fc bfc" id="L304" title="All 2 branches covered.">            while (matcher.find())</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">            while (matcher.find())</span>
             {
-<span class="fc" id="L306">                groupNamesMap.put(matcher.group(1), Integer.valueOf(position++));</span>
+<span class="nc" id="L306">                groupNamesMap.put(matcher.group(1), Integer.valueOf(position++));</span>
             }
-<span class="fc" id="L308">            urlMap.setGroupNamesMap(groupNamesMap);</span>
-<span class="fc" id="L309">        }</span>
+<span class="nc" id="L308">            urlMap.setGroupNamesMap(groupNamesMap);</span>
+<span class="nc" id="L309">        }</span>
 
-<span class="fc" id="L311">        log.info(&quot;Loaded {} url-mappings from {}&quot;, Integer.valueOf(container.getMapEntries().size()), configFile);</span>
+<span class="nc" id="L311">        log.info(&quot;Loaded {} url-mappings from {}&quot;, Integer.valueOf(container.getMapEntries().size()), configFile);</span>
 
-<span class="fc" id="L313">        setInit(true);</span>
-<span class="fc" id="L314">    }</span>
+<span class="nc" id="L313">        setInit(true);</span>
+<span class="nc" id="L314">    }</span>
 
     /**
      * Returns to uninitialized state.
@@ -319,8 +319,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
     @Override
     public void shutdown()
     {
-<span class="fc" id="L322">        container.getMapEntries().clear();</span>
-<span class="fc" id="L323">        setInit(false);</span>
-<span class="fc" id="L324">    }</span>
+<span class="nc" id="L322">        container.getMapEntries().clear();</span>
+<span class="nc" id="L323">        setInit(false);</span>
+<span class="nc" id="L324">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

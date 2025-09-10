@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultUserManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.security</a> &gt; <span class="el_source">DefaultUserManager.java</span></div><h1>DefaultUserManager.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.security;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultUserManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.security</a> &gt; <span class="el_source">DefaultUserManager.java</span></div><h1>DefaultUserManager.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.security;
 
 
 /*
@@ -98,8 +98,8 @@ import org.apache.turbine.util.ObjectUtils;
     protected &lt;U extends User&gt; U wrap(TurbineUser user)
     {
         @SuppressWarnings(&quot;unchecked&quot;)
-<span class="fc" id="L101">        U u = (U) getUserWrapper(user);</span>
-<span class="fc" id="L102">        return u;</span>
+<span class="nc" id="L101">        U u = (U) getUserWrapper(user);</span>
+<span class="nc" id="L102">        return u;</span>
     }
 
     /**
@@ -114,9 +114,9 @@ import org.apache.turbine.util.ObjectUtils;
     {
 		try
 		{
-<span class="fc" id="L117">            Object params[] = new Object[] { user };</span>
-<span class="fc" id="L118">            String signature[] = new String[] { TurbineUser.class.getName() };</span>
-<span class="fc" id="L119">            return (U) factoryService.getInstance(getUserWrapperClass(), params, signature);</span>
+<span class="nc" id="L117">            Object params[] = new Object[] { user };</span>
+<span class="nc" id="L118">            String signature[] = new String[] { TurbineUser.class.getName() };</span>
+<span class="nc" id="L119">            return (U) factoryService.getInstance(getUserWrapperClass(), params, signature);</span>
 		}
 <span class="nc" id="L121">		catch (Exception e)</span>
 		{
@@ -132,7 +132,7 @@ import org.apache.turbine.util.ObjectUtils;
      */
     public String getUserWrapperClass()
     {
-<span class="fc" id="L135">		return userWrapperClass;</span>
+<span class="nc" id="L135">		return userWrapperClass;</span>
 	}
 
     /**
@@ -196,11 +196,11 @@ import org.apache.turbine.util.ObjectUtils;
     public boolean accountExists(User user)
             throws DataBackendException
     {
-<span class="fc" id="L199">        boolean result = false;</span>
-<span class="pc bpc" id="L200" title="1 of 2 branches missed.">        if (user != null) {</span>
-<span class="fc" id="L201">            result = umDelegate.checkExists(user.getUserDelegate());</span>
+<span class="nc" id="L199">        boolean result = false;</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">        if (user != null) {</span>
+<span class="nc" id="L201">            result = umDelegate.checkExists(user.getUserDelegate());</span>
         }
-<span class="fc" id="L203">        return result;</span>
+<span class="nc" id="L203">        return result;</span>
     }
 
     /**
@@ -216,7 +216,7 @@ import org.apache.turbine.util.ObjectUtils;
     public boolean accountExists(String userName)
             throws DataBackendException
     {
-<span class="fc" id="L219">        return umDelegate.checkExists(userName);</span>
+<span class="nc" id="L219">        return umDelegate.checkExists(userName);</span>
     }
 
     /**
@@ -234,8 +234,8 @@ import org.apache.turbine.util.ObjectUtils;
     public &lt;U extends User&gt; U retrieve(String username)
             throws UnknownEntityException, DataBackendException
     {
-<span class="fc" id="L237">        TurbineUser u = umDelegate.getUser(username);</span>
-<span class="fc" id="L238">        return wrap(u);</span>
+<span class="nc" id="L237">        TurbineUser u = umDelegate.getUser(username);</span>
+<span class="nc" id="L238">        return wrap(u);</span>
     }
 
     /**
@@ -288,8 +288,8 @@ import org.apache.turbine.util.ObjectUtils;
             throws PasswordMismatchException, UnknownEntityException,
             DataBackendException
     {
-<span class="fc" id="L291">        TurbineUser u = umDelegate.getUser(username, password);</span>
-<span class="fc" id="L292">        return wrap(u);</span>
+<span class="nc" id="L291">        TurbineUser u = umDelegate.getUser(username, password);</span>
+<span class="nc" id="L292">        return wrap(u);</span>
     }
 
     /**
@@ -306,20 +306,20 @@ import org.apache.turbine.util.ObjectUtils;
     public void store(User user)
             throws UnknownEntityException, DataBackendException
     {
-<span class="pc bpc" id="L309" title="1 of 2 branches missed.">        if (user == null) {</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">        if (user == null) {</span>
 <span class="nc" id="L310">            throw new UnknownEntityException(&quot;user is null&quot;);</span>
         }
         try
         {
-<span class="fc" id="L314">            user.setObjectdata(ObjectUtils.serializeMap(user.getPermStorage()));</span>
+<span class="nc" id="L314">            user.setObjectdata(ObjectUtils.serializeMap(user.getPermStorage()));</span>
         }
 <span class="nc" id="L316">        catch (Exception e)</span>
         {
 <span class="nc" id="L318">            throw new DataBackendException(&quot;Could not serialize permanent storage&quot;, e);</span>
-<span class="fc" id="L319">        }</span>
+<span class="nc" id="L319">        }</span>
 
-<span class="fc" id="L321">        umDelegate.saveUser(((TurbineUserDelegate)user).getUserDelegate());</span>
-<span class="fc" id="L322">    }</span>
+<span class="nc" id="L321">        umDelegate.saveUser(((TurbineUserDelegate)user).getUserDelegate());</span>
+<span class="nc" id="L322">    }</span>
 
     /**
      * Saves User data when the session is unbound. The user account is required
@@ -375,11 +375,11 @@ import org.apache.turbine.util.ObjectUtils;
     public void createAccount(User user, String initialPassword)
             throws UnknownEntityException, EntityExistsException, DataBackendException
     {
-<span class="pc bpc" id="L378" title="1 of 2 branches missed.">        if (user == null) {</span>
+<span class="nc bnc" id="L378" title="All 2 branches missed.">        if (user == null) {</span>
 <span class="nc" id="L379">            throw new UnknownEntityException(&quot;user is null&quot;);</span>
         }
-<span class="fc" id="L381">        umDelegate.addUser(user.getUserDelegate(), initialPassword);</span>
-<span class="fc" id="L382">    }</span>
+<span class="nc" id="L381">        umDelegate.addUser(user.getUserDelegate(), initialPassword);</span>
+<span class="nc" id="L382">    }</span>
 
     /**
      * Removes an user account from the system.
@@ -461,8 +461,8 @@ import org.apache.turbine.util.ObjectUtils;
     @Override
     public &lt;U extends User&gt; U getAnonymousUser() throws UnknownEntityException
     {
-<span class="fc" id="L464">        TurbineUser u = umDelegate.getAnonymousUser();</span>
-<span class="fc" id="L465">        return wrap(u);</span>
+<span class="nc" id="L464">        TurbineUser u = umDelegate.getAnonymousUser();</span>
+<span class="nc" id="L465">        return wrap(u);</span>
     }
 
     /**
@@ -477,7 +477,7 @@ import org.apache.turbine.util.ObjectUtils;
     @Override
     public boolean isAnonymousUser(User u)
     {
-<span class="fc" id="L480">        return umDelegate.isAnonymousUser(u);</span>
+<span class="nc" id="L480">        return umDelegate.isAnonymousUser(u);</span>
     }
 
     /**
@@ -493,8 +493,8 @@ import org.apache.turbine.util.ObjectUtils;
     @Override
     public &lt;U extends User&gt; U getUserInstance() throws DataBackendException
     {
-<span class="fc" id="L496">        TurbineUser u = umDelegate.getUserInstance();</span>
-<span class="fc" id="L497">        return wrap(u);</span>
+<span class="nc" id="L496">        TurbineUser u = umDelegate.getUserInstance();</span>
+<span class="nc" id="L497">        return wrap(u);</span>
     }
 
     /**
@@ -513,8 +513,8 @@ import org.apache.turbine.util.ObjectUtils;
     @Override
     public &lt;U extends User&gt; U getUserInstance(String userName) throws DataBackendException
     {
-<span class="fc" id="L516">        TurbineUser u = umDelegate.getUserInstance(userName);</span>
-<span class="fc" id="L517">        return wrap(u);</span>
+<span class="nc" id="L516">        TurbineUser u = umDelegate.getUserInstance(userName);</span>
+<span class="nc" id="L517">        return wrap(u);</span>
     }
 
     /**
@@ -529,10 +529,10 @@ import org.apache.turbine.util.ObjectUtils;
     @Override
     public &lt;A extends AccessControlList&gt; A getACL(User user) throws UnknownEntityException
     {
-<span class="pc bpc" id="L532" title="1 of 2 branches missed.">        if (user == null) {</span>
+<span class="nc bnc" id="L532" title="All 2 branches missed.">        if (user == null) {</span>
 <span class="nc" id="L533">            throw new UnknownEntityException(&quot;user is null&quot;);</span>
         }
-<span class="fc" id="L535">        return umDelegate.getACL(user.getUserDelegate());</span>
+<span class="nc" id="L535">        return umDelegate.getACL(user.getUserDelegate());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

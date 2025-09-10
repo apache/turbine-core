@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TemplateLink.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.pull.tools</a> &gt; <span class="el_source">TemplateLink.java</span></div><h1>TemplateLink.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.pull.tools;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TemplateLink.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.pull.tools</a> &gt; <span class="el_source">TemplateLink.java</span></div><h1>TemplateLink.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.pull.tools;
 
 
 /*
@@ -69,7 +69,7 @@ public class TemplateLink
     public static final boolean TEMPLATE_LINK_RELATIVE_DEFAULT = false;
 
     /** Do we want a relative link? */
-<span class="fc" id="L72">    protected boolean wantRelative = false;</span>
+<span class="nc" id="L72">    protected boolean wantRelative = false;</span>
     
     /**
      * Should this tool add Container Encoding to the URIs returned?
@@ -83,13 +83,13 @@ public class TemplateLink
     public static final boolean TEMPLATE_LINK_ENCODING_DEFAULT = false;
     
     /** Do we want the container to encode the response? */
-<span class="fc" id="L86">    boolean wantEncoding = false;</span>
+<span class="nc" id="L86">    boolean wantEncoding = false;</span>
 
     /** cache of the template name for getPage() */
-<span class="fc" id="L89">    protected String template = null;</span>
+<span class="nc" id="L89">    protected String template = null;</span>
 
     /** TemplateURI used as backend for this object */
-<span class="fc" id="L92">    protected TemplateURI templateURI = null;</span>
+<span class="nc" id="L92">    protected TemplateURI templateURI = null;</span>
 
     /** Logging */
 <span class="fc" id="L95">    private static final Logger log = LogManager.getLogger(TemplateLink.class);</span>
@@ -100,9 +100,9 @@ public class TemplateLink
      * The init method must be called before use.
      */
     public TemplateLink()
-<span class="fc" id="L103">    {</span>
+<span class="nc" id="L103">    {</span>
         // empty
-<span class="fc" id="L105">    }</span>
+<span class="nc" id="L105">    }</span>
 
     /*
      * ========================================================================
@@ -126,34 +126,34 @@ public class TemplateLink
         // we just blithely cast to RunData as if another object
         // or null is passed in we'll throw an appropriate runtime
         // exception.
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        if (data instanceof PipelineData)</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        if (data instanceof PipelineData)</span>
         {
-<span class="fc" id="L131">            PipelineData pipelineData = (PipelineData) data;</span>
-<span class="fc" id="L132">            RunData runData = (RunData)pipelineData;</span>
-<span class="fc" id="L133">            templateURI = new TemplateURI(runData);</span>
-<span class="fc" id="L134">        }</span>
+<span class="nc" id="L131">            PipelineData pipelineData = (PipelineData) data;</span>
+<span class="nc" id="L132">            RunData runData = (RunData)pipelineData;</span>
+<span class="nc" id="L133">            templateURI = new TemplateURI(runData);</span>
+<span class="nc" id="L134">        }</span>
         else
         {
 <span class="nc" id="L137">            templateURI = new TemplateURI((RunData) data);</span>
         }
 
         Configuration conf =
-<span class="fc" id="L141">                Turbine.getConfiguration().subset(TEMPLATE_LINK_PREFIX);</span>
+<span class="nc" id="L141">                Turbine.getConfiguration().subset(TEMPLATE_LINK_PREFIX);</span>
 
-<span class="pc bpc" id="L143" title="1 of 2 branches missed.">        if (conf != null)</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        if (conf != null)</span>
         {
-<span class="fc" id="L145">            wantRelative = conf.getBoolean(TEMPLATE_LINK_RELATIVE_KEY,</span>
+<span class="nc" id="L145">            wantRelative = conf.getBoolean(TEMPLATE_LINK_RELATIVE_KEY,</span>
                     TEMPLATE_LINK_RELATIVE_DEFAULT);
-<span class="fc" id="L147">            wantEncoding = conf.getBoolean(TEMPLATE_LINK_ENCODING_KEY,</span>
+<span class="nc" id="L147">            wantEncoding = conf.getBoolean(TEMPLATE_LINK_ENCODING_KEY,</span>
                     TEMPLATE_LINK_ENCODING_DEFAULT);
         }
         
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        if (!wantEncoding)</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (!wantEncoding)</span>
         {
-<span class="fc" id="L153">            templateURI.clearResponse();</span>
+<span class="nc" id="L153">            templateURI.clearResponse();</span>
         }
 
-<span class="fc" id="L156">    }</span>
+<span class="nc" id="L156">    }</span>
 
     /**
      * Refresh method - does nothing

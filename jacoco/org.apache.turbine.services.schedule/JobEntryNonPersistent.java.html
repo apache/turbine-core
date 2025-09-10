@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JobEntryNonPersistent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.schedule</a> &gt; <span class="el_source">JobEntryNonPersistent.java</span></div><h1>JobEntryNonPersistent.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.schedule;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JobEntryNonPersistent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.schedule</a> &gt; <span class="el_source">JobEntryNonPersistent.java</span></div><h1>JobEntryNonPersistent.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.schedule;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -35,15 +35,15 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     private int wd;
     private int day_mo;
     private String task;
-<span class="fc" id="L38">    private boolean isnew = true;</span>
+<span class="nc" id="L38">    private boolean isnew = true;</span>
 
     /**
      * Default constructor
      */
     public JobEntryNonPersistent()
     {
-<span class="fc" id="L45">        super();</span>
-<span class="fc" id="L46">    }</span>
+<span class="nc" id="L45">        super();</span>
+<span class="nc" id="L46">    }</span>
 
     /**
      * Constructor.
@@ -84,8 +84,8 @@ public class JobEntryNonPersistent extends AbstractJobEntry
                     String task)
             throws TurbineException
     {
-<span class="fc" id="L87">        super(sec, min, hour, wd, day_mo, task);</span>
-<span class="fc" id="L88">    }</span>
+<span class="nc" id="L87">        super(sec, min, hour, wd, day_mo, task);</span>
+<span class="nc" id="L88">    }</span>
 
     /**
      * @see java.lang.Object#hashCode()
@@ -102,12 +102,12 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public boolean equals(Object obj)
     {
-<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (obj instanceof JobEntry)</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (obj instanceof JobEntry)</span>
         {
-<span class="fc bfc" id="L107" title="All 2 branches covered.">            return compareTo((JobEntry)obj) == 0;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            return compareTo((JobEntry)obj) == 0;</span>
         }
 
-<span class="fc" id="L110">        return false;</span>
+<span class="nc" id="L110">        return false;</span>
     }
 
     /**
@@ -129,7 +129,7 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public int getJobId()
     {
-<span class="fc" id="L132">        return jobId;</span>
+<span class="nc" id="L132">        return jobId;</span>
     }
 
     /**
@@ -140,8 +140,8 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public void setJobId(int v)
     {
-<span class="fc" id="L143">        this.jobId = v;</span>
-<span class="fc" id="L144">    }</span>
+<span class="nc" id="L143">        this.jobId = v;</span>
+<span class="nc" id="L144">    }</span>
 
     /**
      * Get the value of second.
@@ -151,7 +151,7 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public int getSecond()
     {
-<span class="fc" id="L154">        return sec;</span>
+<span class="nc" id="L154">        return sec;</span>
     }
 
     /**
@@ -162,8 +162,8 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public void setSecond(int v)
     {
-<span class="fc" id="L165">        this.sec = v;</span>
-<span class="fc" id="L166">    }</span>
+<span class="nc" id="L165">        this.sec = v;</span>
+<span class="nc" id="L166">    }</span>
 
     /**
      * Get the value of minute.
@@ -173,7 +173,7 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public int getMinute()
     {
-<span class="fc" id="L176">        return min;</span>
+<span class="nc" id="L176">        return min;</span>
     }
 
     /**
@@ -184,8 +184,8 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public void setMinute(int v)
     {
-<span class="fc" id="L187">        this.min = v;</span>
-<span class="fc" id="L188">    }</span>
+<span class="nc" id="L187">        this.min = v;</span>
+<span class="nc" id="L188">    }</span>
 
     /**
      * Get the value of hour.
@@ -195,7 +195,7 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public int getHour()
     {
-<span class="fc" id="L198">        return hour;</span>
+<span class="nc" id="L198">        return hour;</span>
     }
 
     /**
@@ -206,8 +206,8 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public void setHour(int v)
     {
-<span class="fc" id="L209">        this.hour = v;</span>
-<span class="fc" id="L210">    }</span>
+<span class="nc" id="L209">        this.hour = v;</span>
+<span class="nc" id="L210">    }</span>
 
     /**
      * Get the value of weekDay.
@@ -217,7 +217,7 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public int getWeekDay()
     {
-<span class="fc" id="L220">        return wd;</span>
+<span class="nc" id="L220">        return wd;</span>
     }
 
     /**
@@ -228,8 +228,8 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public void setWeekDay(int v)
     {
-<span class="fc" id="L231">        this.wd = v;</span>
-<span class="fc" id="L232">    }</span>
+<span class="nc" id="L231">        this.wd = v;</span>
+<span class="nc" id="L232">    }</span>
 
     /**
      * Get the value of dayOfMonth.
@@ -239,7 +239,7 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public int getDayOfMonth()
     {
-<span class="fc" id="L242">        return day_mo;</span>
+<span class="nc" id="L242">        return day_mo;</span>
     }
 
     /**
@@ -250,8 +250,8 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public void setDayOfMonth(int v)
     {
-<span class="fc" id="L253">        this.day_mo = v;</span>
-<span class="fc" id="L254">    }</span>
+<span class="nc" id="L253">        this.day_mo = v;</span>
+<span class="nc" id="L254">    }</span>
 
     /**
      * Get the value of task.
@@ -261,7 +261,7 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public String getTask()
     {
-<span class="fc" id="L264">        return task;</span>
+<span class="nc" id="L264">        return task;</span>
     }
 
     /**
@@ -272,7 +272,7 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public void setTask(String v)
     {
-<span class="fc" id="L275">        this.task = v;</span>
-<span class="fc" id="L276">    }</span>
+<span class="nc" id="L275">        this.task = v;</span>
+<span class="nc" id="L276">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HtmlPageAttributes.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util.template</a> &gt; <span class="el_source">HtmlPageAttributes.java</span></div><h1>HtmlPageAttributes.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util.template;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HtmlPageAttributes.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util.template</a> &gt; <span class="el_source">HtmlPageAttributes.java</span></div><h1>HtmlPageAttributes.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util.template;
 
 
 /*
@@ -107,27 +107,27 @@ public class HtmlPageAttributes
     private String title;
 
     /** Body Attributes */
-<span class="fc" id="L110">    private final Map&lt;String, String&gt; bodyAttributes = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L110">    private final Map&lt;String, String&gt; bodyAttributes = new LinkedHashMap&lt;&gt;();</span>
 
     /** Script references */
-<span class="fc" id="L113">    private final List&lt;String&gt; scripts = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L113">    private final List&lt;String&gt; scripts = new ArrayList&lt;&gt;();</span>
 
     /** External references */
-<span class="fc" id="L116">    private final List&lt;LinkTag&gt; linkTags = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L116">    private final List&lt;LinkTag&gt; linkTags = new ArrayList&lt;&gt;();</span>
 
     /** Inline styles */
-<span class="fc" id="L119">    private final List&lt;String&gt; styles = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L119">    private final List&lt;String&gt; styles = new ArrayList&lt;&gt;();</span>
 
     /** Meta tags for the HEAD */
-<span class="fc" id="L122">    private final Map&lt;String, String&gt; metaTags = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L122">    private final Map&lt;String, String&gt; metaTags = new LinkedHashMap&lt;&gt;();</span>
 
     /** http-equiv tags */
-<span class="fc" id="L125">    private final Map&lt;String, String&gt; httpEquivs = new LinkedHashMap&lt;&gt;();</span>
+<span class="nc" id="L125">    private final Map&lt;String, String&gt; httpEquivs = new LinkedHashMap&lt;&gt;();</span>
 
     /** Doctype */
-<span class="fc" id="L128">    private String doctype = null;</span>
+<span class="nc" id="L128">    private String doctype = null;</span>
 
-<span class="fc" id="L130">    @TurbineConfiguration( TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY )</span>
+<span class="nc" id="L130">    @TurbineConfiguration( TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY )</span>
     private String defaultHtmlDoctypeRootElement = TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_DEFAULT;
 
     @TurbineConfiguration( TurbineConstants.DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY )
@@ -140,9 +140,9 @@ public class HtmlPageAttributes
      * Construct a new instance
      */
     public HtmlPageAttributes()
-<span class="fc" id="L143">    {</span>
-<span class="fc" id="L144">        init(null);</span>
-<span class="fc" id="L145">    }</span>
+<span class="nc" id="L143">    {</span>
+<span class="nc" id="L144">        init(null);</span>
+<span class="nc" id="L145">    }</span>
 
     /**
      * Initialize this instance.
@@ -153,14 +153,14 @@ public class HtmlPageAttributes
     @Override
     public void init(Object data)
     {
-<span class="fc" id="L156">        this.title = null;</span>
-<span class="fc" id="L157">        this.bodyAttributes.clear();</span>
-<span class="fc" id="L158">        this.scripts.clear();</span>
-<span class="fc" id="L159">        this.linkTags.clear();</span>
-<span class="fc" id="L160">        this.styles.clear();</span>
-<span class="fc" id="L161">        this.metaTags.clear();</span>
-<span class="fc" id="L162">        this.httpEquivs.clear();</span>
-<span class="fc" id="L163">    }</span>
+<span class="nc" id="L156">        this.title = null;</span>
+<span class="nc" id="L157">        this.bodyAttributes.clear();</span>
+<span class="nc" id="L158">        this.scripts.clear();</span>
+<span class="nc" id="L159">        this.linkTags.clear();</span>
+<span class="nc" id="L160">        this.styles.clear();</span>
+<span class="nc" id="L161">        this.metaTags.clear();</span>
+<span class="nc" id="L162">        this.httpEquivs.clear();</span>
+<span class="nc" id="L163">    }</span>
 
     /**
      * Refresh method - does nothing
@@ -499,7 +499,7 @@ public class HtmlPageAttributes
     @Override
     public String toString()
     {
-<span class="fc" id="L502">        return &quot;&quot;;</span>
+<span class="nc" id="L502">        return &quot;&quot;;</span>
     }
 
     /**
@@ -638,21 +638,21 @@ public class HtmlPageAttributes
      */
     public String getDefaultDoctype()
     {
-<span class="pc bpc" id="L641" title="1 of 2 branches missed.">        if (doctype == null)</span>
+<span class="nc bnc" id="L641" title="All 2 branches missed.">        if (doctype == null)</span>
         {
-<span class="fc" id="L643">            String tag = defaultHtmlDoctypeRootElement;</span>
+<span class="nc" id="L643">            String tag = defaultHtmlDoctypeRootElement;</span>
 
-<span class="pc bpc" id="L645" title="1 of 2 branches missed.">            if (StringUtils.isEmpty(tag))</span>
+<span class="nc bnc" id="L645" title="All 2 branches missed.">            if (StringUtils.isEmpty(tag))</span>
             {
 <span class="nc" id="L647">                doctype = &quot;&quot;;</span>
             }
             else
             {
-<span class="fc" id="L651">                doctype = getDoctype(tag, defaultHtmlDoctypeIdentifier, defaultHtmlDoctypeUri);</span>
+<span class="nc" id="L651">                doctype = getDoctype(tag, defaultHtmlDoctypeIdentifier, defaultHtmlDoctypeUri);</span>
             }
         }
 
-<span class="fc" id="L655">        return doctype;</span>
+<span class="nc" id="L655">        return doctype;</span>
     }
 
     /**
@@ -665,27 +665,27 @@ public class HtmlPageAttributes
      */
     public String getDoctype(String tag, String identifier, String uri)
     {
-<span class="fc" id="L668">        StringBuilder doctypeBuf = new StringBuilder(&quot;&lt;!DOCTYPE &quot;);</span>
-<span class="fc" id="L669">        doctypeBuf.append(tag);</span>
+<span class="nc" id="L668">        StringBuilder doctypeBuf = new StringBuilder(&quot;&lt;!DOCTYPE &quot;);</span>
+<span class="nc" id="L669">        doctypeBuf.append(tag);</span>
 
-<span class="fc bfc" id="L671" title="All 2 branches covered.">        if (StringUtils.isNotEmpty(identifier))</span>
+<span class="nc bnc" id="L671" title="All 2 branches missed.">        if (StringUtils.isNotEmpty(identifier))</span>
         {
-<span class="fc" id="L673">            doctypeBuf.append(&quot; PUBLIC \&quot;&quot;);</span>
-<span class="fc" id="L674">            doctypeBuf.append(identifier);</span>
-<span class="fc" id="L675">            doctypeBuf.append(&quot;\&quot; \&quot;&quot;);</span>
-<span class="fc" id="L676">            doctypeBuf.append(uri);</span>
-<span class="fc" id="L677">            doctypeBuf.append('&quot;');</span>
+<span class="nc" id="L673">            doctypeBuf.append(&quot; PUBLIC \&quot;&quot;);</span>
+<span class="nc" id="L674">            doctypeBuf.append(identifier);</span>
+<span class="nc" id="L675">            doctypeBuf.append(&quot;\&quot; \&quot;&quot;);</span>
+<span class="nc" id="L676">            doctypeBuf.append(uri);</span>
+<span class="nc" id="L677">            doctypeBuf.append('&quot;');</span>
         }
-<span class="fc bfc" id="L679" title="All 2 branches covered.">        else if (StringUtils.isNotEmpty(uri))</span>
+<span class="nc bnc" id="L679" title="All 2 branches missed.">        else if (StringUtils.isNotEmpty(uri))</span>
         {
-<span class="fc" id="L681">            doctypeBuf.append(&quot; SYSTEM \&quot;&quot;);</span>
-<span class="fc" id="L682">            doctypeBuf.append(uri);</span>
-<span class="fc" id="L683">            doctypeBuf.append('&quot;');</span>
+<span class="nc" id="L681">            doctypeBuf.append(&quot; SYSTEM \&quot;&quot;);</span>
+<span class="nc" id="L682">            doctypeBuf.append(uri);</span>
+<span class="nc" id="L683">            doctypeBuf.append('&quot;');</span>
         }
 
-<span class="fc" id="L686">        doctypeBuf.append('&gt;');</span>
+<span class="nc" id="L686">        doctypeBuf.append('&gt;');</span>
 
-<span class="fc" id="L688">        return doctypeBuf.toString();</span>
+<span class="nc" id="L688">        return doctypeBuf.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

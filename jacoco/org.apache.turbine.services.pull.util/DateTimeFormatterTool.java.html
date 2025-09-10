@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DateTimeFormatterTool.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.pull.util</a> &gt; <span class="el_source">DateTimeFormatterTool.java</span></div><h1>DateTimeFormatterTool.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.pull.util;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DateTimeFormatterTool.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.pull.util</a> &gt; <span class="el_source">DateTimeFormatterTool.java</span></div><h1>DateTimeFormatterTool.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.pull.util;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -51,7 +51,7 @@ import org.apache.turbine.util.RunData;
  * if the source and the target format do not match appropriately.
  *
  */
-<span class="fc" id="L54">public class DateTimeFormatterTool extends DateFormatter</span>
+<span class="nc" id="L54">public class DateTimeFormatterTool extends DateFormatter</span>
         implements DateTimeFormatterInterface
 {
 
@@ -66,7 +66,7 @@ import org.apache.turbine.util.RunData;
     
     protected Locale locale;
     
-<span class="fc" id="L69">    private boolean overrideFromRequestLocale = false;</span>
+<span class="nc" id="L69">    private boolean overrideFromRequestLocale = false;</span>
     
     /**
      * Initialize the application tool. The data parameter holds a different
@@ -92,28 +92,28 @@ import org.apache.turbine.util.RunData;
     @Override
     public void init(Object data)
     {
-<span class="fc" id="L95">        log.info(&quot;Initializing DateTimeFormatterTool with service {}&quot;,</span>
+<span class="nc" id="L95">        log.info(&quot;Initializing DateTimeFormatterTool with service {}&quot;,</span>
                 dtfs);
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (dtfs == null)</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (dtfs == null)</span>
         {
 <span class="nc" id="L99">            ServiceManager serviceManager = TurbineServices.getInstance();</span>
 <span class="nc" id="L100">            dtfs = (DateTimeFormatterService)serviceManager.getService(DateTimeFormatterService.SERVICE_NAME);</span>
         }
         
-<span class="fc" id="L103">        overrideFromRequestLocale = Turbine.getConfiguration()</span>
-<span class="fc" id="L104">                .getBoolean(USE_REQUEST_LOCALE_KEY, false);</span>
+<span class="nc" id="L103">        overrideFromRequestLocale = Turbine.getConfiguration()</span>
+<span class="nc" id="L104">                .getBoolean(USE_REQUEST_LOCALE_KEY, false);</span>
         // dtfs should be already initialized
-<span class="pc bpc" id="L106" title="3 of 4 branches missed.">        if (overrideFromRequestLocale &amp;&amp; data instanceof RunData)</span>
+<span class="nc bnc" id="L106" title="All 4 branches missed.">        if (overrideFromRequestLocale &amp;&amp; data instanceof RunData)</span>
         {
             // Pull necessary information out of RunData while we have
             // a reference to it.
 <span class="nc" id="L110">            locale = localizationService.getLocale(((RunData) data).getRequest());</span>
 <span class="nc" id="L111">            log.info(&quot;Override {} with request locale {} from {}&quot;, dtfs.getLocale(), locale, localizationService);</span>
         }
-<span class="fc" id="L113">    }</span>
+<span class="nc" id="L113">    }</span>
 
     public DateTimeFormatterService getDtfs() {
-<span class="fc" id="L116">        return dtfs;</span>
+<span class="nc" id="L116">        return dtfs;</span>
     }
 
     /**
@@ -132,7 +132,7 @@ import org.apache.turbine.util.RunData;
     @Override
     public DateTimeFormatter getDefaultFormat()
     {
-<span class="fc" id="L135">        return getDtfs().getDefaultFormat();</span>
+<span class="nc" id="L135">        return getDtfs().getDefaultFormat();</span>
     }
 
     @Override
@@ -150,13 +150,13 @@ import org.apache.turbine.util.RunData;
     @Override
     public &lt;T extends TemporalAccessor&gt; String format(T temporalAccessor)
     {
-<span class="fc" id="L153">        return getDtfs().format(temporalAccessor, getDtfs().getFormatPattern(), getLocale());</span>
+<span class="nc" id="L153">        return getDtfs().format(temporalAccessor, getDtfs().getFormatPattern(), getLocale());</span>
     }
 
     @Override
     public &lt;T extends TemporalAccessor&gt; String format(T temporalAccessor, String dateFormatString)
     {
-<span class="fc" id="L159">        return getDtfs().format(temporalAccessor, dateFormatString, getLocale());</span>
+<span class="nc" id="L159">        return getDtfs().format(temporalAccessor, dateFormatString, getLocale());</span>
     }
 
     @Override
@@ -187,13 +187,13 @@ import org.apache.turbine.util.RunData;
     @Override
     public String mapTo( String src, DateTimeFormatter outgoingFormat )
     {
-<span class="fc" id="L190">        return  getDtfs().map( src, outgoingFormat, getLocale(), getDtfs().getDefaultFormat() );</span>
+<span class="nc" id="L190">        return  getDtfs().map( src, outgoingFormat, getLocale(), getDtfs().getDefaultFormat() );</span>
     }
 
     @Override
     public String mapFrom( String src, DateTimeFormatter incomingFormat )
     {
-<span class="fc" id="L196">        return  getDtfs().map( src, getDtfs().getDefaultFormat(), getLocale(), incomingFormat );</span>
+<span class="nc" id="L196">        return  getDtfs().map( src, getDtfs().getDefaultFormat(), getLocale(), incomingFormat );</span>
     }
 
     @Override
@@ -203,7 +203,7 @@ import org.apache.turbine.util.RunData;
     }
 
     public Locale getLocale() {
-<span class="fc" id="L206">        return locale;</span>
+<span class="nc" id="L206">        return locale;</span>
     }
 
     public void setLocale(Locale locale) {
@@ -212,7 +212,7 @@ import org.apache.turbine.util.RunData;
 
     @Override
     public ZoneId getZoneId() {
-<span class="pc bpc" id="L215" title="1 of 2 branches missed.">        return (getDtfs()!= null)? getDtfs().getZoneId():ZoneId.systemDefault();</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">        return (getDtfs()!= null)? getDtfs().getZoneId():ZoneId.systemDefault();</span>
     }
 
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GenericLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules</a> &gt; <span class="el_source">GenericLoader.java</span></div><h1>GenericLoader.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GenericLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules</a> &gt; <span class="el_source">GenericLoader.java</span></div><h1>GenericLoader.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -120,7 +120,7 @@ public abstract class GenericLoader&lt;T extends Assembler&gt; implements Loader
      */
     public static String getBasePackage()
     {
-<span class="fc" id="L123">        return TURBINE_PACKAGE;</span>
+<span class="nc" id="L123">        return TURBINE_PACKAGE;</span>
     }
 
     /**
@@ -131,7 +131,7 @@ public abstract class GenericLoader&lt;T extends Assembler&gt; implements Loader
      */
     public static List&lt;String&gt; getPackages()
     {
-<span class="fc bfc" id="L134" title="All 2 branches covered.">        if (TURBINE_PACKAGES == null)</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        if (TURBINE_PACKAGES == null)</span>
         {
 <span class="fc" id="L136">            List&lt;String&gt; turbinePackages = Turbine.getConfiguration()</span>
 <span class="fc" id="L137">            .getList(TurbineConstants.MODULE_PACKAGES).stream().map( o -&gt; (String) o ).collect( Collectors.toList() );</span>
@@ -141,9 +141,9 @@ public abstract class GenericLoader&lt;T extends Assembler&gt; implements Loader
 
 <span class="fc" id="L142">        List&lt;String&gt; packages = TURBINE_PACKAGES;</span>
 
-<span class="fc bfc" id="L144" title="All 2 branches covered.">        if (!packages.contains(TURBINE_PACKAGE))</span>
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if (!packages.contains(TURBINE_PACKAGE))</span>
         {
-<span class="fc" id="L146">            packages.add(TURBINE_PACKAGE);</span>
+<span class="nc" id="L146">            packages.add(TURBINE_PACKAGE);</span>
         }
 
 <span class="fc" id="L149">        return packages;</span>
@@ -161,7 +161,7 @@ public abstract class GenericLoader&lt;T extends Assembler&gt; implements Loader
     public T getAssembler(String name)
         throws Exception
     {
-<span class="fc" id="L164">        return getAssembler(assemblerClass, name);</span>
+<span class="nc" id="L164">        return getAssembler(assemblerClass, name);</span>
     }
 
     /**
@@ -176,14 +176,14 @@ public abstract class GenericLoader&lt;T extends Assembler&gt; implements Loader
     protected T getAssembler(Class&lt;T&gt; type, String name)
         throws Exception
     {
-<span class="fc" id="L179">        T asm = null;</span>
+<span class="nc" id="L179">        T asm = null;</span>
 
         try
         {
-<span class="pc bpc" id="L183" title="1 of 2 branches missed.">            if (ab != null)</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">            if (ab != null)</span>
             {
                 // Attempt to load the assembler
-<span class="fc" id="L186">                asm = ab.getAssembler(type, name);</span>
+<span class="nc" id="L186">                asm = ab.getAssembler(type, name);</span>
             }
         }
 <span class="nc" id="L189">        catch (ClassCastException cce)</span>
@@ -192,23 +192,23 @@ public abstract class GenericLoader&lt;T extends Assembler&gt; implements Loader
             // So that the ClassCastException is shown in the
             // browser window.  Like this it shows &quot;Screen not Found&quot;
 <span class="nc" id="L194">            asm = null;</span>
-<span class="fc" id="L195">        }</span>
+<span class="nc" id="L195">        }</span>
 
-<span class="fc bfc" id="L197" title="All 2 branches covered.">        if (asm == null)</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        if (asm == null)</span>
         {
             // If we did not find a screen we should try and give
             // the user a reason for that...
             // FIX ME: The AssemblerFactories should each add it's
             // own string here...
-<span class="fc" id="L203">            List&lt;String&gt; packages = GenericLoader.getPackages();</span>
+<span class="nc" id="L203">            List&lt;String&gt; packages = GenericLoader.getPackages();</span>
 
-<span class="fc" id="L205">            throw new ClassNotFoundException(</span>
+<span class="nc" id="L205">            throw new ClassNotFoundException(</span>
                     &quot;\n\n\tRequested &quot; + type + &quot; not found: &quot; + name +
                     &quot;\n\tTurbine looked in the following &quot; +
-<span class="fc" id="L208">                    &quot;modules.packages path: \n\t&quot; + packages.toString() + &quot;\n&quot;);</span>
+<span class="nc" id="L208">                    &quot;modules.packages path: \n\t&quot; + packages.toString() + &quot;\n&quot;);</span>
         }
 
-<span class="fc" id="L211">        return asm;</span>
+<span class="nc" id="L211">        return asm;</span>
     }
 
     /**

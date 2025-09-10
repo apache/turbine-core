@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AccessController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.actions</a> &gt; <span class="el_source">AccessController.java</span></div><h1>AccessController.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.actions;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AccessController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.modules.actions</a> &gt; <span class="el_source">AccessController.java</span></div><h1>AccessController.java</h1><pre class="source lang-java linenums">package org.apache.turbine.modules.actions;
 
 import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
@@ -68,10 +68,10 @@ import org.apache.turbine.util.RunData;
  * @author &lt;a href=&quot;mailto:peter@courcoux.biz&quot;&gt;Peter Courcoux&lt;/a&gt;
  * @version $Id$
  */
-<span class="fc" id="L71">public class AccessController implements Action</span>
+<span class="nc" id="L71">public class AccessController implements Action</span>
 {
     /** Logging */
-<span class="fc" id="L74">    private static final Logger log = LogManager.getLogger(AccessController.class);</span>
+<span class="nc" id="L74">    private static final Logger log = LogManager.getLogger(AccessController.class);</span>
 
     /** Injected service instance */
     @TurbineService
@@ -91,30 +91,30 @@ import org.apache.turbine.util.RunData;
     public void doPerform(PipelineData pipelineData)
     	throws FulcrumSecurityException
     {
-<span class="fc" id="L94">        RunData data = pipelineData.getRunData();</span>
-<span class="fc" id="L95">        User user = data.getUser();</span>
+<span class="nc" id="L94">        RunData data = pipelineData.getRunData();</span>
+<span class="nc" id="L95">        User user = data.getUser();</span>
 
-<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (!security.isAnonymousUser(user)</span>
-<span class="pc bpc" id="L98" title="1 of 2 branches missed.">            &amp;&amp; user.hasLoggedIn())</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (!security.isAnonymousUser(user)</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            &amp;&amp; user.hasLoggedIn())</span>
         {
-<span class="fc" id="L100">            log.debug(&quot;Fetching ACL for {}&quot;, user::getName);</span>
-<span class="fc" id="L101">            AccessControlList acl = (AccessControlList)</span>
-<span class="fc" id="L102">                    data.getSession().getAttribute(</span>
+<span class="nc" id="L100">            log.debug(&quot;Fetching ACL for {}&quot;, user::getName);</span>
+<span class="nc" id="L101">            AccessControlList acl = (AccessControlList)</span>
+<span class="nc" id="L102">                    data.getSession().getAttribute(</span>
                             TurbineConstants.ACL_SESSION_KEY);
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">            if (acl == null)</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            if (acl == null)</span>
             {
-<span class="fc" id="L106">                log.debug(&quot;No ACL found in Session, building fresh ACL&quot;);</span>
-<span class="fc" id="L107">                acl = security.getACL(user);</span>
-<span class="fc" id="L108">                data.getSession().setAttribute(</span>
+<span class="nc" id="L106">                log.debug(&quot;No ACL found in Session, building fresh ACL&quot;);</span>
+<span class="nc" id="L107">                acl = security.getACL(user);</span>
+<span class="nc" id="L108">                data.getSession().setAttribute(</span>
                         TurbineConstants.ACL_SESSION_KEY, acl);
 
-<span class="fc" id="L111">                log.debug(&quot;ACL is {}&quot;, acl);</span>
+<span class="nc" id="L111">                log.debug(&quot;ACL is {}&quot;, acl);</span>
             }
-<span class="fc" id="L113">            data.setACL(acl);</span>
+<span class="nc" id="L113">            data.setACL(acl);</span>
         }
 
         // Comply with Turbine 4.0 standards
-<span class="fc" id="L117">        pipelineData.get(Turbine.class).put(TurbineAccessControlList.class, data.getACL());</span>
-<span class="fc" id="L118">    }</span>
+<span class="nc" id="L117">        pipelineData.get(Turbine.class).put(TurbineAccessControlList.class, data.getACL());</span>
+<span class="nc" id="L118">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

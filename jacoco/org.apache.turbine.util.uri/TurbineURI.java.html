@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineURI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util.uri</a> &gt; <span class="el_source">TurbineURI.java</span></div><h1>TurbineURI.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util.uri;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineURI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util.uri</a> &gt; <span class="el_source">TurbineURI.java</span></div><h1>TurbineURI.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util.uri;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -56,10 +56,10 @@ public class TurbineURI
         extends BaseURI
 {
     /** Logging */
-<span class="fc" id="L59">    private static final Logger log = LogManager.getLogger(TurbineURI.class);</span>
+<span class="nc" id="L59">    private static final Logger log = LogManager.getLogger(TurbineURI.class);</span>
 
     /** Contains the PathInfo and QueryData vectors */
-<span class="pc" id="L62">    private List&lt;URIParam&gt; [] dataVectors = null;</span>
+<span class="nc" id="L62">    private List&lt;URIParam&gt; [] dataVectors = null;</span>
 
     /** Local reference to the parser service for URI parameter folding */
     private ParserService parserService;
@@ -92,9 +92,9 @@ public class TurbineURI
      */
     public TurbineURI(RunData runData)
     {
-<span class="fc" id="L95">        super(runData);</span>
-<span class="fc" id="L96">        init();</span>
-<span class="fc" id="L97">    }</span>
+<span class="nc" id="L95">        super(runData);</span>
+<span class="nc" id="L96">        init();</span>
+<span class="nc" id="L97">    }</span>
 
     /**
      * Constructor, set explicit redirection.
@@ -167,9 +167,9 @@ public class TurbineURI
      */
     public TurbineURI(ServerData serverData)
     {
-<span class="fc" id="L170">        super(serverData);</span>
-<span class="fc" id="L171">        init();</span>
-<span class="fc" id="L172">    }</span>
+<span class="nc" id="L170">        super(serverData);</span>
+<span class="nc" id="L171">        init();</span>
+<span class="nc" id="L172">    }</span>
 
     /**
      * Constructor, set explicit redirection.
@@ -264,20 +264,20 @@ public class TurbineURI
     @SuppressWarnings(&quot;unchecked&quot;)
     private void init()
     {
-<span class="fc" id="L267">        dataVectors = new List[2];</span>
-<span class="fc" id="L268">        dataVectors[PATH_INFO]  = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L269">        dataVectors[QUERY_DATA] = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L270">        parserService = (ParserService)TurbineServices.getInstance().getService(ParserService.ROLE);</span>
+<span class="nc" id="L267">        dataVectors = new List[2];</span>
+<span class="nc" id="L268">        dataVectors[PATH_INFO]  = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L269">        dataVectors[QUERY_DATA] = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L270">        parserService = (ParserService)TurbineServices.getInstance().getService(ParserService.ROLE);</span>
 
         try
         {
-<span class="fc" id="L274">            parameterEncoding = Charset.forName(parserService.getParameterEncoding());</span>
+<span class="nc" id="L274">            parameterEncoding = Charset.forName(parserService.getParameterEncoding());</span>
         }
 <span class="nc" id="L276">        catch (IllegalCharsetNameException | UnsupportedCharsetException e)</span>
         {
 <span class="nc" id="L278">            log.error(&quot;Unsupported encoding {}&quot;, parserService.getParameterEncoding(), e);</span>
-<span class="fc" id="L279">        }</span>
-<span class="fc" id="L280">    }</span>
+<span class="nc" id="L279">        }</span>
+<span class="nc" id="L280">    }</span>
 
     /**
      * Sets the action= value for this URL.
@@ -385,8 +385,8 @@ public class TurbineURI
      */
     public void addPathInfo(ParameterParser pp)
     {
-<span class="fc" id="L388">        add(PATH_INFO, pp);</span>
-<span class="fc" id="L389">    }</span>
+<span class="nc" id="L388">        add(PATH_INFO, pp);</span>
+<span class="nc" id="L389">    }</span>
 
     /**
      * Adds an existing List of URIParam objects to
@@ -418,8 +418,8 @@ public class TurbineURI
      */
     public void addPathInfo(String name, String value)
     {
-<span class="fc" id="L421">        add(PATH_INFO, name, value);</span>
-<span class="fc" id="L422">    }</span>
+<span class="nc" id="L421">        add(PATH_INFO, name, value);</span>
+<span class="nc" id="L422">    }</span>
 
     /**
      * Adds a name=value pair to the path_info string.
@@ -440,8 +440,8 @@ public class TurbineURI
      */
     public void addPathInfo(String name, int value)
     {
-<span class="fc" id="L443">        add(PATH_INFO, name, Integer.toString(value));</span>
-<span class="fc" id="L444">    }</span>
+<span class="nc" id="L443">        add(PATH_INFO, name, Integer.toString(value));</span>
+<span class="nc" id="L444">    }</span>
 
     /**
      * Adds a name=value pair to the path_info string.
@@ -473,8 +473,8 @@ public class TurbineURI
      */
     public void addQueryData(String name, String value)
     {
-<span class="fc" id="L476">        add(QUERY_DATA, name, value);</span>
-<span class="fc" id="L477">    }</span>
+<span class="nc" id="L476">        add(QUERY_DATA, name, value);</span>
+<span class="nc" id="L477">    }</span>
 
     /**
      * Adds a name=value pair to the query string.
@@ -495,8 +495,8 @@ public class TurbineURI
      */
     public void addQueryData(String name, int value)
     {
-<span class="fc" id="L498">        add(QUERY_DATA, name, Integer.toString(value));</span>
-<span class="fc" id="L499">    }</span>
+<span class="nc" id="L498">        add(QUERY_DATA, name, Integer.toString(value));</span>
+<span class="nc" id="L499">    }</span>
 
     /**
      * Adds a name=value pair to the query string.
@@ -537,7 +537,7 @@ public class TurbineURI
      */
     public boolean hasPathInfo()
     {
-<span class="fc bfc" id="L540" title="All 2 branches covered.">        return !dataVectors[PATH_INFO].isEmpty();</span>
+<span class="nc bnc" id="L540" title="All 2 branches missed.">        return !dataVectors[PATH_INFO].isEmpty();</span>
     }
 
     /**
@@ -555,8 +555,8 @@ public class TurbineURI
      */
     public void removePathInfo(String name)
     {
-<span class="fc" id="L558">        remove(PATH_INFO, name);</span>
-<span class="fc" id="L559">    }</span>
+<span class="nc" id="L558">        remove(PATH_INFO, name);</span>
+<span class="nc" id="L559">    }</span>
 
     /**
      * Is Query data set in this URI?
@@ -565,7 +565,7 @@ public class TurbineURI
      */
     public boolean hasQueryData()
     {
-<span class="fc bfc" id="L568" title="All 2 branches covered.">        return !dataVectors[QUERY_DATA].isEmpty();</span>
+<span class="nc bnc" id="L568" title="All 2 branches missed.">        return !dataVectors[QUERY_DATA].isEmpty();</span>
     }
 
     /**
@@ -583,8 +583,8 @@ public class TurbineURI
      */
     public void removeQueryData(String name)
     {
-<span class="fc" id="L586">        remove (QUERY_DATA, name);</span>
-<span class="fc" id="L587">    }</span>
+<span class="nc" id="L586">        remove (QUERY_DATA, name);</span>
+<span class="nc" id="L587">    }</span>
 
     /**
      * Template Link and friends want to be able to turn the encoding
@@ -594,8 +594,8 @@ public class TurbineURI
      */
     public void clearResponse()
     {
-<span class="fc" id="L597">        setResponse(null);</span>
-<span class="fc" id="L598">    }</span>
+<span class="nc" id="L597">        setResponse(null);</span>
+<span class="nc" id="L598">    }</span>
 
 
     /**
@@ -619,16 +619,16 @@ public class TurbineURI
      */
     public String getAbsoluteLink()
     {
-<span class="fc" id="L622">        StringBuilder output = new StringBuilder();</span>
+<span class="nc" id="L622">        StringBuilder output = new StringBuilder();</span>
 
-<span class="fc" id="L624">        getSchemeAndPort(output);</span>
+<span class="nc" id="L624">        getSchemeAndPort(output);</span>
 
-<span class="fc" id="L626">        buildRelativeLink(output);</span>
+<span class="nc" id="L626">        buildRelativeLink(output);</span>
 
         //
         // Encode Response does all the fixup for the Servlet Container
         //
-<span class="fc" id="L631">        return encodeResponse(output.toString());</span>
+<span class="nc" id="L631">        return encodeResponse(output.toString());</span>
     }
 
     /**
@@ -652,14 +652,14 @@ public class TurbineURI
      */
     public String getRelativeLink()
     {
-<span class="fc" id="L655">        StringBuilder output = new StringBuilder();</span>
+<span class="nc" id="L655">        StringBuilder output = new StringBuilder();</span>
 
-<span class="fc" id="L657">        buildRelativeLink(output);</span>
+<span class="nc" id="L657">        buildRelativeLink(output);</span>
 
         //
         // Encode Response does all the fixup for the Servlet Container
         //
-<span class="fc" id="L662">        return encodeResponse(output.toString());</span>
+<span class="nc" id="L662">        return encodeResponse(output.toString());</span>
     }
 
     /**
@@ -669,26 +669,26 @@ public class TurbineURI
      */
     private void buildRelativeLink(StringBuilder output)
     {
-<span class="fc" id="L672">        getContextAndScript(output);</span>
+<span class="nc" id="L672">        getContextAndScript(output);</span>
 
-<span class="fc bfc" id="L674" title="All 2 branches covered.">        if (hasPathInfo())</span>
+<span class="nc bnc" id="L674" title="All 2 branches missed.">        if (hasPathInfo())</span>
         {
-<span class="fc" id="L676">            output.append('/');</span>
-<span class="fc" id="L677">            getPathInfoAsString(output);</span>
+<span class="nc" id="L676">            output.append('/');</span>
+<span class="nc" id="L677">            getPathInfoAsString(output);</span>
         }
 
-<span class="pc bpc" id="L680" title="1 of 2 branches missed.">        if (hasReference())</span>
+<span class="nc bnc" id="L680" title="All 2 branches missed.">        if (hasReference())</span>
         {
 <span class="nc" id="L682">            output.append('#');</span>
 <span class="nc" id="L683">            output.append(getReference());</span>
         }
 
-<span class="fc bfc" id="L686" title="All 2 branches covered.">        if (hasQueryData())</span>
+<span class="nc bnc" id="L686" title="All 2 branches missed.">        if (hasQueryData())</span>
         {
-<span class="fc" id="L688">            output.append('?');</span>
-<span class="fc" id="L689">            getQueryDataAsString(output);</span>
+<span class="nc" id="L688">            output.append('?');</span>
+<span class="nc" id="L689">            getQueryDataAsString(output);</span>
         }
-<span class="fc" id="L691">    }</span>
+<span class="nc" id="L691">    }</span>
 
     /**
      * Gets the current Path Info List.
@@ -698,7 +698,7 @@ public class TurbineURI
      */
     public List&lt;URIParam&gt; getPathInfo()
     {
-<span class="fc" id="L701">        return dataVectors[PATH_INFO];</span>
+<span class="nc" id="L701">        return dataVectors[PATH_INFO];</span>
     }
 
     /**
@@ -722,7 +722,7 @@ public class TurbineURI
      */
     public List&lt;URIParam&gt; getQueryData()
     {
-<span class="fc" id="L725">        return dataVectors[QUERY_DATA];</span>
+<span class="nc" id="L725">        return dataVectors[QUERY_DATA];</span>
     }
 
     /**
@@ -748,7 +748,7 @@ public class TurbineURI
     @Override
     public String toString()
     {
-<span class="fc" id="L751">        return getAbsoluteLink();</span>
+<span class="nc" id="L751">        return getAbsoluteLink();</span>
     }
 
     /*
@@ -767,8 +767,8 @@ public class TurbineURI
      */
     private void getPathInfoAsString(StringBuilder output)
     {
-<span class="fc" id="L770">        doEncode(output, dataVectors[PATH_INFO], &quot;/&quot;, &quot;/&quot;);</span>
-<span class="fc" id="L771">    }</span>
+<span class="nc" id="L770">        doEncode(output, dataVectors[PATH_INFO], &quot;/&quot;, &quot;/&quot;);</span>
+<span class="nc" id="L771">    }</span>
 
     /**
      * Returns the Query data as a String.
@@ -777,8 +777,8 @@ public class TurbineURI
      */
     private void getQueryDataAsString(StringBuilder output)
     {
-<span class="fc" id="L780">        doEncode(output, dataVectors[QUERY_DATA], &quot;&amp;&quot;, &quot;=&quot;);</span>
-<span class="fc" id="L781">    }</span>
+<span class="nc" id="L780">        doEncode(output, dataVectors[QUERY_DATA], &quot;&amp;&quot;, &quot;=&quot;);</span>
+<span class="nc" id="L781">    }</span>
 
     /**
      * URL encode the given string, catching possible Exceptions
@@ -791,7 +791,7 @@ public class TurbineURI
         try
         {
             // Java10: return URLEncoder.encode(string, parameterEncoding);
-<span class="fc" id="L794">            return URLEncoder.encode(string, parameterEncoding.name());</span>
+<span class="nc" id="L794">            return URLEncoder.encode(string, parameterEncoding.name());</span>
         }
 <span class="nc" id="L796">        catch (UnsupportedEncodingException e)</span>
         {
@@ -811,17 +811,17 @@ public class TurbineURI
      */
     private void doEncode(StringBuilder output, Collection&lt;URIParam&gt; list, String fieldDelim, String valueDelim)
     {
-<span class="pc bpc" id="L814" title="1 of 2 branches missed.">        if(!list.isEmpty())</span>
+<span class="nc bnc" id="L814" title="All 2 branches missed.">        if(!list.isEmpty())</span>
         {
-<span class="fc" id="L816">            output.append(list.stream()</span>
-<span class="fc" id="L817">                    .map(uriParam -&gt;</span>
-<span class="fc" id="L818">                        String.join(</span>
+<span class="nc" id="L816">            output.append(list.stream()</span>
+<span class="nc" id="L817">                    .map(uriParam -&gt;</span>
+<span class="nc" id="L818">                        String.join(</span>
                                 valueDelim,
-<span class="fc" id="L820">                                urlEncode(uriParam.getKey()),</span>
-<span class="fc" id="L821">                                urlEncode(Objects.toString(uriParam.getValue()))))</span>
-<span class="fc" id="L822">                    .collect(Collectors.joining(fieldDelim)));</span>
+<span class="nc" id="L820">                                urlEncode(uriParam.getKey()),</span>
+<span class="nc" id="L821">                                urlEncode(Objects.toString(uriParam.getValue()))))</span>
+<span class="nc" id="L822">                    .collect(Collectors.joining(fieldDelim)));</span>
         }
-<span class="fc" id="L824">    }</span>
+<span class="nc" id="L824">    }</span>
 
     /**
      * If the type is PATH_INFO, then add name/value to the pathInfo
@@ -838,9 +838,9 @@ public class TurbineURI
             String name,
             String value)
     {
-<span class="fc" id="L841">        URIParam uriParam = new URIParam(parserService.convertAndTrim(name), value);</span>
-<span class="fc" id="L842">        dataVectors[type].add(uriParam); // Code so clean you can eat from...</span>
-<span class="fc" id="L843">    }</span>
+<span class="nc" id="L841">        URIParam uriParam = new URIParam(parserService.convertAndTrim(name), value);</span>
+<span class="nc" id="L842">        dataVectors[type].add(uriParam); // Code so clean you can eat from...</span>
+<span class="nc" id="L843">    }</span>
 
     /**
      * Method for a quick way to add all the parameters in a
@@ -858,26 +858,26 @@ public class TurbineURI
     protected void add(int type,
             ParameterParser pp)
     {
-<span class="fc bfc" id="L861" title="All 2 branches covered.">        for(String key : pp.keySet())</span>
+<span class="nc bnc" id="L861" title="All 2 branches missed.">        for(String key : pp.keySet())</span>
         {
-<span class="pc bpc" id="L863" title="1 of 2 branches missed.">            if (!key.equalsIgnoreCase(CGI_ACTION_PARAM) &amp;&amp;</span>
-<span class="pc bpc" id="L864" title="1 of 2 branches missed.">                    !key.equalsIgnoreCase(CGI_SCREEN_PARAM))</span>
+<span class="nc bnc" id="L863" title="All 2 branches missed.">            if (!key.equalsIgnoreCase(CGI_ACTION_PARAM) &amp;&amp;</span>
+<span class="nc bnc" id="L864" title="All 2 branches missed.">                    !key.equalsIgnoreCase(CGI_SCREEN_PARAM))</span>
             {
-<span class="fc" id="L866">                String[] values = pp.getStrings(key);</span>
-<span class="fc bfc" id="L867" title="All 2 branches covered.">                if(values != null)</span>
+<span class="nc" id="L866">                String[] values = pp.getStrings(key);</span>
+<span class="nc bnc" id="L867" title="All 2 branches missed.">                if(values != null)</span>
                 {
-<span class="fc bfc" id="L869" title="All 2 branches covered.">                    for (String value : values)</span>
+<span class="nc bnc" id="L869" title="All 2 branches missed.">                    for (String value : values)</span>
                     {
-<span class="fc" id="L871">                        add(type, key, value);</span>
+<span class="nc" id="L871">                        add(type, key, value);</span>
                     }
                 }
                 else
                 {
-<span class="fc" id="L876">                    add(type, key, &quot;&quot;);</span>
+<span class="nc" id="L876">                    add(type, key, &quot;&quot;);</span>
                 }
             }
-<span class="fc" id="L879">        }</span>
-<span class="fc" id="L880">    }</span>
+<span class="nc" id="L879">        }</span>
+<span class="nc" id="L880">    }</span>
 
     /**
      * Method for a quick way to add all the parameters in a
@@ -909,9 +909,9 @@ public class TurbineURI
      */
     protected void remove (int type, String name)
     {
-<span class="fc" id="L912">        String key = parserService.convertAndTrim(name);</span>
+<span class="nc" id="L912">        String key = parserService.convertAndTrim(name);</span>
 
-<span class="fc" id="L914">        dataVectors[type].removeIf(uriParam -&gt; key.equals(uriParam.getKey()));</span>
-<span class="fc" id="L915">    }</span>
+<span class="nc" id="L914">        dataVectors[type].removeIf(uriParam -&gt; key.equals(uriParam.getKey()));</span>
+<span class="nc" id="L915">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

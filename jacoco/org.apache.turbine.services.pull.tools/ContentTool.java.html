@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ContentTool.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.pull.tools</a> &gt; <span class="el_source">ContentTool.java</span></div><h1>ContentTool.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.pull.tools;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ContentTool.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.pull.tools</a> &gt; <span class="el_source">ContentTool.java</span></div><h1>ContentTool.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.pull.tools;
 
 
 /*
@@ -71,21 +71,21 @@ public class ContentTool
     public static final boolean CONTENT_TOOL_RELATIVE_DEFAULT = false;
 
     /** Do we want the container to encode the response? */
-<span class="fc" id="L74">    boolean wantEncoding = false;</span>
+<span class="nc" id="L74">    boolean wantEncoding = false;</span>
 
     /** Do we want a relative link? */
-<span class="fc" id="L77">    boolean wantRelative = false;</span>
+<span class="nc" id="L77">    boolean wantRelative = false;</span>
 
     /** Caches a DataURI object which provides the translation routines */
-<span class="fc" id="L80">    private DataURI dataURI = null;</span>
+<span class="nc" id="L80">    private DataURI dataURI = null;</span>
 
     /**
      * C'tor
      */
     public ContentTool()
-<span class="fc" id="L86">    {</span>
+<span class="nc" id="L86">    {</span>
         // empty
-<span class="fc" id="L88">    }</span>
+<span class="nc" id="L88">    }</span>
 
     /*
      * ========================================================================
@@ -109,12 +109,12 @@ public class ContentTool
         // we just blithely cast to RunData as if another object
         // or null is passed in we'll throw an appropriate runtime
         // exception.
-<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (data instanceof PipelineData)</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (data instanceof PipelineData)</span>
         {
-<span class="fc" id="L114">            PipelineData pipelineData = (PipelineData) data;</span>
-<span class="fc" id="L115">            RunData runData = (RunData)pipelineData;</span>
-<span class="fc" id="L116">            dataURI = new DataURI(runData);</span>
-<span class="fc" id="L117">        }</span>
+<span class="nc" id="L114">            PipelineData pipelineData = (PipelineData) data;</span>
+<span class="nc" id="L115">            RunData runData = (RunData)pipelineData;</span>
+<span class="nc" id="L116">            dataURI = new DataURI(runData);</span>
+<span class="nc" id="L117">        }</span>
         else
         {
 <span class="nc" id="L120">            dataURI = new DataURI((RunData) data);</span>
@@ -122,22 +122,22 @@ public class ContentTool
         }
 
         Configuration conf =
-<span class="fc" id="L125">                Turbine.getConfiguration().subset(CONTENT_TOOL_PREFIX);</span>
+<span class="nc" id="L125">                Turbine.getConfiguration().subset(CONTENT_TOOL_PREFIX);</span>
 
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        if (conf != null)</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        if (conf != null)</span>
         {
-<span class="fc" id="L129">            wantRelative = conf.getBoolean(CONTENT_TOOL_RELATIVE_KEY,</span>
+<span class="nc" id="L129">            wantRelative = conf.getBoolean(CONTENT_TOOL_RELATIVE_KEY,</span>
                     CONTENT_TOOL_RELATIVE_DEFAULT);
 
-<span class="fc" id="L132">            wantEncoding = conf.getBoolean(CONTENT_TOOL_ENCODING_KEY,</span>
+<span class="nc" id="L132">            wantEncoding = conf.getBoolean(CONTENT_TOOL_ENCODING_KEY,</span>
                     CONTENT_TOOL_ENCODING_DEFAULT);
         }
 
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if (!wantEncoding)</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (!wantEncoding)</span>
         {
-<span class="fc" id="L138">            dataURI.clearResponse();</span>
+<span class="nc" id="L138">            dataURI.clearResponse();</span>
         }
-<span class="fc" id="L140">    }</span>
+<span class="nc" id="L140">    }</span>
 
     /**
      * Refresh method - does nothing

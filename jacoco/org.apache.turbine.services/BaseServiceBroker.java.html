@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseServiceBroker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services</a> &gt; <span class="el_source">BaseServiceBroker.java</span></div><h1>BaseServiceBroker.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseServiceBroker.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services</a> &gt; <span class="el_source">BaseServiceBroker.java</span></div><h1>BaseServiceBroker.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -266,7 +266,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
 <span class="fc" id="L266">                String serviceKey = keyParts[1];</span>
 <span class="fc" id="L267">                log.info(&quot;Added Mapping for Service: {}&quot;, serviceKey);</span>
 
-<span class="fc bfc" id="L269" title="All 2 branches covered.">                if (!mapping.containsKey(serviceKey))</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">                if (!mapping.containsKey(serviceKey))</span>
                 {
 <span class="fc" id="L271">                    String className = configuration.getString(key);</span>
                     try
@@ -315,7 +315,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
     @Override
     public boolean isRegistered(String serviceName)
     {
-<span class="fc bfc" id="L318" title="All 2 branches covered.">        return (services.get(serviceName) != null);</span>
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">        return (services.get(serviceName) != null);</span>
     }
 
     /**
@@ -425,10 +425,10 @@ public abstract class BaseServiceBroker implements ServiceBroker
                 }
                         // In case of an exception, file an error message; the
                         // system may be still functional, though.
-<span class="fc" id="L428">                catch (InstantiationException | InitializationException e)</span>
+<span class="nc" id="L428">                catch (InstantiationException | InitializationException e)</span>
                 {
-<span class="fc" id="L430">                    log.error(e);</span>
-<span class="fc" id="L431">                }</span>
+<span class="nc" id="L430">                    log.error(e);</span>
+<span class="pc" id="L431">                }</span>
             }
         }
 <span class="fc" id="L434">        log.info(&quot;Finished initializing all services!&quot;);</span>
@@ -470,11 +470,11 @@ public abstract class BaseServiceBroker implements ServiceBroker
                 try {
 <span class="fc" id="L471">                    service.shutdown();</span>
     
-<span class="pc bpc" id="L473" title="1 of 4 branches missed.">                    if (service.getInit() &amp;&amp; service instanceof BaseService)</span>
+<span class="pc bpc" id="L473" title="3 of 4 branches missed.">                    if (service.getInit() &amp;&amp; service instanceof BaseService)</span>
                     {
                         // BaseService::shutdown() does this by default,
                         // but could've been overriden poorly.
-<span class="fc" id="L477">                        ((BaseService) service).setInit(false);</span>
+<span class="nc" id="L477">                        ((BaseService) service).setInit(false);</span>
                     }
                 } finally {
 <span class="fc" id="L480">                    serviceLock.unlock();</span>
@@ -572,13 +572,13 @@ public abstract class BaseServiceBroker implements ServiceBroker
 	                    &quot; failed to initialize&quot;, e);
 	        }
         }
-<span class="fc bfc" id="L575" title="All 2 branches covered.">        else if (this.isNonLocalService(name))</span>
+<span class="pc bpc" id="L575" title="1 of 2 branches missed.">        else if (this.isNonLocalService(name))</span>
         {
 <span class="fc" id="L577">            return this.getNonLocalService(name);</span>
         }
         else
         {
-<span class="fc" id="L581">            throw new InstantiationException(</span>
+<span class="nc" id="L581">            throw new InstantiationException(</span>
                 &quot;ServiceBroker: unknown service &quot; + name
                 + &quot; requested&quot;);
         }
@@ -743,17 +743,17 @@ public abstract class BaseServiceBroker implements ServiceBroker
     {
 <span class="fc" id="L744">        TurbineServiceProvider turbineServiceProvider = null;</span>
 
-<span class="fc bfc" id="L746" title="All 2 branches covered.">        for (Map.Entry&lt;String, Service&gt; entry : this.serviceProviderInstanceMap.entrySet())</span>
+<span class="pc bpc" id="L746" title="1 of 2 branches missed.">        for (Map.Entry&lt;String, Service&gt; entry : this.serviceProviderInstanceMap.entrySet())</span>
         {
 <span class="fc" id="L748">            turbineServiceProvider = (TurbineServiceProvider) this.getService(entry.getKey());</span>
 
-<span class="fc bfc" id="L750" title="All 2 branches covered.">            if (turbineServiceProvider.exists(name))</span>
+<span class="pc bpc" id="L750" title="1 of 2 branches missed.">            if (turbineServiceProvider.exists(name))</span>
             {
 <span class="fc" id="L752">                return true;</span>
             }
-<span class="fc" id="L754">        }</span>
+<span class="nc" id="L754">        }</span>
 
-<span class="fc" id="L756">        return false;</span>
+<span class="nc" id="L756">        return false;</span>
     }
 
     /**

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultUserImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.om.security</a> &gt; <span class="el_source">DefaultUserImpl.java</span></div><h1>DefaultUserImpl.java</h1><pre class="source lang-java linenums">package org.apache.turbine.om.security;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultUserImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.om.security</a> &gt; <span class="el_source">DefaultUserImpl.java</span></div><h1>DefaultUserImpl.java</h1><pre class="source lang-java linenums">package org.apache.turbine.om.security;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -122,7 +122,7 @@ public class DefaultUserImpl implements User
     @Override
     public String getName()
     {
-<span class="fc" id="L125">        return userDelegate.getName();</span>
+<span class="nc" id="L125">        return userDelegate.getName();</span>
     }
 
     /**
@@ -134,8 +134,8 @@ public class DefaultUserImpl implements User
     @Override
     public void setName(String name)
     {
-<span class="fc" id="L137">        userDelegate.setName(name);</span>
-<span class="fc" id="L138">    }</span>
+<span class="nc" id="L137">        userDelegate.setName(name);</span>
+<span class="nc" id="L138">    }</span>
 
     /**
      * Get the Id of the SecurityEntity.
@@ -279,8 +279,8 @@ public class DefaultUserImpl implements User
     @Override
     public void setObjectdata(byte[] objectdata)
     {
-<span class="fc" id="L282">        userDelegate.setObjectdata(objectdata);</span>
-<span class="fc" id="L283">    }</span>
+<span class="nc" id="L282">        userDelegate.setObjectdata(objectdata);</span>
+<span class="nc" id="L283">    }</span>
 
     /**
      * Get the User/Group/Role set associated with this entity
@@ -347,9 +347,9 @@ public class DefaultUserImpl implements User
         {
 <span class="nc" id="L348">            return ((Integer) getPerm(User.ACCESS_COUNTER)).intValue();</span>
         }
-<span class="fc" id="L350">        catch (Exception e)</span>
+<span class="nc" id="L350">        catch (Exception e)</span>
         {
-<span class="fc" id="L352">            return 0;</span>
+<span class="nc" id="L352">            return 0;</span>
         }
     }
 
@@ -365,9 +365,9 @@ public class DefaultUserImpl implements User
         {
 <span class="nc" id="L366">            return ((Integer) getTemp(User.SESSION_ACCESS_COUNTER)).intValue();</span>
         }
-<span class="fc" id="L368">        catch (Exception e)</span>
+<span class="nc" id="L368">        catch (Exception e)</span>
         {
-<span class="fc" id="L370">            return 0;</span>
+<span class="nc" id="L370">            return 0;</span>
         }
     }
 
@@ -378,8 +378,8 @@ public class DefaultUserImpl implements User
     public void incrementAccessCounter()
     {
         // Ugh. Race city, here I come...
-<span class="fc" id="L381">        setAccessCounter(getAccessCounter() + 1);</span>
-<span class="fc" id="L382">    }</span>
+<span class="nc" id="L381">        setAccessCounter(getAccessCounter() + 1);</span>
+<span class="nc" id="L382">    }</span>
 
     /**
      * Increments the session hit counter for the user.
@@ -387,8 +387,8 @@ public class DefaultUserImpl implements User
     @Override
     public void incrementAccessCounterForSession()
     {
-<span class="fc" id="L390">        setAccessCounterForSession(getAccessCounterForSession() + 1);</span>
-<span class="fc" id="L391">    }</span>
+<span class="nc" id="L390">        setAccessCounterForSession(getAccessCounterForSession() + 1);</span>
+<span class="nc" id="L391">    }</span>
 
     /**
      * Sets the access counter for a user, saved in perm storage.
@@ -398,8 +398,8 @@ public class DefaultUserImpl implements User
     @Override
     public void setAccessCounter(int cnt)
     {
-<span class="fc" id="L401">        setPerm(User.ACCESS_COUNTER, Integer.valueOf(cnt));</span>
-<span class="fc" id="L402">    }</span>
+<span class="nc" id="L401">        setPerm(User.ACCESS_COUNTER, Integer.valueOf(cnt));</span>
+<span class="nc" id="L402">    }</span>
 
     /**
      * Sets the session access counter for a user, saved in temp
@@ -410,8 +410,8 @@ public class DefaultUserImpl implements User
     @Override
     public void setAccessCounterForSession(int cnt)
     {
-<span class="fc" id="L413">        setTemp(User.SESSION_ACCESS_COUNTER, Integer.valueOf(cnt));</span>
-<span class="fc" id="L414">    }</span>
+<span class="nc" id="L413">        setTemp(User.SESSION_ACCESS_COUNTER, Integer.valueOf(cnt));</span>
+<span class="nc" id="L414">    }</span>
 
     /**
      * Gets the last access date for this User.  This is the last time
@@ -436,8 +436,8 @@ public class DefaultUserImpl implements User
     @Override
     public void setLastAccessDate()
     {
-<span class="fc" id="L439">        lastAccessDate = new Date();</span>
-<span class="fc" id="L440">    }</span>
+<span class="nc" id="L439">        lastAccessDate = new Date();</span>
+<span class="nc" id="L440">    }</span>
 
     /**
      * Returns the permanent storage. This is implemented
@@ -448,7 +448,7 @@ public class DefaultUserImpl implements User
     @Override
     public synchronized Map&lt;String, Object&gt; getPermStorage()
     {
-<span class="fc bfc" id="L451" title="All 2 branches covered.">        if (permStorage == null)</span>
+<span class="pc bpc" id="L451" title="1 of 2 branches missed.">        if (permStorage == null)</span>
         {
 <span class="fc" id="L453">            byte [] objectdata = getObjectdata();</span>
 
@@ -521,7 +521,7 @@ public class DefaultUserImpl implements User
     @Override
     public Object getPerm(String name)
     {
-<span class="fc" id="L524">        return getPermStorage().get(name);</span>
+<span class="nc" id="L524">        return getPermStorage().get(name);</span>
     }
 
     /**
@@ -567,7 +567,7 @@ public class DefaultUserImpl implements User
     @Override
     public Object getTemp(String name)
     {
-<span class="fc" id="L570">        return getTempStorage().get(name);</span>
+<span class="nc" id="L570">        return getTempStorage().get(name);</span>
     }
 
     /**
@@ -684,8 +684,8 @@ public class DefaultUserImpl implements User
     @Override
     public void setLastLogin(Date lastLogin)
     {
-<span class="fc" id="L687">        setPerm(User.LAST_LOGIN, lastLogin);</span>
-<span class="fc" id="L688">    }</span>
+<span class="nc" id="L687">        setPerm(User.LAST_LOGIN, lastLogin);</span>
+<span class="nc" id="L688">    }</span>
 
     /**
      * The user is considered logged in if they have not timed out.
@@ -695,8 +695,8 @@ public class DefaultUserImpl implements User
     @Override
     public boolean hasLoggedIn()
     {
-<span class="fc" id="L698">        Boolean loggedIn = (Boolean) getTemp(User.HAS_LOGGED_IN);</span>
-<span class="pc bpc" id="L699" title="1 of 4 branches missed.">        return loggedIn != null &amp;&amp; loggedIn.booleanValue();</span>
+<span class="nc" id="L698">        Boolean loggedIn = (Boolean) getTemp(User.HAS_LOGGED_IN);</span>
+<span class="nc bnc" id="L699" title="All 4 branches missed.">        return loggedIn != null &amp;&amp; loggedIn.booleanValue();</span>
     }
 
     /**
@@ -735,8 +735,8 @@ public class DefaultUserImpl implements User
     public void updateLastLogin()
         throws Exception
     {
-<span class="fc" id="L738">        setLastLogin(new Date());</span>
-<span class="fc" id="L739">    }</span>
+<span class="nc" id="L738">        setLastLogin(new Date());</span>
+<span class="nc" id="L739">    }</span>
 
     /* (non-Javadoc)
 	 * @see org.apache.turbine.om.security.UserDelegate#getUserDelegate()
@@ -744,7 +744,7 @@ public class DefaultUserImpl implements User
     @Override
 	public TurbineUser getUserDelegate()
     {
-<span class="fc" id="L747">        return userDelegate;</span>
+<span class="nc" id="L747">        return userDelegate;</span>
     }
 
     /* (non-Javadoc)

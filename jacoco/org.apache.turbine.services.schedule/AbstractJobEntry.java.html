@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractJobEntry.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.schedule</a> &gt; <span class="el_source">AbstractJobEntry.java</span></div><h1>AbstractJobEntry.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.schedule;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractJobEntry.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.schedule</a> &gt; <span class="el_source">AbstractJobEntry.java</span></div><h1>AbstractJobEntry.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.schedule;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -35,21 +35,21 @@ import org.apache.turbine.util.TurbineException;
 public abstract class AbstractJobEntry implements JobEntry
 {
     /** Logging */
-<span class="fc" id="L38">    protected static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);</span>
+<span class="nc" id="L38">    protected static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);</span>
 
     /** indicates if job is currently running */
-<span class="fc" id="L41">    private boolean jobIsActive = false;</span>
+<span class="nc" id="L41">    private boolean jobIsActive = false;</span>
 
     /** Next runtime. **/
-<span class="fc" id="L44">    private long runtime = 0;</span>
+<span class="nc" id="L44">    private long runtime = 0;</span>
 
     /** schedule types **/
-<span class="fc" id="L47">    protected enum ScheduleType {</span>
-<span class="fc" id="L48">        SECOND,</span>
-<span class="fc" id="L49">        MINUTE,</span>
-<span class="fc" id="L50">        WEEK_DAY,</span>
-<span class="fc" id="L51">        DAY_OF_MONTH,</span>
-<span class="fc" id="L52">        DAILY</span>
+<span class="nc" id="L47">    protected enum ScheduleType {</span>
+<span class="nc" id="L48">        SECOND,</span>
+<span class="nc" id="L49">        MINUTE,</span>
+<span class="nc" id="L50">        WEEK_DAY,</span>
+<span class="nc" id="L51">        DAY_OF_MONTH,</span>
+<span class="nc" id="L52">        DAILY</span>
     }
 
     /**
@@ -57,8 +57,8 @@ public abstract class AbstractJobEntry implements JobEntry
      */
     public AbstractJobEntry()
     {
-<span class="fc" id="L60">        super();</span>
-<span class="fc" id="L61">    }</span>
+<span class="nc" id="L60">        super();</span>
+<span class="nc" id="L61">    }</span>
 
     /**
      * Constructor.
@@ -99,23 +99,23 @@ public abstract class AbstractJobEntry implements JobEntry
                     String task)
             throws TurbineException
     {
-<span class="fc" id="L102">        this();</span>
+<span class="nc" id="L102">        this();</span>
 
-<span class="pc bpc" id="L104" title="1 of 2 branches missed.">        if (StringUtils.isEmpty(task))</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (StringUtils.isEmpty(task))</span>
         {
 <span class="nc" id="L106">            throw new TurbineException(&quot;Error in JobEntry. &quot; +</span>
                     &quot;Bad Job parameter. Task not set.&quot;);
         }
 
-<span class="fc" id="L110">        setSecond(sec);</span>
-<span class="fc" id="L111">        setMinute(min);</span>
-<span class="fc" id="L112">        setHour(hour);</span>
-<span class="fc" id="L113">        setWeekDay(wd);</span>
-<span class="fc" id="L114">        setDayOfMonth(day_mo);</span>
-<span class="fc" id="L115">        setTask(task);</span>
+<span class="nc" id="L110">        setSecond(sec);</span>
+<span class="nc" id="L111">        setMinute(min);</span>
+<span class="nc" id="L112">        setHour(hour);</span>
+<span class="nc" id="L113">        setWeekDay(wd);</span>
+<span class="nc" id="L114">        setDayOfMonth(day_mo);</span>
+<span class="nc" id="L115">        setTask(task);</span>
 
-<span class="fc" id="L117">        calcRunTime();</span>
-<span class="fc" id="L118">    }</span>
+<span class="nc" id="L117">        calcRunTime();</span>
+<span class="nc" id="L118">    }</span>
 
     /**
      * Used for ordering Jobentries
@@ -128,7 +128,7 @@ public abstract class AbstractJobEntry implements JobEntry
     @Override
     public int compareTo(JobEntry je)
     {
-<span class="fc" id="L131">        return getJobId() - je.getJobId();</span>
+<span class="nc" id="L131">        return getJobId() - je.getJobId();</span>
     }
 
     /**
@@ -139,8 +139,8 @@ public abstract class AbstractJobEntry implements JobEntry
     @Override
     public void setActive(boolean isActive)
     {
-<span class="fc" id="L142">        jobIsActive = isActive;</span>
-<span class="fc" id="L143">    }</span>
+<span class="nc" id="L142">        jobIsActive = isActive;</span>
+<span class="nc" id="L143">    }</span>
 
     /**
      * Check to see if job is currently active/running
@@ -151,7 +151,7 @@ public abstract class AbstractJobEntry implements JobEntry
     @Override
     public boolean isActive()
     {
-<span class="fc" id="L154">        return jobIsActive;</span>
+<span class="nc" id="L154">        return jobIsActive;</span>
     }
 
     /**
@@ -162,7 +162,7 @@ public abstract class AbstractJobEntry implements JobEntry
     @Override
     public long getNextRuntime()
     {
-<span class="fc" id="L165">        return runtime;</span>
+<span class="nc" id="L165">        return runtime;</span>
     }
 
     /**
@@ -207,23 +207,23 @@ public abstract class AbstractJobEntry implements JobEntry
     public void calcRunTime()
             throws TurbineException
     {
-<span class="fc" id="L210">        Calendar schedrun = Calendar.getInstance();</span>
-<span class="fc" id="L211">        Calendar now = Calendar.getInstance();</span>
+<span class="nc" id="L210">        Calendar schedrun = Calendar.getInstance();</span>
+<span class="nc" id="L211">        Calendar now = Calendar.getInstance();</span>
 
-<span class="pc bpc" id="L213" title="3 of 6 branches missed.">        switch (evaluateJobType())</span>
+<span class="nc bnc" id="L213" title="All 6 branches missed.">        switch (evaluateJobType())</span>
         {
             case SECOND:
                 // SECOND (every so many seconds...)
-<span class="fc" id="L217">                schedrun.add(Calendar.SECOND, getSecond());</span>
-<span class="fc" id="L218">                runtime = schedrun.getTime().getTime();</span>
-<span class="fc" id="L219">                break;</span>
+<span class="nc" id="L217">                schedrun.add(Calendar.SECOND, getSecond());</span>
+<span class="nc" id="L218">                runtime = schedrun.getTime().getTime();</span>
+<span class="nc" id="L219">                break;</span>
 
             case MINUTE:
                 // MINUTE (every so many minutes...)
-<span class="fc" id="L223">                schedrun.add(Calendar.SECOND, getSecond());</span>
-<span class="fc" id="L224">                schedrun.add(Calendar.MINUTE, getMinute());</span>
-<span class="fc" id="L225">                runtime = schedrun.getTime().getTime();</span>
-<span class="fc" id="L226">                break;</span>
+<span class="nc" id="L223">                schedrun.add(Calendar.SECOND, getSecond());</span>
+<span class="nc" id="L224">                schedrun.add(Calendar.MINUTE, getMinute());</span>
+<span class="nc" id="L225">                runtime = schedrun.getTime().getTime();</span>
+<span class="nc" id="L226">                break;</span>
 
             case WEEK_DAY:
                 // WEEKDAY (day of the week)
@@ -247,12 +247,12 @@ public abstract class AbstractJobEntry implements JobEntry
 
             case DAY_OF_MONTH:
                 // DAY_OF_MONTH (date of the month)
-<span class="fc" id="L250">                schedrun.set(Calendar.SECOND, getSecond());</span>
-<span class="fc" id="L251">                schedrun.set(Calendar.MINUTE, getMinute());</span>
-<span class="fc" id="L252">                schedrun.set(Calendar.HOUR_OF_DAY, getHour());</span>
-<span class="fc" id="L253">                schedrun.set(Calendar.DAY_OF_MONTH, getDayOfMonth());</span>
+<span class="nc" id="L250">                schedrun.set(Calendar.SECOND, getSecond());</span>
+<span class="nc" id="L251">                schedrun.set(Calendar.MINUTE, getMinute());</span>
+<span class="nc" id="L252">                schedrun.set(Calendar.HOUR_OF_DAY, getHour());</span>
+<span class="nc" id="L253">                schedrun.set(Calendar.DAY_OF_MONTH, getDayOfMonth());</span>
 
-<span class="pc bpc" id="L255" title="1 of 2 branches missed.">                if (now.before(schedrun))</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">                if (now.before(schedrun))</span>
                 {
                     // Scheduled time has NOT expired.
 <span class="nc" id="L258">                    runtime = schedrun.getTime().getTime();</span>
@@ -260,10 +260,10 @@ public abstract class AbstractJobEntry implements JobEntry
                 else
                 {
                     // Scheduled time has expired; roll to the next month.
-<span class="fc" id="L263">                    schedrun.add(Calendar.MONTH, 1);</span>
-<span class="fc" id="L264">                    runtime = schedrun.getTime().getTime();</span>
+<span class="nc" id="L263">                    schedrun.add(Calendar.MONTH, 1);</span>
+<span class="nc" id="L264">                    runtime = schedrun.getTime().getTime();</span>
                 }
-<span class="fc" id="L266">                break;</span>
+<span class="nc" id="L266">                break;</span>
 
             case DAILY:
                 // DAILY (certain hour:minutes of the day)
@@ -288,8 +288,8 @@ public abstract class AbstractJobEntry implements JobEntry
                 // Do nothing.
         }
 
-<span class="fc" id="L291">        log.info(&quot;Next runtime for task {} is {}&quot;, this::getTask, this::getNextRunDate);</span>
-<span class="fc" id="L292">    }</span>
+<span class="nc" id="L291">        log.info(&quot;Next runtime for task {} is {}&quot;, this::getTask, this::getNextRunDate);</span>
+<span class="nc" id="L292">    }</span>
 
     /**
      * What schedule am I on?
@@ -306,35 +306,35 @@ public abstract class AbstractJobEntry implements JobEntry
     {
 
         // First start by checking if it's a day of the month job.
-<span class="fc bfc" id="L309" title="All 2 branches covered.">        if (getDayOfMonth() &lt; 0)</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">        if (getDayOfMonth() &lt; 0)</span>
         {
             // Not a day of the month job... check weekday.
-<span class="pc bpc" id="L312" title="1 of 2 branches missed.">            if (getWeekDay() &lt; 0)</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">            if (getWeekDay() &lt; 0)</span>
             {
                 // Not a weekday job...check if by the hour.
-<span class="pc bpc" id="L315" title="1 of 2 branches missed.">                if (getHour() &lt; 0)</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">                if (getHour() &lt; 0)</span>
                 {
                     // Not an hourly job...check if it is by the minute
-<span class="fc bfc" id="L318" title="All 2 branches covered.">                    if (getMinute() &lt; 0)</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">                    if (getMinute() &lt; 0)</span>
                     {
                         // Not a by the minute job so must be by the second
-<span class="pc bpc" id="L321" title="1 of 2 branches missed.">                        if (getSecond() &lt; 0)</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">                        if (getSecond() &lt; 0)</span>
                         {
 <span class="nc" id="L323">                            throw new TurbineException(&quot;Error in JobEntry. Bad Job parameter.&quot;);</span>
                         }
 
-<span class="fc" id="L326">                        return ScheduleType.SECOND;</span>
+<span class="nc" id="L326">                        return ScheduleType.SECOND;</span>
                     }
                     else
                     {
                         // Must be a job run by the minute so we need minutes and
                         // seconds.
-<span class="pc bpc" id="L332" title="2 of 4 branches missed.">                        if (getMinute() &lt; 0 || getSecond() &lt; 0)</span>
+<span class="nc bnc" id="L332" title="All 4 branches missed.">                        if (getMinute() &lt; 0 || getSecond() &lt; 0)</span>
                         {
 <span class="nc" id="L334">                            throw new TurbineException(&quot;Error in JobEntry. Bad Job parameter.&quot;);</span>
                         }
 
-<span class="fc" id="L337">                        return ScheduleType.MINUTE;</span>
+<span class="nc" id="L337">                        return ScheduleType.MINUTE;</span>
                     }
                 }
                 else
@@ -365,12 +365,12 @@ public abstract class AbstractJobEntry implements JobEntry
         {
             // Must be a day of the month job.  In this case, we need
             // minute, second, and hour params
-<span class="pc bpc" id="L368" title="2 of 4 branches missed.">            if (getMinute() &lt; 0 || getHour() &lt; 0)</span>
+<span class="nc bnc" id="L368" title="All 4 branches missed.">            if (getMinute() &lt; 0 || getHour() &lt; 0)</span>
             {
 <span class="nc" id="L370">                throw new TurbineException(&quot;Error in JobEntry. Bad Job parameter.&quot;);</span>
             }
 
-<span class="fc" id="L373">            return ScheduleType.DAY_OF_MONTH;</span>
+<span class="nc" id="L373">            return ScheduleType.DAY_OF_MONTH;</span>
         }
     }
 

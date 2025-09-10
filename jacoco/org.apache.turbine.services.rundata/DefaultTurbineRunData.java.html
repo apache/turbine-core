@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultTurbineRunData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.rundata</a> &gt; <span class="el_source">DefaultTurbineRunData.java</span></div><h1>DefaultTurbineRunData.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.rundata;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultTurbineRunData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.rundata</a> &gt; <span class="el_source">DefaultTurbineRunData.java</span></div><h1>DefaultTurbineRunData.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.rundata;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -114,16 +114,16 @@ public class DefaultTurbineRunData
     private Charset charSet;
 
     /** The HTTP content type to return. */
-<span class="fc" id="L117">    private String contentType = TurbineConstants.DEFAULT_HTML_CONTENT_TYPE;</span>
+<span class="nc" id="L117">    private String contentType = TurbineConstants.DEFAULT_HTML_CONTENT_TYPE;</span>
 
     /** If this is set, also set the status code to 302. */
     private String redirectURI;
 
     /** The HTTP status code to return. */
-<span class="fc" id="L123">    private int statusCode = HttpServletResponse.SC_OK;</span>
+<span class="nc" id="L123">    private int statusCode = HttpServletResponse.SC_OK;</span>
 
     /** This is a List to hold critical system errors. */
-<span class="fc" id="L126">    private final List&lt;SystemError&gt; errors = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L126">    private final List&lt;SystemError&gt; errors = new ArrayList&lt;&gt;();</span>
 
     /** JNDI Contexts. */
     private Map&lt;String, Context&gt; jndiContexts;
@@ -148,10 +148,10 @@ public class DefaultTurbineRunData
      * screen.  This is great for debugging variable values when an
      * exception is thrown.
      */
-<span class="fc" id="L151">    private final Map&lt;String, Object&gt; debugVariables = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L151">    private final Map&lt;String, Object&gt; debugVariables = new HashMap&lt;&gt;();</span>
 
     /** Logging */
-<span class="fc" id="L154">    private static final Logger log = LogManager.getLogger(DefaultTurbineRunData.class);</span>
+<span class="nc" id="L154">    private static final Logger log = LogManager.getLogger(DefaultTurbineRunData.class);</span>
 
     /**
      * Attempts to get the User object from the session.  If it does
@@ -168,8 +168,8 @@ public class DefaultTurbineRunData
         try
         {
             @SuppressWarnings(&quot;unchecked&quot;)
-<span class="fc" id="L171">            T user = (T) session.getAttribute(User.SESSION_KEY);</span>
-<span class="fc" id="L172">            return user;</span>
+<span class="nc" id="L171">            T user = (T) session.getAttribute(User.SESSION_KEY);</span>
+<span class="nc" id="L172">            return user;</span>
         }
 <span class="nc" id="L174">        catch (ClassCastException e)</span>
         {
@@ -201,12 +201,12 @@ public class DefaultTurbineRunData
      */
     public DefaultTurbineRunData()
     {
-<span class="fc" id="L204">        super();</span>
+<span class="nc" id="L204">        super();</span>
 
         // a map to hold information to be added to pipelineData
-<span class="fc" id="L207">        put(Turbine.class, new HashMap&lt;Class&lt;?&gt;, Object&gt;());</span>
-<span class="fc" id="L208">        recycle();</span>
-<span class="fc" id="L209">    }</span>
+<span class="nc" id="L207">        put(Turbine.class, new HashMap&lt;Class&lt;?&gt;, Object&gt;());</span>
+<span class="nc" id="L208">        recycle();</span>
+<span class="nc" id="L209">    }</span>
 
     /**
      * Recycles the object by removing its disposed flag.
@@ -214,8 +214,8 @@ public class DefaultTurbineRunData
     @Override
     public void recycle()
     {
-<span class="fc" id="L217">        disposed = false;</span>
-<span class="fc" id="L218">    }</span>
+<span class="nc" id="L217">        disposed = false;</span>
+<span class="nc" id="L218">    }</span>
 
     /**
      * Disposes a run data object.
@@ -224,28 +224,28 @@ public class DefaultTurbineRunData
     public void dispose()
     {
         // empty pipelinedata map
-<span class="fc" id="L227">        get(Turbine.class).clear();</span>
+<span class="nc" id="L227">        get(Turbine.class).clear();</span>
 
-<span class="fc" id="L229">        action = null;</span>
-<span class="fc" id="L230">        layout = null;</span>
-<span class="fc" id="L231">        screen = null;</span>
-<span class="fc" id="L232">        templateEncoding = null;</span>
-<span class="fc" id="L233">        title = null;</span>
-<span class="fc" id="L234">        outSet = false;</span>
-<span class="fc" id="L235">        out = null;</span>
-<span class="fc" id="L236">        charSet = null;</span>
-<span class="fc" id="L237">        contentType = TurbineConstants.DEFAULT_HTML_CONTENT_TYPE;</span>
-<span class="fc" id="L238">        redirectURI = null;</span>
-<span class="fc" id="L239">        statusCode = HttpServletResponse.SC_OK;</span>
-<span class="fc" id="L240">        errors.clear();</span>
-<span class="fc" id="L241">        jndiContexts = null;</span>
-<span class="fc" id="L242">        remoteAddr = null;</span>
-<span class="fc" id="L243">        remoteHost = null;</span>
-<span class="fc" id="L244">        userAgent = null;</span>
-<span class="fc" id="L245">        stackTrace = null;</span>
-<span class="fc" id="L246">        stackTraceException = null;</span>
-<span class="fc" id="L247">        debugVariables.clear();</span>
-<span class="fc" id="L248">    }</span>
+<span class="nc" id="L229">        action = null;</span>
+<span class="nc" id="L230">        layout = null;</span>
+<span class="nc" id="L231">        screen = null;</span>
+<span class="nc" id="L232">        templateEncoding = null;</span>
+<span class="nc" id="L233">        title = null;</span>
+<span class="nc" id="L234">        outSet = false;</span>
+<span class="nc" id="L235">        out = null;</span>
+<span class="nc" id="L236">        charSet = null;</span>
+<span class="nc" id="L237">        contentType = TurbineConstants.DEFAULT_HTML_CONTENT_TYPE;</span>
+<span class="nc" id="L238">        redirectURI = null;</span>
+<span class="nc" id="L239">        statusCode = HttpServletResponse.SC_OK;</span>
+<span class="nc" id="L240">        errors.clear();</span>
+<span class="nc" id="L241">        jndiContexts = null;</span>
+<span class="nc" id="L242">        remoteAddr = null;</span>
+<span class="nc" id="L243">        remoteHost = null;</span>
+<span class="nc" id="L244">        userAgent = null;</span>
+<span class="nc" id="L245">        stackTrace = null;</span>
+<span class="nc" id="L246">        stackTraceException = null;</span>
+<span class="nc" id="L247">        debugVariables.clear();</span>
+<span class="nc" id="L248">    }</span>
 
     // ***************************************
     // Implementation of the RunData interface
@@ -260,15 +260,15 @@ public class DefaultTurbineRunData
     public ParameterParser getParameters()
     {
         // Parse the parameters first, if not yet done.
-<span class="fc" id="L263">        ParameterParser parameters = getParameterParser();</span>
-<span class="fc" id="L264">        HttpServletRequest request = getRequest();</span>
+<span class="nc" id="L263">        ParameterParser parameters = getParameterParser();</span>
+<span class="nc" id="L264">        HttpServletRequest request = getRequest();</span>
 
-<span class="pc bpc" id="L266" title="1 of 4 branches missed.">        if (parameters != null &amp;&amp; parameters.getRequest() != request)</span>
+<span class="nc bnc" id="L266" title="All 4 branches missed.">        if (parameters != null &amp;&amp; parameters.getRequest() != request)</span>
         {
-<span class="fc" id="L268">            parameters.setRequest(request);</span>
+<span class="nc" id="L268">            parameters.setRequest(request);</span>
         }
 
-<span class="fc" id="L271">        return parameters;</span>
+<span class="nc" id="L271">        return parameters;</span>
     }
 
     /**
@@ -299,7 +299,7 @@ public class DefaultTurbineRunData
     @Override
     public HttpServletRequest getRequest()
     {
-<span class="fc" id="L302">        return get(Turbine.class, HttpServletRequest.class);</span>
+<span class="nc" id="L302">        return get(Turbine.class, HttpServletRequest.class);</span>
     }
 
     /**
@@ -310,7 +310,7 @@ public class DefaultTurbineRunData
     @Override
     public HttpServletResponse getResponse()
     {
-<span class="fc" id="L313">        return get(Turbine.class, HttpServletResponse.class);</span>
+<span class="nc" id="L313">        return get(Turbine.class, HttpServletResponse.class);</span>
     }
 
     /**
@@ -321,7 +321,7 @@ public class DefaultTurbineRunData
     @Override
     public HttpSession getSession()
     {
-<span class="fc" id="L324">        return getRequest().getSession();</span>
+<span class="nc" id="L324">        return getRequest().getSession();</span>
     }
 
     /**
@@ -355,8 +355,8 @@ public class DefaultTurbineRunData
     public &lt;A extends AccessControlList&gt; A getACL()
     {
         @SuppressWarnings(&quot;unchecked&quot;)
-<span class="fc" id="L358">        A acl = (A)get(Turbine.class, TurbineAccessControlList.class);</span>
-<span class="fc" id="L359">        return acl;</span>
+<span class="nc" id="L358">        A acl = (A)get(Turbine.class, TurbineAccessControlList.class);</span>
+<span class="nc" id="L359">        return acl;</span>
     }
 
     /**
@@ -370,8 +370,8 @@ public class DefaultTurbineRunData
     @Override
     public void setACL(AccessControlList acl)
     {
-<span class="fc" id="L373">        get(Turbine.class).put(TurbineAccessControlList.class, acl);</span>
-<span class="fc" id="L374">    }</span>
+<span class="nc" id="L373">        get(Turbine.class).put(TurbineAccessControlList.class, acl);</span>
+<span class="nc" id="L374">    }</span>
 
     /**
      * Whether or not an action has been defined.
@@ -381,8 +381,8 @@ public class DefaultTurbineRunData
     @Override
     public boolean hasAction()
     {
-<span class="fc bfc" id="L384" title="All 2 branches covered.">        return StringUtils.isNotEmpty(this.action)</span>
-<span class="pc bpc" id="L385" title="1 of 2 branches missed.">          &amp;&amp; !this.action.equalsIgnoreCase(&quot;null&quot;);</span>
+<span class="nc bnc" id="L384" title="All 2 branches missed.">        return StringUtils.isNotEmpty(this.action)</span>
+<span class="nc bnc" id="L385" title="All 2 branches missed.">          &amp;&amp; !this.action.equalsIgnoreCase(&quot;null&quot;);</span>
     }
 
     /**
@@ -395,7 +395,7 @@ public class DefaultTurbineRunData
     @Override
     public String getAction()
     {
-<span class="fc bfc" id="L398" title="All 2 branches covered.">        return hasAction() ? this.action : &quot;&quot;;</span>
+<span class="nc bnc" id="L398" title="All 2 branches missed.">        return hasAction() ? this.action : &quot;&quot;;</span>
     }
 
     /**
@@ -406,8 +406,8 @@ public class DefaultTurbineRunData
     @Override
     public void setAction(String action)
     {
-<span class="fc" id="L409">        this.action = action;</span>
-<span class="fc" id="L410">    }</span>
+<span class="nc" id="L409">        this.action = action;</span>
+<span class="nc" id="L410">    }</span>
 
     /**
      * If the Layout has not been defined by the screen then set the
@@ -425,23 +425,23 @@ public class DefaultTurbineRunData
     @Override
     public String getLayout()
     {
-<span class="fc bfc" id="L428" title="All 2 branches covered.">        if (this.layout == null)</span>
+<span class="nc bnc" id="L428" title="All 2 branches missed.">        if (this.layout == null)</span>
         {
             /*
              * This will return something if the template
              * services are running. If we get nothing we
              * will fall back to the ECS layout.
              */
-<span class="fc" id="L435">            TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);</span>
-<span class="fc" id="L436">            layout = templateService.getDefaultLayoutName(this);</span>
+<span class="nc" id="L435">            TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);</span>
+<span class="nc" id="L436">            layout = templateService.getDefaultLayoutName(this);</span>
 
-<span class="pc bpc" id="L438" title="1 of 2 branches missed.">            if (layout == null)</span>
+<span class="nc bnc" id="L438" title="All 2 branches missed.">            if (layout == null)</span>
             {
 <span class="nc" id="L440">                layout = &quot;DefaultLayout&quot;;</span>
             }
         }
 
-<span class="fc" id="L444">        return this.layout;</span>
+<span class="nc" id="L444">        return this.layout;</span>
     }
 
     /**
@@ -452,8 +452,8 @@ public class DefaultTurbineRunData
     @Override
     public void setLayout(String layout)
     {
-<span class="fc" id="L455">        this.layout = layout;</span>
-<span class="fc" id="L456">    }</span>
+<span class="nc" id="L455">        this.layout = layout;</span>
+<span class="nc" id="L456">    }</span>
 
     /**
      * Convenience method for a template info that
@@ -490,7 +490,7 @@ public class DefaultTurbineRunData
     @Override
     public boolean hasScreen()
     {
-<span class="fc" id="L493">        return StringUtils.isNotEmpty(this.screen);</span>
+<span class="nc" id="L493">        return StringUtils.isNotEmpty(this.screen);</span>
     }
 
     /**
@@ -501,7 +501,7 @@ public class DefaultTurbineRunData
     @Override
     public String getScreen()
     {
-<span class="fc bfc" id="L504" title="All 2 branches covered.">        return hasScreen() ? this.screen : &quot;&quot;;</span>
+<span class="nc bnc" id="L504" title="All 2 branches missed.">        return hasScreen() ? this.screen : &quot;&quot;;</span>
     }
 
     /**
@@ -512,8 +512,8 @@ public class DefaultTurbineRunData
     @Override
     public void setScreen(String screen)
     {
-<span class="fc" id="L515">        this.screen = screen;</span>
-<span class="fc" id="L516">    }</span>
+<span class="nc" id="L515">        this.screen = screen;</span>
+<span class="nc" id="L516">    }</span>
 
     /**
      * Convenience method for a template info that
@@ -538,8 +538,8 @@ public class DefaultTurbineRunData
     @Override
     public void setScreenTemplate(String screen)
     {
-<span class="fc" id="L541">        getTemplateInfo().setScreenTemplate(screen);</span>
-<span class="fc" id="L542">    }</span>
+<span class="nc" id="L541">        getTemplateInfo().setScreenTemplate(screen);</span>
+<span class="nc" id="L542">    }</span>
 
     /**
      * Gets the character encoding to use for reading template files.
@@ -549,7 +549,7 @@ public class DefaultTurbineRunData
     @Override
     public String getTemplateEncoding()
     {
-<span class="fc" id="L552">        return templateEncoding;</span>
+<span class="nc" id="L552">        return templateEncoding;</span>
     }
 
     /**
@@ -571,15 +571,15 @@ public class DefaultTurbineRunData
     @Override
     public TemplateInfo getTemplateInfo()
     {
-<span class="fc" id="L574">        TemplateInfo templateInfo = get(Turbine.class, TemplateInfo.class);</span>
+<span class="nc" id="L574">        TemplateInfo templateInfo = get(Turbine.class, TemplateInfo.class);</span>
 
-<span class="fc bfc" id="L576" title="All 2 branches covered.">        if (templateInfo == null)</span>
+<span class="nc bnc" id="L576" title="All 2 branches missed.">        if (templateInfo == null)</span>
         {
-<span class="fc" id="L578">            templateInfo = new TemplateInfo(this);</span>
-<span class="fc" id="L579">            get(Turbine.class).put(TemplateInfo.class, templateInfo);</span>
+<span class="nc" id="L578">            templateInfo = new TemplateInfo(this);</span>
+<span class="nc" id="L579">            get(Turbine.class).put(TemplateInfo.class, templateInfo);</span>
         }
 
-<span class="fc" id="L582">        return templateInfo;</span>
+<span class="nc" id="L582">        return templateInfo;</span>
     }
 
     /**
@@ -615,8 +615,8 @@ public class DefaultTurbineRunData
     @Override
     public void setMessage(String msg)
     {
-<span class="fc" id="L618">        get(Turbine.class).put(StringBuilder.class, new StringBuilder(msg));</span>
-<span class="fc" id="L619">    }</span>
+<span class="nc" id="L618">        get(Turbine.class).put(StringBuilder.class, new StringBuilder(msg));</span>
+<span class="nc" id="L619">    }</span>
 
     /**
      * Adds the string to message. If message has prior messages from
@@ -739,8 +739,8 @@ public class DefaultTurbineRunData
     public &lt;T extends User&gt; T getUser()
     {
         @SuppressWarnings(&quot;unchecked&quot;)
-<span class="fc" id="L742">        T user = (T)get(Turbine.class, User.class);</span>
-<span class="fc" id="L743">        return user;</span>
+<span class="nc" id="L742">        T user = (T)get(Turbine.class, User.class);</span>
+<span class="nc" id="L743">        return user;</span>
     }
 
     /**
@@ -751,9 +751,9 @@ public class DefaultTurbineRunData
     @Override
     public void setUser(User user)
     {
-<span class="fc" id="L754">        log.debug(&quot;user set: {}&quot;, user::getName);</span>
-<span class="fc" id="L755">        get(Turbine.class).put(User.class, user);</span>
-<span class="fc" id="L756">    }</span>
+<span class="nc" id="L754">        log.debug(&quot;user set: {}&quot;, user::getName);</span>
+<span class="nc" id="L755">        get(Turbine.class).put(User.class, user);</span>
+<span class="nc" id="L756">    }</span>
 
     /**
      * Attempts to get the user from the session. If it does
@@ -764,7 +764,7 @@ public class DefaultTurbineRunData
     @Override
     public &lt;T extends User&gt; T getUserFromSession()
     {
-<span class="fc" id="L767">        return getUserFromSession(getSession());</span>
+<span class="nc" id="L767">        return getUserFromSession(getSession());</span>
     }
 
     /**
@@ -835,12 +835,12 @@ public class DefaultTurbineRunData
     @Override
     public Locale getLocale()
     {
-<span class="fc" id="L838">        Locale locale = get(Turbine.class, Locale.class);</span>
-<span class="pc bpc" id="L839" title="1 of 2 branches missed.">        if (locale == null)</span>
+<span class="nc" id="L838">        Locale locale = get(Turbine.class, Locale.class);</span>
+<span class="nc bnc" id="L839" title="All 2 branches missed.">        if (locale == null)</span>
         {
 <span class="nc" id="L841">            locale = LocaleUtils.getDefaultLocale();</span>
         }
-<span class="fc" id="L843">        return locale;</span>
+<span class="nc" id="L843">        return locale;</span>
     }
 
     /**
@@ -851,22 +851,22 @@ public class DefaultTurbineRunData
     @Override
     public void setLocale(Locale locale)
     {
-<span class="fc" id="L854">        get(Turbine.class).put(Locale.class, locale);</span>
+<span class="nc" id="L854">        get(Turbine.class).put(Locale.class, locale);</span>
 
         // propagate the locale to the parsers
-<span class="fc" id="L857">        ParameterParser parameters = get(Turbine.class, ParameterParser.class);</span>
-<span class="fc" id="L858">        CookieParser cookies = get(Turbine.class, CookieParser.class);</span>
+<span class="nc" id="L857">        ParameterParser parameters = get(Turbine.class, ParameterParser.class);</span>
+<span class="nc" id="L858">        CookieParser cookies = get(Turbine.class, CookieParser.class);</span>
 
-<span class="pc bpc" id="L860" title="1 of 2 branches missed.">        if (parameters != null)</span>
+<span class="nc bnc" id="L860" title="All 2 branches missed.">        if (parameters != null)</span>
         {
-<span class="fc" id="L862">            parameters.setLocale(locale);</span>
+<span class="nc" id="L862">            parameters.setLocale(locale);</span>
         }
 
-<span class="pc bpc" id="L865" title="1 of 2 branches missed.">        if (cookies != null)</span>
+<span class="nc bnc" id="L865" title="All 2 branches missed.">        if (cookies != null)</span>
         {
-<span class="fc" id="L867">            cookies.setLocale(locale);</span>
+<span class="nc" id="L867">            cookies.setLocale(locale);</span>
         }
-<span class="fc" id="L869">    }</span>
+<span class="nc" id="L869">    }</span>
 
     /**
      * Gets the charset. If it has not already been defined with
@@ -906,15 +906,15 @@ public class DefaultTurbineRunData
     @Override
     public Charset getCharset()
     {
-<span class="fc" id="L909">        log.debug(&quot;getCharset()&quot;);</span>
+<span class="nc" id="L909">        log.debug(&quot;getCharset()&quot;);</span>
 
-<span class="fc bfc" id="L911" title="All 2 branches covered.">        if (charSet == null)</span>
+<span class="nc bnc" id="L911" title="All 2 branches missed.">        if (charSet == null)</span>
         {
-<span class="fc" id="L913">            log.debug(&quot;Charset was null!&quot;);</span>
-<span class="fc" id="L914">            charSet =  LocaleUtils.getDefaultCharset();</span>
+<span class="nc" id="L913">            log.debug(&quot;Charset was null!&quot;);</span>
+<span class="nc" id="L914">            charSet =  LocaleUtils.getDefaultCharset();</span>
         }
 
-<span class="fc" id="L917">        return charSet;</span>
+<span class="nc" id="L917">        return charSet;</span>
     }
 
     /**
@@ -925,9 +925,9 @@ public class DefaultTurbineRunData
     @Override
     public void setCharset(Charset charSet)
     {
-<span class="fc" id="L928">        log.debug(&quot;setCharset({})&quot;, charSet);</span>
-<span class="fc" id="L929">        this.charSet = charSet;</span>
-<span class="fc" id="L930">    }</span>
+<span class="nc" id="L928">        log.debug(&quot;setCharset({})&quot;, charSet);</span>
+<span class="nc" id="L929">        this.charSet = charSet;</span>
+<span class="nc" id="L930">    }</span>
 
     /**
      * Gets the HTTP content type to return. If a charset
@@ -943,9 +943,9 @@ public class DefaultTurbineRunData
     @Override
     public String getContentType()
     {
-<span class="pc bpc" id="L946" title="1 of 2 branches missed.">        if (StringUtils.isNotEmpty(contentType))</span>
+<span class="nc bnc" id="L946" title="All 2 branches missed.">        if (StringUtils.isNotEmpty(contentType))</span>
         {
-<span class="pc bpc" id="L948" title="1 of 2 branches missed.">            if (charSet == null)</span>
+<span class="nc bnc" id="L948" title="All 2 branches missed.">            if (charSet == null)</span>
             {
 <span class="nc bnc" id="L950" title="All 2 branches missed.">                if (contentType.startsWith(&quot;text/&quot;))</span>
                 {
@@ -956,7 +956,7 @@ public class DefaultTurbineRunData
             }
             else
             {
-<span class="fc" id="L959">                return contentType + &quot;; charset=&quot; + charSet.name();</span>
+<span class="nc" id="L959">                return contentType + &quot;; charset=&quot; + charSet.name();</span>
             }
         }
 
@@ -983,7 +983,7 @@ public class DefaultTurbineRunData
     @Override
     public String getRedirectURI()
     {
-<span class="pc bpc" id="L986" title="1 of 2 branches missed.">        return (this.redirectURI == null ? &quot;&quot; : redirectURI);</span>
+<span class="nc bnc" id="L986" title="All 2 branches missed.">        return (this.redirectURI == null ? &quot;&quot; : redirectURI);</span>
     }
 
     /**
@@ -1133,7 +1133,7 @@ public class DefaultTurbineRunData
     @Override
     public ServerData getServerData()
     {
-<span class="fc" id="L1136">        return get(Turbine.class, ServerData.class);</span>
+<span class="nc" id="L1136">        return get(Turbine.class, ServerData.class);</span>
     }
 
     /**
@@ -1193,16 +1193,16 @@ public class DefaultTurbineRunData
     @Override
     public void populate()
     {
-<span class="fc" id="L1196">        User user = getUserFromSession();</span>
-<span class="fc" id="L1197">        get(Turbine.class).put(User.class, user);</span>
+<span class="nc" id="L1196">        User user = getUserFromSession();</span>
+<span class="nc" id="L1197">        get(Turbine.class).put(User.class, user);</span>
 
-<span class="fc bfc" id="L1199" title="All 2 branches covered.">        if (user != null)</span>
+<span class="nc bnc" id="L1199" title="All 2 branches missed.">        if (user != null)</span>
         {
-<span class="fc" id="L1201">            user.setLastAccessDate();</span>
-<span class="fc" id="L1202">            user.incrementAccessCounter();</span>
-<span class="fc" id="L1203">            user.incrementAccessCounterForSession();</span>
+<span class="nc" id="L1201">            user.setLastAccessDate();</span>
+<span class="nc" id="L1202">            user.incrementAccessCounter();</span>
+<span class="nc" id="L1203">            user.incrementAccessCounterForSession();</span>
         }
-<span class="fc" id="L1205">    }</span>
+<span class="nc" id="L1205">    }</span>
 
     /**
      * Saves a user object into the session.
@@ -1210,8 +1210,8 @@ public class DefaultTurbineRunData
     @Override
     public void save()
     {
-<span class="fc" id="L1213">        getSession().setAttribute(User.SESSION_KEY, getUser());</span>
-<span class="fc" id="L1214">    }</span>
+<span class="nc" id="L1213">        getSession().setAttribute(User.SESSION_KEY, getUser());</span>
+<span class="nc" id="L1214">    }</span>
 
     /**
      * Gets the stack trace if set.
@@ -1221,7 +1221,7 @@ public class DefaultTurbineRunData
     @Override
     public String getStackTrace()
     {
-<span class="fc" id="L1224">        return stackTrace;</span>
+<span class="nc" id="L1224">        return stackTrace;</span>
     }
 
     /**
@@ -1232,7 +1232,7 @@ public class DefaultTurbineRunData
     @Override
     public Throwable getStackTraceException()
     {
-<span class="fc" id="L1235">        return stackTraceException;</span>
+<span class="nc" id="L1235">        return stackTraceException;</span>
     }
 
     /**
@@ -1244,9 +1244,9 @@ public class DefaultTurbineRunData
     @Override
     public void setStackTrace(String trace, Throwable exp)
     {
-<span class="fc" id="L1247">        stackTrace = trace;</span>
-<span class="fc" id="L1248">        stackTraceException = exp;</span>
-<span class="fc" id="L1249">    }</span>
+<span class="nc" id="L1247">        stackTrace = trace;</span>
+<span class="nc" id="L1248">        stackTraceException = exp;</span>
+<span class="nc" id="L1249">    }</span>
 
     /**
      * Sets a name/value pair in an internal Map that is accessible from the
@@ -1290,7 +1290,7 @@ public class DefaultTurbineRunData
     @Override
     public ParameterParser getParameterParser()
     {
-<span class="fc" id="L1293">        return get(Turbine.class, ParameterParser.class);</span>
+<span class="nc" id="L1293">        return get(Turbine.class, ParameterParser.class);</span>
     }
 
     /**
@@ -1301,7 +1301,7 @@ public class DefaultTurbineRunData
     @Override
     public CookieParser getCookieParser()
     {
-<span class="fc" id="L1304">        return get(Turbine.class, CookieParser.class);</span>
+<span class="nc" id="L1304">        return get(Turbine.class, CookieParser.class);</span>
     }
 
     // ********************

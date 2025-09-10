@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JobQueue.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.schedule</a> &gt; <span class="el_source">JobQueue.java</span></div><h1>JobQueue.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.schedule;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JobQueue.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.schedule</a> &gt; <span class="el_source">JobQueue.java</span></div><h1>JobQueue.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.schedule;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -38,15 +38,15 @@ public class JobQueue&lt;J extends JobEntry&gt;
     /**
      * The queue of &lt;code&gt;JobEntry&lt;/code&gt; objects.
      */
-<span class="fc" id="L41">    private ConcurrentSkipListSet&lt;J&gt; queue = null;</span>
+<span class="nc" id="L41">    private ConcurrentSkipListSet&lt;J&gt; queue = null;</span>
 
     /**
      * Creates a new instance.
      */
     public JobQueue()
-<span class="fc" id="L47">    {</span>
-<span class="fc" id="L48">        queue = new ConcurrentSkipListSet&lt;J&gt;((o1, o2) -&gt; Long.compare(o1.getNextRuntime(), o2.getNextRuntime()));</span>
-<span class="fc" id="L49">    }</span>
+<span class="nc" id="L47">    {</span>
+<span class="nc" id="L48">        queue = new ConcurrentSkipListSet&lt;J&gt;((o1, o2) -&gt; Long.compare(o1.getNextRuntime(), o2.getNextRuntime()));</span>
+<span class="nc" id="L49">    }</span>
 
     /**
      * Return the next job off the top of the queue and remove it from the queue, or &lt;code&gt;null&lt;/code&gt; if
@@ -56,7 +56,7 @@ public class JobQueue&lt;J extends JobEntry&gt;
      */
     public J getNext()
     {
-<span class="fc" id="L59">        return queue.pollFirst();</span>
+<span class="nc" id="L59">        return queue.pollFirst();</span>
     }
     
     /**
@@ -67,7 +67,7 @@ public class JobQueue&lt;J extends JobEntry&gt;
      */
     public J getFirst()
     {
-<span class="pc bpc" id="L70" title="1 of 2 branches missed.">        return !queue.isEmpty()? queue.first(): null;</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">        return !queue.isEmpty()? queue.first(): null;</span>
     }
 
     /**
@@ -78,22 +78,22 @@ public class JobQueue&lt;J extends JobEntry&gt;
      */
     public J getJob(J je)
     {
-<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (je != null)</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        if (je != null)</span>
         {
-<span class="fc" id="L83">          J job = queue.floor(je);</span>
-<span class="fc bfc" id="L84" title="All 2 branches covered.">          if (je.equals(job))</span>
+<span class="nc" id="L83">          J job = queue.floor(je);</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">          if (je.equals(job))</span>
           {
-<span class="fc" id="L86">              return job;</span>
+<span class="nc" id="L86">              return job;</span>
           }
-<span class="fc bfc" id="L88" title="All 2 branches covered.">          for (J jobEntry : list())</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">          for (J jobEntry : list())</span>
             {
-<span class="fc bfc" id="L90" title="All 2 branches covered.">                if (jobEntry.getJobId() == je.getJobId())</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">                if (jobEntry.getJobId() == je.getJobId())</span>
                 {
-<span class="fc" id="L92">                    return jobEntry;</span>
+<span class="nc" id="L92">                    return jobEntry;</span>
                 }
-<span class="fc" id="L94">            } </span>
+<span class="nc" id="L94">            } </span>
         }
-<span class="fc" id="L96">        return null;</span>
+<span class="nc" id="L96">        return null;</span>
     }
 
     /**
@@ -103,13 +103,13 @@ public class JobQueue&lt;J extends JobEntry&gt;
      */
     public Vector&lt;J&gt; list()
     {
-<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (!queue.isEmpty())</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (!queue.isEmpty())</span>
         {
-<span class="fc" id="L108">            return new Vector&lt;&gt;(queue);</span>
+<span class="nc" id="L108">            return new Vector&lt;&gt;(queue);</span>
         }
         else
         {
-<span class="fc" id="L112">            return null;</span>
+<span class="nc" id="L112">            return null;</span>
         }
     }
 
@@ -120,8 +120,8 @@ public class JobQueue&lt;J extends JobEntry&gt;
      */
     public void add(J je)
     {
-<span class="fc" id="L123">        queue.add(je);</span>
-<span class="fc" id="L124">    }</span>
+<span class="nc" id="L123">        queue.add(je);</span>
+<span class="nc" id="L124">    }</span>
 
     /**
      * Batch load jobs.  Retains any already enqueued jobs.  Called on
@@ -131,11 +131,11 @@ public class JobQueue&lt;J extends JobEntry&gt;
      */
     public void batchLoad(List&lt;J&gt; jobEntries)
     {
-<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        if (jobEntries != null)</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        if (jobEntries != null)</span>
         {
-<span class="fc" id="L136">            queue.addAll(jobEntries);</span>
+<span class="nc" id="L136">            queue.addAll(jobEntries);</span>
         }
-<span class="fc" id="L138">    }</span>
+<span class="nc" id="L138">    }</span>
 
     /**
      * Remove a job from the queue.
@@ -144,8 +144,8 @@ public class JobQueue&lt;J extends JobEntry&gt;
      */
     public void remove(J je)
     {
-<span class="fc" id="L147">        queue.remove(je);</span>
-<span class="fc" id="L148">    }</span>
+<span class="nc" id="L147">        queue.remove(je);</span>
+<span class="nc" id="L148">    }</span>
 
     /**
      * Modify a job on the queue.
@@ -155,10 +155,10 @@ public class JobQueue&lt;J extends JobEntry&gt;
      */
     public void modify(J je) throws TurbineException
     {
-<span class="fc" id="L158">        remove(je);</span>
-<span class="fc" id="L159">        je.calcRunTime();</span>
-<span class="fc" id="L160">        add(je);</span>
-<span class="fc" id="L161">    }</span>
+<span class="nc" id="L158">        remove(je);</span>
+<span class="nc" id="L159">        je.calcRunTime();</span>
+<span class="nc" id="L160">        add(je);</span>
+<span class="nc" id="L161">    }</span>
 
     /**
      * Update the job for its next run time.
@@ -169,7 +169,7 @@ public class JobQueue&lt;J extends JobEntry&gt;
     public void updateQueue(J je)
             throws TurbineException
     {
-<span class="fc" id="L172">        modify(je);</span>
-<span class="fc" id="L173">    }</span>
+<span class="nc" id="L172">        modify(je);</span>
+<span class="nc" id="L173">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocalizationTool.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.localization</a> &gt; <span class="el_source">LocalizationTool.java</span></div><h1>LocalizationTool.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.localization;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LocalizationTool.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.localization</a> &gt; <span class="el_source">LocalizationTool.java</span></div><h1>LocalizationTool.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.localization;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -76,7 +76,7 @@ public class LocalizationTool implements ApplicationTool
     {
         try
         {
-<span class="fc" id="L79">            return localizationService.getString(getBundleName(null), getLocale(), key);</span>
+<span class="nc" id="L79">            return localizationService.getString(getBundleName(null), getLocale(), key);</span>
         }
 <span class="nc" id="L81">        catch (MissingResourceException noKey)</span>
         {
@@ -92,7 +92,7 @@ public class LocalizationTool implements ApplicationTool
      */
     public Locale getLocale()
     {
-<span class="fc" id="L95">        return locale;</span>
+<span class="nc" id="L95">        return locale;</span>
     }
 
     /**
@@ -108,7 +108,7 @@ public class LocalizationTool implements ApplicationTool
      */
     protected String getBundleName(Object data)
     {
-<span class="fc" id="L111">        return localizationService.getDefaultBundleName();</span>
+<span class="nc" id="L111">        return localizationService.getDefaultBundleName();</span>
     }
 
     /**
@@ -133,15 +133,15 @@ public class LocalizationTool implements ApplicationTool
     @Override
     public void init(Object data)
     {
-<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if (data instanceof RunData)</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (data instanceof RunData)</span>
         {
             // Pull necessary information out of RunData while we have
             // a reference to it.
-<span class="fc bfc" id="L140" title="All 2 branches covered.">            locale = (localizationService instanceof RundataLocalizationService)?</span>
-<span class="fc" id="L141">                    ((RundataLocalizationService)localizationService).getLocale((RunData) data):</span>
-<span class="fc" id="L142">                    localizationService.getLocale(((RunData) data).getRequest());</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">            locale = (localizationService instanceof RundataLocalizationService)?</span>
+<span class="nc" id="L141">                    ((RundataLocalizationService)localizationService).getLocale((RunData) data):</span>
+<span class="nc" id="L142">                    localizationService.getLocale(((RunData) data).getRequest());</span>
         }
-<span class="fc" id="L144">    }</span>
+<span class="nc" id="L144">    }</span>
 
     /**
      * No-op.

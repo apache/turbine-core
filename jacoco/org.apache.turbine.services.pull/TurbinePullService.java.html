@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbinePullService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.pull</a> &gt; <span class="el_source">TurbinePullService.java</span></div><h1>TurbinePullService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.pull;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbinePullService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.pull</a> &gt; <span class="el_source">TurbinePullService.java</span></div><h1>TurbinePullService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.pull;
 
 
 /*
@@ -216,9 +216,9 @@ import org.apache.velocity.context.Context;
 <span class="nc" id="L216">                log.info(&quot;Velocity Service not configured, skipping pull tools!&quot;);</span>
             }
         }
-<span class="fc" id="L219">        catch (Exception e)</span>
+<span class="nc" id="L219">        catch (Exception e)</span>
         {
-<span class="fc" id="L221">            throw new InitializationException(&quot;TurbinePullService failed to initialize&quot;, e);</span>
+<span class="nc" id="L221">            throw new InitializationException(&quot;TurbinePullService failed to initialize&quot;, e);</span>
 <span class="fc" id="L222">        }</span>
 <span class="fc" id="L223">    }</span>
 
@@ -248,7 +248,7 @@ import org.apache.velocity.context.Context;
 
         // Log the fact that the application tool box will
         // be refreshed on a per request basis.
-<span class="fc bfc" id="L251" title="All 2 branches covered.">        if (refreshToolsPerRequest)</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">        if (refreshToolsPerRequest)</span>
         {
 <span class="fc" id="L253">            log.info(&quot;Pull Model tools will be refreshed on a per request basis.&quot;);</span>
         }
@@ -357,11 +357,11 @@ import org.apache.velocity.context.Context;
     @Override
     public Context getGlobalContext()
     {
-<span class="pc bpc" id="L360" title="1 of 2 branches missed.">        if (refreshToolsPerRequest)</span>
+<span class="nc bnc" id="L360" title="All 2 branches missed.">        if (refreshToolsPerRequest)</span>
         {
-<span class="fc" id="L362">            refreshGlobalTools();</span>
+<span class="nc" id="L362">            refreshGlobalTools();</span>
         }
-<span class="fc" id="L364">        return globalContext;</span>
+<span class="nc" id="L364">        return globalContext;</span>
     }
 
     /**
@@ -376,7 +376,7 @@ import org.apache.velocity.context.Context;
     @Override
     public void populateContext(Context context, RunData data)
     {
-<span class="fc" id="L379">        populateWithRequestTools(context, data);</span>
+<span class="nc" id="L379">        populateWithRequestTools(context, data);</span>
 
         // session tools (whether session-only or persistent are
         // very similar, so the same method is used - the
@@ -388,26 +388,26 @@ import org.apache.velocity.context.Context;
         // while persistent and authorized Tools are started when the user has
         // logged in
         //
-<span class="fc" id="L391">        User user = data.getUser();</span>
+<span class="nc" id="L391">        User user = data.getUser();</span>
 
         // Note: Session tools are currently lost after the login action
         // because the anonymous user is replaced the the real user object.
         // We should either store the session pull tools in the session or
         // make Turbine.loginAction() copy the session pull tools into the
         // new user object.
-<span class="fc" id="L398">        populateWithSessionTools(sessionTools, context, data, user);</span>
+<span class="nc" id="L398">        populateWithSessionTools(sessionTools, context, data, user);</span>
 
         TurbineUserManager userManager =
         	(TurbineUserManager)TurbineServices
-<span class="fc" id="L402">        		.getInstance()</span>
-<span class="fc" id="L403">        		.getService(TurbineUserManager.ROLE);</span>
+<span class="nc" id="L402">        		.getInstance()</span>
+<span class="nc" id="L403">        		.getService(TurbineUserManager.ROLE);</span>
 
-<span class="pc bpc" id="L405" title="3 of 4 branches missed.">        if (!userManager.isAnonymousUser(user) &amp;&amp; user.hasLoggedIn())</span>
+<span class="nc bnc" id="L405" title="All 4 branches missed.">        if (!userManager.isAnonymousUser(user) &amp;&amp; user.hasLoggedIn())</span>
         {
 <span class="nc" id="L407">            populateWithSessionTools(authorizedTools, context, data, user);</span>
 <span class="nc" id="L408">            populateWithPermTools(persistentTools, context, data, user);</span>
         }
-<span class="fc" id="L410">    }</span>
+<span class="nc" id="L410">    }</span>
 
     /**
      * Populate the given context with all request, session, authorized
@@ -421,9 +421,9 @@ import org.apache.velocity.context.Context;
     @Override
     public void populateContext(Context context, PipelineData pipelineData)
     {
-<span class="fc" id="L424">        RunData data = pipelineData.getRunData();</span>
+<span class="nc" id="L424">        RunData data = pipelineData.getRunData();</span>
 
-<span class="fc" id="L426">        populateWithRequestTools(context, pipelineData);</span>
+<span class="nc" id="L426">        populateWithRequestTools(context, pipelineData);</span>
         // session tools (whether session-only or persistent are
         // very similar, so the same method is used - the
         // boolean parameter indicates whether get/setPerm is to be used
@@ -434,26 +434,26 @@ import org.apache.velocity.context.Context;
         // while persistent and authorized Tools are started when the user has
         // logged in
         //
-<span class="fc" id="L437">        User user = data.getUser();</span>
+<span class="nc" id="L437">        User user = data.getUser();</span>
 
         // Note: Session tools are currently lost after the login action
         // because the anonymous user is replaced the the real user object.
         // We should either store the session pull tools in the session or
         // make Turbine.loginAction() copy the session pull tools into the
         // new user object.
-<span class="fc" id="L444">        populateWithSessionTools(sessionTools, context, data, user);</span>
+<span class="nc" id="L444">        populateWithSessionTools(sessionTools, context, data, user);</span>
 
         TurbineUserManager userManager =
         	(TurbineUserManager)TurbineServices
-<span class="fc" id="L448">        		.getInstance()</span>
-<span class="fc" id="L449">        		.getService(TurbineUserManager.ROLE);</span>
+<span class="nc" id="L448">        		.getInstance()</span>
+<span class="nc" id="L449">        		.getService(TurbineUserManager.ROLE);</span>
 
-<span class="pc bpc" id="L451" title="1 of 4 branches missed.">        if (!userManager.isAnonymousUser(user) &amp;&amp; user.hasLoggedIn())</span>
+<span class="nc bnc" id="L451" title="All 4 branches missed.">        if (!userManager.isAnonymousUser(user) &amp;&amp; user.hasLoggedIn())</span>
         {
-<span class="fc" id="L453">            populateWithSessionTools(authorizedTools, context, data, user);</span>
-<span class="fc" id="L454">            populateWithPermTools(persistentTools, context, pipelineData, user);</span>
+<span class="nc" id="L453">            populateWithSessionTools(authorizedTools, context, data, user);</span>
+<span class="nc" id="L454">            populateWithPermTools(persistentTools, context, pipelineData, user);</span>
         }
-<span class="fc" id="L456">    }</span>
+<span class="nc" id="L456">    }</span>
 
     /**
      * Populate the given context with the global tools
@@ -491,26 +491,26 @@ import org.apache.velocity.context.Context;
     private void populateWithRequestTools(Context context, Object data)
     {
         // Iterate the tools
-<span class="fc bfc" id="L494" title="All 2 branches covered.">        for (ToolData toolData : requestTools)</span>
+<span class="nc bnc" id="L494" title="All 2 branches missed.">        for (ToolData toolData : requestTools)</span>
         {
             try
             {
                 // Fetch Object through the Pool.
-<span class="fc" id="L499">                Object tool = pool.getInstance(toolData.toolClass);</span>
+<span class="nc" id="L499">                Object tool = pool.getInstance(toolData.toolClass);</span>
 
                 // request tools are init'd with a RunData object
-<span class="fc" id="L502">                initTool(tool, data);</span>
+<span class="nc" id="L502">                initTool(tool, data);</span>
 
                 // put the tool in the context
-<span class="fc" id="L505">                context.put(toolData.toolName, tool);</span>
+<span class="nc" id="L505">                context.put(toolData.toolName, tool);</span>
             }
 <span class="nc" id="L507">            catch (Exception e)</span>
             {
 <span class="nc" id="L509">                log.error(&quot;Could not instantiate request tool {} from a {} object&quot;,</span>
                         toolData.toolName, toolData.toolClassName, e);
-<span class="fc" id="L511">            }</span>
-<span class="fc" id="L512">        }</span>
-<span class="fc" id="L513">    }</span>
+<span class="nc" id="L511">            }</span>
+<span class="nc" id="L512">        }</span>
+<span class="nc" id="L513">    }</span>
 
     /**
      * Populate the given context with the session-scoped tools.
@@ -525,37 +525,37 @@ import org.apache.velocity.context.Context;
             RunData data, User user)
     {
         // Iterate the tools
-<span class="fc bfc" id="L528" title="All 2 branches covered.">        for (ToolData toolData : tools)</span>
+<span class="nc bnc" id="L528" title="All 2 branches missed.">        for (ToolData toolData : tools)</span>
         {
             try
             {
                 // ensure that tool is created only once for a user
                 // by synchronizing against the user object
-<span class="fc" id="L534">                synchronized (data.getSession())</span>
+<span class="nc" id="L534">                synchronized (data.getSession())</span>
                 {
                     // first try and fetch the tool from the user's
                     // hashmap
-<span class="fc" id="L538">                    Object tool = data.getSession().getAttribute(</span>
+<span class="nc" id="L538">                    Object tool = data.getSession().getAttribute(</span>
                             SESSION_TOOLS_ATTRIBUTE_PREFIX
                             + toolData.toolClassName);
 
-<span class="fc bfc" id="L542" title="All 2 branches covered.">                    if (tool == null)</span>
+<span class="nc bnc" id="L542" title="All 2 branches missed.">                    if (tool == null)</span>
                     {
                         // if not there, an instance must be fetched from
                         // the pool
-<span class="fc" id="L546">                        tool = pool.getInstance(toolData.toolClass);</span>
+<span class="nc" id="L546">                        tool = pool.getInstance(toolData.toolClass);</span>
 
                         // session tools are init'd with the User object
-<span class="fc" id="L549">                        initTool(tool, user);</span>
+<span class="nc" id="L549">                        initTool(tool, user);</span>
                     }
 
                     // *NOT* else
-<span class="pc bpc" id="L553" title="1 of 2 branches missed.">                    if(tool != null)</span>
+<span class="nc bnc" id="L553" title="All 2 branches missed.">                    if(tool != null)</span>
                     {
                         // store the newly created tool in the session
-<span class="fc" id="L556">                        data.getSession().setAttribute(</span>
+<span class="nc" id="L556">                        data.getSession().setAttribute(</span>
                                 SESSION_TOOLS_ATTRIBUTE_PREFIX
-<span class="fc" id="L558">                                + tool.getClass().getName(), tool);</span>
+<span class="nc" id="L558">                                + tool.getClass().getName(), tool);</span>
 
                         // This is a semantics change. In the old
                         // Turbine, Session tools were initialized and
@@ -570,28 +570,28 @@ import org.apache.velocity.context.Context;
                         // tools on every run, even if we just init'ed it.
                         //
 
-<span class="pc bpc" id="L573" title="1 of 2 branches missed.">                        if (refreshToolsPerRequest)</span>
+<span class="nc bnc" id="L573" title="All 2 branches missed.">                        if (refreshToolsPerRequest)</span>
                         {
-<span class="fc" id="L575">                            refreshTool(tool, data);</span>
+<span class="nc" id="L575">                            refreshTool(tool, data);</span>
                         }
 
                         // put the tool in the context
-<span class="fc" id="L579">                        log.debug(&quot;Adding {} to ctx as {}&quot;, tool, toolData.toolName);</span>
-<span class="fc" id="L580">                        context.put(toolData.toolName, tool);</span>
+<span class="nc" id="L579">                        log.debug(&quot;Adding {} to ctx as {}&quot;, tool, toolData.toolName);</span>
+<span class="nc" id="L580">                        context.put(toolData.toolName, tool);</span>
                     }
                     else
                     {
 <span class="nc" id="L584">                        log.info(&quot;Tool {} was null, skipping it.&quot;, toolData.toolName);</span>
                     }
-<span class="fc" id="L586">                }</span>
+<span class="nc" id="L586">                }</span>
             }
 <span class="nc" id="L588">            catch (Exception e)</span>
             {
 <span class="nc" id="L590">                log.error(&quot;Could not instantiate session tool {} from a {} object&quot;,</span>
                         toolData.toolName, toolData.toolClassName, e);
-<span class="fc" id="L592">            }</span>
-<span class="fc" id="L593">        }</span>
-<span class="fc" id="L594">    }</span>
+<span class="nc" id="L592">            }</span>
+<span class="nc" id="L593">        }</span>
+<span class="nc" id="L594">    }</span>
 
     /**
      * Populate the given context with the perm-scoped tools.
@@ -607,7 +607,7 @@ import org.apache.velocity.context.Context;
             Object data, User user)
     {
         // Iterate the tools
-<span class="pc bpc" id="L610" title="1 of 2 branches missed.">        for (ToolData toolData : tools)</span>
+<span class="nc bnc" id="L610" title="All 2 branches missed.">        for (ToolData toolData : tools)</span>
         {
             try
             {
@@ -670,7 +670,7 @@ import org.apache.velocity.context.Context;
                         toolData.toolName, toolData.toolClassName, e);
 <span class="nc" id="L671">            }</span>
 <span class="nc" id="L672">        }</span>
-<span class="fc" id="L673">    }</span>
+<span class="nc" id="L673">    }</span>
 
 
 
@@ -707,15 +707,15 @@ import org.apache.velocity.context.Context;
      */
     private void refreshGlobalTools()
     {
-<span class="pc bpc" id="L710" title="1 of 2 branches missed.">        if (globalTools != null)</span>
+<span class="nc bnc" id="L710" title="All 2 branches missed.">        if (globalTools != null)</span>
         {
-<span class="fc bfc" id="L712" title="All 2 branches covered.">            for (ToolData toolData : globalTools)</span>
+<span class="nc bnc" id="L712" title="All 2 branches missed.">            for (ToolData toolData : globalTools)</span>
             {
-<span class="fc" id="L714">                Object tool = globalContext.get(toolData.toolName);</span>
-<span class="fc" id="L715">                refreshTool(tool, null);</span>
-<span class="fc" id="L716">            }</span>
+<span class="nc" id="L714">                Object tool = globalContext.get(toolData.toolName);</span>
+<span class="nc" id="L715">                refreshTool(tool, null);</span>
+<span class="nc" id="L716">            }</span>
         }
-<span class="fc" id="L718">    }</span>
+<span class="nc" id="L718">    }</span>
 
     /**
      * Release the request-scope tool instances in the
@@ -728,8 +728,8 @@ import org.apache.velocity.context.Context;
     {
         // only the request tools can be released - other scoped
         // tools will have continuing references to them
-<span class="fc" id="L731">        releaseTools(context, requestTools);</span>
-<span class="fc" id="L732">    }</span>
+<span class="nc" id="L731">        releaseTools(context, requestTools);</span>
+<span class="nc" id="L732">    }</span>
 
     /**
      * Release the given list of tools from the context back
@@ -740,19 +740,19 @@ import org.apache.velocity.context.Context;
      */
     private void releaseTools(Context context, List&lt;ToolData&gt; tools)
     {
-<span class="pc bpc" id="L743" title="1 of 2 branches missed.">        if (tools != null)</span>
+<span class="nc bnc" id="L743" title="All 2 branches missed.">        if (tools != null)</span>
         {
-<span class="fc bfc" id="L745" title="All 2 branches covered.">            for (ToolData toolData : tools)</span>
+<span class="nc bnc" id="L745" title="All 2 branches missed.">            for (ToolData toolData : tools)</span>
             {
-<span class="fc" id="L747">                Object tool = context.remove(toolData.toolName);</span>
+<span class="nc" id="L747">                Object tool = context.remove(toolData.toolName);</span>
 
-<span class="pc bpc" id="L749" title="1 of 2 branches missed.">                if (tool != null)</span>
+<span class="nc bnc" id="L749" title="All 2 branches missed.">                if (tool != null)</span>
                 {
-<span class="fc" id="L751">                    pool.putInstance(tool);</span>
+<span class="nc" id="L751">                    pool.putInstance(tool);</span>
                 }
-<span class="fc" id="L753">            }</span>
+<span class="nc" id="L753">            }</span>
         }
-<span class="fc" id="L755">    }</span>
+<span class="nc" id="L755">    }</span>
 
     /**
      * Initialized a given Tool with the passed init Object
@@ -767,22 +767,22 @@ import org.apache.velocity.context.Context;
     {
 <span class="fc" id="L768">        AnnotationProcessor.process(tool);</span>
 
-<span class="fc bfc" id="L770" title="All 2 branches covered.">        if (param instanceof PipelineData)</span>
+<span class="pc bpc" id="L770" title="1 of 2 branches missed.">        if (param instanceof PipelineData)</span>
         {
-<span class="pc bpc" id="L772" title="1 of 2 branches missed.">            if (tool instanceof PipelineDataApplicationTool)</span>
+<span class="nc bnc" id="L772" title="All 2 branches missed.">            if (tool instanceof PipelineDataApplicationTool)</span>
             {
 <span class="nc" id="L774">                ((PipelineDataApplicationTool) tool).init(param);</span>
             }
-<span class="pc bpc" id="L776" title="1 of 2 branches missed.">            else if (tool instanceof RunDataApplicationTool)</span>
+<span class="nc bnc" id="L776" title="All 2 branches missed.">            else if (tool instanceof RunDataApplicationTool)</span>
             {
 <span class="nc" id="L778">                RunData data = getRunData((PipelineData)param);</span>
 <span class="nc" id="L779">                ((RunDataApplicationTool) tool).init(data);</span>
 <span class="nc" id="L780">            }</span>
-<span class="pc bpc" id="L781" title="1 of 2 branches missed.">            else if (tool instanceof ApplicationTool)</span>
+<span class="nc bnc" id="L781" title="All 2 branches missed.">            else if (tool instanceof ApplicationTool)</span>
             {
-<span class="fc" id="L783">                RunData data = getRunData((PipelineData)param);</span>
-<span class="fc" id="L784">                ((ApplicationTool) tool).init(data);</span>
-<span class="fc" id="L785">            }</span>
+<span class="nc" id="L783">                RunData data = getRunData((PipelineData)param);</span>
+<span class="nc" id="L784">                ((ApplicationTool) tool).init(data);</span>
+<span class="nc" id="L785">            }</span>
         }
         else
         {
@@ -809,34 +809,34 @@ import org.apache.velocity.context.Context;
      */
     private void refreshTool(Object tool, Object dataObject)
     {
-<span class="fc" id="L812">        RunData data = null;</span>
-<span class="fc" id="L813">        PipelineData pipelineData = null;</span>
-<span class="fc bfc" id="L814" title="All 2 branches covered.">        if (dataObject instanceof PipelineData)</span>
+<span class="nc" id="L812">        RunData data = null;</span>
+<span class="nc" id="L813">        PipelineData pipelineData = null;</span>
+<span class="nc bnc" id="L814" title="All 2 branches missed.">        if (dataObject instanceof PipelineData)</span>
         {
-<span class="fc" id="L816">            pipelineData = (PipelineData)dataObject;</span>
-<span class="fc" id="L817">            data = pipelineData.getRunData();</span>
-<span class="pc bpc" id="L818" title="1 of 2 branches missed.">            if (tool instanceof PipelineDataApplicationTool)</span>
+<span class="nc" id="L816">            pipelineData = (PipelineData)dataObject;</span>
+<span class="nc" id="L817">            data = pipelineData.getRunData();</span>
+<span class="nc bnc" id="L818" title="All 2 branches missed.">            if (tool instanceof PipelineDataApplicationTool)</span>
             {
 <span class="nc" id="L820">                ((PipelineDataApplicationTool) tool).refresh(pipelineData);</span>
             }
         }
-<span class="pc bpc" id="L823" title="1 of 2 branches missed.">        if (tool instanceof ApplicationTool)</span>
+<span class="nc bnc" id="L823" title="All 2 branches missed.">        if (tool instanceof ApplicationTool)</span>
         {
-<span class="fc" id="L825">            ((ApplicationTool) tool).refresh();</span>
+<span class="nc" id="L825">            ((ApplicationTool) tool).refresh();</span>
         }
 <span class="nc bnc" id="L827" title="All 2 branches missed.">        else if (tool instanceof RunDataApplicationTool)</span>
         {
 <span class="nc" id="L829">            ((RunDataApplicationTool) tool).refresh(data);</span>
         }
-<span class="fc" id="L831">    }</span>
+<span class="nc" id="L831">    }</span>
 
     private RunData getRunData(PipelineData pipelineData)
     {
-<span class="pc bpc" id="L835" title="1 of 2 branches missed.">        if (!(pipelineData instanceof RunData))</span>
+<span class="nc bnc" id="L835" title="All 2 branches missed.">        if (!(pipelineData instanceof RunData))</span>
         {
 <span class="nc" id="L837">            throw new RuntimeException(&quot;Can't cast to rundata from pipeline data.&quot;);</span>
         }
-<span class="fc" id="L839">        return (RunData)pipelineData;</span>
+<span class="nc" id="L839">        return (RunData)pipelineData;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

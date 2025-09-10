@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseURI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util.uri</a> &gt; <span class="el_source">BaseURI.java</span></div><h1>BaseURI.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util.uri;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseURI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.util.uri</a> &gt; <span class="el_source">BaseURI.java</span></div><h1>BaseURI.java</h1><pre class="source lang-java linenums">package org.apache.turbine.util.uri;
 
 
 /*
@@ -48,20 +48,20 @@ public abstract class BaseURI
                    URIConstants
 {
     /** Logging */
-<span class="fc" id="L51">    private static final Logger log = LogManager.getLogger(BaseURI.class);</span>
+<span class="nc" id="L51">    private static final Logger log = LogManager.getLogger(BaseURI.class);</span>
 
     /** ServerData Object for scheme, name, port etc. */
-<span class="pc" id="L54">    private ServerData serverData =</span>
+<span class="nc" id="L54">    private ServerData serverData =</span>
             new ServerData(null, HTTP_PORT, HTTP, null, null);
 
     /** Whether we want to redirect or not. */
-<span class="pc" id="L58">    private boolean redirect = false;</span>
+<span class="nc" id="L58">    private boolean redirect = false;</span>
 
     /** Servlet response interface. */
-<span class="pc" id="L61">    private HttpServletResponse response = null;</span>
+<span class="nc" id="L61">    private HttpServletResponse response = null;</span>
 
     /** Reference Anchor (#ref) */
-<span class="pc" id="L64">    private String reference = null;</span>
+<span class="nc" id="L64">    private String reference = null;</span>
 
     /*
      * ========================================================================
@@ -88,10 +88,10 @@ public abstract class BaseURI
      * @param runData A RunData object
      */
     public BaseURI(RunData runData)
-<span class="fc" id="L91">    {</span>
-<span class="fc" id="L92">        init(runData.getServerData());</span>
-<span class="fc" id="L93">        setResponse(runData.getResponse());</span>
-<span class="fc" id="L94">    }</span>
+<span class="nc" id="L91">    {</span>
+<span class="nc" id="L92">        init(runData.getServerData());</span>
+<span class="nc" id="L93">        setResponse(runData.getResponse());</span>
+<span class="nc" id="L94">    }</span>
 
     /**
      * Constructor, set explicit redirection
@@ -112,10 +112,10 @@ public abstract class BaseURI
      * @param serverData A ServerData object
      */
     public BaseURI(ServerData serverData)
-<span class="fc" id="L115">    {</span>
-<span class="fc" id="L116">        init(serverData);</span>
-<span class="fc" id="L117">        setResponse(null);</span>
-<span class="fc" id="L118">    }</span>
+<span class="nc" id="L115">    {</span>
+<span class="nc" id="L116">        init(serverData);</span>
+<span class="nc" id="L117">        setResponse(null);</span>
+<span class="nc" id="L118">    }</span>
 
     /**
      * Constructor, set explicit redirection
@@ -147,22 +147,22 @@ public abstract class BaseURI
      */
     private void init(ServerData serverData)
     {
-<span class="fc" id="L150">        log.debug(&quot;init({})&quot;, serverData);</span>
+<span class="nc" id="L150">        log.debug(&quot;init({})&quot;, serverData);</span>
 
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">        if (serverData != null)</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (serverData != null)</span>
         {
             // We must clone this, because if BaseURI is used in a pull tool,
             // then the fields might be changed. If we don't clone, this might pull
             // through to the ServerData object saved at firstRequest() in the
             // Turbine object.
-<span class="fc" id="L158">            this.serverData = (ServerData) serverData.clone();</span>
+<span class="nc" id="L158">            this.serverData = (ServerData) serverData.clone();</span>
         }
         else
         {
 <span class="nc" id="L162">            log.error(&quot;Passed null ServerData object!&quot;);</span>
         }
-<span class="fc" id="L164">        reference = null;</span>
-<span class="fc" id="L165">    }</span>
+<span class="nc" id="L164">        reference = null;</span>
+<span class="nc" id="L165">    }</span>
 
     /*
      * ========================================================================
@@ -202,7 +202,7 @@ public abstract class BaseURI
     @Override
     public String getScriptName()
     {
-<span class="fc" id="L205">        return serverData.getScriptName();</span>
+<span class="nc" id="L205">        return serverData.getScriptName();</span>
     }
 
     /**
@@ -212,8 +212,8 @@ public abstract class BaseURI
      */
     public void setScriptName(String scriptName)
     {
-<span class="fc" id="L215">        serverData.setScriptName(scriptName);</span>
-<span class="fc" id="L216">    }</span>
+<span class="nc" id="L215">        serverData.setScriptName(scriptName);</span>
+<span class="nc" id="L216">    }</span>
 
     /**
      * Gets the context path.
@@ -223,7 +223,7 @@ public abstract class BaseURI
     @Override
     public String getContextPath()
     {
-<span class="fc" id="L226">        return serverData.getContextPath();</span>
+<span class="nc" id="L226">        return serverData.getContextPath();</span>
     }
 
     /**
@@ -244,7 +244,7 @@ public abstract class BaseURI
     @Override
     public String getServerName()
     {
-<span class="fc" id="L247">        return serverData.getServerName();</span>
+<span class="nc" id="L247">        return serverData.getServerName();</span>
     }
 
     /**
@@ -339,9 +339,9 @@ public abstract class BaseURI
     @Override
     public String getServerScheme()
     {
-<span class="fc" id="L342">        String serverScheme = serverData.getServerScheme();</span>
+<span class="nc" id="L342">        String serverScheme = serverData.getServerScheme();</span>
 
-<span class="pc bpc" id="L344" title="1 of 2 branches missed.">        return StringUtils.isNotEmpty(serverScheme) ? serverScheme : HTTP;</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">        return StringUtils.isNotEmpty(serverScheme) ? serverScheme : HTTP;</span>
     }
 
     /**
@@ -372,7 +372,7 @@ public abstract class BaseURI
      */
     public boolean hasReference()
     {
-<span class="fc" id="L375">        return StringUtils.isNotEmpty(reference);</span>
+<span class="nc" id="L375">        return StringUtils.isNotEmpty(reference);</span>
     }
 
     /*
@@ -392,8 +392,8 @@ public abstract class BaseURI
      */
     protected void setResponse(HttpServletResponse response)
     {
-<span class="fc" id="L395">        this.response = response;</span>
-<span class="fc" id="L396">    }</span>
+<span class="nc" id="L395">        this.response = response;</span>
+<span class="nc" id="L396">    }</span>
 
     /**
      * Returns the Response Object from the Servlet Container.
@@ -403,7 +403,7 @@ public abstract class BaseURI
      */
     protected HttpServletResponse getResponse()
     {
-<span class="fc" id="L406">        return response;</span>
+<span class="nc" id="L406">        return response;</span>
     }
 
     /**
@@ -420,29 +420,29 @@ public abstract class BaseURI
      */
     protected void getContextAndScript(StringBuilder sb)
     {
-<span class="fc" id="L423">        String context = getContextPath();</span>
+<span class="nc" id="L423">        String context = getContextPath();</span>
 
-<span class="pc bpc" id="L425" title="1 of 2 branches missed.">        if(StringUtils.isNotEmpty(context))</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">        if(StringUtils.isNotEmpty(context))</span>
         {
-<span class="fc bfc" id="L427" title="All 2 branches covered.">            if(context.charAt(0) != '/')</span>
+<span class="nc bnc" id="L427" title="All 2 branches missed.">            if(context.charAt(0) != '/')</span>
             {
-<span class="fc" id="L429">                sb.append('/');</span>
+<span class="nc" id="L429">                sb.append('/');</span>
             }
-<span class="fc" id="L431">            sb.append (context);</span>
+<span class="nc" id="L431">            sb.append (context);</span>
         }
 
         // /servlet/turbine
-<span class="fc" id="L435">        String script = getScriptName();</span>
+<span class="nc" id="L435">        String script = getScriptName();</span>
 
-<span class="pc bpc" id="L437" title="1 of 2 branches missed.">        if(StringUtils.isNotEmpty(script))</span>
+<span class="nc bnc" id="L437" title="All 2 branches missed.">        if(StringUtils.isNotEmpty(script))</span>
         {
-<span class="fc bfc" id="L439" title="All 2 branches covered.">            if(script.charAt(0) != '/')</span>
+<span class="nc bnc" id="L439" title="All 2 branches missed.">            if(script.charAt(0) != '/')</span>
             {
-<span class="fc" id="L441">                sb.append('/');</span>
+<span class="nc" id="L441">                sb.append('/');</span>
             }
-<span class="fc" id="L443">            sb.append (script);</span>
+<span class="nc" id="L443">            sb.append (script);</span>
         }
-<span class="fc" id="L445">    }</span>
+<span class="nc" id="L445">    }</span>
 
     /**
      * Appends Scheme, Server and optionally the port to the
@@ -459,20 +459,20 @@ public abstract class BaseURI
     protected void getSchemeAndPort(StringBuilder sb)
     {
         // http(s)://&lt;servername&gt;
-<span class="fc" id="L462">        sb.append(getServerScheme());</span>
-<span class="fc" id="L463">        sb.append(URIConstants.URI_SCHEME_SEPARATOR);</span>
-<span class="fc" id="L464">        sb.append(getServerName());</span>
+<span class="nc" id="L462">        sb.append(getServerScheme());</span>
+<span class="nc" id="L463">        sb.append(URIConstants.URI_SCHEME_SEPARATOR);</span>
+<span class="nc" id="L464">        sb.append(getServerName());</span>
 
         // (:&lt;port&gt;)
-<span class="pc bpc" id="L467" title="1 of 2 branches missed.">        if ((getServerScheme().equals(HTTP)</span>
-<span class="pc bnc" id="L468" title="All 2 branches missed.">                    &amp;&amp; getServerPort() != HTTP_PORT)</span>
-<span class="pc bpc" id="L469" title="1 of 2 branches missed.">                || (getServerScheme().equals(HTTPS)</span>
+<span class="nc bnc" id="L467" title="All 2 branches missed.">        if ((getServerScheme().equals(HTTP)</span>
+<span class="nc bnc" id="L468" title="All 2 branches missed.">                    &amp;&amp; getServerPort() != HTTP_PORT)</span>
+<span class="nc bnc" id="L469" title="All 2 branches missed.">                || (getServerScheme().equals(HTTPS)</span>
 <span class="nc bnc" id="L470" title="All 2 branches missed.">                        &amp;&amp; getServerPort() != HTTPS_PORT))</span>
         {
 <span class="nc" id="L472">            sb.append(':');</span>
 <span class="nc" id="L473">            sb.append(getServerPort());</span>
         }
-<span class="fc" id="L475">    }</span>
+<span class="nc" id="L475">    }</span>
 
     /**
      * Encodes a Response Uri according to the Servlet Container.
@@ -485,13 +485,13 @@ public abstract class BaseURI
      */
     protected String encodeResponse(String uri)
     {
-<span class="fc" id="L488">        String res = uri;</span>
+<span class="nc" id="L488">        String res = uri;</span>
 
-<span class="fc" id="L490">        HttpServletResponse response = getResponse();</span>
+<span class="nc" id="L490">        HttpServletResponse response = getResponse();</span>
 
-<span class="pc bpc" id="L492" title="1 of 2 branches missed.">        if(response == null)</span>
+<span class="nc bnc" id="L492" title="All 2 branches missed.">        if(response == null)</span>
         {
-<span class="fc" id="L494">            log.debug(&quot;No Response Object!&quot;);</span>
+<span class="nc" id="L494">            log.debug(&quot;No Response Object!&quot;);</span>
         }
         else
         {
@@ -514,8 +514,8 @@ public abstract class BaseURI
 <span class="nc" id="L514">            }</span>
         }
 
-<span class="fc" id="L517">        log.debug(&quot;encodeResponse():  &quot; + res);</span>
-<span class="fc" id="L518">        return res;</span>
+<span class="nc" id="L517">        log.debug(&quot;encodeResponse():  &quot; + res);</span>
+<span class="nc" id="L518">        return res;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

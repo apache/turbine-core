@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineRunDataService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.rundata</a> &gt; <span class="el_source">TurbineRunDataService.java</span></div><h1>TurbineRunDataService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.rundata;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineRunDataService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.rundata</a> &gt; <span class="el_source">TurbineRunDataService.java</span></div><h1>TurbineRunDataService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.rundata;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -194,7 +194,7 @@ public class TurbineRunDataService
                               ServletConfig config)
             throws TurbineException
     {
-<span class="fc" id="L197">        return getRunData(DEFAULT_CONFIG, req, res, config);</span>
+<span class="nc" id="L197">        return getRunData(DEFAULT_CONFIG, req, res, config);</span>
     }
 
     /**
@@ -223,15 +223,15 @@ public class TurbineRunDataService
         // to each and every module. Since each thread has its own RunData
         // object, it is not necessary to perform synchronization for
         // the data within this object.
-<span class="pc bpc" id="L226" title="3 of 6 branches missed.">        if (req == null || res == null || config == null)</span>
+<span class="nc bnc" id="L226" title="All 6 branches missed.">        if (req == null || res == null || config == null)</span>
         {
 <span class="nc" id="L228">            throw new IllegalArgumentException(&quot;HttpServletRequest, &quot;</span>
                 + &quot;HttpServletResponse or ServletConfig was null.&quot;);
         }
 
         // Get the specified configuration.
-<span class="fc" id="L233">        String[] cfg = (String[]) configurations.get(key);</span>
-<span class="pc bpc" id="L234" title="1 of 2 branches missed.">        if (cfg == null)</span>
+<span class="nc" id="L233">        String[] cfg = (String[]) configurations.get(key);</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">        if (cfg == null)</span>
         {
 <span class="nc" id="L236">            throw new TurbineException(&quot;RunTime configuration '&quot; + key + &quot;' is undefined&quot;);</span>
         }
@@ -239,29 +239,29 @@ public class TurbineRunDataService
         TurbineRunData data;
         try
         {
-<span class="fc" id="L242">    		Class&lt;?&gt; runDataClazz = classCache.computeIfAbsent(cfg[0], this::classForName);</span>
-<span class="fc" id="L243">            Class&lt;?&gt; parameterParserClazz = classCache.computeIfAbsent(cfg[1], this::classForName);</span>
-<span class="fc" id="L244">            Class&lt;?&gt; cookieParserClazz = classCache.computeIfAbsent(cfg[2], this::classForName);</span>
+<span class="nc" id="L242">    		Class&lt;?&gt; runDataClazz = classCache.computeIfAbsent(cfg[0], this::classForName);</span>
+<span class="nc" id="L243">            Class&lt;?&gt; parameterParserClazz = classCache.computeIfAbsent(cfg[1], this::classForName);</span>
+<span class="nc" id="L244">            Class&lt;?&gt; cookieParserClazz = classCache.computeIfAbsent(cfg[2], this::classForName);</span>
 
-<span class="fc" id="L246">            data = (TurbineRunData) pool.getInstance(runDataClazz);</span>
+<span class="nc" id="L246">            data = (TurbineRunData) pool.getInstance(runDataClazz);</span>
             @SuppressWarnings(&quot;unchecked&quot;) // ok
-<span class="fc" id="L248">            ParameterParser pp = parserService.getParser((Class&lt;ParameterParser&gt;)parameterParserClazz);</span>
-<span class="fc" id="L249">            data.get(Turbine.class).put(ParameterParser.class, pp);</span>
+<span class="nc" id="L248">            ParameterParser pp = parserService.getParser((Class&lt;ParameterParser&gt;)parameterParserClazz);</span>
+<span class="nc" id="L249">            data.get(Turbine.class).put(ParameterParser.class, pp);</span>
 
             @SuppressWarnings(&quot;unchecked&quot;) // ok
-<span class="fc" id="L252">            CookieParser cp = parserService.getParser((Class&lt;CookieParser&gt;)cookieParserClazz);</span>
-<span class="fc" id="L253">            data.get(Turbine.class).put(CookieParser.class, cp);</span>
+<span class="nc" id="L252">            CookieParser cp = parserService.getParser((Class&lt;CookieParser&gt;)cookieParserClazz);</span>
+<span class="nc" id="L253">            data.get(Turbine.class).put(CookieParser.class, cp);</span>
 
-<span class="fc" id="L255">            Locale locale = req.getLocale();</span>
+<span class="nc" id="L255">            Locale locale = req.getLocale();</span>
 
-<span class="pc bpc" id="L257" title="1 of 2 branches missed.">            if (locale == null)</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">            if (locale == null)</span>
             {
                 // get the default from the Turbine configuration
 <span class="nc" id="L260">                locale = data.getLocale();</span>
             }
 
             // set the locale detected and propagate it to the parsers
-<span class="fc" id="L264">            data.setLocale(locale);</span>
+<span class="nc" id="L264">            data.setLocale(locale);</span>
         }
 <span class="nc" id="L266">        catch (PoolException pe)</span>
         {
@@ -270,20 +270,20 @@ public class TurbineRunDataService
 <span class="nc" id="L270">        catch (TurbineRuntimeException | ClassCastException | InstantiationException x)</span>
         {
 <span class="nc" id="L272">            throw new TurbineException(&quot;RunData configuration '&quot; + key + &quot;' is illegal&quot;, x);</span>
-<span class="fc" id="L273">        }</span>
+<span class="nc" id="L273">        }</span>
 
         // Set the request and response.
-<span class="fc" id="L276">        data.get(Turbine.class).put(HttpServletRequest.class, req);</span>
-<span class="fc" id="L277">        data.get(Turbine.class).put(HttpServletResponse.class, res);</span>
+<span class="nc" id="L276">        data.get(Turbine.class).put(HttpServletRequest.class, req);</span>
+<span class="nc" id="L277">        data.get(Turbine.class).put(HttpServletResponse.class, res);</span>
 
         // Set the servlet configuration.
-<span class="fc" id="L280">        data.get(Turbine.class).put(ServletConfig.class, config);</span>
-<span class="fc" id="L281">        data.get(Turbine.class).put(ServletContext.class, config.getServletContext());</span>
+<span class="nc" id="L280">        data.get(Turbine.class).put(ServletConfig.class, config);</span>
+<span class="nc" id="L281">        data.get(Turbine.class).put(ServletContext.class, config.getServletContext());</span>
 
         // Set the ServerData.
-<span class="fc" id="L284">        data.get(Turbine.class).put(ServerData.class, new ServerData(req));</span>
+<span class="nc" id="L284">        data.get(Turbine.class).put(ServerData.class, new ServerData(req));</span>
 
-<span class="fc" id="L286">        return data;</span>
+<span class="nc" id="L286">        return data;</span>
     }
 
     /**
@@ -295,12 +295,12 @@ public class TurbineRunDataService
     @Override
     public boolean putRunData(RunData data)
     {
-<span class="pc bpc" id="L298" title="1 of 2 branches missed.">        if (data instanceof TurbineRunData)</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">        if (data instanceof TurbineRunData)</span>
         {
-<span class="fc" id="L300">            parserService.putParser(((TurbineRunData) data).getParameterParser());</span>
-<span class="fc" id="L301">            parserService.putParser(((TurbineRunData) data).getCookieParser());</span>
+<span class="nc" id="L300">            parserService.putParser(((TurbineRunData) data).getParameterParser());</span>
+<span class="nc" id="L301">            parserService.putParser(((TurbineRunData) data).getCookieParser());</span>
 
-<span class="fc" id="L303">            return pool.putInstance(data);</span>
+<span class="nc" id="L303">            return pool.putInstance(data);</span>
         }
         else
         {
@@ -313,7 +313,7 @@ public class TurbineRunDataService
     {
         try
         {
-<span class="fc" id="L316">            return (Class&lt;T&gt;) Class.forName(className);</span>
+<span class="nc" id="L316">            return (Class&lt;T&gt;) Class.forName(className);</span>
         }
 <span class="nc" id="L318">        catch (ClassNotFoundException e)</span>
         {

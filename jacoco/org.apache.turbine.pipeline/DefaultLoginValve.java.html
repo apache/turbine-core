@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultLoginValve.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.pipeline</a> &gt; <span class="el_source">DefaultLoginValve.java</span></div><h1>DefaultLoginValve.java</h1><pre class="source lang-java linenums">package org.apache.turbine.pipeline;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultLoginValve.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.pipeline</a> &gt; <span class="el_source">DefaultLoginValve.java</span></div><h1>DefaultLoginValve.java</h1><pre class="source lang-java linenums">package org.apache.turbine.pipeline;
 
 
 /*
@@ -69,16 +69,16 @@ import org.apache.turbine.util.template.TemplateInfo;
     {
         try
         {
-<span class="fc" id="L72">            process(pipelineData);</span>
+<span class="nc" id="L72">            process(pipelineData);</span>
         }
 <span class="nc" id="L74">        catch (Exception e)</span>
         {
 <span class="nc" id="L76">            throw new TurbineException(e);</span>
-<span class="fc" id="L77">        }</span>
+<span class="nc" id="L77">        }</span>
 
         // Pass control to the next Valve in the Pipeline
-<span class="fc" id="L80">        context.invokeNext(pipelineData);</span>
-<span class="fc" id="L81">    }</span>
+<span class="nc" id="L80">        context.invokeNext(pipelineData);</span>
+<span class="nc" id="L81">    }</span>
 
     /**
      * Handles user sessions, parsing of the action from the query
@@ -91,16 +91,16 @@ import org.apache.turbine.util.template.TemplateInfo;
     protected void process(PipelineData pipelineData)
         throws Exception
     {
-<span class="fc" id="L94">        RunData data = pipelineData.getRunData();</span>
+<span class="nc" id="L94">        RunData data = pipelineData.getRunData();</span>
         // Special case for login and logout, this must happen before the
         // session validator is executed in order either to allow a user to
         // even login, or to ensure that the session validator gets to
         // mandate its page selection policy for non-logged in users
         // after the logout has taken place.
-<span class="fc" id="L100">        String actionName = data.getAction();</span>
-<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (data.hasAction() &amp;&amp;</span>
-<span class="fc bfc" id="L102" title="All 2 branches covered.">            actionName.equalsIgnoreCase(actionLogin) ||</span>
-<span class="fc bfc" id="L103" title="All 2 branches covered.">            actionName.equalsIgnoreCase(actionLogout))</span>
+<span class="nc" id="L100">        String actionName = data.getAction();</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (data.hasAction() &amp;&amp;</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">            actionName.equalsIgnoreCase(actionLogin) ||</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">            actionName.equalsIgnoreCase(actionLogout))</span>
         {
             // If a User is logging in, we should refresh the
             // session here.  Invalidating session and starting a
@@ -113,10 +113,10 @@ import org.apache.turbine.util.template.TemplateInfo;
             // associated with the previous User.  Currently the
             // only keys stored in the session are &quot;turbine.user&quot;
             // and &quot;turbine.acl&quot;.
-<span class="fc bfc" id="L116" title="All 2 branches covered.">            if (actionName.equalsIgnoreCase(actionLogin))</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">            if (actionName.equalsIgnoreCase(actionLogin))</span>
             {
-<span class="fc" id="L118">                Enumeration&lt;String&gt; names = data.getSession().getAttributeNames();</span>
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">                if (names != null)</span>
+<span class="nc" id="L118">                Enumeration&lt;String&gt; names = data.getSession().getAttributeNames();</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                if (names != null)</span>
                 {
                     // copy keys into a new list, so we can clear the session
                     // and not get ConcurrentModificationException
@@ -141,11 +141,11 @@ import org.apache.turbine.util.template.TemplateInfo;
                 }
             }
 
-<span class="fc" id="L144">            actionLoader.exec(pipelineData, data.getAction());</span>
-<span class="fc" id="L145">            cleanupTemplateContext(data);</span>
-<span class="fc" id="L146">            data.setAction(null);</span>
+<span class="nc" id="L144">            actionLoader.exec(pipelineData, data.getAction());</span>
+<span class="nc" id="L145">            cleanupTemplateContext(data);</span>
+<span class="nc" id="L146">            data.setAction(null);</span>
         }
-<span class="fc" id="L148">    }</span>
+<span class="nc" id="L148">    }</span>
 
     /**
      * cleans the Velocity Context if available.
@@ -157,11 +157,11 @@ import org.apache.turbine.util.template.TemplateInfo;
         // This is Velocity specific and shouldn't be done here.
         // But this is a band aid until we get real listeners
         // here.
-<span class="fc" id="L160">        TemplateInfo ti = data.getTemplateInfo();</span>
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">        if (ti != null)</span>
+<span class="nc" id="L160">        TemplateInfo ti = data.getTemplateInfo();</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        if (ti != null)</span>
         {
-<span class="fc" id="L163">            ti.removeTemp(VelocityService.CONTEXT);</span>
+<span class="nc" id="L163">            ti.removeTemp(VelocityService.CONTEXT);</span>
         }
-<span class="fc" id="L165">    }</span>
+<span class="nc" id="L165">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

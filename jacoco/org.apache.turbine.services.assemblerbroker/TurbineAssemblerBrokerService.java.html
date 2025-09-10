@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineAssemblerBrokerService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.assemblerbroker</a> &gt; <span class="el_source">TurbineAssemblerBrokerService.java</span></div><h1>TurbineAssemblerBrokerService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.assemblerbroker;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineAssemblerBrokerService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.assemblerbroker</a> &gt; <span class="el_source">TurbineAssemblerBrokerService.java</span></div><h1>TurbineAssemblerBrokerService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.assemblerbroker;
 
 
 /*
@@ -167,14 +167,14 @@ import org.apache.turbine.util.uri.URIConstants;
 <span class="fc" id="L167">            .getBoolean(TurbineConstants.MODULE_CACHE_KEY,</span>
                         TurbineConstants.MODULE_CACHE_DEFAULT);
 
-<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (isCaching)</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">        if (isCaching)</span>
         {
-<span class="fc" id="L172">            int cacheSize = Turbine.getConfiguration()</span>
-<span class="fc" id="L173">                .getInt(TurbineConstants.MODULE_CACHE_SIZE_KEY,</span>
+<span class="nc" id="L172">            int cacheSize = Turbine.getConfiguration()</span>
+<span class="nc" id="L173">                .getInt(TurbineConstants.MODULE_CACHE_SIZE_KEY,</span>
                         TurbineConstants.MODULE_CACHE_SIZE_DEFAULT);
 
-<span class="fc" id="L176">            assemblerCache = new ConcurrentHashMap&lt;&gt;(cacheSize);</span>
-<span class="fc" id="L177">            loaderCache = new ConcurrentHashMap&lt;&gt;(cacheSize);</span>
+<span class="nc" id="L176">            assemblerCache = new ConcurrentHashMap&lt;&gt;(cacheSize);</span>
+<span class="nc" id="L177">            loaderCache = new ConcurrentHashMap&lt;&gt;(cacheSize);</span>
         }
 
 <span class="fc" id="L180">        setInit(true);</span>
@@ -213,34 +213,34 @@ import org.apache.turbine.util.uri.URIConstants;
     public &lt;T extends Assembler&gt; T getAssembler(Class&lt;T&gt; type, String name)
         throws TurbineException
     {
-<span class="fc" id="L216">        String key = type + &quot;:&quot; + name;</span>
-<span class="fc" id="L217">        T assembler = null;</span>
+<span class="nc" id="L216">        String key = type + &quot;:&quot; + name;</span>
+<span class="nc" id="L217">        T assembler = null;</span>
         
-<span class="fc" id="L219">        log.debug(&quot;Check name in key {} in assembler.&quot;, key);</span>
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        if (HttpUtils.keyRequiresClean( name ))</span>
+<span class="nc" id="L219">        log.debug(&quot;Check name in key {} in assembler.&quot;, key);</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        if (HttpUtils.keyRequiresClean( name ))</span>
         {
 <span class="nc" id="L222">            String message = &quot;Assembler key has invalid characters.&quot;;</span>
 <span class="nc" id="L223">            log.warn(&quot;{}. Abort assembling for cleaned key {}:{}.&quot;, message, type, HttpUtils.getCleanedKey( name ) );</span>
 <span class="nc" id="L224">            throw new TurbineException( message );</span>
         }
 
-<span class="fc bfc" id="L227" title="All 4 branches covered.">        if (isCaching &amp;&amp; assemblerCache.containsKey(key))</span>
+<span class="nc bnc" id="L227" title="All 4 branches missed.">        if (isCaching &amp;&amp; assemblerCache.containsKey(key))</span>
         {
-<span class="fc" id="L229">            assembler = (T) assemblerCache.get(key);</span>
-<span class="fc" id="L230">            log.debug(&quot;Found {} in the cache!&quot;, key);</span>
+<span class="nc" id="L229">            assembler = (T) assemblerCache.get(key);</span>
+<span class="nc" id="L230">            log.debug(&quot;Found {} in the cache!&quot;, key);</span>
         }
         else
         {
-<span class="fc" id="L234">            log.debug(&quot;Loading {}&quot;, key);</span>
-<span class="fc" id="L235">            List&lt;AssemblerFactory&lt;T&gt;&gt; facs = getFactoryGroup(type);</span>
+<span class="nc" id="L234">            log.debug(&quot;Loading {}&quot;, key);</span>
+<span class="nc" id="L235">            List&lt;AssemblerFactory&lt;T&gt;&gt; facs = getFactoryGroup(type);</span>
 
-<span class="fc bfc" id="L237" title="All 4 branches covered.">            for (Iterator&lt;AssemblerFactory&lt;T&gt;&gt; it = facs.iterator(); (assembler == null) &amp;&amp; it.hasNext();)</span>
+<span class="nc bnc" id="L237" title="All 4 branches missed.">            for (Iterator&lt;AssemblerFactory&lt;T&gt;&gt; it = facs.iterator(); (assembler == null) &amp;&amp; it.hasNext();)</span>
             {
-<span class="fc" id="L239">                AssemblerFactory&lt;T&gt; fac = it.next();</span>
+<span class="nc" id="L239">                AssemblerFactory&lt;T&gt; fac = it.next();</span>
 
                 try
                 {
-<span class="fc" id="L243">                    assembler = fac.getAssembler(name);</span>
+<span class="nc" id="L243">                    assembler = fac.getAssembler(name);</span>
                 }
 <span class="nc" id="L245">                catch (Exception e)</span>
                 {
@@ -248,25 +248,25 @@ import org.apache.turbine.util.uri.URIConstants;
                                                + name + &quot; from the &quot;
                                                + type + &quot; factory &quot;
 <span class="nc" id="L250">                                               + fac.getClass().getName(), e);</span>
-<span class="fc" id="L251">                }</span>
+<span class="nc" id="L251">                }</span>
 
-<span class="fc bfc" id="L253" title="All 2 branches covered.">                if (assembler != null)</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">                if (assembler != null)</span>
                 {
-<span class="fc" id="L255">                    AnnotationProcessor.process(assembler);</span>
+<span class="nc" id="L255">                    AnnotationProcessor.process(assembler);</span>
 
-<span class="fc bfc" id="L257" title="All 2 branches covered.">                    if (isCaching)</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">                    if (isCaching)</span>
                     {
-<span class="fc" id="L259">                        T oldAssembler = (T) assemblerCache.putIfAbsent(key, assembler);</span>
-<span class="fc bfc" id="L260" title="All 2 branches covered.">                        if (oldAssembler != null)</span>
+<span class="nc" id="L259">                        T oldAssembler = (T) assemblerCache.putIfAbsent(key, assembler);</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">                        if (oldAssembler != null)</span>
                         {
-<span class="fc" id="L262">                            assembler = oldAssembler;</span>
+<span class="nc" id="L262">                            assembler = oldAssembler;</span>
                         }
                     }
                 }
-<span class="fc" id="L266">            }</span>
+<span class="nc" id="L266">            }</span>
         }
 
-<span class="fc" id="L269">        return assembler;</span>
+<span class="nc" id="L269">        return assembler;</span>
     }
 
     /**
@@ -284,10 +284,10 @@ import org.apache.turbine.util.uri.URIConstants;
     {
 <span class="fc" id="L285">        Loader&lt;T&gt; loader = null;</span>
 
-<span class="fc bfc" id="L287" title="All 4 branches covered.">        if (isCaching &amp;&amp; loaderCache.containsKey(type))</span>
+<span class="pc bpc" id="L287" title="3 of 4 branches missed.">        if (isCaching &amp;&amp; loaderCache.containsKey(type))</span>
         {
-<span class="fc" id="L289">            loader = (Loader&lt;T&gt;) loaderCache.get(type);</span>
-<span class="fc" id="L290">            log.debug(&quot;Found {} loader in the cache!&quot;, type);</span>
+<span class="nc" id="L289">            loader = (Loader&lt;T&gt;) loaderCache.get(type);</span>
+<span class="nc" id="L290">            log.debug(&quot;Found {} loader in the cache!&quot;, type);</span>
         }
         else
         {
@@ -300,9 +300,9 @@ import org.apache.turbine.util.uri.URIConstants;
 <span class="fc" id="L300">                loader = fac.getLoader();</span>
 <span class="fc" id="L301">            }</span>
 
-<span class="pc bpc" id="L303" title="1 of 4 branches missed.">            if (isCaching &amp;&amp; loader != null)</span>
+<span class="pc bpc" id="L303" title="3 of 4 branches missed.">            if (isCaching &amp;&amp; loader != null)</span>
             {
-<span class="fc" id="L305">                loaderCache.put(type, loader);</span>
+<span class="nc" id="L305">                loaderCache.put(type, loader);</span>
             }
         }
 

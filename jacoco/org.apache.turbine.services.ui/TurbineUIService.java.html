@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="de"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineUIService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.ui</a> &gt; <span class="el_source">TurbineUIService.java</span></div><h1>TurbineUIService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.ui;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang=""><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurbineUIService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Apache Turbine</a> &gt; <a href="index.source.html" class="el_package">org.apache.turbine.services.ui</a> &gt; <span class="el_source">TurbineUIService.java</span></div><h1>TurbineUIService.java</h1><pre class="source lang-java linenums">package org.apache.turbine.services.ui;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -168,8 +168,8 @@ import org.apache.turbine.util.uri.DataURI;
     @Override
     public void refresh(String skinName)
     {
-<span class="fc" id="L171">        clearSkin(skinName);</span>
-<span class="fc" id="L172">    }</span>
+<span class="nc" id="L171">        clearSkin(skinName);</span>
+<span class="nc" id="L172">    }</span>
 
     /**
      * Retrieve the Properties for a specific skin.  If they are not yet loaded
@@ -260,13 +260,13 @@ import org.apache.turbine.util.uri.DataURI;
      */
     private void clearSkin(String skinName)
     {
-<span class="pc bpc" id="L263" title="1 of 2 branches missed.">        if (!skinName.equals(SKIN_PROPERTY_DEFAULT))</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">        if (!skinName.equals(SKIN_PROPERTY_DEFAULT))</span>
         {
-<span class="fc" id="L265">            skins.remove(SKIN_PROPERTY_DEFAULT);</span>
+<span class="nc" id="L265">            skins.remove(SKIN_PROPERTY_DEFAULT);</span>
         }
-<span class="fc" id="L267">        skins.remove(skinName);</span>
-<span class="fc" id="L268">        log.debug(&quot;The skin \&quot;{}\&quot; was cleared (will also clear \&quot;default\&quot; skin).&quot;, skinName);</span>
-<span class="fc" id="L269">    }</span>
+<span class="nc" id="L267">        skins.remove(skinName);</span>
+<span class="nc" id="L268">        log.debug(&quot;The skin \&quot;{}\&quot; was cleared (will also clear \&quot;default\&quot; skin).&quot;, skinName);</span>
+<span class="nc" id="L269">    }</span>
 
     /**
      * Load the specified skin.
