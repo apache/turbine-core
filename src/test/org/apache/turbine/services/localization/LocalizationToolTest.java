@@ -24,16 +24,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-import org.apache.fulcrum.pool.PoolService;
 import org.apache.turbine.annotation.AnnotationProcessor;
-import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.annotation.TurbineTool;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.pull.PullService;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.RunData;
@@ -42,6 +35,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Unit test for Localization Tool. Verifies that localization works the same using the
@@ -54,10 +51,10 @@ import org.junit.Test;
 public class LocalizationToolTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    
+
     @TurbineTool(LocalizationTool.class)
     private LocalizationTool lt;
-    
+
     @BeforeClass
     public static void setUp() throws Exception
     {

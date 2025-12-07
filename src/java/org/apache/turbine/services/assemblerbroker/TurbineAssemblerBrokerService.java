@@ -42,7 +42,6 @@ import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
 import org.apache.turbine.util.HttpUtils;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.uri.URIConstants;
 
 /**
  * TurbineAssemblerBrokerService allows assemblers (like screens,
@@ -215,7 +214,7 @@ public class TurbineAssemblerBrokerService
     {
         String key = type + ":" + name;
         T assembler = null;
-        
+
         log.debug("Check name in key {} in assembler.", key);
         if (HttpUtils.keyRequiresClean( name ))
         {

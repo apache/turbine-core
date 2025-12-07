@@ -21,6 +21,7 @@ package org.apache.turbine.services.ui;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -281,7 +282,7 @@ public class TurbineUIService
     {
         Properties defaultSkinProperties = null;
 
-        if (!StringUtils.equals(skinName, SKIN_PROPERTY_DEFAULT))
+        if (!SKIN_PROPERTY_DEFAULT.equals(skinName))
         {
             defaultSkinProperties = getSkinProperties(SKIN_PROPERTY_DEFAULT);
         }
@@ -304,13 +305,13 @@ public class TurbineUIService
         catch (Exception e)
         {
             log.error("Cannot load skin: {}, from: {}", skinName, sb.toString(), e);
-            if (!StringUtils.equals(skinName, getWebappSkinName())
-                    && !StringUtils.equals(skinName, SKIN_PROPERTY_DEFAULT))
+            if (!Objects.equals(getWebappSkinName(), skinName)
+                    && !SKIN_PROPERTY_DEFAULT.equals(skinName))
             {
                 log.error("Attempting to return the skin configured for webapp instead of {}", skinName);
                 return getSkinProperties(getWebappSkinName());
             }
-            else if (!StringUtils.equals(skinName, SKIN_PROPERTY_DEFAULT))
+            else if (!SKIN_PROPERTY_DEFAULT.equals(skinName))
             {
                 log.error("Return the default skin instead of {}", skinName);
                 return skinProperties; // Already contains the default skin.

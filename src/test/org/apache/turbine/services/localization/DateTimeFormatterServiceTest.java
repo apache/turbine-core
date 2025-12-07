@@ -30,17 +30,12 @@ import static org.mockito.Mockito.mock;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAccessor;
 import java.util.stream.Stream;
-
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.fulcrum.parser.DefaultParameterParser;
 import org.apache.turbine.annotation.AnnotationProcessor;
@@ -63,6 +58,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Test class for DateTimeFormatter.
@@ -132,18 +131,18 @@ public class DateTimeFormatterServiceTest extends BaseTestCase {
         // taking from request context
         dateTimeFormatterTool = (DateTimeFormatterTool) requestContext.get("dateTimeFormatter");
         assertNotNull(dateTimeFormatterTool);
-        
+
         String resultFormat = dateTimeFormatterTool.format(Instant.now());
-        
+
         System.out.println("format Instant now in tool:"+resultFormat );
         assertTrue(resultFormat.length()>5);
-        
+
         System.out.println("locale in tool:"+ dateTimeFormatterTool.getLocale());
         // tool.use.request.locale is by default false, tool will use service locale
         assertTrue(dateTimeFormatterTool.getLocale() == null);
     }
-    
-    // to test configuration 
+
+    // to test configuration
     // datetime.zoneId
     // and locale.default.language l.d.country
     @Test
@@ -153,7 +152,7 @@ public class DateTimeFormatterServiceTest extends BaseTestCase {
 //        assertEquals("Europe/Berlin",df.getZoneId().getId());
         System.out.println("locale in service:"+ df.getLocale());
 //        assertEquals("de_DE",df.getLocale().toString());
- 
+
     }
 
     @Order(2)
@@ -161,7 +160,7 @@ public class DateTimeFormatterServiceTest extends BaseTestCase {
     Stream<DynamicNode> testDateTimeFormatterInstances() {
         // Stream of DateTimeFormatterInterface to check
         Stream<DateTimeFormatterInterface> inputStream = Stream.of(
-                df, 
+                df,
                 dateTimeFormatterTool);
         // Executes tests based on the current input value.
         return inputStream.map(dtf -> dynamicContainer(
@@ -201,7 +200,7 @@ public class DateTimeFormatterServiceTest extends BaseTestCase {
         assertEquals(mmddyyyy, dateTime.format(ldt, "MM/dd/yyyy"));
     }
 
-    void formatZonedDateString(DateTimeFormatterInterface dateTime) {        
+    void formatZonedDateString(DateTimeFormatterInterface dateTime) {
         ZonedDateTime zdt = ZonedDateTime.now(dateTime.getZoneId());
         int day = zdt.get(ChronoField.DAY_OF_MONTH);
         int month = zdt.get(ChronoField.MONTH_OF_YEAR); // one based
@@ -325,7 +324,7 @@ public class DateTimeFormatterServiceTest extends BaseTestCase {
     }
 
     void formatInstantString(DateTimeFormatterInterface dateTime) {
-       
+
         ZonedDateTime zonedToday = ZonedDateTime.now(dateTime.getZoneId());
         int day = zonedToday.get(ChronoField.DAY_OF_MONTH);
         int month = zonedToday.get(ChronoField.MONTH_OF_YEAR); // one based
@@ -337,7 +336,7 @@ public class DateTimeFormatterServiceTest extends BaseTestCase {
         String mmddyyyy = "" + monthString + "/" + dayString + "/" + year;
         assertNotNull(ddmmyyyy);
         assertNotNull(mmddyyyy);
-        
+
         Instant today = Instant.now();
         assertNotNull(dateTime.format(today, "dd/MM/yyyy"));
         assertNotNull(dateTime.format(today, "MM"));

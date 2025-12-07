@@ -20,8 +20,7 @@ package org.apache.turbine.util;
  * under the License.
  */
 
-
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.text.StringEscapeUtils;
 
 /**
@@ -63,6 +62,6 @@ public abstract class InputFilterUtils
          * want to filter all the above chars, so we will just disallow
          * <.
          */
-        return StringUtils.replace(s, "<", "&lt;");
+        return Strings.CS.replace(s, "<", "&lt;");
     }
 }

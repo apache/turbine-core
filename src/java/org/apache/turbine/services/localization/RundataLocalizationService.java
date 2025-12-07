@@ -29,21 +29,22 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
 
 /**
- * 
+ *
  * Instead of reading first the accept-language header in a http request,
  * instead this method read the user.getTemp("locale")
  * from the RunData to obtain the language choice by the user
  * without the browser language rule.
  * If user.getPerm("language") is not set,
  *  the "Accept-Language" header is read.
- * 
+ *
  * Adapted from the Jetspeed-1 implementation of CustomLocalizationService.
- * 
+ *
  */
 public class RundataLocalizationService extends DefaultLocalizationService implements RundataLocalizationInterface {
 
-    private static final Logger log = LogManager.getLogger(RundataLocalizationService.class); 
-    
+    private static final long serialVersionUID = -3374820066195748221L;
+    private static final Logger log = LogManager.getLogger(RundataLocalizationService.class);
+
     @Override
     public Locale getLocale(RunData data) {
         User user = data.getUser();

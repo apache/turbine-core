@@ -69,7 +69,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
             setEnabled(getConfiguration().getBoolean("enabled", true));
             scheduleQueue = new JobQueue<>();
             threadPool = Executors.newCachedThreadPool(
-                    new BasicThreadFactory.Builder()
+                    BasicThreadFactory.builder()
                         .namingPattern("Turbine-ScheduledJob-")
                         .daemon(true)
                         .build());
