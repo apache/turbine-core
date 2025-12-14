@@ -29,18 +29,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.servlet.annotation.WebInitParam;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.Unmarshaller;
-
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
@@ -71,6 +59,18 @@ import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.uri.URIConstants;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebInitParam;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Unmarshaller;
 
 /**
  * <p>
@@ -362,7 +362,7 @@ public class Turbine extends HttpServlet
     }
 
     /**
-     * Checks configuraton style, resolves the location of the configuration and
+     * Checks configuration style, resolves the location of the configuration and
      * loads it to internal {@link Configuration} object
      * ({@link #configuration}).
      *
@@ -952,7 +952,7 @@ public class Turbine extends HttpServlet
                 if (ctxContext instanceof LoggerContext) {
                     log.info("resolved log4j2 location: {}", context.getConfiguration().getConfigurationSource().getLocation());
                 }
-                
+
             }
         }
         log.info("found log4j2 location: {}", context.getConfiguration().getConfigurationSource().getLocation());

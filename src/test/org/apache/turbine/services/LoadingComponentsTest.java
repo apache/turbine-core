@@ -42,7 +42,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
- * Unit test for verifing that we can load all the appropriate components from the
+ * Unit test for verifying that we can load all the appropriate components from the
  * appropriate Container.  For now that is just ECM (AvalonComponentService)
  * but in the future with mixed containers there could be multiple.
  *
@@ -53,7 +53,7 @@ import org.junit.Test;
 public class LoadingComponentsTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    
+
     @TurbineService
     GlobalCacheService cacheService;
 
@@ -125,7 +125,7 @@ public class LoadingComponentsTest extends BaseTestCase
         MimeTypeService mimetype = (MimeTypeService)serviceManager.getService(MimeTypeService.ROLE);
         assertNotNull(mimetype);
     }
-    
+
     @Test public void testLoadingByAnnotation() throws TurbineException
     {
         AnnotationProcessor.process(this);
