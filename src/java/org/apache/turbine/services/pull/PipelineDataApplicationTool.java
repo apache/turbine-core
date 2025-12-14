@@ -49,9 +49,11 @@ public interface PipelineDataApplicationTool
      * get a <code>User</code> object from the instance of
      * <code>PipelineData</code>.
      *
+     * Default: do nothing
+     *
      * @param data initialization data
      */
-    void init(Object data);
+    default void init(Object data) {}
 
     /**
      * Refresh the application tool. This is
@@ -59,8 +61,10 @@ public interface PipelineDataApplicationTool
      * probably want the tool to refresh itself
      * if it is using configuration information
      * that is typically cached after initialization
+     * 
+     * Default: do nothing
      *
      * @param data The current PipelineData Object
      */
-    void refresh(PipelineData data);
+    default void refresh(PipelineData data) {}
 }

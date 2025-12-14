@@ -50,9 +50,11 @@ public interface RunDataApplicationTool
      * get a <code>User</code> object from the instance of
      * <code>RunData</code>.
      *
+     * Default: do nothing
+     *
      * @param data initialization data
      */
-    void init(Object data);
+    default void init(Object data) {}
 
     /**
      * Refresh the application tool. This is
@@ -61,7 +63,9 @@ public interface RunDataApplicationTool
      * if it is using configuration information
      * that is typically cached after initialization
      *
+     * Default: do nothing
+     *
      * @param data The current RunData Object
      */
-    void refresh(RunData data);
+    default void refresh(RunData data){}
 }

@@ -140,15 +140,6 @@ public class ContentTool
     }
 
     /**
-     * Refresh method - does nothing
-     */
-    @Override
-    public void refresh()
-    {
-        // empty
-    }
-
-    /**
      * Returns the Turbine URI of a given Path
      *
      * @param path The path to translate

@@ -68,19 +68,6 @@ public class DateFormatter
     }
 
     /**
-     * Refresh the application tool. This is
-     * necessary for development work where you
-     * probably want the tool to refresh itself
-     * if it is using configuration information
-     * that is typically cached after initialization
-     */
-    @Override
-    public void refresh()
-    {
-        // empty
-    }
-
-    /**
      * Formats the given date as a String using the default date format.
      * The default date format is MM/dd/yyyy
      *

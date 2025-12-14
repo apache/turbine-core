@@ -43,12 +43,14 @@ public interface ApplicationTool
      * session happens to the be login action.
      * <p>
      * If your session tool depends on having a <code>User</code> object, you
-     * should look at implementing the {@link RunDataApplicationTool} interface
+     * should look at implementing the {@link PipelineDataApplicationTool} interface
      * instead.
+     * 
+     * Default: do nothing
      *
      * @param data initialization data
      */
-    void init(Object data);
+    default void init(Object data) {}
 
     /**
      * Refresh the application tool. This is
@@ -56,6 +58,8 @@ public interface ApplicationTool
      * probably want the tool to refresh itself
      * if it is using configuration information
      * that is typically cached after initialization
+     * 
+     * Default: do nothing
      */
-    void refresh();
+    default void refresh() {}
 }

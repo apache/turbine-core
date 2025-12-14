@@ -44,18 +44,6 @@ public class SessionTool
     @TurbineService
     private SessionService sessionService;
 
-    @Override
-    public void init(Object o)
-    {
-        // empty
-    }
-
-    @Override
-    public void refresh()
-    {
-        // empty
-    }
-
     /**
      * Gets a list of the active sessions
      *

@@ -155,15 +155,6 @@ public class TemplateLink
 
     }
 
-    /**
-     * Refresh method - does nothing
-     */
-    @Override
-    public void refresh()
-    {
-        // empty
-    }
-
     /*
      * ========================================================================
      *

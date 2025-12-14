@@ -67,27 +67,6 @@ public class OMTool implements ApplicationTool, Recyclable
     }
 
     /**
-     * Prepares tool for a single request
-     *
-     * @param data the initialization data
-     */
-    @Override
-    public void init(Object data)
-    {
-        // data = (RunData)data;
-    }
-
-    /**
-     * Implementation of ApplicationTool interface is not needed for this
-     * method as the tool is request scoped
-     */
-    @Override
-    public void refresh()
-    {
-        // empty
-    }
-
-    /**
      * Inner class to present a nice interface to the template designer
      */
     protected class PullHelper

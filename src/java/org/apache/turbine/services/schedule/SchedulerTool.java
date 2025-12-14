@@ -61,15 +61,6 @@ public class SchedulerTool implements ApplicationTool
     }
 
     /**
-     * Does nothing
-     */
-    @Override
-    public void refresh()
-    {
-        // empty
-    }
-
-    /**
      * Gets the list of scheduled jobs.
      *
      * @return List of JobEntry objects.

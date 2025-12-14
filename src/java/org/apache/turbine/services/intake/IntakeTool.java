@@ -246,16 +246,6 @@ public class IntakeTool
     }
 
     /**
-     * Implementation of ApplicationTool interface is not needed for this
-     * tool as it is request scoped
-     */
-    @Override
-    public void refresh()
-    {
-        // empty
-    }
-
-    /**
      * Inner class to present a nice interface to the template designer
      */
     public class PullHelper

@@ -163,15 +163,6 @@ public class HtmlPageAttributes
     }
 
     /**
-     * Refresh method - does nothing
-     */
-    @Override
-    public void refresh()
-    {
-        // empty
-    }
-
-    /**
      * Set the title in the page.  This returns an empty String so
      * that the template doesn't complain about getting a null return
      * value.  Subsequent calls to this method will replace the current

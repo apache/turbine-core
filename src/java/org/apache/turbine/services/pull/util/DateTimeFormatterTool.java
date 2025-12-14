@@ -116,19 +116,6 @@ public class DateTimeFormatterTool extends DateFormatter
         return dtfs;
     }
 
-    /**
-     * Refresh the application tool. This is
-     * necessary for development work where you
-     * probably want the tool to refresh itself
-     * if it is using configuration information
-     * that is typically cached after initialization
-     */
-    @Override
-    public void refresh()
-    {
-        // empty
-    }
-
     @Override
     public DateTimeFormatter getDefaultFormat()
     {

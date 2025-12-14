@@ -53,15 +53,6 @@ public class SessionData implements ApplicationTool
     }
 
     /**
-     * Refresh the application tool.
-     */
-    @Override
-    public void refresh()
-    {
-        // do nothing
-    }
-
-    /**
      * Gets the data stored under the key.  Null will be returned if the
      * key does not exist or if null was stored under the key.
      * <p>
