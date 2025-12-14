@@ -55,6 +55,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.pipeline.PipelineData;
 
 /**
  * A class used for initialization of Turbine without a servlet container.
@@ -215,7 +216,7 @@ public class TurbineConfig
      * Initialization requiring a HTTP <code>GET</code> request.
      * @param data the Turbine request
      */
-    public void init(RunData data)
+    public void init(PipelineData data)
     {
         if (turbine != null)
         {
