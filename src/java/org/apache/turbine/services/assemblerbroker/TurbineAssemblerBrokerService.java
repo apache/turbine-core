@@ -62,7 +62,7 @@ public class TurbineAssemblerBrokerService
             = LogManager.getLogger(TurbineAssemblerBrokerService.class);
 
     /** A structure that holds the registered AssemblerFactories */
-    private Map<Class<?>, List<?>> factories = null;
+    private ConcurrentMap<Class<?>, List<?>> factories = null;
 
     /** A cache that holds the generated Assemblers */
     private ConcurrentMap<String, Assembler> assemblerCache = null;
@@ -85,11 +85,8 @@ public class TurbineAssemblerBrokerService
     @SuppressWarnings("unchecked")
     private <T extends Assembler> List<AssemblerFactory<T>> getFactoryGroup(Class<T> type)
     {
-        if (!factories.containsKey(type))
-        {
-            factories.put(type, new ArrayList<AssemblerFactory<T>>());
-        }
-        return (List<AssemblerFactory<T>>) factories.get(type);
+        return (List<AssemblerFactory<T>>) factories.computeIfAbsent(type, 
+            k -> new ArrayList<AssemblerFactory<T>>());
     }
 
     /**
@@ -140,7 +137,7 @@ public class TurbineAssemblerBrokerService
     public void init()
         throws InitializationException
     {
-        factories = new HashMap<>();
+        factories = new ConcurrentHashMap<>();
 
         try
         {
