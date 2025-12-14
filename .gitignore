@@ -12,6 +12,7 @@ maven-eclipse.xml
 logs
 .idea
 .settings
+.vscode
 *.ser
 
 *torque.usersettings.properties
