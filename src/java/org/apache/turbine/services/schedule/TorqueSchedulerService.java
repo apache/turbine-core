@@ -158,9 +158,9 @@ public class TorqueSchedulerService extends AbstractSchedulerService
                 scheduleQueue.modify(je);
             }
 
-            if (je instanceof JobEntryTorque)
+            if (je instanceof JobEntryTorque jet)
             {
-                ((JobEntryTorque)je).save();
+                jet.save();
             }
 
             restart();

@@ -94,7 +94,7 @@ public class TurbineXmlConfig
      */
     public TurbineXmlConfig(String path, Map<String, String> initParams)
     {
-        this(path, new HashMap<String, Object>(0), initParams);
+        this(path, new HashMap<>(0), initParams);
     }
 
     /**
@@ -108,7 +108,7 @@ public class TurbineXmlConfig
      */
     public TurbineXmlConfig(String path, String config)
     {
-        this(path, new HashMap<String, String>(1));
+        this(path, new HashMap<>(1));
         initParams.put(CONFIGURATION_PATH_KEY, config);
     }
 }

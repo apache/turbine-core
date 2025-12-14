@@ -72,13 +72,13 @@ public abstract class TurbineBaseService
     public void init(Object data)
             throws InitializationException
     {
-        if (data instanceof RunData)
+        if (data instanceof RunData rd)
         {
-            init((RunData) data);
+            init(rd);
         }
-        else if (data instanceof PipelineData)
+        else if (data instanceof PipelineData pd)
         {
-            init((PipelineData) data);
+            init(pd);
         }
     }
 

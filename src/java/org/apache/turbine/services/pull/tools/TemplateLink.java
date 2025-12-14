@@ -70,7 +70,7 @@ public class TemplateLink
 
     /** Do we want a relative link? */
     protected boolean wantRelative = false;
-    
+
     /**
      * Should this tool add Container Encoding to the URIs returned?
      * True might cause trouble e.g. if you run with Apache HTTP Daemon / Tomcat Combo.
@@ -81,7 +81,7 @@ public class TemplateLink
 
     /** Default Value for TEMPLATE_LINK_ENCODING_DEFAULT */
     public static final boolean TEMPLATE_LINK_ENCODING_DEFAULT = false;
-    
+
     /** Do we want the container to encode the response? */
     boolean wantEncoding = false;
 
@@ -126,10 +126,9 @@ public class TemplateLink
         // we just blithely cast to RunData as if another object
         // or null is passed in we'll throw an appropriate runtime
         // exception.
-        if (data instanceof PipelineData)
+        if (data instanceof PipelineData pipelineData)
         {
-            PipelineData pipelineData = (PipelineData) data;
-            RunData runData = (RunData)pipelineData;
+            RunData runData = pipelineData.getRunData();
             templateURI = new TemplateURI(runData);
         }
         else
@@ -147,7 +146,7 @@ public class TemplateLink
             wantEncoding = conf.getBoolean(TEMPLATE_LINK_ENCODING_KEY,
                     TEMPLATE_LINK_ENCODING_DEFAULT);
         }
-        
+
         if (!wantEncoding)
         {
             templateURI.clearResponse();

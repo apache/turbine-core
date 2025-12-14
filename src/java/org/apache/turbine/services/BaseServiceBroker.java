@@ -356,15 +356,15 @@ public abstract class BaseServiceBroker implements ServiceBroker
         Service instance = getServiceInstance(name);
 
         serviceLock.lock();
-        try 
+        try
         {
             if (!instance.getInit())
             {
                 // this call might result in an indirect recursion
                 instance.init();
             }
-        } 
-        finally 
+        }
+        finally
         {
             serviceLock.unlock();
         }
@@ -462,16 +462,19 @@ public abstract class BaseServiceBroker implements ServiceBroker
             if (service != null && service.getInit())
             {
                 serviceLock.lock();
-                try {
+                try
+                {
                     service.shutdown();
 
-                    if (service.getInit() && service instanceof BaseService)
+                    if (service.getInit() && service instanceof BaseService base)
                     {
                         // BaseService::shutdown() does this by default,
                         // but could've been overriden poorly.
-                        ((BaseService) service).setInit(false);
+                        base.setInit(false);
                     }
-                } finally {
+                }
+                finally
+                {
                     serviceLock.unlock();
                 }
             }
@@ -539,7 +542,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
 	            if (!service.getInit())
 	            {
 	                serviceLock.lock(); // was synchronized (service.getClass(), but should be equivalent
-	                try 
+	                try
                     {
 	                    if (!service.getInit())
 	                    {
@@ -547,8 +550,8 @@ public abstract class BaseServiceBroker implements ServiceBroker
 	                        service.init();
 	                        log.info("Finish Initializing service (late): {}", name);
 	                    }
-	                } 
-                    finally 
+	                }
+                    finally
                     {
 	                    serviceLock.unlock();
 	                }
@@ -605,7 +608,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
     protected Service getServiceInstance(String serviceName)
             throws InstantiationException
     {
-        Service service = services.computeIfAbsent(serviceName, name -> 
+        return services.computeIfAbsent(serviceName, name ->
         {
             serviceLock.lock();
             try
@@ -667,8 +670,6 @@ public abstract class BaseServiceBroker implements ServiceBroker
                 serviceLock.unlock();
             }
         });
-
-        return service;
     }
 
     /**

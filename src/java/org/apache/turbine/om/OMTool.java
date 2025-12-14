@@ -46,7 +46,7 @@ public class OMTool implements ApplicationTool, Recyclable
     // though
 
     /** The cache of PullHelpers. **/
-    private ConcurrentMap<String, OMTool.PullHelper> pullMap =
+    private final ConcurrentMap<String, OMTool.PullHelper> pullMap =
             new ConcurrentHashMap<>();
 
     /**

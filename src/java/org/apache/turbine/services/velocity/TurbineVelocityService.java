@@ -182,8 +182,7 @@ public class TurbineVelocityService
         Context globalContext =
                 pullModelActive ? pullService.getGlobalContext() : null;
 
-        Context ctx = new VelocityContext(globalContext);
-        return ctx;
+        return new VelocityContext(globalContext);
     }
 
     /**
@@ -414,9 +413,9 @@ public class TurbineVelocityService
         Charset charset = null;
 
         Object data = context.get(VelocityService.RUNDATA_KEY);
-        if ((data != null) && (data instanceof RunData))
+        if (data != null && data instanceof RunData rd)
         {
-            charset = ((RunData) data).getCharset();
+            charset = rd.getCharset();
         }
 
         return charset == null ? defaultOutputEncoding : charset;
@@ -433,9 +432,9 @@ public class TurbineVelocityService
         Charset encoding = null;
 
         Object data = context.get(VelocityService.RUNDATA_KEY);
-        if ((data != null) && (data instanceof RunData) && (((RunData) data).getTemplateEncoding() != null) )
+        if (data != null && data instanceof RunData rd && rd.getTemplateEncoding() != null)
         {
-            encoding = Charset.forName(((RunData) data).getTemplateEncoding());
+            encoding = Charset.forName(rd.getTemplateEncoding());
         }
 
         return encoding != null ? encoding : defaultInputEncoding;
@@ -508,9 +507,9 @@ public class TurbineVelocityService
             if (!key.endsWith(RESOURCE_LOADER_PATH))
             {
                 Object value = conf.getProperty(key);
-                if (value instanceof List<?>)
+                if (value instanceof List<?> list)
                 {
-                    for (Object name2 : ((List<?>) value))
+                    for (Object name2 : list)
                     {
                         velocity.addProperty(key, name2);
                     }

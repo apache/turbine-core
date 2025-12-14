@@ -48,9 +48,9 @@ import org.apache.turbine.services.TurbineServices;
  */
 public class SecurityCheck
 {
-    private String message;
+    private final String message;
 
-    private String failScreen;
+    private final String failScreen;
 
     private RunData data = null;
 
@@ -60,7 +60,7 @@ public class SecurityCheck
      * Holds information if a missing Permission or Role should be created and granted on-the-fly.
      * This is good behavior, if these change a lot.
      */
-    private boolean initialize;
+    private final boolean initialize;
 
     /**
      * Constructor.

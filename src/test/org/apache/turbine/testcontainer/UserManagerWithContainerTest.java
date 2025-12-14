@@ -123,8 +123,8 @@ class UserManagerWithContainerTest {
       user.setAccessCounter( 5 );
       user.setName( "ringo" );
       // required not null constraint
-      ( (ExtendedUser) user ).setFirstName( user.getName() );
-      ( (ExtendedUser) user ).setLastName( user.getName() );
+      user.setFirstName( user.getName() );
+      user.setLastName( user.getName() );
       turbineSecurityService.addUser( user, "fakepassword" );
       assertTrue( turbineSecurityService.accountExists( user ) );
       //assertTrue( turbineSecurityService.getUserManager().checkExists( user ) );

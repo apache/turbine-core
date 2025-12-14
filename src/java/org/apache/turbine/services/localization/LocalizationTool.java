@@ -22,9 +22,9 @@ package org.apache.turbine.services.localization;
 import java.util.Locale;
 import java.util.MissingResourceException;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 import org.apache.fulcrum.localization.LocalizationService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
@@ -133,13 +133,13 @@ public class LocalizationTool implements ApplicationTool
     @Override
     public void init(Object data)
     {
-        if (data instanceof RunData)
+        if (data instanceof RunData rd)
         {
             // Pull necessary information out of RunData while we have
             // a reference to it.
-            locale = (localizationService instanceof RundataLocalizationService)?
-                    ((RundataLocalizationService)localizationService).getLocale((RunData) data):
-                    localizationService.getLocale(((RunData) data).getRequest());
+            locale = (localizationService instanceof RundataLocalizationService r) ?
+                    r.getLocale(rd):
+                    localizationService.getLocale(rd.getRequest());
         }
     }
 

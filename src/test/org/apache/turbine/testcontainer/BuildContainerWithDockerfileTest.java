@@ -131,7 +131,10 @@ class BuildContainerWithDockerfileTest {
    @Test
    @Order(2)
    void createUser() throws SQLException {
-      if (connection == null) return;
+      if (connection == null)
+    {
+        return;
+      }
       try (PreparedStatement preparedStatement =
               connection.prepareStatement(
                  "INSERT INTO TURBINE_USER (USER_ID,LOGIN_NAME,PASSWORD_VALUE,FIRST_NAME,LAST_NAME) values (?,?,?,?,?)")) {
@@ -148,7 +151,10 @@ class BuildContainerWithDockerfileTest {
    @Test
    @Order(1)
    void selectExistingUser() throws SQLException {
-      if (connection == null) return;
+      if (connection == null)
+    {
+        return;
+      }
       try (PreparedStatement preparedStatement =
               connection.prepareStatement(
                  "select USER_ID, LAST_NAME, FIRST_NAME from TURBINE_USER where USER_ID=?")) {
@@ -164,7 +170,10 @@ class BuildContainerWithDockerfileTest {
    @Test
    @Order(3)
    void selectNewUser() throws SQLException {
-      if (connection == null) return;
+      if (connection == null)
+    {
+        return;
+      }
       try (PreparedStatement preparedStatement =
               connection.prepareStatement(
                  "select USER_ID, LAST_NAME, FIRST_NAME from TURBINE_USER where USER_ID=?")) {

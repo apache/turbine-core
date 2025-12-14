@@ -47,7 +47,7 @@ public interface Initable
      * throw an exception and complain.
      *
      * Default: do nothing
-     * 
+     *
      * @param data An Object to use for initialization activities.
      * @throws InitializationException if initialization of this
      * class was not successful.
@@ -56,13 +56,13 @@ public interface Initable
 
     /**
      * Performs late initialization of an Initable.
-     * 
+     *
      * When your class is being requested from an InitableBroker, it
      * will call getInit(), and if it returns false, this method will
      * be invoked.
      *
      * Default: do nothing
-     * 
+     *
      * @throws InitializationException if initialization of this
      * class was not successful.
      */
@@ -76,7 +76,7 @@ public interface Initable
      * You may chose to implement this operation or not. If you support
      * this operation, getInit() should return false after successful
      * shutdown of the service.
-     * 
+     *
      * Default: setInit(false)
      */
     default void shutdown() {
@@ -92,7 +92,7 @@ public interface Initable
 
     /**
      * Sets initialization status.
-     * 
+     *
      * @param value The new initialization status.
      */
     void setInit(boolean value);

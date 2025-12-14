@@ -60,16 +60,15 @@ public class InvalidState implements Screen
         body.append("<body>");
 
         StringBuilder message = new StringBuilder();
-        StringBuilder sb = new StringBuilder();
-        sb.append("<b>There has been an error.</b>")
-                .append("<p>")
-                .append("- If you used the browser \"Back\" or \"Reload\"")
-                .append(" buttons please use the navigation buttons we provide")
-                .append(" within the screen.")
-                .append("<p>")
-                .append("Please click ");
-
-        message.append(sb.toString());
+        String str = """
+            <b>There has been an error.</b>\
+            <p>\
+            - If you used the browser "Back" or "Reload"\
+             buttons please use the navigation buttons we provide\
+             within the screen.\
+            <p>\
+            Please click """;
+        message.append(str);
         ParameterParser pp;
         pp = (ParameterParser) data.getUser().getTemp("prev_parameters");
         pp.remove("_session_access_counter");

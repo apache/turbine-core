@@ -97,9 +97,7 @@ public class DefaultUserManager implements UserManager
      */
     protected <U extends User> U wrap(TurbineUser user)
     {
-        @SuppressWarnings("unchecked")
-        U u = (U) getUserWrapper(user);
-        return u;
+        return (U) getUserWrapper(user);
     }
 
     /**
@@ -114,8 +112,8 @@ public class DefaultUserManager implements UserManager
     {
 		try
 		{
-            Object params[] = new Object[] { user };
-            String signature[] = new String[] { TurbineUser.class.getName() };
+            Object params[] = { user };
+            String signature[] = { TurbineUser.class.getName() };
             return (U) factoryService.getInstance(getUserWrapperClass(), params, signature);
 		}
 		catch (Exception e)
@@ -168,8 +166,8 @@ public class DefaultUserManager implements UserManager
         	// should provide default constructor
         	TurbineUser turbineUser = umDelegate.getUserInstance();
         			//(TurbineUser) factoryService.getInstance(userClass);
-            Object params[] = new Object[] { turbineUser };
-            String signature[] = new String[] { TurbineUser.class.getName() };
+            Object params[] = { turbineUser };
+            String signature[] = { TurbineUser.class.getName() };
 
             // Just check if exceptions would occur
             factoryService.getInstance(userWrapperClass, params, signature);
@@ -258,13 +256,11 @@ public class DefaultUserManager implements UserManager
     {
         UserSet<org.apache.fulcrum.security.entity.User> uset = umDelegate.retrieveUserList(criteria);
 
-        List<User> userList = uset.stream()
+        return uset.stream()
                 .map(u -> (TurbineUser) u)
                 .map(this::wrap)
                 .map(u -> (User)u)
                 .collect(Collectors.toList());
-
-        return userList;
     }
 
     /**
@@ -318,7 +314,7 @@ public class DefaultUserManager implements UserManager
             throw new DataBackendException("Could not serialize permanent storage", e);
         }
 
-        umDelegate.saveUser(((TurbineUserDelegate)user).getUserDelegate());
+        umDelegate.saveUser(user.getUserDelegate());
     }
 
     /**
@@ -421,7 +417,7 @@ public class DefaultUserManager implements UserManager
             throw new UnknownEntityException("user is null");
         }
         umDelegate.changePassword(
-                ((TurbineUserDelegate)user).getUserDelegate(),
+                user.getUserDelegate(),
                 oldPassword, newPassword);
     }
 

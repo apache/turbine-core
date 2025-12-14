@@ -27,8 +27,8 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation to mark class and fields in modules that require a service to be injected
- * 
- * Explicit field annotation of {@link #SERVICE_NAME} will take precedence of class annotation. 
+ *
+ * Explicit field annotation of {@link #SERVICE_NAME} will take precedence of class annotation.
  */
 @Retention( RetentionPolicy.RUNTIME )
 @Target( {ElementType.TYPE, ElementType.FIELD, ElementType.METHOD} )

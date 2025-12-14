@@ -116,9 +116,7 @@ public class QuartzSchedulerService
                     .forJob(jd)
                     .build();
 
-            JobEntryQuartz jeq = new JobEntryQuartz(t, jd);
-
-            return jeq;
+            return new JobEntryQuartz(t, jd);
         }
         catch (ParseException e)
         {
@@ -376,9 +374,9 @@ public class QuartzSchedulerService
      */
     private JobEntryQuartz downCast(JobEntry je) throws TurbineException
     {
-        if (je instanceof JobEntryQuartz)
+        if (je instanceof JobEntryQuartz jeq)
         {
-            return (JobEntryQuartz)je;
+            return jeq;
         }
         else
         {
@@ -407,8 +405,7 @@ public class QuartzSchedulerService
 	 * @return A JobEntryQuartz.
 	 */
 	public JobEntryQuartz buildJobEntry(Trigger trigger, JobDetail jd) {
-        JobEntryQuartz job = new JobEntryQuartz(trigger, jd);
-		return job;
+        return new JobEntryQuartz(trigger, jd);
 	}
 }
 

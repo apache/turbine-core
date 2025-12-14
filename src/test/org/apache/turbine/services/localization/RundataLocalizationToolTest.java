@@ -56,22 +56,22 @@ import org.junit.jupiter.api.Test;
 public class RundataLocalizationToolTest extends BaseUnit5Test
 {
     private static TurbineConfig tc = null;
-    
+
     @TurbineTool(LocalizationTool.class)
     private LocalizationTool lt;
-    
+
     @BeforeAll
     public static void setUp() throws Exception
     {
         tc = new TurbineConfig(".", "/conf/test/rundataTemplateService.properties");
         tc.initialize();
-        
+
     }
 
     @BeforeEach
     public void initTool() throws Exception
     {
-        AnnotationProcessor.process(this);   
+        AnnotationProcessor.process(this);
         lt.init(getRunData());
     }
 
@@ -103,16 +103,16 @@ public class RundataLocalizationToolTest extends BaseUnit5Test
         HttpServletRequest request = getMockRequest();
         HttpServletResponse response = mock(HttpServletResponse.class);
         RunData runData = rds.getRunData(request, response, config);
-        
+
         User user = null;
         try {
             user = new DefaultUserImpl(mock(TurbineUser.class));
             user.setTemp("locale", new Locale("de","DE") );
-            runData.setUser(user);            
+            runData.setUser(user);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return runData;
     }
 

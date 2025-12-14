@@ -42,8 +42,8 @@ import org.apache.turbine.util.RunData;
  * This pull tool is used to format {@link TemporalAccessor} and
  * {@link #map(String, DateTimeFormatter, Locale)} (different flavors)
  * objects into strings.
- * 
- * This tool extends {@link DateFormatter} to simplify configuration 
+ *
+ * This tool extends {@link DateFormatter} to simplify configuration
  * and to allow legacy {@link Date} inputs.
  *
  * The methods may throw {@link java.time.temporal.UnsupportedTemporalTypeException} or
@@ -63,11 +63,11 @@ public class DateTimeFormatterTool extends DateFormatter
     /** Fulcrum Localization component */
     @TurbineService
     private LocalizationService localizationService;
-    
+
     protected Locale locale;
-    
+
     private boolean overrideFromRequestLocale = false;
-    
+
     /**
      * Initialize the application tool. The data parameter holds a different
      * type depending on how the tool is being instantiated:
@@ -80,13 +80,13 @@ public class DateTimeFormatterTool extends DateFormatter
      * the {@link #getDefaultFormat()} from {@link #getFormatPattern()}
      * with {@link DateTimeFormatterService#getLocale()}
      * and zoneId {@link DateTimeFormatterService#getZoneId()} is used.
-     * 
+     *
      * Customizations:
-     * Locale could be fetched from request, if #USE_REQUEST_LOCALE_KEY is set to 
-     * <code>true</code> (by default it is <code>false</code>.Then it will be retrieved either from 
+     * Locale could be fetched from request, if #USE_REQUEST_LOCALE_KEY is set to
+     * <code>true</code> (by default it is <code>false</code>.Then it will be retrieved either from
      * {@link RundataLocalizationService#getLocale(RunData)} (if set in urbien role configuration)
      * or {@link LocalizationService#getLocale(jakarta.servlet.http.HttpServletRequest)}.
-     * 
+     *
      * @param data initialization data
      */
     @Override
@@ -99,15 +99,15 @@ public class DateTimeFormatterTool extends DateFormatter
             ServiceManager serviceManager = TurbineServices.getInstance();
             dtfs = (DateTimeFormatterService)serviceManager.getService(DateTimeFormatterService.SERVICE_NAME);
         }
-        
+
         overrideFromRequestLocale = Turbine.getConfiguration()
                 .getBoolean(USE_REQUEST_LOCALE_KEY, false);
         // dtfs should be already initialized
-        if (overrideFromRequestLocale && data instanceof RunData)
+        if (overrideFromRequestLocale && data instanceof RunData rd)
         {
             // Pull necessary information out of RunData while we have
             // a reference to it.
-            locale = localizationService.getLocale(((RunData) data).getRequest());
+            locale = localizationService.getLocale(rd.getRequest());
             log.info("Override {} with request locale {} from {}", dtfs.getLocale(), locale, localizationService);
         }
     }
@@ -165,7 +165,7 @@ public class DateTimeFormatterTool extends DateFormatter
     }
 
     @Override
-    public String map( String src, java.time.format.DateTimeFormatter outgoingFormat, 
+    public String map( String src, java.time.format.DateTimeFormatter outgoingFormat,
             Locale locale, java.time.format.DateTimeFormatter incomingFormat)
     {
         return getDtfs().map(src, outgoingFormat, locale, incomingFormat);

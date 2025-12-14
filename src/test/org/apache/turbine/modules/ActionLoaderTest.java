@@ -332,7 +332,7 @@ public class ActionLoaderTest extends BaseTestCase
             fail("Should not have thrown an exception.");
         }
     }
-    
+
     @Test
     public void testDoPerformWithExtendedServiceInjection() throws Exception
     {

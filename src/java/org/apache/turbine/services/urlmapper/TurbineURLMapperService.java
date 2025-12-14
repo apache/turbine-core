@@ -165,7 +165,7 @@ public class TurbineURLMapperService
             if (entryKeys.containsAll(keys))
             {
                 Matcher matcher = NAMED_GROUPS_PATTERN.matcher(urlMap.getUrlPattern().pattern());
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
 
                 while (matcher.find())
                 {
@@ -191,8 +191,8 @@ public class TurbineURLMapperService
                     }
                 }
 
-                matcher.appendTail(sb);
-                
+                new StringBuilder(matcher.appendTail(sb).toString());
+
                 implicitKeysFound.forEach(key -> {
                     pathInfo.removeIf(uriParam -> key.equals(uriParam.getKey()));
                     queryData.removeIf(uriParam -> key.equals(uriParam.getKey()));
@@ -200,11 +200,11 @@ public class TurbineURLMapperService
 
                 // Clean up
                 uri.setScriptName(MULTI_SLASH_PATTERN.matcher(sb).replaceAll("/").replaceFirst( "/$", "" ));
-                
+
                 break;
             }
         }
-        
+
         log.debug("mapped to uri: {} ", uri);
     }
 
@@ -241,7 +241,7 @@ public class TurbineURLMapperService
                 // remove ignore parameters
                 urlMap.getIgnoreParameters().keySet()
                         .forEach(pp::remove);
-                
+
                 log.debug("mapped {} params from url {} ", pp.getKeys().length, url);
 
                 break;

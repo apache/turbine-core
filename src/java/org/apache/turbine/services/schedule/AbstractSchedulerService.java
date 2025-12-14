@@ -47,7 +47,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
     protected JobQueue<JobEntry> scheduleQueue = null;
 
     /** Current status of the scheduler */
-    private AtomicBoolean enabled = new AtomicBoolean(false);
+    private final AtomicBoolean enabled = new AtomicBoolean(false);
 
     /** The housekeeping thread. */
     protected Thread houseKeepingThread;

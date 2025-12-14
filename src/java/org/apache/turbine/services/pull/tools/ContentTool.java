@@ -109,10 +109,9 @@ public class ContentTool
         // we just blithely cast to RunData as if another object
         // or null is passed in we'll throw an appropriate runtime
         // exception.
-        if (data instanceof PipelineData)
+        if (data instanceof PipelineData pipelineData)
         {
-            PipelineData pipelineData = (PipelineData) data;
-            RunData runData = (RunData)pipelineData;
+            RunData runData = pipelineData.getRunData();
             dataURI = new DataURI(runData);
         }
         else

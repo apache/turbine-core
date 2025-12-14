@@ -76,7 +76,7 @@ public class DefaultSecurityService
         implements SecurityService
 {
     /** The number of threads concurrently reading security information */
-    private AtomicInteger readerCount = new AtomicInteger(0);
+    private final AtomicInteger readerCount = new AtomicInteger(0);
 
     /** The instance of UserManager the SecurityService uses */
     private UserManager userManager = null;
@@ -642,9 +642,7 @@ public class DefaultSecurityService
                 }
             }
         }
-        @SuppressWarnings("unchecked")
-        G g = (G)globalGroup;
-        return g;
+        return (G)globalGroup;
     }
 
     /**
@@ -694,9 +692,9 @@ public class DefaultSecurityService
             throws DataBackendException, UnknownEntityException
     {
         R role = roleManager.getRoleByName(name);
-        if (role instanceof TurbineRole)
+        if (role instanceof TurbineRole tr)
         {
-            ((TurbineRole)role).setPermissions(getPermissions(role));
+            tr.setPermissions(getPermissions(role));
         }
         return role;
     }
@@ -716,9 +714,9 @@ public class DefaultSecurityService
                    UnknownEntityException
     {
         R role = roleManager.getRoleById(Integer.valueOf(id));
-        if (role instanceof TurbineRole)
+        if (role instanceof TurbineRole tr)
         {
-            ((TurbineRole)role).setPermissions(getPermissions(role));
+            tr.setPermissions(getPermissions(role));
         }
         return role;
     }

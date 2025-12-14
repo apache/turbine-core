@@ -92,6 +92,7 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
         setInit(true);
     }
 
+    @Override
     public void setInit(boolean value)
     {
         isInitialized = value;

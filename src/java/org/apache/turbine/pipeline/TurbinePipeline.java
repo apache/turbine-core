@@ -68,7 +68,7 @@ public class TurbinePipeline
     /**
      * The per-thread execution state for processing through this pipeline.
      */
-    private ThreadLocal<Iterator<Valve>> state = new ThreadLocal<>();
+    private final ThreadLocal<Iterator<Valve>> state = new ThreadLocal<>();
 
     /**
      * @see org.apache.turbine.pipeline.Pipeline#initialize()

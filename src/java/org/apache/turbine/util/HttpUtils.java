@@ -45,7 +45,7 @@ public class HttpUtils
      * Validates only external key (name), as internal key may also contain colon and space.
      */
     private static final String CHARACTERS_NOT_ALLOWED_IN_KEY = "[^\\w_/\\.-]";
-    
+
     private static final Pattern CNAIK_PATTERN = Pattern.compile(CHARACTERS_NOT_ALLOWED_IN_KEY);
     /**
      * The date format to use for HTTP Dates.
@@ -91,11 +91,11 @@ public class HttpUtils
             response.setDateHeader("Expires", System.currentTimeMillis() + expiry);
         }
     }
-    
+
     /**
      * Check, if there is any not allowed {@value #CHARACTERS_NOT_ALLOWED_IN_KEY}
      * in parameters, eg. Turbine keys like actions, screens, layouts.
-     * 
+     *
      * @param parameter or key to be checked
      * @return True, if it contains any non allowed characters
      */
@@ -103,15 +103,15 @@ public class HttpUtils
         Matcher testMatcher = CNAIK_PATTERN.matcher(parameter);
         return testMatcher.find();
     }
-    
+
     /**
      * Cleans parameter/key from disallowed characters defined in {@link #CHARACTERS_NOT_ALLOWED_IN_KEY}.
-     * 
+     *
      * @param parameter to be cleaned
      * @return the cleaned parameter
      */
     public static String getCleanedKey(String parameter) {
         return parameter.replaceAll(CHARACTERS_NOT_ALLOWED_IN_KEY,"");
     }
-    
+
 }

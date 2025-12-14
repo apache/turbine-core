@@ -35,7 +35,7 @@ public class MockRetrieverFactory implements RetrieverFactory
     @Override
     public Retriever getInstance(String className) throws Exception
     {
-        return key -> new String(key);
+        return String::new;
     }
 
 }

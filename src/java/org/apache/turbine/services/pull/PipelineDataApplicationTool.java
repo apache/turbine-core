@@ -61,7 +61,7 @@ public interface PipelineDataApplicationTool
      * probably want the tool to refresh itself
      * if it is using configuration information
      * that is typically cached after initialization
-     * 
+     *
      * Default: do nothing
      *
      * @param data The current PipelineData Object

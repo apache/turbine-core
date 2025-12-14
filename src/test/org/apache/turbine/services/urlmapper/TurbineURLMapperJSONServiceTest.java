@@ -126,8 +126,8 @@ public class TurbineURLMapperJSONServiceTest extends BaseTestCase
         assertEquals( expectedMappedURL, uri2.getRelativeLink() );
 
         pp.clear();
-    
-//        
+
+//
         // scheme://bob/wow/damn2/contact/4/de
         log.info( "relative uri is now {}", uri2.getRelativeLink() );
         urlMapper.mapFromURL( uri2.getRelativeLink(), pp );
@@ -148,7 +148,7 @@ public class TurbineURLMapperJSONServiceTest extends BaseTestCase
         assertEquals( expectedMappedURL, uri2.getRelativeLink() );
 
     }
-    
+
     @Test
     public void testIgnoreParameterForShortURL() throws Exception
     {
@@ -188,7 +188,7 @@ public class TurbineURLMapperJSONServiceTest extends BaseTestCase
         assertEquals( expectedMappedURL, uri2.getRelativeLink() );
 
         pp.clear();
-       
+
         uri2.addPathInfo( "de", "" );
         // scheme://bob/wow/damn2/info/4/de/
         log.info( "relative uri is now {}", uri2.getRelativeLink() );

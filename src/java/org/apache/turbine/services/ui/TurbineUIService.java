@@ -150,7 +150,7 @@ public class TurbineUIService
     /**
      * The skin Properties store.
      */
-    private ConcurrentHashMap<String, Properties> skins = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Properties> skins = new ConcurrentHashMap<>();
 
     /**
      * Refresh the service by clearing all skins.

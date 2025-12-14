@@ -69,13 +69,11 @@ public abstract class BaseTestCase
         RunDataService rds =
             (RunDataService) TurbineServices.getInstance().getService(
                     RunDataService.SERVICE_NAME);
-        RunData runData = rds.getRunData(request, response, config);
-        return runData;
+        return rds.getRunData(request, response, config);
     }
 
     protected PipelineData getPipelineData(HttpServletRequest request,HttpServletResponse response,ServletConfig config) throws Exception {
-       RunData runData = getRunData(request,response,config);
-       return runData;
+       return getRunData(request,response,config);
     }
 
     protected Map<String,Object> attributes = new HashMap<>();

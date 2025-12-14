@@ -27,7 +27,7 @@ import org.apache.turbine.util.TurbineException;
 
 /**
  * <p>This class provides a <code>Service</code> implementation that
- * Services used in Turbine are required to extend. 
+ * Services used in Turbine are required to extend.
  * This class provides the ability to process field annotation {@link TurbineServices} in a Turbine service.
  * You could enable scanning globally by annotating the class (service) with the annotation {@link TurbineServices}.
  * Field annotation could then be omitted, if the field class is {@link TurbineServices} annotated.
@@ -37,7 +37,7 @@ import org.apache.turbine.util.TurbineException;
 public abstract class FieldAnnotatedTurbineBaseService
         extends TurbineBaseService
 {
-    
+
     private static Logger log = LogManager.getLogger(FieldAnnotatedTurbineBaseService.class);
     /**
      * Performs late initialization.

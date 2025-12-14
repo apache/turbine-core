@@ -106,8 +106,7 @@ public class LocalizationToolTest extends BaseTestCase
         ServletConfig config = mock(ServletConfig.class);
         HttpServletRequest request = getMockRequest();
         HttpServletResponse response = mock(HttpServletResponse.class);
-        RunData runData = rds.getRunData(request, response, config);
-        return runData;
+        return rds.getRunData(request, response, config);
     }
 
     @AfterClass

@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import org.apache.turbine.util.TurbineConfig;
 import org.junit.AfterClass;
@@ -76,7 +76,7 @@ public class OMToolTest
     {
         Object testString1 = om.get("test1", "testString");
         assertNotNull("Object should not be null", testString1);
-        assertTrue("Object should be a string", testString1 instanceof String);
+        assertInstanceOf(String.class, testString1, "Object should be a string");
         assertEquals("Object should be a string", "testString", testString1);
         Object testString2 = om.get("test1", "testString");
         assertNotNull("Object should not be null", testString2);

@@ -45,7 +45,7 @@ public interface ApplicationTool
      * If your session tool depends on having a <code>User</code> object, you
      * should look at implementing the {@link PipelineDataApplicationTool} interface
      * instead.
-     * 
+     *
      * Default: do nothing
      *
      * @param data initialization data
@@ -58,7 +58,7 @@ public interface ApplicationTool
      * probably want the tool to refresh itself
      * if it is using configuration information
      * that is typically cached after initialization
-     * 
+     *
      * Default: do nothing
      */
     default void refresh() {}

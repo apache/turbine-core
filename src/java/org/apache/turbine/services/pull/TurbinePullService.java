@@ -767,37 +767,32 @@ public class TurbinePullService
     {
         AnnotationProcessor.process(tool);
 
-        if (param instanceof PipelineData)
+        if (param instanceof PipelineData pd)
         {
-            if (tool instanceof PipelineDataApplicationTool)
+            if (tool instanceof PipelineDataApplicationTool pdat)
             {
-                ((PipelineDataApplicationTool) tool).init(param);
+                pdat.init(pd);
             }
-            else if (tool instanceof RunDataApplicationTool)
+            else if (tool instanceof RunDataApplicationTool rdat)
             {
-                RunData data = getRunData((PipelineData)param);
-                ((RunDataApplicationTool) tool).init(data);
+                rdat.init(pd.getRunData());
             }
-            else if (tool instanceof ApplicationTool)
+            else if (tool instanceof ApplicationTool at)
             {
-                RunData data = getRunData((PipelineData)param);
-                ((ApplicationTool) tool).init(data);
+                at.init(pd.getRunData());
             }
         }
-        else
+        else if (tool instanceof PipelineDataApplicationTool pdat)
         {
-            if (tool instanceof PipelineDataApplicationTool)
-            {
-                ((PipelineDataApplicationTool) tool).init(param);
-            }
-            else if (tool instanceof RunDataApplicationTool)
-            {
-                ((RunDataApplicationTool) tool).init(param);
-            }
-            else if (tool instanceof ApplicationTool)
-            {
-                ((ApplicationTool) tool).init(param);
-            }
+            pdat.init(param);
+        }
+        else if (tool instanceof RunDataApplicationTool rdat)
+        {
+            rdat.init(param);
+        }
+        else if (tool instanceof ApplicationTool at)
+        {
+            at.init(param);
         }
     }
 
@@ -809,33 +804,20 @@ public class TurbinePullService
      */
     private void refreshTool(Object tool, Object dataObject)
     {
-        RunData data = null;
-        PipelineData pipelineData = null;
-        if (dataObject instanceof PipelineData)
+        if (dataObject instanceof PipelineData pipelineData)
         {
-            pipelineData = (PipelineData)dataObject;
-            data = pipelineData.getRunData();
-            if (tool instanceof PipelineDataApplicationTool)
+            if (tool instanceof PipelineDataApplicationTool pdat)
             {
-                ((PipelineDataApplicationTool) tool).refresh(pipelineData);
+                pdat.refresh(pipelineData);
+            }
+            else if (tool instanceof RunDataApplicationTool rdat)
+            {
+                rdat.refresh(pipelineData.getRunData());
             }
         }
-        if (tool instanceof ApplicationTool)
+        if (tool instanceof ApplicationTool at)
         {
-            ((ApplicationTool) tool).refresh();
+            at.refresh();
         }
-        else if (tool instanceof RunDataApplicationTool)
-        {
-            ((RunDataApplicationTool) tool).refresh(data);
-        }
-    }
-
-    private RunData getRunData(PipelineData pipelineData)
-    {
-        if (!(pipelineData instanceof RunData))
-        {
-            throw new RuntimeException("Can't cast to rundata from pipeline data.");
-        }
-        return (RunData)pipelineData;
     }
 }

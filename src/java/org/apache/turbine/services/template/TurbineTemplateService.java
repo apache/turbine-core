@@ -717,17 +717,17 @@ public class TurbineTemplateService
         // out of the Template Service.
         mapperRegistry = new Mapper[TEMPLATE_TYPES];
 
-        String [] mapperNames = new String [] {
+        String [] mapperNames = {
             Page.NAME, Screen.NAME, Layout.NAME, Navigation.NAME,
             LAYOUT_TEMPLATE_NAME, SCREEN_TEMPLATE_NAME, NAVIGATION_TEMPLATE_NAME
         };
 
-        Class<?> [] mapperKeys = new Class<?> [] {
+        Class<?> [] mapperKeys = {
             Page.class, Screen.class, Layout.class, Navigation.class,
             Layout.class, Screen.class, Navigation.class
         };
 
-        String [] mapperClasses = new String [] {
+        String [] mapperClasses = {
             DirectMapper.class.getName(),
             ClassMapper.class.getName(),
             ClassMapper.class.getName(),
@@ -754,7 +754,7 @@ public class TurbineTemplateService
         mapperLoader[SCREEN_TEMPLATE_KEY] = null;
         mapperLoader[NAVIGATION_TEMPLATE_KEY] = null;
 
-        String [] mapperDefaultProperty = new String [] {
+        String [] mapperDefaultProperty = {
             TemplateEngineService.DEFAULT_PAGE,
             TemplateEngineService.DEFAULT_SCREEN,
             TemplateEngineService.DEFAULT_LAYOUT,
@@ -764,9 +764,9 @@ public class TurbineTemplateService
             TemplateEngineService.DEFAULT_NAVIGATION_TEMPLATE
         };
 
-        char [] mapperSeparator = new char [] { '.', '.', '.', '.', '/', '/', '/' };
+        char [] mapperSeparator = { '.', '.', '.', '.', '/', '/', '/' };
 
-        String [] mapperPrefix = new String [] {
+        String [] mapperPrefix = {
             null, null, null, null,
             Layout.PREFIX,
             Screen.PREFIX,
@@ -801,14 +801,14 @@ public class TurbineTemplateService
             tm.setDefaultProperty(mapperDefaultProperty[i]);
             tm.setSeparator(mapperSeparator[i]);
 
-            if (mapperLoader[i] != null && tm instanceof ClassMapper)
+            if (mapperLoader[i] != null && tm instanceof ClassMapper cm)
             {
-                ((ClassMapper) tm).setLoader(mapperLoader[i]);
+                cm.setLoader(mapperLoader[i]);
             }
 
-            if (mapperPrefix[i] != null && tm instanceof BaseTemplateMapper)
+            if (mapperPrefix[i] != null && tm instanceof BaseTemplateMapper btm)
             {
-                ((BaseTemplateMapper) tm).setPrefix(mapperPrefix[i]);
+                btm.setPrefix(mapperPrefix[i]);
             }
 
             registerMapper(i, tm);

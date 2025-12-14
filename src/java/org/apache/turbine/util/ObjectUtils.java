@@ -60,14 +60,14 @@ public abstract class ObjectUtils
     {
         byte[] byteArray = null;
         Map<String, Object> mapCopy = new HashMap<>(map);
-        
+
         // Remove all entries that are not serializable
         for (Iterator<Map.Entry<String, Object>> i = mapCopy.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry<String, Object> entry = i.next();
             if (! (entry.getValue() instanceof Serializable))
             {
-        	i.remove();
+                i.remove();
                 log.warn("Skipping serialization, value is not serializable: " + entry.getValue());
             }
         }
@@ -100,7 +100,7 @@ public abstract class ObjectUtils
         if (objectData != null)
         {
             final String filterPattern = Turbine.getConfiguration().getString(TurbineConstants.SESSION_OBJECTINPUTFILTER);
-            
+
             try (ByteArrayInputStream bin = new ByteArrayInputStream(objectData);
                  ObjectInputStream in = new ObjectInputStream(bin))
             {
@@ -109,7 +109,7 @@ public abstract class ObjectUtils
                 {
                     in.setObjectInputFilter(ObjectInputFilter.Config.createFilter(filterPattern));
                 }
-                
+
                 // If objectData has not been initialized, an
                 // exception will occur.
                 object = (T)in.readObject();

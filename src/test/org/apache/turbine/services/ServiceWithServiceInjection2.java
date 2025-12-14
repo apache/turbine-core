@@ -26,23 +26,23 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.localization.LocalizationService;
 import org.apache.turbine.annotation.TurbineService;
 /**
- * This service is used for testing 2nd level injection of services and class level declaration of 
- * {@link TurbineService} (interface is optional). 
+ * This service is used for testing 2nd level injection of services and class level declaration of
+ * {@link TurbineService} (interface is optional).
  *
  * @author <a href="mailto:gk@apache.org">Georg Kallidis</a>
  */
 @TurbineService( ServiceWithServiceInjection2.SERVICE_NAME )
-public class ServiceWithServiceInjection2 extends FieldAnnotatedTurbineBaseService 
+public class ServiceWithServiceInjection2 extends FieldAnnotatedTurbineBaseService
 {
-    
+
     static final String SERVICE_NAME = "ServiceWithService2";
-    
+
     private static Log log = LogFactory.getLog(ServiceWithServiceInjection2.class);
-    
+
     // Test for implicit SERVICE_NAME
     @TurbineService
     private LocalizationService localizationService2;
-    
+
     /**
      * Initializes the service.
      */
@@ -53,8 +53,8 @@ public class ServiceWithServiceInjection2 extends FieldAnnotatedTurbineBaseServi
         log.info("localizationService2 is: " + localizationService2);
 //        setInit(true);
     }
-    
-    public void callService() 
+
+    public void callService()
     {
         assertNotNull("localizationService2 object was Null.", localizationService2);
     }

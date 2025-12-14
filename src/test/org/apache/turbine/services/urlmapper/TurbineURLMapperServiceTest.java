@@ -197,10 +197,10 @@ public class TurbineURLMapperServiceTest extends BaseTestCase
 
         System.out.println("s1 estimateSize: " + spliterator1.estimateSize());
         spliterator1.forEachRemaining((IntConsumer) i ->
-                runCheck(templateURIs, counterSum, counters, parallel, sr));
+                runCheck(templateURIs, counterSum, counters, sr));
         System.out.println("s2 estimateSize: " + spliterator2.estimateSize());
         spliterator2.forEachRemaining((IntConsumer) i ->
-                runCheck(templateURIs, counterSum, counters, parallel, sr));
+                runCheck(templateURIs, counterSum, counters, sr));
 
         for (int i = 0; i < counters.size() - 1; i++)
         {
@@ -220,8 +220,7 @@ public class TurbineURLMapperServiceTest extends BaseTestCase
         );
     }
 
-    private void runCheck(int templateURIs, List<AtomicLong> counterSum, List<AtomicInteger> counters, boolean parallel,
-                          SplittableRandom sr)
+    private void runCheck(int templateURIs, List<AtomicLong> counterSum, List<AtomicInteger> counters, SplittableRandom sr)
     {
         int randomNum = sr.nextInt(templateURIs);
         TemplateURI turi = getURI(randomNum);

@@ -368,22 +368,21 @@ public class UITool implements ApplicationTool
             log.debug("UITool scope is global");
             setSkin();
         }
-        else if (data instanceof RunData)
+        else if (data instanceof RunData rd)
         {
             log.debug("UITool scope is request");
-            setSkin((RunData) data);
+            setSkin(rd);
         }
-        else if (data instanceof PipelineData)
+        else if (data instanceof PipelineData pipelineData)
         {
-            PipelineData pipelineData = (PipelineData) data;
-            RunData runData = (RunData)pipelineData;
+            RunData runData = pipelineData.getRunData();
             log.debug("UITool scope is request");
             setSkin(runData);
         }
-        else if (data instanceof User)
+        else if (data instanceof User u)
         {
             log.debug("UITool scope is session");
-            setSkin((User) data);
+            setSkin(u);
         }
     }
 

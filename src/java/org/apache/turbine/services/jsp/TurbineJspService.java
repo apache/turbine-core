@@ -25,9 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -38,8 +35,10 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.services.pull.tools.TemplateLink;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * This is a Service that can process JSP templates from within a Turbine
@@ -138,12 +137,8 @@ public class TurbineJspService
     public void handleRequest(PipelineData pipelineData, String templateName, boolean isForward)
         throws TurbineException
     {
-        if(!(pipelineData instanceof RunData))
-        {
-            throw new RuntimeException("Can't cast to rundata from pipeline data.");
-        }
-
-        RunData data = (RunData)pipelineData;
+        // throws TurbineRuntimeException if cast fails
+        pipelineData.getRunData();
 
         /** template name with relative path */
         String relativeTemplateName = getRelativeTemplateName(templateName);

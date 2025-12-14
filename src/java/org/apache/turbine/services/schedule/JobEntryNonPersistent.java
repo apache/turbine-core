@@ -102,9 +102,9 @@ public class JobEntryNonPersistent extends AbstractJobEntry
     @Override
     public boolean equals(Object obj)
     {
-        if (obj instanceof JobEntry)
+        if (obj instanceof JobEntry je)
         {
-            return compareTo((JobEntry)obj) == 0;
+            return compareTo(je) == 0;
         }
 
         return false;

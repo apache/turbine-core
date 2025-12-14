@@ -152,9 +152,8 @@ public abstract class ActionEvent implements Action
 	            Annotation[] annotations = AnnotationProcessor.getAnnotations(m);
 	            for (Annotation a : annotations)
 	            {
-    	            if (a instanceof TurbineActionEvent)
+    	            if (a instanceof TurbineActionEvent tae)
     	            {
-    	                TurbineActionEvent tae = (TurbineActionEvent) a;
     	                if (name.equals(pp.convert(tae.value()))
                             && Arrays.equals(signature, m.getParameterTypes()))
     	                {
@@ -266,9 +265,9 @@ public abstract class ActionEvent implements Action
 			Throwable t = ite.getTargetException();
 			if (bubbleUpException)
 			{
-                if (t instanceof Exception)
+                if (t instanceof Exception e)
                 {
-                    throw (Exception) t;
+                    throw e;
                 }
                 else
                 {

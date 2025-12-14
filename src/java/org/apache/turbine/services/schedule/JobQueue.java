@@ -1,5 +1,7 @@
 package org.apache.turbine.services.schedule;
 
+import java.util.Comparator;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -45,7 +47,7 @@ public class JobQueue<J extends JobEntry>
      */
     public JobQueue()
     {
-        queue = new ConcurrentSkipListSet<J>((o1, o2) -> Long.compare(o1.getNextRuntime(), o2.getNextRuntime()));
+        queue = new ConcurrentSkipListSet<>(Comparator.comparing(J::getNextRuntime));
     }
 
     /**
@@ -58,7 +60,7 @@ public class JobQueue<J extends JobEntry>
     {
         return queue.pollFirst();
     }
-    
+
     /**
      * Return the next job of the top of the queue or <code>null</code> if
      * there are no jobs in the queue.
@@ -91,7 +93,7 @@ public class JobQueue<J extends JobEntry>
                 {
                     return jobEntry;
                 }
-            } 
+            }
         }
         return null;
     }

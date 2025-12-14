@@ -561,11 +561,11 @@ public class Turbine extends HttpServlet
                     String serviceName = i.next();
                     Object service = services.getService(serviceName);
 
-                    if (service instanceof Initable)
+                    if (service instanceof Initable initable)
                     {
                         try
                         {
-                            ((Initable) service).init(data);
+                            initable.init(data);
                         }
                         catch (InitializationException e)
                         {
@@ -949,7 +949,8 @@ public class Turbine extends HttpServlet
             if (log4jFile != null)
             {
                 org.apache.logging.log4j.spi.LoggerContext ctxContext = LogManager.getContext(null, false, log4jFile.toUri());
-                if (ctxContext instanceof LoggerContext) {
+                if (ctxContext instanceof LoggerContext)
+                {
                     log.info("resolved log4j2 location: {}", context.getConfiguration().getConfigurationSource().getLocation());
                 }
 
@@ -990,16 +991,13 @@ public class Turbine extends HttpServlet
                 {
                     log4jTarget = logFilePath.normalize();
                 }
-                else
+                else // fall back just using the filename, if path match
+                if (log4jFilePath != null && log4jFilePath.getParent() != null && logConfPath.endsWith(log4jFilePath.getParent()))
                 {
-                    // fall back just using the filename, if path match
-                    if (log4jFilePath != null && log4jFilePath.getParent() != null && logConfPath.endsWith(log4jFilePath.getParent()))
+                    logFilePath = logConfPath.resolve(log4jFilePath.getFileName());
+                    if (logFilePath != null && logFilePath.toFile().exists())
                     {
-                        logFilePath = logConfPath.resolve(log4jFilePath.getFileName());
-                        if (logFilePath != null && logFilePath.toFile().exists())
-                        {
-                            log4jTarget = logFilePath.normalize();
-                        }
+                        log4jTarget = logFilePath.normalize();
                     }
                 }
             }

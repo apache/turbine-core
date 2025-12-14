@@ -24,11 +24,6 @@ import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.apache.commons.configuration2.Configuration;
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.DefaultCookieParser;
@@ -45,6 +40,11 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.TurbineRuntimeException;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * The RunData Service provides the implementations for RunData and
@@ -104,8 +104,7 @@ public class TurbineRunDataService
             throws InitializationException
     {
         // Create a default configuration.
-        String[] def = new String[]
-        {
+        String[] def = {
             DEFAULT_RUN_DATA,
             DEFAULT_PARAMETER_PARSER,
             DEFAULT_COOKIE_PARSER
@@ -118,8 +117,7 @@ public class TurbineRunDataService
         {
             String key,value;
             String[] config;
-            String[] plist = new String[]
-            {
+            String[] plist = {
                 RUN_DATA_KEY,
                 PARAMETER_PARSER_KEY,
                 COOKIE_PARSER_KEY
@@ -295,10 +293,10 @@ public class TurbineRunDataService
     @Override
     public boolean putRunData(RunData data)
     {
-        if (data instanceof TurbineRunData)
+        if (data instanceof TurbineRunData trd)
         {
-            parserService.putParser(((TurbineRunData) data).getParameterParser());
-            parserService.putParser(((TurbineRunData) data).getCookieParser());
+            parserService.putParser(trd.getParameterParser());
+            parserService.putParser(trd.getCookieParser());
 
             return pool.putInstance(data);
         }

@@ -18,7 +18,7 @@
  */
 
 /**
- * 
+ *
  * <p>
  *   The Turbine processing pipeline is modeled after the pipeline found
  *   in Tomcat 4.0.1 (Catalina), and after the module architecture found
@@ -28,11 +28,11 @@
  *   Pipeline (ClassicPipeline) can be changed by replacing or extending
  *   the implementation with a custom one.
  * </p>
- * 
+ *
  * <p>
  *   As with Catalina, Turbine's Pipeline and Valve configuration is
  *   setup via XML:
- * 
+ *
  *   <code>
  * 	&lt;pipeline name="default"&gt;
  * 	  &lt;valves&gt;
@@ -49,11 +49,11 @@
  * 	&lt;/pipeline&gt;
  *   </code>
  * </p>
- * 
+ *
  * <p>
  *   Please direct all comments, fixes, and enhancements to the
  *   <a href="mailto:dev@turbine.apache.org">development list</a>.
  * </p>
- * 
+ *
 */
 package org.apache.turbine.pipeline;

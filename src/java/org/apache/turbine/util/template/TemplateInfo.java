@@ -132,8 +132,7 @@ public class TemplateInfo
      */
     public String getLayoutTemplate()
     {
-        String value = getString(TemplateInfo.LAYOUT_TEMPLATE);
-        return value;
+        return getString(TemplateInfo.LAYOUT_TEMPLATE);
     }
 
     /**

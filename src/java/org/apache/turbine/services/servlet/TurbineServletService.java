@@ -138,8 +138,7 @@ public class TurbineServletService
         }
 
         InputStream is = null;
-        is = servletContext.getResourceAsStream(uri);
-        return is;
+        return servletContext.getResourceAsStream(uri);
     }
 
     /**

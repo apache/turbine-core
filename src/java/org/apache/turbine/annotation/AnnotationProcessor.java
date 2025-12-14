@@ -120,9 +120,8 @@ public class AnnotationProcessor
 
         for (Annotation annotation : annotations)
         {
-            if (annotation instanceof TurbineRequiredRole)
+            if (annotation instanceof TurbineRequiredRole trr)
             {
-                TurbineRequiredRole trr = (TurbineRequiredRole) annotation;
                 String[] roleNames = trr.value();
                 String group = trr.group();
 
@@ -170,9 +169,8 @@ public class AnnotationProcessor
                     }
                 }
             }
-            else if (annotation instanceof TurbineRequiredPermission)
+            else if (annotation instanceof TurbineRequiredPermission trp)
             {
-                TurbineRequiredPermission trp = (TurbineRequiredPermission) annotation;
                 String[] permissionNames = trp.value();
                 String group = trp.group();
 
@@ -250,13 +248,13 @@ public class AnnotationProcessor
         AssemblerBrokerService assembler = null;
         PoolService pool= null;
         Class<?> clazz = object.getClass();
-        
+
         boolean isTurbineService = false;
         if ( clazz.isAnnotationPresent(TurbineService.class)) {
             TurbineService service = clazz.getAnnotation(TurbineService.class);
             log.debug("retrieved class annotation: "+ service);
             isTurbineService = true;
-        } 
+        }
 
         while (clazz != null)
         {
@@ -268,39 +266,39 @@ public class AnnotationProcessor
 
                 for (Annotation a : annotations)
                 {
-                    if (a instanceof TurbineService)
+                    if (a instanceof TurbineService ts)
                     {
                         if (manager == null)
                         {
                             manager = TurbineServices.getInstance();
                         }
-                        injectTurbineService(object, manager, field, (TurbineService) a);
+                        injectTurbineService(object, manager, field, ts);
                     }
-                    else if (a instanceof TurbineConfiguration)
+                    else if (a instanceof TurbineConfiguration tc)
                     {
                         if (config == null)
                         {
                             config = Turbine.getConfiguration();
                         }
-                        injectTurbineConfiguration(object, config, field, (TurbineConfiguration) a);
+                        injectTurbineConfiguration(object, config, field, tc);
                     }
-                    else if (a instanceof TurbineLoader)
+                    else if (a instanceof TurbineLoader tl)
                     {
                         if (assembler == null)
                         {
                             assembler = (AssemblerBrokerService) TurbineServices.getInstance().
                                 getService(AssemblerBrokerService.SERVICE_NAME);
                         }
-                        injectTurbineLoader(object, assembler, field, (TurbineLoader) a);
+                        injectTurbineLoader(object, assembler, field, tl);
                     }
-                    else if (a instanceof TurbineTool)
+                    else if (a instanceof TurbineTool tt)
                     {
                         if (pool == null)
                         {
                             pool = (PoolService)TurbineServices.getInstance()
                                     .getService(PoolService.ROLE);
                         }
-                        injectTurbineTool(object, pool, field, (TurbineTool) a);
+                        injectTurbineTool(object, pool, field, tt);
                     }
                 }
                 if (isTurbineService)
@@ -313,7 +311,7 @@ public class AnnotationProcessor
                             manager = TurbineServices.getInstance();
                         }
                         injectTurbineService(object, manager, field, service);
-                    }    
+                    }
                 }
             }
 
@@ -333,14 +331,14 @@ public class AnnotationProcessor
             Annotation[] annotations = getAnnotations(method);
             for (Annotation a : annotations)
             {
-                if (a instanceof TurbineService)
+                if (a instanceof TurbineService ts)
                 {
 
                     if (manager == null)
                     {
                         manager = TurbineServices.getInstance();
                     }
-                    injectTurbineService(object, manager, method, (TurbineService) a);
+                    injectTurbineService(object, manager, method, ts);
                 }
             }
             if (isTurbineService)
@@ -356,8 +354,8 @@ public class AnnotationProcessor
                         TurbineService service = c.getAnnotation(TurbineService.class);
                         log.debug("retrieved implicit service in Turbien service: "+ service);
                         injectTurbineService(object, manager, method, service);
-                    } 
-                    
+                    }
+
                 }
             }
         }
@@ -391,9 +389,9 @@ public class AnnotationProcessor
                     + loader + " into object " + object, e);
         }
     }
-    
+
     /**
-     * Inject Turbine tool into field of object and 
+     * Inject Turbine tool into field of object and
      * injects annotations provided in the tool.
      *
      * @param object the object to process
@@ -421,7 +419,7 @@ public class AnnotationProcessor
         {
             throw new TurbineException("Could not inject tool "
                     + tool + " into object " + object, e);
-        } 
+        }
     }
 
     /**
@@ -542,14 +540,14 @@ public class AnnotationProcessor
                     field.setAccessible(true);
                     field.set(object, values);
                 } else {
-                    throw new TurbineException("Could not inject type " + 
+                    throw new TurbineException("Could not inject type " +
                       type + " into object " + object + ". Type "+ type + " not assignable in configuration "
                       + conf + " (allowed: String, Boolean, List, Number Types, "+ Configuration.class.getName() + ").");
                 }
             } else {
                 field.setAccessible(true);
                 Object defaultValue = field.get(object);
-                // this should not throw an error as it might be set later from container  e. g. session.timeout 
+                // this should not throw an error as it might be set later from container  e. g. session.timeout
                 // we might check field.get<Type> to show the default value of the field, but this is only a guess, it might be set even later..
                 log.info("No key {} of type {} injected into object {}. Field {} is set to default {}.", key, type, object, field.getName(), defaultValue);
             }
@@ -581,7 +579,7 @@ public class AnnotationProcessor
         }
         // Check for fields SERVICE_NAME and ROLE
         else
-        { 
+        {
             // check field level annotation
             Field[] typeFields = field.getType().getFields();
             serviceName = checkServiceOrRoleInField(serviceName, typeFields);
@@ -591,7 +589,7 @@ public class AnnotationProcessor
                 TurbineService service = field.getType().getAnnotation(TurbineService.class);
                 log.debug("retrieved class annotation: "+ service);
                 serviceName = service.value();
-            } 
+            }
         }
 
         if (StringUtils.isEmpty(serviceName))
@@ -619,8 +617,8 @@ public class AnnotationProcessor
     }
 
     /**
-     * Injects Turbine service into method fields 
-     * 
+     * Injects Turbine service into method fields
+     *
      * @param object the object to process
      * @param manager the service manager
      * @param method The method
@@ -643,14 +641,14 @@ public class AnnotationProcessor
                 Field[] fields = c.getFields();
                 // Check for fields SERVICE_NAME and ROLE
                 serviceName = checkServiceOrRoleInField(serviceName, fields);
-                
+
                 if ( (serviceName == null || serviceName.equals(Service.SERVICE_NAME)) &&
                         c.isAnnotationPresent(TurbineService.class)) {
                     TurbineService service = c.getAnnotation(TurbineService.class);
                     log.debug("retrieved class annotation: "+ service);
                     serviceName = service.value();
-                } 
-                
+                }
+
             }
         }
 
@@ -681,6 +679,7 @@ public class AnnotationProcessor
 
     private static String checkServiceOrRoleInField(String serviceName, Field[] fields) {
         for (Field f : fields)
+        {
             if (TurbineService.SERVICE_NAME.equals(f.getName()))
             {
                 try
@@ -705,6 +704,7 @@ public class AnnotationProcessor
                 }
                 break;
             }
+        }
         return serviceName;
     }
 }

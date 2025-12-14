@@ -45,7 +45,7 @@ public class JobEntryQuartz implements JobEntry, Job
     private JobDetail jobDetail;
     private String task;
     private boolean isnew = true;
-    private AtomicBoolean active = new AtomicBoolean(false);
+    private final AtomicBoolean active = new AtomicBoolean(false);
 
     /**
      * the default Quartz schedule group name for Turbine jobs
@@ -234,7 +234,7 @@ public class JobEntryQuartz implements JobEntry, Job
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException
     {
-        if (active.compareAndSet(false, true) == false)
+        if (!active.compareAndSet(false, true))
         {
             return;
         }

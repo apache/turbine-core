@@ -38,7 +38,7 @@ import org.apache.turbine.util.LocaleUtils;
  * This service is used to format {@link TemporalAccessor} and
  * {@link #map(String, DateTimeFormatter, Locale)} (different flavors)
  * objects into strings.
- * <p> 
+ * <p>
  * The methods may throw {@link java.time.temporal.UnsupportedTemporalTypeException} or
  * {@link DateTimeParseException}, e.g.
  * if the source and the target format do not match appropriately.
@@ -47,7 +47,7 @@ import org.apache.turbine.util.LocaleUtils;
  */
 @TurbineService("DateTimeFormatterService")
 public class DateTimeFormatterService
-        extends TurbineBaseService implements DateTimeFormatterInterface 
+        extends TurbineBaseService implements DateTimeFormatterInterface
 {
 
     private String formatPattern = null;
@@ -75,12 +75,12 @@ public class DateTimeFormatterService
      * Initialize the service.
      * <p> <p> <p> <p>
      * the {@link #dateTimeFormat} from {@link #formatPattern} is initialized with
-     * 
+     *
      * <ol>
      * <li>{@link Locale}: {@link LocaleUtils#getDefaultLocale()} is used by default.
      * It could be overridden setting #USE_TURBINE_LOCALE_KEY to false, the
      * the default Locale {@link Locale#getDefault()} is used.
-     * </li><li>{@link ZoneId}: If #DATE_TIME_ZONEID_KEY is set this {@link ZoneId} 
+     * </li><li>{@link ZoneId}: If #DATE_TIME_ZONEID_KEY is set this {@link ZoneId}
      * is used else {@link ZoneId#systemDefault()}.
      * </li>
      * </ol>
@@ -245,7 +245,7 @@ public class DateTimeFormatterService
     public void setLocale(Locale locale) {
         this.locale = locale;
     }
-    
+
     @Override
     public ZoneId getZoneId() {
         return zoneId;

@@ -184,8 +184,8 @@ public interface TurbineConstants
 	/** Session Timeout Default Value */
 	int SESSION_TIMEOUT_DEFAULT = -1;
 
-	/** 
-	 * Filter for classes that can be de-serialized from the persistent session storage 
+	/**
+	 * Filter for classes that can be de-serialized from the persistent session storage
 	 * See {@link java.io.ObjectInputFilter.Config#createFilter(String)}
 	 */
 	String SESSION_OBJECTINPUTFILTER = "session.objectinputfilter";

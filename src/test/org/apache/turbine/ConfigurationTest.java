@@ -59,8 +59,14 @@ public class ConfigurationTest extends BaseTestCase
 
     @After
     public void close() {
-        if (tc != null) tc.dispose();
-        if (txc != null) txc.dispose();
+        if (tc != null)
+        {
+            tc.dispose();
+        }
+        if (txc != null)
+        {
+            txc.dispose();
+        }
     }
 
     @Test

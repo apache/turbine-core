@@ -72,17 +72,17 @@ public class ObjectUtilsTest extends BaseTestCase
         throws Exception
     {
 	Map<String, Object> map = new HashMap<>();
-	map.put("testKey1", new HashBag<String>()); // forbidden class
+	map.put("testKey1", new HashBag<>()); // forbidden class
         map.put("testKey2", new Object()); // non-serializable
         map.put("testKey3", "actual Value");
         assertEquals(map.size(), 3);
-	
+
         final byte[] serialized1 = ObjectUtils.serializeMap(map);
         assertNotNull(serialized1);
 
         Map<String, Object> result1 =  ObjectUtils.deserialize(serialized1);
         assertNull(result1); // Contains forbidden class
-        
+
         map.remove("testKey1");
         assertEquals(map.size(), 2);
 
@@ -91,6 +91,6 @@ public class ObjectUtilsTest extends BaseTestCase
 
         Map<String, Object> result2 =  ObjectUtils.deserialize(serialized2);
         assertNotNull(result2); // Does not contain forbidden class
-        assertEquals(result2.size(), 1); // Non-serializable value skipped      
+        assertEquals(result2.size(), 1); // Non-serializable value skipped
     }
 }

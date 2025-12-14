@@ -22,10 +22,8 @@ package org.apache.turbine.services.assemblerbroker;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -85,7 +83,7 @@ public class TurbineAssemblerBrokerService
     @SuppressWarnings("unchecked")
     private <T extends Assembler> List<AssemblerFactory<T>> getFactoryGroup(Class<T> type)
     {
-        return (List<AssemblerFactory<T>>) factories.computeIfAbsent(type, 
+        return (List<AssemblerFactory<T>>) factories.computeIfAbsent(type,
             k -> new ArrayList<AssemblerFactory<T>>());
     }
 

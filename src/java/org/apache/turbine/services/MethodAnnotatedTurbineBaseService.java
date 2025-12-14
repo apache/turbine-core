@@ -24,17 +24,17 @@ import org.apache.turbine.util.TurbineException;
 
 /**
  * <p>This class provides a <code>Service</code> implementation that
- * Services used in Turbine are required to extend. 
+ * Services used in Turbine are required to extend.
  * This class provides the ability to process field and method annotations {@link TurbineServices} in a Turbine service.
- * You could also enable scanning globally by annotating the class (service) with the annotation {@link TurbineServices}, 
- * then method annotation could be omitted, if the argument class is {@link TurbineServices} annotated.  
+ * You could also enable scanning globally by annotating the class (service) with the annotation {@link TurbineServices},
+ * then method annotation could be omitted, if the argument class is {@link TurbineServices} annotated.
  * </p>
  *
  */
 public abstract class MethodAnnotatedTurbineBaseService
         extends TurbineBaseService
 {
-    
+
     /**
      * Performs late initialization.
      *

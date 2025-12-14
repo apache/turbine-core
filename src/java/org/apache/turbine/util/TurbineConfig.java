@@ -85,7 +85,7 @@ import org.apache.turbine.pipeline.PipelineData;
  * </p>
  *
  * TODO Make this class enforce the lifecycle contracts
- * 
+ *
  * @see <a href="https://jakarta.ee/specifications/servlet/6.1/jakarta-servlet-spec-6.1">Java Servlet Spec v6.1</a>
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
@@ -190,7 +190,7 @@ public class TurbineConfig
      */
     public TurbineConfig(String path, String properties)
     {
-        this(path, new HashMap<String, String>(1));
+        this(path, new HashMap<>(1));
         initParams.put(PROPERTIES_PATH_KEY, properties);
     }
 
@@ -921,7 +921,7 @@ public class TurbineConfig
 
     @Override
     public void setResponseCharacterEncoding(String encoding) {
-        
+
     }
 
 }

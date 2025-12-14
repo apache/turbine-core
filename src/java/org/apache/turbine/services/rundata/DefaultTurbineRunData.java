@@ -167,9 +167,7 @@ public class DefaultTurbineRunData
     {
         try
         {
-            @SuppressWarnings("unchecked")
-            T user = (T) session.getAttribute(User.SESSION_KEY);
-            return user;
+            return (T) session.getAttribute(User.SESSION_KEY);
         }
         catch (ClassCastException e)
         {
@@ -204,7 +202,7 @@ public class DefaultTurbineRunData
         super();
 
         // a map to hold information to be added to pipelineData
-        put(Turbine.class, new HashMap<Class<?>, Object>());
+        put(Turbine.class, new HashMap<>());
         recycle();
     }
 
@@ -354,9 +352,7 @@ public class DefaultTurbineRunData
     @Override
     public <A extends AccessControlList> A getACL()
     {
-        @SuppressWarnings("unchecked")
-        A acl = (A)get(Turbine.class, TurbineAccessControlList.class);
-        return acl;
+        return (A)get(Turbine.class, TurbineAccessControlList.class);
     }
 
     /**
@@ -738,9 +734,7 @@ public class DefaultTurbineRunData
     @Override
     public <T extends User> T getUser()
     {
-        @SuppressWarnings("unchecked")
-        T user = (T)get(Turbine.class, User.class);
-        return user;
+        return (T)get(Turbine.class, User.class);
     }
 
     /**

@@ -265,7 +265,7 @@ public class VelocityEmail extends SimpleEmail
         if (wordWrap > 0)
         {
             body = WordUtils.wrap(body, wordWrap,
-                    System.getProperty("line.separator"), false);
+            System.lineSeparator(), false);
         }
 
         setMsg(body);

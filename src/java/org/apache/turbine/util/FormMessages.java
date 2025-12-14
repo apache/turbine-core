@@ -1,7 +1,5 @@
 package org.apache.turbine.util;
 
-import java.util.ArrayList;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -21,8 +19,11 @@ import java.util.ArrayList;
  * under the License.
  */
 
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Used for adding and accessing messages that relate to a specific form and field. Allows to query for messages by form
@@ -33,23 +34,23 @@ import java.util.List;
  */
 public class FormMessages
 {
-    private final Hashtable<String, List<String>> forms_messages;
+    private final Map<String, List<String>> forms_messages;
 
-    private final Hashtable<String, List<String>> fields_messages;
+    private final Map<String, List<String>> fields_messages;
 
-    private final Hashtable<String, List<String>> messages_fields;
+    private final Map<String, List<String>> messages_fields;
 
-    private final Hashtable<String, List<String>> forms_fields;
+    private final Map<String, List<String>> forms_fields;
 
     /**
      * Constructor.
      */
     public FormMessages()
     {
-        forms_messages = new Hashtable<>();
-        fields_messages = new Hashtable<>();
-        messages_fields = new Hashtable<>();
-        forms_fields = new Hashtable<>();
+        forms_messages = new HashMap<>();
+        fields_messages = new HashMap<>();
+        messages_fields = new HashMap<>();
+        forms_fields = new HashMap<>();
     }
 
     /**
@@ -83,38 +84,27 @@ public class FormMessages
     /**
      * Adds a pair key/value to a table, making sure not to add duplicate keys.
      *
-     * @param table A Hashtable.
+     * @param table A Map.
      * @param key A String with the key.
      * @param value A String with value.
      */
-    private void addValue( Hashtable<String, List<String>> table, String key, String value )
+    private void addValue( Map<String, List<String>> table, String key, String value )
     {
-        List<String> values;
-
-        if ( !table.containsKey( key ) )
+        List<String> values = table.computeIfAbsent(key, k -> new ArrayList<>());
+        if (!values.contains( value))
         {
-            values = new ArrayList<>();
-            values.add( value );
-            table.put( key, values );
-        }
-        else
-        {
-            values = table.get( key );
-            if ( !values.contains( value ) )
-            {
-                values.add( value );
-            }
+            values.add(value);
         }
     }
 
     /**
      * Gets a pair key/value from a table.
      *
-     * @param table A Hashtable.
+     * @param table A Map.
      * @param key A String with the key.
      * @return A List with the pair key/value, or null.
      */
-    private final List<String> getValues( Hashtable<String, List<String>> table, String key )
+    private final List<String> getValues( Map<String, List<String>> table, String key )
     {
         return table.get( key );
     }
@@ -127,28 +117,25 @@ public class FormMessages
      */
     public FormMessage[] getFormMessages( String formName )
     {
-        List<String> messages, fields;
-        String messageName, fieldName;
-        messages = getValues( forms_messages, formName );
+        List<String> messages = getValues( forms_messages, formName );
         if ( messages != null )
         {
-            FormMessage[] result = new FormMessage[messages.size()];
-            for ( int i = 0; i < messages.size(); i++ )
-            {
-                result[i] = new FormMessage( formName );
-                messageName = messages.get( i );
-                result[i].setMessage( messageName );
-                fields = getValues( messages_fields, messageName );
-                for (String field : fields)
-                {
-                    fieldName = field;
-                    if ( formHasField( formName, fieldName ) )
-                    {
-                        result[i].setFieldName( fieldName );
-                    }
-                }
-            }
-            return result;
+            return messages.stream()
+                .map(message -> {
+                    FormMessage fm = new FormMessage(formName);
+                    fm.setMessage(message);
+                    List<String> fields = getValues( messages_fields, message);
+                    fields.forEach(field -> {
+                        if (formHasField(formName, field))
+                        {
+                            fm.setFieldName(field);
+                        }
+                    });
+
+                    return fm;
+                })
+                .collect(Collectors.toList())
+                .toArray(new FormMessage[messages.size()]);
         }
         return null;
     }

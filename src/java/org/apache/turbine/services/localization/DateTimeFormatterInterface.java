@@ -30,16 +30,16 @@ public interface DateTimeFormatterInterface {
      * Property tag for the date format that is to be used for the web
      * application. "tool.dateTool.format"
      */
-    final String DATE_TIME_FORMAT_KEY = "datetime.format";
-    
-    final String DATE_TIME_ZONEID_KEY = "datetime.zoneId";
-    
-    final String USE_TURBINE_LOCALE_KEY = "datetime.use.turbine.locale";
-    
-    final String USE_REQUEST_LOCALE_KEY = "tool.use.request.locale";
-    
+    String DATE_TIME_FORMAT_KEY = "datetime.format";
+
+    String DATE_TIME_ZONEID_KEY = "datetime.zoneId";
+
+    String USE_TURBINE_LOCALE_KEY = "datetime.use.turbine.locale";
+
+    String USE_REQUEST_LOCALE_KEY = "tool.use.request.locale";
+
     /** Default date format. find supported formats in {@link DateTimeFormatterService} */
-    final String DATE_TIME_FORMAT_DEFAULT = "MM/dd/yyyy";
+    String DATE_TIME_FORMAT_DEFAULT = "MM/dd/yyyy";
 
     DateTimeFormatter getDefaultFormat();
 
@@ -74,7 +74,7 @@ public interface DateTimeFormatterInterface {
      * @return String value of the date
      */
     <T extends TemporalAccessor> String format(T temporalAccessor, String dateFormatString, Locale locale);
-    
+
     /**
      * Formats the given date as a String.
      *

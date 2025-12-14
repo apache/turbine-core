@@ -91,30 +91,29 @@ public abstract class SessionValidator implements Action
                     data.setScreen(screenInvalidState);
                     data.setAction("");
                 }
-            } else {
-                if (!security.isAnonymousUser(data.getUser()))
+            }
+            else if (!security.isAnonymousUser(data.getUser()))
+            {
+                // See comments in screens.error.InvalidState.
+                if (data.getParameters().getInt("_session_access_counter")
+                        < (((Integer) data.getUser().getTemp(
+                        "_session_access_counter")).intValue() - 1))
                 {
-                    // See comments in screens.error.InvalidState.
-                    if (data.getParameters().getInt("_session_access_counter")
-                            < (((Integer) data.getUser().getTemp(
-                            "_session_access_counter")).intValue() - 1))
+                    if (data.getTemplateInfo().getScreenTemplate() != null)
                     {
-                        if (data.getTemplateInfo().getScreenTemplate() != null)
-                        {
-                            data.getUser().setTemp("prev_template",
-                                    data.getTemplateInfo().getScreenTemplate()
-                                    .replace('/', ','));
-                            data.getTemplateInfo().setScreenTemplate(templateInvalidState);
-                        }
-                        else
-                        {
-                            data.getUser().setTemp("prev_screen",
-                                                   data.getScreen().replace('/', ','));
-                            data.setScreen(screenInvalidState);
-                        }
-                        data.getUser().setTemp("prev_parameters", data.getParameters());
-                        data.setAction("");
+                        data.getUser().setTemp("prev_template",
+                                data.getTemplateInfo().getScreenTemplate()
+                                .replace('/', ','));
+                        data.getTemplateInfo().setScreenTemplate(templateInvalidState);
                     }
+                    else
+                    {
+                        data.getUser().setTemp("prev_screen",
+                                               data.getScreen().replace('/', ','));
+                        data.setScreen(screenInvalidState);
+                    }
+                    data.getUser().setTemp("prev_parameters", data.getParameters());
+                    data.setAction("");
                 }
             }
         }
