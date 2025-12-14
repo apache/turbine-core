@@ -35,6 +35,7 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.services.pull.tools.TemplateLink;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
+import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 import jakarta.servlet.RequestDispatcher;
@@ -138,7 +139,7 @@ public class TurbineJspService
         throws TurbineException
     {
         // throws TurbineRuntimeException if cast fails
-        pipelineData.getRunData();
+        RunData data = pipelineData.getRunData();
 
         /** template name with relative path */
         String relativeTemplateName = getRelativeTemplateName(templateName);

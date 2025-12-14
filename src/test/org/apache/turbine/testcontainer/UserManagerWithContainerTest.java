@@ -26,7 +26,6 @@ import static junit.framework.TestCase.fail;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import org.apache.fulcrum.security.entity.ExtendedUser;
 import org.apache.fulcrum.security.util.UnknownEntityException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,7 +73,7 @@ class UserManagerWithContainerTest {
    private static Logger log = LogManager.getLogger();
 
    @Container
-   private static GenericContainer MY_SQL_CONTAINER = BuildContainerWithDockerfileTest.MY_SQL_CONTAINER;
+   private static GenericContainer<?> MY_SQL_CONTAINER = BuildContainerWithDockerfileTest.MY_SQL_CONTAINER;
 
    @BeforeAll
    public static void init() {

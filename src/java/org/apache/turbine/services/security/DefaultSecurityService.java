@@ -622,6 +622,7 @@ public class DefaultSecurityService
      *
      * @return a Group object that represents the global group.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <G extends Group> G getGlobalGroup()
     {

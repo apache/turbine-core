@@ -29,11 +29,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.naming.Context;
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.fulcrum.parser.CookieParser;
@@ -53,6 +48,12 @@ import org.apache.turbine.util.LocaleUtils;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.SystemError;
 import org.apache.turbine.util.template.TemplateInfo;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * DefaultTurbineRunData is the default implementation of the
@@ -163,6 +164,7 @@ public class DefaultTurbineRunData
      *
      * @return A User.
      */
+    @SuppressWarnings("unchecked")
     public static <T extends User> T getUserFromSession(HttpSession session)
     {
         try
@@ -349,6 +351,7 @@ public class DefaultTurbineRunData
      *
      * @return the access control list.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <A extends AccessControlList> A getACL()
     {
@@ -731,6 +734,7 @@ public class DefaultTurbineRunData
      *
      * @return a user.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <T extends User> T getUser()
     {

@@ -53,7 +53,7 @@ public class VelocityActionDoesNothing extends VelocityAction
     {
         log.debug("Calling doPerform(PipelineData)");
 		VelocityActionDoesNothing.numberOfCalls++;
-        RunData rd = (RunData)pipelineData;
+        RunData rd = pipelineData.getRunData();
 		assertNotNull("PipelineData object was Null.", rd);
 		VelocityActionDoesNothing.pipelineDataCalls++;
     }
@@ -70,7 +70,7 @@ public class VelocityActionDoesNothing extends VelocityAction
     {
         log.debug("Calling arbitraryMethodName(PipelineData)");
         VelocityActionDoesNothing.numberOfCalls++;
-        RunData rd = (RunData)pipelineData;
+        RunData rd = pipelineData.getRunData();
         assertNotNull("RunData object was Null.", rd);
         VelocityActionDoesNothing.actionEventCalls++;
     }

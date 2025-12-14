@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
-import org.apache.turbine.util.RunData;
 
 
 /*
@@ -98,7 +97,7 @@ public class DefaultPipelineData implements PipelineData
         RunDataService rds = (RunDataService) TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME);
         if (rds != null)
         {
-            rds.putRunData((RunData) this);
+            rds.putRunData(getRunData());
         }
     }
 }

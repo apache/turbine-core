@@ -25,14 +25,14 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletContext;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.ServletUtils;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
 
 /**
  * <p>This class provides a context service when the application
@@ -137,7 +137,6 @@ public class TurbineServletService
             return null;
         }
 
-        InputStream is = null;
         return servletContext.getResourceAsStream(uri);
     }
 

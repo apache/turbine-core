@@ -23,10 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.test.BaseTestCase;
@@ -36,6 +32,10 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Tests TurbinePipeline.
@@ -90,7 +90,7 @@ public class DefaultSetEncodingValveTest extends BaseTestCase
 
         pipeline.invoke(pipelineData);
 
-        RunData runData = (RunData) pipelineData;
+        RunData runData = pipelineData.getRunData();
         assertEquals(TurbineConstants.PARAMETER_ENCODING_DEFAULT, runData.getCharset().name());
     }
 
@@ -110,7 +110,7 @@ public class DefaultSetEncodingValveTest extends BaseTestCase
         pipeline.initialize();
 
         pipeline.invoke(pipelineData);
-        RunData runData = (RunData) pipelineData;
+        RunData runData = pipelineData.getRunData();
 
         assertEquals("UTF-8", runData.getCharset().name());
     }

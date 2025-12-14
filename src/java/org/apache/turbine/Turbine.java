@@ -842,7 +842,7 @@ public class Turbine extends HttpServlet
     protected void handleException(PipelineData pipelineData, HttpServletResponse res,
             Throwable t)
     {
-        RunData data = (RunData) pipelineData;
+        RunData data = pipelineData.getRunData();
         // make sure that the stack trace makes it the log
         log.error("Turbine.handleException: ", t);
 

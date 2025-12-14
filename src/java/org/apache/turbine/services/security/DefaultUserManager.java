@@ -36,7 +36,6 @@ import org.apache.fulcrum.security.util.UnknownEntityException;
 import org.apache.fulcrum.security.util.UserSet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.turbine.om.security.TurbineUserDelegate;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.ServiceManager;
@@ -95,6 +94,7 @@ public class DefaultUserManager implements UserManager
      *
      * @return the wrapped object
      */
+    @SuppressWarnings("unchecked")
     protected <U extends User> U wrap(TurbineUser user)
     {
         return (U) getUserWrapper(user);

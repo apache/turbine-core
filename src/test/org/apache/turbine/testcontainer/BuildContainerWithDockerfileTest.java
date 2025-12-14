@@ -102,11 +102,10 @@ class BuildContainerWithDockerfileTest {
    Connection connection;
 
    @Container
-   public static GenericContainer MY_SQL_CONTAINER =   new GenericContainer<>(
-           new ImageFromDockerfile()
-            .withFileFromPath(".", RESOURCE_PATH)
+   public static GenericContainer<?> MY_SQL_CONTAINER = new GenericContainer<>(
+           new ImageFromDockerfile().withFileFromPath(".", RESOURCE_PATH)
         ).withExposedPorts( SERVICE_PORT ) //.withStartupAttempts( 2 )
-         .withEnv(  "MYSQL_DATABASE", DATABASE_NAME )
+         .withEnv( "MYSQL_DATABASE", DATABASE_NAME )
          .withEnv( "MYSQL_USER", "userdb"  )
          .withEnv( "MYSQL_PASSWORD", "test1234" )
          .withEnv( "MYSQL_ROOT_PASSWORD","test1234" );

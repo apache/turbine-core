@@ -29,7 +29,6 @@ import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateInfo;
 
 /**
@@ -134,8 +133,7 @@ public abstract class TemplateScreen implements Screen
      */
     public static void setTemplate(PipelineData pipelineData, String template)
     {
-        RunData data = (RunData)pipelineData;
-        TemplateInfo ti = data.getTemplateInfo();
+        TemplateInfo ti = pipelineData.getRunData().getTemplateInfo();
         TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
 
         ti.setScreenTemplate(template);

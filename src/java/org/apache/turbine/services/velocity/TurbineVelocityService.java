@@ -245,7 +245,7 @@ public class TurbineVelocityService
     public Context getContext(PipelineData pipelineData)
     {
         //Map runDataMap = (Map)pipelineData.get(RunData.class);
-        RunData data = (RunData)pipelineData;
+        RunData data = pipelineData.getRunData();
         // Attempt to get it from the data first.  If it doesn't
         // exist, create it and then stuff it into the data.
         Context context = (Context)

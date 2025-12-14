@@ -25,10 +25,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Vector;
 
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.test.BaseTestCase;
@@ -39,6 +35,10 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Tests TurbinePipeline.
@@ -99,7 +99,7 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
 
         pipeline.invoke(pipelineData);
 
-        RunData runData = (RunData) pipelineData;
+        RunData runData = pipelineData.getRunData();
         assertEquals(0, runData.getSession().getMaxInactiveInterval());
     }
 
@@ -119,7 +119,7 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
         pipeline.initialize();
 
         pipeline.invoke(pipelineData);
-        RunData runData = (RunData) pipelineData;
+        RunData runData = pipelineData.getRunData();
 
         assertEquals(3600, runData.getSession().getMaxInactiveInterval());
     }

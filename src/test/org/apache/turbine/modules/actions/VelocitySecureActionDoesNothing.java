@@ -51,7 +51,7 @@ public class VelocitySecureActionDoesNothing extends VelocitySecureAction
     {
         log.debug("Calling doPerform(PipelineData)");
 		VelocitySecureActionDoesNothing.numberOfCalls++;
-        RunData rd = (RunData)pipelineData;
+        RunData rd = pipelineData.getRunData();
 		assertNotNull("PipelineData object was Null.", rd);
 		VelocitySecureActionDoesNothing.pipelineDataCalls++;
     }
