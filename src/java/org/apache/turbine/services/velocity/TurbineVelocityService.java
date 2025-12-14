@@ -290,13 +290,11 @@ public class TurbineVelocityService
         throws TurbineException
     {
         String results = null;
-        OutputStreamWriter writer = null;
         Charset charset = getOutputCharSet(context);
 
-        try (ByteArrayOutputStream bytes = new ByteArrayOutputStream())
+        try (ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+             OutputStreamWriter writer = new OutputStreamWriter(bytes, charset))
         {
-            writer = new OutputStreamWriter(bytes, charset);
-
             executeRequest(context, filename, writer);
             writer.flush();
             results = bytes.toString(charset.name());
