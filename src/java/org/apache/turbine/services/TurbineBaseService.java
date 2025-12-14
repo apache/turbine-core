@@ -42,7 +42,7 @@ import org.apache.turbine.util.RunData;
  * it:</p>
  *
  * <pre>
- * getServiceBroker().initClass("OtherService",data);
+ * getServiceBroker().initService("OtherService");
  * OtherService service =
  *         (OtherService)getServiceBroker().getService("OtherService");
  * </pre>

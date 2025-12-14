@@ -25,25 +25,12 @@ package org.apache.turbine.services;
  * Classes that implement this interface need initialization before
  * they can work.
  *
- * These classes rely also on an <code>InitableBroker</code> that
- * ensures that there is only one instance of the class in the system,
- * and handles dependencies between <code>Initables</code>.
- *
  * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
 public interface Initable
 {
-    /**
-     * Provides an Initable with a reference to the InitableBroker
-     * that instantiated this object, so that it can access other
-     * Initables.
-     *
-     * @param broker The InitableBroker that instantiated this object.
-     */
-    void setInitableBroker(InitableBroker broker);
-
     /**
      * Performs early initialization of an Initable
      *
@@ -59,23 +46,27 @@ public interface Initable
      * expects was not received, you can use late initialization to
      * throw an exception and complain.
      *
+     * Default: do nothing
+     * 
      * @param data An Object to use for initialization activities.
      * @throws InitializationException if initialization of this
      * class was not successful.
      */
-    void init(Object data) throws InitializationException;
+    default void init(Object data) throws InitializationException {}
 
     /**
      * Performs late initialization of an Initable.
-     *
+     * 
      * When your class is being requested from an InitableBroker, it
      * will call getInit(), and if it returns false, this method will
      * be invoked.
      *
+     * Default: do nothing
+     * 
      * @throws InitializationException if initialization of this
      * class was not successful.
      */
-    void init() throws InitializationException;
+    default void init() throws InitializationException {}
 
     /**
      * Returns an <code>Initable</code> to an uninitialized state.
@@ -85,8 +76,12 @@ public interface Initable
      * You may chose to implement this operation or not. If you support
      * this operation, getInit() should return false after successful
      * shutdown of the service.
+     * 
+     * Default: setInit(false)
      */
-    void shutdown();
+    default void shutdown() {
+        setInit(false);
+    }
 
     /**
      * Returns initialization status of an Initable.
@@ -94,4 +89,11 @@ public interface Initable
      * @return Initialization status of an Initable.
      */
     boolean getInit();
+
+    /**
+     * Sets initialization status.
+     * 
+     * @param value The new initialization status.
+     */
+    void setInit(boolean value);
 }

@@ -24,11 +24,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
@@ -54,7 +53,6 @@ import org.apache.logging.log4j.Logger;
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
- * @version $Id$
  */
 public abstract class BaseServiceBroker implements ServiceBroker
 {
@@ -282,11 +280,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
                         }
                     }
                     // those two errors must be passed to the VM
-                    catch (ThreadDeath t)
-                    {
-                        throw t;
-                    }
-                    catch (OutOfMemoryError t)
+                    catch (ThreadDeath | OutOfMemoryError t)
                     {
                         throw t;
                     }
@@ -337,11 +331,10 @@ public abstract class BaseServiceBroker implements ServiceBroker
      */
     public Iterator<String> getServiceNames(String prefix)
     {
-        Set<String> keys = new LinkedHashSet<>(mapping.keySet());
-
-        keys.removeIf(key -> !key.startsWith(prefix));
-
-        return Collections.unmodifiableSet(keys).iterator();
+        return mapping.keySet().stream()
+            .filter(key -> !key.startsWith(prefix))
+            .collect(Collectors.toUnmodifiableSet())
+            .iterator();
     }
 
     /**
@@ -361,16 +354,18 @@ public abstract class BaseServiceBroker implements ServiceBroker
         // implementation has its name and broker reference set before
         // initialization.
         Service instance = getServiceInstance(name);
-        
+
         serviceLock.lock();
-        try {
+        try 
+        {
             if (!instance.getInit())
             {
                 // this call might result in an indirect recursion
                 instance.init();
             }
-            
-        } finally {
+        } 
+        finally 
+        {
             serviceLock.unlock();
         }
     }
@@ -469,7 +464,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
                 serviceLock.lock();
                 try {
                     service.shutdown();
-    
+
                     if (service.getInit() && service instanceof BaseService)
                     {
                         // BaseService::shutdown() does this by default,
@@ -544,14 +539,17 @@ public abstract class BaseServiceBroker implements ServiceBroker
 	            if (!service.getInit())
 	            {
 	                serviceLock.lock(); // was synchronized (service.getClass(), but should be equivalent
-	                try {
+	                try 
+                    {
 	                    if (!service.getInit())
 	                    {
 	                        log.info("Start Initializing service (late): {}", name);
 	                        service.init();
 	                        log.info("Finish Initializing service (late): {}", name);
 	                    }
-	                } finally {
+	                } 
+                    finally 
+                    {
 	                    serviceLock.unlock();
 	                }
 	            }
@@ -597,89 +595,78 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * called.  This calls for two - level accessing the Services
      * instances.
      *
-     * @param name The name of the service requested.
+     * @param serviceName The name of the service requested.
      *
      * @return the Service instance
      *
      * @throws InstantiationException The service is unknown or
      * can't be initialized.
      */
-    protected Service getServiceInstance(String name)
+    protected Service getServiceInstance(String serviceName)
             throws InstantiationException
     {
-        Service service = services.get(name);
-
-        if (service == null)
+        Service service = services.computeIfAbsent(serviceName, name -> 
         {
             serviceLock.lock();
-
             try
             {
-                // Double check
-                service = services.get(name);
-
-                if (service == null)
+                if (!this.isLocalService(name))
                 {
-                    if (!this.isLocalService(name))
-                    {
-                        throw new InstantiationException(
-                                "ServiceBroker: unknown service " + name
-                                + " requested");
-                    }
+                    throw new InstantiationException(
+                            "ServiceBroker: unknown service " + name
+                            + " requested");
+                }
+
+                Service newService;
+
+                try
+                {
+                    Class<?> clazz = mapping.get(name);
 
                     try
                     {
-                        Class<?> clazz = mapping.get(name);
+                        newService = (Service) clazz.getDeclaredConstructor().newInstance();
 
-                        try
+                        // check if the newly created service is also a
+                        // service provider - if so then remember it
+                        if (newService instanceof TurbineServiceProvider)
                         {
-                            service = (Service) clazz.getDeclaredConstructor().newInstance();
-
-                            // check if the newly created service is also a
-                            // service provider - if so then remember it
-                            if (service instanceof TurbineServiceProvider)
+                            Service _service = this.serviceProviderInstanceMap.putIfAbsent(name, newService);
+                            if (_service != null)
                             {
-                                Service _service = this.serviceProviderInstanceMap.putIfAbsent(name,service);
-                                if (_service != null)
-                                {
-                                    service = _service;
-                                }
+                                newService = _service;
                             }
                         }
-                        // those two errors must be passed to the VM
-                        catch (ClassCastException e)
-                        {
-                            throw new InstantiationException("Class " + clazz +
-                                    " doesn't implement the Service interface", e);
-                        }
-                        catch (ThreadDeath | OutOfMemoryError t)
-                        {
-                            throw t;
-                        }
-                        catch (Throwable t)
-                        {
-                            throw new InstantiationException("Failed to instantiate " + clazz, t);
-                        }
                     }
-                    catch (InstantiationException e)
+                    // those two errors must be passed to the VM
+                    catch (ClassCastException e)
                     {
-                        throw new InstantiationException(
-                                "Failed to instantiate service " + name, e);
+                        throw new InstantiationException("Class " + clazz +
+                                " doesn't implement the Service interface", e);
                     }
-                    service.setServiceBroker(this);
-                    service.setName(name);
-                    Service _service = services.putIfAbsent(name, service);
-                    if (_service != null) // Unlikely
+                    catch (ThreadDeath | OutOfMemoryError t)
                     {
-                        service = _service;
+                        throw t;
+                    }
+                    catch (Throwable t)
+                    {
+                        throw new InstantiationException("Failed to instantiate " + clazz, t);
                     }
                 }
+                catch (InstantiationException e)
+                {
+                    throw new InstantiationException(
+                            "Failed to instantiate service " + name, e);
+                }
+                newService.setServiceBroker(this);
+                newService.setName(name);
+                return newService;
             }
             finally
             {
                 serviceLock.unlock();
             }
-        }
+        });
 
         return service;
     }

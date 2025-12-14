@@ -42,9 +42,8 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
      */
     private static final long serialVersionUID = -7775459623190960297L;
 
-    protected Configuration configuration;
+    private Configuration configuration;
     private boolean isInitialized;
-    private InitableBroker initableBroker;
     private String name;
     private ServiceBroker serviceBroker;
 
@@ -56,9 +55,6 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
             throws RemoteException
     {
         isInitialized = false;
-        initableBroker = null;
-        name = null;
-        serviceBroker = null;
     }
 
     /**
@@ -84,21 +80,6 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
     }
 
     @Override
-    public void setInitableBroker(InitableBroker broker)
-    {
-        this.initableBroker = broker;
-    }
-
-    /**
-     * Get the {@link InitableBroker} instance
-     * @return the broker instance
-     */
-    public InitableBroker getInitableBroker()
-    {
-        return initableBroker;
-    }
-
-    @Override
     public void init(Object data)
             throws InitializationException
     {
@@ -111,7 +92,7 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
         setInit(true);
     }
 
-    protected void setInit(boolean value)
+    public void setInit(boolean value)
     {
         isInitialized = value;
     }

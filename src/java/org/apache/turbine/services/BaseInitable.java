@@ -1,6 +1,5 @@
 package org.apache.turbine.services;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -34,11 +33,8 @@ package org.apache.turbine.services;
 public class BaseInitable
         implements Initable
 {
-    /** InitableBroker that instantiatd this class. */
-    protected InitableBroker initableBroker;
-
     /** Initialization status of this class. */
-    protected boolean isInitialized = false;
+    private boolean isInitialized = false;
 
     /**
      * Default constructor of BaseInitable.
@@ -50,72 +46,6 @@ public class BaseInitable
     public BaseInitable()
     {
         // empty
-    }
-
-    /**
-     * Saves InitableBroker reference for later use.
-     *
-     * @param broker The InitableBroker that instantiated this object.
-     */
-    @Override
-    public void setInitableBroker(InitableBroker broker)
-    {
-        this.initableBroker = broker;
-    }
-
-    /**
-     * Returns an InitableBroker reference.
-     *
-     * @return The InitableBroker that instantiated this object.
-     */
-    public InitableBroker getInitableBroker()
-    {
-        return initableBroker;
-    }
-
-    /**
-     * Performs early initialization.  Used in a manner similar to a ctor.
-     *
-     * BaseInitable doesn't need early initialization, therefore it
-     * ignores all objects passed to it and performs no initialization
-     * activities.
-     *
-     * @param data An Object to use for initialization activities.
-     * @throws InitializationException Initialization of this
-     * class was not successful.
-     */
-    @Override
-    public void init(Object data) throws InitializationException
-    {
-        // empty
-    }
-
-    /**
-     * Performs late initialization.  Called when the Service is requested
-     * for the first time (if not already completely initialized by the
-     * early initializer).
-     *
-     * Late initialization of a BaseInitable is always successful.
-     *
-     * @throws InitializationException Initialization of this
-     * class was not successful.
-     */
-    @Override
-    public void init() throws InitializationException
-    {
-        // empty
-    }
-
-    /**
-     * Returns an Initable to uninitialized state.
-     *
-     * Calls setInit(false) to mark that we are no longer in initialized
-     * state.
-     */
-    @Override
-    public void shutdown()
-    {
-        setInit(false);
     }
 
     /**
@@ -134,7 +64,8 @@ public class BaseInitable
      *
      * @param value The new initialization status.
      */
-    protected void setInit(boolean value)
+    @Override
+    public void setInit(boolean value)
     {
         this.isInitialized = value;
     }

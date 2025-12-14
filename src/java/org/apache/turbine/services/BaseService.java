@@ -39,13 +39,13 @@ public class BaseService
         implements Service
 {
     /** A reference to the ServiceBroker that instantiated this object. */
-    protected ServiceBroker serviceBroker;
+    private ServiceBroker serviceBroker;
 
     /** The configuration for this service */
-    protected Configuration configuration;
+    private Configuration configuration;
 
     /** The name of this Service. */
-    protected String name;
+    private String name;
 
     /**
      * Saves a reference to the ServiceBroker that instantiated this
