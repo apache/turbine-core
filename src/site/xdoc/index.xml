@@ -145,10 +145,10 @@
   
   <p>
     Currently, the best way to get started with Turbine is to use the
-    Maven Archetypes, find it on <a href="https://github.com/apache/turbine-archetypes" 
+    Maven Archetypes (Turbine Webapp example), find it on <a href="https://github.com/apache/turbine-archetypes" 
     title="Turbine Maven Archetype on GitHub">GitHub</a>. 
-    Eihter use it with a hosted database or use the 
-    <a href="https://github.com/apache/turbine-archetypes/blob/master/src/main/resources/archetype-resources/docs/DOCKER-README.md">docker profile</a>. 
+    Either use it with a hosted database or use the 
+    <a href="https://github.com/apache/turbine-archetypes/blob/master/src/main/resources/archetype-resources/docs/DOCKER-PODMAN-COMPOSE-README.md">docker profile</a>. 
     See also the <a href="https://blogs.apache.org/turbine/entry/maven_archetypes_for_apache_turbine">blog post</a>
     in the <a href="https://blogs.apache.org/turbine/">Turbine Blog</a> for usage information. 
   </p>
@@ -176,18 +176,18 @@ the current Turbine code.
         Create issues and Comment in Apache JIRA system <a href="https://issues.apache.org/jira/projects/TRB/">Turbine
         </a></li>   
      <li>
-        You can access the <a href="https://github.com/apache/turbine-core/">Turbine Git trunk branch (rw)
+        You can access the <a href="https://github.com/apache/turbine-core/">Turbine Core Git trunk branch (rw)
         repository</a></li>
      <li>
         You can also access the archived (since 2021) <a href="https://svn.apache.org/viewvc/turbine/core/trunk/">Turbine SVN
         repository (read only)</a></li>
     
     <li>
-        You can access the <a href="https://github.com/apache/turbine-archetypes/">Turbine Archetype Git (rw)
+        You can access the <a href="https://github.com/apache/turbine-archetypes/">Turbine Webapp Archetype Git (rw)
         repository</a></li>
      <li>
         You can access the <a href="https://github.com/apache/turbine-build/">Turbine Git build environment repository</a>. 
-        This is a GIT modules structure, which should help to manage all Turbine components in one place.
+        This is a GIT modules structure, which should help to manage all Turbine (and Fulcrum) components in one place.
      </li>
     <li>
         You can find more about the Turbine Ecosystem on <a href="https://gitbox.apache.org/repos/asf#turbine"> gitbox.apache.org (rw)
