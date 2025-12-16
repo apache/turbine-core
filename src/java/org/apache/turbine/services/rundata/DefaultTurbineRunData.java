@@ -45,12 +45,9 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.util.FormMessages;
 import org.apache.turbine.util.LocaleUtils;
-import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.SystemError;
 import org.apache.turbine.util.template.TemplateInfo;
 
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -97,7 +94,7 @@ public class DefaultTurbineRunData
     private String screen;
 
     /** The character encoding of template files. */
-    private String templateEncoding;
+    private Charset templateEncoding;
 
     /** This is what will build the title of the document. */
     private String title;
@@ -110,9 +107,6 @@ public class DefaultTurbineRunData
      * different places.
      */
     private PrintWriter out;
-
-    /** The HTTP charset. */
-    private Charset charSet;
 
     /** The HTTP content type to return. */
     private String contentType = TurbineConstants.DEFAULT_HTML_CONTENT_TYPE;
@@ -128,15 +122,6 @@ public class DefaultTurbineRunData
 
     /** JNDI Contexts. */
     private Map<String, Context> jndiContexts;
-
-    /** @see #getRemoteAddr() */
-    private String remoteAddr;
-
-    /** @see #getRemoteHost() */
-    private String remoteHost;
-
-    /** @see #getUserAgent() */
-    private String userAgent;
 
     /** A holder for stack trace. */
     private String stackTrace;
@@ -229,19 +214,15 @@ public class DefaultTurbineRunData
         action = null;
         layout = null;
         screen = null;
-        templateEncoding = null;
+        templateEncoding = null; // FIXME This is never set
         title = null;
         outSet = false;
         out = null;
-        charSet = null;
         contentType = TurbineConstants.DEFAULT_HTML_CONTENT_TYPE;
         redirectURI = null;
         statusCode = HttpServletResponse.SC_OK;
         errors.clear();
         jndiContexts = null;
-        remoteAddr = null;
-        remoteHost = null;
-        userAgent = null;
         stackTrace = null;
         stackTraceException = null;
         debugVariables.clear();
@@ -289,61 +270,6 @@ public class DefaultTurbineRunData
         }
 
         return cookies;
-    }
-
-    /**
-     * Gets the servlet request.
-     *
-     * @return the request.
-     */
-    @Override
-    public HttpServletRequest getRequest()
-    {
-        return get(Turbine.class, HttpServletRequest.class);
-    }
-
-    /**
-     * Gets the servlet response.
-     *
-     * @return the response.
-     */
-    @Override
-    public HttpServletResponse getResponse()
-    {
-        return get(Turbine.class, HttpServletResponse.class);
-    }
-
-    /**
-     * Gets the servlet session information.
-     *
-     * @return the session.
-     */
-    @Override
-    public HttpSession getSession()
-    {
-        return getRequest().getSession();
-    }
-
-    /**
-     * Gets the servlet configuration used during servlet init.
-     *
-     * @return the configuration.
-     */
-    @Override
-    public ServletConfig getServletConfig()
-    {
-        return get(Turbine.class, ServletConfig.class);
-    }
-
-    /**
-     * Gets the servlet context used during servlet init.
-     *
-     * @return the context.
-     */
-    @Override
-    public ServletContext getServletContext()
-    {
-        return get(Turbine.class, ServletContext.class);
     }
 
     /**
@@ -455,33 +381,6 @@ public class DefaultTurbineRunData
     }
 
     /**
-     * Convenience method for a template info that
-     * returns the layout template being used.
-     *
-     * @return a string.
-     */
-    @Override
-    public String getLayoutTemplate()
-    {
-        return getTemplateInfo().getLayoutTemplate();
-    }
-
-    /**
-     * Modifies the layout template for the screen. This convenience
-     * method allows for a layout to be modified from within a
-     * template. For example;
-     *
-     *    $data.setLayoutTemplate("NewLayout.vm")
-     *
-     * @param layout a layout template.
-     */
-    @Override
-    public void setLayoutTemplate(String layout)
-    {
-        getTemplateInfo().setLayoutTemplate(layout);
-    }
-
-    /**
      * Whether or not a screen has been defined.
      *
      * @return true if a screen has been defined.
@@ -515,38 +414,12 @@ public class DefaultTurbineRunData
     }
 
     /**
-     * Convenience method for a template info that
-     * returns the name of the template being used.
-     *
-     * @return a string.
-     */
-    @Override
-    public String getScreenTemplate()
-    {
-        return getTemplateInfo().getScreenTemplate();
-    }
-
-    /**
-     * Sets the screen template for the request. For
-     * example;
-     *
-     *    $data.setScreenTemplate("NewScreen.vm")
-     *
-     * @param screen a screen template.
-     */
-    @Override
-    public void setScreenTemplate(String screen)
-    {
-        getTemplateInfo().setScreenTemplate(screen);
-    }
-
-    /**
      * Gets the character encoding to use for reading template files.
      *
      * @return the template encoding or null if not specified.
      */
     @Override
-    public String getTemplateEncoding()
+    public Charset getTemplateCharset()
     {
         return templateEncoding;
     }
@@ -557,7 +430,7 @@ public class DefaultTurbineRunData
      * @param encoding the template encoding.
      */
     @Override
-    public void setTemplateEncoding(String encoding)
+    public void setTemplateCharset(Charset encoding)
     {
         templateEncoding = encoding;
     }
@@ -728,20 +601,6 @@ public class DefaultTurbineRunData
     }
 
     /**
-     * Gets the user.
-     *
-     * @param <T> a type extending {@link User}
-     *
-     * @return a user.
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends User> T getUser()
-    {
-        return (T)get(Turbine.class, User.class);
-    }
-
-    /**
      * Sets the user.
      *
      * @param user a user.
@@ -837,6 +696,7 @@ public class DefaultTurbineRunData
         if (locale == null)
         {
             locale = LocaleUtils.getDefaultLocale();
+            setLocale(locale);
         }
         return locale;
     }
@@ -852,8 +712,8 @@ public class DefaultTurbineRunData
         get(Turbine.class).put(Locale.class, locale);
 
         // propagate the locale to the parsers
-        ParameterParser parameters = get(Turbine.class, ParameterParser.class);
-        CookieParser cookies = get(Turbine.class, CookieParser.class);
+        ParameterParser parameters = getParameterParser();
+        CookieParser cookies = getCookieParser();
 
         if (parameters != null)
         {
@@ -873,43 +733,18 @@ public class DefaultTurbineRunData
      * property is undefined, the default charset of the locale
      * is returned. If the locale is undefined, null is returned.
      *
-     * @return the name of the charset or null.
-     */
-    @Override
-    public String getCharSet()
-    {
-        return getCharset().name();
-    }
-
-    /**
-     * Sets the charset.
-     *
-     * @param charSet the name of the new charset.
-     */
-    @Override
-    public void setCharSet(String charSet)
-    {
-        setCharset(Charset.forName(charSet));
-    }
-
-    /**
-     * Gets the charset. If it has not already been defined with
-     * setCharSet(), then a property named "locale.default.charset"
-     * is checked from the Resource Service and returned. If this
-     * property is undefined, the default charset of the locale
-     * is returned. If the locale is undefined, null is returned.
-     *
      * @return the charset or null.
      */
     @Override
     public Charset getCharset()
     {
-        log.debug("getCharset()");
+        Charset charSet = get(Turbine.class, Charset.class);
 
         if (charSet == null)
         {
             log.debug("Charset was null!");
             charSet =  LocaleUtils.getDefaultCharset();
+            setCharset(charSet);
         }
 
         return charSet;
@@ -924,7 +759,7 @@ public class DefaultTurbineRunData
     public void setCharset(Charset charSet)
     {
         log.debug("setCharset({})", charSet);
-        this.charSet = charSet;
+        get(Turbine.class).put(Charset.class, charSet);
     }
 
     /**
@@ -943,19 +778,13 @@ public class DefaultTurbineRunData
     {
         if (StringUtils.isNotEmpty(contentType))
         {
-            if (charSet == null)
+            if (contentType.startsWith("text/"))
             {
-                if (contentType.startsWith("text/"))
-                {
-                    return contentType + "; charset=" + LocaleUtils.getDefaultCharset();
-                }
-
-                return contentType;
-            }
-            else
-            {
+                Charset charSet = getCharset();
                 return contentType + "; charset=" + charSet.name();
             }
+
+            return contentType;
         }
 
         return "";
@@ -1026,9 +855,7 @@ public class DefaultTurbineRunData
     @Override
     public SystemError[] getSystemErrors()
     {
-        SystemError[] result = new SystemError[errors.size()];
-        errors.toArray(result);
-        return result;
+        return errors.toArray(new SystemError[0]);
     }
 
     /**
@@ -1066,122 +893,6 @@ public class DefaultTurbineRunData
     public void setJNDIContexts(Map<String, Context> contexts)
     {
         this.jndiContexts = contexts;
-    }
-
-    /**
-     * Gets the cached server scheme.
-     *
-     * @return a string.
-     */
-    @Override
-    public String getServerScheme()
-    {
-        return getServerData().getServerScheme();
-    }
-
-    /**
-     * Gets the cached server name.
-     *
-     * @return a string.
-     */
-    @Override
-    public String getServerName()
-    {
-        return getServerData().getServerName();
-    }
-
-    /**
-     * Gets the cached server port.
-     *
-     * @return an int.
-     */
-    @Override
-    public int getServerPort()
-    {
-        return getServerData().getServerPort();
-    }
-
-    /**
-     * Gets the cached context path.
-     *
-     * @return a string.
-     */
-    @Override
-    public String getContextPath()
-    {
-        return getServerData().getContextPath();
-    }
-
-    /**
-     * Gets the cached script name.
-     *
-     * @return a string.
-     */
-    @Override
-    public String getScriptName()
-    {
-        return getServerData().getScriptName();
-    }
-
-    /**
-     * Gets the server data ofy the request.
-     *
-     * @return server data.
-     */
-    @Override
-    public ServerData getServerData()
-    {
-        return get(Turbine.class, ServerData.class);
-    }
-
-    /**
-     * Gets the IP address of the client that sent the request.
-     *
-     * @return a string.
-     */
-    @Override
-    public String getRemoteAddr()
-    {
-        if (this.remoteAddr == null)
-        {
-            this.remoteAddr = this.getRequest().getRemoteAddr();
-        }
-
-        return this.remoteAddr;
-    }
-
-    /**
-     * Gets the qualified name of the client that sent the request.
-     *
-     * @return a string.
-     */
-    @Override
-    public String getRemoteHost()
-    {
-        if (this.remoteHost == null)
-        {
-            this.remoteHost = this.getRequest().getRemoteHost();
-        }
-
-        return this.remoteHost;
-    }
-
-    /**
-     * Get the user agent for the request. The semantics here
-     * are muddled because RunData caches the value after the
-     * first invocation. This is different e.g. from getCharSet().
-     *
-     * @return a string.
-     */
-    @Override
-    public String getUserAgent()
-    {
-        if (StringUtils.isEmpty(userAgent))
-        {
-            userAgent = this.getRequest().getHeader("User-Agent");
-        }
-
-        return userAgent;
     }
 
     /**
@@ -1269,37 +980,6 @@ public class DefaultTurbineRunData
     public Map<String, Object> getDebugVariables()
     {
         return this.debugVariables;
-    }
-
-    // **********************************************
-    // Implementation of the TurbineRunData interface
-    // **********************************************
-
-    /**
-     * Gets the parameter parser without parsing the parameters.
-     *
-     * @return the parameter parser.
-     * TODO Does this method make sense? Pulling the parameter out of
-     *       the run data object before setting a request (which happens
-     *       only in getParameters() leads to the Parameter parser having
-     *       no object and thus the default or even an undefined encoding
-     *       instead of the actual request character encoding).
-     */
-    @Override
-    public ParameterParser getParameterParser()
-    {
-        return get(Turbine.class, ParameterParser.class);
-    }
-
-    /**
-     * Gets the cookie parser without parsing the cookies.
-     *
-     * @return the cookie parser.
-     */
-    @Override
-    public CookieParser getCookieParser()
-    {
-        return get(Turbine.class, CookieParser.class);
     }
 
     // ********************

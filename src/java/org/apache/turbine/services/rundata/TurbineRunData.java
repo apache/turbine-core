@@ -22,6 +22,7 @@ package org.apache.turbine.services.rundata;
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.pool.Recyclable;
+import org.apache.turbine.Turbine;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -50,12 +51,18 @@ public interface TurbineRunData
      *
      * @return the parameter parser.
      */
-    ParameterParser getParameterParser();
+    default ParameterParser getParameterParser()
+    {
+        return get(Turbine.class, ParameterParser.class);
+    }
 
     /**
      * Gets the cookie parser without parsing the cookies.
      *
      * @return the cookie parser.
      */
-    CookieParser getCookieParser();
+    default CookieParser getCookieParser()
+    {
+        return get(Turbine.class, CookieParser.class);
+   }
 }

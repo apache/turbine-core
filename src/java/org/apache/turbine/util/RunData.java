@@ -28,18 +28,20 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.naming.Context;
+
+import org.apache.fulcrum.parser.CookieParser;
+import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.fulcrum.security.acl.AccessControlList;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.util.template.TemplateInfo;
+
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import org.apache.fulcrum.parser.CookieParser;
-import org.apache.fulcrum.parser.ParameterParser;
-import org.apache.fulcrum.security.acl.AccessControlList;
-import org.apache.turbine.om.security.User;
-import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.template.TemplateInfo;
 
 /**
  * RunData is an interface to run-time information that is passed
@@ -76,35 +78,50 @@ public interface RunData extends PipelineData
      *
      * @return the request.
      */
-    HttpServletRequest getRequest();
+    default HttpServletRequest getRequest()
+    {
+        return get(Turbine.class, HttpServletRequest.class);
+    }
 
     /**
      * Gets the servlet response.
      *
      * @return the resposne.
      */
-    HttpServletResponse getResponse();
+    default HttpServletResponse getResponse()
+    {
+        return get(Turbine.class, HttpServletResponse.class);
+    }
 
     /**
      * Gets the servlet session information.
      *
      * @return the session.
      */
-    HttpSession getSession();
+    default HttpSession getSession()
+    {
+        return getRequest().getSession();
+    }
 
     /**
      * Gets the servlet configuration used during servlet init.
      *
      * @return the configuration.
      */
-    ServletConfig getServletConfig();
+    default ServletConfig getServletConfig()
+    {
+        return get(Turbine.class, ServletConfig.class);
+    }
 
     /**
      * Gets the servlet context used during servlet init.
      *
      * @return the context.
      */
-    ServletContext getServletContext();
+    default ServletContext getServletContext()
+    {
+        return get(Turbine.class, ServletContext.class);
+    }
 
     /**
      * Gets the access control list.
@@ -173,7 +190,10 @@ public interface RunData extends PipelineData
      *
      * @return a string.
      */
-    String getLayoutTemplate();
+    default String getLayoutTemplate()
+    {
+        return getTemplateInfo().getLayoutTemplate();
+    }
 
     /**
      * Modifies the layout template for the screen. This convenience
@@ -184,7 +204,10 @@ public interface RunData extends PipelineData
      *
      * @param layout a layout template.
      */
-    void setLayoutTemplate(String layout);
+    default void setLayoutTemplate(String layout)
+    {
+        getTemplateInfo().setLayoutTemplate(layout);
+    }
 
     /**
      * Whether or not a screen has been defined.
@@ -213,7 +236,10 @@ public interface RunData extends PipelineData
      *
      * @return a string.
      */
-    String getScreenTemplate();
+    default String getScreenTemplate()
+    {
+        return getTemplateInfo().getScreenTemplate();
+    }
 
     /**
      * Sets the screen template for the request. For
@@ -223,21 +249,46 @@ public interface RunData extends PipelineData
      *
      * @param screen a screen template.
      */
-    void setScreenTemplate(String screen);
+    default void setScreenTemplate(String screen)
+    {
+        getTemplateInfo().setScreenTemplate(screen);
+    }
 
     /**
      * Gets the character encoding to use for reading template files.
      *
      * @return the template encoding or null if not specified.
      */
-    String getTemplateEncoding();
+    Charset getTemplateCharset();
 
     /**
      * Sets the character encoding to use for reading template files.
      *
      * @param encoding the template encoding.
      */
-    void setTemplateEncoding(String encoding);
+    void setTemplateCharset(Charset encoding);
+
+    /**
+     * Gets the character encoding to use for reading template files.
+     *
+     * @return the template encoding or null if not specified.
+     */
+    @Deprecated
+    default String getTemplateEncoding()
+    {
+        return getTemplateCharset().name();
+    }
+
+    /**
+     * Sets the character encoding to use for reading template files.
+     *
+     * @param encoding the template encoding.
+     */
+    @Deprecated
+    default void setTemplateEncoding(String encoding)
+    {
+        setTemplateCharset(Charset.forName(encoding));
+    }
 
     /**
      * Gets the template info. Creates a new one if needed.
@@ -332,7 +383,11 @@ public interface RunData extends PipelineData
      *
      * @return a user.
      */
-    <T extends User> T getUser();
+    @SuppressWarnings("unchecked")
+    default <T extends User> T getUser()
+    {
+        return (T)get(Turbine.class, User.class);
+    }
 
     /**
      * Sets the user.
@@ -341,7 +396,10 @@ public interface RunData extends PipelineData
      *
      * @param <T> a type extending {@link User}
      */
-    <T extends User> void setUser(T user);
+    default <T extends User> void setUser(T user)
+    {
+        get(Turbine.class).put(User.class, user);
+    }
 
     /**
      * Attempts to get the user from the session. If it does
@@ -415,7 +473,10 @@ public interface RunData extends PipelineData
      * @return the name of the charset or null.
      */
     @Deprecated
-    String getCharSet();
+    default String getCharSet()
+    {
+        return getCharset().name();
+    }
 
     /**
      * Sets the charset.
@@ -423,7 +484,10 @@ public interface RunData extends PipelineData
      * @param charset the name of the new charset.
      */
     @Deprecated
-    void setCharSet(String charset);
+    default void setCharSet(String charset)
+    {
+        setCharset(Charset.forName(charset));
+    }
 
     /**
      * Gets the charset. If it has not already been defined with
@@ -526,63 +590,90 @@ public interface RunData extends PipelineData
      *
      * @return a string.
      */
-    String getServerScheme();
+    default String getServerScheme()
+    {
+        return getServerData().getServerScheme();
+    }
 
     /**
      * Gets the cached server name.
      *
      * @return a string.
      */
-    String getServerName();
+    default String getServerName()
+    {
+        return getServerData().getServerName();
+    }
 
     /**
      * Gets the cached server port.
      *
      * @return an int.
      */
-    int getServerPort();
+    default int getServerPort()
+    {
+        return getServerData().getServerPort();
+    }
 
     /**
      * Gets the cached context path.
      *
      * @return a string.
      */
-    String getContextPath();
+    default String getContextPath()
+    {
+        return getServerData().getContextPath();
+    }
 
     /**
      * Gets the cached script name.
      *
      * @return a string.
      */
-    String getScriptName();
+    default String getScriptName()
+    {
+        return getServerData().getScriptName();
+    }
 
     /**
      * Gets the server data used by the request.
      *
      * @return server data.
      */
-    ServerData getServerData();
+    default ServerData getServerData()
+    {
+        return get(Turbine.class, ServerData.class);
+    }
 
     /**
      * Gets the IP address of the client that sent the request.
      *
      * @return a string.
      */
-    String getRemoteAddr();
+    default String getRemoteAddr()
+    {
+        return getRequest().getRemoteAddr();
+    }
 
     /**
      * Gets the qualified name of the client that sent the request.
      *
      * @return a string.
      */
-    String getRemoteHost();
+    default String getRemoteHost()
+    {
+        return getRequest().getRemoteHost();
+    }
 
     /**
      * Get the user agent for the request.
      *
      * @return a string.
      */
-    String getUserAgent();
+    default String getUserAgent()
+    {
+        return getRequest().getHeader("User-Agent");
+    }
 
     /**
      * Pulls a user object from the session and increments the access
