@@ -27,7 +27,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.pull.ApplicationTool;
+import org.apache.turbine.services.pull.PipelineDataApplicationTool;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.uri.TemplateURI;
 
@@ -57,7 +57,7 @@ import org.apache.turbine.util.uri.TemplateURI;
  */
 
 public class TemplateLink
-    implements ApplicationTool
+    implements PipelineDataApplicationTool
 {
     /** Prefix for Parameters for this tool */
     public static final String TEMPLATE_LINK_PREFIX = "tool.link";
@@ -121,20 +121,10 @@ public class TemplateLink
      * @param data assumed to be a PipelineData object
      */
     @Override
-    public void init(Object data)
+    public void init(PipelineData data)
     {
-        // we just blithely cast to RunData as if another object
-        // or null is passed in we'll throw an appropriate runtime
-        // exception.
-        if (data instanceof PipelineData pipelineData)
-        {
-            RunData runData = pipelineData.getRunData();
-            templateURI = new TemplateURI(runData);
-        }
-        else
-        {
-            templateURI = new TemplateURI((RunData) data);
-        }
+        RunData runData = data.getRunData();
+        templateURI = new TemplateURI(runData);
 
         Configuration conf =
                 Turbine.getConfiguration().subset(TEMPLATE_LINK_PREFIX);

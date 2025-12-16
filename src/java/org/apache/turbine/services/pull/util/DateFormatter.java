@@ -36,7 +36,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
  * @version $Id$
  */
 public class DateFormatter
-        implements ApplicationTool
+        implements ApplicationTool<Object>
 {
     /** Default date format */
     private static final String DATE_FORMAT_DEFAULT = "MM/dd/yyyy";

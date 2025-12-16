@@ -1,6 +1,5 @@
 package org.apache.turbine.services.jsp;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,7 +19,6 @@ package org.apache.turbine.services.jsp;
  * under the License.
  */
 
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -32,7 +30,6 @@ import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.services.pull.tools.TemplateLink;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
 import org.apache.turbine.util.RunData;
@@ -107,7 +104,7 @@ public class TurbineJspService
         // in a regular Java Context. We have no Pull Service with the
         // Jsp Paging stuff, but we can run our Application Tool by Hand:
         //
-        ApplicationTool templateLink = new TemplateLink();
+        TemplateLink templateLink = new TemplateLink();
         templateLink.init(pipelineData);
 
         req.setAttribute(LINK, templateLink);

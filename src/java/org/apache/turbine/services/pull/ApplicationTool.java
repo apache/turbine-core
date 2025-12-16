@@ -25,9 +25,8 @@ package org.apache.turbine.services.pull;
  * Tools that go into the Toolbox should implement this interface.
  *
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
- * @version $Id$
  */
-public interface ApplicationTool
+public interface ApplicationTool<T>
 {
     /**
      * Initialize the application tool. The data parameter holds a different
@@ -50,7 +49,7 @@ public interface ApplicationTool
      *
      * @param data initialization data
      */
-    default void init(Object data) {}
+    default void init(T data) {}
 
     /**
      * Refresh the application tool. This is
@@ -60,6 +59,8 @@ public interface ApplicationTool
      * that is typically cached after initialization
      *
      * Default: do nothing
+     *
+     * @param data refresh data
      */
-    default void refresh() {}
+    default void refresh(T data) {}
 }

@@ -142,22 +142,12 @@ public class TurbinePullService
     private Context globalContext;
 
     /**
-     * This inner class is used in the lists below to store the
+     * This record is used in the lists below to store the
      * tool name and class for each of request, session and persistent
      * tools
      */
-    private static class ToolData
+    private record ToolData(String toolName, String toolClassName, Class<ApplicationTool<?>> toolClass)
     {
-        String toolName;
-        String toolClassName;
-        Class<ApplicationTool> toolClass;
-
-        public ToolData(String toolName, String toolClassName, Class<ApplicationTool> toolClass)
-        {
-            this.toolName = toolName;
-            this.toolClassName = toolClassName;
-            this.toolClass = toolClass;
-        }
     }
 
     /** Internal list of global tools */
@@ -332,7 +322,7 @@ public class TurbinePullService
             try
             {
                 // Create an instance of the tool class.
-                Class<ApplicationTool> toolClass = (Class<ApplicationTool>) Class.forName(toolClassName);
+                Class<ApplicationTool<?>> toolClass = (Class<ApplicationTool<?>>) Class.forName(toolClassName);
 
                 // Add the tool to the list being built.
                 tools.add(new ToolData(toolName, toolClassName, toolClass));
@@ -762,6 +752,7 @@ public class TurbinePullService
      *
      * @throws Exception If anything went wrong.
      */
+    @SuppressWarnings("unchecked")
     private void initTool(Object tool, Object param)
         throws Exception
     {
@@ -782,13 +773,9 @@ public class TurbinePullService
                 at.init(pd.getRunData());
             }
         }
-        else if (tool instanceof PipelineDataApplicationTool pdat)
-        {
-            pdat.init(param);
-        }
         else if (tool instanceof RunDataApplicationTool rdat)
         {
-            rdat.init(param);
+            rdat.init((RunData)param);
         }
         else if (tool instanceof ApplicationTool at)
         {
@@ -802,6 +789,7 @@ public class TurbinePullService
      * @param tool A Tool Object
      * @param dataObject The current RunData Object
      */
+    @SuppressWarnings("unchecked")
     private void refreshTool(Object tool, Object dataObject)
     {
         if (dataObject instanceof PipelineData pipelineData)
@@ -817,7 +805,7 @@ public class TurbinePullService
         }
         if (tool instanceof ApplicationTool at)
         {
-            at.refresh();
+            at.refresh(dataObject);
         }
     }
 }

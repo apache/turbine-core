@@ -34,8 +34,8 @@ import org.apache.fulcrum.pool.Recyclable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.turbine.annotation.TurbineService;
-import org.apache.turbine.services.pull.ApplicationTool;
-import org.apache.turbine.util.RunData;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.pull.PipelineDataApplicationTool;
 
 
 /**
@@ -49,7 +49,7 @@ import org.apache.turbine.util.RunData;
  * @version $Id: IntakeTool.java 1886259 2021-02-06 16:54:03Z tv $
  */
 public class IntakeTool
-        implements ApplicationTool, Recyclable
+        implements PipelineDataApplicationTool, Recyclable
 {
     /** Used for logging */
     protected static final Logger log = LogManager.getLogger(IntakeTool.class);
@@ -90,7 +90,7 @@ public class IntakeTool
      * Prepares intake for a single request
      */
     @Override
-    public void init(Object runData)
+    public void init(PipelineData pipelineData)
     {
         if (groups == null) // Initialize only once
         {
@@ -109,7 +109,7 @@ public class IntakeTool
             }
         }
 
-        this.pp = ((RunData) runData).getParameters();
+        this.pp = pipelineData.getRunData().getParameters();
 
         String[] groupKeys = pp.getStrings(INTAKE_GRP);
         String[] groupNames = null;

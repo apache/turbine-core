@@ -36,7 +36,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
  * @deprecated This class is probably not used anymore, it may have been intended for cacheable Torque OM or might be used with Fulcrum Security Torque.
  */
 @Deprecated
-public class OMTool implements ApplicationTool, Recyclable
+public class OMTool implements ApplicationTool<Object>, Recyclable
 {
     protected ConcurrentMap<String, Object> omMap;
 

@@ -62,7 +62,7 @@ import org.apache.turbine.util.ServerData;
  * @version $Id$
  * @see UIService
  */
-public class UITool implements ApplicationTool
+public class UITool implements ApplicationTool<Object>
 {
     /** Logging */
     private static final Logger log = LogManager.getLogger(UITool.class);
@@ -87,7 +87,7 @@ public class UITool implements ApplicationTool
      * Refresh the tool.
      */
     @Override
-    public void refresh()
+    public void refresh(Object data)
     {
         uiService.refresh(getSkin());
         log.debug("UITool refreshed for skin: {}", this::getSkin);

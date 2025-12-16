@@ -39,5 +39,5 @@ public @interface TurbineTool
      *
      * @return the class the tool is responsible for
      */
-    Class<? extends ApplicationTool> value();
+    Class<? extends ApplicationTool<?>> value();
 }

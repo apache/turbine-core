@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.pull.ApplicationTool;
 
 /**
@@ -36,7 +37,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class SessionData implements ApplicationTool
+public class SessionData implements ApplicationTool<User>
 {
     /** Storage of user defined data */
     private Map<String, Object> dataStorage;
@@ -47,7 +48,7 @@ public class SessionData implements ApplicationTool
      * @param data initialization data
      */
     @Override
-    public void init(Object data)
+    public void init(User data)
     {
         dataStorage = new HashMap<>();
     }

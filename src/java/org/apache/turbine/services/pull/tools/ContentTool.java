@@ -25,7 +25,7 @@ package org.apache.turbine.services.pull.tools;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.pull.ApplicationTool;
+import org.apache.turbine.services.pull.PipelineDataApplicationTool;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.uri.DataURI;
 
@@ -48,7 +48,7 @@ import org.apache.turbine.util.uri.DataURI;
  */
 
 public class ContentTool
-    implements ApplicationTool
+    implements PipelineDataApplicationTool
 {
     /** Prefix for Parameters for this tool */
     public static final String CONTENT_TOOL_PREFIX = "tool.content";
@@ -104,21 +104,10 @@ public class ContentTool
      * @param data assumed to be a PipelineData object
      */
     @Override
-    public void init(Object data)
+    public void init(PipelineData data)
     {
-        // we just blithely cast to RunData as if another object
-        // or null is passed in we'll throw an appropriate runtime
-        // exception.
-        if (data instanceof PipelineData pipelineData)
-        {
-            RunData runData = pipelineData.getRunData();
-            dataURI = new DataURI(runData);
-        }
-        else
-        {
-            dataURI = new DataURI((RunData) data);
-
-        }
+        RunData runData = data.getRunData();
+        dataURI = new DataURI(runData);
 
         Configuration conf =
                 Turbine.getConfiguration().subset(CONTENT_TOOL_PREFIX);

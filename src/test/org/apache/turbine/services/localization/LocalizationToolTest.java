@@ -96,7 +96,7 @@ public class LocalizationToolTest extends BaseTestCase
     public void testRefresh() throws Exception
     {
         assertNotNull(lt.getLocale());
-        lt.refresh();
+        lt.refresh(null);
         assertNull(lt.getLocale());
     }
 

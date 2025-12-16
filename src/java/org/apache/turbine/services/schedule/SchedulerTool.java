@@ -35,7 +35,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:qmccombs@nequalsone.com">Quinton McCombs</a>
  * @version $Id$
  */
-public class SchedulerTool implements ApplicationTool
+public class SchedulerTool implements ApplicationTool<Object>
 {
     /** Used for logging */
     private static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);

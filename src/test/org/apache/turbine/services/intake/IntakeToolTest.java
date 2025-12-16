@@ -22,13 +22,10 @@ package org.apache.turbine.services.intake;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.mock;
 
 import java.io.File;
-
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.fulcrum.intake.IntakeService;
 import org.apache.fulcrum.intake.model.Group;
@@ -43,6 +40,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Unit test for Intake Tool, wrapping the Fulcrum Intake service.
@@ -95,7 +96,7 @@ public class IntakeToolTest extends BaseTestCase
     public void testRefresh() throws Exception
     {
         int numberOfGroups = intakeTool.getGroups().size();
-        intakeTool.refresh();
+        intakeTool.refresh(null);
         assertEquals(numberOfGroups, intakeTool.getGroups().size());
     }
 
@@ -106,8 +107,8 @@ public class IntakeToolTest extends BaseTestCase
         HttpServletRequest request = getMockRequest();
         HttpServletResponse response = mock(HttpServletResponse.class);
         RunData runData = rds.getRunData(request, response, config);
-        assertEquals("Verify we are using Fulcrum parameter parser", DefaultParameterParser.class, runData.getParameters()
-            .getClass());
+        assertInstanceOf(DefaultParameterParser.class, runData.getParameters(),
+                "Verify we are using Fulcrum parameter parser");
         return runData;
     }
 

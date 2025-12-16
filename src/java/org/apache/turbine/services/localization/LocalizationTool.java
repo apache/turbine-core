@@ -26,7 +26,8 @@ import org.apache.fulcrum.localization.LocalizationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.turbine.annotation.TurbineService;
-import org.apache.turbine.services.pull.ApplicationTool;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.pull.PipelineDataApplicationTool;
 import org.apache.turbine.util.RunData;
 /**
  * A pull tool which provides lookups for localized text by delegating
@@ -36,7 +37,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @author <a href="mailto:jon@collab.net">Jon Stevens</a>
  */
-public class LocalizationTool implements ApplicationTool
+public class LocalizationTool implements PipelineDataApplicationTool
 {
     /** Logging */
     private static Logger log = LogManager.getLogger(LocalizationTool.class);
@@ -56,7 +57,7 @@ public class LocalizationTool implements ApplicationTool
      */
     public LocalizationTool()
     {
-        refresh();
+        refresh(null);
     }
 
     /**
@@ -131,23 +132,21 @@ public class LocalizationTool implements ApplicationTool
      * from (reset on each request).
      */
     @Override
-    public void init(Object data)
+    public void init(PipelineData data)
     {
-        if (data instanceof RunData rd)
-        {
-            // Pull necessary information out of RunData while we have
-            // a reference to it.
-            locale = (localizationService instanceof RundataLocalizationService r) ?
-                    r.getLocale(rd):
-                    localizationService.getLocale(rd.getRequest());
-        }
+        RunData runData = data.getRunData();
+        // Pull necessary information out of RunData while we have
+        // a reference to it.
+        locale = (localizationService instanceof RundataLocalizationService r) ?
+                r.getLocale(runData):
+                localizationService.getLocale(runData.getRequest());
     }
 
     /**
      * No-op.
      */
     @Override
-    public void refresh()
+    public void refresh(PipelineData data)
     {
         locale = null;
     }

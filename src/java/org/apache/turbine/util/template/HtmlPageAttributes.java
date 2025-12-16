@@ -101,7 +101,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
  * @version $Id$
  */
 public class HtmlPageAttributes
-        implements ApplicationTool
+        implements ApplicationTool<Object>
 {
     /** The title */
     private String title;

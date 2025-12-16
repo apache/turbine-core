@@ -23,11 +23,11 @@ package org.apache.turbine.services.session;
 
 import java.util.Collection;
 
-import jakarta.servlet.http.HttpSession;
-
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.pull.ApplicationTool;
+
+import jakarta.servlet.http.HttpSession;
 
 /**
  * A pull tool for accessing the SessionService from a velocity template.
@@ -36,7 +36,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
  * @version $Id$
  */
 public class SessionTool
-        implements ApplicationTool
+        implements ApplicationTool<Object>
 {
     /**
      * The session service.
