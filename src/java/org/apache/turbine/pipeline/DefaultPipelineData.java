@@ -3,6 +3,7 @@ package org.apache.turbine.pipeline;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
 
@@ -44,6 +45,15 @@ public class DefaultPipelineData implements PipelineData
 {
     private final Map<Class<?>, Map<Class<?>, ? super Object>> map =
         new HashMap<>();
+
+    /**
+     * Default constructor
+     */
+    public DefaultPipelineData()
+    {
+        // a map to hold information to be added to pipelineData
+        put(Turbine.class, new HashMap<>());
+    }
 
     /**
      * Put a configured map of objects into the pipeline data object

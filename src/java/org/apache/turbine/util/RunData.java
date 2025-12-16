@@ -295,7 +295,11 @@ public interface RunData extends PipelineData
      *
      * @return a template info.
      */
-    TemplateInfo getTemplateInfo();
+    default TemplateInfo getTemplateInfo()
+    {
+        return computeIfAbsent(Turbine.class, TemplateInfo.class,
+                k -> new TemplateInfo(this));
+    }
 
     /**
      * Whether or not a message has been defined.
@@ -346,14 +350,20 @@ public interface RunData extends PipelineData
      *
      * @return a FormMessages.
      */
-    FormMessages getMessages();
+    default FormMessages getMessages()
+    {
+        return computeIfAbsent(Turbine.class, FormMessages.class, k -> new FormMessages());
+    }
 
     /**
      * Sets the FormMessages object for the request.
      *
      * @param msgs A FormMessages.
      */
-    void setMessages(FormMessages msgs);
+    default void setMessages(FormMessages msgs)
+    {
+        get(Turbine.class).put(FormMessages.class, msgs);
+    }
 
     /**
      * Gets the title of the page.

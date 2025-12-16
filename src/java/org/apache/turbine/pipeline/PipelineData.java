@@ -1,6 +1,7 @@
 package org.apache.turbine.pipeline;
 
 import java.util.Map;
+import java.util.function.Function;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineRuntimeException;
@@ -68,6 +69,24 @@ public interface PipelineData extends AutoCloseable
      * @return the inner value or null if no such keys exist
      */
     <T> T get(Class<?> key, Class<T> innerKey);
+
+    /**
+     * Get a value from the configured map of objects for the given keys
+     *
+     * @param key the key class
+     * @param innerKey the key into the value map
+     * @return the inner value or null if no such keys exist
+     */
+    @SuppressWarnings("unchecked")
+    default <T> T computeIfAbsent(Class<?> key, Class<T> innerKey, Function<? super Class<?>, T> mappingFunction)
+    {
+        Map<Class<?>, ? super Object> innerMap = get(key);
+        if (innerMap == null)
+        {
+            return null;
+        }
+        return (T) innerMap.computeIfAbsent(innerKey, mappingFunction);
+    }
 
     /**
      * Get RunData from PipelineData

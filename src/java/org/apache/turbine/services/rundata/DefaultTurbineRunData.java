@@ -43,10 +43,8 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.DefaultPipelineData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.util.FormMessages;
 import org.apache.turbine.util.LocaleUtils;
 import org.apache.turbine.util.SystemError;
-import org.apache.turbine.util.template.TemplateInfo;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -82,7 +80,7 @@ public class DefaultTurbineRunData
     /**
      * The disposed flag.
      */
-    private boolean disposed;
+    private boolean disposed = false;
 
     /** Cached action name to execute for this request. */
     private String action;
@@ -179,18 +177,6 @@ public class DefaultTurbineRunData
             return false;
         }
         return true;
-    }
-
-    /**
-     * Constructs a run data object.
-     */
-    public DefaultTurbineRunData()
-    {
-        super();
-
-        // a map to hold information to be added to pipelineData
-        put(Turbine.class, new HashMap<>());
-        recycle();
     }
 
     /**
@@ -436,25 +422,6 @@ public class DefaultTurbineRunData
     }
 
     /**
-     * Gets the template info. Creates a new one if needed.
-     *
-     * @return a template info.
-     */
-    @Override
-    public TemplateInfo getTemplateInfo()
-    {
-        TemplateInfo templateInfo = get(Turbine.class, TemplateInfo.class);
-
-        if (templateInfo == null)
-        {
-            templateInfo = new TemplateInfo(this);
-            get(Turbine.class).put(TemplateInfo.class, templateInfo);
-        }
-
-        return templateInfo;
-    }
-
-    /**
      * Whether or not a message has been defined.
      *
      * @return true if a message has been defined.
@@ -530,36 +497,6 @@ public class DefaultTurbineRunData
     public void unsetMessage()
     {
         get(Turbine.class).remove(StringBuilder.class);
-    }
-
-    /**
-     * Gets a FormMessages object where all the messages to the
-     * user should be stored.
-     *
-     * @return a FormMessages.
-     */
-    @Override
-    public FormMessages getMessages()
-    {
-        FormMessages messages = get(Turbine.class, FormMessages.class);
-        if (messages == null)
-        {
-            messages = new FormMessages();
-            setMessages(messages);
-        }
-
-        return messages;
-    }
-
-    /**
-     * Sets the FormMessages object for the request.
-     *
-     * @param msgs A FormMessages.
-     */
-    @Override
-    public void setMessages(FormMessages msgs)
-    {
-        get(Turbine.class).put(FormMessages.class, msgs);
     }
 
     /**
@@ -692,13 +629,7 @@ public class DefaultTurbineRunData
     @Override
     public Locale getLocale()
     {
-        Locale locale = get(Turbine.class, Locale.class);
-        if (locale == null)
-        {
-            locale = LocaleUtils.getDefaultLocale();
-            setLocale(locale);
-        }
-        return locale;
+        return computeIfAbsent(Turbine.class, Locale.class, k -> LocaleUtils.getDefaultLocale());
     }
 
     /**
@@ -738,16 +669,7 @@ public class DefaultTurbineRunData
     @Override
     public Charset getCharset()
     {
-        Charset charSet = get(Turbine.class, Charset.class);
-
-        if (charSet == null)
-        {
-            log.debug("Charset was null!");
-            charSet =  LocaleUtils.getDefaultCharset();
-            setCharset(charSet);
-        }
-
-        return charSet;
+        return computeIfAbsent(Turbine.class, Charset.class, k -> LocaleUtils.getDefaultCharset());
     }
 
     /**
