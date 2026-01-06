@@ -51,6 +51,24 @@ public interface PipelineData extends AutoCloseable
     void put(Class<?> name, Map<Class<?>, ? super Object> value);
 
     /**
+     * Convenience method:
+     * Put a value into the pipeline data object
+     *
+     * @param name the key class
+     * @param innerKey the key into the value map
+     * @param value the value
+     */
+    default <T> void put(Class<?> name, Class<T> innerKey, T value)
+    {
+        Map<Class<?>, ? super Object> innerMap = get(name);
+        if (innerMap == null)
+        {
+            throw new TurbineRuntimeException("Inner map does not exist: " + name);
+        }
+        innerMap.put(innerKey, value);
+    }
+
+    /**
      * Get the configured map of objects for the given key
      *
      * @param name the key class
@@ -59,6 +77,7 @@ public interface PipelineData extends AutoCloseable
     Map<Class<?>, ? super Object> get(Class<?> name);
 
     /**
+     * Convenience method:
      * Get a value from the configured map of objects for the given keys
      *
      * @param key the key class
@@ -68,14 +87,26 @@ public interface PipelineData extends AutoCloseable
      *
      * @return the inner value or null if no such keys exist
      */
-    <T> T get(Class<?> key, Class<T> innerKey);
+    @SuppressWarnings("unchecked")
+    default <T> T get(Class<?> key, Class<T> innerKey)
+    {
+        Map<Class<?>, ? super Object> innerMap = get(key);
+        if (innerMap == null)
+        {
+            return null;
+        }
+        return (T) innerMap.get(innerKey);
+    }
 
     /**
-     * Get a value from the configured map of objects for the given keys
+     * Convenience method:
+     * Get a value from the configured map of objects for the given keys,
+     * compute it if it does not exist
      *
      * @param key the key class
      * @param innerKey the key into the value map
-     * @return the inner value or null if no such keys exist
+     * @param mappingFunction the mapping function to calculate the absent value
+     * @return the inner value or null if no inner map exists
      */
     @SuppressWarnings("unchecked")
     default <T> T computeIfAbsent(Class<?> key, Class<T> innerKey, Function<? super Class<?>, T> mappingFunction)
@@ -89,6 +120,7 @@ public interface PipelineData extends AutoCloseable
     }
 
     /**
+     * Convenience method:
      * Get RunData from PipelineData
      *
      * @return RunData extracted from PipelineData

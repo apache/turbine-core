@@ -362,7 +362,7 @@ public interface RunData extends PipelineData
      */
     default void setMessages(FormMessages msgs)
     {
-        get(Turbine.class).put(FormMessages.class, msgs);
+        put(Turbine.class, FormMessages.class, msgs);
     }
 
     /**
@@ -408,7 +408,7 @@ public interface RunData extends PipelineData
      */
     default <T extends User> void setUser(T user)
     {
-        get(Turbine.class).put(User.class, user);
+        put(Turbine.class, User.class, user);
     }
 
     /**

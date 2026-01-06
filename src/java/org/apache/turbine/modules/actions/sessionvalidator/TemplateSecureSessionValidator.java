@@ -144,6 +144,6 @@ public class TemplateSecureSessionValidator
         }
 
         // Comply with Turbine 4.0 standards
-        pipelineData.get(Turbine.class).put(User.class, data.getUser());
+        pipelineData.put(Turbine.class, User.class, data.getUser());
     }
 }

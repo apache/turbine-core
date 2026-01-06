@@ -454,7 +454,7 @@ public class DefaultTurbineRunData
     @Override
     public void setMessage(String msg)
     {
-        get(Turbine.class).put(StringBuilder.class, new StringBuilder(msg));
+        put(Turbine.class, StringBuilder.class, new StringBuilder(msg));
     }
 
     /**
@@ -532,7 +532,7 @@ public class DefaultTurbineRunData
         User user = getUserFromSession();
 
         // TODO: Check if this side effect is reasonable
-        get(Turbine.class).put(User.class, user);
+        put(Turbine.class, User.class, user);
 
         return (user != null);
     }
@@ -546,7 +546,7 @@ public class DefaultTurbineRunData
     public void setUser(User user)
     {
         log.debug("user set: {}", user::getName);
-        get(Turbine.class).put(User.class, user);
+        put(Turbine.class, User.class, user);
     }
 
     /**
@@ -640,7 +640,7 @@ public class DefaultTurbineRunData
     @Override
     public void setLocale(Locale locale)
     {
-        get(Turbine.class).put(Locale.class, locale);
+        put(Turbine.class, Locale.class, locale);
 
         // propagate the locale to the parsers
         ParameterParser parameters = getParameterParser();
@@ -681,7 +681,7 @@ public class DefaultTurbineRunData
     public void setCharset(Charset charSet)
     {
         log.debug("setCharset({})", charSet);
-        get(Turbine.class).put(Charset.class, charSet);
+        put(Turbine.class, Charset.class, charSet);
     }
 
     /**
@@ -825,7 +825,7 @@ public class DefaultTurbineRunData
     public void populate()
     {
         User user = getUserFromSession();
-        get(Turbine.class).put(User.class, user);
+        put(Turbine.class, User.class, user);
 
         if (user != null)
         {

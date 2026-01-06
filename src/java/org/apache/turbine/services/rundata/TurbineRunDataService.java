@@ -244,11 +244,11 @@ public class TurbineRunDataService
             data = (TurbineRunData) pool.getInstance(runDataClazz);
             @SuppressWarnings("unchecked") // ok
             ParameterParser pp = parserService.getParser((Class<ParameterParser>)parameterParserClazz);
-            data.get(Turbine.class).put(ParameterParser.class, pp);
+            data.put(Turbine.class, ParameterParser.class, pp);
 
             @SuppressWarnings("unchecked") // ok
             CookieParser cp = parserService.getParser((Class<CookieParser>)cookieParserClazz);
-            data.get(Turbine.class).put(CookieParser.class, cp);
+            data.put(Turbine.class, CookieParser.class, cp);
 
             Locale locale = req.getLocale();
 
@@ -271,15 +271,15 @@ public class TurbineRunDataService
         }
 
         // Set the request and response.
-        data.get(Turbine.class).put(HttpServletRequest.class, req);
-        data.get(Turbine.class).put(HttpServletResponse.class, res);
+        data.put(Turbine.class, HttpServletRequest.class, req);
+        data.put(Turbine.class, HttpServletResponse.class, res);
 
         // Set the servlet configuration.
-        data.get(Turbine.class).put(ServletConfig.class, config);
-        data.get(Turbine.class).put(ServletContext.class, config.getServletContext());
+        data.put(Turbine.class, ServletConfig.class, config);
+        data.put(Turbine.class, ServletContext.class, config.getServletContext());
 
         // Set the ServerData.
-        data.get(Turbine.class).put(ServerData.class, new ServerData(req));
+        data.put(Turbine.class, ServerData.class, new ServerData(req));
 
         return data;
     }

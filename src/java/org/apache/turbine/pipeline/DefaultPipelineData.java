@@ -80,25 +80,6 @@ public class DefaultPipelineData implements PipelineData
     }
 
     /**
-     * Get a value from the configured map of objects for the given keys
-     *
-     * @param key the key class
-     * @param innerKey the key into the value map
-     * @return the inner value or null if no such keys exist
-     */
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> T get(Class<?> key, Class<T> innerKey)
-    {
-        Map<Class<?>, ? super Object> innerMap = get(key);
-        if (innerMap == null)
-        {
-            return null;
-        }
-        return (T) innerMap.get(innerKey);
-    }
-
-    /**
      * Put object back into RunDataService for recycling
      */
     @Override

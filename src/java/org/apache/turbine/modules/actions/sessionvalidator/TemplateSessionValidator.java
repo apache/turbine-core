@@ -20,8 +20,8 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  */
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
@@ -96,6 +96,6 @@ public class TemplateSessionValidator
         }
 
         // Comply with Turbine 4.0 standards
-        pipelineData.get(Turbine.class).put(User.class, data.getUser());
+        pipelineData.put(Turbine.class, User.class, data.getUser());
     }
 }

@@ -114,6 +114,6 @@ public class AccessController implements Action
         }
 
         // Comply with Turbine 4.0 standards
-        pipelineData.get(Turbine.class).put(TurbineAccessControlList.class, data.getACL());
+        pipelineData.put(Turbine.class, TurbineAccessControlList.class, data.getACL());
     }
 }

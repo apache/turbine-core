@@ -88,8 +88,7 @@ public interface Screen extends Assembler
      */
     default String getLayout(PipelineData pipelineData)
     {
-        RunData data = pipelineData.getRunData();
-        return data.getLayout();
+        return pipelineData.getRunData().getLayout();
     }
 
     /**
@@ -100,7 +99,6 @@ public interface Screen extends Assembler
      */
     default void setLayout(PipelineData pipelineData, String layout)
     {
-        RunData data = pipelineData.getRunData();
-        data.setLayout(layout);
+        pipelineData.getRunData().setLayout(layout);
     }
 }
