@@ -22,7 +22,6 @@ package org.apache.turbine.modules;
 
 
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.RunData;
 
 /**
  * This is the interface which defines the Screen modules.
