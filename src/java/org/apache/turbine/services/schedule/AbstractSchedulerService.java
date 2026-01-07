@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.turbine.modules.ScheduledJobLoader;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.TurbineException;
@@ -343,7 +344,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
                     taskName = je.getTask();
 
                     // Get a thread to run the job.
-                    threadPool.execute(new WorkerThread(je));
+                    threadPool.execute(() -> runJob(je));
                 }
                 else
                 {
@@ -360,5 +361,52 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
         {
             clearThread();
         }
+    }
+
+    /**
+     * Run the job.
+     *
+     * @param je the job descriptor
+     */
+    private void runJob(JobEntry je)
+    {
+        if (je == null || je.isActive())
+        {
+            return;
+        }
+
+        try
+        {
+            if (!je.isActive())
+            {
+                je.setActive(true);
+                logStateChange(je, "started");
+                ScheduledJobLoader.getInstance().exec(je, je.getTask());
+            }
+        }
+        catch (Exception e)
+        {
+            log.error("Error in WorkerThread for scheduled job #{}, task: {}",
+                    Integer.valueOf(je.getJobId()), je.getTask(), e);
+        }
+        finally
+        {
+            if (je.isActive())
+            {
+                je.setActive(false);
+                logStateChange(je, "completed");
+            }
+        }
+    }
+
+    /**
+     * Macro to log <code>JobEntry</code> status information.
+     *
+     * @param state The new state of the <code>JobEntry</code>.
+     */
+    private final void logStateChange(JobEntry je, String state)
+    {
+        log.error("Scheduled job #{} {}, task: {}",
+                Integer.valueOf(je.getJobId()), state, je.getTask());
     }
 }
