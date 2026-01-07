@@ -483,11 +483,11 @@
 
   <scm>
     <connection>scm:git:https://gitbox.apache.org/repos/asf/turbine-core.git</connection>
-    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/turbine-core.git</developerConnection>    
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/turbine-core.git</developerConnection>
     <url>https://github.com/apache/${turbine.site.path}/tree/${project.scm.tag}</url>
     <tag>turbine-7.0-candidate</tag>
   </scm>
-  
+
   <build>
     <sourceDirectory>src/java</sourceDirectory>
     <testSourceDirectory>src/test</testSourceDirectory>
@@ -501,13 +501,14 @@
         </includes>
       </resource>
       <resource>
-          <directory>${basedir}/src/main/resources</directory>
-          <!-- remove filtering to allow for non utf-8, if required; e.g. the case of i10n and non ascii chars - otherwise use html entities or \u notation. java.util.Properties files are in latin-1.  -->
-          <filtering>true</filtering>
-          <includes>
-              <include>**/*.properties</include>
-              <include>**/*.xml</include>
-          </includes>
+        <directory>${basedir}/src/main/resources</directory>
+        <!-- remove filtering to allow for non utf-8, if required; e.g. the case of i10n and non ascii chars - otherwise use html entities 
+          or \u notation. java.util.Properties files are in latin-1. -->
+        <filtering>true</filtering>
+        <includes>
+          <include>**/*.properties</include>
+          <include>**/*.xml</include>
+        </includes>
       </resource>
     </resources>
 
@@ -520,62 +521,62 @@
         </includes>
       </testResource>
     </testResources>
-    
-     <pluginManagement>
+
+    <pluginManagement>
       <plugins>
-       <plugin>
-        <groupId>org.apache.torque</groupId>
-        <artifactId>torque-maven-plugin</artifactId>
-        <version>${torque.version}</version>
+        <plugin>
+          <groupId>org.apache.torque</groupId>
+          <artifactId>torque-maven-plugin</artifactId>
+          <version>${torque.version}</version>
         </plugin>
         <plugin>
-            <groupId>org.apache.rat</groupId>
-            <artifactId>apache-rat-plugin</artifactId>
-            <version>${turbine.rat.version}</version>
-            <configuration>
-                <excludes>
-                  <exclude>xdocs/images/*</exclude>
-                  <exclude>src/site/**</exclude>
-                  <exclude>proposals/**</exclude>
-                  <exclude>extensions/**</exclude>
-                  <exclude>conf/**</exclude>
-                  <exclude>README.md</exclude>
-                </excludes>
-              </configuration>
-          </plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <version>${turbine.rat.version}</version>
+          <configuration>
+            <excludes>
+              <exclude>xdocs/images/*</exclude>
+              <exclude>src/site/**</exclude>
+              <exclude>proposals/**</exclude>
+              <exclude>extensions/**</exclude>
+              <exclude>conf/**</exclude>
+              <exclude>README.md</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
 
     <plugins>
 
-     <plugin>
-       <!-- hint: mvn verify or skip with -Ddependency.check.skip=true  -->
+      <plugin>
+        <!-- hint: mvn verify or skip with -Ddependency.check.skip=true -->
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
         <configuration>
-           <!-- suppress false positive -->
-           <suppressionFiles>
+          <!-- suppress false positive -->
+          <suppressionFiles>
             <suppressionFile>${project.basedir}/suppression-owasp-fp.xml</suppressionFile>
-            </suppressionFiles>
-           <!-- no .NET code inside turbine -->
-           <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-           <skip>${dependency.check.skip}</skip>
+          </suppressionFiles>
+          <!-- no .NET code inside turbine -->
+          <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+          <skip>${dependency.check.skip}</skip>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <executions>
-                <execution>
-                   <id>default-test</id>
-                    <configuration>
-                      <!--default setting is forkCount=1/reuseForks=true -->
-                      <reuseForks>false</reuseForks>
-                      <forkCount>1</forkCount>
-                      <excludedGroups>performance,docker,yaml</excludedGroups>
-                    </configuration>
-             </execution>
-         </executions>
+          <execution>
+            <id>default-test</id>
+            <configuration>
+              <!--default setting is forkCount=1/reuseForks=true -->
+              <reuseForks>false</reuseForks>
+              <forkCount>1</forkCount>
+              <excludedGroups>performance,docker,yaml</excludedGroups>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.torque</groupId>
@@ -830,11 +831,11 @@
           </execution>
         </executions>
         <dependencies>
-            <dependency>
-                <groupId>org.apache.torque</groupId>
-                <artifactId>torque-templates</artifactId>
-                <version>${torque.version}</version>
-            </dependency>
+          <dependency>
+            <groupId>org.apache.torque</groupId>
+            <artifactId>torque-templates</artifactId>
+            <version>${torque.version}</version>
+          </dependency>
         </dependencies>
       </plugin>
     </plugins>
@@ -848,7 +849,7 @@
         <configuration>
           <linkJavadoc>true</linkJavadoc>
         </configuration>
-        <!-- no usable for aggregate, but we are aggregate = false implicitely  -->
+        <!-- no usable for aggregate, but we are aggregate = false implicitely -->
         <reportSets>
           <reportSet>
             <reports>
@@ -880,26 +881,26 @@
   </reporting>
 
   <dependencies>
-	<dependency>
-        <groupId>jakarta.servlet</groupId>
-        <artifactId>jakarta.servlet-api</artifactId>
-        <version>6.1.0</version>
-        <scope>provided</scope>
-     </dependency>
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.1.0</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.apache.avalon.framework</groupId>
       <artifactId>avalon-framework-api</artifactId>
       <version>4.3.1</version>
     </dependency>
     <dependency>
-    	<groupId>commons-codec</groupId>
-    	<artifactId>commons-codec</artifactId>
-      <version>1.15</version>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.20.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-configuration2</artifactId>
-      <version>2.11.0</version>
+      <version>2.13.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -909,12 +910,12 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.18.0</version>
+      <version>3.20.0</version>
     </dependency>
     <dependency>
-       <groupId>org.apache.commons</groupId>
-       <artifactId>commons-text</artifactId>
-       <version>1.12.0</version>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.15.0</version>
     </dependency>
     <dependency>
       <groupId>commons-beanutils</groupId>
@@ -931,7 +932,7 @@
       <groupId>nl.basjes.parse.useragent</groupId>
       <artifactId>yauaa</artifactId>
       <!-- java 11 required for v6.1+ -->
-      <version>7.26.1</version>
+      <version>7.32.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
@@ -961,9 +962,9 @@
     </dependency>
     <!-- overrid dep from torque-runtime -->
     <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-pool2</artifactId>
-        <version>2.12.0</version>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-pool2</artifactId>
+      <version>2.13.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
@@ -996,16 +997,16 @@
       <version>${torque.version}</version>
       <exclusions>
         <exclusion>
-            <groupId>avalon-framework</groupId>
-            <artifactId>avalon-framework-api</artifactId>
+          <groupId>avalon-framework</groupId>
+          <artifactId>avalon-framework-api</artifactId>
         </exclusion>
         <exclusion>
-            <groupId>avalon-logkit</groupId>
-            <artifactId>avalon-logkit</artifactId>
+          <groupId>avalon-logkit</groupId>
+          <artifactId>avalon-logkit</artifactId>
         </exclusion>
-         <exclusion><!-- already provided -->
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-1.2-api</artifactId>
+        <exclusion><!-- already provided -->
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-1.2-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -1028,38 +1029,38 @@
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
-    <!--  owasp warning resolved in v1.1.2, which references quartz-2.3.0.jar, fixing CVE-2019-13990, https://github.com/quartz-scheduler/quartz/issues/467 -->
+    <!-- owasp warning resolved in v1.1.2, which references quartz-2.3.0.jar, fixing CVE-2019-13990, https://github.com/quartz-scheduler/quartz/issues/467 -->
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-quartz</artifactId>
       <version>${fulcrum.quartz}</version>
     </dependency>
-    <!-- suppress owasp CVE-2018-11771, CVE-2018-1324 .. as jython-standalone is optional.
-     https://github.com/jython/jython/issues/137, https://github.com/jython/jython/issues/138 -->
+    <!-- suppress owasp CVE-2018-11771, CVE-2018-1324 .. as jython-standalone is optional. https://github.com/jython/jython/issues/137, 
+      https://github.com/jython/jython/issues/138 -->
     <dependency>
       <groupId>org.python</groupId>
       <artifactId>jython-standalone</artifactId>
-      <version>2.7.3</version>
+      <version>2.7.4</version>
       <optional>true</optional>
     </dependency>
-    <!-- jabsorb and json dependencies required for turbien service json rpc  to work-->
+    <!-- jabsorb and json dependencies required for turbien service json rpc to work -->
     <dependency>
       <groupId>org.jabsorb</groupId>
       <artifactId>jabsorb</artifactId>
       <version>2.0.0</version>
-      <optional>true</optional> 
+      <optional>true</optional>
     </dependency>
     <dependency>
-        <groupId>org.json</groupId>
-        <artifactId>json</artifactId>
-        <version>20240303</version>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20251224</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-jcl</artifactId>
       <version>${turbine.log4j2.version}</version>
     </dependency>
-    <!-- java testcontainers uses slf4j-api, need for log4j-slf4j-impl mapping-->
+    <!-- java testcontainers uses slf4j-api, need for log4j-slf4j-impl mapping -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
@@ -1067,9 +1068,9 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>2.0.11</version>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>2.0.13</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -1077,46 +1078,46 @@
       <version>${turbine.log4j2.version}</version>
     </dependency>
     <dependency>
-       <groupId>org.apache.logging.log4j</groupId>
-       <artifactId>log4j-core</artifactId>
-       <version>${turbine.log4j2.version}</version>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${turbine.log4j2.version}</version>
     </dependency>
-    <!-- support of log4j-web (autodetect of log4j2 in WEB-INF folder) 
-         may allow to remove explicit log4j2 loading/configuration except for tests -->      
+    <!-- support of log4j-web (autodetect of log4j2 in WEB-INF folder) may allow to remove explicit log4j2 loading/configuration except 
+      for tests -->
     <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-jakarta-web</artifactId>
-        <version>${turbine.log4j2.version}</version>
-     </dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-jakarta-web</artifactId>
+      <version>${turbine.log4j2.version}</version>
+    </dependency>
     <!-- optional log4j1.2 bridge instead of log4j -->
     <dependency>
-       <groupId>org.apache.logging.log4j</groupId>
-       <artifactId>log4j-1.2-api</artifactId>
-       <version>${turbine.log4j2.version}</version>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-1.2-api</artifactId>
+      <version>${turbine.log4j2.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.velocity</groupId>
       <artifactId>velocity-engine-core</artifactId>
-      <version>2.3</version>
+      <version>2.4.1</version>
     </dependency>
     <!-- with the url mapper we need xml support -->
- 	<dependency>
-        <groupId>jakarta.xml.bind</groupId>
-        <artifactId>jakarta.xml.bind-api</artifactId>
-        <version>4.0.1</version>
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>4.0.4</version>
     </dependency>
     <dependency>
-         <groupId>org.glassfish.jaxb</groupId>
-          <artifactId>jaxb-runtime</artifactId>
-           <version>4.0.4</version>
-     </dependency>
+      <groupId>org.glassfish.jaxb</groupId>
+      <artifactId>jaxb-runtime</artifactId>
+      <version>4.0.6</version>
+    </dependency>
     <!-- testcontainer minimal shared resources -->
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-testcontainer</artifactId>
       <version>${fulcrum.testcontainer}</version>
       <scope>test</scope>
-    </dependency> 
+    </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers</artifactId>
@@ -1131,12 +1132,12 @@
       <scope>test</scope>
       <optional>true</optional>
     </dependency>
-     <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.13.2</version>
-        <scope>test</scope>
-      </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <profiles>
@@ -1145,17 +1146,17 @@
       <build>
         <plugins>
           <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-site-plugin</artifactId>
-              <executions>
-                <execution>
-                  <id>turbine-release-site</id>
-                  <phase>prepare-package</phase>
-                  <goals>
-                    <goal>site</goal>
-                  </goals>
-                </execution>
-              </executions>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>turbine-release-site</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>site</goal>
+                </goals>
+              </execution>
+            </executions>
           </plugin>
           <plugin>
             <groupId>org.apache.rat</groupId>
@@ -1211,10 +1212,10 @@
     <profile>
       <id>docker-testcontainer</id>
       <activation>
-      <activeByDefault>false</activeByDefault>
-    </activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
       <build>
-         <testResources>
+        <testResources>
           <testResource>
             <directory>conf/docker-resources</directory>
             <includes>
@@ -1224,129 +1225,121 @@
           </testResource>
         </testResources>
         <plugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-surefire-plugin</artifactId> 
-              <executions>
-                <execution>
-                   <id>default-test</id>
-                  <configuration>
-                    <groups>docker</groups>
-                    <excludedGroups>performance,yaml</excludedGroups>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${turbine.surefire.version}</version>
-            </plugin>
-          </plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>default-test</id>
+                <configuration>
+                  <groups>docker</groups>
+                  <excludedGroups>performance,yaml</excludedGroups>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>${turbine.surefire.version}</version>
+          </plugin>
+        </plugins>
       </build>
       <dependencies>
-        <!-- docker testcontainer requires at least torque v5.0, start it like
-        inside IDE (add dependencies):
-        mvn eclipse:eclipse -Pdocker-testcontainer
-
-        from console:
-        mvn test -Pdocker-testcontainer
-
-        -->
+        <!-- docker testcontainer requires at least torque v5.0, start it like inside IDE (add dependencies): mvn eclipse:eclipse -Pdocker-testcontainer 
+          from console: mvn test -Pdocker-testcontainer -->
         <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers</artifactId>
-            <version>${docker.testcontainers.version}</version>
-            <scope>test</scope>
-          </dependency>
-          <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${docker.testcontainers.version}</version>
-            <scope>test</scope>
-          </dependency>
-          <dependency>
-              <groupId>org.testcontainers</groupId>
-              <artifactId>mysql</artifactId>
-              <version>${docker.testcontainers.version}</version>
-              <scope>test</scope>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.fulcrum</groupId>
-            <artifactId>fulcrum-security-torque</artifactId>
-            <version>${fulcrum.security}</version>
-            <exclusions>
-              <exclusion><!-- will we mapped in jcl-over-slf4j -->
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-              </exclusion>
-            </exclusions>
-          </dependency>
-          <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <version>8.3.0</version>
-          </dependency>
+          <groupId>org.testcontainers</groupId>
+          <artifactId>testcontainers</artifactId>
+          <version>${docker.testcontainers.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.testcontainers</groupId>
+          <artifactId>junit-jupiter</artifactId>
+          <version>${docker.testcontainers.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.testcontainers</groupId>
+          <artifactId>mysql</artifactId>
+          <version>${docker.testcontainers.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.fulcrum</groupId>
+          <artifactId>fulcrum-security-torque</artifactId>
+          <version>${fulcrum.security}</version>
+          <exclusions>
+            <exclusion><!-- will we mapped in jcl-over-slf4j -->
+              <groupId>commons-logging</groupId>
+              <artifactId>commons-logging</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+          <groupId>com.mysql</groupId>
+          <artifactId>mysql-connector-j</artifactId>
+          <version>8.3.0</version>
+        </dependency>
       </dependencies>
     </profile>
     <profile>
-        <id>yaml</id>
+      <id>yaml</id>
       <activation>
         <activeByDefault>false</activeByDefault>
       </activation>
       <!-- mvn test -Dtest=TurbineURLMapperYAMLServiceTest -Pyaml -->
       <build>
-      <plugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-surefire-plugin</artifactId>
-              <executions>
-                <execution>
-                   <id>default-test</id>
-                  <configuration><!-- to override excludedGroups set something else (bug?)-->
-                    <groups>yaml</groups>
-                     <excludedGroups>docker,performance</excludedGroups>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin>
-          </plugins>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>default-test</id>
+                <configuration><!-- to override excludedGroups set something else (bug?) -->
+                  <groups>yaml</groups>
+                  <excludedGroups>docker,performance</excludedGroups>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
       </build>
       <dependencies>
-           <dependency>
-               <groupId>com.fasterxml.jackson.dataformat</groupId>
-               <artifactId>jackson-dataformat-yaml</artifactId>
-               <version>${jackson2.version}</version>
-           </dependency>
-       </dependencies>
+        <dependency>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-yaml</artifactId>
+          <version>${jackson2.version}</version>
+        </dependency>
+      </dependencies>
     </profile>
     <profile>
-    <!-- allow reproducible / verifibable builds: build first and check with
-          mvn clean install -Prv-builds
-          mvn clean verify artifact:compare -Prv-builds  
-          diffoscope ..   -->
+      <!-- allow reproducible / verifibable builds: build first and check with mvn clean install -Prv-builds mvn clean verify artifact:compare 
+        -Prv-builds diffoscope .. -->
       <id>rv-builds</id>
       <build>
         <plugins>
           <plugin>
-              <groupId>org.apache.torque</groupId>
-              <artifactId>torque-maven-plugin</artifactId>
-              <executions>
-                <execution>
-                  <id>generate-om-scheduler-sources</id>
-                  <configuration>
-                    <options>
-                       <!-- to allow for reproducible builds -->
-                      <torque.om.addTimeStamp>false</torque.om.addTimeStamp>
-                    </options>
-                  </configuration>
-                </execution>
-               </executions>
+            <groupId>org.apache.torque</groupId>
+            <artifactId>torque-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate-om-scheduler-sources</id>
+                <configuration>
+                  <options>
+                    <!-- to allow for reproducible builds -->
+                    <torque.om.addTimeStamp>false</torque.om.addTimeStamp>
+                  </options>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
       <properties>
-          <!-- outputTimestamp, implementation.build and buildNumber in parent POM  -->
-          <scmBranch>trunk</scmBranch>
+        <!-- outputTimestamp, implementation.build and buildNumber in parent POM -->
+        <scmBranch>trunk</scmBranch>
       </properties>
     </profile>
   </profiles>
@@ -1364,24 +1357,24 @@
     <fulcrum.testcontainer>2.0.1</fulcrum.testcontainer>
     <!-- inherited in fulcrum components, testcontainer -->
     <fulcrum.yaafi>2.0.1</fulcrum.yaafi>
-    <torque.version>6.0</torque.version>
-    <jackson2.version>2.18.2</jackson2.version>
+    <torque.version>7.0</torque.version>
+    <jackson2.version>2.20.1</jackson2.version>
     <doclint>none</doclint>
-    <docker.testcontainers.version>1.20.4</docker.testcontainers.version>
-    <!--jacoco.skip>true</jacoco.skip-->
+    <docker.testcontainers.version>1.21.4</docker.testcontainers.version>
+    <!--jacoco.skip>true</jacoco.skip -->
     <argLine />
   </properties>
 
-    <!-- to allow snapshot parents:  https://issues.apache.org/jira/browse/INFRA-15815  jenkins settings.xml is unchanged from beginning -->
-    <repositories>
-      <repository>
-        <id>apache.snapshots</id>
-        <name>Apache Snapshot Repository</name>
-        <url>https://repository.apache.org/snapshots</url>
-        <releases>
-          <enabled>false</enabled>
-        </releases>
-      </repository>
-    </repositories>
+  <!-- to allow snapshot parents: https://issues.apache.org/jira/browse/INFRA-15815 jenkins settings.xml is unchanged from beginning -->
+  <repositories>
+    <repository>
+      <id>apache.snapshots</id>
+      <name>Apache Snapshot Repository</name>
+      <url>https://repository.apache.org/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
 </project>
 
