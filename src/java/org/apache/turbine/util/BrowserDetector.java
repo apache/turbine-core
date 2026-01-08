@@ -1,26 +1,6 @@
 package org.apache.turbine.util;
 
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Objects;
 
 import nl.basjes.parse.useragent.UserAgent;
 import nl.basjes.parse.useragent.UserAgentAnalyzer;
@@ -50,25 +30,8 @@ public class BrowserDetector
                     UserAgent.AGENT_VERSION,
                     UserAgent.OPERATING_SYSTEM_NAME)
             .hideMatcherLoadStats()
+            .withCache(10000)
             .build();
-
-    /** The user agent cache. */
-    private static volatile ConcurrentMap<String, UserAgent> userAgentCache =
-            new ConcurrentHashMap<>();
-
-    /** The browser name specified in the user agent string. */
-    private String browserName = "";
-
-    /**
-     * The browser version specified in the user agent string.  If we
-     * can't parse the version just assume an old browser.
-     */
-    private float browserVersion = (float) 1.0;
-
-    /**
-     * The browser platform specified in the user agent string.
-     */
-    private String browserPlatform = "unknown";
 
     /**
      * Constructor used to initialize this class.
@@ -78,15 +41,6 @@ public class BrowserDetector
     public BrowserDetector(String userAgentString)
     {
         this.userAgentString = userAgentString;
-        UserAgent userAgent = getUserAgent();
-
-        // Get the browser name and version.
-        browserName = userAgent.getValue(UserAgent.AGENT_NAME);
-        String version = userAgent.getValue(UserAgent.AGENT_VERSION);
-        browserVersion = toFloat(version);
-
-        // Try to figure out what platform.
-        browserPlatform = userAgent.getValue(UserAgent.OPERATING_SYSTEM_NAME);
     }
 
     /**
@@ -106,7 +60,10 @@ public class BrowserDetector
      */
     public String getBrowserName()
     {
-        return browserName;
+        // Get the browser name.
+        return Objects.requireNonNullElse(
+                getUserAgent().getValue(UserAgent.AGENT_NAME),
+                "");
     }
 
     /**
@@ -116,7 +73,10 @@ public class BrowserDetector
      */
     public String getBrowserPlatform()
     {
-        return browserPlatform;
+        // Try to figure out what platform.
+        return Objects.requireNonNullElse(
+                getUserAgent().getValue(UserAgent.OPERATING_SYSTEM_NAME),
+                "unknown");
     }
 
     /**
@@ -126,7 +86,12 @@ public class BrowserDetector
      */
     public float getBrowserVersion()
     {
-        return browserVersion;
+        // The browser version specified in the user agent string.  If we
+        // can't parse the version just assume an old browser.
+        String version = Objects.requireNonNullElse(
+                getUserAgent().getValue(UserAgent.AGENT_VERSION),
+                "1.0");
+        return Float.parseFloat(version);
     }
 
     /**
@@ -146,27 +111,6 @@ public class BrowserDetector
      */
     public UserAgent getUserAgent()
     {
-        return parse(userAgentString);
-    }
-
-    /**
-     * Helper method to initialize this class.
-     *
-     * @param userAgentString the user agent string
-     */
-    private static UserAgent parse(String userAgentString)
-    {
-        return userAgentCache.computeIfAbsent(userAgentString, uaa::parse);
-    }
-
-    /**
-     * Helper method to convert String to a float.
-     *
-     * @param s A String.
-     * @return The String converted to float.
-     */
-    private static final float toFloat(String s)
-    {
-        return Float.parseFloat(s);
+        return uaa.parse(userAgentString);
     }
 }
