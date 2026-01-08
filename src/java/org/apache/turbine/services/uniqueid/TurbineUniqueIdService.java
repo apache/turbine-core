@@ -24,9 +24,9 @@ import java.nio.charset.StandardCharsets;
 
 
 import java.security.MessageDigest;
+import java.util.Base64;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
@@ -78,8 +78,7 @@ public class TurbineUniqueIdService
 
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte [] bytesId = md.digest(turbineURL.getBytes(StandardCharsets.UTF_8));
-            turbineId = new String(Base64.encodeBase64(bytesId),
-                    StandardCharsets.UTF_8);
+            turbineId = Base64.getEncoder().encodeToString(bytesId);
 
             log.info("This is Turbine instance running at: {}", turbineURL);
             log.info("The instance id is #{}", turbineId);
