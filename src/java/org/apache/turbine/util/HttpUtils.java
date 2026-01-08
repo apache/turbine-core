@@ -19,13 +19,14 @@ package org.apache.turbine.util;
  * under the License.
  */
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
 
@@ -36,7 +37,6 @@ import jakarta.servlet.http.HttpServletResponse;
  * would otherwise be handled elsewhere.
  *
  * @author <a href="mailto:magnus@handpoint.com">Magnús Þór Torfason</a>
- * @version $Id$
  */
 public class HttpUtils
 {
@@ -50,10 +50,10 @@ public class HttpUtils
     /**
      * The date format to use for HTTP Dates.
      */
-    private static FastDateFormat httpDateFormat = FastDateFormat.getInstance(
-                "EEE, dd MMM yyyy HH:mm:ss z",
-                TimeZone.getTimeZone("GMT"),
-                Locale.US);
+    private static DateTimeFormatter HTTP_DATE_FORMATTER =
+            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z")
+            .withZone(ZoneId.of("GMT"))
+            .withLocale(Locale.US);
 
     /**
      * Formats a java Date according to rfc 1123, the rfc standard for dates in
@@ -64,7 +64,8 @@ public class HttpUtils
      */
     public static String formatHttpDate(Date date)
     {
-        return httpDateFormat.format(date);
+        return HTTP_DATE_FORMATTER.format(
+            ZonedDateTime.ofInstant(date.toInstant(), ZoneId.of("GMT")));
     }
 
     /**
