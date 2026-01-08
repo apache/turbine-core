@@ -386,7 +386,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
         }
         catch (Exception e)
         {
-            log.error("Error in WorkerThread for scheduled job #{}, task: {}",
+            log.error("Error in scheduled job #{}, task: {}",
                     Integer.valueOf(je.getJobId()), je.getTask(), e);
         }
         finally
