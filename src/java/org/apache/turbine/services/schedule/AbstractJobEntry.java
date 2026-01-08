@@ -297,8 +297,7 @@ public abstract class AbstractJobEntry implements JobEntry
      * I know this is kinda ugly!  If you can think of a cleaner way
      * to do this, please jump in!
      *
-     * @return A number specifying the type of schedule. See
-     * calcRunTime().
+     * @return An enum specifying the type of schedule. See {@link #calcRunTime() calcRunTime}.
      * @throws TurbineException a generic exception.
      */
     private ScheduleType evaluateJobType()
@@ -327,9 +326,9 @@ public abstract class AbstractJobEntry implements JobEntry
                     }
                     else
                     {
-                        // Must be a job run by the minute so we need minutes and
-                        // seconds.
-                        if (getMinute() < 0 || getSecond() < 0)
+                        // Must be a job run by the minute so we have minutes and
+                        // need seconds.
+                        if (getSecond() < 0)
                         {
                             throw new TurbineException("Error in JobEntry. Bad Job parameter.");
                         }
@@ -340,8 +339,8 @@ public abstract class AbstractJobEntry implements JobEntry
                 else
                 {
                     // Must be a daily job by hours minutes, and seconds.  In
-                    // this case, we need the minute, second, and hour params.
-                    if (getMinute() < 0 || getHour() < 0 || getSecond() < 0)
+                    // this case, we have the hor and need the minute, and second params.
+                    if (getMinute() < 0 || getSecond() < 0)
                     {
                         throw new TurbineException("Error in JobEntry. Bad Job parameter.");
                     }
@@ -365,7 +364,7 @@ public abstract class AbstractJobEntry implements JobEntry
         {
             // Must be a day of the month job.  In this case, we need
             // minute, second, and hour params
-            if (getMinute() < 0 || getHour() < 0)
+            if (getMinute() < 0 || getHour() < 0 || getSecond() < 0)
             {
                 throw new TurbineException("Error in JobEntry. Bad Job parameter.");
             }
