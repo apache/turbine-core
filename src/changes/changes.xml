@@ -29,11 +29,20 @@
         Add some convenience default methods to PipelineData to reduce code duplication
       </action>
       <action type="update" dev="tv">
+        yuaa: Rely on library-provided cache
+      </action>
+      <action type="update" dev="tv">
         Pull up several ApplicationTool methods as default methods into the interface.
         Parametrize ApplicationTool to reduce number of instanceof checks.
       </action>
       <action type="update" dev="tv">
         Move several RunData methods as default methods into the interface.
+      </action>
+      <action type="remove" dev="tv">
+        Remove explicitly declared transitive dependencies that are not used directly
+      </action>
+      <action type="remove" dev="tv">
+        Use Base64 from JDK, removing commons-codec dependency
       </action>
       <action type="remove" dev="tv">
         Move job execution logic into AbstractSchedulerService and remove WorkerThread
