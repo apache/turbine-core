@@ -21,21 +21,26 @@ package org.apache.turbine.services.intake;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.Mockito.mock;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.apache.fulcrum.intake.IntakeService;
 import org.apache.fulcrum.intake.model.Group;
 import org.apache.fulcrum.parser.DefaultParameterParser;
-import org.apache.turbine.annotation.AnnotationProcessor;
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.pull.PullService;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
+import org.apache.velocity.context.Context;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -49,19 +54,31 @@ import jakarta.servlet.http.HttpServletResponse;
  * Unit test for Intake Tool, wrapping the Fulcrum Intake service.
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
- * @version $Id$
  */
 public class IntakeToolTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
+    private static PullService pullService = null;
+    private Context context;
     private IntakeTool intakeTool;
 
     @Before
     public void initTool() throws Exception
     {
-        intakeTool = new IntakeTool();
-        AnnotationProcessor.process(intakeTool);
-        intakeTool.init(getRunData());
+        context = pullService.getGlobalContext();
+        assertNotNull(context);
+
+        pullService.populateContext(context, getRunData());
+        intakeTool = (IntakeTool) context.get("intake");
+    }
+
+    @After
+    public void recycle() throws Exception
+    {
+        pullService.releaseTools(context);
+        assertTrue(intakeTool.isDisposed());
+        assertTrue(intakeTool.getGroups().isEmpty());
+        assertNull(intakeTool.pp);
     }
 
     @Test
@@ -82,9 +99,9 @@ public class IntakeToolTest extends BaseTestCase
         assertTrue("Make sure serialized data file exists:" + file, file.exists());
         Group group = intakeTool.get("LoginGroup", "loginGroupKey");
         assertNotNull(group);
-        assertEquals(1, intakeTool.groups.size());
+        assertEquals(1, intakeTool.getGroups().size());
         intakeTool.remove(group);
-        assertTrue(intakeTool.groups.isEmpty());
+        assertTrue(intakeTool.getGroups().isEmpty());
     }
 
     /**
@@ -115,9 +132,15 @@ public class IntakeToolTest extends BaseTestCase
     @BeforeClass
     public static void setUp() throws Exception
     {
-        tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
+        Map<String, String> initParams = new HashMap<>();
+        initParams.put(TurbineConfig.PROPERTIES_PATH_KEY, "/conf/test/CompleteTurbineResources.properties"); // "conf/test/TurbineResources.properties"
+        initParams.put(TurbineConstants.LOGGING_ROOT_KEY, "target/test-logs");
+
+        tc = new TurbineConfig(".", initParams);
         tc.initialize();
-        TurbineServices.getInstance().getService(IntakeService.class.getName());
+
+        pullService = (PullService)TurbineServices.getInstance().getService(PullService.SERVICE_NAME);
+        assertNotNull(pullService);
     }
 
     @AfterClass

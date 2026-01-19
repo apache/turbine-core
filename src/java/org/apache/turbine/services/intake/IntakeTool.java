@@ -19,10 +19,11 @@ package org.apache.turbine.services.intake;
  * under the License.
  */
 
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.fulcrum.intake.IntakeException;
@@ -66,7 +67,7 @@ public class IntakeTool
     /** ValueParser instance */
     protected ValueParser pp;
 
-    private final HashMap<String, Group> declaredGroups = new HashMap<>();
+    private final HashSet<String> declaredGroups = new HashSet<>();
     private final StringBuilder allGroupsSB = new StringBuilder(256);
     private final StringBuilder groupSB = new StringBuilder(128);
 
@@ -95,17 +96,16 @@ public class IntakeTool
         if (groups == null) // Initialize only once
         {
             String[] groupNames = intakeService.getGroupNames();
-            int groupCount = 0;
+            ArrayUtils.reverse(groupNames);
+            groups = new HashMap<>();
+            pullMap = new HashMap<>();
+
             if (groupNames != null)
             {
-                groupCount = groupNames.length;
-            }
-            groups = new HashMap<>((int) (1.25 * groupCount + 1));
-            pullMap = new HashMap<>((int) (1.25 * groupCount + 1));
-
-            for (int i = groupCount - 1; i >= 0; i--)
-            {
-                pullMap.put(groupNames[i], new PullHelper(groupNames[i]));
+                for (String groupName : groupNames)
+                {
+                    pullMap.put(groupName, new PullHelper(groupName));
+                }
             }
         }
 
@@ -119,20 +119,19 @@ public class IntakeTool
         }
         else
         {
-            groupNames = new String[groupKeys.length];
-            for (int i = groupKeys.length - 1; i >= 0; i--)
-            {
-                groupNames[i] = intakeService.getGroupName(groupKeys[i]);
-            }
+            groupNames = Stream.of(groupKeys)
+                    .map(key -> intakeService.getGroupName(key))
+                    .toArray(String[]::new);
         }
 
-        for (int i = groupNames.length - 1; i >= 0; i--)
+        ArrayUtils.reverse(groupNames);
+        for (String groupName : groupNames)
         {
             Group foundGroup = null;
 
             try
             {
-                foundGroup = intakeService.getGroup(groupNames[i]);
+                foundGroup = intakeService.getGroup(groupName);
                 List<Group> foundGroups = foundGroup.getObjects(pp);
 
                 if (foundGroups != null)
@@ -153,9 +152,9 @@ public class IntakeTool
                     {
                         intakeService.releaseGroup(foundGroup);
                     }
-                    catch (IntakeException intakeException)
+                    catch (IntakeException ie)
                     {
-                        log.error(intakeException, intakeException);
+                        log.error("Tried to release unknown group {}", foundGroup.getIntakeGroupName(), ie);
                     }
                 }
             }
@@ -171,9 +170,9 @@ public class IntakeTool
     {
         for (Group group : groups.values())
         {
-            if (!declaredGroups.containsKey(group.getIntakeGroupName()))
+            if (!declaredGroups.contains(group.getIntakeGroupName()))
             {
-                declaredGroups.put(group.getIntakeGroupName(), null);
+                declaredGroups.add(group.getIntakeGroupName());
                 vp.add("intake-grp", group.getGID());
             }
             vp.add(group.getGID(), group.getOID());
@@ -224,9 +223,9 @@ public class IntakeTool
      */
     public void declareGroup(Group group, StringBuilder sb)
     {
-        if (!declaredGroups.containsKey(group.getIntakeGroupName()))
+        if (!declaredGroups.contains(group.getIntakeGroupName()))
         {
-            declaredGroups.put(group.getIntakeGroupName(), null);
+            declaredGroups.add(group.getIntakeGroupName());
             sb.append("<input type=\"hidden\" name=\"")
                     .append(INTAKE_GRP)
                     .append("\" value=\"")
@@ -302,24 +301,6 @@ public class IntakeTool
             Group g = null;
 
             String inputKey = intakeService.getGroupKey(groupName) + key;
-//            g = groups.computeIfAbsent(inputKey, k -> {
-//                if (create)
-//                {
-//                    try
-//                    {
-//                        Group gg = intakeService.getGroup(groupName);
-//                        gg.init(key, pp);
-//                        return gg;
-//                    }
-//                    catch (IntakeException e)
-//                    {
-//                        // TODO Auto-generated catch block
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                return null;
-//            });
             if (groups.containsKey(inputKey))
             {
                 g = groups.get(inputKey);
@@ -342,30 +323,23 @@ public class IntakeTool
          */
         public Group mapTo(Retrievable obj)
         {
-            Group g = null;
-
-            try
-            {
-                String inputKey = intakeService.getGroupKey(groupName)
-                        + obj.getQueryKey();
-                if (groups.containsKey(inputKey))
+            String inputKey = intakeService.getGroupKey(groupName)
+                    + obj.getQueryKey();
+            Group g = groups.computeIfAbsent(inputKey, k -> {
+                try
                 {
-                    g = groups.get(inputKey);
+                    Group gg = intakeService.getGroup(groupName);
+                    return gg.init(obj);
                 }
-                else
+                catch (IntakeException e)
                 {
-                    g = intakeService.getGroup(groupName);
-                    groups.put(inputKey, g);
+                    log.error(e);
                 }
 
-                return g.init(obj);
-            }
-            catch (IntakeException e)
-            {
-                log.error(e);
-            }
+                return null;
+            });
 
-            return null;
+            return g;
         }
     }
 
@@ -401,10 +375,13 @@ public class IntakeTool
     public boolean isAllValid()
     {
         boolean allValid = true;
-        // TODO: fail fast?
         for (Group group : groups.values())
         {
             allValid &= group.isAllValid();
+            if (!allValid)
+            {
+                break;
+            }
         }
         return allValid;
     }
@@ -466,7 +443,7 @@ public class IntakeTool
 
 			if (groupKeys != null)
 			{
-			    Arrays.stream(groupKeys)
+			    Stream.of(groupKeys)
 			        .filter(groupKey -> !groupKey.equals(group.getGID()))
 			        .forEach(groupKey -> pp.add(INTAKE_GRP, groupKey));
 		    }
