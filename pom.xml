@@ -1035,13 +1035,6 @@
       <artifactId>json</artifactId>
       <version>20251224</version>
     </dependency>
-    <!-- java testcontainers uses slf4j-api, need for log4j-slf4j-impl mapping -->
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>${turbine.log4j2.version}</version>
-      <scope>runtime</scope>
-    </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -1061,6 +1054,7 @@
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-jpl</artifactId>
       <version>${turbine.log4j2.version}</version>
+      <scope>runtime</scope>
     </dependency>
     <!-- support of log4j-web (autodetect of log4j2 in WEB-INF folder) may allow to remove explicit log4j2 loading/configuration except 
       for tests -->
@@ -1068,6 +1062,14 @@
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-jakarta-web</artifactId>
       <version>${turbine.log4j2.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <!-- velocity and java testcontainers use slf4j-api, need for log4j-slf4j-impl mapping -->
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j2-impl</artifactId>
+      <version>${turbine.log4j2.version}</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.velocity</groupId>
