@@ -27,10 +27,9 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.LocaleUtils;
 
@@ -69,7 +68,7 @@ public class DateTimeFormatterService
         return formatPattern;
     }
 
-    private static final Logger log = LogManager.getLogger(DateTimeFormatterService.class);
+    private static final Log log = Log.getLog(DateTimeFormatterService.class);
 
     /**
      * Initialize the service.
@@ -108,7 +107,7 @@ public class DateTimeFormatterService
         dateTimeFormat = DateTimeFormatter.ofPattern(formatPattern)
                 .withLocale(localeSetter).withZone(zoneIdSet);
 
-        log.info("Initialized DateTimeFormatterService with pattern {}, locale {} and zone {}",
+        log.info("Initialized DateTimeFormatterService with pattern {0}, locale {1} and zone {2}",
                 formatPattern, dateTimeFormat.getLocale(),
                 dateTimeFormat.getZone());
         setInit(true);
@@ -148,23 +147,29 @@ public class DateTimeFormatterService
             if (locale != null)
             {
                 dtf = dtf.withLocale(locale);
-            } else {
-                log.warn("adding default locale {}",  getLocale() );
+            }
+            else
+            {
+                log.warn("adding default locale {0}",  getLocale() );
                 dtf = dtf.withLocale( getLocale());
             }
             if (zoneId != null)
             {
                 dtf = dtf.withZone(zoneId);
-            } else {
-                log.info("adding default zone {}", getZoneId() );
+            }
+            else
+            {
+                log.info("adding default zone {0}", getZoneId() );
                 dtf = dtf.withZone(getZoneId());
             }
-            log.info("try to format {} with {}.", temporalAccessor, dtf );
-            try {
-                result =
-                        dtf.format(temporalAccessor);
-            } catch(DateTimeException e) {
-                log.error("An exception with date time formatting was thrown: {}", e);
+            log.info("try to format {0} with {1}.", temporalAccessor, dtf );
+            try
+            {
+                result = dtf.format(temporalAccessor);
+            }
+            catch(DateTimeException e)
+            {
+                log.error("An exception with date time formatting was thrown: {0}", e);
                 // check with dtf.toFormat().format(temporalAccessor)?
                 throw e;
             }
@@ -183,7 +188,8 @@ public class DateTimeFormatterService
         {
             incomingFormatPattern = formatPattern;
         }
-        if (incomingFormatPattern.equals( outgoingFormatPattern )) {
+        if (incomingFormatPattern.equals( outgoingFormatPattern ))
+        {
             return "";
         }
         DateTimeFormatter incomingFormat = DateTimeFormatter.ofPattern(incomingFormatPattern);
@@ -238,20 +244,24 @@ public class DateTimeFormatterService
         return map( src, outgoingFormat, locale, dateTimeFormat );
     }
 
-    public Locale getLocale() {
+    public Locale getLocale()
+    {
         return locale;
     }
 
-    public void setLocale(Locale locale) {
+    public void setLocale(Locale locale)
+    {
         this.locale = locale;
     }
 
     @Override
-    public ZoneId getZoneId() {
+    public ZoneId getZoneId()
+    {
         return zoneId;
     }
 
-    public void setZoneId(ZoneId zoneId) {
+    public void setZoneId(ZoneId zoneId)
+    {
         this.zoneId = zoneId;
     }
 

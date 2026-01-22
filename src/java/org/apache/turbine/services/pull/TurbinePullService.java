@@ -28,10 +28,9 @@ import java.util.List;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.fulcrum.pool.PoolService;
 import org.apache.fulcrum.security.model.turbine.TurbineUserManager;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.annotation.AnnotationProcessor;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
@@ -123,7 +122,7 @@ public class TurbinePullService
         implements PullService
 {
     /** Logging */
-    private static Logger log = LogManager.getLogger(TurbinePullService.class);
+    private static Log log = Log.getLog(TurbinePullService.class);
 
     /** Reference to the pool service */
     private PoolService pool = null;
@@ -327,11 +326,11 @@ public class TurbinePullService
                 // Add the tool to the list being built.
                 tools.add(new ToolData(toolName, toolClassName, toolClass));
 
-                log.info("Tool {} to add to the context as '${}'", toolClassName, toolName);
+                log.info("Tool {0} to add to the context as '${1}'", toolClassName, toolName);
             }
             catch (NoClassDefFoundError | ClassNotFoundException e)
             {
-                log.error("Cannot instantiate tool class {}", toolClassName, e);
+                log.error("Cannot instantiate tool class {0}", toolClassName, e);
             }
         }
 
@@ -466,7 +465,7 @@ public class TurbinePullService
             }
             catch (Exception e)
             {
-                log.error("Could not instantiate global tool {} from a {} object",
+                log.error("Could not instantiate global tool {0} from a {1} object",
                     toolData.toolName, toolData.toolClassName, e);
             }
         }
@@ -496,7 +495,7 @@ public class TurbinePullService
             }
             catch (Exception e)
             {
-                log.error("Could not instantiate request tool {} from a {} object",
+                log.error("Could not instantiate request tool {0} from a {1} object",
                         toolData.toolName, toolData.toolClassName, e);
             }
         }
@@ -566,18 +565,18 @@ public class TurbinePullService
                         }
 
                         // put the tool in the context
-                        log.debug("Adding {} to ctx as {}", tool, toolData.toolName);
+                        log.debug("Adding {0} to ctx as {1}", tool, toolData.toolName);
                         context.put(toolData.toolName, tool);
                     }
                     else
                     {
-                        log.info("Tool {} was null, skipping it.", toolData.toolName);
+                        log.info("Tool {0} was null, skipping it.", toolData.toolName);
                     }
                 }
             }
             catch (Exception e)
             {
-                log.error("Could not instantiate session tool {} from a {} object",
+                log.error("Could not instantiate session tool {0} from a {1} object",
                         toolData.toolName, toolData.toolClassName, e);
             }
         }
@@ -644,19 +643,19 @@ public class TurbinePullService
                         }
 
                         // put the tool in the context
-                        log.debug("Adding {} to ctx as {}", tool, toolData.toolName);
+                        log.debug("Adding {0} to ctx as {1}", tool, toolData.toolName);
                         log.warn("Persistent scope tools are deprecated.");
                         context.put(toolData.toolName, tool);
                     }
                     else
                     {
-                        log.info("Tool {} was null, skipping it.", toolData.toolName);
+                        log.info("Tool {0} was null, skipping it.", toolData.toolName);
                     }
                 }
             }
             catch (Exception e)
             {
-                log.error("Could not instantiate perm tool {} from a {} object",
+                log.error("Could not instantiate perm tool {0} from a {1} object",
                         toolData.toolName, toolData.toolClassName, e);
             }
         }

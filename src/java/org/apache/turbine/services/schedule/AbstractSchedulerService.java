@@ -25,8 +25,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.modules.ScheduledJobLoader;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -42,7 +41,7 @@ import org.apache.turbine.util.TurbineException;
 public abstract class AbstractSchedulerService extends TurbineBaseService implements ScheduleService
 {
     /** Logging */
-    protected static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);
+    protected static final Log log = Log.getLog(ScheduleService.LOGGER_NAME);
 
     /** The queue */
     protected JobQueue<JobEntry> scheduleQueue = null;
@@ -354,7 +353,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
         }
         catch (Exception e)
         {
-            log.error("Error running a Scheduled Job: {}", taskName, e);
+            log.error("Error running a Scheduled Job: {0}", taskName, e);
             setEnabled(false);
         }
         finally
@@ -386,7 +385,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
         }
         catch (Exception e)
         {
-            log.error("Error in scheduled job #{}, task: {}",
+            log.error("Error in scheduled job #{0}, task: {1}",
                     Integer.valueOf(je.getJobId()), je.getTask(), e);
         }
         finally
@@ -406,7 +405,7 @@ public abstract class AbstractSchedulerService extends TurbineBaseService implem
      */
     private final void logStateChange(JobEntry je, String state)
     {
-        log.error("Scheduled job #{} {}, task: {}",
+        log.error("Scheduled job #{0} {1}, task: {2}",
                 Integer.valueOf(je.getJobId()), state, je.getTask());
     }
 }

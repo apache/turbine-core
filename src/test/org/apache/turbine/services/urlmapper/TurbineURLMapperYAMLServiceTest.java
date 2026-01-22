@@ -23,14 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.apache.fulcrum.parser.ParameterParser;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
@@ -44,6 +39,10 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 @Tag("yaml")
 public class TurbineURLMapperYAMLServiceTest extends BaseTestCase
 {
@@ -54,7 +53,7 @@ public class TurbineURLMapperYAMLServiceTest extends BaseTestCase
 
     private RunData data;
 
-    Logger log = LogManager.getLogger();
+    private Log log = Log.getLog(TurbineURLMapperYAMLServiceTest.class);
 
     @BeforeAll
     public static void setUp() throws Exception
@@ -153,7 +152,7 @@ public class TurbineURLMapperYAMLServiceTest extends BaseTestCase
         pp.add( "role", "admin" ); // will not be overridden
         urlMapper.mapFromURL( "/app/register", pp );
 
-        log.info( "parameters: {}", pp );
+        log.info( "parameters: {0}", pp );
         assertEquals( 4, pp.keySet().size() );
         assertEquals( "random-id-123-abc", pp.getString( "js_pane" ) );
         assertEquals( "admin", pp.getString( "role" ) );
@@ -179,7 +178,7 @@ public class TurbineURLMapperYAMLServiceTest extends BaseTestCase
         pp.clear();
         pp.add( "role", "admin" );// will be overridden
         urlMapper.mapFromURL( "/app/contact", pp );
-        log.info( "parameters: {}", pp );
+        log.info( "parameters: {0}", pp );
         assertEquals( 4, pp.keySet().size() );
         assertEquals( "anon", pp.getString( "role" ) );
         assertEquals( "another-random-id-876-dfg", pp.getString( "js_pane" ) );

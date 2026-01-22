@@ -25,8 +25,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.ServletUtils;
@@ -52,7 +51,7 @@ public class TurbineServletService
         extends TurbineBaseService implements ServletService
 {
     /** Logging */
-    private static final Logger log = LogManager.getLogger(TurbineServletService.class);
+    private static final Log log = Log.getLog(TurbineServletService.class);
 
     /** The servlet context for this servlet */
     private ServletContext servletContext = null;

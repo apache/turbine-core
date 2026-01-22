@@ -23,9 +23,8 @@ package org.apache.turbine.services.pull.tools;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.fulcrum.parser.ParameterParser;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.pull.PipelineDataApplicationTool;
 import org.apache.turbine.util.RunData;
@@ -92,7 +91,7 @@ public class TemplateLink
     protected TemplateURI templateURI = null;
 
     /** Logging */
-    private static final Logger log = LogManager.getLogger(TemplateLink.class);
+    private static final Log log = Log.getLog(TemplateLink.class);
 
     /**
      * Default constructor
@@ -175,7 +174,7 @@ public class TemplateLink
      */
     public TemplateLink setPage(String template)
     {
-        log.debug("setPage({})", template);
+        log.debug("setPage({0})", template);
         this.template = template;
         templateURI.setTemplate(template);
         return this;
@@ -203,7 +202,7 @@ public class TemplateLink
      */
     public TemplateLink setAction(String action)
     {
-        log.debug("setAction({})", action);
+        log.debug("setAction({0})", action);
         templateURI.setAction(action);
         return this;
     }
@@ -220,7 +219,7 @@ public class TemplateLink
      */
     public TemplateLink setActionEvent(String action, String event)
     {
-        log.debug("setActionEvent({}, {})", action, event);
+        log.debug("setActionEvent({0}, {1})", action, event);
         templateURI.setActionEvent(action, event);
         return this;
     }
@@ -236,7 +235,7 @@ public class TemplateLink
      */
     public TemplateLink setScreen(String screen)
     {
-        log.debug("setScreen({})", screen);
+        log.debug("setScreen({0})", screen);
         templateURI.setScreen(screen);
         return this;
     }

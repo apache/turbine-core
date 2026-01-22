@@ -3,8 +3,6 @@ package org.apache.turbine.modules.layouts;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.logging.log4j.LogManager;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -25,7 +23,7 @@ import org.apache.logging.log4j.LogManager;
  */
 
 
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Layout;
@@ -43,7 +41,7 @@ import org.apache.velocity.context.Context;
 public abstract class VelocityLayout implements Layout
 {
     /** Logging */
-    protected final Logger log = LogManager.getLogger(this.getClass());
+    protected final Log log = Log.getLog(this.getClass());
 
     /** The prefix for lookup up layout pages */
     protected static final String prefix = PREFIX + "/";
@@ -79,7 +77,7 @@ public abstract class VelocityLayout implements Layout
         data.getResponse().setLocale(data.getLocale());
         data.getResponse().setContentType(data.getContentType());
 
-        log.debug("Now trying to render layout {}", templateName);
+        log.debug("Now trying to render layout {0}", templateName);
 
         // Finally, generate the layout template and send it to the browser
         render(pipelineData, context, templateName);

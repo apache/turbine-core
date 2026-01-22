@@ -1,8 +1,6 @@
 package org.apache.turbine.util.template;
 
 
-import org.apache.logging.log4j.LogManager;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -23,7 +21,7 @@ import org.apache.logging.log4j.LogManager;
  */
 
 
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
 
@@ -49,7 +47,7 @@ import org.apache.turbine.pipeline.PipelineData;
 public class TemplateScreen
 {
     /** Logging */
-    private static final Logger log = LogManager.getLogger(TemplateScreen.class);
+    private static final Log log = Log.getLog(TemplateScreen.class);
 
     /* The PipelineData object. */
     private final PipelineData pipelineData;

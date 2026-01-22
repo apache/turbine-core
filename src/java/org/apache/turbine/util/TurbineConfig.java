@@ -35,6 +35,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import org.apache.avalon.framework.activity.Disposable;
+import org.apache.avalon.framework.activity.Initializable;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.log.Log;
+import org.apache.turbine.pipeline.PipelineData;
+
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterRegistration;
 import jakarta.servlet.RequestDispatcher;
@@ -47,15 +55,6 @@ import jakarta.servlet.ServletRegistration.Dynamic;
 import jakarta.servlet.SessionCookieConfig;
 import jakarta.servlet.SessionTrackingMode;
 import jakarta.servlet.descriptor.JspConfigDescriptor;
-
-import org.apache.avalon.framework.activity.Disposable;
-import org.apache.avalon.framework.activity.Initializable;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.annotation.TurbineConfiguration;
-import org.apache.turbine.pipeline.PipelineData;
 
 /**
  * A class used for initialization of Turbine without a servlet container.
@@ -135,7 +134,7 @@ public class TurbineConfig
     private Turbine turbine;
 
     /** Logging */
-    private final Logger log = LogManager.getLogger(this.getClass());
+    private final Log log = Log.getLog(this.getClass());
 
     /**
      * Constructs a new TurbineConfig.
@@ -274,7 +273,7 @@ public class TurbineConfig
 
         if (log.isDebugEnabled())
         {
-            log.debug("TurbineConfig.getRealPath: path '{}' translated to '{}' {}found",
+            log.debug("TurbineConfig.getRealPath: path '{0}' translated to '{1}' {2}found",
                     path, f.getPath(), f.exists() ? "" : "not ");
         }
 
@@ -284,7 +283,7 @@ public class TurbineConfig
         }
         else
         {
-            log.error("getRealPath(\"{}\") is undefined, returning null", path);
+            log.error("getRealPath(\"{0}\") is undefined, returning null", path);
         }
 
         return result;

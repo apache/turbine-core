@@ -25,8 +25,7 @@ import java.io.File;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.TurbineServices;
@@ -55,7 +54,7 @@ public abstract class PythonBaseFactory<T extends Assembler>
     public static final String PYTHON_CONFIG_FILE = "conf.py";
 
     /** Logging */
-    private static Logger log = LogManager.getLogger(PythonBaseFactory.class);
+    private static Log log = Log.getLog(PythonBaseFactory.class);
 
     /** Our configuration */
     private final Configuration conf = TurbineServices.getInstance().getConfiguration(AssemblerBrokerService.SERVICE_NAME);
@@ -79,7 +78,7 @@ public abstract class PythonBaseFactory<T extends Assembler>
                 "Python path not found - check your Properties");
         }
 
-        log.debug("Screen name for JPython: {}", name);
+        log.debug("Screen name for JPython: {0}", name);
 
         T assembler = null;
 

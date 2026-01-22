@@ -31,8 +31,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.apache.commons.configuration2.Configuration;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -52,7 +51,7 @@ public class TurbineNamingService
         implements NamingService
 {
     /** Logging */
-    private static Logger log = LogManager.getLogger(TurbineNamingService.class);
+    private static Log log = Log.getLog(TurbineNamingService.class);
 
     /**
      * A global Map of Property objects which are initialised using

@@ -1,8 +1,6 @@
 package org.apache.turbine.services.jsp.util;
 
 
-import org.apache.logging.log4j.LogManager;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -23,7 +21,7 @@ import org.apache.logging.log4j.LogManager;
  */
 
 
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.modules.NavigationLoader;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
@@ -47,7 +45,7 @@ import org.apache.turbine.util.RunData;
 public class JspNavigation
 {
     /** Logging */
-    private static Logger log = LogManager.getLogger(JspNavigation.class);
+    private static Log log = Log.getLog(JspNavigation.class);
 
     /* The RunData object */
     private final RunData data;

@@ -27,8 +27,7 @@ import java.nio.charset.Charset;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.util.LocaleUtils;
 import org.apache.turbine.util.TurbineException;
@@ -47,7 +46,7 @@ import org.apache.turbine.util.TurbineException;
 public class DefaultSetEncodingValve
     implements Valve
 {
-    private static final Logger log = LogManager.getLogger(DefaultSetEncodingValve.class);
+    private static final Log log = Log.getLog(DefaultSetEncodingValve.class);
 
     /**
      * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
@@ -65,7 +64,7 @@ public class DefaultSetEncodingValve
         if (requestEncoding == null)
         {
             requestEncoding = LocaleUtils.getDefaultInputEncoding();
-            log.debug("Changing Input Encoding to {}", requestEncoding);
+            log.debug("Changing Input Encoding to {0}", requestEncoding);
 
             try
             {

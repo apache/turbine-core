@@ -30,8 +30,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 
@@ -44,7 +43,7 @@ import org.apache.turbine.TurbineConstants;
  */
 public abstract class ObjectUtils
 {
-    private static final Logger log = LogManager.getLogger(ObjectUtils.class);
+    private static final Log log = Log.getLog(ObjectUtils.class);
 
     /**
      * Converts a map to a byte array for storage/serialization.

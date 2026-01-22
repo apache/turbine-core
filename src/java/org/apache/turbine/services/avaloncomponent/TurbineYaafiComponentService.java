@@ -30,8 +30,7 @@ import org.apache.commons.configuration2.Configuration;
 import org.apache.fulcrum.yaafi.framework.container.ServiceContainer;
 import org.apache.fulcrum.yaafi.framework.factory.ServiceContainerConfiguration;
 import org.apache.fulcrum.yaafi.framework.factory.ServiceContainerFactory;
-import org.apache.fulcrum.yaafi.framework.logger.Log4j2Logger;
-import org.apache.logging.log4j.LogManager;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.InstantiationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -46,7 +45,7 @@ public class TurbineYaafiComponentService
         implements AvalonComponentService, Initializable, Disposable
 {
     /** the logger to be used */
-    private static org.apache.logging.log4j.Logger log = LogManager.getLogger(AVALON_LOG_CATEGORY);
+    private static Log log = Log.getLog(AVALON_LOG_CATEGORY);
 
     /** property to lookup the container configuration file */
     public static final String CONTAINER_CONFIGURATION_KEY = "containerConfiguration";
@@ -115,7 +114,7 @@ public class TurbineYaafiComponentService
 
         // determine the home directory
         File home = new File(getServiceBroker().getApplicationRoot());
-        log.info("Using the following home : {}", home::getAbsolutePath);
+        log.info("Using the following home : {0}", home.getAbsolutePath());
 
         // create the configuration for YAAFI
         ServiceContainerConfiguration config =
@@ -258,7 +257,7 @@ public class TurbineYaafiComponentService
      */
     protected Logger createAvalonLogger()
     {
-        return new Log4j2Logger(log);
+        return new SystemLogger(log);
     }
 
     // -------------------------------------------------------------

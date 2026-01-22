@@ -1057,6 +1057,11 @@
       <artifactId>log4j-core</artifactId>
       <version>${turbine.log4j2.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-jpl</artifactId>
+      <version>${turbine.log4j2.version}</version>
+    </dependency>
     <!-- support of log4j-web (autodetect of log4j2 in WEB-INF folder) may allow to remove explicit log4j2 loading/configuration except 
       for tests -->
     <dependency>

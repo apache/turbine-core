@@ -20,8 +20,7 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  */
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineConfiguration;
@@ -58,7 +57,7 @@ public class DefaultSessionValidator
     extends SessionValidator
 {
     /** Logging */
-    private static Logger log = LogManager.getLogger(DefaultSessionValidator.class);
+    private static Log log = Log.getLog(DefaultSessionValidator.class);
 
     @TurbineConfiguration( TurbineConstants.LOGIN_MESSAGE )
     private String loginMessage;

@@ -34,8 +34,7 @@ import org.apache.fulcrum.security.util.EntityExistsException;
 import org.apache.fulcrum.security.util.PasswordMismatchException;
 import org.apache.fulcrum.security.util.UnknownEntityException;
 import org.apache.fulcrum.security.util.UserSet;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.ServiceManager;
@@ -84,7 +83,7 @@ public class DefaultUserManager implements UserManager
 
 
     /** Logging */
-    private static final Logger log = LogManager.getLogger(DefaultUserManager.class);
+    private static final Log log = Log.getLog(DefaultUserManager.class);
 
     /**
      * Wrap a Fulcrum user object into a Turbine user object

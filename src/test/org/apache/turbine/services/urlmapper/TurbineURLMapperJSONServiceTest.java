@@ -23,14 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.apache.fulcrum.parser.ParameterParser;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
@@ -43,6 +38,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 public class TurbineURLMapperJSONServiceTest extends BaseTestCase
 {
 
@@ -52,7 +51,7 @@ public class TurbineURLMapperJSONServiceTest extends BaseTestCase
 
     private RunData data;
 
-    Logger log = LogManager.getLogger();
+    private Log log = Log.getLog(TurbineURLMapperJSONServiceTest.class);
 
     @BeforeAll
     public static void setUp() throws Exception
@@ -102,7 +101,7 @@ public class TurbineURLMapperJSONServiceTest extends BaseTestCase
 
         urlMapper.mapFromURL( "/app/context/contact", pp );
 
-        log.info( "parameters: {}", pp );
+        log.info( "parameters: {0}", pp );
         assertEquals( 2, pp.keySet().size() );
         assertEquals( "anon", pp.getString( "role" ) );
         assertEquals( "Contact", pp.getString( "page" ) );
@@ -129,10 +128,10 @@ public class TurbineURLMapperJSONServiceTest extends BaseTestCase
 
 //
         // scheme://bob/wow/damn2/contact/4/de
-        log.info( "relative uri is now {}", uri2.getRelativeLink() );
+        log.info( "relative uri is now {0}", uri2.getRelativeLink() );
         urlMapper.mapFromURL( uri2.getRelativeLink(), pp );
 
-        log.info( "parameters: {}", pp );
+        log.info( "parameters: {0}", pp );
         assertEquals( 4, pp.keySet().size() );
         assertEquals( "anon", pp.getString( "role" ) );
         assertEquals( "Contact", pp.getString( "page" ) );
@@ -164,7 +163,7 @@ public class TurbineURLMapperJSONServiceTest extends BaseTestCase
 
         urlMapper.mapFromURL( "/app/context/info", pp );
 
-        log.info( "parameters: {}", pp );
+        log.info( "parameters: {0}", pp );
         assertEquals( 2, pp.keySet().size() );
         assertEquals( "anon", pp.getString( "role" ) );
         assertEquals( "Info", pp.getString( "page" ) );
@@ -191,10 +190,10 @@ public class TurbineURLMapperJSONServiceTest extends BaseTestCase
 
         uri2.addPathInfo( "de", "" );
         // scheme://bob/wow/damn2/info/4/de/
-        log.info( "relative uri is now {}", uri2.getRelativeLink() );
+        log.info( "relative uri is now {0}", uri2.getRelativeLink() );
         urlMapper.mapFromURL( uri2.getRelativeLink(), pp );
 
-        log.info( "parameters: {}", pp );
+        log.info( "parameters: {0}", pp );
         assertEquals( 3, pp.keySet().size() );
         assertEquals( "anon", pp.getString( "role" ) );
         assertEquals( "Info", pp.getString( "page" ) );
@@ -226,7 +225,7 @@ public class TurbineURLMapperJSONServiceTest extends BaseTestCase
 
         urlMapper.mapFromURL( "/wow/damn2/register", pp );
 
-        log.info( "parameters: {}", pp );
+        log.info( "parameters: {0}", pp );
         assertEquals( 2, pp.keySet().size() );
         assertEquals( "anon", pp.getString( "role" ) );
         assertEquals( "Register", pp.getString( "page" ) );
@@ -248,7 +247,7 @@ public class TurbineURLMapperJSONServiceTest extends BaseTestCase
         pp.clear();
         urlMapper.mapFromURL( uri2.getRelativeLink(), pp );
 
-        log.info( "parameters: {}", pp );
+        log.info( "parameters: {0}", pp );
         assertEquals( 3, pp.keySet().size() );
         assertEquals( "anon", pp.getString( "role" ) );
         assertEquals( "Register", pp.getString( "page" ) );

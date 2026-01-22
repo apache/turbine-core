@@ -1,6 +1,10 @@
 package org.apache.turbine.util;
 
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.turbine.log.Log;
+import org.apache.turbine.util.uri.URIConstants;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -22,11 +26,6 @@ package org.apache.turbine.util;
 
 
 import jakarta.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.turbine.util.uri.URIConstants;
 
 /**
  * Holds basic server information under which Turbine is running.
@@ -57,7 +56,7 @@ public class ServerData
     private String  contextPath = null;
 
     /** Logging */
-    private static final Logger log = LogManager.getLogger(ServerData.class);
+    private static final Log log = Log.getLog(ServerData.class);
 
     /**
      * Constructor.
@@ -76,7 +75,7 @@ public class ServerData
     {
         if (log.isDebugEnabled())
         {
-            log.debug("Constructor({}, {}, {}, {}, {})", serverName,
+            log.debug("Constructor({0}, {1}, {2}, {3}, {4})", serverName,
                     Integer.valueOf(serverPort),
                     serverScheme,
                     scriptName,
@@ -97,7 +96,7 @@ public class ServerData
      */
     public ServerData(ServerData serverData)
     {
-        log.debug("Copy Constructor({})", serverData);
+        log.debug("Copy Constructor({0})", serverData);
 
         setServerName(serverData.getServerName());
         setServerPort(serverData.getServerPort());
@@ -150,7 +149,7 @@ public class ServerData
      */
     public void setServerName(String serverName)
     {
-        log.debug("setServerName({})", serverName);
+        log.debug("setServerName({0})", serverName);
         this.serverName = serverName;
     }
 
@@ -171,7 +170,7 @@ public class ServerData
      */
     public void setServerPort(int serverPort)
     {
-        log.debug("setServerPort({})", Integer.valueOf(serverPort));
+        log.debug("setServerPort({0})", Integer.valueOf(serverPort));
         this.serverPort = serverPort;
     }
 
@@ -192,7 +191,7 @@ public class ServerData
      */
     public void setServerScheme(String serverScheme)
     {
-        log.debug("setServerScheme({})", serverScheme);
+        log.debug("setServerScheme({0})", serverScheme);
         this.serverScheme = serverScheme;
     }
 
@@ -213,7 +212,7 @@ public class ServerData
      */
     public void setScriptName(String scriptName)
     {
-        log.debug("setScriptName({})", scriptName);
+        log.debug("setScriptName({0})", scriptName);
         this.scriptName = scriptName;
     }
 
@@ -234,7 +233,7 @@ public class ServerData
      */
     public void setContextPath(String contextPath)
     {
-        log.debug("setContextPath({})", contextPath);
+        log.debug("setContextPath({0})", contextPath);
         this.contextPath = contextPath;
     }
 

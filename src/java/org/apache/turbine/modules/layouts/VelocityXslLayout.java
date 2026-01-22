@@ -87,7 +87,7 @@ public class VelocityXslLayout extends VelocityOnlyLayout
         // (done by the TemplateInfo object)
         String templateName = data.getTemplateInfo().getLayoutTemplate();
 
-        log.debug("Now trying to render layout {}", templateName);
+        log.debug("Now trying to render layout {0}", templateName);
 
         // Now, generate the layout template.
         String temp = velocityService.handleRequest(context,

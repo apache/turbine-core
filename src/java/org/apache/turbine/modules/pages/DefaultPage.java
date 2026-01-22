@@ -22,8 +22,7 @@ package org.apache.turbine.modules.pages;
 
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
@@ -92,7 +91,7 @@ import org.apache.turbine.util.RunData;
 public class DefaultPage implements Page
 {
     /** Logging */
-    protected final Logger log = LogManager.getLogger(this.getClass());
+    protected final Log log = Log.getLog(this.getClass());
 
     /** Injected loader instance */
     @TurbineLoader( Action.class )
@@ -140,7 +139,7 @@ public class DefaultPage implements Page
 
         String screenName = data.getScreen();
 
-        log.debug("Building {}", screenName);
+        log.debug("Building {0}", screenName);
 
         // Ask the Screen for its Layout and then execute the Layout.
         // The Screen can override the getLayout() method to re-define

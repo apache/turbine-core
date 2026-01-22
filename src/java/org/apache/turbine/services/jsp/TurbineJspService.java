@@ -25,8 +25,7 @@ import java.util.Arrays;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
@@ -61,7 +60,7 @@ public class TurbineJspService
     private int bufferSize;
 
     /** Logging */
-    private static Logger log = LogManager.getLogger(TurbineJspService.class);
+    private static Log log = Log.getLog(TurbineJspService.class);
 
     /**
      * Load all configured components and initialize them. This is
@@ -290,7 +289,7 @@ public class TurbineJspService
     {
         if (template.startsWith("/"))
         {
-            log.warn("Template {} has a leading /, which is wrong!", template);
+            log.warn("Template {0} has a leading /, which is wrong!", template);
             return template.substring(1);
         }
         return template;

@@ -33,8 +33,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.parser.ParserService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
@@ -56,7 +55,7 @@ public class TurbineURI
         extends BaseURI
 {
     /** Logging */
-    private static final Logger log = LogManager.getLogger(TurbineURI.class);
+    private static final Log log = Log.getLog(TurbineURI.class);
 
     /** Contains the PathInfo and QueryData vectors */
     private List<URIParam> [] dataVectors = null;
@@ -275,7 +274,7 @@ public class TurbineURI
         }
         catch (IllegalCharsetNameException | UnsupportedCharsetException e)
         {
-            log.error("Unsupported encoding {}", parserService.getParameterEncoding(), e);
+            log.error("Unsupported encoding {0}", parserService.getParameterEncoding(), e);
         }
     }
 
@@ -795,7 +794,7 @@ public class TurbineURI
         }
         catch (UnsupportedEncodingException e)
         {
-            log.warn("Unsupported encoding {}", parameterEncoding);
+            log.warn("Unsupported encoding {0}", parameterEncoding);
         }
 
         return StringUtils.EMPTY;

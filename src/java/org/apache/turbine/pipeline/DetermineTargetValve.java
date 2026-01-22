@@ -23,8 +23,7 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.util.HttpUtils;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
@@ -44,8 +43,7 @@ import org.apache.turbine.util.uri.URIConstants;
  */
 public class DetermineTargetValve implements Valve
 {
-    private static final Logger log
-        = LogManager.getLogger(DetermineTargetValve.class);
+    private static final Log log = Log.getLog(DetermineTargetValve.class);
 
     /**
      * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
@@ -65,7 +63,7 @@ public class DetermineTargetValve implements Valve
                 {
                     String testAction = HttpUtils.getCleanedKey( target );
                     String message = URIConstants.CGI_SCREEN_PARAM + " has invalid characters. ";
-                    log.warn("{}. Debug action key: {}.", message, testAction);
+                    log.warn("{0}. Debug action key: {1}.", message, testAction);
                     throw new TurbineException( message );
                 }
                 runData.setScreen(target);
@@ -77,7 +75,7 @@ public class DetermineTargetValve implements Valve
             }
         }
 
-        log.debug("Screen Target is now: {}", runData::getScreen);
+        log.debug("Screen Target is now: {0}", runData.getScreen());
 
         // Pass control to the next Valve in the Pipeline
         context.invokeNext(pipelineData);

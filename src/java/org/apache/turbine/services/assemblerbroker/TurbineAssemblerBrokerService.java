@@ -28,11 +28,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.configuration2.Configuration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.AnnotationProcessor;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.InitializationException;
@@ -56,8 +55,7 @@ public class TurbineAssemblerBrokerService
         implements AssemblerBrokerService
 {
     /** Logging */
-    private static Logger log
-            = LogManager.getLogger(TurbineAssemblerBrokerService.class);
+    private static Log log = Log.getLog(TurbineAssemblerBrokerService.class);
 
     /** A structure that holds the registered AssemblerFactories */
     private ConcurrentMap<Class<?>, List<?>> factories = null;
@@ -98,7 +96,7 @@ public class TurbineAssemblerBrokerService
     {
         List<Object> names = getConfiguration().getList(type);
 
-        log.info("Registering {} {} factories.", Integer.valueOf(names.size()), type);
+        log.info("Registering {0} {1} factories.", Integer.valueOf(names.size()), type);
 
         for (Object name2 : names)
         {
@@ -210,22 +208,22 @@ public class TurbineAssemblerBrokerService
         String key = type + ":" + name;
         T assembler = null;
 
-        log.debug("Check name in key {} in assembler.", key);
+        log.debug("Check name in key {0} in assembler.", key);
         if (HttpUtils.keyRequiresClean( name ))
         {
             String message = "Assembler key has invalid characters.";
-            log.warn("{}. Abort assembling for cleaned key {}:{}.", message, type, HttpUtils.getCleanedKey( name ) );
+            log.warn("{0}. Abort assembling for cleaned key {1}:{2}.", message, type, HttpUtils.getCleanedKey( name ) );
             throw new TurbineException( message );
         }
 
         if (isCaching && assemblerCache.containsKey(key))
         {
             assembler = (T) assemblerCache.get(key);
-            log.debug("Found {} in the cache!", key);
+            log.debug("Found {0} in the cache!", key);
         }
         else
         {
-            log.debug("Loading {}", key);
+            log.debug("Loading {0}", key);
             List<AssemblerFactory<T>> facs = getFactoryGroup(type);
 
             for (Iterator<AssemblerFactory<T>> it = facs.iterator(); (assembler == null) && it.hasNext();)
@@ -281,11 +279,11 @@ public class TurbineAssemblerBrokerService
         if (isCaching && loaderCache.containsKey(type))
         {
             loader = (Loader<T>) loaderCache.get(type);
-            log.debug("Found {} loader in the cache!", type);
+            log.debug("Found {0} loader in the cache!", type);
         }
         else
         {
-            log.debug("Getting Loader for {}", type);
+            log.debug("Getting Loader for {0}", type);
             List<AssemblerFactory<T>> facs = getFactoryGroup(type);
 
             for (Iterator<AssemblerFactory<T>> it = facs.iterator(); (loader == null) && it.hasNext();)
@@ -302,7 +300,7 @@ public class TurbineAssemblerBrokerService
 
         if (loader == null)
         {
-            log.warn("Loader for {} is null.", type);
+            log.warn("Loader for {0} is null.", type);
         }
 
         return loader;

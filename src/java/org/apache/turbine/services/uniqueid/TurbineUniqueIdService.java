@@ -27,8 +27,7 @@ import java.security.MessageDigest;
 import java.util.Base64;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -46,7 +45,7 @@ public class TurbineUniqueIdService
         implements UniqueIdService
 {
     /** Logging */
-    private static final Logger log = LogManager.getLogger(TurbineUniqueIdService.class);
+    private static final Log log = Log.getLog(TurbineUniqueIdService.class);
 
     /** The identifier of this instance of turbine. */
     private static String turbineId = "UNKNOWN";
@@ -80,8 +79,8 @@ public class TurbineUniqueIdService
             byte [] bytesId = md.digest(turbineURL.getBytes(StandardCharsets.UTF_8));
             turbineId = Base64.getEncoder().encodeToString(bytesId);
 
-            log.info("This is Turbine instance running at: {}", turbineURL);
-            log.info("The instance id is #{}", turbineId);
+            log.info("This is Turbine instance running at: {0}", turbineURL);
+            log.info("The instance id is #{0}", turbineId);
             setInit(true);
         }
         catch (Exception e)
@@ -97,7 +96,7 @@ public class TurbineUniqueIdService
     @Override
     public void shutdown()
     {
-        log.info("Turbine instance running at {} shutting down.", turbineURL);
+        log.info("Turbine instance running at {0} shutting down.", turbineURL);
     }
 
     /**

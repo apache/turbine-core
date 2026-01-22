@@ -24,8 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail2.core.EmailException;
 import org.apache.commons.mail2.jakarta.SimpleEmail;
 import org.apache.commons.text.WordUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.TurbineServices;
@@ -104,7 +103,7 @@ import org.apache.velocity.context.Context;
 public class VelocityEmail extends SimpleEmail
 {
     /** Logging */
-    private static final Logger log = LogManager.getLogger(VelocityEmail.class);
+    private static final Log log = Log.getLog(VelocityEmail.class);
 
     /** The column to word-wrap at.  <code>0</code> indicates no wrap. */
     private int wordWrap = 0;

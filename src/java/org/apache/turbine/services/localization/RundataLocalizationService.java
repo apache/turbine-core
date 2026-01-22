@@ -23,8 +23,7 @@ import java.util.Locale;
 
 import org.apache.fulcrum.localization.DefaultLocalizationService;
 import org.apache.fulcrum.localization.LocalizationService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
 
@@ -43,12 +42,12 @@ import org.apache.turbine.util.RunData;
 public class RundataLocalizationService extends DefaultLocalizationService implements RundataLocalizationInterface {
 
     private static final long serialVersionUID = -3374820066195748221L;
-    private static final Logger log = LogManager.getLogger(RundataLocalizationService.class);
+    private static final Log log = Log.getLog(RundataLocalizationService.class);
 
     @Override
     public Locale getLocale(RunData data) {
         User user = data.getUser();
-        log.debug( "retrieving lang from req header :{}",
+        log.debug( "retrieving lang from req header :{0}",
                 (user == null || user.getTemp("locale") == null )  );
 
         if (user == null)
@@ -66,7 +65,7 @@ public class RundataLocalizationService extends DefaultLocalizationService imple
                 }
                 else
                 {
-                    log.debug( "retrieved lang from temp(locale):{}", ()-> locale.getLanguage() );
+                    log.debug( "retrieved lang from temp(locale):{0}", locale.getLanguage());
                     return locale;
                 }
             }
