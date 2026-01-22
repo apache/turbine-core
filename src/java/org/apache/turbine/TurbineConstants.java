@@ -48,17 +48,21 @@ public interface TurbineConstants
 	String CONFIG_NAMESPACE = "org.apache.turbine";
 
 	/** The key for the Log4J File */
+    @Deprecated
 	String LOG4J2_CONFIG_FILE = "log4j2.file";
 	/** old key as a reminder */
+    @Deprecated
 	String LOG4J_CONFIG_FILE = "log4j.file";
 
 	/** The default value for the Log4J File */
 	String LOG4J2_CONFIG_FILE_DEFAULT = "/WEB-INF/conf/log4j2.xml";
 
 	/** This is the default log file to be used for logging */
+    @Deprecated
 	String DEFAULT_LOGGER = "turbine";
 
 	/** The logging facility which captures output from the SchedulerService. */
+    @Deprecated
 	String SCHEDULER_LOG_FACILITY = "scheduler";
 
 	/** The SMTP server Turbine uses to send mail. */
@@ -268,9 +272,11 @@ public interface TurbineConstants
 	String WEBAPP_ROOT_KEY = "webappRoot";
 
 	/** The Key in the deployment descriptor for the Logging Directory */
+	@Deprecated
 	String LOGGING_ROOT_KEY = "loggingRoot";
 
 	/** Default Value for the Logging Directory, relative to the webroot */
+    @Deprecated
 	String LOGGING_ROOT_DEFAULT = "/logs";
 
 	/** Key for loading the UUID Generator with a constant value */
