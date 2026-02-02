@@ -31,8 +31,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 
 /**
  * A generic implementation of a <code>ServiceBroker</code> which
@@ -104,7 +103,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
     private final ConcurrentHashMap<String, Object> serviceObjects = new ConcurrentHashMap<>();
 
     /** Logging */
-    private static final Logger log = LogManager.getLogger(BaseServiceBroker.class);
+    private static final Log log = Log.getLog(BaseServiceBroker.class);
 
     /**
      * Application root path as set by the
@@ -262,7 +261,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
                     && ("." + keyParts[2]).equals(CLASSNAME_SUFFIX))
             {
                 String serviceKey = keyParts[1];
-                log.info("Added Mapping for Service: {}", serviceKey);
+                log.info("Added Mapping for Service: {0}", serviceKey);
 
                 if (!mapping.containsKey(serviceKey))
                 {
@@ -275,7 +274,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
                         // detect TurbineServiceProviders
                         if (checkForInterface(TurbineServiceProvider.class, clazz.getInterfaces()))
                         {
-                            log.info("Found a TurbineServiceProvider: {} - initializing it early", serviceKey);
+                            log.info("Found a TurbineServiceProvider: {0} - initializing it early", serviceKey);
                             earlyInitFlags.put(SERVICE_PREFIX + serviceKey + ".earlyInit", "true");
                         }
                     }
@@ -439,9 +438,9 @@ public abstract class BaseServiceBroker implements ServiceBroker
         // Only start up services that have their earlyInit flag set.
         if (getConfiguration(name).getBoolean("earlyInit", false))
         {
-            log.info("Start Initializing service (early): {}", name);
+            log.info("Start Initializing service (early): {0}", name);
             initService(name);
-            log.info("Finish Initializing service (early): {}", name);
+            log.info("Finish Initializing service (early): {0}", name);
         }
     }
 
@@ -516,7 +515,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
         for (String s : reverseServicesList)
         {
             serviceName = s;
-            log.info("Shutting down service: {}", serviceName);
+            log.info("Shutting down service: {0}", serviceName);
             shutdownService(serviceName);
         }
     }
@@ -546,9 +545,9 @@ public abstract class BaseServiceBroker implements ServiceBroker
                     {
 	                    if (!service.getInit())
 	                    {
-	                        log.info("Start Initializing service (late): {}", name);
+	                        log.info("Start Initializing service (late): {0}", name);
 	                        service.init();
-	                        log.info("Finish Initializing service (late): {}", name);
+	                        log.info("Finish Initializing service (late): {0}", name);
 	                    }
 	                }
                     finally

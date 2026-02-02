@@ -27,10 +27,9 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.apache.fulcrum.localization.LocalizationService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.localization.DateTimeFormatterInterface;
@@ -58,7 +57,7 @@ public class DateTimeFormatterTool extends DateFormatter
     @TurbineService
     private DateTimeFormatterService dtfs;
 
-    private static final Logger log = LogManager.getLogger(DateTimeFormatterTool.class);
+    private static final Log log = Log.getLog(DateTimeFormatterTool.class);
 
     /** Fulcrum Localization component */
     @TurbineService
@@ -84,7 +83,7 @@ public class DateTimeFormatterTool extends DateFormatter
      * Customizations:
      * Locale could be fetched from request, if #USE_REQUEST_LOCALE_KEY is set to
      * <code>true</code> (by default it is <code>false</code>.Then it will be retrieved either from
-     * {@link RundataLocalizationService#getLocale(RunData)} (if set in urbien role configuration)
+     * {@link RundataLocalizationService#getLocale(RunData)} (if set in Turbine role configuration)
      * or {@link LocalizationService#getLocale(jakarta.servlet.http.HttpServletRequest)}.
      *
      * @param data initialization data
@@ -92,8 +91,7 @@ public class DateTimeFormatterTool extends DateFormatter
     @Override
     public void init(Object data)
     {
-        log.info("Initializing DateTimeFormatterTool with service {}",
-                dtfs);
+        log.info("Initializing DateTimeFormatterTool with service {0}", dtfs);
         if (dtfs == null)
         {
             ServiceManager serviceManager = TurbineServices.getInstance();
@@ -108,7 +106,7 @@ public class DateTimeFormatterTool extends DateFormatter
             // Pull necessary information out of RunData while we have
             // a reference to it.
             locale = localizationService.getLocale(rd.getRequest());
-            log.info("Override {} with request locale {} from {}", dtfs.getLocale(), locale, localizationService);
+            log.info("Override {0} with request locale {1} from {2}", dtfs.getLocale(), locale, localizationService);
         }
     }
 
@@ -154,7 +152,8 @@ public class DateTimeFormatterTool extends DateFormatter
 
     @Override
     public <T extends TemporalAccessor> String format(T temporalAccessor, String dateFormatString, Locale locale,
-            ZoneId zoneId) {
+            ZoneId zoneId)
+    {
         return getDtfs().format(temporalAccessor, dateFormatString, locale, zoneId);
     }
 
@@ -189,16 +188,19 @@ public class DateTimeFormatterTool extends DateFormatter
         return  getDtfs().map( src, outgoingFormat, locale, getDtfs().getDefaultFormat() );
     }
 
-    public Locale getLocale() {
+    public Locale getLocale()
+    {
         return locale;
     }
 
-    public void setLocale(Locale locale) {
+    public void setLocale(Locale locale)
+    {
         this.locale = locale;
     }
 
     @Override
-    public ZoneId getZoneId() {
+    public ZoneId getZoneId()
+    {
         return (getDtfs()!= null)? getDtfs().getZoneId():ZoneId.systemDefault();
     }
 

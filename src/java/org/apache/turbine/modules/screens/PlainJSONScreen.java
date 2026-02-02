@@ -106,10 +106,10 @@ public class PlainJSONScreen extends RawScreen
 
         String json_res = data.getMessage();
 
-        log.debug( "json_res output: {}", json_res );
+        log.debug( "json_res output: {0}", json_res );
         try (PrintWriter out = new PrintWriter(
                 new OutputStreamWriter(
-                    data.getResponse().getOutputStream(),charset)))
+                    data.getResponse().getOutputStream(), charset)))
         {
             out.print(json_res.toString());
             out.flush();

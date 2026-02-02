@@ -29,8 +29,7 @@ import java.util.Hashtable;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.mail2.core.EmailException;
 import org.apache.commons.mail2.jakarta.HtmlEmail;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.TurbineServices;
@@ -85,7 +84,7 @@ import org.apache.velocity.context.Context;
 public class VelocityHtmlEmail extends HtmlEmail
 {
     /** Logging */
-    private static final Logger log = LogManager.getLogger(VelocityHtmlEmail.class);
+    private static final Log log = Log.getLog(VelocityHtmlEmail.class);
 
     /**
      * The html template to process, relative to VM's template
@@ -251,7 +250,7 @@ public class VelocityHtmlEmail extends HtmlEmail
         }
         catch (MalformedURLException | EmailException e)
         {
-            log.error("cannot embed {}", surl, e);
+            log.error("cannot embed {0}", surl, e);
         }
         return cid;
     }

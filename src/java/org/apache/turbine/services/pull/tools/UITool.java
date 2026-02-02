@@ -1,6 +1,6 @@
 package org.apache.turbine.services.pull.tools;
 
-import org.apache.logging.log4j.LogManager;
+import org.apache.turbine.annotation.TurbineService;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -21,8 +21,7 @@ import org.apache.logging.log4j.LogManager;
  * under the License.
  */
 
-import org.apache.logging.log4j.Logger;
-import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.pull.ApplicationTool;
@@ -65,7 +64,7 @@ import org.apache.turbine.util.ServerData;
 public class UITool implements ApplicationTool<Object>
 {
     /** Logging */
-    private static final Logger log = LogManager.getLogger(UITool.class);
+    private static final Log log = Log.getLog(UITool.class);
 
     /**
      * Attribute name of skinName value in User's temp hashmap.
@@ -90,7 +89,7 @@ public class UITool implements ApplicationTool<Object>
     public void refresh(Object data)
     {
         uiService.refresh(getSkin());
-        log.debug("UITool refreshed for skin: {}", this::getSkin);
+        log.debug("UITool refreshed for skin: {0}", getSkin());
     }
 
     /**

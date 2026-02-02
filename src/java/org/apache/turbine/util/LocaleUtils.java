@@ -28,8 +28,7 @@ import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.fulcrum.mimetype.MimeTypeService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.ServiceManager;
@@ -61,7 +60,7 @@ import org.apache.turbine.services.TurbineServices;
 public class LocaleUtils
 {
     /** Logging */
-    private static final Logger log = LogManager.getLogger(LocaleUtils.class);
+    private static final Log log = Log.getLog(LocaleUtils.class);
 
     /** The default locale. */
     private static Locale defaultLocale = null;
@@ -81,7 +80,7 @@ public class LocaleUtils
                 .getString(TurbineConstants.PARAMETER_ENCODING_KEY,
                         TurbineConstants.PARAMETER_ENCODING_DEFAULT);
 
-        log.debug("Input Encoding has been set to {}", inputEncoding);
+        log.debug("Input Encoding has been set to {0}", inputEncoding);
 
         return inputEncoding;
     }
@@ -145,7 +144,7 @@ public class LocaleUtils
             if (StringUtils.isNotEmpty(charSet))
             {
                 defaultCharSet = charSetForName(charSet);
-                log.debug("defaultCharSet = {} (From Properties)", defaultCharSet);
+                log.debug("defaultCharSet = {0} (From Properties)", defaultCharSet);
             }
         }
 
@@ -156,7 +155,7 @@ public class LocaleUtils
             log.debug("Default charset is empty!");
             /* Default charset isn't specified, get the locale specific one. */
             Locale locale = getDefaultLocale();
-            log.debug("Locale is {}", locale);
+            log.debug("Locale is {0}", locale);
 
             if (!locale.equals(Locale.US))
             {
@@ -174,7 +173,7 @@ public class LocaleUtils
                         throw new RuntimeException(e);
                     }
 
-                    log.debug("Charset now {}", charset);
+                    log.debug("Charset now {0}", charset);
                 }
             }
 
@@ -185,7 +184,7 @@ public class LocaleUtils
             }
         }
 
-        log.debug("Returning default Charset of {}", charset);
+        log.debug("Returning default Charset of {0}", charset);
         return charset;
     }
 
@@ -239,7 +238,7 @@ public class LocaleUtils
         }
         catch (IllegalCharsetNameException | UnsupportedCharsetException e)
         {
-            log.error("Illegal default charset {}", charSet);
+            log.error("Illegal default charset {0}", charSet);
         }
 
         return null;

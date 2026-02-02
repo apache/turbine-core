@@ -1,6 +1,7 @@
 package org.apache.turbine.modules.screens;
 
-import org.apache.logging.log4j.LogManager;
+import org.apache.turbine.annotation.TurbineLoader;
+import org.apache.turbine.annotation.TurbineService;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -21,9 +22,7 @@ import org.apache.logging.log4j.LogManager;
  * under the License.
  */
 
-import org.apache.logging.log4j.Logger;
-import org.apache.turbine.annotation.TurbineLoader;
-import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
@@ -51,7 +50,7 @@ import org.apache.turbine.util.template.TemplateInfo;
 public abstract class TemplateScreen implements Screen
 {
     /** Logging */
-    protected Logger log = LogManager.getLogger(this.getClass());
+    protected Log log = Log.getLog(this.getClass());
 
     /** Injected service instance */
     @TurbineService
@@ -171,7 +170,7 @@ public abstract class TemplateScreen implements Screen
     public void doRedirect(PipelineData pipelineData, String screen, String template)
             throws Exception
     {
-        log.debug("doRedirect(data, {}, {})", screen, template);
+        log.debug("doRedirect(data, {0}, {1})", screen, template);
         setTemplate(pipelineData, template);
         screenLoader.exec(pipelineData, screen);
     }

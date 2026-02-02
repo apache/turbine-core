@@ -26,8 +26,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.GenericLoader;
 import org.apache.turbine.modules.Loader;
@@ -48,7 +47,7 @@ public abstract class JavaBaseFactory<T extends Assembler>
     private static List<String> packages = GenericLoader.getPackages();
 
     /** Logging */
-    protected Logger log = LogManager.getLogger(this.getClass());
+    protected Log log = Log.getLog(this.getClass());
 
     /**
      * A cache for previously obtained Class instances, which we keep in order
@@ -68,7 +67,7 @@ public abstract class JavaBaseFactory<T extends Assembler>
     {
         T assembler = null;
 
-        log.debug("Class Fragment is {}", name);
+        log.debug("Class Fragment is {0}", name);
 
         if (StringUtils.isNotEmpty(name))
         {
@@ -79,7 +78,7 @@ public abstract class JavaBaseFactory<T extends Assembler>
                 sb.append(p).append('.').append(packageName).append('.').append(name);
                 String className = sb.toString();
 
-                log.debug("Trying {}", className);
+                log.debug("Trying {0}", className);
 
                 try
                 {
@@ -99,12 +98,12 @@ public abstract class JavaBaseFactory<T extends Assembler>
                 catch (ClassNotFoundException cnfe)
                 {
                     // Do this so we loop through all the packages.
-                    log.debug("{}: Not found", className);
+                    log.debug("{0}: Not found", className);
                 }
                 catch (NoClassDefFoundError ncdfe)
                 {
                     // Do this so we loop through all the packages.
-                    log.debug("{}: No Class Definition found", className);
+                    log.debug("{0}: No Class Definition found", className);
                 }
                 // With ClassCastException, InstantiationException we hit big problems
                 catch (ClassCastException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
@@ -112,13 +111,13 @@ public abstract class JavaBaseFactory<T extends Assembler>
                     // This means trouble!
                     // Alternatively we can throw this exception so
                     // that it will appear on the client browser
-                    log.error("Could not load {}", className, e);
+                    log.error("Could not load {0}", className, e);
                     break; // for()
                 }
             }
         }
 
-        log.debug("Returning: {}", assembler);
+        log.debug("Returning: {0}", assembler);
 
         return assembler;
     }

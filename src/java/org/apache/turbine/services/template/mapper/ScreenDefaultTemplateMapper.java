@@ -26,8 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateEngineService;
 import org.apache.turbine.services.template.TemplateService;
@@ -48,7 +47,7 @@ public class ScreenDefaultTemplateMapper
     implements Mapper
 {
     /** Logging */
-    private static final Logger log = LogManager.getLogger(ScreenDefaultTemplateMapper.class);
+    private static final Log log = Log.getLog(ScreenDefaultTemplateMapper.class);
 
     /**
      * Default C'tor. If you use this C'tor, you must use
@@ -70,7 +69,7 @@ public class ScreenDefaultTemplateMapper
     @Override
     public String doMapping(String template)
     {
-        log.debug("doMapping({})", template);
+        log.debug("doMapping({0})", template);
         // Copy our elements into an array
         List<String> components
             = new ArrayList<>(Arrays.asList(StringUtils.split(
@@ -83,7 +82,7 @@ public class ScreenDefaultTemplateMapper
         String templateName = components.get(componentSize);
         components.remove(componentSize--);
 
-        log.debug("templateName is {}", templateName);
+        log.debug("templateName is {0}", templateName);
 
         // Last element decides, which template Service to use...
         TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
@@ -105,7 +104,7 @@ public class ScreenDefaultTemplateMapper
         {
             String templatePackage = StringUtils.join(components.iterator(), String.valueOf(separator));
 
-            log.debug("templatePackage is now: {}", templatePackage);
+            log.debug("templatePackage is now: {0}", templatePackage);
 
             StringBuilder testName = new StringBuilder();
 
@@ -128,11 +127,11 @@ public class ScreenDefaultTemplateMapper
             }
             templatePath.append(testName);
 
-            log.debug("Looking for {}", templatePath);
+            log.debug("Looking for {0}", templatePath);
 
             if (tes.templateExists(templatePath.toString()))
             {
-                log.debug("Found it, returning {}", testName);
+                log.debug("Found it, returning {0}", testName);
                 return testName.toString();
             }
 

@@ -3,7 +3,9 @@ package org.apache.turbine.modules.actions;
 import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
 import org.apache.fulcrum.security.util.FulcrumSecurityException;
-import org.apache.logging.log4j.LogManager;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineService;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -24,10 +26,7 @@ import org.apache.logging.log4j.LogManager;
  * under the License.
  */
 
-import org.apache.logging.log4j.Logger;
-import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.annotation.TurbineService;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
@@ -71,7 +70,7 @@ import org.apache.turbine.util.RunData;
 public class AccessController implements Action
 {
     /** Logging */
-    private static final Logger log = LogManager.getLogger(AccessController.class);
+    private static final Log log = Log.getLog(AccessController.class);
 
     /** Injected service instance */
     @TurbineService
@@ -97,7 +96,7 @@ public class AccessController implements Action
         if (!security.isAnonymousUser(user)
             && user.hasLoggedIn())
         {
-            log.debug("Fetching ACL for {}", user::getName);
+            log.debug("Fetching ACL for {0}", user.getName());
             AccessControlList acl = (AccessControlList)
                     data.getSession().getAttribute(
                             TurbineConstants.ACL_SESSION_KEY);
@@ -108,7 +107,7 @@ public class AccessController implements Action
                 data.getSession().setAttribute(
                         TurbineConstants.ACL_SESSION_KEY, acl);
 
-                log.debug("ACL is {}", acl);
+                log.debug("ACL is {0}", acl);
             }
             data.setACL(acl);
         }

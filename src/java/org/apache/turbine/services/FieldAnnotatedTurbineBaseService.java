@@ -1,7 +1,6 @@
 package org.apache.turbine.services;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -38,7 +37,7 @@ public abstract class FieldAnnotatedTurbineBaseService
         extends TurbineBaseService
 {
 
-    private static Logger log = LogManager.getLogger(FieldAnnotatedTurbineBaseService.class);
+    private static Log log = Log.getLog(FieldAnnotatedTurbineBaseService.class);
     /**
      * Performs late initialization.
      *
@@ -53,7 +52,7 @@ public abstract class FieldAnnotatedTurbineBaseService
     public void init() throws InitializationException
     {
         try {
-            log.debug("parsing annotations for {}", this.getClass());
+            log.debug("parsing annotations for {0}", this.getClass());
             AnnotationProcessor.process(this, false);
         } catch (TurbineException e) {
             throw new InitializationException(e.getMessage(), e);

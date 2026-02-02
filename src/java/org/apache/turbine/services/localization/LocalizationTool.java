@@ -23,8 +23,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 
 import org.apache.fulcrum.localization.LocalizationService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.pull.PipelineDataApplicationTool;
@@ -40,7 +39,7 @@ import org.apache.turbine.util.RunData;
 public class LocalizationTool implements PipelineDataApplicationTool
 {
     /** Logging */
-    private static Logger log = LogManager.getLogger(LocalizationTool.class);
+    private static Log log = Log.getLog(LocalizationTool.class);
 
     /** Fulcrum Localization component */
     @TurbineService

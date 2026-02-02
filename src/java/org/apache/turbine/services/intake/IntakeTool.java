@@ -32,8 +32,7 @@ import org.apache.fulcrum.intake.Retrievable;
 import org.apache.fulcrum.intake.model.Group;
 import org.apache.fulcrum.parser.ValueParser;
 import org.apache.fulcrum.pool.Recyclable;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.pull.PipelineDataApplicationTool;
@@ -53,7 +52,7 @@ public class IntakeTool
         implements PipelineDataApplicationTool, Recyclable
 {
     /** Used for logging */
-    protected static final Logger log = LogManager.getLogger(IntakeTool.class);
+    protected static final Log log = Log.getLog(IntakeTool.class);
 
     /** Constant for default key */
     public static final String DEFAULT_KEY = "_0";
@@ -154,7 +153,7 @@ public class IntakeTool
                     }
                     catch (IntakeException ie)
                     {
-                        log.error("Tried to release unknown group {}", foundGroup.getIntakeGroupName(), ie);
+                        log.error("Tried to release unknown group {0}", foundGroup.getIntakeGroupName(), ie);
                     }
                 }
             }
@@ -454,7 +453,7 @@ public class IntakeTool
             }
             catch (IntakeException ie)
             {
-                log.error("Tried to release unknown group {}", group.getIntakeGroupName(), ie);
+                log.error("Tried to release unknown group {0}", group.getIntakeGroupName(), ie);
             }
         }
     }
@@ -515,7 +514,7 @@ public class IntakeTool
             }
             catch (IntakeException ie)
             {
-                log.error("Tried to release unknown group {}",
+                log.error("Tried to release unknown group {0}",
                         group.getIntakeGroupName(), ie);
             }
         }

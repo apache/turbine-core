@@ -35,10 +35,9 @@ import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.DefaultPipelineData;
 import org.apache.turbine.services.TurbineServices;
@@ -135,7 +134,7 @@ public class DefaultTurbineRunData
     private final Map<String, Object> debugVariables = new HashMap<>();
 
     /** Logging */
-    private static final Logger log = LogManager.getLogger(DefaultTurbineRunData.class);
+    private static final Log log = Log.getLog(DefaultTurbineRunData.class);
 
     /**
      * Attempts to get the User object from the session.  If it does
@@ -545,7 +544,7 @@ public class DefaultTurbineRunData
     @Override
     public void setUser(User user)
     {
-        log.debug("user set: {}", user::getName);
+        log.debug("user set: {0}", user.getName());
         put(Turbine.class, User.class, user);
     }
 
@@ -680,7 +679,7 @@ public class DefaultTurbineRunData
     @Override
     public void setCharset(Charset charSet)
     {
-        log.debug("setCharset({})", charSet);
+        log.debug("setCharset({0})", charSet);
         put(Turbine.class, Charset.class, charSet);
     }
 

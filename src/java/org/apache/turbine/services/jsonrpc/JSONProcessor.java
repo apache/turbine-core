@@ -21,15 +21,14 @@ package org.apache.turbine.services.jsonrpc;
 
 import java.io.CharArrayWriter;
 
-import jakarta.servlet.http.HttpServletRequest;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.jabsorb.JSONRPCBridge;
 import org.jabsorb.JSONRPCResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Process a JSON RPC call
@@ -39,7 +38,7 @@ import org.json.JSONObject;
 public class JSONProcessor
 {
     /** Log. */
-    private static Logger log = LogManager.getLogger(JSONProcessor.class);
+    private static Log log = Log.getLog(JSONProcessor.class);
 
     /**
      * Process a JSON RPC call
@@ -76,11 +75,11 @@ public class JSONProcessor
         }
         catch (JSONException e)
         {
-            log.error(".processCall(): can't parse call: {}", cdata, e);
+            log.error(".processCall(): can't parse call: {0}", cdata, e);
             json_res = JSONRPCResult.MSG_ERR_PARSE;
         }
         // Write the response
-        log.debug(".processCall():  returns ", json_res::toString);
+        log.debug(".processCall():  returns {0}", json_res.toString());
         return json_res;
     }
 

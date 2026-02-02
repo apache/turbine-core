@@ -23,8 +23,7 @@ package org.apache.turbine.services.schedule;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.TurbineException;
@@ -38,7 +37,7 @@ import org.apache.turbine.util.TurbineException;
 public class SchedulerTool implements ApplicationTool<Object>
 {
     /** Used for logging */
-    private static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);
+    private static final Log log = Log.getLog(ScheduleService.LOGGER_NAME);
 
     /**
      * The scheduler service.
@@ -95,7 +94,7 @@ public class SchedulerTool implements ApplicationTool<Object>
         }
         catch (TurbineException e)
         {
-            log.error("Could not retreive job id #{}", jobId, e);
+            log.error("Could not retreive job id #{0}", jobId, e);
         }
 
         return je;

@@ -30,13 +30,12 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.parser.ValueParser.URLCaseFolding;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.AnnotationProcessor;
 import org.apache.turbine.annotation.TurbineActionEvent;
 import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.pipeline.PipelineData;
 
 /**
@@ -87,7 +86,7 @@ import org.apache.turbine.pipeline.PipelineData;
 public abstract class ActionEvent implements Action
 {
 	/** Logging */
-	protected Logger log = LogManager.getLogger(this.getClass());
+	protected Log log = Log.getLog(this.getClass());
 
 	/** The name of the button to look for. */
 	protected static final String BUTTON = "eventSubmit_";
@@ -256,7 +255,7 @@ public abstract class ActionEvent implements Action
 
 		try
 		{
-			log.debug("Invoking {}", method);
+			log.debug("Invoking {0}", method);
 
 			method.invoke(this, parameters);
 		}
@@ -276,7 +275,7 @@ public abstract class ActionEvent implements Action
 			}
 			else
 			{
-			    log.error("Invokation of {}", method, t);
+			    log.error("Invocation of {0}", method, t);
 			}
 		}
 	}
@@ -327,7 +326,7 @@ public abstract class ActionEvent implements Action
 	{
 		if (!submitValueKey)
 		{
-			log.debug("No Value required, accepting {}", key);
+			log.debug("No Value required, accepting {0}", key);
 			return true;
 		}
 		else
@@ -342,10 +341,10 @@ public abstract class ActionEvent implements Action
 			// current behavior.
 			//
 			String keyValue = pp.getString(key);
-			log.debug("Key Value is {}", keyValue);
+			log.debug("Key Value is {0}", keyValue);
 			if (StringUtils.isEmpty(keyValue))
 			{
-				log.debug("Key is empty, rejecting {}", key);
+				log.debug("Key is empty, rejecting {0}", key);
 				return false;
 			}
 
@@ -353,7 +352,7 @@ public abstract class ActionEvent implements Action
 			{
 				if (Integer.parseInt(keyValue) != 0)
 				{
-					log.debug("Integer != 0, accepting {}", key);
+					log.debug("Integer != 0, accepting {0}", key);
 					return true;
 				}
 			}
@@ -366,7 +365,7 @@ public abstract class ActionEvent implements Action
 				return true;
 			}
 		}
-		log.debug("Rejecting {}", key);
+		log.debug("Rejecting {0}", key);
 		return false;
 	}
 }

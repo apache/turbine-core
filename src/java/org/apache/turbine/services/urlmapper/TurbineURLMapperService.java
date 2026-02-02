@@ -34,14 +34,9 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
-
 import org.apache.commons.configuration2.Configuration;
 import org.apache.fulcrum.parser.ParameterParser;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
@@ -54,6 +49,10 @@ import org.apache.turbine.util.uri.URIParam;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 /**
  * The URL mapper service provides methods to map a set of parameters to a
@@ -76,7 +75,7 @@ public class TurbineURLMapperService
     /**
      * Logging.
      */
-    private static final Logger log = LogManager.getLogger(TurbineURLMapperService.class);
+    private static final Log log = Log.getLog(TurbineURLMapperService.class);
 
     /**
      * The default configuration file.
@@ -205,7 +204,7 @@ public class TurbineURLMapperService
             }
         }
 
-        log.debug("mapped to uri: {} ", uri);
+        log.debug("mapped to uri: {0} ", uri);
     }
 
     /**
@@ -242,7 +241,7 @@ public class TurbineURLMapperService
                 urlMap.getIgnoreParameters().keySet()
                         .forEach(pp::remove);
 
-                log.debug("mapped {} params from url {} ", pp.getKeys().length, url);
+                log.debug("mapped {0} params from url {1} ", pp.getKeys().length, url);
 
                 break;
             }
@@ -308,7 +307,7 @@ public class TurbineURLMapperService
             urlMap.setGroupNamesMap(groupNamesMap);
         }
 
-        log.info("Loaded {} url-mappings from {}", Integer.valueOf(container.getMapEntries().size()), configFile);
+        log.info("Loaded {0} url-mappings from {1}", Integer.valueOf(container.getMapEntries().size()), configFile);
 
         setInit(true);
     }

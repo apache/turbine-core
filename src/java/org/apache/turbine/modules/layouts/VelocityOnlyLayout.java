@@ -76,7 +76,7 @@ public class VelocityOnlyLayout extends VelocityLayout
     {
         String screenName = pipelineData.getRunData().getScreen();
 
-        log.debug("Loading Screen {}", screenName);
+        log.debug("Loading Screen {0}", screenName);
 
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.

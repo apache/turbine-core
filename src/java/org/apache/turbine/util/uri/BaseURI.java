@@ -24,8 +24,7 @@ package org.apache.turbine.util.uri;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.util.RunData;
@@ -48,7 +47,7 @@ public abstract class BaseURI
                    URIConstants
 {
     /** Logging */
-    private static final Logger log = LogManager.getLogger(BaseURI.class);
+    private static final Log log = Log.getLog(BaseURI.class);
 
     /** ServerData Object for scheme, name, port etc. */
     private ServerData serverData =
@@ -147,7 +146,7 @@ public abstract class BaseURI
      */
     private void init(ServerData serverData)
     {
-        log.debug("init({})", serverData);
+        log.debug("init({0})", serverData);
 
         if (serverData != null)
         {

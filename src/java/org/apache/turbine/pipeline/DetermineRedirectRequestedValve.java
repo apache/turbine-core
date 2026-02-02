@@ -24,8 +24,7 @@ package org.apache.turbine.pipeline;
 import java.io.IOException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -40,7 +39,7 @@ import org.apache.turbine.util.TurbineException;
 public class DetermineRedirectRequestedValve
     implements Valve
 {
-    private static final Logger log = LogManager.getLogger(DetermineRedirectRequestedValve.class);
+    private static final Log log = Log.getLog(DetermineRedirectRequestedValve.class);
 
     /**
      * Creates a new instance.
@@ -80,7 +79,7 @@ public class DetermineRedirectRequestedValve
         {
             if (data.getResponse().isCommitted())
             {
-                log.warn("redirect requested, response already committed: {}", data.getRedirectURI());
+                log.warn("redirect requested, response already committed: {0}", data.getRedirectURI());
             }
             else
             {

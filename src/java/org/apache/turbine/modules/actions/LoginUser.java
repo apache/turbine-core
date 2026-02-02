@@ -22,8 +22,7 @@ package org.apache.turbine.modules.actions;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.fulcrum.security.util.DataBackendException;
 import org.apache.fulcrum.security.util.FulcrumSecurityException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.annotation.TurbineService;
@@ -54,7 +53,7 @@ public class LoginUser implements Action
     public static final String CGI_PASSWORD = "password";
 
     /** Logging */
-    private static Logger log = LogManager.getLogger(LoginUser.class);
+    private static Log log = Log.getLog(LoginUser.class);
 
     /** Injected service instance */
     @TurbineService

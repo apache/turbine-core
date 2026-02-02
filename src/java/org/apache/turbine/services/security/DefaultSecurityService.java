@@ -40,8 +40,7 @@ import org.apache.fulcrum.security.util.PasswordMismatchException;
 import org.apache.fulcrum.security.util.PermissionSet;
 import org.apache.fulcrum.security.util.RoleSet;
 import org.apache.fulcrum.security.util.UnknownEntityException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.torque.avalon.Torque;
 import org.apache.torque.avalon.TorqueComponent;
 import org.apache.turbine.om.security.User;
@@ -101,7 +100,7 @@ public class DefaultSecurityService
     private static volatile Group globalGroup = null;
 
     /** Logging */
-    private static final Logger log = LogManager.getLogger(DefaultSecurityService.class);
+    private static final Log log = Log.getLog(DefaultSecurityService.class);
 
     /**
      * Initializes the SecurityService, locating the appropriate UserManager

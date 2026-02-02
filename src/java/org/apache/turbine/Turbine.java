@@ -40,9 +40,7 @@ import org.apache.commons.configuration2.io.HomeDirectoryLocationStrategy;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.modules.PageLoader;
 import org.apache.turbine.pipeline.Pipeline;
 import org.apache.turbine.pipeline.PipelineData;
@@ -113,7 +111,8 @@ import jakarta.xml.bind.Unmarshaller;
  */
 @WebServlet(name = "Turbine", urlPatterns = { "/app" }, loadOnStartup = 1, initParams = {
         @WebInitParam(name = TurbineConstants.APPLICATION_ROOT_KEY, value = TurbineConstants.APPLICATION_ROOT_DEFAULT),
-        @WebInitParam(name = TurbineConfig.PROPERTIES_PATH_KEY, value = TurbineConfig.PROPERTIES_PATH_DEFAULT) })
+        @WebInitParam(name = TurbineConfig.PROPERTIES_PATH_KEY, value = TurbineConfig.PROPERTIES_PATH_DEFAULT),
+        @WebInitParam(name = "log4jConfiguration", value = TurbineConstants.LOG4J2_CONFIG_FILE_DEFAULT) })
 @MultipartConfig
 public class Turbine extends HttpServlet
 {
@@ -184,7 +183,7 @@ public class Turbine extends HttpServlet
         XML, PROPERTIES, JSON, YAML, UNSET
     }
 
-    private static final Logger log = LogManager.getLogger(Turbine.class);
+    private static final Log log = Log.getLog(Turbine.class);
 
     /**
      * This init method will load the default resources from a properties file.
@@ -306,12 +305,7 @@ public class Turbine extends HttpServlet
         // /WEB-INF/conf/TurbineResources.properties relative to the
         // web application root.
 
-        Path confPath = configureApplication(config, context);
-
-        configureLogging(confPath);
-
-        //
-        // Logging with log4j 2 is done via convention, finding in path
+        configureApplication(config, context);
 
         setTurbineServletConfig(config);
         setTurbineServletContext(context);
@@ -340,7 +334,7 @@ public class Turbine extends HttpServlet
                 "pipeline.default.descriptor",
                 TurbinePipeline.CLASSIC_PIPELINE);
 
-        log.debug("Using descriptor path: {}", descriptorPath);
+        log.debug("Using descriptor path: {0}", descriptorPath);
 
         // context resource path has to begin with slash, cft.
         // context.getResource
@@ -411,7 +405,7 @@ public class Turbine extends HttpServlet
         }
 
         // First report
-        log.debug("Loading configuration ({}) from {}", confStyle, confFile);
+        log.debug("Loading configuration ({0}) from {1}", confStyle, confFile);
 
         // now begin loading
         Parameters params = new Parameters();
@@ -476,7 +470,7 @@ public class Turbine extends HttpServlet
                 break;
         }
         // Now report our successful configuration to the world
-        log.info("Loaded configuration ({}) from {} style: {}",
+        log.info("Loaded configuration ({2}) from {1} style: {0}",
                 confStyle, confFile, configuration.toString());
 
         return targetPath;
@@ -569,7 +563,7 @@ public class Turbine extends HttpServlet
                         }
                         catch (InitializationException e)
                         {
-                            log.warn("Could not initialize Initable {} with PipelineData", serviceName, e);
+                            log.warn("Could not initialize Initable {0} with PipelineData", serviceName, e);
                         }
                     }
                 }
@@ -927,82 +921,6 @@ public class Turbine extends HttpServlet
         //
         ServerData requestServerData = data.get(Turbine.class, ServerData.class);
         serverData = (ServerData) requestServerData.clone();
-    }
-
-    /**
-     * Checks Log4j 2 Context, loads log4File, if configured and configuration
-     * is not already located.
-     *
-     * @param logConf
-     *            Configuration file path
-     * @throws IOException
-     *             if path not found
-     */
-    protected void configureLogging(Path logConf) throws IOException
-    {
-        LoggerContext context = (LoggerContext) LogManager.getContext(false);
-
-        if (context.getConfiguration().getConfigurationSource().getLocation() == null)
-        {
-            Path log4jFile = resolveLog4j2(logConf.getParent());
-            // configured + no other log4j configuration already found
-            if (log4jFile != null)
-            {
-                org.apache.logging.log4j.spi.LoggerContext ctxContext = LogManager.getContext(null, false, log4jFile.toUri());
-                if (ctxContext instanceof LoggerContext)
-                {
-                    log.info("resolved log4j2 location: {}", context.getConfiguration().getConfigurationSource().getLocation());
-                }
-
-            }
-        }
-        log.info("found log4j2 location: {}", context.getConfiguration().getConfigurationSource().getLocation());
-    }
-
-    /**
-     * Check {@linkplain TurbineConstants#LOG4J2_CONFIG_FILE} in Turbine
-     * configuration.
-     *
-     * @param logConfPath
-     *            configuration directory
-     * @return Resolved log4j2 {@link Path} or null, if not found or configured
-     *         "none".
-     */
-    protected Path resolveLog4j2(Path logConfPath)
-    {
-        String log4jFile = configuration.getString(TurbineConstants.LOG4J2_CONFIG_FILE,
-                TurbineConstants.LOG4J2_CONFIG_FILE_DEFAULT);
-
-        if (log4jFile.startsWith("/"))
-        {
-            log4jFile = log4jFile.substring(1);
-        }
-        Path log4jTarget = null;
-        if (StringUtils.isNotEmpty(log4jFile) && !log4jFile.equalsIgnoreCase("none"))
-        {
-            // log4j must either share path with configuration path or resolved
-            // relatively
-
-            if (logConfPath != null)
-            {
-                Path log4jFilePath = Paths.get(log4jFile);
-                Path logFilePath = logConfPath.resolve(log4jFilePath);
-                if (logFilePath != null && logFilePath.toFile().exists())
-                {
-                    log4jTarget = logFilePath.normalize();
-                }
-                else // fall back just using the filename, if path match
-                if (log4jFilePath != null && log4jFilePath.getParent() != null && logConfPath.endsWith(log4jFilePath.getParent()))
-                {
-                    logFilePath = logConfPath.resolve(log4jFilePath.getFileName());
-                    if (logFilePath != null && logFilePath.toFile().exists())
-                    {
-                        log4jTarget = logFilePath.normalize();
-                    }
-                }
-            }
-        }
-        return log4jTarget;
     }
 
     /**

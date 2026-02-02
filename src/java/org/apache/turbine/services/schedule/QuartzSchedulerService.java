@@ -25,8 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.fulcrum.quartz.QuartzScheduler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.turbine.log.Log;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
@@ -51,7 +50,7 @@ public class QuartzSchedulerService
         implements ScheduleService
 {
     /** Logging */
-    protected static final Logger log = LogManager.getLogger(ScheduleService.LOGGER_NAME);
+    protected static final Log log = Log.getLog(ScheduleService.LOGGER_NAME);
 
     /** Current status of the scheduler */
     protected boolean enabled = false;
