@@ -1332,7 +1332,7 @@
     <!-- this is the context path of the turbine release -->
     <turbine.url.path>turbine/turbine-7-0</turbine.url.path>
     <fulcrum.intake>4.0.0</fulcrum.intake>
-    <fulcrum.parser>4.0.0</fulcrum.parser>
+    <fulcrum.parser>4.0.1-SNAPSHOT</fulcrum.parser>
     <fulcrum.security>4.0.0</fulcrum.security>
     <fulcrum.localization>2.0.0</fulcrum.localization>
     <fulcrum.quartz>2.0.0</fulcrum.quartz>
