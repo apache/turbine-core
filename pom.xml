@@ -880,6 +880,44 @@
     </plugins>
   </reporting>
 
+  <dependencyManagement>
+  
+     <dependencies>
+         <dependency>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-api</artifactId>
+          <version>${turbine.log4j2.version}</version>
+        </dependency>
+        <!-- all log4j implement deps are optional since v7.1, use profile log4j2 to activate -->
+        <dependency>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-core</artifactId>
+          <version>${turbine.log4j2.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-jpl</artifactId>
+          <version>${turbine.log4j2.version}</version>
+          <scope>runtime</scope>
+        </dependency>
+        <!-- support of log4j-jakarta-web (autodetect of log4j2 in WEB-INF folder) may allow to remove explicit log4j2 loading/configuration except 
+          for tests -->
+        <dependency>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-jakarta-web</artifactId>
+          <version>${turbine.log4j2.version}</version>
+          <scope>runtime</scope>
+        </dependency>
+        <!-- velocity and java testcontainers use slf4j-api, need for log4j-slf4j-impl mapping, if using log4j -->
+        <dependency>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-slf4j2-impl</artifactId>
+          <version>${turbine.log4j2.version}</version>
+          <scope>runtime</scope>
+        </dependency>
+     </dependencies>
+  </dependencyManagement>
+  
   <dependencies>
     <dependency>
       <groupId>jakarta.servlet</groupId>
@@ -981,12 +1019,8 @@
       <version>${torque.version}</version>
       <exclusions>
         <exclusion>
-          <groupId>avalon-framework</groupId>
-          <artifactId>avalon-framework-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>avalon-logkit</groupId>
-          <artifactId>avalon-logkit</artifactId>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -1043,33 +1077,29 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
-      <version>${turbine.log4j2.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
-      <version>${turbine.log4j2.version}</version>
+   	  <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-jpl</artifactId>
-      <version>${turbine.log4j2.version}</version>
-      <scope>runtime</scope>
+      <optional>true</optional>
     </dependency>
     <!-- support of log4j-web (autodetect of log4j2 in WEB-INF folder) may allow to remove explicit log4j2 loading/configuration except 
       for tests -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-jakarta-web</artifactId>
-      <version>${turbine.log4j2.version}</version>
-      <scope>runtime</scope>
+      <optional>true</optional>
     </dependency>
     <!-- velocity and java testcontainers use slf4j-api, need for log4j-slf4j-impl mapping -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j2-impl</artifactId>
-      <version>${turbine.log4j2.version}</version>
-      <scope>runtime</scope>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.apache.velocity</groupId>
@@ -1323,6 +1353,30 @@
         <!-- outputTimestamp, implementation.build and buildNumber in parent POM -->
         <scmBranch>trunk</scmBranch>
       </properties>
+    </profile>
+    <profile>
+      <id>log4j2</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <dependencies>
+          <dependency>
+              <groupId>org.apache.logging.log4j</groupId>
+              <artifactId>log4j-core</artifactId>
+            </dependency>
+            <dependency>
+              <groupId>org.apache.logging.log4j</groupId>
+              <artifactId>log4j-jpl</artifactId>
+            </dependency>
+            <dependency>
+              <groupId>org.apache.logging.log4j</groupId>
+              <artifactId>log4j-jakarta-web</artifactId>
+            </dependency>
+            <dependency>
+              <groupId>org.apache.logging.log4j</groupId>
+              <artifactId>log4j-slf4j2-impl</artifactId>
+            </dependency>
+      </dependencies>
     </profile>
   </profiles>
 
