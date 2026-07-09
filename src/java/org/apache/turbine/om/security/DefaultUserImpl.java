@@ -454,6 +454,7 @@ public class DefaultUserImpl implements User
 
             if (objectdata != null)
             {
+                // might throw StreamCorruptedException
                 permStorage = ObjectUtils.deserialize(objectdata);
             }
 

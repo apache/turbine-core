@@ -18,7 +18,7 @@
  under the License.
 -->
 <!-- may change status to debug or trace -->
-<Configuration status="info" verbose="true">
+<Configuration verbose="true">
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
 	      <PatternLayout pattern="%d [%t] %-5p %c - %m%n"/>

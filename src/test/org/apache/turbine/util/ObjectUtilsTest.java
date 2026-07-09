@@ -71,8 +71,8 @@ public class ObjectUtilsTest extends BaseTestCase
     public void testDeserializationFilter()
         throws Exception
     {
-	Map<String, Object> map = new HashMap<>();
-	map.put("testKey1", new HashBag<>()); // forbidden class
+        Map<String, Object> map = new HashMap<>();
+        map.put("testKey1", new HashBag<>()); // forbidden class
         map.put("testKey2", new Object()); // non-serializable
         map.put("testKey3", "actual Value");
         assertEquals(map.size(), 3);
