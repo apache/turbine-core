@@ -18,3 +18,6 @@ logs
 *torque.usersettings.properties
 /.apt_generated/
 /.apt_generated_tests/
+
+.claude
+.specify
