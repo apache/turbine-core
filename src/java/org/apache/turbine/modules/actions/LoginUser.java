@@ -95,10 +95,11 @@ public class LoginUser implements Action
 
         try
         {
-        	if (username.equals(security.getAnonymousUser().getName()))
+            if (username.equals(security.getAnonymousUser().getName()))
             {
                 throw new TurbineException("Anonymous user cannot login");
             }
+            // sessionid is already refreshed in pipeline by default.
 
             // Authenticate the user and get the object.
             User user = security.getAuthenticatedUser(username, password);

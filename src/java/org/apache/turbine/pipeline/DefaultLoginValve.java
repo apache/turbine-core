@@ -113,9 +113,16 @@ public class DefaultLoginValve
             // associated with the previous User.  Currently the
             // only keys stored in the session are "turbine.user"
             // and "turbine.acl".
+            // Since Servlet spec 3.1 request.changeSessionId does change 
+            // the session id of the current session associated with this 
+            // request, which disallows passing the sessionId.
             if (actionName.equalsIgnoreCase(actionLogin))
             {
+                // this fetches or creates session 
                 Enumeration<String> names = data.getSession().getAttributeNames();
+
+                data.getRequest().changeSessionId();
+                
                 if (names != null)
                 {
                     // copy keys into a new list, so we can clear the session
