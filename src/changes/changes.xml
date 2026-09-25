@@ -17,7 +17,8 @@
  specific language governing permissions and limitations
  under the License.
 -->
-<document>
+<document xmlns="http://maven.apache.org/changes/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/changes/2.0.0 https://maven.apache.org/xsd/changes-2.0.0.xsd">
   <properties>
     <title>Changes</title>
     <author email="epugh@opensourceconnections.com.com">Eric Pugh</author>
@@ -115,10 +116,10 @@
       <action type="update" dev="tv">
         Optimize JobQueue and add JobQueueTest
       </action>    
-    </release>
-    <action type="add" dev="gk">
+      <action type="add" dev="gk">
        Add Annotation @TurbineTool to annotate tools for advanced usage in action methods.
-    </action>
+       </action>
+    </release>
     <release version="5.1" date="2021-11-23">
         <action type="update" dev="painter">
         Updated dependencies: yauaa to 5.23, commons-lang3 to 3.12, jython-standalone to 2.7.2
@@ -681,8 +682,9 @@
        Thanks to Peter Courcoux for the code.</action>
 </release>
 <release version="PRE 2.4" description="Older Changes Logs">
-    <action>Please see <a href="changes-pre24.html">Pre 2.4 Changelog</a></action>
-    </release>
+    <action>Please find changes before v2.4 in "Historical Changes".
+    </action>
+</release>
 
   </body>
 </document>

@@ -17,10 +17,10 @@
  specific language governing permissions and limitations
  under the License.
 -->
+<site xmlns="http://maven.apache.org/SITE/2.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SITE/2.0.0 https://maven.apache.org/xsd/site-2.0.0.xsd"
+  name="Apache Turbine" combine.self="merge">
 
-<project xmlns="http://maven.apache.org/DECORATION/1.8.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.0 https://maven.apache.org/xsd/decoration-1.8.0.xsd"
-  name="Apache Turbine" combine.self="merge">  
 
   <!-- banners in parent -->
   
@@ -45,8 +45,9 @@
       <item name="Features"              href="/features.html"/>
       <item name="Specification"         href="/fsd.html"/>
       <item name="Getting Started"       href="/getting-started.html"/>
-      <item name="Howto Build Turbine"   href="/how-to-build.html"/>
-      <item name="Changes"               href="/changes-report.html"/>
+      <item name="How to Build Turbine"   href="/how-to-build.html"/>
+      <item name="Changes"               href="/changes.html"/>
+      <item name="Historical Changes"               href="/changes-pre24.html"/>
     </menu>
     <menu name="Documentation">
       <item name="Services"              href="/services/index.html" collapse="true">
@@ -132,4 +133,4 @@
         </fluidoSkin>
     </custom>
   
-</project>
+</site>

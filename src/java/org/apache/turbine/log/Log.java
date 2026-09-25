@@ -51,7 +51,7 @@ public class Log
     /**
      * Constructs a System Logger wrapper
      *
-     * @param logger the System Logger
+     * @param name the System Logger
      */
     public Log(String name)
     {
