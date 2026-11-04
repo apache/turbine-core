@@ -93,6 +93,37 @@ In /WEB-INF/conf you should provide componentConfiguration.xml:
     <torque>
        <configfile>/WEB-INF/conf/torque.properties</configfile>
     </torque>
+   
+    <securityService/>
+    <authenticator/>
+    <!--   <authenticator>
+         <algorithm>java</algorithm>
+         <cipher>SHA1</cipher>    </authenticator>   -->   
+    <aclFactory/>
+    <modelManager/>
+    
+    <!-- package : your Torque ORM base package -->     
+   <userManager>
+        <className>${package}.om.TurbineUser</className>
+        <peerClassName>${package}.om.TurbineUserPeerImpl</peerClassName>
+        <userGroupRoleManager><!-- using custom peers requires now this element -->
+        <peerClassName>${package}.om.TurbineUserGroupRolePeerImpl</peerClassName>
+        </userGroupRoleManager>
+    </userManager>
+    <groupManager><!-- might have lazy="true" attribute -->
+        <className>${package}.om.TurbineGroup</className>
+        <peerClassName>${package}.om.TurbineGroupPeerImpl</peerClassName>
+    </groupManager>
+    <roleManager><!-- might have lazy="true" attribute -->
+        <className>${package}.om.TurbineRole</className>
+        <peerClassName>${package}.om.TurbineRolePeerImpl</peerClassName>
+    </roleManager>
+    <permissionManager>
+        <className>${package}.om.TurbinePermission</className>
+        <peerClassName>${package}.om.TurbinePermissionPeerImpl</peerClassName>
+    </permissionManager>
+    <peerManager/>
+    
 </componentConfig>
 ]]></source>
 <p>
@@ -103,6 +134,47 @@ and roleConfiguration.xml:
     <role name="org.apache.torque.avalon.Torque"
           shorthand="torque"
           default-class="org.apache.torque.avalon.TorqueComponent" />
+    <role
+        name="org.apache.fulcrum.security.SecurityService"
+        shorthand="securityService"
+        default-class="org.apache.fulcrum.security.BaseSecurityService"/>     
+        
+    <role
+        name="org.apache.fulcrum.security.authenticator.Authenticator"
+        shorthand="authenticator"
+        default-class="org.apache.fulcrum.security.authenticator.TextMatchAuthenticator"/>
+    <role
+        name="org.apache.fulcrum.security.model.ACLFactory"
+        shorthand="aclFactory"
+        default-class="org.apache.fulcrum.security.model.turbine.TurbineACLFactory"/>
+        
+    <role
+        name="org.apache.fulcrum.security.ModelManager"
+        shorthand="modelManager"
+        default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbineModelManagerImpl"/>
+        
+     <role
+        name="org.apache.fulcrum.security.UserManager"
+        shorthand="userManager"
+        early-init="true"
+        default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbineUserManagerImpl"/>
+    <role
+        name="org.apache.fulcrum.security.GroupManager"
+        shorthand="groupManager"
+        default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbineGroupManagerImpl"/>
+    <role
+        name="org.apache.fulcrum.security.RoleManager"
+        shorthand="roleManager"
+        default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbineRoleManagerImpl"/>
+    <role
+        name="org.apache.fulcrum.security.PermissionManager"
+        shorthand="permissionManager"
+        default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbinePermissionManagerImpl"/>
+    <role
+        name="org.apache.fulcrum.security.torque.peer.PeerManager"
+        shorthand="peerManager"
+        default-class="org.apache.fulcrum.security.torque.peer.PeerManagerDefaultImpl"/>
+    
 </role-list>
 ]]></source>
 <p>
@@ -128,6 +200,10 @@ If you plan to use the decoupled Torque in your application, you should
 leave the Avalon Component Service configured at all times. It is started at
 early startup time. Once it has initialized all the components, there
 are no application specific methods or services available.
+</p>
+<p>
+Find more Avalon services in Maven Archetypes (Turbine Webapp example) on <a href="https://github.com/apache/turbine-archetypes" 
+    title="Turbine Maven Archetype on GitHub">GitHub</a>. Find more services in <a href="../services/index.html">Fulcrum Service components</a>.
 </p>
 </section>
 

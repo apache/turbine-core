@@ -94,6 +94,11 @@ services.RunDataService.default.parameter.parser=org.apache.turbine.util.parser.
 services.RunDataService.default.cookie.parser=org.apache.turbine.util.parser.DefaultCookieParser
 ]]></source>
 
+Furthermore the Fulcrum component parser service is required for initializing.
+Find more information in the description of the <a href="../services/avalon-component-service.html">Avalon service component</a> and 
+in the examples xml configurations.
+Adding a service there is equivalent to adding a Turbine service to TurbineResources.properties.
+
 </section>
 
 <section name="Using RunData">
