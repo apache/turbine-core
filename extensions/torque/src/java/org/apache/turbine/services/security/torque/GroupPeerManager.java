@@ -83,7 +83,7 @@ public class GroupPeerManager
      *
      * @param conf The configuration object used to configure the Manager
      *
-     * @exception InitializationException A problem occured during initialization
+     * @exception InitializationException A problem occurred during initialization
      */
 
     public static void init(Configuration conf)
